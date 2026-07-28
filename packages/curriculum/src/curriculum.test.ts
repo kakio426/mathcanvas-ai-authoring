@@ -15,9 +15,9 @@ describe("교육과정 해석", () => {
     expect(result.record.domain).toBe("수와 연산");
     expect(result.record.officialSource.sourceTextIncluded).toBe(false);
     expect(result.record.officialSource.url).toBe(
-      "https://ncic.re.kr/bbs/eduNotice2022/view/543.do"
+      "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4"
     );
-    expect(result.warnings.join(" ")).toContain("분수의 덧셈과 뺄셈");
+    expect(result.warnings.join(" ")).toContain("후속 확인");
   });
 
   it("보조 맵 버전을 정확한 commit으로 고정한다", () => {

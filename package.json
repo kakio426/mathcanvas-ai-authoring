@@ -1,6 +1,6 @@
 {
   "name": "mathcanvas-ai-authoring",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.15.9",
@@ -11,15 +11,15 @@
     "build": "pnpm -r --sort run build",
     "clean": "pnpm -r run clean",
     "doctor": "node scripts/doctor.mjs",
-    "pairing-code": "node apps/mcp-server/dist/pairing-code.js",
+    "smoke:browser": "node scripts/smoke-managed-browser.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "pnpm typecheck && pnpm test && pnpm build"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.315",
     "@types/node": "^22.15.3",
+    "playwright-core": "1.62.0",
     "typescript": "^5.8.3",
     "vite": "^6.1.0",
     "vitest": "^3.1.1"

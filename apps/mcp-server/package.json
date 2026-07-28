@@ -1,6 +1,6 @@
 {
   "name": "@mathcanvas/mcp-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "bin": {
@@ -13,9 +13,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@mathcanvas/bridge-protocol": "workspace:*",
     "@mathcanvas/compiler": "workspace:*",
     "@mathcanvas/contracts": "workspace:*",
+    "@mathcanvas/managed-browser": "workspace:*",
     "@mathcanvas/planner": "workspace:*",
     "@mathcanvas/templates": "workspace:*",
     "@mathcanvas/validator": "workspace:*",

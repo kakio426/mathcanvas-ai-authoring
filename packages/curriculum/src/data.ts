@@ -24,9 +24,10 @@ export const unlikeDenominatorComparisonRecord: CurriculumRecord =
     officialSource: {
       sourceId: "kr-ncic-2022-elementary-math",
       sourceKind: "official",
-      title: "2022 개정 초중등학교 교육과정 원문 탑재 안내 및 수학과 교육과정",
-      url: "https://ncic.re.kr/bbs/eduNotice2022/view/543.do",
-      locator: "초등학교 5~6학년군 수학 > 수와 연산 > [6수01-07]",
+      title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      locator:
+        "PDF 31쪽, 초등학교 5~6학년군 > 수와 연산 > 분수의 덧셈과 뺄셈 > [6수01-07]",
       version: "교육부 고시 제2022-33호",
       verificationStatus: "official-text-verified",
       sourceTextIncluded: false,
@@ -45,9 +46,9 @@ export const unlikeDenominatorComparisonRecord: CurriculumRecord =
         verificationStatus: "auxiliary-pinned",
         sourceTextIncluded: false,
         caveat:
-          "official-source-checked는 코드와 출처 위치 확인을 뜻하며 공식 문구 수록이나 교육 전문가 승인을 뜻하지 않습니다. 이 스냅샷은 [6수01-07]을 상위 단원명인 '분수의 덧셈과 뺄셈'으로 표시하므로 공식 목표를 대신할 수 없습니다."
+          "고정 스냅샷은 성취기준 코드와 상위 단원 위치를 확인하는 보조 자료입니다. 공식 목표 문구는 교육부 원문을 기준으로 삼습니다."
       }
     ],
-    reviewedAt: "2026-07-28T00:00:00.000Z",
+    reviewedAt: "2026-07-29T00:00:00.000Z",
     reviewer: "MathCanvas AI authoring curriculum review"
   });

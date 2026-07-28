@@ -47,15 +47,9 @@ export function resolveCurriculum(
   for (const source of record.auxiliarySources) {
     if (source.caveat) warnings.push(source.caveat);
   }
-  if (
-    record.auxiliarySources.some((source) =>
-      source.caveat?.includes("분수의 덧셈과 뺄셈")
-    )
-  ) {
-    warnings.push(
-      "보조 학습 맵의 상위 단원명은 공식 성취기준 문구가 아니므로 추천 목표에는 공식 문구를 사용했습니다."
-    );
-  }
+  warnings.push(
+    "이 템플릿은 분수 띠로 크기를 비교하는 개념 형성 활동입니다. 성취기준 전체를 평가하려면 학생이 비교 방법을 말하거나 쓰는 후속 확인이 필요합니다."
+  );
 
   return {
     record,

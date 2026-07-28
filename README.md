@@ -1,51 +1,71 @@
 # MathCanvas AI 활동지 생성 도구
 
-Codex 또는 Claude Code와 대화해 검증된 새 MathCanvas 프로젝트를 만드는 로컬 도구입니다. 로그인 정보는 Chrome 페이지 안에서만 사용하며, 기존 프로젝트는 수정하지 않습니다.
+Codex 또는 Claude Code와 대화해 새 MathCanvas 활동지를 만드는 로컬 MCP 도구입니다. 별도 Chrome 추가 기능이나 화면 원격 조작 기능을 설치하지 않습니다. MCP 서버가 MathCanvas 전용 Chrome 창을 열고, 교사는 그 창에서 직접 로그인합니다.
 
-현재 검증된 활동은 초등 5학년 권장 `분모가 다른 분수의 크기 비교` 한 종류입니다. 분수 띠를 같은 출발선에 옮겨 길이를 비교한 뒤 `<` 또는 `>` 기호를 놓는 활동을 만들고, 대화에는 교사용 정답지도 함께 보여 줍니다. 대표 문제는 [최종 활동지 예시](./examples/FINAL_ACTIVITY_SAMPLE.md)에서 볼 수 있습니다.
+현재 검증된 활동은 초등 5학년 권장 `분모가 다른 분수의 크기 비교`입니다. 학생은 두 분수 띠를 같은 출발선에 옮겨 길이를 비교하고 `<` 또는 `>` 기호를 놓습니다. 생성 전 대화에는 학년·문제 수·난이도·조작 방식 추천과 교사용 정답지가 함께 나옵니다.
 
-## 빠른 설치
+## 설치
 
-- macOS: `scripts/install-macos/install.command`를 실행합니다.
-- Windows: PowerShell에서 `scripts\install-windows\install.ps1`을 실행합니다.
-- 설치 뒤 [ONBOARDING_KO.md](./ONBOARDING_KO.md)의 Chrome 설정을 마칩니다.
+### macOS
 
-개발 환경에서는 다음 명령을 사용합니다.
+Finder에서 `scripts/install-macos/install.command`를 실행합니다.
+
+### Windows
+
+PowerShell에서 다음 명령을 실행합니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install-windows\install.ps1
+```
+
+설치 스크립트는 의존성 설치, 빌드, Codex·Claude Code MCP 등록과 실행 환경 진단을 수행합니다. 전체 테스트는 개발 환경에서 다음 명령으로 실행합니다.
 
 ```bash
 pnpm install --frozen-lockfile
 pnpm check
-pnpm pairing-code
 pnpm run doctor
+pnpm run smoke:browser
 ```
 
-## 대화 사용 예
+## 처음 사용하는 대화
 
-1. `MathCanvas 연결 상태를 확인해 줘.`
-2. `5학년 분모가 다른 분수의 크기 비교 활동지를 추천해 줘.`
-3. AI가 보여 준 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 확인합니다.
-4. 조건이 맞으면 `이대로 새 활동지를 만들어 줘.`라고 승인합니다.
-5. 생성이 끝나면 Chrome에 새 MathCanvas 편집 탭이 열립니다.
+1. `MathCanvas 전용 Chrome을 열어 줘.`
+2. 새로 열린 창에서 교사가 직접 로그인합니다.
+3. 같은 창에서 `내 캔버스` 화면까지 이동합니다.
+4. `MathCanvas 연결 상태를 확인해 줘.`
+5. `5학년 분모가 다른 분수의 크기 비교 활동지를 추천해 줘.`
+6. 추천을 확인한 뒤 `이대로 새 활동지를 만들어 줘.`
 
-추천 단계에서는 MathCanvas에 아무것도 만들지 않고, 재시작 복구용 초안만 이 컴퓨터에 저장합니다. 새 프로젝트 생성은 교사가 직전 추천안을 명시적으로 승인한 뒤에만 실행됩니다.
+생성에 성공하면 같은 전용 Chrome에 새 MathCanvas 편집 탭이 열립니다. 기존 캔버스는 수정하지 않습니다.
+
+자세한 첫 연결 안내는 [ONBOARDING_KO.md](./ONBOARDING_KO.md)를 봅니다.
 
 ## 구성
 
-- `apps/mcp-server`: Codex·Claude Code 공용 MCP 서버
-- `apps/chrome-extension`: 로그인된 MathCanvas 탭과 로컬 서버를 잇는 얇은 브리지
+- `apps/mcp-server`: Codex·Claude Code 공용 stdio MCP 서버
+- `packages/managed-browser`: 별도 영구 프로필로 Google Chrome을 실행하는 제한형 런타임
 - `packages/curriculum`: 공식 성취기준 우선 교육과정 해석
 - `packages/templates`: 검증된 활동 패턴
 - `packages/mathcanvas-compiler`: `ActivitySpec`을 MathCanvas 객체로 변환
 - `packages/validator`: 수학·교육·배치·API 계약 검증
-- `packages/bridge-protocol`: 인증된 로컬 작업 큐와 중복 생성 방지
+- `packages/contracts`: 승인·활동·검증 데이터 계약
 
-자세한 설계는 [ARCHITECTURE.md](./docs/ARCHITECTURE.md), 보안 경계는 [SECURITY.md](./docs/SECURITY.md), 검증 현황은 [REPORT.md](./REPORT.md)를 봅니다. 독립 평가 점수와 남은 실서비스 확인 항목은 [Claude Opus 5 심사](./CLAUDE_OPUS_5_REVIEW.md)에 정리했습니다.
+## 안전 원칙
+
+- MathCanvas 로그인 토큰은 페이지 안에서만 읽고 사용합니다.
+- MCP 응답과 로컬 작업 파일에 토큰·비밀번호·Authorization 헤더를 저장하지 않습니다.
+- 교사가 직전 추천안을 명시적으로 승인해야 새 프로젝트를 만듭니다.
+- 로그인·Chrome 실행 같은 일시 오류 뒤에는 같은 추천안과 같은 문제로 다시 시도합니다.
+- 생성 직전 payload 해시와 MathCanvas 객체 계약을 다시 검사합니다.
+- 새 프로젝트 `POST`만 허용하며 기존 프로젝트 수정·삭제 도구는 없습니다.
+- 전용 Chrome 프로필은 `~/.mathcanvas-ai-authoring/chrome-profile`에 저장됩니다.
 
 ## 현재 제한
 
 - Chrome 데스크톱, Windows·macOS만 지원합니다.
-- 한 컴퓨터에서 Codex와 Claude Code가 같은 로컬 포트를 사용하므로 동시에 실행하지 않습니다.
-- 학생 링크 자동 발행, Chrome 웹 스토어 배포, 원격 AI 서비스는 아직 구현하지 않았습니다.
-- MathCanvas 내부 웹 계약은 공개 SDK가 아닙니다. 계약 사전 검사가 실패하면 프로젝트를 만들지 않습니다.
-- 추천 초안과 작업 상태는 인증 정보 없이 로컬에 저장되어 앱이 재시작되어도 같은 승인을 이어갑니다. 새 추천을 다시 승인하면 새 캔버스를 만듭니다.
-- 여러 교사에게 배포하기 전 [DISTRIBUTION_PERMISSION.md](./DISTRIBUTION_PERMISSION.md)의 허가 증빙과 배포 조건을 확정해야 합니다.
+- 같은 전용 Chrome 프로필을 동시에 열 수 없으므로 Codex와 Claude Code를 동시에 사용하지 않습니다.
+- 서버 잠금이 두 AI 앱의 동시 실행을 감지해 로컬 작업 파일 손상을 막습니다.
+- 로그인, CAPTCHA, 2단계 인증은 교사가 전용 창에서 직접 처리합니다.
+- 학생 링크 자동 발행과 원격 AI 서비스는 구현하지 않았습니다.
+- MathCanvas 내부 웹 계약은 공개 SDK가 아닙니다. 계약이 바뀌면 생성하지 않고 중단합니다.
+- 여러 교사에게 배포하기 전 [DISTRIBUTION_PERMISSION.md](./DISTRIBUTION_PERMISSION.md)의 허가 범위를 확정해야 합니다.

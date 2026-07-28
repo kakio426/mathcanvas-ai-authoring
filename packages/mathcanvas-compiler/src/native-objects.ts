@@ -222,7 +222,7 @@ export function makeRectangleObject(
 }
 
 export function problemLabel(problem: ActivityProblem): string {
-  return `${problem.order}번  \\frac{${problem.left.numerator}}{${problem.left.denominator}} \\; ? \\; \\frac{${problem.right.numerator}}{${problem.right.denominator}}`;
+  return `\\frac{${problem.left.numerator}}{${problem.left.denominator}} \\; ? \\; \\frac{${problem.right.numerator}}{${problem.right.denominator}}`;
 }
 
 export function buildNativeContents(spec: ActivitySpec): {
@@ -268,6 +268,20 @@ export function buildNativeContents(spec: ActivitySpec): {
     );
     lockedIds.push(mat.id);
 
+    const problemNumberId = `${problem.id}-number`;
+    contents.push(
+      makeTextObject(
+        problemNumberId,
+        `${problem.order}번`,
+        mat.bounds.x + 40,
+        mat.bounds.y + 16,
+        120,
+        54,
+        34
+      )
+    );
+    lockedIds.push(problemNumberId);
+
     const promptId = `${problem.id}-prompt`;
     contents.push(
       makeLatexObject(
@@ -305,9 +319,9 @@ export function buildNativeContents(spec: ActivitySpec): {
         makeTextObject(
           labelId,
           lane.label,
-          lane.bounds.x - 125,
+          mat.bounds.x + 20,
           lane.bounds.y + 15,
-          110,
+          70,
           50,
           24
         )

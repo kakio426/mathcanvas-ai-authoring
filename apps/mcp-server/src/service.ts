@@ -21,10 +21,11 @@ import {
   type Recommendation
 } from "@mathcanvas/contracts";
 import {
-  BRIDGE_PROTOCOL_VERSION,
-  BridgeJobStore,
-  type ExtensionHeartbeat
-} from "@mathcanvas/bridge-protocol";
+  CreationJobStore,
+  type MathCanvasBrowserRuntime,
+  type QueuedCreation,
+  type StoredCreationJob
+} from "@mathcanvas/managed-browser";
 import { compileActivitySpec } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
 import { generateFractionComparisonActivity } from "@mathcanvas/templates";
@@ -107,15 +108,55 @@ function summarizeRecommendation(
 }
 
 function teacherAnswerKey(spec: ActivitySpec): TeacherAnswer[] {
-  return spec.problems.map((problem) => ({
-    problemNumber: problem.order,
-    answer:
-      `${problem.left.numerator}/${problem.left.denominator} ` +
-      `${problem.correctRelation} ` +
-      `${problem.right.numerator}/${problem.right.denominator}`,
-    explanation: problem.explanation
-  }));
+  const greatestCommonDivisor = (left: number, right: number): number => {
+    let a = Math.abs(left);
+    let b = Math.abs(right);
+    while (b !== 0) {
+      const remainder = a % b;
+      a = b;
+      b = remainder;
+    }
+    return a || 1;
+  };
+  return spec.problems.map((problem) => {
+    const commonDenominator =
+      (problem.left.denominator * problem.right.denominator) /
+      greatestCommonDivisor(
+        problem.left.denominator,
+        problem.right.denominator
+      );
+    const leftEquivalent =
+      problem.left.numerator *
+      (commonDenominator / problem.left.denominator);
+    const rightEquivalent =
+      problem.right.numerator *
+      (commonDenominator / problem.right.denominator);
+    return {
+      problemNumber: problem.order,
+      answer:
+        `${problem.left.numerator}/${problem.left.denominator} ` +
+        `${problem.correctRelation} ` +
+        `${problem.right.numerator}/${problem.right.denominator}`,
+      explanation:
+        `통분하면 ${problem.left.numerator}/${problem.left.denominator}=` +
+        `${leftEquivalent}/${commonDenominator}, ` +
+        `${problem.right.numerator}/${problem.right.denominator}=` +
+        `${rightEquivalent}/${commonDenominator}입니다. ` +
+        `${leftEquivalent}${problem.correctRelation}${rightEquivalent}이므로 ` +
+        `${problem.left.numerator}/${problem.left.denominator}` +
+        `${problem.correctRelation}` +
+        `${problem.right.numerator}/${problem.right.denominator}입니다. ` +
+        problem.explanation
+    };
+  });
 }
+
+const retryableCreationErrors = new Set([
+  "login-required",
+  "browser-launch-failed",
+  "mathcanvas-unavailable",
+  "project-create-failed"
+]);
 
 export interface AuthoringClock {
   now(): Date;
@@ -149,7 +190,8 @@ export class MathCanvasAuthoringService {
   readonly #draftSnapshotPath: string | undefined;
 
   public constructor(
-    public readonly bridgeStore: BridgeJobStore,
+    public readonly browserRuntime: MathCanvasBrowserRuntime,
+    public readonly jobStore: CreationJobStore,
     private readonly clock: AuthoringClock = systemClock,
     options: AuthoringServiceOptions = {}
   ) {
@@ -237,41 +279,75 @@ export class MathCanvasAuthoringService {
     chmodSync(this.#draftSnapshotPath, 0o600);
   }
 
-  public checkConnection(): {
+  public async openWorkspace(): Promise<{
     state:
-      | "extension-not-connected"
-      | ExtensionHeartbeat["state"];
+      | "browser-launch-failed"
+      | "login-required"
+      | "contract-mismatch"
+      | "ready";
     ready: boolean;
     message: string;
     checkedAt?: string;
+    currentUrl?: string;
+    detailCode?: string;
+  }> {
+    const connection = await this.browserRuntime.openWorkspace();
+    return this.#connectionSummary(connection);
+  }
+
+  public async checkConnection(): Promise<{
+    state:
+      | "browser-launch-failed"
+      | "login-required"
+      | "contract-mismatch"
+      | "ready";
+    ready: boolean;
+    message: string;
+    checkedAt?: string;
+    currentUrl?: string;
+    detailCode?: string;
+  }> {
+    const connection = await this.browserRuntime.checkConnection({
+      forceContractCheck: true,
+      bringToFront: true
+    });
+    return this.#connectionSummary(connection);
+  }
+
+  #connectionSummary(connection: Awaited<
+    ReturnType<MathCanvasBrowserRuntime["checkConnection"]>
+  >): {
+    state:
+      | "browser-launch-failed"
+      | "login-required"
+      | "contract-mismatch"
+      | "ready";
+    ready: boolean;
+    message: string;
+    checkedAt: string;
+    currentUrl?: string;
     detailCode?: string;
   } {
-    const heartbeat = this.bridgeStore.latestHeartbeat(this.clock.now());
-    if (!heartbeat) {
-      return {
-        state: "extension-not-connected",
-        ready: false,
-        message:
-          "Chrome 연결이 아직 확인되지 않았어요. 확장 프로그램에 연결 코드를 저장하고 MathCanvas의 ‘내 캔버스’를 열어 주세요."
-      };
-    }
-    const messages: Record<ExtensionHeartbeat["state"], string> = {
-      "bridge-not-paired":
-        "확장 프로그램에 연결 코드를 저장해 주세요.",
-      "mathcanvas-tab-missing":
-        "Chrome에서 https://mathcanvas.vivasam.com/ko/myCanvas 를 열어 주세요.",
+    const messages: Record<typeof connection.state, string> = {
+      "browser-launch-failed":
+        "Chrome을 열지 못했습니다. Chrome 설치 상태와 다른 MathCanvas 전용 창이 실행 중인지 확인해 주세요.",
       "login-required":
-        "Chrome의 MathCanvas에서 로그인한 뒤 ‘내 캔버스’를 열어 주세요.",
+        "MathCanvas 전용 Chrome 창이 열렸습니다. 그 창에서 로그인한 뒤 ‘내 캔버스’ 화면까지 들어가 주세요.",
       "contract-mismatch":
         "MathCanvas 연결 방식이 현재 버전과 달라졌습니다. 생성하지 않고 안전하게 멈췄어요.",
       ready: "MathCanvas에 연결되었어요. 새 활동지를 만들 준비가 됐습니다."
     };
     return {
-      state: heartbeat.state,
-      ready: heartbeat.state === "ready",
-      message: messages[heartbeat.state],
-      checkedAt: heartbeat.checkedAt,
-      ...(heartbeat.detailCode ? { detailCode: heartbeat.detailCode } : {})
+      state: connection.state,
+      ready: connection.ready,
+      message: messages[connection.state],
+      checkedAt: connection.checkedAt,
+      ...(connection.currentUrl
+        ? { currentUrl: connection.currentUrl }
+        : {}),
+      ...(connection.detailCode
+        ? { detailCode: connection.detailCode }
+        : {})
     };
   }
 
@@ -370,11 +446,11 @@ export class MathCanvasAuthoringService {
     };
   }
 
-  public createNewProject(input: {
+  public async createNewProject(input: {
     draftId: string;
     activitySpecHash: string;
     teacherConfirmed: boolean;
-  }): {
+  }): Promise<{
     jobId: string;
     status: string;
     activitySpecHash: string;
@@ -383,7 +459,10 @@ export class MathCanvasAuthoringService {
     validation: ReturnType<typeof validateForCreation>;
     teacherAnswerKey: TeacherAnswer[];
     message: string;
-  } {
+    projectId?: string;
+    editorUrl?: string;
+    errorCode?: string;
+  }> {
     if (!input.teacherConfirmed) {
       throw new AuthoringServiceError(
         "approval-required",
@@ -416,27 +495,37 @@ export class MathCanvasAuthoringService {
       );
     }
     if (draft.jobId) {
-      const existing = this.bridgeStore.getStatus(draft.jobId, now);
+      const existing = this.jobStore.get(draft.jobId, now);
       if (!existing) {
         throw new Error("기존 생성 작업 상태를 찾지 못했습니다.");
       }
       if (!draft.payloadHash) {
         throw new Error("이미 등록한 작업의 payload 해시가 없습니다.");
       }
-      return {
-        jobId: draft.jobId,
-        status: existing.status,
-        activitySpecHash: draft.activitySpecHash,
-        payloadHash: draft.payloadHash,
-        expiresAt: draft.expiresAt,
-        validation: validateForCreation(
-          draft.spec,
-          compileActivitySpec(draft.spec),
-          now
-        ),
-        teacherAnswerKey: teacherAnswerKey(draft.spec),
-        message: "같은 생성 요청이 이미 처리 중이거나 완료되었습니다."
-      };
+      if (
+        existing.status === "failed" &&
+        existing.result?.errorCode &&
+        retryableCreationErrors.has(existing.result.errorCode)
+      ) {
+        delete draft.jobId;
+        delete draft.payloadHash;
+        this.#persistDrafts();
+      } else {
+        const recovered =
+          existing.status === "queued" || existing.status === "creating"
+            ? await this.#executeJob(existing, draft)
+            : existing;
+        return this.#creationSummary(
+          recovered,
+          draft,
+          validateForCreation(
+            draft.spec,
+            compileActivitySpec(draft.spec),
+            now
+          ),
+          "같은 생성 요청의 기존 작업 결과를 확인했습니다."
+        );
+      }
     }
 
     const compiled = compileActivitySpec(draft.spec);
@@ -449,25 +538,24 @@ export class MathCanvasAuthoringService {
           .join(" ")}`
       );
     }
-    const samePayload = this.bridgeStore.findByPayloadHash(
+    const samePayload = this.jobStore.findByPayloadHash(
       compiled.payloadHash,
       now
     );
     if (samePayload) {
-      draft.jobId = samePayload.jobId;
+      draft.jobId = samePayload.job.jobId;
       draft.payloadHash = compiled.payloadHash;
       this.#persistDrafts();
-      return {
-        jobId: samePayload.jobId,
-        status: samePayload.status,
-        activitySpecHash: draft.activitySpecHash,
-        payloadHash: compiled.payloadHash,
-        expiresAt: draft.expiresAt,
+      const recovered =
+        samePayload.status === "queued" || samePayload.status === "creating"
+          ? await this.#executeJob(samePayload, draft)
+          : samePayload;
+      return this.#creationSummary(
+        recovered,
+        draft,
         validation,
-        teacherAnswerKey: teacherAnswerKey(draft.spec),
-        message:
-          "같은 조건의 활동지가 이미 생성 대기 중이거나 완료되었습니다. 기존 작업 상태를 확인해 주세요."
-      };
+        "같은 활동의 기존 작업 결과를 확인했습니다."
+      );
     }
     const approvalExpiresAt = new Date(now.getTime() + 10 * 60 * 1000);
     const approval = createApprovalReceipt(draft.spec, now, approvalExpiresAt);
@@ -475,7 +563,7 @@ export class MathCanvasAuthoringService {
       throw new Error("승인 무결성 검증에 실패했습니다.");
     }
     const jobId = `job-${randomUUID()}`;
-    const job = this.bridgeStore.createQueuedJob({
+    const job: QueuedCreation = {
       jobId,
       approvalHash: approval.approvalHash,
       payloadHash: compiled.payloadHash,
@@ -483,21 +571,93 @@ export class MathCanvasAuthoringService {
       expiresAt: approvalExpiresAt.toISOString(),
       compiledProject: compiled,
       validationReport: validation
-    });
-    this.bridgeStore.enqueue(job, now);
+    };
+    const stored = this.jobStore.enqueue(job, now);
     draft.jobId = jobId;
     draft.payloadHash = compiled.payloadHash;
     this.#persistDrafts();
+    const completed = await this.#executeJob(stored, draft);
+    return this.#creationSummary(
+      completed,
+      draft,
+      validation,
+      completed.status === "succeeded"
+        ? "새 활동지를 만들고 MathCanvas 편집 화면을 열었습니다."
+        : "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요."
+    );
+  }
+
+  async #executeJob(
+    stored: StoredCreationJob,
+    draft: Draft
+  ): Promise<StoredCreationJob> {
+    const canonicalCompiled = compileActivitySpec(draft.spec);
+    const currentValidation = validateForCreation(
+      draft.spec,
+      canonicalCompiled,
+      this.clock.now()
+    );
+    if (
+      !currentValidation.canCreate ||
+      stored.job.payloadHash !== canonicalCompiled.payloadHash ||
+      sha256Hex(stored.job.compiledProject) !==
+        sha256Hex(canonicalCompiled) ||
+      stored.job.validationReport.compiledPayloadHash !==
+        canonicalCompiled.payloadHash
+    ) {
+      throw new AuthoringServiceError(
+        "validation-failed",
+        "저장된 생성 작업이 현재 검증된 활동과 달라 안전하게 중단했습니다."
+      );
+    }
+    const marked = this.jobStore.markCreating(
+      stored.job.jobId,
+      this.clock.now()
+    );
+    if (marked.status === "expired") return marked;
+    const result = await this.browserRuntime.createProject(
+      marked.job.compiledProject.payload,
+      marked.job.payloadHash
+    );
+    return this.jobStore.complete(marked.job.jobId, result);
+  }
+
+  #creationSummary(
+    stored: StoredCreationJob,
+    draft: Draft,
+    validation: ReturnType<typeof validateForCreation>,
+    message: string
+  ): {
+    jobId: string;
+    status: string;
+    activitySpecHash: string;
+    payloadHash: string;
+    expiresAt: string;
+    validation: ReturnType<typeof validateForCreation>;
+    teacherAnswerKey: TeacherAnswer[];
+    message: string;
+    projectId?: string;
+    editorUrl?: string;
+    errorCode?: string;
+  } {
     return {
-      jobId,
-      status: "queued",
+      jobId: stored.job.jobId,
+      status: stored.status,
       activitySpecHash: draft.activitySpecHash,
-      payloadHash: compiled.payloadHash,
-      expiresAt: approvalExpiresAt.toISOString(),
+      payloadHash: stored.job.payloadHash,
+      expiresAt: stored.job.expiresAt,
       validation,
       teacherAnswerKey: teacherAnswerKey(draft.spec),
-      message:
-        "새 활동지 생성을 요청했습니다. Chrome에서 편집 화면이 열릴 때까지 잠시 기다려 주세요."
+      message,
+      ...(stored.result?.projectId
+        ? { projectId: stored.result.projectId }
+        : {}),
+      ...(stored.result?.editorUrl
+        ? { editorUrl: stored.result.editorUrl }
+        : {}),
+      ...(stored.result?.errorCode
+        ? { errorCode: stored.result.errorCode }
+        : {})
     };
   }
 
@@ -510,7 +670,7 @@ export class MathCanvasAuthoringService {
     errorCode?: string;
     message: string;
   } {
-    const status = this.bridgeStore.getStatus(jobId, this.clock.now());
+    const status = this.jobStore.get(jobId, this.clock.now());
     if (!status) {
       return {
         found: false,
@@ -519,7 +679,7 @@ export class MathCanvasAuthoringService {
       };
     }
     const messages: Record<typeof status.status, string> = {
-      queued: "Chrome 연결을 기다리고 있어요.",
+      queued: "MathCanvas 전용 Chrome을 준비하고 있어요.",
       creating: "MathCanvas에 새 활동지를 만들고 있어요.",
       succeeded: "새 활동지를 만들고 편집 화면을 열었어요.",
       failed: "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요.",
@@ -529,7 +689,9 @@ export class MathCanvasAuthoringService {
       "login-required":
         "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
       "mathcanvas-tab-missing":
-        "Chrome에서 MathCanvas의 ‘내 캔버스’를 연 뒤 새 추천을 받아 주세요.",
+        "MathCanvas 전용 Chrome에서 ‘내 캔버스’를 연 뒤 새 추천을 받아 주세요.",
+      "browser-launch-failed":
+        "Chrome을 열지 못했습니다. 설치 상태를 확인해 주세요.",
       "contract-mismatch":
         "MathCanvas 연결 방식이 달라져 안전하게 멈췄어요. 도구를 업데이트해 주세요.",
       "permission-denied":
@@ -562,5 +724,3 @@ export class MathCanvasAuthoringService {
     };
   }
 }
-
-export { BRIDGE_PROTOCOL_VERSION };

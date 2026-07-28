@@ -316,7 +316,7 @@ export const validationReportSchema = z
     "canCreate 값은 오류 유무와 일치해야 합니다."
   );
 
-export const bridgeJobSchema = z
+export const creationJobSchema = z
   .object({
     schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
     jobId: identifier,
@@ -324,7 +324,6 @@ export const bridgeJobSchema = z
     payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
     status: z.enum([
       "queued",
-      "awaiting-browser",
       "creating",
       "succeeded",
       "failed",
@@ -370,7 +369,7 @@ export type VisualModel = z.infer<typeof visualModelSchema>;
 export type CompiledProject = z.infer<typeof compiledProjectSchema>;
 export type ValidationReport = z.infer<typeof validationReportSchema>;
 export type ValidationIssue = z.infer<typeof validationIssueSchema>;
-export type BridgeJob = z.infer<typeof bridgeJobSchema>;
+export type CreationJob = z.infer<typeof creationJobSchema>;
 export type CurriculumRecord = z.infer<typeof curriculumRecordSchema>;
 export type ApprovalReceipt = z.infer<typeof approvalReceiptSchema>;
 export type TemplateDefinition = z.infer<typeof templateDefinitionSchema>;

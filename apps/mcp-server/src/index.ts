@@ -1,62 +1,77 @@
 #!/usr/bin/env node
-import { homedir } from "node:os";
 import { join } from "node:path";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  BridgeJobStore,
-  createBridgeHttpServer,
-  loadOrCreatePairingSecret
-} from "@mathcanvas/bridge-protocol";
+  CreationJobStore,
+  ManagedChromeRuntime
+} from "@mathcanvas/managed-browser";
 import { MathCanvasAuthoringService } from "./service.js";
 import { createMcpServer } from "./server.js";
+import { quarantineCorruptStateFile } from "./state-recovery.js";
+import { InstanceLock } from "./instance-lock.js";
+import { resolveStateDirectory } from "./state-directory.js";
 
-const stateDirectory =
-  process.env.MATHCANVAS_STATE_DIR ??
-  join(homedir(), ".mathcanvas-ai-authoring");
-const secretPath = join(stateDirectory, "pairing-secret");
-const port = Number.parseInt(
-  process.env.MATHCANVAS_BRIDGE_PORT ?? "38471",
-  10
-);
-if (!Number.isInteger(port) || port < 1024 || port > 65535) {
-  throw new Error("MATHCANVAS_BRIDGE_PORT는 1024~65535 사이여야 합니다.");
+const stateDirectory = resolveStateDirectory();
+const instanceLock = new InstanceLock(join(stateDirectory, "server.lock"));
+instanceLock.acquire();
+const browserRuntime = new ManagedChromeRuntime({
+  userDataDirectory: join(stateDirectory, "chrome-profile")
+});
+const jobSnapshotPath = join(stateDirectory, "creation-jobs.json");
+const draftSnapshotPath = join(stateDirectory, "drafts.json");
+
+function recoverStateFile(path: string, kind: string): void {
+  const backupPath = quarantineCorruptStateFile(path);
+  if (backupPath) {
+    process.stderr.write(
+      `${kind} 상태 파일이 손상되어 보존용 백업으로 옮겼습니다: ${backupPath}\n`
+    );
+  }
 }
 
-const pairingSecret = await loadOrCreatePairingSecret(secretPath);
-const bridgeStore = new BridgeJobStore({
-  snapshotPath: join(stateDirectory, "bridge-jobs.json")
-});
-const bridgeServer = createBridgeHttpServer({
-  store: bridgeStore,
-  pairingSecret
-});
-await new Promise<void>((resolve, reject) => {
-  bridgeServer.once("error", reject);
-  bridgeServer.listen(port, "127.0.0.1", () => {
-    bridgeServer.off("error", reject);
-    resolve();
-  });
-});
+let jobStore: CreationJobStore;
+try {
+  jobStore = new CreationJobStore({ snapshotPath: jobSnapshotPath });
+} catch {
+  recoverStateFile(jobSnapshotPath, "생성 작업");
+  jobStore = new CreationJobStore({ snapshotPath: jobSnapshotPath });
+}
 
 process.stderr.write(
   [
-    "MathCanvas AI 로컬 연결이 시작되었습니다.",
-    "연결 코드는 설치 결과 또는 `pnpm pairing-code` 명령에서 확인하세요.",
-    "보안을 위해 MCP 서버 로그에는 연결 코드를 표시하지 않습니다.",
+    "MathCanvas AI 로컬 MCP 서버가 시작되었습니다.",
+    "확장 프로그램과 Computer Use를 사용하지 않습니다.",
+    "MathCanvas 전용 Chrome은 대화에서 요청할 때 열립니다.",
     ""
   ].join("\n")
 );
 
-const service = new MathCanvasAuthoringService(bridgeStore, undefined, {
-  draftSnapshotPath: join(stateDirectory, "drafts.json")
-});
+let service: MathCanvasAuthoringService;
+try {
+  service = new MathCanvasAuthoringService(
+    browserRuntime,
+    jobStore,
+    undefined,
+    { draftSnapshotPath }
+  );
+} catch {
+  recoverStateFile(draftSnapshotPath, "추천안");
+  service = new MathCanvasAuthoringService(
+    browserRuntime,
+    jobStore,
+    undefined,
+    { draftSnapshotPath }
+  );
+}
 const server = createMcpServer(service);
 const transport = new StdioServerTransport();
 
 const shutdown = async () => {
   await server.close();
-  await new Promise<void>((resolve) => bridgeServer.close(() => resolve()));
+  await browserRuntime.close();
+  instanceLock.release();
 };
+process.once("exit", () => instanceLock.release());
 process.once("SIGINT", () => void shutdown().finally(() => process.exit(0)));
 process.once("SIGTERM", () => void shutdown().finally(() => process.exit(0)));
 

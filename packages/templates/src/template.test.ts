@@ -5,6 +5,7 @@ import {
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
 import { generateFractionComparisonActivity } from "./index.js";
+import { VISUAL_DIFFERENCE_BANDS } from "./index.js";
 
 function recommendation(
   overrides: Record<string, unknown> = {}
@@ -69,6 +70,36 @@ describe("분수 비교 템플릿", () => {
     ).toEqual(generateFractionComparisonActivity(recommendation(), options));
   });
 
+  it("쉬움에서 어려움으로 갈수록 눈으로 구별할 길이 차이가 줄어든다", () => {
+    expect(VISUAL_DIFFERENCE_BANDS.easy.min).toBeGreaterThan(
+      VISUAL_DIFFERENCE_BANDS.normal.max
+    );
+    expect(VISUAL_DIFFERENCE_BANDS.normal.min).toBeGreaterThanOrEqual(
+      VISUAL_DIFFERENCE_BANDS.hard.max
+    );
+    for (const difficulty of ["easy", "normal", "hard"] as const) {
+      const spec = generateFractionComparisonActivity(
+        recommendation({ difficulty, problemCount: 6 }),
+        {
+          seed: `difficulty-band-${difficulty}`,
+          generatedAt: "2026-07-28T02:00:00.000Z"
+        }
+      );
+      for (const problem of spec.problems) {
+        const difference = Math.abs(
+          problem.left.numerator / problem.left.denominator -
+            problem.right.numerator / problem.right.denominator
+        );
+        expect(difference).toBeGreaterThanOrEqual(
+          VISUAL_DIFFERENCE_BANDS[difficulty].min
+        );
+        expect(difference).toBeLessThanOrEqual(
+          VISUAL_DIFFERENCE_BANDS[difficulty].max
+        );
+      }
+    }
+  });
+
   it("문제마다 같은 전체와 실제 수학 판단이 있는 조작을 만든다", () => {
     const spec = generateFractionComparisonActivity(recommendation(), {
       seed: "visual-seed",
@@ -95,5 +126,10 @@ describe("분수 비교 템플릿", () => {
         (object) => object.id === "instruction-symbol"
       )?.text
     ).toContain("기호");
+    expect(
+      spec.fixedObjects.find(
+        (object) => object.id === "instruction-explain"
+      )?.text
+    ).toContain("말해");
   });
 });

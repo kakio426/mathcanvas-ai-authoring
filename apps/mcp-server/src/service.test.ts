@@ -1,273 +1,298 @@
-import { describe, expect, it } from "vitest";
-import { mkdtempSync } from "node:fs";
+import {
+  mkdtempSync,
+  readFileSync,
+  writeFileSync
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { describe, expect, it } from "vitest";
 import {
-  BRIDGE_PROTOCOL_VERSION,
-  BridgeJobStore
-} from "@mathcanvas/bridge-protocol";
+  CreationJobStore,
+  MANAGED_BROWSER_VERSION,
+  type BrowserConnection,
+  type CreationResult,
+  type MathCanvasBrowserRuntime
+} from "@mathcanvas/managed-browser";
+import { sha256Hex } from "@mathcanvas/contracts";
 import { MathCanvasAuthoringService } from "./service.js";
 
 const fixedClock = {
-  now: () => new Date("2026-07-28T04:00:00.000Z")
+  now: () => new Date("2026-07-29T04:00:00.000Z")
 };
 
+class FakeBrowserRuntime implements MathCanvasBrowserRuntime {
+  public createCalls = 0;
+  public openCalls = 0;
+
+  public constructor(
+    public connection: BrowserConnection = {
+      runtimeVersion: MANAGED_BROWSER_VERSION,
+      state: "ready",
+      ready: true,
+      checkedAt: fixedClock.now().toISOString(),
+      currentUrl: "https://mathcanvas.vivasam.com/ko/myCanvas"
+    },
+    public creationResult: CreationResult = {
+      ok: true,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      projectId: "P_generated",
+      editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_generated"
+    }
+  ) {}
+
+  public async openWorkspace(): Promise<BrowserConnection> {
+    this.openCalls += 1;
+    return this.connection;
+  }
+
+  public async checkConnection(): Promise<BrowserConnection> {
+    return this.connection;
+  }
+
+  public async createProject(): Promise<CreationResult> {
+    this.createCalls += 1;
+    return this.creationResult;
+  }
+
+  public async close(): Promise<void> {}
+}
+
+function createService(
+  runtime = new FakeBrowserRuntime(),
+  store = new CreationJobStore(),
+  draftSnapshotPath?: string
+) {
+  return new MathCanvasAuthoringService(
+    runtime,
+    store,
+    fixedClock,
+    draftSnapshotPath ? { draftSnapshotPath } : {}
+  );
+}
+
 describe("MCP 서비스 흐름", () => {
-  it("연결이 없으면 정확한 준비 안내를 돌려준다", () => {
-    const service = new MathCanvasAuthoringService(
-      new BridgeJobStore(),
-      fixedClock
-    );
-    const status = service.checkConnection();
+  it("전용 Chrome을 열고 로그인 위치를 정확히 안내한다", async () => {
+    const runtime = new FakeBrowserRuntime({
+      runtimeVersion: MANAGED_BROWSER_VERSION,
+      state: "login-required",
+      ready: false,
+      checkedAt: fixedClock.now().toISOString(),
+      currentUrl: "https://mathcanvas.vivasam.com/ko/myCanvas"
+    });
+    const status = await createService(runtime).openWorkspace();
+    expect(runtime.openCalls).toBe(1);
     expect(status.ready).toBe(false);
+    expect(status.message).toContain("전용 Chrome");
     expect(status.message).toContain("내 캔버스");
   });
 
-  it("추천 뒤 교사 승인과 같은 해시가 있어야 작업을 등록한다", () => {
-    const store = new BridgeJobStore();
-    store.recordHeartbeat({
-      protocolVersion: BRIDGE_PROTOCOL_VERSION,
-      instanceId: "extension-test",
-      extensionVersion: "1.0.0",
-      state: "ready",
-      checkedAt: "2026-07-28T04:00:00.000Z",
-      mathCanvasTabUrl: "https://mathcanvas.vivasam.com/ko/myCanvas",
-      contractVersion: "1.0.0"
-    });
-    const service = new MathCanvasAuthoringService(store, fixedClock);
+  it("추천 뒤 교사 승인과 같은 해시가 있어야 새 프로젝트를 만든다", async () => {
+    const runtime = new FakeBrowserRuntime();
+    const service = createService(runtime);
     const draft = service.recommend({
-      prompt: "분모가 다른 분수의 크기를 눈으로 비교하는 활동지를 만들어 주세요."
+      prompt:
+        "분모가 다른 분수의 크기를 눈으로 비교하는 활동지를 만들어 주세요."
     });
     expect(draft.supported).toBe(true);
-    expect(() =>
+    await expect(
       service.createNewProject({
         draftId: draft.draftId!,
         activitySpecHash: draft.activitySpecHash!,
         teacherConfirmed: false
       })
-    ).toThrow("명시적으로 승인");
-    expect(() =>
+    ).rejects.toThrow("명시적으로 승인");
+    await expect(
       service.createNewProject({
         draftId: draft.draftId!,
         activitySpecHash: "0".repeat(64),
         teacherConfirmed: true
       })
-    ).toThrow("다릅니다");
+    ).rejects.toThrow("다릅니다");
 
-    const created = service.createNewProject({
+    const created = await service.createNewProject({
       draftId: draft.draftId!,
       activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(created.status).toBe("queued");
+    expect(created.status).toBe("succeeded");
     expect(created.validation.canCreate).toBe(true);
     expect(created.teacherAnswerKey).toHaveLength(4);
-    expect(created.teacherAnswerKey[0]?.answer).toMatch(
-      /^\d+\/\d+ [<>] \d+\/\d+$/
-    );
+    expect(created.teacherAnswerKey[0]?.explanation).toContain("통분하면");
+    expect(created.projectId).toBe("P_generated");
+    expect(created.editorUrl).toContain("/ko/view/P_generated");
+    expect(runtime.createCalls).toBe(1);
     expect(JSON.stringify(created)).not.toMatch(
       /accessToken|Authorization|Bearer/
     );
-    expect(service.getJobStatus(created.jobId).status).toBe("queued");
 
-    const repeated = service.createNewProject({
+    const repeated = await service.createNewProject({
       draftId: draft.draftId!,
       activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
     expect(repeated.jobId).toBe(created.jobId);
-    expect(repeated.payloadHash).toBe(created.payloadHash);
-    expect(repeated.message).toContain("이미");
+    expect(runtime.createCalls).toBe(1);
   });
 
   it("지원하지 않는 요청은 draft를 만들지 않는다", () => {
-    const service = new MathCanvasAuthoringService(
-      new BridgeJobStore(),
-      fixedClock
-    );
-    const result = service.recommend({
+    const result = createService().recommend({
       prompt: "원의 넓이 활동지를 만들어 주세요."
     });
     expect(result.supported).toBe(false);
     expect(result.draftId).toBeUndefined();
   });
 
-  it("실패 코드를 교사가 바로 행동할 수 있는 안내로 바꾼다", () => {
-    const store = new BridgeJobStore();
-    const service = new MathCanvasAuthoringService(store, fixedClock);
+  it("브라우저 실패 코드를 교사가 행동할 수 있는 안내로 바꾼다", async () => {
+    const runtime = new FakeBrowserRuntime(undefined, {
+      ok: false,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      errorCode: "login-required",
+      httpStatus: 401
+    });
+    const service = createService(runtime);
     const draft = service.recommend({
       prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
     });
-    const created = service.createNewProject({
+    const created = await service.createNewProject({
       draftId: draft.draftId!,
       activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    const claimed = store.claimNext("extension-test", fixedClock.now())!;
-    store.complete({
-      protocolVersion: BRIDGE_PROTOCOL_VERSION,
-      jobId: claimed.jobId,
-      instanceId: "extension-test",
-      payloadHash: claimed.payloadHash,
-      ok: false,
-      completedAt: "2026-07-28T04:00:01.000Z",
-      errorCode: "login-required",
-      httpStatus: 401
-    });
+    expect(created.status).toBe("failed");
     expect(service.getJobStatus(created.jobId).message).toContain(
       "다시 로그인"
     );
   });
 
-  it("서버가 재시작되어도 creating 작업을 같은 ID로 이어간다", () => {
-    const directory = mkdtempSync(join(tmpdir(), "mathcanvas-jobs-"));
-    const snapshotPath = join(directory, "bridge-jobs.json");
+  it("로그인 실패 뒤 같은 추천안과 같은 문제로 다시 생성할 수 있다", async () => {
+    const runtime = new FakeBrowserRuntime(undefined, {
+      ok: false,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      errorCode: "login-required",
+      httpStatus: 401
+    });
+    const service = createService(runtime);
+    const draft = service.recommend({
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
+    });
+    const first = await service.createNewProject({
+      draftId: draft.draftId!,
+      activitySpecHash: draft.activitySpecHash!,
+      teacherConfirmed: true
+    });
+    expect(first.status).toBe("failed");
+
+    runtime.creationResult = {
+      ok: true,
+      completedAt: "2026-07-29T04:00:02.000Z",
+      projectId: "P_retry",
+      editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_retry"
+    };
+    const retried = await service.createNewProject({
+      draftId: draft.draftId!,
+      activitySpecHash: draft.activitySpecHash!,
+      teacherConfirmed: true
+    });
+    expect(retried.status).toBe("succeeded");
+    expect(retried.projectId).toBe("P_retry");
+    expect(retried.activitySpecHash).toBe(draft.activitySpecHash);
+    expect(retried.teacherAnswerKey).toEqual(first.teacherAnswerKey);
+    expect(runtime.createCalls).toBe(2);
+  });
+
+  it("서버 재시작 뒤 같은 승인 결과를 다시 외부 쓰기 하지 않는다", async () => {
+    const directory = mkdtempSync(join(tmpdir(), "mathcanvas-managed-jobs-"));
+    const jobSnapshotPath = join(directory, "creation-jobs.json");
     const draftSnapshotPath = join(directory, "drafts.json");
-    const firstStore = new BridgeJobStore({ snapshotPath });
-    const firstService = new MathCanvasAuthoringService(
-      firstStore,
-      fixedClock,
-      { draftSnapshotPath }
+    const firstRuntime = new FakeBrowserRuntime();
+    const firstService = createService(
+      firstRuntime,
+      new CreationJobStore({ snapshotPath: jobSnapshotPath }),
+      draftSnapshotPath
     );
     const draft = firstService.recommend({
       prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
     });
-    const created = firstService.createNewProject({
+    const created = await firstService.createNewProject({
       draftId: draft.draftId!,
       activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    const firstClaim = firstStore.claimNext(
-      "extension-persistent",
-      fixedClock.now()
-    )!;
+    expect(firstRuntime.createCalls).toBe(1);
 
-    const restartedStore = new BridgeJobStore({ snapshotPath });
-    const repeatedClaim = restartedStore.claimNext(
-      "extension-persistent",
-      fixedClock.now()
-    )!;
-    expect(repeatedClaim.jobId).toBe(firstClaim.jobId);
-    expect(repeatedClaim.jobId).toBe(created.jobId);
-
-    const restartedService = new MathCanvasAuthoringService(
-      restartedStore,
-      {
-        now: () => new Date("2026-07-28T04:01:00.000Z")
-      },
-      { draftSnapshotPath }
+    const restartedRuntime = new FakeBrowserRuntime();
+    const restartedService = createService(
+      restartedRuntime,
+      new CreationJobStore({ snapshotPath: jobSnapshotPath }),
+      draftSnapshotPath
     );
-    const deduplicated = restartedService.createNewProject({
+    const repeated = await restartedService.createNewProject({
       draftId: draft.draftId!,
       activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(deduplicated.jobId).toBe(created.jobId);
-    expect(deduplicated.status).toBe("creating");
+    expect(repeated.jobId).toBe(created.jobId);
+    expect(repeated.projectId).toBe("P_generated");
+    expect(restartedRuntime.createCalls).toBe(0);
+  });
 
-    restartedStore.complete({
-      protocolVersion: BRIDGE_PROTOCOL_VERSION,
-      jobId: repeatedClaim.jobId,
-      instanceId: "extension-persistent",
-      payloadHash: repeatedClaim.payloadHash,
-      ok: true,
-      completedAt: "2026-07-28T04:00:02.000Z",
-      projectId: "P_persisted",
-      editorUrl:
-        "https://mathcanvas.vivasam.com/ko/view/P_persisted"
-    });
-
-    const newDraft = restartedService.recommend({
+  it("저장된 작업 payload가 바뀌면 재시작 복구 중 외부 쓰기를 막는다", async () => {
+    const directory = mkdtempSync(join(tmpdir(), "mathcanvas-tamper-"));
+    const jobSnapshotPath = join(directory, "creation-jobs.json");
+    const draftSnapshotPath = join(directory, "drafts.json");
+    const firstService = createService(
+      new FakeBrowserRuntime(),
+      new CreationJobStore({ snapshotPath: jobSnapshotPath }),
+      draftSnapshotPath
+    );
+    const draft = firstService.recommend({
       prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
     });
-    const newCreation = restartedService.createNewProject({
-      draftId: newDraft.draftId!,
-      activitySpecHash: newDraft.activitySpecHash!,
+    await firstService.createNewProject({
+      draftId: draft.draftId!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(newCreation.jobId).not.toBe(created.jobId);
-    expect(newCreation.payloadHash).not.toBe(created.payloadHash);
 
-    const finalStore = new BridgeJobStore({ snapshotPath });
-    expect(finalStore.getStatus(created.jobId, fixedClock.now())).toMatchObject({
-      status: "succeeded",
-      result: { projectId: "P_persisted" }
-    });
-  });
+    const snapshot = JSON.parse(
+      readFileSync(jobSnapshotPath, "utf8")
+    ) as {
+      jobs: Array<{
+        status: string;
+        result?: unknown;
+        job: {
+          payloadHash: string;
+          compiledProject: {
+            payloadHash: string;
+            payload: Record<string, unknown>;
+          };
+          validationReport: { compiledPayloadHash: string };
+        };
+      }>;
+    };
+    const stored = snapshot.jobs[0]!;
+    stored.job.compiledProject.payload.projectTitle = "바뀐 활동지";
+    const tamperedHash = sha256Hex(stored.job.compiledProject.payload);
+    stored.job.payloadHash = tamperedHash;
+    stored.job.compiledProject.payloadHash = tamperedHash;
+    stored.job.validationReport.compiledPayloadHash = tamperedHash;
+    stored.status = "creating";
+    delete stored.result;
+    writeFileSync(jobSnapshotPath, JSON.stringify(snapshot));
 
-  it("완료 작업 스냅샷을 설정한 개수로 제한한다", () => {
-    const directory = mkdtempSync(join(tmpdir(), "mathcanvas-prune-"));
-    const snapshotPath = join(directory, "bridge-jobs.json");
-    const store = new BridgeJobStore({
-      snapshotPath,
-      maxStoredJobs: 2
-    });
-    const service = new MathCanvasAuthoringService(store, fixedClock);
-    const completedIds: string[] = [];
-
-    for (let index = 0; index < 3; index += 1) {
-      const draft = service.recommend({
-        prompt:
-          "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
-      });
-      const created = service.createNewProject({
+    const runtime = new FakeBrowserRuntime();
+    const restarted = createService(
+      runtime,
+      new CreationJobStore({ snapshotPath: jobSnapshotPath }),
+      draftSnapshotPath
+    );
+    await expect(
+      restarted.createNewProject({
         draftId: draft.draftId!,
         activitySpecHash: draft.activitySpecHash!,
         teacherConfirmed: true
-      });
-      const claimed = store.claimNext("extension-prune", fixedClock.now())!;
-      store.complete({
-        protocolVersion: BRIDGE_PROTOCOL_VERSION,
-        jobId: claimed.jobId,
-        instanceId: "extension-prune",
-        payloadHash: claimed.payloadHash,
-        ok: true,
-        completedAt: `2026-07-28T04:00:0${index}.000Z`,
-        projectId: `P_pruned_${index}`,
-        editorUrl:
-          `https://mathcanvas.vivasam.com/ko/view/P_pruned_${index}`
-      });
-      completedIds.push(created.jobId);
-    }
-
-    const restarted = new BridgeJobStore({
-      snapshotPath,
-      maxStoredJobs: 2
-    });
-    expect(restarted.getStatus(completedIds[0]!)).toBeNull();
-    expect(restarted.getStatus(completedIds[1]!)).not.toBeNull();
-    expect(restarted.getStatus(completedIds[2]!)).not.toBeNull();
-  });
-
-  it("스냅샷이 없는 메모리 모드에서도 완료 작업 상한을 적용한다", () => {
-    const store = new BridgeJobStore({ maxStoredJobs: 1 });
-    const service = new MathCanvasAuthoringService(store, fixedClock);
-    const completedIds: string[] = [];
-    for (let index = 0; index < 2; index += 1) {
-      const draft = service.recommend({
-        prompt:
-          "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
-      });
-      const created = service.createNewProject({
-        draftId: draft.draftId!,
-        activitySpecHash: draft.activitySpecHash!,
-        teacherConfirmed: true
-      });
-      const claimed = store.claimNext("extension-memory", fixedClock.now())!;
-      store.complete({
-        protocolVersion: BRIDGE_PROTOCOL_VERSION,
-        jobId: claimed.jobId,
-        instanceId: "extension-memory",
-        payloadHash: claimed.payloadHash,
-        ok: true,
-        completedAt: `2026-07-28T04:01:0${index}.000Z`,
-        projectId: `P_memory_${index}`,
-        editorUrl:
-          `https://mathcanvas.vivasam.com/ko/view/P_memory_${index}`
-      });
-      completedIds.push(created.jobId);
-    }
-    expect(store.getStatus(completedIds[0]!)).toBeNull();
-    expect(store.getStatus(completedIds[1]!)).not.toBeNull();
+      })
+    ).rejects.toThrow("안전하게 중단");
+    expect(runtime.createCalls).toBe(0);
   });
 });

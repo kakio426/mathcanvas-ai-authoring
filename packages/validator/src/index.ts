@@ -521,6 +521,40 @@ export function validateForCreation(
         "layout",
         `${model.id}의 실제 MathCanvas 분수 좌표가 캔버스 밖으로 나갑니다.`
       );
+    } else {
+      const xCoordinates = coordinates.map(
+        (point) => (point as [number, number])[0]
+      );
+      const renderedLeft = Math.min(...xCoordinates);
+      const renderedRight = Math.max(...xCoordinates);
+      const expectedGeometricWidth =
+        (model.wholeWidth / model.fraction.denominator) *
+        model.fraction.numerator;
+      const roleSuffix =
+        model.role === "left-strip" ? "left-movable" : "right-movable";
+      const lane = spec.dropAreas.find(
+        (area) =>
+          area.problemId === model.problemId &&
+          area.kind === "comparison-lane" &&
+          area.accepts.includes(`${model.problemId}-${roleSuffix}`)
+      );
+      const targetObjectX = model.commonStartX - renderedLeft;
+      const targetRenderedLeft = targetObjectX + renderedLeft;
+      const targetRenderedRight = targetObjectX + renderedRight;
+      if (
+        Math.abs(renderedRight - renderedLeft - expectedGeometricWidth) >
+          0.001 ||
+        !lane ||
+        Math.abs(targetRenderedLeft - lane.bounds.x) > 0.001 ||
+        targetRenderedRight > lane.bounds.x + lane.bounds.width + 0.001
+      ) {
+        issue(
+          issues,
+          "native-fraction-target-geometry-mismatch",
+          "layout",
+          `${model.id}의 실제 렌더 좌표를 출발선에 맞출 수 없습니다.`
+        );
+      }
     }
   }
 
@@ -543,6 +577,41 @@ export function validateForCreation(
     }
   }
 
+  for (const problem of spec.problems) {
+    const mat = spec.fixedObjects.find(
+      (object) => object.id === `${problem.id}-mat`
+    );
+    if (!mat) continue;
+    const helperIds = [
+      `${problem.id}-number`,
+      `${problem.id}-prompt`,
+      `${problem.id}-left-lane-label`,
+      `${problem.id}-right-lane-label`,
+      `${problem.id}-relation-slot-label`
+    ];
+    for (const helperId of helperIds) {
+      const helper = nativeById.get(helperId);
+      if (
+        !helper ||
+        typeof helper.x !== "number" ||
+        typeof helper.y !== "number" ||
+        typeof helper.width !== "number" ||
+        typeof helper.height !== "number" ||
+        helper.x < mat.bounds.x ||
+        helper.x + helper.width > mat.bounds.x + mat.bounds.width ||
+        helper.y < mat.bounds.y ||
+        helper.y + helper.height > mat.bounds.y + mat.bounds.height
+      ) {
+        issue(
+          issues,
+          "problem-helper-outside-mat",
+          "layout",
+          `${helperId}가 비교판 안에 들어오지 않습니다.`
+        );
+      }
+    }
+  }
+
   for (const [index, object] of compiled.payload.contentsJson.entries()) {
     if (
       typeof object.svgId !== "string" ||
@@ -554,6 +623,19 @@ export function validateForCreation(
         "api-contract",
         `지원하지 않는 MathCanvas svgId입니다: ${String(object.svgId)}`,
         `payload.contentsJson.${index}.svgId`
+      );
+    }
+    if (
+      object.svgId === "math-latex" &&
+      typeof object.text === "string" &&
+      /[가-힣]/.test(object.text)
+    ) {
+      issue(
+        issues,
+        "korean-text-inside-latex",
+        "api-contract",
+        "한글 안내는 수식 객체가 아니라 일반 글자 객체에 넣어야 합니다.",
+        `payload.contentsJson.${index}.text`
       );
     }
   }

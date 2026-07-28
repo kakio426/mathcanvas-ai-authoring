@@ -4,7 +4,6 @@ set -euo pipefail
 SCRIPT_DIR="${0:A:h}"
 PROJECT_DIR="${SCRIPT_DIR:h:h}"
 SERVER_ENTRY="$PROJECT_DIR/apps/mcp-server/dist/index.js"
-EXTENSION_DIR="$PROJECT_DIR/apps/chrome-extension/dist"
 
 if ! command -v node >/dev/null 2>&1; then
   print "Node.js 20 이상이 필요합니다: https://nodejs.org/"
@@ -20,12 +19,11 @@ fi
 cd "$PROJECT_DIR"
 if command -v pnpm >/dev/null 2>&1; then
   pnpm install --frozen-lockfile
-  pnpm check
+  pnpm build
 else
   npx --yes pnpm@9.15.9 install --frozen-lockfile
-  npx --yes pnpm@9.15.9 check
+  npx --yes pnpm@9.15.9 build
 fi
-PAIRING_CODE="$(node "$PROJECT_DIR/apps/mcp-server/dist/pairing-code.js")"
 
 if command -v codex >/dev/null 2>&1; then
   if codex mcp get mathcanvas-ai >/dev/null 2>&1; then
@@ -43,13 +41,14 @@ if command -v claude >/dev/null 2>&1; then
   print "Claude Code의 mathcanvas-ai 등록을 현재 빌드로 맞췄습니다."
 fi
 
-pnpm run doctor 2>/dev/null || npx --yes pnpm@9.15.9 run doctor
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm run doctor
+else
+  npx --yes pnpm@9.15.9 run doctor
+fi
 
 print ""
-print "Chrome 확장 프로그램 폴더:"
-print "$EXTENSION_DIR"
-print ""
-print "확장 프로그램 옵션에 입력할 연결 코드:"
-print "$PAIRING_CODE"
-print ""
-print "다음 단계는 ONBOARDING_KO.md를 따라 주세요."
+print "설치가 끝났습니다. 확장 프로그램은 설치하지 않습니다."
+print "Codex 또는 Claude Code를 다시 시작한 뒤"
+print "‘MathCanvas 전용 창을 열어 줘’라고 말하세요."
+print "자세한 로그인 순서는 ONBOARDING_KO.md에 있습니다."

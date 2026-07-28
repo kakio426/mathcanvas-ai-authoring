@@ -2,7 +2,6 @@ $ErrorActionPreference = "Stop"
 
 $ProjectDir = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $ServerEntry = Join-Path $ProjectDir "apps\mcp-server\dist\index.js"
-$ExtensionDir = Join-Path $ProjectDir "apps\chrome-extension\dist"
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   throw "Node.js 20 이상이 필요합니다: https://nodejs.org/"
@@ -18,16 +17,14 @@ try {
   if (Get-Command pnpm -ErrorAction SilentlyContinue) {
     & pnpm install --frozen-lockfile
     if ($LASTEXITCODE -ne 0) { throw "패키지 설치에 실패했습니다." }
-    & pnpm check
-    if ($LASTEXITCODE -ne 0) { throw "검증 또는 빌드에 실패했습니다." }
+    & pnpm build
+    if ($LASTEXITCODE -ne 0) { throw "빌드에 실패했습니다." }
   } else {
     & npx --yes pnpm@9.15.9 install --frozen-lockfile
     if ($LASTEXITCODE -ne 0) { throw "패키지 설치에 실패했습니다." }
-    & npx --yes pnpm@9.15.9 check
-    if ($LASTEXITCODE -ne 0) { throw "검증 또는 빌드에 실패했습니다." }
+    & npx --yes pnpm@9.15.9 build
+    if ($LASTEXITCODE -ne 0) { throw "빌드에 실패했습니다." }
   }
-
-  $PairingCode = (& node (Join-Path $ProjectDir "apps\mcp-server\dist\pairing-code.js")).Trim()
 
   if (Get-Command codex -ErrorAction SilentlyContinue) {
     & codex mcp get mathcanvas-ai *> $null
@@ -59,13 +56,10 @@ try {
   if ($LASTEXITCODE -ne 0) { throw "설치 진단에 실패했습니다." }
 
   Write-Host ""
-  Write-Host "Chrome 확장 프로그램 폴더:"
-  Write-Host $ExtensionDir
-  Write-Host ""
-  Write-Host "확장 프로그램 옵션에 입력할 연결 코드:"
-  Write-Host $PairingCode
-  Write-Host ""
-  Write-Host "다음 단계는 ONBOARDING_KO.md를 따라 주세요."
+  Write-Host "설치가 끝났습니다. 확장 프로그램은 설치하지 않습니다."
+  Write-Host "Codex 또는 Claude Code를 다시 시작한 뒤"
+  Write-Host "'MathCanvas 전용 창을 열어 줘'라고 말하세요."
+  Write-Host "자세한 로그인 순서는 ONBOARDING_KO.md에 있습니다."
 } finally {
   Pop-Location
 }

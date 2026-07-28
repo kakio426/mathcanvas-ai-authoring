@@ -35,35 +35,43 @@ type FractionPair = readonly [
 
 const pairBank: Record<Difficulty, readonly FractionPair[]> = {
   easy: [
-    [1, 2, 3, 4],
-    [2, 3, 1, 2],
+    [1, 2, 4, 5],
     [1, 3, 3, 4],
-    [3, 5, 1, 2],
+    [2, 3, 1, 4],
     [2, 5, 3, 4],
-    [3, 4, 2, 3],
-    [1, 4, 2, 3],
-    [4, 5, 1, 2]
+    [1, 5, 2, 3],
+    [3, 5, 1, 4],
+    [1, 2, 5, 6],
+    [1, 4, 4, 5]
   ],
   normal: [
-    [4, 5, 2, 3],
+    [1, 2, 2, 3],
     [3, 4, 3, 5],
-    [4, 7, 3, 4],
+    [4, 5, 4, 7],
     [3, 8, 3, 5],
-    [5, 6, 4, 7],
     [2, 7, 1, 2],
     [5, 8, 3, 7],
-    [4, 9, 2, 3]
+    [4, 9, 2, 3],
+    [5, 6, 3, 5]
   ],
   hard: [
     [5, 8, 8, 11],
     [7, 10, 5, 9],
-    [4, 7, 7, 9],
-    [7, 9, 5, 8],
+    [4, 7, 7, 10],
+    [7, 9, 2, 3],
     [5, 11, 7, 12],
-    [7, 12, 3, 4],
-    [8, 11, 5, 9],
-    [6, 11, 7, 9]
+    [7, 12, 2, 3],
+    [8, 11, 5, 6],
+    [4, 9, 6, 11]
   ]
+};
+
+export const VISUAL_DIFFERENCE_BANDS: Readonly<
+  Record<Difficulty, { min: number; max: number }>
+> = {
+  easy: { min: 0.28, max: 0.56 },
+  normal: { min: 0.15, max: 0.27 },
+  hard: { min: MIN_VISUAL_FRACTION_DIFFERENCE_RATIO, max: 0.145 }
 };
 
 export interface GenerateActivitySpecOptions {
@@ -124,6 +132,15 @@ function makeProblem(
       `분수 띠 길이 차이는 전체의 ${MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100}% 이상이어야 합니다.`
     );
   }
+  const differenceBand = VISUAL_DIFFERENCE_BANDS[difficulty];
+  if (
+    visualDifference < differenceBand.min ||
+    visualDifference > differenceBand.max
+  ) {
+    throw new Error(
+      `${difficulty} 문제의 시각적 차이가 난이도 범위와 맞지 않습니다.`
+    );
+  }
   const correctRelation = leftCross > rightCross ? ">" : "<";
   return {
     id: `problem-${order}`,
@@ -134,8 +151,8 @@ function makeProblem(
     difficulty,
     explanation:
       correctRelation === ">"
-        ? "같은 전체에서 첫째 분수 띠가 더 깁니다."
-        : "같은 전체에서 둘째 분수 띠가 더 깁니다."
+        ? `같은 전체에서 두 띠를 같은 출발선에 놓으면 ${leftNumerator}/${leftDenominator} 띠가 더 깁니다. 더 큰 분수는 ${leftNumerator}/${leftDenominator}입니다.`
+        : `같은 전체에서 두 띠를 같은 출발선에 놓으면 ${rightNumerator}/${rightDenominator} 띠가 더 깁니다. 더 큰 분수는 ${rightNumerator}/${rightDenominator}입니다.`
   };
 }
 
@@ -173,7 +190,7 @@ export function generateFractionComparisonActivity(
   ).map((pair, index) =>
     makeProblem(pair, index + 1, recommendation.difficulty!)
   );
-  const height = 320 + problemCount * 620;
+  const height = 420 + problemCount * 620;
   const visualModels: ActivitySpec["visualModels"] = [];
   const fixedObjects: ActivitySpec["fixedObjects"] = [
     {
@@ -188,14 +205,21 @@ export function generateFractionComparisonActivity(
       kind: "instruction" as const,
       bounds: { x: 240, y: 204, width: 1920, height: 70 },
       locked: true as const,
-      text: "두 띠의 길이를 보고 알맞은 기호를 놓아요."
+      text: "두 띠의 길이를 보고 기호를 놓아요."
+    },
+    {
+      id: "instruction-explain",
+      kind: "instruction" as const,
+      bounds: { x: 240, y: 300, width: 1920, height: 70 },
+      locked: true as const,
+      text: "왜 더 큰지 짝에게 말해 보세요."
     }
   ];
   const movableObjects: ActivitySpec["movableObjects"] = [];
   const dropAreas: ActivitySpec["dropAreas"] = [];
 
   for (const problem of problems) {
-    const top = 260 + (problem.order - 1) * 620;
+    const top = 360 + (problem.order - 1) * 620;
     const prefix = problem.id;
     const commonStartX = 720;
     const wholeWidth = 640;
@@ -331,7 +355,8 @@ export function generateFractionComparisonActivity(
     },
     instructions: [
       "분수 띠를 같은 출발선에 놓아요.",
-      "두 띠의 길이를 보고 알맞은 기호를 놓아요."
+      "두 띠의 길이를 보고 기호를 놓아요.",
+      "왜 더 큰지 짝에게 말해 보세요."
     ],
     provenance: {
       generatedAt: generatedAt.toISOString(),

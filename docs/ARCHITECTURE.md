@@ -2,49 +2,55 @@
 
 ## 한 줄 구조
 
-교사 대화는 로컬 MCP 서버가 해석하고, Chrome 확장 프로그램은 검증된 생성 payload만 로그인된 MathCanvas 페이지 안에서 `POST /api/project`로 전달합니다.
+교사의 대화를 로컬 MCP 서버가 활동 명세로 바꾸고, 같은 서버의 제한형 브라우저 런타임이 별도 영구 프로필의 Google Chrome 안에서 검증된 새 프로젝트만 생성합니다.
 
 ```mermaid
 flowchart LR
   T["교사"] --> A["Codex 또는 Claude Code"]
-  A --> M["로컬 MCP 서버"]
-  M --> C["교육과정·추천"]
-  C --> S["ActivitySpec"]
-  S --> V["컴파일·검증"]
-  V -->|승인 해시 일치| Q["1회용 로컬 작업"]
-  Q --> E["Chrome 확장 프로그램"]
-  E --> P["MathCanvas 페이지 컨텍스트"]
-  P --> N["새 프로젝트"]
+  A --> M["로컬 stdio MCP 서버"]
+  M --> R["교육과정 추천"]
+  R --> S["ActivitySpec"]
+  S --> V["컴파일·검증·교사 승인 해시"]
+  V --> B["관리형 Chrome 런타임"]
+  B --> P["MathCanvas 페이지 컨텍스트"]
+  P --> N["새 프로젝트 POST"]
   N --> W["새 편집 탭"]
 ```
 
+## 브라우저 수명 주기
+
+1. `mathcanvas_open_workspace`가 설치된 Google Chrome을 headed 모드로 실행합니다.
+2. 일반 Chrome 기본 프로필이 아닌 `~/.mathcanvas-ai-authoring/chrome-profile`을 사용합니다.
+3. 첫 실행에는 교사가 직접 로그인하고 `내 캔버스`까지 이동합니다.
+4. 로그인 쿠키와 로컬 저장소는 전용 프로필에 남아 다음 실행에도 사용됩니다.
+5. MCP 서버가 종료되면 자신이 실행한 Chrome을 닫습니다. 다음 대화에서 같은 전용 프로필을 다시 엽니다.
+
 ## 신뢰 경계
 
-1. AI 경계: 교사 요청, 추천, `ActivitySpec`, 검증 결과만 다룹니다.
-2. 로컬 IPC 경계: `127.0.0.1:38471`에만 열리고 256비트 연결 코드와 `chrome-extension://` Origin을 모두 요구합니다.
-3. 브라우저 경계: MathCanvas 토큰은 MAIN world 함수의 지역 변수로만 읽고 사용합니다. 함수 결과와 브리지 메시지에는 토큰이 없습니다.
-4. 외부 쓰기 경계: 교사 승인 해시, payload 해시, 검증 보고서가 모두 맞을 때 새 프로젝트 POST 한 번만 허용합니다.
+1. AI 경계: 교사 요청, 추천 요약, `ActivitySpec` 해시, 검증 결과와 프로젝트 ID만 다룹니다.
+2. 로컬 MCP 경계: stdio만 사용합니다. 로컬 HTTP 서버, 공개 포트, 연결 코드는 없습니다.
+3. 브라우저 경계: MathCanvas 토큰은 `page.evaluate`로 실행되는 함수의 지역 변수에서만 읽고 사용합니다. 함수 결과에는 토큰이 없습니다.
+4. 외부 쓰기 경계: 교사 승인 해시, payload 해시, validator, 최신 MathCanvas 계약 검사가 모두 맞을 때 `POST /api/project` 한 번만 시도합니다.
+5. 도구 표면: 일반 웹 탐색이나 임의 스크립트 실행 도구를 MCP에 노출하지 않습니다. MathCanvas 홈 열기, 연결 확인, 정해진 생성 작업만 제공합니다.
 
-## 코어
+## 코어 모듈
 
 - 엄격한 Zod 스키마와 버전
 - 공식 교육과정 우선 resolver
-- 검증된 첫 템플릿
+- 검증된 분수 비교 템플릿
 - 결정적 문제 생성
 - MathCanvas 네이티브 객체 컴파일러
 - 수학·교수학습·배치·상호작용·계약 validator
-- MCP 도구 4개
-- 인증된 로컬 브리지와 중복 생성 방지
-- MV3 Chrome 브리지
+- MCP 도구 5개
+- `playwright-core` 기반 관리형 Chrome 런타임
+- 원자적 추천 초안·생성 작업 저장과 중복 생성 방지
 
-추천 초안과 브리지 작업은 `~/.mathcanvas-ai-authoring/drafts.json`, `bridge-jobs.json`에 인증 정보 없이 원자적으로 저장합니다. MCP 서버나 컴퓨터가 재시작되어도 같은 승인에는 같은 작업 ID와 payload 해시를 이어서 사용합니다. 교사가 새 추천을 받고 다시 승인하면 같은 조건이어도 새 프로젝트를 만듭니다.
-
-Chrome은 1분마다 로그인 상태를 확인하지만 공개 계약 fixture 전체 검사는 성공 결과를 6시간 동안 캐시합니다. 시작·설치·수동 새로고침 때와 실제 생성 작업을 가져온 뒤 외부 쓰기 직전에는 전체 계약을 다시 확인합니다. 전체 계약 검사에 실패하면 15분 자동 백오프를 적용하고 수동 확인은 즉시 재시도합니다. 완료·실패·만료된 브리지 작업은 최근 500건까지만 보관하고, 진행 중인 작업은 가지치지 않습니다. 추천 초안은 만료 초안을 먼저 지운 뒤 최근 100건까지만 보관합니다.
-
-## 확장 경계만 있는 기능
-
-`RemoteRecommendationProvider`, `AdditionalTemplateProvider`, `StudentActivityPublisher`, `ExtensionDistributionChannel` 인터페이스만 선언되어 있습니다. v0.1에서는 네트워크 호출이나 가짜 구현을 제공하지 않습니다.
+추천 초안은 `drafts.json`, 생성 작업은 `creation-jobs.json`에 인증 정보 없이 저장합니다. 외부 쓰기 전에 작업을 저장하고, 고유 프로젝트 제목 조회로 불확실한 재시도를 조정합니다. 로그인·Chrome 실행 같은 일시 오류는 실패 기록을 보존한 채 같은 추천안으로 새 작업을 만들어 재시도합니다. 상태 파일을 읽을 수 없으면 덮어쓰지 않고 `.corrupt-*` 백업으로 옮긴 뒤 빈 상태로 다시 시작합니다.
 
 ## 동시 실행
 
-Codex와 Claude Code는 같은 stdio MCP 서버 명령을 각각 등록하지만 브리지 포트는 하나입니다. v0.1은 한 번에 한 AI 앱을 사용하는 단일 사용자 구조입니다.
+Codex와 Claude Code는 같은 stdio MCP 명령을 등록할 수 있지만 하나의 전용 Chrome 프로필은 동시에 한 프로세스만 열 수 있습니다. v0.2는 한 번에 한 AI 앱을 쓰는 단일 사용자 구조입니다. `server.lock`이 살아 있는 프로세스를 확인해 두 번째 서버를 시작 전에 차단합니다.
+
+## 확장 경계
+
+`RemoteRecommendationProvider`, `AdditionalTemplateProvider`, `StudentActivityPublisher`, `DesktopDistributionChannel`은 미래 기능의 인터페이스만 선언합니다. 현재 버전에는 가짜 원격 호출이나 학생 배포 기능이 없습니다.

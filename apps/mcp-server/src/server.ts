@@ -1,5 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { redactSensitiveText } from "@mathcanvas/contracts";
+import { PlanningError } from "@mathcanvas/planner";
 import {
   AuthoringServiceError,
   MathCanvasAuthoringService
@@ -18,10 +20,12 @@ function toolError(error: unknown) {
     errorCode:
       error instanceof AuthoringServiceError
         ? error.code
+        : error instanceof PlanningError
+          ? error.code
         : "unexpected-error",
     message:
       error instanceof Error
-        ? error.message
+        ? redactSensitiveText(error.message)
         : "알 수 없는 오류가 생겼습니다."
   };
   return {
@@ -32,10 +36,36 @@ function toolError(error: unknown) {
 
 export function createMcpServer(service: MathCanvasAuthoringService): McpServer {
   const server = new McpServer(
-    { name: "mathcanvas-ai-authoring", version: "1.0.0" },
+    { name: "mathcanvas-ai-authoring", version: "0.2.0" },
     {
       instructions:
-        "먼저 mathcanvas_check_connection으로 연결을 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정이나 UI 자동화 도구는 제공하지 않습니다."
+        "처음에는 mathcanvas_open_workspace로 MathCanvas 전용 Chrome을 여세요. 교사가 그 창에서 로그인하고 ‘내 캔버스’까지 이동하면 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정 도구는 제공하지 않습니다."
+    }
+  );
+
+  server.registerTool(
+    "mathcanvas_open_workspace",
+    {
+      title: "MathCanvas 전용 Chrome 열기",
+      description:
+        "이 도구만 사용하는 전용 Chrome 창을 열고 MathCanvas 로그인 화면을 보여 줍니다. 프로젝트를 만들거나 수정하지 않습니다.",
+      inputSchema: z.object({}).strict(),
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async () => {
+      try {
+        return toolResult({
+          ok: true,
+          ...(await service.openWorkspace())
+        });
+      } catch (error) {
+        return toolError(error);
+      }
     }
   );
 
@@ -44,7 +74,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     {
       title: "MathCanvas 연결 확인",
       description:
-        "Chrome 확장 프로그램, MathCanvas 탭, 로그인과 API 계약 상태를 읽기 전용으로 확인합니다. 프로젝트를 만들거나 수정하지 않습니다.",
+        "MathCanvas 전용 Chrome의 로그인과 API 계약 상태를 읽기 전용으로 확인합니다. 창이 없으면 자동으로 열지만 프로젝트를 만들거나 수정하지 않습니다.",
       inputSchema: z.object({}).strict(),
       annotations: {
         readOnlyHint: true,
@@ -53,7 +83,16 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
         openWorldHint: false
       }
     },
-    async () => toolResult({ ok: true, ...service.checkConnection() })
+    async () => {
+      try {
+        return toolResult({
+          ok: true,
+          ...(await service.checkConnection())
+        });
+      } catch (error) {
+        return toolError(error);
+      }
+    }
   );
 
   server.registerTool(
@@ -130,7 +169,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
       try {
         return toolResult({
           ok: true,
-          ...service.createNewProject(input)
+          ...(await service.createNewProject(input))
         });
       } catch (error) {
         return toolError(error);
@@ -156,8 +195,16 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
         openWorldHint: false
       }
     },
-    async ({ jobId }) =>
-      toolResult({ ok: true, ...service.getJobStatus(jobId) })
+    async ({ jobId }) => {
+      try {
+        return toolResult({
+          ok: true,
+          ...service.getJobStatus(jobId)
+        });
+      } catch (error) {
+        return toolError(error);
+      }
+    }
   );
 
   return server;

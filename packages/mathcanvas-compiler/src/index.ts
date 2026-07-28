@@ -75,6 +75,12 @@ const disabledModuleGroups = {
 export function compileActivitySpec(input: ActivitySpec): CompiledProject {
   const spec = activitySpecSchema.parse(input);
   const native = buildNativeContents(spec);
+  const difficultyLabel = {
+    easy: "쉬움",
+    normal: "보통",
+    hard: "어려움"
+  }[spec.recommendationSnapshot.difficulty ?? "normal"];
+  const grade = spec.recommendationSnapshot.recommendedGrade ?? 5;
   const creationMarker = sha256Hex({
     activityId: spec.id,
     seed: spec.seed,
@@ -84,7 +90,10 @@ export function compileActivitySpec(input: ActivitySpec): CompiledProject {
     .slice(0, 12)
     .toUpperCase();
   const payload = mathCanvasPayloadSchema.parse({
-    projectTitle: `${spec.title.slice(0, 100)} [AI-${creationMarker}]`,
+    projectTitle:
+      `${spec.title.slice(0, 60)} · ${grade}학년 · ` +
+      `${spec.problems.length}문제 · ${difficultyLabel} ` +
+      `[AI-${creationMarker}]`,
     categoryId: MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID,
     contentsJson: native.contents,
     canvasOption: {

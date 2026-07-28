@@ -18,6 +18,6 @@
     { "path": "../../packages/templates/tsconfig.build.json" },
     { "path": "../../packages/mathcanvas-compiler/tsconfig.build.json" },
     { "path": "../../packages/validator/tsconfig.build.json" },
-    { "path": "../../packages/bridge-protocol/tsconfig.build.json" }
+    { "path": "../../packages/managed-browser/tsconfig.build.json" }
   ]
 }

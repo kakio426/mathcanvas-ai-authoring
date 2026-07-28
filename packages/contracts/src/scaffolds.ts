@@ -18,7 +18,7 @@ export interface StudentActivityPublisher {
   publishNewActivity(projectId: string): Promise<{ studentUrl: string }>;
 }
 
-export interface ExtensionDistributionChannel {
-  readonly channel: "managed-browser" | "store";
+export interface DesktopDistributionChannel {
+  readonly channel: "local-installer" | "package-manager";
   getInstallLocation(): Promise<string>;
 }

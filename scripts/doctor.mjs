@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-import { access, readFile } from "node:fs/promises";
-import { homedir } from "node:os";
+import { access } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { chromium } from "playwright-core";
 
 const projectDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const stateDirectory =
-  process.env.MATHCANVAS_STATE_DIR ??
-  join(homedir(), ".mathcanvas-ai-authoring");
 const checks = [];
 
 function add(label, ok, detail) {
@@ -21,8 +18,8 @@ add("Node.js 20 이상", nodeMajor >= 20, `현재 ${process.versions.node}`);
 for (const [label, path] of [
   ["MCP 서버 빌드", join(projectDirectory, "apps/mcp-server/dist/index.js")],
   [
-    "Chrome 확장 프로그램 빌드",
-    join(projectDirectory, "apps/chrome-extension/dist/manifest.json")
+    "관리형 브라우저 런타임 빌드",
+    join(projectDirectory, "packages/managed-browser/dist/index.js")
   ]
 ]) {
   try {
@@ -34,21 +31,18 @@ for (const [label, path] of [
 }
 
 try {
-  const secret = (
-    await readFile(join(stateDirectory, "pairing-secret"), "utf8")
-  ).trim();
-  add(
-    "로컬 연결 코드",
-    /^[a-f0-9]{64}$/.test(secret),
-    /^[a-f0-9]{64}$/.test(secret)
-      ? "형식 정상(값은 표시하지 않음)"
-      : "형식 오류"
-  );
+  const browser = await chromium.launch({
+    channel: "chrome",
+    headless: true
+  });
+  const version = browser.version();
+  await browser.close();
+  add("Google Chrome 실행", true, version);
 } catch {
   add(
-    "로컬 연결 코드",
+    "Google Chrome 실행",
     false,
-    "아직 없음: pnpm pairing-code를 한 번 실행하세요."
+    "Chrome이 설치되지 않았거나 현재 Playwright에서 실행할 수 없습니다."
   );
 }
 
@@ -72,8 +66,10 @@ for (const check of checks) {
   );
 }
 process.stdout.write(
-  "\n안내: Codex와 Claude Code가 같은 38471 포트를 사용하므로 한 번에 한 AI 앱만 실행하세요.\n"
+  "\n안내: 확장 프로그램과 연결 코드는 사용하지 않습니다. Codex와 Claude Code는 한 번에 하나만 실행하세요.\n"
 );
-process.exitCode = checks.some((check) => !check.ok && !check.label.endsWith("CLI"))
+process.exitCode = checks.some(
+  (check) => !check.ok && !check.label.endsWith("CLI")
+)
   ? 1
   : 0;

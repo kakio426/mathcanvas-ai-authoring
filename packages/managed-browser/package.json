@@ -1,6 +1,6 @@
 {
-  "name": "@mathcanvas/bridge-protocol",
-  "version": "0.1.0",
+  "name": "@mathcanvas/managed-browser",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@mathcanvas/contracts": "workspace:*",
+    "playwright-core": "1.62.0",
     "zod": "^3.24.2"
   }
 }

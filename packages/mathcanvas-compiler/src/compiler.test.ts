@@ -67,14 +67,29 @@ describe("MathCanvas 컴파일러", () => {
     expect(result.payload.studyLevel).toBe("elementary");
     expect(result.payload.isNoteworthy).toBe(false);
     expect(result.payload.projectTitle).toMatch(
-      /^분수 띠로 크기 비교하기 \[AI-[A-F0-9]{12}\]$/
+      /^분수 띠로 크기 비교하기 · 5학년 · 4문제 · 보통 \[AI-[A-F0-9]{12}\]$/
     );
     expect(result.payloadHash).toBe(sha256Hex(result.payload));
   });
 
   it("분모와 MathCanvas 분수 모형 ID를 실제 fixture대로 연결한다", () => {
-    expect(FRACTION_SVG_BY_DENOMINATOR[2]).toBe("NO03FM-09");
-    expect(FRACTION_SVG_BY_DENOMINATOR[12]).toBe("NO03FM-22");
+    const fixture = JSON.parse(
+      readFileSync(
+        new URL(
+          "../../../fixtures/mathcanvas/fraction-svg-map.json",
+          import.meta.url
+        ),
+        "utf8"
+      )
+    ) as { svgIdByDenominator: Record<string, string> };
+    expect(FRACTION_SVG_BY_DENOMINATOR).toEqual(
+      Object.fromEntries(
+        Object.entries(fixture.svgIdByDenominator).map(([key, value]) => [
+          Number(key),
+          value
+        ])
+      )
+    );
     const { spec, compiled: result } = compiled();
     for (const model of spec.visualModels) {
       const native = result.payload.contentsJson.find(
@@ -135,5 +150,29 @@ describe("MathCanvas 컴파일러", () => {
     });
     expect(slot).not.toHaveProperty("width");
     expect(slot).not.toHaveProperty("height");
+  });
+
+  it("문제 번호는 일반 글자로, 분수 식은 수식으로 나누고 띠 이름을 비교판 안에 둔다", () => {
+    const { spec, compiled: result } = compiled();
+    const mat = spec.fixedObjects.find(
+      (object) => object.id === "problem-1-mat"
+    )!;
+    const prompt = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-prompt"
+    )!;
+    const number = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-number"
+    )!;
+    const laneLabel = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-lane-label"
+    )!;
+
+    expect(prompt.svgId).toBe("math-latex");
+    expect(String(prompt.text)).not.toContain("번");
+    expect(number).toMatchObject({ svgId: "input-text", text: "1번" });
+    expect(Number(laneLabel.x)).toBeGreaterThanOrEqual(mat.bounds.x);
+    expect(Number(laneLabel.x) + Number(laneLabel.width)).toBeLessThanOrEqual(
+      mat.bounds.x + mat.bounds.width
+    );
   });
 });
