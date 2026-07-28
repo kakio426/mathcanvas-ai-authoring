@@ -145,5 +145,8 @@ describe("MCP 도구 seam", () => {
       "secret-browser-token"
     );
     expect(JSON.stringify(result.content)).toContain("[REDACTED]");
+    expect(JSON.stringify(result.structuredContent)).toContain(
+      "unexpected-error"
+    );
   });
 });

@@ -64,8 +64,8 @@ MathCanvas 토큰은 페이지 컨텍스트의 지역 변수로만 읽고 사용
 - [x] macOS 설치 스크립트 구문 검사
 - [ ] Windows 스크립트 정적 검사
 - [x] 문서와 코드의 구조 일치
-- [ ] Claude Opus 5 독립 검토와 보수적 점수
-- [ ] 비공개 GitHub 저장소 `main` 갱신
+- [x] Claude Opus 5 독립 검토와 보수적 점수
+- [x] 비공개 GitHub 저장소 `main` 갱신
 
 ## 실서비스 경계
 

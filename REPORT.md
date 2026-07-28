@@ -19,7 +19,7 @@ Chrome 추가 기능, 개발자 모드 설치, 연결 코드, loopback HTTP 서�
 ## 현재 자동 검증
 
 - TypeScript typecheck: 통과
-- Vitest: 15개 파일, 72개 테스트 통과
+- Vitest: 15개 파일, 74개 테스트 통과
 - 전체 workspace production build: 통과
 - 실제 설치된 Google Chrome 150으로 전용 임시 프로필 실행: 통과
 - 실제 관리형 런타임으로 `https://mathcanvas.vivasam.com/ko/myCanvas` 열기: 통과

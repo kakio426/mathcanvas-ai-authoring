@@ -57,11 +57,10 @@ export class InstanceLock {
           activePid = null;
         }
         if (activePid !== null) {
+          let processIsActive = false;
           try {
             process.kill(activePid, 0);
-            throw new Error(
-              "MathCanvas AI 서버가 이미 실행 중입니다. Codex와 Claude Code 중 하나만 열어 주세요."
-            );
+            processIsActive = true;
           } catch (probeError) {
             const probeCode =
               typeof probeError === "object" &&
@@ -69,7 +68,16 @@ export class InstanceLock {
               "code" in probeError
                 ? String(probeError.code)
                 : "";
-            if (probeCode !== "ESRCH") throw probeError;
+            if (probeCode === "EPERM") {
+              processIsActive = true;
+            } else if (probeCode !== "ESRCH") {
+              throw probeError;
+            }
+          }
+          if (processIsActive) {
+            throw new Error(
+              "MathCanvas AI 서버가 이미 실행 중입니다. Codex와 Claude Code 중 하나만 열어 주세요."
+            );
           }
         }
         unlinkSync(this.#path);

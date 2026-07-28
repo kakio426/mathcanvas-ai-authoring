@@ -136,6 +136,47 @@ describe("생성 전 검증", () => {
     );
   });
 
+  it("실제 분수 좌표 폭이 놓기 칸과 맞지 않으면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const fraction = payload.contentsJson.find((object) =>
+      String(object.svgId).startsWith("NO03FM")
+    )!;
+    const coordinates = fraction.coordinates as number[][];
+    coordinates[1]![0] = Number(coordinates[1]![0]) + 5;
+    coordinates[2]![0] = Number(coordinates[2]![0]) + 5;
+    const altered = {
+      ...compiled,
+      payload,
+      payloadHash: sha256Hex(payload)
+    };
+    const report = validateForCreation(spec, altered);
+    expect(report.canCreate).toBe(false);
+    expect(report.issues.map((value) => value.code)).toContain(
+      "native-fraction-target-geometry-mismatch"
+    );
+  });
+
+  it("실제 분수 좌표가 캔버스 밖이면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const fraction = payload.contentsJson.find((object) =>
+      String(object.svgId).startsWith("NO03FM")
+    )!;
+    fraction.x = -1000;
+    fraction._x = -1000;
+    const altered = {
+      ...compiled,
+      payload,
+      payloadHash: sha256Hex(payload)
+    };
+    const report = validateForCreation(spec, altered);
+    expect(report.canCreate).toBe(false);
+    expect(report.issues.map((value) => value.code)).toContain(
+      "native-fraction-out-of-bounds"
+    );
+  });
+
   it("무결성 해시 변조를 차단한다", () => {
     const { spec, compiled } = fixture();
     const report = validateForCreation(spec, {
