@@ -1,0 +1,25 @@
+{
+  "name": "@mathcanvas/mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "mathcanvas-ai-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mathcanvas/bridge-protocol": "workspace:*",
+    "@mathcanvas/compiler": "workspace:*",
+    "@mathcanvas/contracts": "workspace:*",
+    "@mathcanvas/planner": "workspace:*",
+    "@mathcanvas/templates": "workspace:*",
+    "@mathcanvas/validator": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "^3.24.2"
+  }
+}

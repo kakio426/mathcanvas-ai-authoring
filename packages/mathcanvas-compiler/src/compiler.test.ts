@@ -1,0 +1,139 @@
+import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import {
+  CONTRACT_SCHEMA_VERSION,
+  sha256Hex
+} from "@mathcanvas/contracts";
+import { recommendActivity } from "@mathcanvas/planner";
+import { generateFractionComparisonActivity } from "@mathcanvas/templates";
+import {
+  CREATE_PROJECT_ENDPOINT,
+  FRACTION_SVG_BY_DENOMINATOR,
+  compileActivitySpec
+} from "./index.js";
+
+function compiled() {
+  const recommendation = recommendActivity({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: "compiler-request",
+    prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
+    problemCount: 4,
+    createdAt: "2026-07-28T00:00:00.000Z"
+  });
+  const spec = generateFractionComparisonActivity(recommendation, {
+    seed: "compiler-seed",
+    generatedAt: "2026-07-28T02:00:00.000Z"
+  });
+  return { spec, compiled: compileActivitySpec(spec) };
+}
+
+describe("MathCanvas 컴파일러", () => {
+  it("공개 프로젝트에서 관찰한 네이티브 객체 계약을 따른다", () => {
+    const observed = JSON.parse(
+      readFileSync(
+        new URL(
+          "../../../fixtures/mathcanvas/native-object-contract.json",
+          import.meta.url
+        ),
+        "utf8"
+      )
+    ) as {
+      mathLatex: Record<string, unknown>;
+      drawRectangle: Record<string, unknown>;
+    };
+    const { compiled: result } = compiled();
+    const symbol = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-less-symbol"
+    );
+    const surface = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-lane-surface"
+    );
+    expect(symbol).toMatchObject(observed.mathLatex);
+    expect(surface).toMatchObject({
+      svgId: observed.drawRectangle.svgId,
+      type: observed.drawRectangle.type,
+      strokeType: observed.drawRectangle.strokeType,
+      strokeWidth: observed.drawRectangle.strokeWidth,
+      isStrokeChange: observed.drawRectangle.isStrokeChange,
+      isMoveRotateHandler:
+        observed.drawRectangle.isMoveRotateHandler
+    });
+  });
+
+  it("새 프로젝트 POST 계약만 노출한다", () => {
+    expect(CREATE_PROJECT_ENDPOINT).toBe("/api/project");
+    const result = compiled().compiled;
+    expect(result.payload.categoryId).toBe("rJa0d46MAy");
+    expect(result.payload.studyLevel).toBe("elementary");
+    expect(result.payload.isNoteworthy).toBe(false);
+    expect(result.payload.projectTitle).toMatch(
+      /^분수 띠로 크기 비교하기 \[AI-[A-F0-9]{12}\]$/
+    );
+    expect(result.payloadHash).toBe(sha256Hex(result.payload));
+  });
+
+  it("분모와 MathCanvas 분수 모형 ID를 실제 fixture대로 연결한다", () => {
+    expect(FRACTION_SVG_BY_DENOMINATOR[2]).toBe("NO03FM-09");
+    expect(FRACTION_SVG_BY_DENOMINATOR[12]).toBe("NO03FM-22");
+    const { spec, compiled: result } = compiled();
+    for (const model of spec.visualModels) {
+      const native = result.payload.contentsJson.find(
+        (object) => object.id === model.id
+      );
+      expect(native?.svgId).toBe(
+        FRACTION_SVG_BY_DENOMINATOR[model.fraction.denominator]
+      );
+      expect(native?.count).toBe(model.fraction.numerator);
+      expect(native?.divider).toBe(model.fraction.denominator);
+      const perWidth = 640 / model.fraction.denominator;
+      const geometricWidth = perWidth * model.fraction.numerator;
+      expect(native?.width).toBe(Math.round(geometricWidth));
+      expect(native?.cx).toBeCloseTo(
+        ((model.fraction.numerator - 1) * perWidth) / 2
+      );
+      expect(native?.coordinates).toEqual([
+        [-perWidth / 2, -40],
+        [geometricWidth - perWidth / 2, -40],
+        [geometricWidth - perWidth / 2, 40],
+        [-perWidth / 2, 40]
+      ]);
+    }
+  });
+
+  it("고정 표면만 잠그고 분수 띠와 기호는 움직일 수 있게 둔다", () => {
+    const { spec, compiled: result } = compiled();
+    const locked = new Set(result.payload.canvasOption.lockIds.flat());
+    for (const model of spec.visualModels) expect(locked.has(model.id)).toBe(false);
+    for (const object of spec.movableObjects)
+      expect(locked.has(object.id)).toBe(false);
+    expect(locked.has("instruction-main")).toBe(true);
+    expect(locked.has("instruction-symbol")).toBe(true);
+    expect(locked.has("problem-1-mat")).toBe(true);
+    expect(locked.has("problem-1-left-lane-label")).toBe(true);
+    expect(locked.has("problem-1-relation-slot-label")).toBe(true);
+  });
+
+  it("문제 식과 기호 놓기 칸이 겹치지 않는다", () => {
+    const { compiled: result } = compiled();
+    const prompt = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-prompt"
+    )!;
+    const slot = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-relation-slot-surface"
+    )!;
+    expect(prompt.fill).toBe("transparent");
+    const promptBottom = Number(prompt.y) + Number(prompt.height);
+    const slotTop = (slot.point1 as [number, number])[1];
+    expect(promptBottom).toBeLessThanOrEqual(slotTop);
+    expect(slot).toMatchObject({
+      svgId: "drawElem",
+      x: 0,
+      y: 0,
+      strokeType: 1,
+      strokeWidth: 2,
+      isStrokeChange: true
+    });
+    expect(slot).not.toHaveProperty("width");
+    expect(slot).not.toHaveProperty("height");
+  });
+});

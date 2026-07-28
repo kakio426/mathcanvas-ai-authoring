@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "MathCanvas AI 연결 도구",
+  "version": "1.0.0",
+  "description": "로그인된 MathCanvas에서 검증된 새 활동지를 만들고 편집 화면을 엽니다.",
+  "permissions": ["alarms", "scripting", "storage", "tabs"],
+  "host_permissions": [
+    "https://mathcanvas.vivasam.com/*",
+    "http://127.0.0.1:38471/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_title": "MathCanvas AI 연결 상태 확인"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "sourcePublicProjectId": "P_yK4Aa6XomJ",
+  "svgId": "NO03FM-09",
+  "type": "rect",
+  "denominator": 2,
+  "count": 2,
+  "divider": 2,
+  "defaultWidth": 640,
+  "height": 80,
+  "perWidth": 320,
+  "verifiedFields": [
+    "count",
+    "divider",
+    "defaultWidth",
+    "perWidth",
+    "width",
+    "coordinates",
+    "isEyeOn",
+    "isFillChange"
+  ],
+  "coordinateRule": {
+    "width": "round(perWidth * count)",
+    "left": "-perWidth / 2",
+    "right": "perWidth * count - perWidth / 2",
+    "cx": "(count - 1) * perWidth / 2"
+  }
+}

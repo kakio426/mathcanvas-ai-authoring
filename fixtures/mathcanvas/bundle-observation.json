@@ -1,0 +1,36 @@
+{
+  "applicationBundle": "https://mathcanvas.vivasam.com/assets/index-fb571b04.js",
+  "observedAt": "2026-07-28T14:50:00.000Z",
+  "byteLength": 3826249,
+  "sha256": "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584",
+  "moveRotateHandlerAudit": {
+    "totalOccurrences": 22,
+    "fieldDeclarationOccurrences": 1,
+    "assignmentOccurrences": 20,
+    "readOccurrences": 1,
+    "readPurpose": "선택된 객체의 이동·회전 도구 SVG를 표시할지 결정",
+    "dragGateOccurrences": 0
+  },
+  "routes": {
+    "projectEditor": {
+      "path": "view/:id",
+      "name": "view",
+      "component": "Q4"
+    },
+    "studentViewer": {
+      "path": "viewer/:id",
+      "name": "viewer",
+      "component": "pqt"
+    },
+    "createSuccessNavigation": {
+      "routeName": "view",
+      "parameter": "id",
+      "valueSource": "POST /api/project 응답의 projectId"
+    }
+  },
+  "notes": [
+    "공개 웹 앱 번들의 전체 복사본은 저장소에 재배포하지 않고 URL, 크기, SHA-256과 검토 결과만 보관합니다.",
+    "isMoveRotateHandler는 객체 드래그 허용 게이트로 읽히지 않으며 선택 도구 표시를 제어합니다.",
+    "현재 앱은 view와 viewer를 서로 다른 route와 component로 구분합니다."
+  ]
+}

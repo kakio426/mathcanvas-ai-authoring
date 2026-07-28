@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals", "chrome"],
+    "baseUrl": ".",
+    "paths": {
+      "@mathcanvas/contracts": ["packages/contracts/src/index.ts"],
+      "@mathcanvas/curriculum": ["packages/curriculum/src/index.ts"],
+      "@mathcanvas/planner": ["packages/planner/src/index.ts"],
+      "@mathcanvas/templates": ["packages/templates/src/index.ts"],
+      "@mathcanvas/compiler": ["packages/mathcanvas-compiler/src/index.ts"],
+      "@mathcanvas/validator": ["packages/validator/src/index.ts"],
+      "@mathcanvas/bridge-protocol": ["packages/bridge-protocol/src/index.ts"]
+    }
+  },
+  "include": ["apps/**/*.ts", "packages/**/*.ts", "tests/**/*.ts", "vitest.config.ts"]
+}

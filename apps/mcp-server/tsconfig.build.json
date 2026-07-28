@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"],
+  "references": [
+    { "path": "../../packages/contracts/tsconfig.build.json" },
+    { "path": "../../packages/curriculum/tsconfig.build.json" },
+    { "path": "../../packages/planner/tsconfig.build.json" },
+    { "path": "../../packages/templates/tsconfig.build.json" },
+    { "path": "../../packages/mathcanvas-compiler/tsconfig.build.json" },
+    { "path": "../../packages/validator/tsconfig.build.json" },
+    { "path": "../../packages/bridge-protocol/tsconfig.build.json" }
+  ]
+}

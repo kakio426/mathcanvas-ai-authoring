@@ -1,0 +1,109 @@
+{
+  "sourcePublicProjectIds": [
+    "P_CsJeiL",
+    "P_yK4Aa6XomJ"
+  ],
+  "sourceEndpointByObject": {
+    "unitThird": "/api/public-project/P_CsJeiL",
+    "mathLatex": "/api/public-project/P_yK4Aa6XomJ",
+    "inputText": "/api/public-project/P_yK4Aa6XomJ",
+    "drawRectangle": "/api/public-project/P_yK4Aa6XomJ",
+    "fractionThirds": "/api/public-project/P_yK4Aa6XomJ"
+  },
+  "observedAt": "2026-07-28T13:30:00.000Z",
+  "applicationBundle": "https://mathcanvas.vivasam.com/assets/index-fb571b04.js",
+  "mathLatex": {
+    "svgId": "math-latex",
+    "fill": "transparent",
+    "parent": null,
+    "isTextEditFontSize": true,
+    "isMoveRotateHandler": false
+  },
+  "inputText": {
+    "svgId": "input-text",
+    "fill": "#000000",
+    "isTextEdit": true,
+    "playgroundIndex": 2,
+    "isMoveRotateHandler": false
+  },
+  "drawRectangle": {
+    "svgId": "drawElem",
+    "type": "rect",
+    "strokeType": 1,
+    "strokeWidth": 2,
+    "isStrokeChange": true,
+    "isMoveRotateHandler": false,
+    "authoritativeGeometryFields": [
+      "point1",
+      "point2",
+      "coordinates"
+    ],
+    "absentGeometryFields": [
+      "width",
+      "height"
+    ]
+  },
+  "unitThird": {
+    "svgId": "NO03FM-08",
+    "count": 1,
+    "divider": 3,
+    "defaultWidth": 640,
+    "perWidth": 213.33333333333337,
+    "width": 213,
+    "height": 80,
+    "cx": 0,
+    "isMoveRotateHandler": true,
+    "coordinates": [
+      [
+        -106.66666666666669,
+        -40
+      ],
+      [
+        106.66666666666669,
+        -40
+      ],
+      [
+        106.66666666666669,
+        40
+      ],
+      [
+        -106.66666666666669,
+        40
+      ]
+    ]
+  },
+  "fractionThirds": {
+    "svgId": "NO03FM-08",
+    "count": 3,
+    "divider": 3,
+    "defaultWidth": 640,
+    "perWidth": 213.33333333333337,
+    "width": 640,
+    "height": 80,
+    "cx": 213.33333333333337,
+    "isMoveRotateHandler": true,
+    "coordinates": [
+      [
+        -106.66666666666669,
+        -40
+      ],
+      [
+        533.3333333333334,
+        -40
+      ],
+      [
+        533.3333333333334,
+        40
+      ],
+      [
+        -106.66666666666669,
+        40
+      ]
+    ]
+  },
+  "notes": [
+    "공개 프로젝트 응답에서 객체 ID, 그룹 ID, 작성자 정보와 본문 텍스트를 제거한 최소 계약 증거입니다.",
+    "isMoveRotateHandler는 번들 기본 객체의 선택 도구 표시 플래그이며 lockIds와 별개입니다.",
+    "런타임 사전 검사는 같은 공개 endpoint의 현재 응답과 이 필드 계약을 대조합니다."
+  ]
+}

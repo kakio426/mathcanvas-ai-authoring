@@ -1,0 +1,27 @@
+{
+  "contractVersion": "1.0.0",
+  "observedAt": "2026-07-28T00:00:00.000Z",
+  "applicationBundle": "https://mathcanvas.vivasam.com/assets/index-fb571b04.js",
+  "publicProjectFixtures": [
+    "https://mathcanvas.vivasam.com/api/public-project/P_yK4Aa6XomJ",
+    "https://mathcanvas.vivasam.com/api/public-project/P_CsJeiL"
+  ],
+  "preflightFixtureEndpoints": [
+    "/api/public-project/P_CsJeiL",
+    "/api/public-project/P_yK4Aa6XomJ"
+  ],
+  "sanitizedNativeObjectFixture": "fixtures/mathcanvas/native-object-contract.json",
+  "bundleObservation": "fixtures/mathcanvas/bundle-observation.json",
+  "createEndpoint": "/api/project",
+  "allowedWriteMethod": "POST",
+  "category": {
+    "categoryId": "rJa0d46MAy",
+    "categoryName": "수와 연산"
+  },
+  "notes": [
+    "공개 프로젝트 JSON과 현재 공개 앱 번들에서 확인한 최소 계약입니다.",
+    "비공개 프로젝트, 사용자 정보, 로그인 토큰은 fixture에 포함하지 않습니다.",
+    "계약 버전이 다르면 프로젝트 생성을 중단합니다.",
+    "현재 웹 앱의 내 캔버스 목록은 offset=1을 첫 페이지로 사용합니다."
+  ]
+}
