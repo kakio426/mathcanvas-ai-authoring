@@ -11,14 +11,22 @@ import { dirname } from "node:path";
 import {
   CONTRACT_SCHEMA_VERSION,
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
-  activitySpecSchema,
-  createApprovalReceipt,
+  activitySetHash,
+  activitySetSpecSchema,
+  canvasActivityHash,
+  canvasActivitySpecSchema,
+  createActivitySetApprovalReceipt,
+  creationBatchSchema,
   generationRequestSchema,
+  legacyActivitySpecSchema,
   recommendationSchema,
-  sha256Hex,
-  verifyApprovalReceipt,
-  type ActivitySpec,
-  type Recommendation
+  verifyActivitySetApprovalReceipt,
+  type ActivitySetSpec,
+  type CanvasActivitySpec,
+  type CreationBatch,
+  type CreationBatchItem,
+  type Recommendation,
+  type ValidationReport
 } from "@mathcanvas/contracts";
 import {
   CreationJobStore,
@@ -26,20 +34,23 @@ import {
   type QueuedCreation,
   type StoredCreationJob
 } from "@mathcanvas/managed-browser";
-import { compileActivitySpec } from "@mathcanvas/compiler";
+import { compileCanvasActivitySpec } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "@mathcanvas/templates";
+import {
+  generateFractionComparisonActivitySet,
+  splitActivitySetIntoCanvases
+} from "@mathcanvas/templates";
 import { validateForCreation } from "@mathcanvas/validator";
 
 interface Draft {
   draftId: string;
-  spec: ActivitySpec;
+  set: ActivitySetSpec;
+  canvases: CanvasActivitySpec[];
   recommendation: Recommendation;
-  activitySpecHash: string;
+  setHash: string;
   createdAt: string;
   expiresAt: string;
-  jobId?: string;
-  payloadHash?: string;
+  batch?: CreationBatch;
 }
 
 export interface TeacherAnswer {
@@ -64,6 +75,16 @@ export interface RecommendationSummary {
     url: string;
     version: string;
   }>;
+}
+
+export interface BatchCanvasSummary {
+  canvasIndex: number;
+  problem: string;
+  status: CreationBatchItem["status"];
+  payloadHash: string;
+  projectId?: string;
+  editorUrl?: string;
+  errorCode?: string;
 }
 
 function summarizeRecommendation(
@@ -107,18 +128,19 @@ function summarizeRecommendation(
   };
 }
 
-function teacherAnswerKey(spec: ActivitySpec): TeacherAnswer[] {
-  const greatestCommonDivisor = (left: number, right: number): number => {
-    let a = Math.abs(left);
-    let b = Math.abs(right);
-    while (b !== 0) {
-      const remainder = a % b;
-      a = b;
-      b = remainder;
-    }
-    return a || 1;
-  };
-  return spec.problems.map((problem) => {
+function greatestCommonDivisor(left: number, right: number): number {
+  let a = Math.abs(left);
+  let b = Math.abs(right);
+  while (b !== 0) {
+    const remainder = a % b;
+    a = b;
+    b = remainder;
+  }
+  return a || 1;
+}
+
+function teacherAnswerKey(set: ActivitySetSpec): TeacherAnswer[] {
+  return set.problems.map((problem) => {
     const commonDenominator =
       (problem.left.denominator * problem.right.denominator) /
       greatestCommonDivisor(
@@ -151,6 +173,14 @@ function teacherAnswerKey(spec: ActivitySpec): TeacherAnswer[] {
   });
 }
 
+function fractionPair(canvas: CanvasActivitySpec): string {
+  const { left, right } = canvas.problem;
+  return (
+    `${left.numerator}/${left.denominator} ? ` +
+    `${right.numerator}/${right.denominator}`
+  );
+}
+
 const retryableCreationErrors = new Set([
   "login-required",
   "browser-launch-failed",
@@ -175,7 +205,7 @@ export class AuthoringServiceError extends Error {
       | "draft-not-found"
       | "draft-expired"
       | "approval-required"
-      | "activity-spec-changed"
+      | "activity-set-changed"
       | "validation-failed"
       | "unsupported-request",
     message: string
@@ -187,6 +217,7 @@ export class AuthoringServiceError extends Error {
 
 export class MathCanvasAuthoringService {
   readonly #drafts = new Map<string, Draft>();
+  readonly #activeCreations = new Map<string, Promise<void>>();
   readonly #draftSnapshotPath: string | undefined;
 
   public constructor(
@@ -196,6 +227,10 @@ export class MathCanvasAuthoringService {
     options: AuthoringServiceOptions = {}
   ) {
     this.#draftSnapshotPath = options.draftSnapshotPath;
+    this.#loadDrafts();
+  }
+
+  #loadDrafts(): void {
     if (!this.#draftSnapshotPath || !existsSync(this.#draftSnapshotPath)) {
       return;
     }
@@ -206,7 +241,7 @@ export class MathCanvasAuthoringService {
       typeof snapshot !== "object" ||
       snapshot === null ||
       !("version" in snapshot) ||
-      snapshot.version !== 1 ||
+      (snapshot.version !== 1 && snapshot.version !== 2) ||
       !("drafts" in snapshot) ||
       !Array.isArray(snapshot.drafts)
     ) {
@@ -218,45 +253,78 @@ export class MathCanvasAuthoringService {
       }
       const record = item as Record<string, unknown>;
       const draftId = record.draftId;
-      const activitySpecHash = record.activitySpecHash;
       const createdAt = record.createdAt;
       const expiresAt = record.expiresAt;
-      const jobId = record.jobId;
-      const payloadHash = record.payloadHash;
-      const spec = activitySpecSchema.parse(record.spec);
       const recommendation = recommendationSchema.parse(record.recommendation);
       if (
         typeof draftId !== "string" ||
         !/^draft-[A-Za-z0-9-]+$/.test(draftId) ||
-        typeof activitySpecHash !== "string" ||
-        !/^[a-f0-9]{64}$/.test(activitySpecHash) ||
-        sha256Hex(spec) !== activitySpecHash ||
-        sha256Hex(recommendation) !==
-          sha256Hex(spec.recommendationSnapshot) ||
         typeof createdAt !== "string" ||
         Number.isNaN(Date.parse(createdAt)) ||
         typeof expiresAt !== "string" ||
         Number.isNaN(Date.parse(expiresAt)) ||
-        Date.parse(expiresAt) <= Date.parse(createdAt) ||
-        (jobId !== undefined &&
-          (typeof jobId !== "string" ||
-            !/^job-[A-Za-z0-9-]+$/.test(jobId))) ||
-        (payloadHash !== undefined &&
-          (typeof payloadHash !== "string" ||
-            !/^[a-f0-9]{64}$/.test(payloadHash))) ||
-        (jobId === undefined) !== (payloadHash === undefined)
+        Date.parse(expiresAt) <= Date.parse(createdAt)
       ) {
         throw new Error(`저장된 추천안 ${String(draftId)}가 올바르지 않습니다.`);
       }
+
+      if (snapshot.version === 1) {
+        const legacy = legacyActivitySpecSchema.parse(record.spec);
+        const migrated = generateFractionComparisonActivitySet(
+          recommendation,
+          {
+            seed: legacy.seed,
+            generatedAt: legacy.provenance.generatedAt,
+            setId: `set-migrated-${legacy.id}`.slice(0, 160)
+          }
+        );
+        this.#drafts.set(draftId, {
+          draftId,
+          set: migrated,
+          canvases: splitActivitySetIntoCanvases(migrated),
+          recommendation,
+          setHash: migrated.setHash,
+          createdAt,
+          expiresAt
+        });
+        continue;
+      }
+
+      const set = activitySetSpecSchema.parse(record.set);
+      const canvases = Array.isArray(record.canvases)
+        ? record.canvases.map((canvas) =>
+            canvasActivitySpecSchema.parse(canvas)
+          )
+        : splitActivitySetIntoCanvases(set);
+      const setHash = record.setHash;
+      const batch =
+        record.batch === undefined
+          ? undefined
+          : creationBatchSchema.parse(record.batch);
+      if (
+        typeof setHash !== "string" ||
+        setHash !== set.setHash ||
+        setHash !== activitySetHash(set) ||
+        canvases.length !== set.problemCount ||
+        canvases.some(
+          (canvas, index) =>
+            canvas.setHash !== setHash ||
+            canvas.canvasIndex !== index + 1 ||
+            canvasActivityHash(canvas) !== canvas.canvasHash
+        ) ||
+        (batch && batch.setHash !== setHash)
+      ) {
+        throw new Error(`저장된 추천안 ${draftId}가 올바르지 않습니다.`);
+      }
       this.#drafts.set(draftId, {
         draftId,
-        spec,
+        set,
+        canvases,
         recommendation,
-        activitySpecHash,
+        setHash,
         createdAt,
         expiresAt,
-        ...(typeof jobId === "string" ? { jobId } : {}),
-        ...(typeof payloadHash === "string" ? { payloadHash } : {})
+        ...(batch ? { batch } : {})
       });
     }
   }
@@ -269,7 +337,7 @@ export class MathCanvasAuthoringService {
     writeFileSync(
       temporaryPath,
       `${JSON.stringify({
-        version: 1,
+        version: 2,
         drafts: [...this.#drafts.values()]
       })}\n`,
       { encoding: "utf8", mode: 0o600 }
@@ -332,10 +400,10 @@ export class MathCanvasAuthoringService {
       "browser-launch-failed":
         "Chrome을 열지 못했습니다. Chrome 설치 상태와 다른 MathCanvas 전용 창이 실행 중인지 확인해 주세요.",
       "login-required":
-        "MathCanvas 전용 Chrome 창이 열렸습니다. 그 창에서 로그인한 뒤 ‘내 캔버스’ 화면까지 들어가 주세요.",
+        "MathCanvas 전용 Chrome 창에서 로그인한 뒤 ‘내 캔버스’까지 들어가 주세요.",
       "contract-mismatch":
         "MathCanvas 연결 방식이 현재 버전과 달라졌습니다. 생성하지 않고 안전하게 멈췄어요.",
-      ready: "MathCanvas에 연결되었어요. 새 활동지를 만들 준비가 됐습니다."
+      ready: "MathCanvas에 연결되었어요. 새 캔버스 세트를 만들 준비가 됐습니다."
     };
     return {
       state: connection.state,
@@ -361,11 +429,13 @@ export class MathCanvasAuthoringService {
     supported: boolean;
     recommendation: RecommendationSummary;
     draftId?: string;
-    activitySpecHash?: string;
+    setHash?: string;
     expiresAt?: string;
-    activitySummary?: {
+    activitySetSummary?: {
       title: string;
-      studentInstructions: string[];
+      canvasCount: number;
+      oneProblemPerCanvas: true;
+      studentInstruction: string;
       minimumVisualDifferencePercent: number;
     };
     teacherAnswerKey?: TeacherAnswer[];
@@ -385,6 +455,7 @@ export class MathCanvasAuthoringService {
       if (!oldest) break;
       this.#drafts.delete(oldest.draftId);
     }
+
     const request = generationRequestSchema.parse({
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: `request-${randomUUID()}`,
@@ -413,17 +484,18 @@ export class MathCanvasAuthoringService {
 
     const draftId = `draft-${randomUUID()}`;
     const expiresAt = new Date(now.getTime() + 30 * 60 * 1000);
-    const spec = generateFractionComparisonActivity(recommendation, {
+    const set = generateFractionComparisonActivitySet(recommendation, {
       seed: request.requestId,
       generatedAt: now.toISOString(),
-      activityId: `activity-${randomUUID()}`
+      setId: `set-${randomUUID()}`
     });
-    const activitySpecHash = sha256Hex(spec);
+    const canvases = splitActivitySetIntoCanvases(set);
     this.#drafts.set(draftId, {
       draftId,
-      spec,
+      set,
+      canvases,
       recommendation,
-      activitySpecHash,
+      setHash: set.setHash,
       createdAt: now.toISOString(),
       expiresAt: expiresAt.toISOString()
     });
@@ -432,37 +504,41 @@ export class MathCanvasAuthoringService {
       supported: true,
       recommendation: summarizeRecommendation(recommendation),
       draftId,
-      activitySpecHash,
+      setHash: set.setHash,
       expiresAt: expiresAt.toISOString(),
-      activitySummary: {
-        title: spec.title,
-        studentInstructions: spec.instructions,
+      activitySetSummary: {
+        title: set.title,
+        canvasCount: set.problemCount,
+        oneProblemPerCanvas: true,
+        studentInstruction: canvases[0]!.instructions[0]!,
         minimumVisualDifferencePercent:
           MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100
       },
-      teacherAnswerKey: teacherAnswerKey(spec),
+      teacherAnswerKey: teacherAnswerKey(set),
       approvalPrompt:
-        "추천한 학년, 문제 수, 난이도와 조작 방식을 확인한 뒤 ‘이대로 만들어줘’라고 승인해 주세요."
+        `추천한 조건을 승인하면 한 문제짜리 새 캔버스 ${set.problemCount}개를 만듭니다. ` +
+        "괜찮다면 “이대로 만들어줘”라고 말해 주세요. 기존 캔버스는 수정하지 않습니다."
     };
   }
 
-  public async createNewProject(input: {
+  public async createActivitySet(input: {
     draftId: string;
-    activitySpecHash: string;
+    setHash: string;
     teacherConfirmed: boolean;
   }): Promise<{
-    jobId: string;
-    status: string;
-    activitySpecHash: string;
-    payloadHash: string;
-    expiresAt: string;
-    validation: ReturnType<typeof validateForCreation>;
+    batchId: string;
+    status: CreationBatch["status"];
+    setHash: string;
+    validations: ValidationReport[];
     teacherAnswerKey: TeacherAnswer[];
+    items: BatchCanvasSummary[];
     message: string;
-    projectId?: string;
-    editorUrl?: string;
-    errorCode?: string;
   }> {
+    while (true) {
+      const activeCreation = this.#activeCreations.get(input.draftId);
+      if (!activeCreation) break;
+      await activeCreation;
+    }
     if (!input.teacherConfirmed) {
       throw new AuthoringServiceError(
         "approval-required",
@@ -486,241 +562,376 @@ export class MathCanvasAuthoringService {
       );
     }
     if (
-      input.activitySpecHash !== draft.activitySpecHash ||
-      sha256Hex(draft.spec) !== draft.activitySpecHash
+      input.setHash !== draft.setHash ||
+      draft.setHash !== draft.set.setHash ||
+      activitySetHash(draft.set) !== draft.setHash ||
+      draft.canvases.some(
+        (canvas) =>
+          canvas.setHash !== draft.setHash ||
+          canvasActivityHash(canvas) !== canvas.canvasHash
+      )
     ) {
       throw new AuthoringServiceError(
-        "activity-spec-changed",
-        "교사가 확인한 추천안과 만들려는 활동이 다릅니다."
+        "activity-set-changed",
+        "교사가 확인한 세트와 만들려는 캔버스가 다릅니다."
       );
     }
-    if (draft.jobId) {
-      const existing = this.jobStore.get(draft.jobId, now);
-      if (!existing) {
-        throw new Error("기존 생성 작업 상태를 찾지 못했습니다.");
-      }
-      if (!draft.payloadHash) {
-        throw new Error("이미 등록한 작업의 payload 해시가 없습니다.");
-      }
-      if (
-        existing.status === "failed" &&
-        existing.result?.errorCode &&
-        retryableCreationErrors.has(existing.result.errorCode)
-      ) {
-        delete draft.jobId;
-        delete draft.payloadHash;
-        this.#persistDrafts();
-      } else {
-        const recovered =
-          existing.status === "queued" || existing.status === "creating"
-            ? await this.#executeJob(existing, draft)
-            : existing;
-        return this.#creationSummary(
-          recovered,
-          draft,
-          validateForCreation(
-            draft.spec,
-            compileActivitySpec(draft.spec),
-            now
-          ),
-          "같은 생성 요청의 기존 작업 결과를 확인했습니다."
-        );
-      }
-    }
 
-    const compiled = compileActivitySpec(draft.spec);
-    const validation = validateForCreation(draft.spec, compiled, now);
-    if (!validation.canCreate) {
+    const compiled = draft.canvases.map((canvas) =>
+      compileCanvasActivitySpec(canvas)
+    );
+    const validations = draft.canvases.map((canvas, index) =>
+      validateForCreation(canvas, compiled[index]!, now)
+    );
+    const failedValidation = validations.find(
+      (validation) => !validation.canCreate
+    );
+    if (failedValidation) {
       throw new AuthoringServiceError(
         "validation-failed",
-        `생성 전 검증을 통과하지 못했습니다: ${validation.issues
-          .map((issue) => issue.message)
+        `생성 전 검증을 통과하지 못했습니다: ${failedValidation.issues
+          .map((value) => value.message)
           .join(" ")}`
       );
     }
-    const samePayload = this.jobStore.findByPayloadHash(
-      compiled.payloadHash,
-      now
-    );
-    if (samePayload) {
-      draft.jobId = samePayload.job.jobId;
-      draft.payloadHash = compiled.payloadHash;
+
+    if (!draft.batch) {
+      draft.batch = creationBatchSchema.parse({
+        schemaVersion: CONTRACT_SCHEMA_VERSION,
+        batchId: `batch-${randomUUID()}`,
+        setId: draft.set.setId,
+        setHash: draft.setHash,
+        status: "queued",
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString(),
+        items: compiled.map((project, index) => ({
+          canvasIndex: index + 1,
+          canvasHash: project.canvasHash,
+          payloadHash: project.payloadHash,
+          status: "queued"
+        }))
+      });
       this.#persistDrafts();
-      const recovered =
-        samePayload.status === "queued" || samePayload.status === "creating"
-          ? await this.#executeJob(samePayload, draft)
-          : samePayload;
-      return this.#creationSummary(
-        recovered,
-        draft,
-        validation,
-        "같은 활동의 기존 작업 결과를 확인했습니다."
-      );
+    } else {
+      for (const item of draft.batch.items) {
+        const expected = compiled[item.canvasIndex - 1];
+        if (
+          !expected ||
+          item.canvasHash !== expected.canvasHash ||
+          item.payloadHash !== expected.payloadHash
+        ) {
+          throw new AuthoringServiceError(
+            "validation-failed",
+            "저장된 배치와 현재 검증된 캔버스가 달라 안전하게 중단했습니다."
+          );
+        }
+        if (
+          item.status === "failed" &&
+          item.errorCode &&
+          retryableCreationErrors.has(item.errorCode)
+        ) {
+          item.status = "queued";
+          delete item.jobId;
+          delete item.errorCode;
+        }
+      }
+      draft.batch.updatedAt = now.toISOString();
+      draft.batch.status = this.#deriveBatchStatus(draft.batch.items);
+      this.#persistDrafts();
     }
-    const approvalExpiresAt = new Date(now.getTime() + 10 * 60 * 1000);
-    const approval = createApprovalReceipt(draft.spec, now, approvalExpiresAt);
-    if (!verifyApprovalReceipt(draft.spec, approval, now)) {
-      throw new Error("승인 무결성 검증에 실패했습니다.");
+
+    const execution = this.#executeBatch(draft, compiled, validations);
+    this.#activeCreations.set(input.draftId, execution);
+    try {
+      await execution;
+    } finally {
+      if (this.#activeCreations.get(input.draftId) === execution) {
+        this.#activeCreations.delete(input.draftId);
+      }
     }
-    const jobId = `job-${randomUUID()}`;
-    const job: QueuedCreation = {
-      jobId,
-      approvalHash: approval.approvalHash,
-      payloadHash: compiled.payloadHash,
-      createdAt: now.toISOString(),
-      expiresAt: approvalExpiresAt.toISOString(),
-      compiledProject: compiled,
-      validationReport: validation
-    };
-    const stored = this.jobStore.enqueue(job, now);
-    draft.jobId = jobId;
-    draft.payloadHash = compiled.payloadHash;
-    this.#persistDrafts();
-    const completed = await this.#executeJob(stored, draft);
-    return this.#creationSummary(
-      completed,
+    let openedFirst = false;
+    if (draft.batch.status === "succeeded") {
+      const firstUrl = draft.batch.items[0]?.editorUrl;
+      if (firstUrl) {
+        try {
+          await this.browserRuntime.openEditor(firstUrl);
+          openedFirst = true;
+        } catch {
+          openedFirst = false;
+        }
+      }
+    }
+    return this.#batchSummary(
       draft,
-      validation,
-      completed.status === "succeeded"
-        ? "새 활동지를 만들고 MathCanvas 편집 화면을 열었습니다."
-        : "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요."
+      validations,
+      draft.batch.status === "succeeded"
+        ? openedFirst
+          ? "새 캔버스 세트를 만들고 첫 번째 편집 화면을 열었습니다."
+          : "새 캔버스 세트는 모두 만들었지만 편집 화면을 자동으로 열지 못했습니다. 반환된 URL을 열어 주세요."
+        : "일부 캔버스를 만들지 못했습니다. 성공한 캔버스는 보존하고 빠진 항목만 다시 시도할 수 있습니다."
     );
   }
 
-  async #executeJob(
-    stored: StoredCreationJob,
-    draft: Draft
-  ): Promise<StoredCreationJob> {
-    const canonicalCompiled = compileActivitySpec(draft.spec);
-    const currentValidation = validateForCreation(
-      draft.spec,
-      canonicalCompiled,
-      this.clock.now()
-    );
-    if (
-      !currentValidation.canCreate ||
-      stored.job.payloadHash !== canonicalCompiled.payloadHash ||
-      sha256Hex(stored.job.compiledProject) !==
-        sha256Hex(canonicalCompiled) ||
-      stored.job.validationReport.compiledPayloadHash !==
-        canonicalCompiled.payloadHash
-    ) {
-      throw new AuthoringServiceError(
-        "validation-failed",
-        "저장된 생성 작업이 현재 검증된 활동과 달라 안전하게 중단했습니다."
-      );
-    }
-    const marked = this.jobStore.markCreating(
-      stored.job.jobId,
-      this.clock.now()
-    );
-    if (marked.status === "expired") return marked;
-    const result = await this.browserRuntime.createProject(
-      marked.job.compiledProject.payload,
-      marked.job.payloadHash
-    );
-    return this.jobStore.complete(marked.job.jobId, result);
-  }
-
-  #creationSummary(
-    stored: StoredCreationJob,
+  async #executeBatch(
     draft: Draft,
-    validation: ReturnType<typeof validateForCreation>,
+    compiled: ReturnType<typeof compileCanvasActivitySpec>[],
+    validations: ValidationReport[]
+  ): Promise<void> {
+    const batch = draft.batch;
+    if (!batch) throw new Error("생성 배치가 없습니다.");
+    batch.status = "creating";
+    batch.updatedAt = this.clock.now().toISOString();
+    this.#persistDrafts();
+
+    for (const item of batch.items) {
+      if (item.status === "succeeded") continue;
+      if (
+        item.status === "failed" &&
+        (!item.errorCode || !retryableCreationErrors.has(item.errorCode))
+      ) {
+        break;
+      }
+      const project = compiled[item.canvasIndex - 1];
+      const validation = validations[item.canvasIndex - 1];
+      if (
+        !project ||
+        !validation ||
+        !validation.canCreate ||
+        project.canvasHash !== item.canvasHash ||
+        project.payloadHash !== item.payloadHash
+      ) {
+        throw new AuthoringServiceError(
+          "validation-failed",
+          `${item.canvasIndex}번 캔버스가 승인된 세트와 다릅니다.`
+        );
+      }
+
+      let stored: StoredCreationJob | null = null;
+      if (item.jobId) {
+        stored = this.jobStore.get(item.jobId, this.clock.now());
+        if (!stored) {
+          delete item.jobId;
+          item.status = "queued";
+        } else if (
+          stored.job.payloadHash !== project.payloadHash ||
+          stored.job.compiledProject.payloadHash !== project.payloadHash ||
+          stored.job.compiledProject.canvasHash !== project.canvasHash ||
+          stored.job.compiledProject.setHash !== draft.setHash ||
+          stored.job.validationReport.compiledPayloadHash !==
+            project.payloadHash ||
+          !stored.job.validationReport.canCreate
+        ) {
+          throw new AuthoringServiceError(
+            "validation-failed",
+            `${item.canvasIndex}번 저장 작업이 승인된 캔버스와 달라 안전하게 중단했습니다.`
+          );
+        } else if (stored.status === "succeeded") {
+          this.#copyJobResult(item, stored);
+          batch.updatedAt = this.clock.now().toISOString();
+          this.#persistDrafts();
+          continue;
+        } else if (
+          stored.status === "failed" &&
+          stored.result?.errorCode &&
+          retryableCreationErrors.has(stored.result.errorCode)
+        ) {
+          delete item.jobId;
+          delete item.errorCode;
+          item.status = "queued";
+          stored = null;
+        } else if (stored.status === "failed" || stored.status === "expired") {
+          this.#copyJobResult(item, stored);
+          batch.updatedAt = this.clock.now().toISOString();
+          this.#persistDrafts();
+          break;
+        }
+      }
+
+      if (!stored) {
+        const approvedAt = this.clock.now();
+        const expiresAt = new Date(approvedAt.getTime() + 10 * 60 * 1000);
+        const approval = createActivitySetApprovalReceipt(
+          draft.set,
+          approvedAt,
+          expiresAt
+        );
+        if (
+          !verifyActivitySetApprovalReceipt(
+            draft.set,
+            approval,
+            approvedAt
+          )
+        ) {
+          throw new Error("승인 무결성 검증에 실패했습니다.");
+        }
+        const jobId = `job-${randomUUID()}`;
+        const queued: QueuedCreation = {
+          jobId,
+          approvalHash: approval.approvalHash,
+          payloadHash: project.payloadHash,
+          createdAt: approvedAt.toISOString(),
+          expiresAt: expiresAt.toISOString(),
+          compiledProject: project,
+          validationReport: validation
+        };
+        item.jobId = jobId;
+        item.status = "queued";
+        batch.updatedAt = approvedAt.toISOString();
+        this.#persistDrafts();
+        const samePayload = this.jobStore.findByPayloadHash(
+          project.payloadHash,
+          approvedAt
+        );
+        stored = samePayload ?? this.jobStore.enqueue(queued, approvedAt);
+        if (samePayload) item.jobId = samePayload.job.jobId;
+      }
+
+      if (stored.status === "queued" || stored.status === "creating") {
+        const marked = this.jobStore.markCreating(
+          stored.job.jobId,
+          this.clock.now()
+        );
+        item.jobId = marked.job.jobId;
+        item.status = marked.status;
+        batch.updatedAt = this.clock.now().toISOString();
+        this.#persistDrafts();
+        if (marked.status === "expired") {
+          this.#copyJobResult(item, marked);
+          break;
+        }
+        const result = await this.browserRuntime.createProject(
+          marked.job.compiledProject.payload,
+          marked.job.payloadHash,
+          { openEditor: false }
+        );
+        stored = this.jobStore.complete(marked.job.jobId, result);
+      }
+      this.#copyJobResult(item, stored);
+      batch.updatedAt = this.clock.now().toISOString();
+      this.#persistDrafts();
+      if (item.status !== "succeeded") break;
+    }
+
+    batch.status = this.#deriveBatchStatus(batch.items);
+    batch.updatedAt = this.clock.now().toISOString();
+    creationBatchSchema.parse(batch);
+    this.#persistDrafts();
+  }
+
+  #copyJobResult(
+    item: CreationBatchItem,
+    stored: StoredCreationJob
+  ): void {
+    item.status = stored.status;
+    item.jobId = stored.job.jobId;
+    if (stored.result?.projectId) item.projectId = stored.result.projectId;
+    if (stored.result?.editorUrl) item.editorUrl = stored.result.editorUrl;
+    if (stored.result?.errorCode) item.errorCode = stored.result.errorCode;
+  }
+
+  #deriveBatchStatus(
+    items: CreationBatchItem[]
+  ): CreationBatch["status"] {
+    if (items.every((item) => item.status === "succeeded")) {
+      return "succeeded";
+    }
+    if (items.some((item) => item.status === "creating")) {
+      return "creating";
+    }
+    if (
+      items.some((item) => item.status === "succeeded") &&
+      items.some((item) => item.status !== "succeeded")
+    ) {
+      return "partial";
+    }
+    if (items.every((item) => item.status === "expired")) {
+      return "expired";
+    }
+    if (items.some((item) => item.status === "failed")) {
+      return "failed";
+    }
+    return "queued";
+  }
+
+  #batchSummary(
+    draft: Draft,
+    validations: ValidationReport[],
     message: string
   ): {
-    jobId: string;
-    status: string;
-    activitySpecHash: string;
-    payloadHash: string;
-    expiresAt: string;
-    validation: ReturnType<typeof validateForCreation>;
+    batchId: string;
+    status: CreationBatch["status"];
+    setHash: string;
+    validations: ValidationReport[];
     teacherAnswerKey: TeacherAnswer[];
+    items: BatchCanvasSummary[];
     message: string;
-    projectId?: string;
-    editorUrl?: string;
-    errorCode?: string;
   } {
+    const batch = draft.batch;
+    if (!batch) throw new Error("생성 배치가 없습니다.");
     return {
-      jobId: stored.job.jobId,
-      status: stored.status,
-      activitySpecHash: draft.activitySpecHash,
-      payloadHash: stored.job.payloadHash,
-      expiresAt: stored.job.expiresAt,
-      validation,
-      teacherAnswerKey: teacherAnswerKey(draft.spec),
-      message,
-      ...(stored.result?.projectId
-        ? { projectId: stored.result.projectId }
-        : {}),
-      ...(stored.result?.editorUrl
-        ? { editorUrl: stored.result.editorUrl }
-        : {}),
-      ...(stored.result?.errorCode
-        ? { errorCode: stored.result.errorCode }
-        : {})
+      batchId: batch.batchId,
+      status: batch.status,
+      setHash: batch.setHash,
+      validations,
+      teacherAnswerKey: teacherAnswerKey(draft.set),
+      items: batch.items.map((item) => {
+        const canvas = draft.canvases[item.canvasIndex - 1]!;
+        return {
+          canvasIndex: item.canvasIndex,
+          problem: fractionPair(canvas),
+          status: item.status,
+          payloadHash: item.payloadHash,
+          ...(item.projectId ? { projectId: item.projectId } : {}),
+          ...(item.editorUrl ? { editorUrl: item.editorUrl } : {}),
+          ...(item.errorCode ? { errorCode: item.errorCode } : {})
+        };
+      }),
+      message
     };
   }
 
-  public getJobStatus(jobId: string): {
+  public getBatchStatus(batchId: string): {
     found: boolean;
-    jobId: string;
-    status?: string;
-    projectId?: string;
-    editorUrl?: string;
-    errorCode?: string;
+    batchId: string;
+    status?: CreationBatch["status"];
+    items?: BatchCanvasSummary[];
     message: string;
   } {
-    const status = this.jobStore.get(jobId, this.clock.now());
-    if (!status) {
+    const draft = [...this.#drafts.values()].find(
+      (candidate) => candidate.batch?.batchId === batchId
+    );
+    if (!draft?.batch) {
       return {
         found: false,
-        jobId,
-        message: "생성 작업을 찾지 못했습니다."
+        batchId,
+        message: "생성 배치를 찾지 못했습니다."
       };
     }
-    const messages: Record<typeof status.status, string> = {
-      queued: "MathCanvas 전용 Chrome을 준비하고 있어요.",
-      creating: "MathCanvas에 새 활동지를 만들고 있어요.",
-      succeeded: "새 활동지를 만들고 편집 화면을 열었어요.",
-      failed: "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요.",
+    const messages: Record<CreationBatch["status"], string> = {
+      queued: "새 캔버스 생성을 기다리고 있어요.",
+      creating: "MathCanvas에 새 캔버스를 만들고 있어요.",
+      partial: "일부 캔버스만 만들어졌습니다. 빠진 항목만 다시 시도할 수 있어요.",
+      succeeded: "새 캔버스 세트를 모두 만들었어요.",
+      failed: "새 캔버스를 만들지 못했습니다. 오류 안내를 확인해 주세요.",
       expired: "생성 요청 시간이 지나 안전하게 중단했습니다."
-    };
-    const failureMessages: Record<string, string> = {
-      "login-required":
-        "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
-      "mathcanvas-tab-missing":
-        "MathCanvas 전용 Chrome에서 ‘내 캔버스’를 연 뒤 새 추천을 받아 주세요.",
-      "browser-launch-failed":
-        "Chrome을 열지 못했습니다. 설치 상태를 확인해 주세요.",
-      "contract-mismatch":
-        "MathCanvas 연결 방식이 달라져 안전하게 멈췄어요. 도구를 업데이트해 주세요.",
-      "permission-denied":
-        "현재 MathCanvas 계정에 새 프로젝트를 만들 권한이 있는지 확인해 주세요.",
-      "mathcanvas-unavailable":
-        "MathCanvas에 연결할 수 없습니다. 잠시 뒤 다시 시도해 주세요.",
-      "payload-hash-mismatch":
-        "교사가 확인한 활동과 생성 데이터가 달라 안전하게 멈췄어요.",
-      "project-create-failed":
-        "MathCanvas에서 새 프로젝트를 만들지 못했습니다. 연결 상태를 다시 확인해 주세요."
     };
     return {
       found: true,
-      jobId,
-      status: status.status,
-      ...(status.result?.projectId
-        ? { projectId: status.result.projectId }
-        : {}),
-      ...(status.result?.editorUrl
-        ? { editorUrl: status.result.editorUrl }
-        : {}),
-      ...(status.result?.errorCode
-        ? { errorCode: status.result.errorCode }
-        : {}),
-      message:
-        status.status === "failed" && status.result?.errorCode
-          ? (failureMessages[status.result.errorCode] ??
-            messages.failed)
-          : messages[status.status]
+      batchId,
+      status: draft.batch.status,
+      items: draft.batch.items.map((item) => {
+        const canvas = draft.canvases[item.canvasIndex - 1]!;
+        return {
+          canvasIndex: item.canvasIndex,
+          problem: fractionPair(canvas),
+          status: item.status,
+          payloadHash: item.payloadHash,
+          ...(item.projectId ? { projectId: item.projectId } : {}),
+          ...(item.editorUrl ? { editorUrl: item.editorUrl } : {}),
+          ...(item.errorCode ? { errorCode: item.errorCode } : {})
+        };
+      }),
+      message: messages[draft.batch.status]
     };
   }
 }

@@ -1,15 +1,17 @@
 import {
+  CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION,
   CONTRACT_SCHEMA_VERSION,
-  activitySpecSchema,
-  compiledProjectSchema,
+  canvasActivityHash,
+  canvasActivitySpecSchema,
+  compiledCanvasProjectSchema,
   mathCanvasPayloadSchema,
   sha256Hex,
-  type ActivitySpec,
-  type CompiledProject
+  type CanvasActivitySpec,
+  type CompiledCanvasProject
 } from "@mathcanvas/contracts";
 import { buildNativeContents } from "./native-objects.js";
 
-export const MATHCANVAS_CONTRACT_VERSION = "1.0.0" as const;
+export const MATHCANVAS_CONTRACT_VERSION = "2.0.0" as const;
 export const MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID = "rJa0d46MAy" as const;
 export const CREATE_PROJECT_ENDPOINT = "/api/project" as const;
 export const ALLOWED_WRITE_METHOD = "POST" as const;
@@ -72,8 +74,13 @@ const disabledModuleGroups = {
   }
 };
 
-export function compileActivitySpec(input: ActivitySpec): CompiledProject {
-  const spec = activitySpecSchema.parse(input);
+export function compileCanvasActivitySpec(
+  input: CanvasActivitySpec
+): CompiledCanvasProject {
+  const spec = canvasActivitySpecSchema.parse(input);
+  if (canvasActivityHash(spec) !== spec.canvasHash) {
+    throw new Error("캔버스 해시가 내용과 맞지 않습니다.");
+  }
   const native = buildNativeContents(spec);
   const difficultyLabel = {
     easy: "쉬움",
@@ -82,7 +89,10 @@ export function compileActivitySpec(input: ActivitySpec): CompiledProject {
   }[spec.recommendationSnapshot.difficulty ?? "normal"];
   const grade = spec.recommendationSnapshot.recommendedGrade ?? 5;
   const creationMarker = sha256Hex({
-    activityId: spec.id,
+    setId: spec.setId,
+    setHash: spec.setHash,
+    canvasId: spec.canvasId,
+    canvasIndex: spec.canvasIndex,
     seed: spec.seed,
     templateId: spec.templateId,
     templateVersion: spec.templateVersion
@@ -92,7 +102,7 @@ export function compileActivitySpec(input: ActivitySpec): CompiledProject {
   const payload = mathCanvasPayloadSchema.parse({
     projectTitle:
       `${spec.title.slice(0, 60)} · ${grade}학년 · ` +
-      `${spec.problems.length}문제 · ${difficultyLabel} ` +
+      `${difficultyLabel} · ${spec.canvasIndex}/${spec.canvasCount} ` +
       `[AI-${creationMarker}]`,
     categoryId: MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID,
     contentsJson: native.contents,
@@ -119,17 +129,20 @@ export function compileActivitySpec(input: ActivitySpec): CompiledProject {
         cy: spec.layout.height / 2
       }
     },
-    isShowMenuOnActivity: true,
+    isShowMenuOnActivity: false,
     isNoteworthy: false,
     tags: ["분수", "크기 비교", "직접 조작"],
     studyLevel: "elementary"
   });
   const payloadHash = sha256Hex(payload);
-  return compiledProjectSchema.parse({
+  return compiledCanvasProjectSchema.parse({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
     contractVersion: MATHCANVAS_CONTRACT_VERSION,
-    sourceActivitySpecId: spec.id,
-    sourceActivitySpecVersion: spec.schemaVersion,
+    sourceCanvasSpecId: spec.canvasId,
+    sourceCanvasSpecVersion: CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION,
+    setId: spec.setId,
+    setHash: spec.setHash,
+    canvasHash: spec.canvasHash,
     templateId: spec.templateId,
     templateVersion: spec.templateVersion,
     payloadHash,

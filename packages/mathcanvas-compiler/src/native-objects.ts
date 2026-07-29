@@ -1,6 +1,6 @@
 import type {
   ActivityProblem,
-  ActivitySpec,
+  CanvasActivitySpec,
   VisualModel
 } from "@mathcanvas/contracts";
 
@@ -38,7 +38,7 @@ const objectCommon = {
   fillOpacity: 1,
   isBluePrint: false,
   strokeWidth: 4,
-  isFillChange: true,
+  isFillChange: false,
   initSizeScale: 1,
   isGroupGridOn: false,
   strokeOpacity: 1,
@@ -51,7 +51,7 @@ const objectCommon = {
   strokeDashArray: "",
   isHorizontalFlip: false,
   isTextEditFontSize: false,
-  isMoveRotateHandler: true,
+  isMoveRotateHandler: false,
   isCenterGravityPolygon: false
 } as const;
 
@@ -63,15 +63,18 @@ export function makeFractionObject(model: VisualModel): Record<string, unknown> 
   const cx = (geometricWidth - perWidth) / 2;
   const left = -perWidth / 2;
   const right = geometricWidth - perWidth / 2;
+  const groupId = `${model.id}-move-group`;
   return {
     ...objectCommon,
-    x: model.bounds.x,
-    y: model.bounds.y,
-    _x: model.bounds.x,
-    _y: model.bounds.y,
+    x: model.bounds.x + perWidth / 2,
+    y: model.bounds.y + model.segmentHeight / 2,
+    _x: model.bounds.x + perWidth / 2,
+    _y: model.bounds.y + model.segmentHeight / 2,
     cx,
     cy: 0,
     id: model.id,
+    groupId,
+    isGroup: true,
     fill: model.color,
     type: "rect",
     count: numerator,
@@ -94,8 +97,50 @@ export function makeFractionObject(model: VisualModel): Record<string, unknown> 
       [right, model.segmentHeight / 2],
       [left, model.segmentHeight / 2]
     ],
-    defaultWidth: model.wholeWidth
+    defaultWidth: model.wholeWidth,
+    isFillChange: false,
+    isSplit: false,
+    isMoveRotateHandler: false
   };
+}
+
+export function makeMoveOnlyGroupObject(
+  model: VisualModel
+): Record<string, unknown> {
+  const groupId = `${model.id}-move-group`;
+  return {
+    ...objectCommon,
+    x: model.bounds.x,
+    y: model.bounds.y,
+    _x: model.bounds.x,
+    _y: model.bounds.y,
+    cx: 0,
+    cy: 0,
+    id: groupId,
+    fill: "#FFFFFF",
+    svgId: "group-element",
+    parent: null,
+    groupId,
+    ids: [model.id],
+    viewBox: {
+      x: model.bounds.x,
+      y: model.bounds.y,
+      width: model.bounds.width,
+      height: model.bounds.height
+    },
+    padding: 8,
+    isGroup: true,
+    isBluePrint: true,
+    playgroundIndex: 0,
+    isMoveRotateHandler: false
+  };
+}
+
+export interface TextObjectOptions {
+  fontSize?: number;
+  color?: string;
+  editable?: boolean;
+  fontSizeEditable?: boolean;
 }
 
 export function makeTextObject(
@@ -105,8 +150,9 @@ export function makeTextObject(
   y: number,
   width: number,
   height: number,
-  fontSize = 40
+  options: TextObjectOptions = {}
 ): Record<string, unknown> {
+  const editable = options.editable ?? false;
   return {
     ...objectCommon,
     x,
@@ -116,19 +162,19 @@ export function makeTextObject(
     cx: 0,
     cy: 0,
     id,
-    fill: "#000000",
+    fill: options.color ?? "#172033",
     text,
     svgId: "input-text",
     width,
     height,
     parent: { observer: null },
     isEyeOn: false,
-    fontSize,
-    clickCount: 0,
-    isTextEdit: true,
+    fontSize: options.fontSize ?? 40,
+    clickCount: 1,
+    isTextEdit: editable,
     playgroundIndex: 2,
     isMoveRotateHandler: false,
-    isTextEditFontSize: true,
+    isTextEditFontSize: options.fontSizeEditable ?? false,
     coordinates: []
   };
 }
@@ -225,186 +271,209 @@ export function problemLabel(problem: ActivityProblem): string {
   return `\\frac{${problem.left.numerator}}{${problem.left.denominator}} \\; ? \\; \\frac{${problem.right.numerator}}{${problem.right.denominator}}`;
 }
 
-export function buildNativeContents(spec: ActivitySpec): {
+export function buildNativeContents(spec: CanvasActivitySpec): {
   contents: Array<Record<string, unknown>>;
   lockedIds: string[];
 } {
   const contents: Array<Record<string, unknown>> = [];
   const lockedIds: string[] = [];
-  const instructions = spec.fixedObjects.filter(
-    (object) => object.kind === "instruction"
+  const problem = spec.problem;
+  const mat = spec.fixedObjects.find(
+    (object) => object.id === `${problem.id}-mat`
   );
-  for (const [index, instruction] of instructions.entries()) {
-    if (!instruction.text) continue;
+  if (!mat) throw new Error(`${problem.id} 비교판이 없습니다.`);
+
+  contents.push(
+    makeRectangleObject(
+      mat.id,
+      mat.bounds.x,
+      mat.bounds.y,
+      mat.bounds.width,
+      mat.bounds.height,
+      "#F4FAFF",
+      "#9EB9CF"
+    )
+  );
+  lockedIds.push(mat.id);
+
+  const fixedTextObjects = spec.fixedObjects.filter(
+    (object) =>
+      object.text &&
+      object.kind !== "comparison-mat" &&
+      object.kind !== "common-start-line"
+  );
+  for (const fixed of fixedTextObjects) {
+    const color = fixed.id.endsWith("start-label")
+      ? "#D93636"
+      : "#172033";
+    const fontSize = fixed.kind === "instruction" ? 36 : 26;
     contents.push(
       makeTextObject(
-        instruction.id,
-        instruction.text,
-        instruction.bounds.x,
-        instruction.bounds.y,
-        instruction.bounds.width,
-        instruction.bounds.height,
-        index === 0 ? 48 : 38
+        fixed.id,
+        fixed.text!,
+        fixed.bounds.x,
+        fixed.bounds.y,
+        fixed.bounds.width,
+        fixed.bounds.height,
+        { fontSize, color }
       )
     );
-    lockedIds.push(instruction.id);
+    lockedIds.push(fixed.id);
   }
 
-  for (const problem of spec.problems) {
-    const mat = spec.fixedObjects.find(
-      (object) => object.id === `${problem.id}-mat`
-    );
-    if (!mat) throw new Error(`${problem.id} 비교판이 없습니다.`);
+  const leftCardId = `${problem.id}-left-fraction-card`;
+  const rightCardId = `${problem.id}-right-fraction-card`;
+  contents.push(
+    makeRectangleObject(
+      leftCardId,
+      320,
+      174,
+      210,
+      110,
+      "#FFF4EC",
+      "#E98242"
+    ),
+    makeRectangleObject(
+      rightCardId,
+      750,
+      174,
+      210,
+      110,
+      "#EAFBFF",
+      "#32B9D6"
+    )
+  );
+  lockedIds.push(leftCardId, rightCardId);
+
+  const leftFormulaId = `${problem.id}-left-fraction`;
+  const rightFormulaId = `${problem.id}-right-fraction`;
+  contents.push(
+    makeLatexObject(
+      leftFormulaId,
+      `\\frac{${problem.left.numerator}}{${problem.left.denominator}}`,
+      370,
+      194,
+      120,
+      78,
+      58
+    ),
+    makeLatexObject(
+      rightFormulaId,
+      `\\frac{${problem.right.numerator}}{${problem.right.denominator}}`,
+      800,
+      194,
+      120,
+      78,
+      58
+    )
+  );
+  lockedIds.push(leftFormulaId, rightFormulaId);
+
+  for (const guide of spec.placementGuides) {
+    const surfaceId = `${guide.id}-surface`;
     contents.push(
       makeRectangleObject(
-        mat.id,
-        mat.bounds.x,
-        mat.bounds.y,
-        mat.bounds.width,
-        mat.bounds.height,
-        "#F7FAFF",
-        "#65758B"
+        surfaceId,
+        guide.bounds.x,
+        guide.bounds.y,
+        guide.bounds.width,
+        guide.bounds.height,
+        guide.kind === "relation-slot" ? "#FFF8E7" : "#FFFFFF",
+        guide.kind === "relation-slot" ? "#D49A25" : "#718398",
+        "10 8"
       )
     );
-    lockedIds.push(mat.id);
-
-    const problemNumberId = `${problem.id}-number`;
-    contents.push(
-      makeTextObject(
-        problemNumberId,
-        `${problem.order}번`,
-        mat.bounds.x + 40,
-        mat.bounds.y + 16,
-        120,
-        54,
-        34
-      )
-    );
-    lockedIds.push(problemNumberId);
-
-    const promptId = `${problem.id}-prompt`;
-    contents.push(
-      makeLatexObject(
-        promptId,
-        problemLabel(problem),
-        mat.bounds.x + 760,
-        mat.bounds.y + 8,
-        360,
-        70,
-        48
-      )
-    );
-    lockedIds.push(promptId);
-
-    const lanes = spec.dropAreas.filter(
-      (area) =>
-        area.problemId === problem.id && area.kind === "comparison-lane"
-    );
-    for (const lane of lanes) {
-      contents.push(
-        makeRectangleObject(
-          `${lane.id}-surface`,
-          lane.bounds.x,
-          lane.bounds.y,
-          lane.bounds.width,
-          lane.bounds.height,
-          "#FFFFFF",
-          "#556274",
-          "10 8"
-        )
-      );
-      lockedIds.push(`${lane.id}-surface`);
-      const labelId = `${lane.id}-label`;
+    lockedIds.push(surfaceId);
+    if (guide.kind === "comparison-lane") {
+      const labelId = `${guide.id}-label`;
+      const isLeftLane = guide.id.endsWith("left-lane");
       contents.push(
         makeTextObject(
           labelId,
-          lane.label,
-          mat.bounds.x + 20,
-          lane.bounds.y + 15,
-          70,
-          50,
-          24
-        )
-      );
-      lockedIds.push(labelId);
-    }
-
-    const start = spec.fixedObjects.find(
-      (object) => object.id === `${problem.id}-start-line`
-    );
-    if (start) {
-      contents.push(
-        makeRectangleObject(
-          start.id,
-          start.bounds.x,
-          start.bounds.y,
-          start.bounds.width,
-          start.bounds.height,
-          "#FF6B5D",
-          "#FF6B5D"
-        )
-      );
-      lockedIds.push(start.id);
-    }
-
-    const relationSlot = spec.dropAreas.find(
-      (area) =>
-        area.problemId === problem.id && area.kind === "relation-slot"
-    );
-    if (relationSlot) {
-      contents.push(
-        makeRectangleObject(
-          `${relationSlot.id}-surface`,
-          relationSlot.bounds.x,
-          relationSlot.bounds.y,
-          relationSlot.bounds.width,
-          relationSlot.bounds.height,
-          "#FFF4D8",
-          "#D49420",
-          "10 8"
-        )
-      );
-      lockedIds.push(`${relationSlot.id}-surface`);
-      const labelId = `${relationSlot.id}-label`;
-      contents.push(
-        makeTextObject(
-          labelId,
-          relationSlot.label,
-          relationSlot.bounds.x + relationSlot.bounds.width + 15,
-          relationSlot.bounds.y + 36,
-          180,
+          guide.label,
+          isLeftLane ? 790 : 320,
+          guide.bounds.y + 20,
+          130,
           42,
-          26
+          {
+            fontSize: 24,
+            color: isLeftLane ? "#B95E25" : "#1687A1"
+          }
         )
       );
       lockedIds.push(labelId);
-    }
-
-    const models = spec.visualModels.filter(
-      (model) => model.problemId === problem.id
-    );
-    for (const model of models) {
-      contents.push(makeFractionObject(model));
-    }
-
-    const symbolObjects = spec.movableObjects.filter(
-      (object) =>
-        object.problemId === problem.id &&
-        object.kind === "comparison-symbol"
-    );
-    for (const object of symbolObjects) {
-      contents.push(
-        makeLatexObject(
-          object.id,
-          object.id.endsWith("less-symbol") ? "<" : ">",
-          object.bounds.x,
-          object.bounds.y,
-          object.bounds.width,
-          object.bounds.height,
-          64
-        )
-      );
     }
   }
+
+  const start = spec.fixedObjects.find(
+    (object) => object.id === `${problem.id}-start-line`
+  );
+  if (!start) throw new Error(`${problem.id} 출발선이 없습니다.`);
+  contents.push(
+    makeRectangleObject(
+      start.id,
+      start.bounds.x,
+      start.bounds.y,
+      start.bounds.width,
+      start.bounds.height,
+      "#E33F3F",
+      "#E33F3F"
+    )
+  );
+  lockedIds.push(start.id);
+
+  for (const model of spec.visualModels) {
+    contents.push(makeFractionObject(model), makeMoveOnlyGroupObject(model));
+  }
+
+  const symbolObjects = spec.movableObjects.filter(
+    (object) => object.kind === "comparison-symbol"
+  );
+  for (const object of symbolObjects) {
+    contents.push(
+      makeLatexObject(
+        object.id,
+        object.id.endsWith("less-symbol") ? "<" : ">",
+        object.bounds.x,
+        object.bounds.y,
+        object.bounds.width,
+        object.bounds.height,
+        72
+      )
+    );
+  }
+
+  const response = spec.inputObjects[0];
+  if (!response) throw new Error(`${problem.id} 비교 까닭 입력칸이 없습니다.`);
+  const responseSurfaceId = `${response.id}-surface`;
+  contents.push(
+    makeRectangleObject(
+      responseSurfaceId,
+      response.bounds.x,
+      response.bounds.y,
+      response.bounds.width,
+      response.bounds.height,
+      "#FFFFFF",
+      "#718398"
+    )
+  );
+  lockedIds.push(responseSurfaceId);
+  contents.push(
+    makeTextObject(
+      response.id,
+      response.placeholder,
+      response.bounds.x,
+      response.bounds.y,
+      response.bounds.width,
+      response.bounds.height,
+      {
+        fontSize: 30,
+        color: "#435065",
+        editable: true,
+        fontSizeEditable: false
+      }
+    )
+  );
+
   return { contents, lockedIds };
 }

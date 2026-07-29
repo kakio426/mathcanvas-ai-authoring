@@ -1,13 +1,14 @@
 import {
   CONTRACT_SCHEMA_VERSION,
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
-  activitySpecSchema,
   assertNoSensitiveKeys,
-  compiledProjectSchema,
+  canvasActivityHash,
+  canvasActivitySpecSchema,
+  compiledCanvasProjectSchema,
   sha256Hex,
   validationReportSchema,
-  type ActivitySpec,
-  type CompiledProject,
+  type CanvasActivitySpec,
+  type CompiledCanvasProject,
   type ValidationIssue,
   type ValidationReport
 } from "@mathcanvas/contracts";
@@ -15,42 +16,32 @@ import {
   FRACTION_SVG_BY_DENOMINATOR,
   MATHCANVAS_CONTRACT_VERSION,
   MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID,
-  compileActivitySpec
+  compileCanvasActivitySpec
 } from "@mathcanvas/compiler";
+
+type Bounds = { x: number; y: number; width: number; height: number };
 
 const supportedSvgIds = new Set([
   ...Object.values(FRACTION_SVG_BY_DENOMINATOR),
   "input-text",
   "math-latex",
-  "drawElem"
+  "drawElem",
+  "group-element"
 ]);
 
-function intersects(
-  left: { x: number; y: number; width: number; height: number },
-  right: { x: number; y: number; width: number; height: number }
-): boolean {
+const visualDifferenceBands = {
+  easy: { min: 0.28, max: 0.56 },
+  normal: { min: 0.15, max: 0.27 },
+  hard: { min: MIN_VISUAL_FRACTION_DIFFERENCE_RATIO, max: 0.145 }
+} as const;
+
+function intersects(left: Bounds, right: Bounds): boolean {
   return (
     left.x < right.x + right.width &&
     left.x + left.width > right.x &&
     left.y < right.y + right.height &&
     left.y + left.height > right.y
   );
-}
-
-function greatestCommonDivisor(left: number, right: number): number {
-  let a = Math.abs(left);
-  let b = Math.abs(right);
-  while (b !== 0) {
-    const remainder = a % b;
-    a = b;
-    b = remainder;
-  }
-  return a || 1;
-}
-
-function fractionValueKey(numerator: number, denominator: number): string {
-  const divisor = greatestCommonDivisor(numerator, denominator);
-  return `${numerator / divisor}/${denominator / divisor}`;
 }
 
 function issue(
@@ -69,19 +60,48 @@ function issue(
   });
 }
 
+function fractionValueKey(numerator: number, denominator: number): string {
+  let left = Math.abs(numerator);
+  let right = Math.abs(denominator);
+  while (right !== 0) {
+    const remainder = left % right;
+    left = right;
+    right = remainder;
+  }
+  const divisor = left || 1;
+  return `${numerator / divisor}/${denominator / divisor}`;
+}
+
+function report(
+  issues: ValidationIssue[],
+  canvasSpecId: string,
+  payloadHash: string,
+  checkedAt: Date
+): ValidationReport {
+  return validationReportSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    canvasSpecId,
+    compiledPayloadHash: payloadHash,
+    checkedAt: checkedAt.toISOString(),
+    issues,
+    canCreate: !issues.some((value) => value.severity === "error")
+  });
+}
+
 export function validateForCreation(
-  specInput: ActivitySpec,
-  compiledInput: CompiledProject,
+  specInput: CanvasActivitySpec,
+  compiledInput: CompiledCanvasProject,
   checkedAt = new Date()
 ): ValidationReport {
   const issues: ValidationIssue[] = [];
-  const parsedSpec = activitySpecSchema.safeParse(specInput);
-  const parsedCompiled = compiledProjectSchema.safeParse(compiledInput);
+  const parsedSpec = canvasActivitySpecSchema.safeParse(specInput);
+  const parsedCompiled = compiledCanvasProjectSchema.safeParse(compiledInput);
+
   if (!parsedSpec.success) {
     for (const zodIssue of parsedSpec.error.issues) {
       issue(
         issues,
-        "activity-spec-invalid",
+        "canvas-activity-spec-invalid",
         "schema",
         zodIssue.message,
         zodIssue.path.join(".")
@@ -92,14 +112,13 @@ export function validateForCreation(
     for (const zodIssue of parsedCompiled.error.issues) {
       issue(
         issues,
-        "compiled-project-invalid",
+        "compiled-canvas-project-invalid",
         "schema",
         zodIssue.message,
         zodIssue.path.join(".")
       );
     }
   }
-
   try {
     assertNoSensitiveKeys({ spec: specInput, compiled: compiledInput });
   } catch (error) {
@@ -111,244 +130,249 @@ export function validateForCreation(
     );
   }
 
-  const spec = parsedSpec.success ? parsedSpec.data : specInput;
-  const compiled = parsedCompiled.success ? parsedCompiled.data : compiledInput;
-  if (parsedSpec.success && parsedCompiled.success) {
-    const canonicalCompiled = compileActivitySpec(parsedSpec.data);
-    if (sha256Hex(parsedCompiled.data) !== sha256Hex(canonicalCompiled)) {
+  const fallbackCanvasId =
+    typeof (specInput as { canvasId?: unknown }).canvasId === "string"
+      ? (specInput as { canvasId: string }).canvasId
+      : "invalid-canvas";
+  const fallbackPayloadHash =
+    typeof (compiledInput as { payloadHash?: unknown }).payloadHash === "string" &&
+    /^[a-f0-9]{64}$/.test(
+      (compiledInput as { payloadHash: string }).payloadHash
+    )
+      ? (compiledInput as { payloadHash: string }).payloadHash
+      : "0".repeat(64);
+  if (!parsedSpec.success || !parsedCompiled.success) {
+    return report(
+      issues,
+      fallbackCanvasId,
+      fallbackPayloadHash,
+      checkedAt
+    );
+  }
+
+  const spec = parsedSpec.data;
+  const compiled = parsedCompiled.data;
+  if (canvasActivityHash(spec) !== spec.canvasHash) {
+    issue(
+      issues,
+      "canvas-hash-mismatch",
+      "security",
+      "캔버스 해시가 현재 사양과 맞지 않습니다."
+    );
+  }
+  try {
+    const canonicalCompiled = compileCanvasActivitySpec(spec);
+    if (sha256Hex(compiled) !== sha256Hex(canonicalCompiled)) {
       issue(
         issues,
         "compiled-project-not-canonical",
         "api-contract",
-        "컴파일된 MathCanvas 객체가 검증된 템플릿의 정확한 결과와 다릅니다."
+        "컴파일된 MathCanvas 객체가 검증된 템플릿 결과와 다릅니다."
       );
     }
-  }
-  if (spec.curriculumReferences[0]?.code !== "[6수01-07]") {
+  } catch (error) {
     issue(
       issues,
-      "curriculum-standard-mismatch",
-      "curriculum",
-      "첫 템플릿은 공식 성취기준 [6수01-07]만 지원합니다."
+      "canonical-compilation-failed",
+      "api-contract",
+      error instanceof Error ? error.message : "정규 컴파일에 실패했습니다."
     );
   }
+
   if (
+    spec.standardCode !== "[6수01-07]" ||
+    spec.curriculumReferences[0]?.code !== "[6수01-07]" ||
     spec.curriculumReferences[0]?.officialGoal !==
-    "분모가 다른 분수의 크기를 비교하고 그 방법을 설명할 수 있다."
+      "분모가 다른 분수의 크기를 비교하고 그 방법을 설명할 수 있다." ||
+    spec.grade < 5 ||
+    spec.grade > 6
   ) {
     issue(
       issues,
-      "curriculum-goal-mismatch",
+      "curriculum-contract-mismatch",
       "curriculum",
-      "공식 성취기준 목표가 검증된 문구와 다릅니다."
+      "첫 템플릿은 [6수01-07]과 5~6학년군만 지원합니다."
     );
   }
 
-  const allIds = [
-    ...spec.visualModels.map((value) => value.id),
-    ...spec.fixedObjects.map((value) => value.id),
-    ...spec.movableObjects.map((value) => value.id),
-    ...spec.dropAreas.map((value) => value.id)
-  ];
-  if (new Set(allIds).size !== allIds.length) {
-    issue(issues, "duplicate-semantic-id", "schema", "활동 객체 ID가 중복됩니다.");
-  }
-
-  const instructionObjects = spec.fixedObjects.filter(
-    (object) => object.kind === "instruction"
-  );
-  for (let leftIndex = 0; leftIndex < instructionObjects.length; leftIndex += 1) {
-    for (
-      let rightIndex = leftIndex + 1;
-      rightIndex < instructionObjects.length;
-      rightIndex += 1
-    ) {
-      const left = instructionObjects[leftIndex];
-      const right = instructionObjects[rightIndex];
-      if (left && right && intersects(left.bounds, right.bounds)) {
-        issue(
-          issues,
-          "instruction-overlap",
-          "layout",
-          `${left.id}와 ${right.id} 지시문 영역이 겹칩니다.`
-        );
-      }
-    }
-  }
-  const orderedInstructions = [...instructionObjects].sort(
-    (left, right) => left.bounds.y - right.bounds.y
-  );
-  for (let index = 1; index < orderedInstructions.length; index += 1) {
-    const previous = orderedInstructions[index - 1];
-    const current = orderedInstructions[index];
-    if (
-      previous &&
-      current &&
-      current.bounds.y -
-        (previous.bounds.y + previous.bounds.height) <
-        spec.layout.minGap
-    ) {
-      issue(
-        issues,
-        "instruction-gap-too-small",
-        "layout",
-        `${previous.id}와 ${current.id} 사이 간격이 ${spec.layout.minGap}보다 작습니다.`
-      );
-    }
-  }
-  const lastInstruction = orderedInstructions.at(-1);
-  const firstComparisonMat = spec.fixedObjects
-    .filter((object) => object.kind === "comparison-mat")
-    .sort((left, right) => left.bounds.y - right.bounds.y)[0];
-  if (
-    lastInstruction &&
-    firstComparisonMat &&
-    firstComparisonMat.bounds.y -
-      (lastInstruction.bounds.y + lastInstruction.bounds.height) <
-      spec.layout.minGap
-  ) {
+  const problem = spec.problem;
+  const leftCross =
+    problem.left.numerator * problem.right.denominator;
+  const rightCross =
+    problem.right.numerator * problem.left.denominator;
+  const actualRelation =
+    leftCross > rightCross ? ">" : leftCross < rightCross ? "<" : "=";
+  if (problem.left.denominator === problem.right.denominator) {
     issue(
       issues,
-      "instruction-to-problem-gap-too-small",
-      "layout",
-      `지시문과 첫 비교판 사이 간격이 ${spec.layout.minGap}보다 작습니다.`
+      "denominators-not-unlike",
+      "mathematics",
+      "두 분수의 분모는 서로 달라야 합니다."
     );
   }
-
-  const seenComparisons = new Set<string>();
-  for (const problem of spec.problems) {
-    const comparisonKey = [
-      fractionValueKey(
-        problem.left.numerator,
-        problem.left.denominator
-      ),
+  if (
+    actualRelation === "=" ||
+    actualRelation !== problem.correctRelation ||
+    fractionValueKey(
+      problem.left.numerator,
+      problem.left.denominator
+    ) ===
       fractionValueKey(
         problem.right.numerator,
         problem.right.denominator
       )
-    ]
-      .sort()
-      .join("|");
-    if (seenComparisons.has(comparisonKey)) {
-      issue(
-        issues,
-        "duplicate-fraction-comparison",
-        "pedagogy",
-        `${problem.id}는 앞 문제와 같은 두 분수를 다시 비교합니다.`
-      );
-    }
-    seenComparisons.add(comparisonKey);
-    const leftCross =
-      problem.left.numerator * problem.right.denominator;
-    const rightCross =
-      problem.right.numerator * problem.left.denominator;
-    const relation = leftCross > rightCross ? ">" : leftCross < rightCross ? "<" : "=";
-    if (problem.left.denominator === problem.right.denominator) {
-      issue(
-        issues,
-        "denominators-not-unlike",
-        "mathematics",
-        `${problem.id}의 분모가 서로 다르지 않습니다.`
-      );
-    }
-    if (relation === "=" || relation !== problem.correctRelation) {
-      issue(
-        issues,
-        "relation-incorrect",
-        "mathematics",
-        `${problem.id}의 비교 기호가 실제 크기와 다릅니다.`
-      );
-    }
-    const visualDifference = Math.abs(
-      problem.left.numerator / problem.left.denominator -
-        problem.right.numerator / problem.right.denominator
+  ) {
+    issue(
+      issues,
+      "relation-incorrect",
+      "mathematics",
+      "두 분수의 비교 기호가 실제 크기와 다르거나 크기가 같습니다."
     );
-    if (visualDifference < MIN_VISUAL_FRACTION_DIFFERENCE_RATIO) {
-      issue(
-        issues,
-        "visual-difference-too-small",
-        "pedagogy",
-        `${problem.id}의 분수 띠 길이 차이는 전체의 ${MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100}% 이상이어야 합니다.`
-      );
-    }
-    const models = spec.visualModels.filter(
-      (model) => model.problemId === problem.id
+  }
+  const visualDifference = Math.abs(
+    problem.left.numerator / problem.left.denominator -
+      problem.right.numerator / problem.right.denominator
+  );
+  const differenceBand = visualDifferenceBands[problem.difficulty];
+  if (
+    visualDifference < differenceBand.min ||
+    visualDifference > differenceBand.max
+  ) {
+    issue(
+      issues,
+      "visual-difference-outside-difficulty-band",
+      "pedagogy",
+      `${problem.difficulty} 문제의 띠 길이 차이가 난이도 범위와 맞지 않습니다.`
     );
+  }
+
+  const semanticIds = [
+    ...spec.visualModels.map((object) => object.id),
+    ...spec.fixedObjects.map((object) => object.id),
+    ...spec.movableObjects.map((object) => object.id),
+    ...spec.inputObjects.map((object) => object.id),
+    ...spec.placementGuides.map((object) => object.id)
+  ];
+  if (new Set(semanticIds).size !== semanticIds.length) {
+    issue(
+      issues,
+      "duplicate-semantic-id",
+      "schema",
+      "캔버스 객체 ID가 중복됩니다."
+    );
+  }
+
+  const models = spec.visualModels;
+  if (
+    models.length !== 2 ||
+    new Set(models.map((model) => model.wholeWidth)).size !== 1 ||
+    new Set(models.map((model) => model.commonStartX)).size !== 1
+  ) {
+    issue(
+      issues,
+      "same-whole-violated",
+      "pedagogy",
+      "두 분수 띠는 같은 전체 폭과 같은 출발선을 써야 합니다."
+    );
+  }
+  for (const model of models) {
+    const expected =
+      model.role === "left-strip" ? problem.left : problem.right;
+    const expectedWidth =
+      (model.wholeWidth / expected.denominator) * expected.numerator;
     if (
-      models.length !== 2 ||
-      new Set(models.map((model) => model.wholeWidth)).size !== 1 ||
-      new Set(models.map((model) => model.commonStartX)).size !== 1
+      model.fraction.numerator !== expected.numerator ||
+      model.fraction.denominator !== expected.denominator ||
+      Math.abs(model.bounds.width - expectedWidth) > 0.001 ||
+      model.bounds.height !== model.segmentHeight
     ) {
       issue(
         issues,
-        "same-whole-violated",
-        "pedagogy",
-        `${problem.id}의 두 분수 모형은 같은 전체와 출발선을 써야 합니다.`
-      );
-    }
-    for (const model of models) {
-      const expected =
-        model.role === "left-strip" ? problem.left : problem.right;
-      if (
-        model.fraction.numerator !== expected.numerator ||
-        model.fraction.denominator !== expected.denominator
-      ) {
-        issue(
-          issues,
-          "visual-fraction-mismatch",
-          "mathematics",
-          `${model.id}의 시각 모형과 숫자 분수가 다릅니다.`
-        );
-      }
-    }
-    const lanes = spec.dropAreas.filter(
-      (area) =>
-        area.problemId === problem.id && area.kind === "comparison-lane"
-    );
-    const startLine = spec.fixedObjects.find(
-      (object) => object.id === `${problem.id}-start-line`
-    );
-    const commonStart = models[0]?.commonStartX;
-    const wholeWidth = models[0]?.wholeWidth;
-    if (
-      lanes.length !== 2 ||
-      commonStart === undefined ||
-      wholeWidth === undefined ||
-      lanes.some(
-        (lane) =>
-          lane.bounds.x !== commonStart ||
-          lane.bounds.width !== wholeWidth
-      ) ||
-      !startLine ||
-      startLine.bounds.x + startLine.bounds.width / 2 !== commonStart
-    ) {
-      issue(
-        issues,
-        "common-start-target-mismatch",
-        "pedagogy",
-        `${problem.id}의 놓기 칸과 출발선이 같은 기준점에 맞지 않습니다.`
+        "visual-fraction-mismatch",
+        "mathematics",
+        `${model.id}의 띠와 숫자 분수가 다릅니다.`
       );
     }
   }
 
-  const semanticBounds = [
+  const lanes = spec.placementGuides.filter(
+    (guide) => guide.kind === "comparison-lane"
+  );
+  const relationSlots = spec.placementGuides.filter(
+    (guide) => guide.kind === "relation-slot"
+  );
+  const commonStartX = models[0]?.commonStartX;
+  const wholeWidth = models[0]?.wholeWidth;
+  const startLine = spec.fixedObjects.find(
+    (object) => object.kind === "common-start-line"
+  );
+  if (
+    lanes.length !== 2 ||
+    relationSlots.length !== 1 ||
+    commonStartX === undefined ||
+    wholeWidth === undefined ||
+    lanes.some(
+      (lane) =>
+        lane.bounds.x !== commonStartX ||
+        lane.bounds.width !== wholeWidth ||
+        lane.behavior !== "visual-guide-only"
+    ) ||
+    !startLine ||
+    startLine.bounds.x + startLine.bounds.width / 2 !== commonStartX
+  ) {
+    issue(
+      issues,
+      "common-start-guide-mismatch",
+      "pedagogy",
+      "두 띠 자리와 빨간 출발선이 같은 기준점에 맞지 않습니다."
+    );
+  }
+  if (
+    lanes.length === 2 &&
+    intersects(lanes[0]!.bounds, lanes[1]!.bounds)
+  ) {
+    issue(
+      issues,
+      "comparison-lanes-overlap",
+      "layout",
+      "두 분수 띠 자리가 겹칩니다."
+    );
+  }
+  if (
+    relationSlots[0] &&
+    lanes.some((lane) => intersects(relationSlots[0]!.bounds, lane.bounds))
+  ) {
+    issue(
+      issues,
+      "relation-slot-overlaps-lane",
+      "layout",
+      "기호 자리와 분수 띠 자리가 겹칩니다."
+    );
+  }
+
+  const allSemanticBounds = [
     ...spec.fixedObjects.map((object) => ({
       id: object.id,
-      bounds: object.bounds,
-      kind: object.kind
+      kind: object.kind,
+      bounds: object.bounds
     })),
     ...spec.movableObjects.map((object) => ({
       id: object.id,
-      bounds: object.bounds,
-      kind: object.kind
+      kind: object.kind,
+      bounds: object.bounds
     })),
-    ...spec.dropAreas.map((object) => ({
+    ...spec.inputObjects.map((object) => ({
       id: object.id,
-      bounds: object.bounds,
-      kind: object.kind
+      kind: object.kind,
+      bounds: object.bounds
+    })),
+    ...spec.placementGuides.map((object) => ({
+      id: object.id,
+      kind: object.kind,
+      bounds: object.bounds
     }))
   ];
-  for (const object of semanticBounds) {
+  for (const object of allSemanticBounds) {
     const { x, y, width, height } = object.bounds;
     if (
       x < 0 ||
@@ -360,256 +384,289 @@ export function validateForCreation(
         issues,
         "object-out-of-bounds",
         "layout",
-        `${object.id}가 캔버스 밖으로 나갑니다.`
+        `${object.id}가 1280×800 Stage 밖으로 나갑니다.`
       );
     }
     if (
-      (object.kind === "relation-slot" ||
-        object.kind === "comparison-symbol") &&
-      (width < 42 || height < 42)
+      (object.kind === "comparison-symbol" ||
+        object.kind === "fraction-strip" ||
+        object.kind === "explanation-text" ||
+        object.kind === "relation-slot") &&
+      (width < 44 || height < 44)
     ) {
       issue(
         issues,
         "target-too-small",
         "interaction",
-        `${object.id}의 조작 영역은 42×42 이상이어야 합니다.`
+        `${object.id}의 조작 영역은 44×44 이상이어야 합니다.`
       );
     }
   }
 
-  const locked = new Set(compiled.payload.canvasOption.lockIds.flat());
-  const nativeIds = compiled.payload.contentsJson
-    .map((object) => object.id)
-    .filter((id): id is string => typeof id === "string");
-  if (new Set(nativeIds).size !== nativeIds.length) {
+  const instruction = spec.fixedObjects.find(
+    (object) => object.kind === "instruction"
+  );
+  const mat = spec.fixedObjects.find(
+    (object) => object.kind === "comparison-mat"
+  );
+  if (
+    !instruction ||
+    !mat ||
+    mat.bounds.y -
+      (instruction.bounds.y + instruction.bounds.height) <
+      spec.layout.minGap
+  ) {
     issue(
       issues,
-      "duplicate-native-id",
-      "api-contract",
-      "MathCanvas 객체 ID가 중복됩니다."
+      "instruction-to-mat-gap-too-small",
+      "layout",
+      "한 줄 지시문과 비교판 사이 간격이 부족합니다."
     );
   }
+  const symbols = spec.movableObjects.filter(
+    (object) => object.kind === "comparison-symbol"
+  );
+  if (
+    symbols.length !== 2 ||
+    (symbols[0] && symbols[1] && intersects(symbols[0].bounds, symbols[1].bounds))
+  ) {
+    issue(
+      issues,
+      "comparison-symbols-overlap",
+      "layout",
+      "비교 기호 두 개가 겹치거나 빠졌습니다."
+    );
+  }
+  const response = spec.inputObjects[0];
+  if (
+    !response ||
+    symbols.some((symbol) => intersects(symbol.bounds, response.bounds)) ||
+    Math.min(...symbols.map((symbol) => symbol.bounds.y + symbol.bounds.height)) >
+      response.bounds.y
+  ) {
+    issue(
+      issues,
+      "response-area-overlaps-symbols",
+      "layout",
+      "기호와 비교 까닭 입력칸이 겹칩니다."
+    );
+  }
+
+  const lockedIds = new Set(compiled.payload.canvasOption.lockIds.flat());
   const nativeById = new Map(
     compiled.payload.contentsJson.flatMap((object) =>
       typeof object.id === "string" ? [[object.id, object] as const] : []
     )
   );
+  if (nativeById.size !== compiled.payload.contentsJson.length) {
+    issue(
+      issues,
+      "duplicate-or-missing-native-id",
+      "api-contract",
+      "MathCanvas 네이티브 객체 ID가 없거나 중복됩니다."
+    );
+  }
   for (const fixed of spec.fixedObjects) {
-    if (!nativeById.has(fixed.id)) {
+    if (!nativeById.has(fixed.id) || !lockedIds.has(fixed.id)) {
       issue(
         issues,
-        "fixed-object-missing",
-        "api-contract",
-        `${fixed.id}에 해당하는 고정 MathCanvas 객체가 없습니다.`
-      );
-    } else if (!locked.has(fixed.id)) {
-      issue(
-        issues,
-        "fixed-object-unlocked",
+        "fixed-object-invalid",
         "interaction",
-        `${fixed.id}가 잠겨 있지 않습니다.`
+        `${fixed.id}가 없거나 잠겨 있지 않습니다.`
       );
     }
   }
-  for (const movable of spec.movableObjects) {
-    const nativeId =
-      movable.kind === "fraction-strip"
-        ? movable.sourceModelId
-        : movable.id;
-    if (!nativeId || !nativeById.has(nativeId)) {
+  const movableNativeIds = spec.movableObjects.map((object) =>
+    object.kind === "fraction-strip" ? object.sourceModelId : object.id
+  );
+  for (const nativeId of movableNativeIds) {
+    if (!nativeId || !nativeById.has(nativeId) || lockedIds.has(nativeId)) {
       issue(
         issues,
-        "movable-object-missing",
-        "api-contract",
-        `${movable.id}에 해당하는 이동 MathCanvas 객체가 없습니다.`
-      );
-    } else if (locked.has(nativeId)) {
-      issue(
-        issues,
-        "movable-object-locked",
+        "movable-object-invalid",
         "interaction",
-        `${movable.id}는 학생이 움직일 수 있어야 합니다.`
+        `${String(nativeId)}가 이동 가능한 객체로 만들어지지 않았습니다.`
       );
     }
   }
 
   const movableIds = new Set(spec.movableObjects.map((object) => object.id));
-  for (const area of spec.dropAreas) {
-    for (const acceptedId of area.accepts) {
-      if (!movableIds.has(acceptedId)) {
-        issue(
-          issues,
-          "drop-accepts-unknown-object",
-          "interaction",
-          `${area.id}가 알 수 없는 이동 객체 ${acceptedId}를 받도록 되어 있습니다.`
-        );
-      }
-    }
-    const surfaceId = `${area.id}-surface`;
-    const labelId = `${area.id}-label`;
-    if (!nativeById.has(surfaceId) || !locked.has(surfaceId)) {
+  for (const guide of spec.placementGuides) {
+    if (
+      guide.behavior !== "visual-guide-only" ||
+      guide.intendedObjectIds.some((id) => !movableIds.has(id))
+    ) {
       issue(
         issues,
-        "drop-surface-invalid",
+        "placement-guide-contract-invalid",
         "interaction",
-        `${area.id}의 고정 놓기 영역 표면이 없거나 잠겨 있지 않습니다.`
+        `${guide.id}의 시각 안내 대상이 올바르지 않습니다.`
       );
     }
-    if (!nativeById.has(labelId) || !locked.has(labelId)) {
+    const surfaceId = `${guide.id}-surface`;
+    if (!nativeById.has(surfaceId) || !lockedIds.has(surfaceId)) {
       issue(
         issues,
-        "drop-label-invalid",
+        "placement-guide-surface-invalid",
         "interaction",
-        `${area.id}의 놓기 위치 안내가 없거나 잠겨 있지 않습니다.`
+        `${guide.id}의 고정 안내 표면이 없거나 잠겨 있지 않습니다.`
       );
     }
   }
 
-  for (const model of spec.visualModels) {
-    const native = compiled.payload.contentsJson.find(
-      (object) => object.id === model.id
-    );
+  for (const model of models) {
+    const native = nativeById.get(model.id);
+    const groupId = `${model.id}-move-group`;
+    const moveGroup = nativeById.get(groupId);
+    const perWidth = model.wholeWidth / model.fraction.denominator;
+    const expectedGeometricWidth = perWidth * model.fraction.numerator;
     if (!native) {
       issue(
         issues,
-        "native-model-missing",
+        "native-fraction-contract-mismatch",
         "api-contract",
-        `${model.id}에 해당하는 MathCanvas 객체가 없습니다.`
+        `${model.id} 분수 띠가 없습니다.`
       );
       continue;
     }
-    const expectedWidth = Math.round(
-      (model.wholeWidth / model.fraction.denominator) *
-        model.fraction.numerator
-    );
+    const coordinates = native.coordinates;
     if (
       native.svgId !==
         FRACTION_SVG_BY_DENOMINATOR[model.fraction.denominator] ||
       native.count !== model.fraction.numerator ||
       native.divider !== model.fraction.denominator ||
-      typeof native.width !== "number" ||
-      Math.abs(native.width - expectedWidth) > 0.001
+      native.defaultWidth !== model.wholeWidth ||
+      native.isMoveRotateHandler !== false ||
+      native.isFillChange !== false ||
+      native.isSplit !== false ||
+      native.groupId !== groupId ||
+      native.isGroup !== true ||
+      (native.parent as Record<string, unknown> | undefined)?.isResizeHandle !==
+        false ||
+      (native.parent as Record<string, unknown> | undefined)?.isAngleHandle !==
+        false ||
+      !Array.isArray(coordinates)
     ) {
       issue(
         issues,
-        "native-fraction-mismatch",
+        "native-fraction-contract-mismatch",
         "api-contract",
-        `${model.id}의 MathCanvas 분수 모형 필드가 명세와 다릅니다.`
+        `${model.id}가 이동 전용 분수 띠 계약과 다릅니다.`
+      );
+      continue;
+    }
+    const groupViewBox = moveGroup?.viewBox as
+      | Record<string, unknown>
+      | undefined;
+    if (
+      moveGroup?.svgId !== "group-element" ||
+      moveGroup.groupId !== groupId ||
+      moveGroup.isGroup !== true ||
+      moveGroup.isBluePrint !== true ||
+      moveGroup.isMoveRotateHandler !== false ||
+      moveGroup.playgroundIndex !== 0 ||
+      lockedIds.has(groupId) ||
+      !Array.isArray(moveGroup.ids) ||
+      moveGroup.ids.length !== 1 ||
+      moveGroup.ids[0] !== model.id ||
+      groupViewBox?.x !== model.bounds.x ||
+      groupViewBox?.y !== model.bounds.y ||
+      groupViewBox?.width !== model.bounds.width ||
+      groupViewBox?.height !== model.bounds.height
+    ) {
+      issue(
+        issues,
+        "native-fraction-group-contract-mismatch",
+        "interaction",
+        `${model.id}의 크기·회전 조절을 막는 이동 전용 그룹이 올바르지 않습니다.`
       );
     }
-    const coordinates = native.coordinates;
-    const nativeX = native.x;
-    const nativeY = native.y;
+    const xCoordinates = (coordinates as Array<[number, number]>).map(
+      (point) => point[0]
+    );
+    const renderedWidth =
+      Math.max(...xCoordinates) - Math.min(...xCoordinates);
+    const nativeX = Number(native.x);
+    const nativeY = Number(native.y);
+    const renderedLeft = nativeX + Math.min(...xCoordinates);
+    const renderedTop =
+      nativeY +
+      Math.min(
+        ...(coordinates as Array<[number, number]>).map((point) => point[1])
+      );
+    const targetX = model.commonStartX - Math.min(...xCoordinates);
     if (
-      typeof nativeX !== "number" ||
-      typeof nativeY !== "number" ||
-      !Array.isArray(coordinates) ||
-      coordinates.some(
-        (point) =>
-          !Array.isArray(point) ||
-          typeof point[0] !== "number" ||
-          typeof point[1] !== "number" ||
-          nativeX + point[0] < 0 ||
-          nativeX + point[0] > spec.layout.width ||
-          nativeY + point[1] < 0 ||
-          nativeY + point[1] > spec.layout.height
-      )
+      Math.abs(renderedWidth - expectedGeometricWidth) > 0.001 ||
+      Math.abs(renderedLeft - model.bounds.x) > 0.001 ||
+      Math.abs(renderedTop - model.bounds.y) > 0.001 ||
+      targetX + Math.max(...xCoordinates) >
+        model.commonStartX + model.wholeWidth + 0.001
     ) {
       issue(
         issues,
-        "native-fraction-out-of-bounds",
+        "native-fraction-geometry-mismatch",
         "layout",
-        `${model.id}의 실제 MathCanvas 분수 좌표가 캔버스 밖으로 나갑니다.`
+        `${model.id}의 실제 좌표가 원래 자리나 출발선 안내와 맞지 않습니다.`
       );
-    } else {
-      const xCoordinates = coordinates.map(
-        (point) => (point as [number, number])[0]
-      );
-      const renderedLeft = Math.min(...xCoordinates);
-      const renderedRight = Math.max(...xCoordinates);
-      const expectedGeometricWidth =
-        (model.wholeWidth / model.fraction.denominator) *
-        model.fraction.numerator;
-      const roleSuffix =
-        model.role === "left-strip" ? "left-movable" : "right-movable";
-      const lane = spec.dropAreas.find(
-        (area) =>
-          area.problemId === model.problemId &&
-          area.kind === "comparison-lane" &&
-          area.accepts.includes(`${model.problemId}-${roleSuffix}`)
-      );
-      const targetObjectX = model.commonStartX - renderedLeft;
-      const targetRenderedLeft = targetObjectX + renderedLeft;
-      const targetRenderedRight = targetObjectX + renderedRight;
-      if (
-        Math.abs(renderedRight - renderedLeft - expectedGeometricWidth) >
-          0.001 ||
-        !lane ||
-        Math.abs(targetRenderedLeft - lane.bounds.x) > 0.001 ||
-        targetRenderedRight > lane.bounds.x + lane.bounds.width + 0.001
-      ) {
-        issue(
-          issues,
-          "native-fraction-target-geometry-mismatch",
-          "layout",
-          `${model.id}의 실제 렌더 좌표를 출발선에 맞출 수 없습니다.`
-        );
-      }
     }
   }
 
-  for (const movable of spec.movableObjects.filter(
-    (object) => object.kind === "comparison-symbol"
-  )) {
-    const native = nativeById.get(movable.id);
+  for (const symbol of symbols) {
+    const native = nativeById.get(symbol.id);
     if (
       native?.svgId !== "math-latex" ||
-      native.fill !== "transparent" ||
+      native.isMoveRotateHandler !== false ||
       native.parent !== null ||
-      native.isMoveRotateHandler !== false
+      lockedIds.has(symbol.id)
     ) {
       issue(
         issues,
         "native-symbol-contract-mismatch",
         "api-contract",
-        `${movable.id}가 검증된 MathCanvas 수식 객체 계약과 다릅니다.`
+        `${symbol.id}가 이동 전용 기호 계약과 다릅니다.`
       );
     }
   }
-
-  for (const problem of spec.problems) {
-    const mat = spec.fixedObjects.find(
-      (object) => object.id === `${problem.id}-mat`
+  const nativeResponse = response ? nativeById.get(response.id) : undefined;
+  if (
+    !response ||
+    nativeResponse?.svgId !== "input-text" ||
+    nativeResponse.isTextEdit !== true ||
+    nativeResponse.isTextEditFontSize !== false ||
+    nativeResponse.isMoveRotateHandler !== false ||
+    lockedIds.has(response.id)
+  ) {
+    issue(
+      issues,
+      "native-response-input-contract-mismatch",
+      "api-contract",
+      "비교 까닭 칸이 학생이 편집할 수 있는 실제 글자 객체가 아닙니다."
     );
-    if (!mat) continue;
-    const helperIds = [
-      `${problem.id}-number`,
-      `${problem.id}-prompt`,
-      `${problem.id}-left-lane-label`,
-      `${problem.id}-right-lane-label`,
-      `${problem.id}-relation-slot-label`
-    ];
-    for (const helperId of helperIds) {
-      const helper = nativeById.get(helperId);
-      if (
-        !helper ||
-        typeof helper.x !== "number" ||
-        typeof helper.y !== "number" ||
-        typeof helper.width !== "number" ||
-        typeof helper.height !== "number" ||
-        helper.x < mat.bounds.x ||
-        helper.x + helper.width > mat.bounds.x + mat.bounds.width ||
-        helper.y < mat.bounds.y ||
-        helper.y + helper.height > mat.bounds.y + mat.bounds.height
-      ) {
-        issue(
-          issues,
-          "problem-helper-outside-mat",
-          "layout",
-          `${helperId}가 비교판 안에 들어오지 않습니다.`
-        );
-      }
-    }
+  }
+  const responseSurfaceId = response
+    ? `${response.id}-surface`
+    : "missing-response-surface";
+  const responseSurface = nativeById.get(responseSurfaceId);
+  if (
+    !response ||
+    responseSurface?.svgId !== "drawElem" ||
+    responseSurface.fill !== "#FFFFFF" ||
+    !Array.isArray(responseSurface.point1) ||
+    !Array.isArray(responseSurface.point2) ||
+    Number(responseSurface.point1[0]) !== response.bounds.x ||
+    Number(responseSurface.point1[1]) !== response.bounds.y ||
+    Number(responseSurface.point2[0]) !==
+      response.bounds.x + response.bounds.width ||
+    Number(responseSurface.point2[1]) !==
+      response.bounds.y + response.bounds.height ||
+    !lockedIds.has(responseSurfaceId)
+  ) {
+    issue(
+      issues,
+      "response-input-surface-invalid",
+      "layout",
+      "비교 까닭 입력칸의 보이는 테두리와 잠금 상태가 올바르지 않습니다."
+    );
   }
 
   for (const [index, object] of compiled.payload.contentsJson.entries()) {
@@ -626,6 +683,18 @@ export function validateForCreation(
       );
     }
     if (
+      (object.svgId === "input-text" || object.svgId === "math-latex") &&
+      typeof object.fontSize === "number" &&
+      object.fontSize < 24
+    ) {
+      issue(
+        issues,
+        "student-font-too-small",
+        "layout",
+        `${String(object.id)}의 글자 크기는 24 이상이어야 합니다.`
+      );
+    }
+    if (
       object.svgId === "math-latex" &&
       typeof object.text === "string" &&
       /[가-힣]/.test(object.text)
@@ -634,22 +703,26 @@ export function validateForCreation(
         issues,
         "korean-text-inside-latex",
         "api-contract",
-        "한글 안내는 수식 객체가 아니라 일반 글자 객체에 넣어야 합니다.",
-        `payload.contentsJson.${index}.text`
+        "한글 안내는 일반 글자 객체에 넣어야 합니다."
       );
     }
   }
+
   if (
     compiled.contractVersion !== MATHCANVAS_CONTRACT_VERSION ||
     compiled.payload.categoryId !== MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID ||
     compiled.payload.studyLevel !== "elementary" ||
-    compiled.payload.isNoteworthy !== false
+    compiled.payload.isNoteworthy !== false ||
+    compiled.payload.isShowMenuOnActivity !== false ||
+    compiled.sourceCanvasSpecId !== spec.canvasId ||
+    compiled.canvasHash !== spec.canvasHash ||
+    compiled.setHash !== spec.setHash
   ) {
     issue(
       issues,
       "project-contract-mismatch",
       "api-contract",
-      "새 초등 수와 연산 프로젝트 생성 계약과 다릅니다."
+      "새 한 문제 분수 비교 프로젝트 계약과 다릅니다."
     );
   }
   if (compiled.payloadHash !== sha256Hex(compiled.payload)) {
@@ -660,40 +733,32 @@ export function validateForCreation(
       "컴파일된 payload의 무결성 해시가 맞지 않습니다."
     );
   }
-
-  for (const problem of spec.problems) {
-    const lanes = spec.dropAreas.filter(
-      (area) =>
-        area.problemId === problem.id && area.kind === "comparison-lane"
+  if (
+    JSON.stringify(spec).includes('"accepts"') ||
+    JSON.stringify(compiled.payload).includes('"accepts"')
+  ) {
+    issue(
+      issues,
+      "unsupported-snap-contract-leaked",
+      "interaction",
+      "실제 스냅 행동이 없는 accepts 필드를 생성 계약에 넣을 수 없습니다."
     );
-    const relationSlots = spec.dropAreas.filter(
-      (area) =>
-        area.problemId === problem.id && area.kind === "relation-slot"
+  }
+  if (
+    compiled.payload.contentsJson.some(
+      (object) =>
+        typeof object.text === "string" &&
+        (object.text.includes(problem.explanation) ||
+          object.text.includes(` ${problem.correctRelation} `))
+    )
+  ) {
+    issue(
+      issues,
+      "teacher-answer-leaked",
+      "pedagogy",
+      "학생 캔버스에 교사용 정답이나 설명이 노출되었습니다."
     );
-    if (lanes.length !== 2 || relationSlots.length !== 1) {
-      issue(
-        issues,
-        "drop-area-count-invalid",
-        "interaction",
-        `${problem.id}에는 비교 칸 2개와 기호 칸 1개가 필요합니다.`
-      );
-    }
-    if (lanes.length === 2 && intersects(lanes[0]!.bounds, lanes[1]!.bounds)) {
-      issue(
-        issues,
-        "comparison-lanes-overlap",
-        "layout",
-        `${problem.id}의 두 비교 칸이 겹칩니다.`
-      );
-    }
   }
 
-  return validationReportSchema.parse({
-    schemaVersion: CONTRACT_SCHEMA_VERSION,
-    activitySpecId: spec.id,
-    compiledPayloadHash: compiled.payloadHash,
-    checkedAt: checkedAt.toISOString(),
-    issues,
-    canCreate: !issues.some((value) => value.severity === "error")
-  });
+  return report(issues, spec.canvasId, compiled.payloadHash, checkedAt);
 }

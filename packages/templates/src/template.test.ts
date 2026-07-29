@@ -4,8 +4,11 @@ import {
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "./index.js";
-import { VISUAL_DIFFERENCE_BANDS } from "./index.js";
+import {
+  generateFractionComparisonActivitySet,
+  splitActivitySetIntoCanvases,
+  VISUAL_DIFFERENCE_BANDS
+} from "./index.js";
 
 function recommendation(
   overrides: Record<string, unknown> = {}
@@ -23,7 +26,7 @@ describe("분수 비교 템플릿", () => {
   it.each(["easy", "normal", "hard"] as const)(
     "%s 난이도에서 정확한 서로 다른 분모 문제를 만든다",
     (difficulty) => {
-      const spec = generateFractionComparisonActivity(
+      const spec = generateFractionComparisonActivitySet(
         recommendation({ difficulty }),
         {
           seed: `seed-${difficulty}`,
@@ -66,8 +69,8 @@ describe("분수 비교 템플릿", () => {
       generatedAt: "2026-07-28T02:00:00.000Z"
     };
     expect(
-      generateFractionComparisonActivity(recommendation(), options)
-    ).toEqual(generateFractionComparisonActivity(recommendation(), options));
+      generateFractionComparisonActivitySet(recommendation(), options)
+    ).toEqual(generateFractionComparisonActivitySet(recommendation(), options));
   });
 
   it("쉬움에서 어려움으로 갈수록 눈으로 구별할 길이 차이가 줄어든다", () => {
@@ -78,7 +81,7 @@ describe("분수 비교 템플릿", () => {
       VISUAL_DIFFERENCE_BANDS.hard.max
     );
     for (const difficulty of ["easy", "normal", "hard"] as const) {
-      const spec = generateFractionComparisonActivity(
+      const spec = generateFractionComparisonActivitySet(
         recommendation({ difficulty, problemCount: 6 }),
         {
           seed: `difficulty-band-${difficulty}`,
@@ -100,36 +103,73 @@ describe("분수 비교 템플릿", () => {
     }
   });
 
+  it.each([2, 4, 6])(
+    "%i문제를 한 문제짜리 캔버스로 정확히 나눈다",
+    (problemCount) => {
+      const set = generateFractionComparisonActivitySet(
+        recommendation({ problemCount }),
+        {
+          seed: `canvas-count-${problemCount}`,
+          generatedAt: "2026-07-28T02:00:00.000Z"
+        }
+      );
+      const canvases = splitActivitySetIntoCanvases(set);
+      expect(canvases).toHaveLength(problemCount);
+      expect(canvases.map((canvas) => canvas.canvasIndex)).toEqual(
+        Array.from({ length: problemCount }, (_, index) => index + 1)
+      );
+      expect(new Set(canvases.map((canvas) => canvas.canvasHash)).size).toBe(
+        problemCount
+      );
+      for (const canvas of canvases) {
+        expect(canvas.layout).toEqual({
+          width: 1280,
+          height: 800,
+          viewBox: [0, 0, 1280, 800],
+          stageRatio: "16:10",
+          minGap: 16
+        });
+        expect(canvas.problem.order).toBe(canvas.canvasIndex);
+        expect(canvas.visualModels).toHaveLength(2);
+        expect(canvas.inputObjects).toHaveLength(1);
+        expect(
+          canvas.placementGuides.every(
+            (guide) => guide.behavior === "visual-guide-only"
+          )
+        ).toBe(true);
+      }
+    }
+  );
+
   it("문제마다 같은 전체와 실제 수학 판단이 있는 조작을 만든다", () => {
-    const spec = generateFractionComparisonActivity(recommendation(), {
+    const set = generateFractionComparisonActivitySet(recommendation(), {
       seed: "visual-seed",
       generatedAt: "2026-07-28T02:00:00.000Z"
     });
-    for (const problem of spec.problems) {
-      const models = spec.visualModels.filter(
-        (model) => model.problemId === problem.id
-      );
+    const canvases = splitActivitySetIntoCanvases(set);
+    for (const canvas of canvases) {
+      const models = canvas.visualModels;
       expect(new Set(models.map((model) => model.wholeWidth))).toEqual(
         new Set([640])
       );
       expect(new Set(models.map((model) => model.commonStartX))).toEqual(
-        new Set([720])
+        new Set([300])
       );
-      const decisions = spec.movableObjects
-        .filter((object) => object.problemId === problem.id)
+      const decisions = canvas.movableObjects
         .map((object) => object.mathematicalDecision)
         .join(" ");
-      expect(decisions).toContain("크기");
+      expect(decisions).toContain("띠");
+      expect(canvas.inputObjects[0]?.placeholder).toContain("한 줄");
+      expect(
+        canvas.fixedObjects.find(
+          (object) => object.id === `${canvas.problem.id}-response-label`
+        )?.text
+      ).toContain("까닭");
+      expect(
+        canvas.fixedObjects.find(
+          (object) => object.id === `${canvas.problem.id}-start-label`
+        )?.text
+      ).toBe("출발선");
     }
-    expect(
-      spec.fixedObjects.find(
-        (object) => object.id === "instruction-symbol"
-      )?.text
-    ).toContain("기호");
-    expect(
-      spec.fixedObjects.find(
-        (object) => object.id === "instruction-explain"
-      )?.text
-    ).toContain("말해");
   });
 });

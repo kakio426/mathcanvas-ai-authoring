@@ -1,7 +1,7 @@
-import type { ActivitySpec, Recommendation } from "./schemas.js";
+import type { ActivitySetSpec, Recommendation } from "./schemas.js";
 
 /**
- * 미래 기능의 경계만 선언한다. v0.1에서는 구현하거나 네트워크를 호출하지 않는다.
+ * 미래 기능의 경계만 선언한다. 현재 버전에서는 구현하거나 네트워크를 호출하지 않는다.
  */
 export interface RemoteRecommendationProvider {
   readonly providerId: string;
@@ -11,7 +11,7 @@ export interface RemoteRecommendationProvider {
 export interface AdditionalTemplateProvider {
   readonly templateId: string;
   supports(recommendation: Recommendation): boolean;
-  generate(recommendation: Recommendation): Promise<ActivitySpec>;
+  generate(recommendation: Recommendation): Promise<ActivitySetSpec>;
 }
 
 export interface StudentActivityPublisher {

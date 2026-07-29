@@ -1,7 +1,10 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import {
+  ACTIVITY_SET_SPEC_SCHEMA_VERSION,
   ACTIVITY_SPEC_SCHEMA_VERSION,
   CONTRACT_SCHEMA_VERSION,
+  type ActivitySetApprovalReceipt,
+  type ActivitySetSpec,
   type ActivitySpec,
   type ApprovalReceipt
 } from "./schemas.js";
@@ -77,6 +80,69 @@ export function verifyApprovalReceipt(
   const actualBytes = Buffer.from(receipt.approvalHash, "hex");
   return (
     expected.activitySpecHash === receipt.activitySpecHash &&
+    expectedBytes.length === actualBytes.length &&
+    timingSafeEqual(expectedBytes, actualBytes)
+  );
+}
+
+export function activitySetHash(
+  value: Omit<ActivitySetSpec, "setHash"> | ActivitySetSpec
+): string {
+  const { setHash: _storedHash, ...hashable } = value as ActivitySetSpec;
+  return sha256Hex(hashable);
+}
+
+export function canvasActivityHash<T extends object>(value: T): string {
+  const { canvasHash: _storedHash, ...hashable } = value as T & {
+    canvasHash?: string;
+  };
+  return sha256Hex(hashable);
+}
+
+export function createActivitySetApprovalReceipt(
+  spec: ActivitySetSpec,
+  approvedAt: Date,
+  expiresAt: Date
+): ActivitySetApprovalReceipt {
+  if (expiresAt.getTime() <= approvedAt.getTime()) {
+    throw new RangeError("승인 만료 시각은 승인 시각보다 뒤여야 합니다.");
+  }
+  const setHash = activitySetHash(spec);
+  if (setHash !== spec.setHash) {
+    throw new Error("활동 세트 해시가 내용과 맞지 않습니다.");
+  }
+  const approvalHash = sha256Hex({
+    purpose: "mathcanvas-create-new-canvas-set",
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    activitySetSpecSchemaVersion: ACTIVITY_SET_SPEC_SCHEMA_VERSION,
+    setHash,
+    approvedAt: approvedAt.toISOString(),
+    expiresAt: expiresAt.toISOString()
+  });
+  return {
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    setHash,
+    approvalHash,
+    approvedAt: approvedAt.toISOString(),
+    expiresAt: expiresAt.toISOString()
+  };
+}
+
+export function verifyActivitySetApprovalReceipt(
+  spec: ActivitySetSpec,
+  receipt: ActivitySetApprovalReceipt,
+  now: Date
+): boolean {
+  if (Date.parse(receipt.expiresAt) <= now.getTime()) return false;
+  const expected = createActivitySetApprovalReceipt(
+    spec,
+    new Date(receipt.approvedAt),
+    new Date(receipt.expiresAt)
+  );
+  const expectedBytes = Buffer.from(expected.approvalHash, "hex");
+  const actualBytes = Buffer.from(receipt.approvalHash, "hex");
+  return (
+    expected.setHash === receipt.setHash &&
     expectedBytes.length === actualBytes.length &&
     timingSafeEqual(expectedBytes, actualBytes)
   );

@@ -11,6 +11,16 @@
     "readPurpose": "선택된 객체의 이동·회전 도구 SVG를 표시할지 결정",
     "dragGateOccurrences": 0
   },
+  "nativeFractionFocusAudit": {
+    "class": "NO03FM fraction strip",
+    "behavior": "getFocus always emits a .resize handle that changes count",
+    "mitigation": "wrap each movable strip in a one-item group-element",
+    "liveEditorEvidence": {
+      "projectId": "T-3RBk",
+      "visibleResizeCountAfterGroupSelection": 0,
+      "dragSucceeded": true
+    }
+  },
   "routes": {
     "projectEditor": {
       "path": "view/:id",
@@ -31,6 +41,7 @@
   "notes": [
     "공개 웹 앱 번들의 전체 복사본은 저장소에 재배포하지 않고 URL, 크기, SHA-256과 검토 결과만 보관합니다.",
     "isMoveRotateHandler는 객체 드래그 허용 게이트로 읽히지 않으며 선택 도구 표시를 제어합니다.",
-    "현재 앱은 view와 viewer를 서로 다른 route와 component로 구분합니다."
+    "현재 앱은 view와 viewer를 서로 다른 route와 component로 구분합니다.",
+    "NO03FM 단독 선택의 resize는 isMoveRotateHandler와 무관하므로 이동 전용 group-element로 감쌉니다."
   ]
 }

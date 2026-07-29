@@ -38,6 +38,7 @@ async function connectedClient(runtimeOverride?: MathCanvasBrowserRuntime) {
         editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_mcp"
       };
     },
+    async openEditor() {},
     async close() {}
   };
   const runtime = runtimeOverride ?? defaultRuntime;
@@ -68,8 +69,8 @@ describe("MCP 도구 seam", () => {
     const tools = await client.listTools();
     expect(tools.tools.map((tool) => tool.name).sort()).toEqual([
       "mathcanvas_check_connection",
-      "mathcanvas_create_new_project",
-      "mathcanvas_get_job_status",
+      "mathcanvas_create_activity_set",
+      "mathcanvas_get_batch_status",
       "mathcanvas_open_workspace",
       "mathcanvas_recommend_activity"
     ]);
@@ -111,10 +112,10 @@ describe("MCP 도구 seam", () => {
   it("teacherConfirmed가 없으면 MCP 스키마 단계에서 쓰기를 막는다", async () => {
     const client = await connectedClient();
     const result = await client.callTool({
-      name: "mathcanvas_create_new_project",
+      name: "mathcanvas_create_activity_set",
       arguments: {
         draftId: "draft-not-approved",
-        activitySpecHash: "0".repeat(64)
+        setHash: "0".repeat(64)
       }
     });
     expect(result.isError).toBe(true);
@@ -133,6 +134,7 @@ describe("MCP 도구 seam", () => {
       async createProject() {
         throw new Error("not used");
       },
+      async openEditor() {},
       async close() {}
     };
     const client = await connectedClient(runtime);

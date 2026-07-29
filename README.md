@@ -2,7 +2,7 @@
 
 Codex 또는 Claude Code와 대화해 새 MathCanvas 활동지를 만드는 로컬 MCP 도구입니다. 별도 Chrome 추가 기능이나 화면 원격 조작 기능을 설치하지 않습니다. MCP 서버가 MathCanvas 전용 Chrome 창을 열고, 교사는 그 창에서 직접 로그인합니다.
 
-현재 검증된 활동은 초등 5학년 권장 `분모가 다른 분수의 크기 비교`입니다. 학생은 두 분수 띠를 같은 출발선에 옮겨 길이를 비교하고 `<` 또는 `>` 기호를 놓습니다. 생성 전 대화에는 학년·문제 수·난이도·조작 방식 추천과 교사용 정답지가 함께 나옵니다.
+현재 검증된 활동은 초등 5학년 권장 `분모가 다른 분수의 크기 비교`입니다. 학생은 두 분수 띠를 같은 출발선에 옮겨 길이를 비교하고 `<` 또는 `>` 기호를 놓은 뒤, 비교한 까닭을 한 줄로 씁니다. 띠는 이동 그룹으로 묶여 있어 옮길 수 있지만 조각 수·크기·회전은 바꿀 수 없습니다. 생성 전 대화에는 학년·문제 수·난이도·조작 방식 추천과 교사용 정답지가 함께 나옵니다.
 
 ## 설치
 
@@ -36,7 +36,7 @@ pnpm run smoke:browser
 5. `5학년 분모가 다른 분수의 크기 비교 활동지를 추천해 줘.`
 6. 추천을 확인한 뒤 `이대로 새 활동지를 만들어 줘.`
 
-생성에 성공하면 같은 전용 Chrome에 새 MathCanvas 편집 탭이 열립니다. 기존 캔버스는 수정하지 않습니다.
+문제 수가 4개면 한 문제짜리 새 캔버스 4개를 만듭니다. 모두 생성되면 같은 전용 Chrome에 첫 번째 MathCanvas 편집 화면을 열고, 대화에는 전체 편집 URL을 순서대로 돌려줍니다. 기존 캔버스는 수정하지 않습니다.
 
 자세한 첫 연결 안내는 [ONBOARDING_KO.md](./ONBOARDING_KO.md)를 봅니다.
 
@@ -46,7 +46,7 @@ pnpm run smoke:browser
 - `packages/managed-browser`: 별도 영구 프로필로 Google Chrome을 실행하는 제한형 런타임
 - `packages/curriculum`: 공식 성취기준 우선 교육과정 해석
 - `packages/templates`: 검증된 활동 패턴
-- `packages/mathcanvas-compiler`: `ActivitySpec`을 MathCanvas 객체로 변환
+- `packages/mathcanvas-compiler`: 문제별 `CanvasActivitySpec`을 MathCanvas 객체로 변환
 - `packages/validator`: 수학·교육·배치·API 계약 검증
 - `packages/contracts`: 승인·활동·검증 데이터 계약
 
@@ -54,8 +54,8 @@ pnpm run smoke:browser
 
 - MathCanvas 로그인 토큰은 페이지 안에서만 읽고 사용합니다.
 - MCP 응답과 로컬 작업 파일에 토큰·비밀번호·Authorization 헤더를 저장하지 않습니다.
-- 교사가 직전 추천안을 명시적으로 승인해야 새 프로젝트를 만듭니다.
-- 로그인·Chrome 실행 같은 일시 오류 뒤에는 같은 추천안과 같은 문제로 다시 시도합니다.
+- 교사가 직전 `ActivitySetSpec` 추천안을 명시적으로 승인해야 새 캔버스 세트를 만듭니다.
+- 로그인·Chrome 실행 같은 일시 오류 뒤에는 이미 성공한 항목은 건너뛰고 빠진 캔버스만 다시 시도합니다.
 - 생성 직전 payload 해시와 MathCanvas 객체 계약을 다시 검사합니다.
 - 새 프로젝트 `POST`만 허용하며 기존 프로젝트 수정·삭제 도구는 없습니다.
 - 전용 Chrome 프로필은 `~/.mathcanvas-ai-authoring/chrome-profile`에 저장됩니다.
@@ -67,5 +67,6 @@ pnpm run smoke:browser
 - 서버 잠금이 두 AI 앱의 동시 실행을 감지해 로컬 작업 파일 손상을 막습니다.
 - 로그인, CAPTCHA, 2단계 인증은 교사가 전용 창에서 직접 처리합니다.
 - 학생 링크 자동 발행과 원격 AI 서비스는 구현하지 않았습니다.
+- 학생 답 자동 판정, 오답 피드백, 응답 수집과 교사 대시보드는 구현하지 않았습니다.
 - MathCanvas 내부 웹 계약은 공개 SDK가 아닙니다. 계약이 바뀌면 생성하지 않고 중단합니다.
 - 여러 교사에게 배포하기 전 [DISTRIBUTION_PERMISSION.md](./DISTRIBUTION_PERMISSION.md)의 허가 범위를 확정해야 합니다.

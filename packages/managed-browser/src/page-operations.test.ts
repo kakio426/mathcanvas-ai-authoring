@@ -166,13 +166,15 @@ function installStaticContractFetch(options: {
 }
 
 describe("페이지 컨텍스트 작업", () => {
-  it("로그인 토큰이 없으면 쓰기 없이 로그인 필요를 반환한다", async () => {
+  it("토큰과 쿠키 인증이 모두 없으면 로그인 필요를 반환한다", async () => {
     installWindow(null);
-    globalThis.fetch = vi.fn();
+    globalThis.fetch = vi.fn(async () =>
+      new Response("", { status: 401 })
+    ) as typeof fetch;
     await expect(inspectMathCanvasPage(false)).resolves.toEqual({
       state: "login-required"
     });
-    expect(globalThis.fetch).not.toHaveBeenCalled();
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
   });
 
   it("토큰은 페이지 안에서만 사용하고 프로젝트 ID만 반환한다", async () => {
@@ -208,8 +210,53 @@ describe("페이지 컨텍스트 작업", () => {
     expect(requests[1]?.init?.method).toBe("POST");
   });
 
+  it("현재 MathCanvas의 쿠키 세션만으로도 새 프로젝트를 만든다", async () => {
+    installWindow(null);
+    const payload = {
+      projectTitle: "쿠키 로그인 분수 비교 활동지",
+      contentsJson: []
+    };
+    const requests: Array<{ url: string; init?: RequestInit }> = [];
+    globalThis.fetch = vi.fn(async (url: string | URL, init?: RequestInit) => {
+      requests.push({ url: String(url), ...(init ? { init } : {}) });
+      if (String(url).startsWith("/api/project?")) {
+        return new Response(JSON.stringify({ list: [] }), { status: 200 });
+      }
+      if (String(url) === "/api/project") {
+        return new Response(
+          JSON.stringify({ projectId: "P_cookie_created" }),
+          { status: 200 }
+        );
+      }
+      return new Response("", { status: 404 });
+    }) as typeof fetch;
+
+    await expect(
+      createProjectInMathCanvas({
+        payload,
+        expectedPayloadHash: sha256Hex(payload)
+      })
+    ).resolves.toEqual({
+      ok: true,
+      projectId: "P_cookie_created"
+    });
+    expect(
+      new Headers(requests[0]?.init?.headers).get("Authorization")
+    ).toBeNull();
+    expect(
+      new Headers(requests[1]?.init?.headers).get("Authorization")
+    ).toBeNull();
+  });
+
   it("분모 1~12 전체와 기본 객체 계약이 맞으면 연결 준비를 반환한다", async () => {
     installStaticContractFetch({ token: "browser-token" });
+    await expect(inspectMathCanvasPage(true)).resolves.toEqual({
+      state: "ready"
+    });
+  });
+
+  it("쿠키 세션만 있는 현재 MathCanvas 로그인도 연결 준비로 본다", async () => {
+    installStaticContractFetch({ token: null });
     await expect(inspectMathCanvasPage(true)).resolves.toEqual({
       state: "ready"
     });

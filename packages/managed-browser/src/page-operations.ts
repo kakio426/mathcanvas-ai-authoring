@@ -187,9 +187,8 @@ export async function inspectMathCanvasPage(
     }
 
     const token = window.localStorage.getItem("accessToken");
-    if (!token) return { state: "login-required" };
     const authResponse = await fetch("/api/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       credentials: "include",
       cache: "no-store"
     });
@@ -258,7 +257,7 @@ export async function createProjectInMathCanvas({
             : "project-create-failed";
   }
   async function findExistingProject(
-    token: string,
+    token: string | null,
     projectTitle: string
   ): Promise<
     | { ok: true; projectId?: string }
@@ -273,7 +272,7 @@ export async function createProjectInMathCanvas({
         sortOrder: "desc"
       });
       const response = await fetch(`/api/project?${query.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         credentials: "include",
         cache: "no-store"
       });
@@ -310,7 +309,6 @@ export async function createProjectInMathCanvas({
       return { ok: false, errorCode: "contract-mismatch" };
     }
     const token = window.localStorage.getItem("accessToken");
-    if (!token) return { ok: false, errorCode: "login-required" };
     const existing = await findExistingProject(token, projectTitle);
     if (!existing.ok) return existing;
     if (existing.projectId) {
@@ -321,7 +319,7 @@ export async function createProjectInMathCanvas({
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        Authorization: `Bearer ${token}`
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
       credentials: "include",
       body: JSON.stringify(payload)
@@ -351,7 +349,7 @@ export async function createProjectInMathCanvas({
   } catch {
     const projectTitle = payload.projectTitle;
     const token = window.localStorage.getItem("accessToken");
-    if (typeof projectTitle === "string" && token) {
+    if (typeof projectTitle === "string") {
       await new Promise((resolve) => setTimeout(resolve, 750));
       const reconciled = await findExistingProject(token, projectTitle);
       if (reconciled.ok && reconciled.projectId) {

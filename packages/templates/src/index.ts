@@ -1,19 +1,26 @@
 import {
-  ACTIVITY_SPEC_SCHEMA_VERSION,
+  ACTIVITY_SET_SPEC_SCHEMA_VERSION,
+  CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION,
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
   VERIFIED_TEMPLATE_ID,
-  activitySpecSchema,
+  activitySetDraftSchema,
+  activitySetHash,
+  activitySetSpecSchema,
+  canvasActivityDraftSchema,
+  canvasActivityHash,
+  canvasActivitySpecSchema,
   createSeededRandom,
   templateDefinitionSchema,
   type ActivityProblem,
-  type ActivitySpec,
+  type ActivitySetSpec,
+  type CanvasActivitySpec,
   type Difficulty,
   type Recommendation,
   type TemplateDefinition
 } from "@mathcanvas/contracts";
 import { LEARNING_MAP_COMMIT } from "@mathcanvas/curriculum";
 
-export const FRACTION_TEMPLATE_VERSION = "1.0.0" as const;
+export const FRACTION_TEMPLATE_VERSION = "2.0.0" as const;
 
 export const fractionComparisonTemplateDefinition: TemplateDefinition =
   templateDefinitionSchema.parse({
@@ -74,10 +81,10 @@ export const VISUAL_DIFFERENCE_BANDS: Readonly<
   hard: { min: MIN_VISUAL_FRACTION_DIFFERENCE_RATIO, max: 0.145 }
 };
 
-export interface GenerateActivitySpecOptions {
+export interface GenerateActivitySetOptions {
   seed: string;
   generatedAt: string;
-  activityId?: string;
+  setId?: string;
 }
 
 function shuffledPairs(
@@ -156,10 +163,10 @@ function makeProblem(
   };
 }
 
-export function generateFractionComparisonActivity(
+export function generateFractionComparisonActivitySet(
   recommendation: Recommendation,
-  options: GenerateActivitySpecOptions
-): ActivitySpec {
+  options: GenerateActivitySetOptions
+): ActivitySetSpec {
   if (
     !recommendation.supported ||
     recommendation.templateId !== VERIFIED_TEMPLATE_ID ||
@@ -190,174 +197,21 @@ export function generateFractionComparisonActivity(
   ).map((pair, index) =>
     makeProblem(pair, index + 1, recommendation.difficulty!)
   );
-  const height = 420 + problemCount * 620;
-  const visualModels: ActivitySpec["visualModels"] = [];
-  const fixedObjects: ActivitySpec["fixedObjects"] = [
-    {
-      id: "instruction-main",
-      kind: "instruction" as const,
-      bounds: { x: 240, y: 80, width: 1920, height: 100 },
-      locked: true as const,
-      text: "분수 띠를 같은 출발선에 놓아요."
-    },
-    {
-      id: "instruction-symbol",
-      kind: "instruction" as const,
-      bounds: { x: 240, y: 204, width: 1920, height: 70 },
-      locked: true as const,
-      text: "두 띠의 길이를 보고 기호를 놓아요."
-    },
-    {
-      id: "instruction-explain",
-      kind: "instruction" as const,
-      bounds: { x: 240, y: 300, width: 1920, height: 70 },
-      locked: true as const,
-      text: "왜 더 큰지 짝에게 말해 보세요."
-    }
-  ];
-  const movableObjects: ActivitySpec["movableObjects"] = [];
-  const dropAreas: ActivitySpec["dropAreas"] = [];
-
-  for (const problem of problems) {
-    const top = 360 + (problem.order - 1) * 620;
-    const prefix = problem.id;
-    const commonStartX = 720;
-    const wholeWidth = 640;
-
-    visualModels.push(
-      {
-        id: `${prefix}-left-strip`,
-        problemId: prefix,
-        role: "left-strip" as const,
-        fraction: problem.left,
-        bounds: { x: 250, y: top + 400, width: 640, height: 80 },
-        wholeWidth,
-        segmentHeight: 80,
-        commonStartX,
-        color: "#FFA26C",
-        movable: true as const
-      },
-      {
-        id: `${prefix}-right-strip`,
-        problemId: prefix,
-        role: "right-strip" as const,
-        fraction: problem.right,
-        bounds: { x: 1510, y: top + 400, width: 640, height: 80 },
-        wholeWidth,
-        segmentHeight: 80,
-        commonStartX,
-        color: "#65F0FF",
-        movable: true as const
-      }
-    );
-
-    fixedObjects.push(
-      {
-        id: `${prefix}-mat`,
-        kind: "comparison-mat" as const,
-        bounds: { x: 620, y: top + 60, width: 1160, height: 300 },
-        locked: true as const,
-        text: `${problem.order}번 비교판`
-      },
-      {
-        id: `${prefix}-start-line`,
-        kind: "common-start-line" as const,
-        bounds: { x: commonStartX - 8, y: top + 120, width: 16, height: 180 },
-        locked: true as const,
-        text: "출발선"
-      }
-    );
-
-    movableObjects.push(
-      {
-        id: `${prefix}-left-movable`,
-        kind: "fraction-strip" as const,
-        problemId: prefix,
-        sourceModelId: `${prefix}-left-strip`,
-        bounds: { x: 250, y: top + 400, width: 640, height: 80 },
-        mathematicalDecision:
-          "첫 번째 분수 띠를 같은 전체의 출발선에 맞춥니다."
-      },
-      {
-        id: `${prefix}-right-movable`,
-        kind: "fraction-strip" as const,
-        problemId: prefix,
-        sourceModelId: `${prefix}-right-strip`,
-        bounds: { x: 1510, y: top + 400, width: 640, height: 80 },
-        mathematicalDecision:
-          "두 번째 분수 띠를 같은 전체의 출발선에 맞춥니다."
-      },
-      {
-        id: `${prefix}-less-symbol`,
-        kind: "comparison-symbol" as const,
-        problemId: prefix,
-        bounds: { x: 1010, y: top + 400, width: 100, height: 100 },
-        mathematicalDecision: "두 분수의 크기를 보고 알맞은 기호를 고릅니다."
-      },
-      {
-        id: `${prefix}-greater-symbol`,
-        kind: "comparison-symbol" as const,
-        problemId: prefix,
-        bounds: { x: 1160, y: top + 400, width: 100, height: 100 },
-        mathematicalDecision: "두 분수의 크기를 보고 알맞은 기호를 고릅니다."
-      }
-    );
-
-    dropAreas.push(
-      {
-        id: `${prefix}-left-lane`,
-        problemId: prefix,
-        kind: "comparison-lane" as const,
-        bounds: { x: commonStartX, y: top + 120, width: 640, height: 80 },
-        accepts: [`${prefix}-left-movable`],
-        label: "첫째 띠"
-      },
-      {
-        id: `${prefix}-right-lane`,
-        problemId: prefix,
-        kind: "comparison-lane" as const,
-        bounds: { x: commonStartX, y: top + 220, width: 640, height: 80 },
-        accepts: [`${prefix}-right-movable`],
-        label: "둘째 띠"
-      },
-      {
-        id: `${prefix}-relation-slot`,
-        problemId: prefix,
-        kind: "relation-slot" as const,
-        bounds: { x: 1430, y: top + 160, width: 120, height: 120 },
-        accepts: [
-          `${prefix}-less-symbol`,
-          `${prefix}-greater-symbol`
-        ],
-        label: "기호 놓는 곳"
-      }
-    );
-  }
-
-  return activitySpecSchema.parse({
-    schemaVersion: ACTIVITY_SPEC_SCHEMA_VERSION,
-    id: options.activityId ?? `fraction-compare-${options.seed}`,
+  const draft = activitySetDraftSchema.parse({
+    schemaVersion: ACTIVITY_SET_SPEC_SCHEMA_VERSION,
+    setId: options.setId ?? `fraction-compare-set-${options.seed}`,
     seed: options.seed,
     title: "분수 띠로 크기 비교하기",
+    grade: recommendation.recommendedGrade,
+    gradeBand: recommendation.gradeBand,
+    standardCode: recommendation.standardCode,
     learningObjective: recommendation.learningGoal,
+    problemCount,
+    difficulty: recommendation.difficulty,
+    manipulation: recommendation.manipulation,
+    problems,
     curriculumReferences: [recommendation.curriculum],
     recommendationSnapshot: recommendation,
-    problems,
-    visualModels,
-    fixedObjects,
-    movableObjects,
-    dropAreas,
-    layout: {
-      width: 2400,
-      height,
-      viewBox: [0, 0, 2400, height],
-      minGap: 24
-    },
-    instructions: [
-      "분수 띠를 같은 출발선에 놓아요.",
-      "두 띠의 길이를 보고 기호를 놓아요.",
-      "왜 더 큰지 짝에게 말해 보세요."
-    ],
     provenance: {
       generatedAt: generatedAt.toISOString(),
       requestId: recommendation.requestId,
@@ -372,4 +226,252 @@ export function generateFractionComparisonActivity(
     templateId: VERIFIED_TEMPLATE_ID,
     templateVersion: FRACTION_TEMPLATE_VERSION
   });
+  return activitySetSpecSchema.parse({
+    ...draft,
+    setHash: activitySetHash(draft)
+  });
+}
+
+function fractionRenderedWidth(
+  fraction: ActivityProblem["left"],
+  wholeWidth: number
+): number {
+  return (wholeWidth / fraction.denominator) * fraction.numerator;
+}
+
+function buildCanvasActivity(
+  set: ActivitySetSpec,
+  problem: ActivityProblem
+): CanvasActivitySpec {
+  const prefix = problem.id;
+  const wholeWidth = 640;
+  const segmentHeight = 80;
+  const commonStartX = 300;
+  const leftSourceX = 80;
+  const rightSourceX = 660;
+  const leftWidth = fractionRenderedWidth(problem.left, wholeWidth);
+  const rightWidth = fractionRenderedWidth(problem.right, wholeWidth);
+  const draft = canvasActivityDraftSchema.parse({
+    schemaVersion: CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION,
+    canvasId: `${set.setId}-canvas-${problem.order}`,
+    setId: set.setId,
+    setHash: set.setHash,
+    canvasIndex: problem.order,
+    canvasCount: set.problemCount,
+    seed: `${set.seed}:canvas:${problem.order}`,
+    title: set.title,
+    grade: set.grade,
+    standardCode: set.standardCode,
+    learningObjective: set.learningObjective,
+    curriculumReferences: set.curriculumReferences,
+    recommendationSnapshot: set.recommendationSnapshot,
+    problem,
+    visualModels: [
+      {
+        id: `${prefix}-left-strip`,
+        problemId: prefix,
+        role: "left-strip",
+        fraction: problem.left,
+        bounds: {
+          x: leftSourceX,
+          y: 310,
+          width: leftWidth,
+          height: segmentHeight
+        },
+        wholeWidth,
+        segmentHeight,
+        commonStartX,
+        color: "#FFA26C",
+        movable: true
+      },
+      {
+        id: `${prefix}-right-strip`,
+        problemId: prefix,
+        role: "right-strip",
+        fraction: problem.right,
+        bounds: {
+          x: rightSourceX,
+          y: 430,
+          width: rightWidth,
+          height: segmentHeight
+        },
+        wholeWidth,
+        segmentHeight,
+        commonStartX,
+        color: "#65D9F2",
+        movable: true
+      }
+    ],
+    fixedObjects: [
+      {
+        id: "instruction-main",
+        kind: "instruction",
+        bounds: { x: 160, y: 82, width: 960, height: 54 },
+        locked: true,
+        text: "두 띠를 출발선에 맞춰 비교해 보세요."
+      },
+      {
+        id: `${prefix}-order-label`,
+        kind: "label",
+        bounds: { x: 1060, y: 24, width: 160, height: 42 },
+        locked: true,
+        text: `${problem.order}/${set.problemCount}`
+      },
+      {
+        id: `${prefix}-mat`,
+        kind: "comparison-mat",
+        bounds: { x: 80, y: 160, width: 1120, height: 380 },
+        locked: true,
+        text: "분수 비교판"
+      },
+      {
+        id: `${prefix}-start-line`,
+        kind: "common-start-line",
+        bounds: { x: commonStartX - 6, y: 306, width: 12, height: 194 },
+        locked: true,
+        text: "출발선"
+      },
+      {
+        id: `${prefix}-start-label`,
+        kind: "label",
+        bounds: { x: 170, y: 388, width: 110, height: 42 },
+        locked: true,
+        text: "출발선"
+      },
+      {
+        id: `${prefix}-symbol-label`,
+        kind: "label",
+        bounds: { x: 240, y: 582, width: 210, height: 42 },
+        locked: true,
+        text: "알맞은 기호"
+      },
+      {
+        id: `${prefix}-response-label`,
+        kind: "label",
+        bounds: { x: 145, y: 696, width: 210, height: 42 },
+        locked: true,
+        text: "비교한 까닭"
+      }
+    ],
+    movableObjects: [
+      {
+        id: `${prefix}-left-movable`,
+        kind: "fraction-strip",
+        problemId: prefix,
+        sourceModelId: `${prefix}-left-strip`,
+        bounds: {
+          x: leftSourceX,
+          y: 310,
+          width: leftWidth,
+          height: segmentHeight
+        },
+        mathematicalDecision: "첫째 띠의 시작을 출발선에 맞춥니다."
+      },
+      {
+        id: `${prefix}-right-movable`,
+        kind: "fraction-strip",
+        problemId: prefix,
+        sourceModelId: `${prefix}-right-strip`,
+        bounds: {
+          x: rightSourceX,
+          y: 430,
+          width: rightWidth,
+          height: segmentHeight
+        },
+        mathematicalDecision: "둘째 띠의 시작을 출발선에 맞춥니다."
+      },
+      {
+        id: `${prefix}-less-symbol`,
+        kind: "comparison-symbol",
+        problemId: prefix,
+        bounds: { x: 500, y: 560, width: 96, height: 96 },
+        mathematicalDecision: "두 띠의 길이를 보고 작은 쪽을 나타냅니다."
+      },
+      {
+        id: `${prefix}-greater-symbol`,
+        kind: "comparison-symbol",
+        problemId: prefix,
+        bounds: { x: 660, y: 560, width: 96, height: 96 },
+        mathematicalDecision: "두 띠의 길이를 보고 큰 쪽을 나타냅니다."
+      }
+    ],
+    inputObjects: [
+      {
+        id: `${prefix}-explanation-input`,
+        kind: "explanation-text",
+        problemId: prefix,
+        bounds: { x: 380, y: 680, width: 760, height: 72 },
+        placeholder: "띠의 길이를 보고 한 줄로 써 보세요.",
+        editable: true,
+        collectResponse: false
+      }
+    ],
+    placementGuides: [
+      {
+        id: `${prefix}-left-lane`,
+        problemId: prefix,
+        kind: "comparison-lane",
+        bounds: {
+          x: commonStartX,
+          y: 310,
+          width: wholeWidth,
+          height: segmentHeight
+        },
+        intendedObjectIds: [`${prefix}-left-movable`],
+        label: "첫째 띠 자리",
+        behavior: "visual-guide-only"
+      },
+      {
+        id: `${prefix}-right-lane`,
+        problemId: prefix,
+        kind: "comparison-lane",
+        bounds: {
+          x: commonStartX,
+          y: 430,
+          width: wholeWidth,
+          height: segmentHeight
+        },
+        intendedObjectIds: [`${prefix}-right-movable`],
+        label: "둘째 띠 자리",
+        behavior: "visual-guide-only"
+      },
+      {
+        id: `${prefix}-relation-slot`,
+        problemId: prefix,
+        kind: "relation-slot",
+        bounds: { x: 585, y: 174, width: 110, height: 110 },
+        intendedObjectIds: [
+          `${prefix}-less-symbol`,
+          `${prefix}-greater-symbol`
+        ],
+        label: "기호 자리",
+        behavior: "visual-guide-only"
+      }
+    ],
+    layout: {
+      width: 1280,
+      height: 800,
+      viewBox: [0, 0, 1280, 800],
+      stageRatio: "16:10",
+      minGap: 16
+    },
+    instructions: ["두 띠를 출발선에 맞춰 비교해 보세요."],
+    provenance: set.provenance,
+    templateId: set.templateId,
+    templateVersion: set.templateVersion
+  });
+  return canvasActivitySpecSchema.parse({
+    ...draft,
+    canvasHash: canvasActivityHash(draft)
+  });
+}
+
+export function splitActivitySetIntoCanvases(
+  input: ActivitySetSpec
+): CanvasActivitySpec[] {
+  const set = activitySetSpecSchema.parse(input);
+  if (activitySetHash(set) !== set.setHash) {
+    throw new Error("활동 세트 해시가 내용과 맞지 않습니다.");
+  }
+  return set.problems.map((problem) => buildCanvasActivity(set, problem));
 }

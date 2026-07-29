@@ -5,11 +5,14 @@ import {
   sha256Hex
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "@mathcanvas/templates";
+import {
+  generateFractionComparisonActivitySet,
+  splitActivitySetIntoCanvases
+} from "@mathcanvas/templates";
 import {
   CREATE_PROJECT_ENDPOINT,
   FRACTION_SVG_BY_DENOMINATOR,
-  compileActivitySpec
+  compileCanvasActivitySpec
 } from "./index.js";
 
 function compiled() {
@@ -20,11 +23,12 @@ function compiled() {
     problemCount: 4,
     createdAt: "2026-07-28T00:00:00.000Z"
   });
-  const spec = generateFractionComparisonActivity(recommendation, {
+  const set = generateFractionComparisonActivitySet(recommendation, {
     seed: "compiler-seed",
     generatedAt: "2026-07-28T02:00:00.000Z"
   });
-  return { spec, compiled: compileActivitySpec(spec) };
+  const spec = splitActivitySetIntoCanvases(set)[0]!;
+  return { set, spec, compiled: compileCanvasActivitySpec(spec) };
 }
 
 describe("MathCanvas 컴파일러", () => {
@@ -67,8 +71,9 @@ describe("MathCanvas 컴파일러", () => {
     expect(result.payload.studyLevel).toBe("elementary");
     expect(result.payload.isNoteworthy).toBe(false);
     expect(result.payload.projectTitle).toMatch(
-      /^분수 띠로 크기 비교하기 · 5학년 · 4문제 · 보통 \[AI-[A-F0-9]{12}\]$/
+      /^분수 띠로 크기 비교하기 · 5학년 · 보통 · 1\/4 \[AI-[A-F0-9]{12}\]$/
     );
+    expect(result.payload.isShowMenuOnActivity).toBe(false);
     expect(result.payloadHash).toBe(sha256Hex(result.payload));
   });
 
@@ -112,34 +117,72 @@ describe("MathCanvas 컴파일러", () => {
         [geometricWidth - perWidth / 2, 40],
         [-perWidth / 2, 40]
       ]);
+      expect(native?.x).toBeCloseTo(model.bounds.x + perWidth / 2);
+      expect(native?.y).toBe(model.bounds.y + 40);
+      expect(native).toMatchObject({
+        groupId: `${model.id}-move-group`,
+        isGroup: true,
+        isMoveRotateHandler: false,
+        isFillChange: false,
+        isSplit: false,
+        parent: { isResizeHandle: false, isAngleHandle: false }
+      });
+      const moveGroup = result.payload.contentsJson.find(
+        (object) => object.id === `${model.id}-move-group`
+      );
+      expect(moveGroup).toMatchObject({
+        svgId: "group-element",
+        groupId: `${model.id}-move-group`,
+        ids: [model.id],
+        viewBox: {
+          x: model.bounds.x,
+          y: model.bounds.y,
+          width: model.bounds.width,
+          height: model.bounds.height
+        },
+        isGroup: true,
+        isBluePrint: true,
+        playgroundIndex: 0,
+        isMoveRotateHandler: false
+      });
     }
   });
 
-  it("고정 표면만 잠그고 분수 띠와 기호는 움직일 수 있게 둔다", () => {
+  it("고정 표면만 잠그고 분수 띠·기호·입력칸은 학생이 조작하게 둔다", () => {
     const { spec, compiled: result } = compiled();
     const locked = new Set(result.payload.canvasOption.lockIds.flat());
-    for (const model of spec.visualModels) expect(locked.has(model.id)).toBe(false);
+    for (const model of spec.visualModels) {
+      expect(locked.has(model.id)).toBe(false);
+      expect(locked.has(`${model.id}-move-group`)).toBe(false);
+    }
     for (const object of spec.movableObjects)
       expect(locked.has(object.id)).toBe(false);
+    expect(locked.has(spec.inputObjects[0]!.id)).toBe(false);
     expect(locked.has("instruction-main")).toBe(true);
-    expect(locked.has("instruction-symbol")).toBe(true);
     expect(locked.has("problem-1-mat")).toBe(true);
     expect(locked.has("problem-1-left-lane-label")).toBe(true);
-    expect(locked.has("problem-1-relation-slot-label")).toBe(true);
+    expect(
+      locked.has(`${spec.inputObjects[0]!.id}-surface`)
+    ).toBe(true);
   });
 
-  it("문제 식과 기호 놓기 칸이 겹치지 않는다", () => {
+  it("두 분수 식과 기호 놓기 칸이 겹치지 않는다", () => {
     const { compiled: result } = compiled();
-    const prompt = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-prompt"
+    const left = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction"
+    )!;
+    const right = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-right-fraction"
     )!;
     const slot = result.payload.contentsJson.find(
       (object) => object.id === "problem-1-relation-slot-surface"
     )!;
-    expect(prompt.fill).toBe("transparent");
-    const promptBottom = Number(prompt.y) + Number(prompt.height);
-    const slotTop = (slot.point1 as [number, number])[1];
-    expect(promptBottom).toBeLessThanOrEqual(slotTop);
+    expect(left.fill).toBe("transparent");
+    expect(right.fill).toBe("transparent");
+    const slotLeft = (slot.point1 as [number, number])[0];
+    const slotRight = (slot.point2 as [number, number])[0];
+    expect(Number(left.x) + Number(left.width)).toBeLessThan(slotLeft);
+    expect(Number(right.x)).toBeGreaterThan(slotRight);
     expect(slot).toMatchObject({
       svgId: "drawElem",
       x: 0,
@@ -152,27 +195,56 @@ describe("MathCanvas 컴파일러", () => {
     expect(slot).not.toHaveProperty("height");
   });
 
-  it("문제 번호는 일반 글자로, 분수 식은 수식으로 나누고 띠 이름을 비교판 안에 둔다", () => {
-    const { spec, compiled: result } = compiled();
-    const mat = spec.fixedObjects.find(
-      (object) => object.id === "problem-1-mat"
-    )!;
+  it("분수 식은 수식으로, 띠 이름은 읽기 쉬운 일반 글자로 만든다", () => {
+    const { compiled: result } = compiled();
     const prompt = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-prompt"
+      (object) => object.id === "problem-1-left-fraction"
     )!;
-    const number = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-number"
+    const order = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-order-label"
     )!;
     const laneLabel = result.payload.contentsJson.find(
       (object) => object.id === "problem-1-left-lane-label"
     )!;
 
     expect(prompt.svgId).toBe("math-latex");
-    expect(String(prompt.text)).not.toContain("번");
-    expect(number).toMatchObject({ svgId: "input-text", text: "1번" });
-    expect(Number(laneLabel.x)).toBeGreaterThanOrEqual(mat.bounds.x);
-    expect(Number(laneLabel.x) + Number(laneLabel.width)).toBeLessThanOrEqual(
-      mat.bounds.x + mat.bounds.width
-    );
+    expect(order).toMatchObject({ svgId: "input-text", text: "1/4" });
+    expect(laneLabel).toMatchObject({
+      svgId: "input-text",
+      text: "첫째 띠 자리",
+      fontSize: 24,
+      x: 790
+    });
+  });
+
+  it("비교 기호는 이동 전용이고 비교 까닭 칸은 실제 편집 객체다", () => {
+    const { spec, compiled: result } = compiled();
+    const less = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-less-symbol"
+    )!;
+    const response = result.payload.contentsJson.find(
+      (object) => object.id === spec.inputObjects[0]!.id
+    )!;
+    const responseSurface = result.payload.contentsJson.find(
+      (object) => object.id === `${spec.inputObjects[0]!.id}-surface`
+    )!;
+    expect(less).toMatchObject({
+      svgId: "math-latex",
+      text: "<",
+      isMoveRotateHandler: false
+    });
+    expect(response).toMatchObject({
+      svgId: "input-text",
+      isTextEdit: true,
+      isTextEditFontSize: false,
+      isMoveRotateHandler: false,
+      playgroundIndex: 2
+    });
+    expect(responseSurface).toMatchObject({
+      svgId: "drawElem",
+      fill: "#FFFFFF",
+      stroke: "#718398",
+      isMoveRotateHandler: false
+    });
   });
 });
