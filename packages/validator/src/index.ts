@@ -16,7 +16,9 @@ import {
   FRACTION_SVG_BY_DENOMINATOR,
   MATHCANVAS_CONTRACT_VERSION,
   MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID,
-  compileCanvasActivitySpec
+  compileCanvasActivitySpec,
+  nativeComparisonSymbolBounds,
+  nativeFractionFormulaBounds
 } from "@mathcanvas/compiler";
 
 type Bounds = { x: number; y: number; width: number; height: number };
@@ -60,6 +62,30 @@ function sameBounds(left: Bounds | undefined, right: Bounds): boolean {
     left.width === right.width &&
     left.height === right.height
   );
+}
+
+function centerDifference(outer: Bounds, inner: Bounds): {
+  x: number;
+  y: number;
+} {
+  return {
+    x: Math.abs(
+      inner.x + inner.width / 2 - (outer.x + outer.width / 2)
+    ),
+    y: Math.abs(
+      inner.y + inner.height / 2 - (outer.y + outer.height / 2)
+    )
+  };
+}
+
+function isCenteredWithin(
+  outer: Bounds | undefined,
+  inner: Bounds | undefined,
+  tolerance = 1
+): boolean {
+  if (!outer || !inner || !contains(outer, inner)) return false;
+  const difference = centerDifference(outer, inner);
+  return difference.x <= tolerance && difference.y <= tolerance;
 }
 
 function nativeBounds(
@@ -568,21 +594,6 @@ export function validateForCreation(
       "MathCanvas 네이티브 객체 ID가 없거나 중복됩니다."
     );
   }
-  if (
-    compiled.payload.contentsJson.some(
-      (object) =>
-        object.svgId === "math-latex" &&
-        typeof object.text === "string" &&
-        object.text.includes("\\frac")
-    )
-  ) {
-    issue(
-      issues,
-      "latex-fraction-formula-forbidden",
-      "layout",
-      "분수 표시는 카드 안의 잠긴 분자·분수선·분모로 만들어야 합니다."
-    );
-  }
   for (const fixed of spec.fixedObjects) {
     if (!nativeById.has(fixed.id) || !lockedIds.has(fixed.id)) {
       issue(
@@ -608,7 +619,7 @@ export function validateForCreation(
     },
     {
       id: `${problem.id}-response-panel`,
-      bounds: { x: 40, y: 645, width: 1180, height: 125 }
+      bounds: { x: 40, y: 640, width: 1180, height: 108 }
     }
   ] as const;
   for (const panel of panelContracts) {
@@ -640,7 +651,9 @@ export function validateForCreation(
         ...lanes.map((lane) => `${lane.id}-surface`),
         `${problem.id}-start-line`,
         `${problem.id}-left-fraction-card`,
+        `${problem.id}-left-fraction-formula`,
         `${problem.id}-right-fraction-card`,
+        `${problem.id}-right-fraction-formula`,
         `${problem.id}-target-label`,
         `${problem.id}-start-label`
       ]
@@ -651,7 +664,9 @@ export function validateForCreation(
         ...(relationSlots[0] ? [`${relationSlots[0].id}-surface`] : []),
         ...symbols.map((symbol) => `${symbol.id}-source-card`),
         `${problem.id}-relation-left-fraction-card`,
+        `${problem.id}-relation-left-fraction-formula`,
         `${problem.id}-relation-right-fraction-card`,
+        `${problem.id}-relation-right-fraction-formula`,
         `${problem.id}-symbol-label`
       ]
     },
@@ -835,6 +850,7 @@ export function validateForCreation(
 
   for (const symbol of symbols) {
     const native = nativeById.get(symbol.id);
+    const nativeSymbolBounds = nativeBounds(native);
     if (
       native?.svgId !== "math-latex" ||
       native.isMoveRotateHandler !== false ||
@@ -851,10 +867,14 @@ export function validateForCreation(
     const sourceCardId = `${symbol.id}-source-card`;
     const sourceCard = nativeById.get(sourceCardId);
     const sourceCardBounds = nativeBounds(sourceCard);
+    const expectedNativeSymbolBounds = nativeComparisonSymbolBounds(
+      symbol.bounds
+    );
     if (
       sourceCard?.svgId !== "drawElem" ||
       !sourceCardBounds ||
       !contains(sourceCardBounds, symbol.bounds) ||
+      !sameBounds(nativeSymbolBounds, expectedNativeSymbolBounds) ||
       (relationSlots[0] &&
         intersects(sourceCardBounds, relationSlots[0].bounds)) ||
       (response && intersects(sourceCardBounds, response.bounds)) ||
@@ -864,61 +884,69 @@ export function validateForCreation(
         issues,
         "symbol-source-card-invalid",
         "layout",
-        `${symbol.id}의 기호 준비 카드가 없거나 기호 자리·입력칸과 겹칩니다.`
+        `${symbol.id}의 기호가 준비 카드 가운데에 있지 않거나 기호 자리·입력칸과 겹칩니다.`
       );
     }
   }
 
-  const fractionCardPrefixes = [
-    `${problem.id}-left-fraction`,
-    `${problem.id}-right-fraction`,
-    `${problem.id}-relation-left-fraction`,
-    `${problem.id}-relation-right-fraction`
+  const fractionFormulaContracts = [
+    {
+      prefix: `${problem.id}-left-fraction`,
+      numerator: problem.left.numerator,
+      denominator: problem.left.denominator
+    },
+    {
+      prefix: `${problem.id}-right-fraction`,
+      numerator: problem.right.numerator,
+      denominator: problem.right.denominator
+    },
+    {
+      prefix: `${problem.id}-relation-left-fraction`,
+      numerator: problem.left.numerator,
+      denominator: problem.left.denominator
+    },
+    {
+      prefix: `${problem.id}-relation-right-fraction`,
+      numerator: problem.right.numerator,
+      denominator: problem.right.denominator
+    }
   ];
-  for (const prefix of fractionCardPrefixes) {
+  for (const { prefix, numerator, denominator } of fractionFormulaContracts) {
     const cardId = `${prefix}-card`;
     const card = nativeById.get(cardId);
     const cardBounds = nativeBounds(card);
-    const numerator = nativeById.get(`${prefix}-numerator`);
-    const line = nativeById.get(`${prefix}-line`);
-    const denominator = nativeById.get(`${prefix}-denominator`);
-    const numeratorBounds = nativeBounds(numerator);
-    const lineBounds = nativeBounds(line);
-    const denominatorBounds = nativeBounds(denominator);
-    const pieces = [numerator, line, denominator];
+    const formulaId = `${prefix}-formula`;
+    const formula = nativeById.get(formulaId);
+    const formulaBounds = nativeBounds(formula);
+    const expectedFormulaBounds = cardBounds
+      ? nativeFractionFormulaBounds(cardBounds, numerator, denominator)
+      : undefined;
+    const hasLegacyPieces = [
+      `${prefix}-numerator`,
+      `${prefix}-line`,
+      `${prefix}-denominator`
+    ].some((id) => nativeById.has(id));
     if (
       card?.svgId !== "drawElem" ||
       !cardBounds ||
-      numerator?.svgId !== "input-text" ||
-      line?.svgId !== "drawElem" ||
-      denominator?.svgId !== "input-text" ||
-      pieces.some((piece) => {
-        const bounds = nativeBounds(piece);
-        return !bounds || !contains(cardBounds, bounds);
-      }) ||
-      !numeratorBounds ||
-      !lineBounds ||
-      !denominatorBounds ||
-      Math.abs(
-        numeratorBounds.x +
-          numeratorBounds.width / 2 -
-          (lineBounds.x + lineBounds.width / 2)
-      ) > 0.001 ||
-      Math.abs(
-        denominatorBounds.x +
-          denominatorBounds.width / 2 -
-          (lineBounds.x + lineBounds.width / 2)
-      ) > 0.001 ||
-      numeratorBounds.y + numeratorBounds.height >= lineBounds.y ||
-      denominatorBounds.y <= lineBounds.y + lineBounds.height ||
-      [cardId, `${prefix}-numerator`, `${prefix}-line`, `${prefix}-denominator`]
-        .some((id) => !lockedIds.has(id))
+      formula?.svgId !== "math-latex" ||
+      formula.text !== `\\frac{${numerator}}{${denominator}}` ||
+      formula.parent !== null ||
+      formula.fill !== "transparent" ||
+      formula.isTextEditFontSize !== true ||
+      formula.isMoveRotateHandler !== false ||
+      !formulaBounds ||
+      !expectedFormulaBounds ||
+      !sameBounds(formulaBounds, expectedFormulaBounds) ||
+      !lockedIds.has(cardId) ||
+      !lockedIds.has(formulaId) ||
+      hasLegacyPieces
     ) {
       issue(
         issues,
-        "composed-fraction-card-invalid",
-        "layout",
-        `${prefix}의 분자·분수선·분모가 카드 안에 잠겨 있지 않습니다.`
+        "native-fraction-formula-invalid",
+        "api-contract",
+        `${prefix}가 수식 메뉴의 한 개짜리 잠긴 분수식 객체가 아닙니다.`
       );
     }
   }
@@ -930,7 +958,10 @@ export function validateForCreation(
   if (
     !response ||
     !responseLabel ||
-    !contains(response.bounds, responseLabel.bounds) ||
+    !contains(
+      { x: 40, y: 640, width: 1180, height: 108 },
+      responseLabel.bounds
+    ) ||
     !nativeResponseBounds ||
     !contains(response.bounds, nativeResponseBounds) ||
     nativeResponseBounds.x -
@@ -947,6 +978,7 @@ export function validateForCreation(
   if (
     !response ||
     nativeResponse?.svgId !== "input-text" ||
+    nativeResponse.text !== "\u200B" ||
     nativeResponse.isTextEdit !== true ||
     nativeResponse.isTextEditFontSize !== false ||
     nativeResponse.isMoveRotateHandler !== false ||
@@ -966,7 +998,8 @@ export function validateForCreation(
   if (
     !response ||
     responseSurface?.svgId !== "drawElem" ||
-    responseSurface.fill !== "#FFFFFF" ||
+    responseSurface.fill !== "#FFF9E8" ||
+    responseSurface.stroke !== "#2F78C4" ||
     !Array.isArray(responseSurface.point1) ||
     !Array.isArray(responseSurface.point2) ||
     Number(responseSurface.point1[0]) !== response.bounds.x ||
@@ -1028,6 +1061,7 @@ export function validateForCreation(
     compiled.contractVersion !== MATHCANVAS_CONTRACT_VERSION ||
     compiled.payload.categoryId !== MATHCANVAS_NUMBER_OPERATIONS_CATEGORY_ID ||
     compiled.payload.studyLevel !== "elementary" ||
+    compiled.payload.canvasOption.scale !== 2 ||
     compiled.payload.isNoteworthy !== false ||
     compiled.payload.isShowMenuOnActivity !== false ||
     compiled.sourceCanvasSpecId !== spec.canvasId ||

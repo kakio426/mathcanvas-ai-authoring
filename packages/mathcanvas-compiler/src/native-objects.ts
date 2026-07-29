@@ -54,6 +54,49 @@ const objectCommon = {
   isCenterGravityPolygon: false
 } as const;
 
+const MATHLIVE_GLYPH_CENTER_COMPENSATION_X = 1;
+const NATIVE_FORMULA_HEIGHT = 108;
+
+export function nativeFractionFormulaBounds(
+  bounds: { x: number; y: number; width: number; height: number },
+  numerator: number,
+  denominator: number
+): { x: number; y: number; width: number; height: number } {
+  const longestValueLength = Math.max(
+    String(Math.abs(numerator)).length,
+    String(Math.abs(denominator)).length
+  );
+  const width = longestValueLength >= 2 ? 76 : 50;
+  return {
+    x:
+      bounds.x +
+      (bounds.width - width) / 2 +
+      MATHLIVE_GLYPH_CENTER_COMPENSATION_X,
+    y: bounds.y + (bounds.height - NATIVE_FORMULA_HEIGHT) / 2,
+    width,
+    height: NATIVE_FORMULA_HEIGHT
+  };
+}
+
+export function nativeComparisonSymbolBounds(bounds: {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}): { x: number; y: number; width: number; height: number } {
+  const width = 52;
+  const height = 76;
+  return {
+    x:
+      bounds.x +
+      (bounds.width - width) / 2 +
+      MATHLIVE_GLYPH_CENTER_COMPENSATION_X,
+    y: bounds.y + (bounds.height - height) / 2,
+    width,
+    height
+  };
+}
+
 export function makeFractionObject(model: VisualModel): Record<string, unknown> {
   const { numerator, denominator } = model.fraction;
   const perWidth = model.wholeWidth / denominator;
@@ -290,7 +333,7 @@ function addLockedRectangle(
   lockedIds.push(id);
 }
 
-function addComposedFraction(
+function addNativeFractionFormula(
   contents: Array<Record<string, unknown>>,
   lockedIds: string[],
   idPrefix: string,
@@ -299,6 +342,11 @@ function addComposedFraction(
   bounds: { x: number; y: number; width: number; height: number },
   colors: { fill: string; stroke: string }
 ): void {
+  const visibleFormulaBox = nativeFractionFormulaBounds(
+    bounds,
+    numerator,
+    denominator
+  );
   const cardId = `${idPrefix}-card`;
   addLockedRectangle(
     contents,
@@ -309,48 +357,19 @@ function addComposedFraction(
     colors.stroke
   );
 
-  const textSlot = (value: number) => {
-    const width = String(value).length > 1 ? 50 : 40;
-    return {
-      x: bounds.x + (bounds.width - width) / 2,
-      width
-    };
-  };
-  const numeratorSlot = textSlot(numerator);
-  const denominatorSlot = textSlot(denominator);
-  const numeratorId = `${idPrefix}-numerator`;
-  const lineId = `${idPrefix}-line`;
-  const denominatorId = `${idPrefix}-denominator`;
+  const formulaId = `${idPrefix}-formula`;
   contents.push(
-    makeTextObject(
-      numeratorId,
-      String(numerator),
-      numeratorSlot.x,
-      bounds.y,
-      numeratorSlot.width,
-      36,
-      { fontSize: 32 }
-    ),
-    makeRectangleObject(
-      lineId,
-      bounds.x + 20,
-      bounds.y + 52,
-      bounds.width - 40,
-      4,
-      "#172033",
-      "#172033"
-    ),
-    makeTextObject(
-      denominatorId,
-      String(denominator),
-      denominatorSlot.x,
-      bounds.y + 62,
-      denominatorSlot.width,
-      36,
-      { fontSize: 32 }
+    makeLatexObject(
+      formulaId,
+      `\\frac{${numerator}}{${denominator}}`,
+      visibleFormulaBox.x,
+      visibleFormulaBox.y,
+      visibleFormulaBox.width,
+      visibleFormulaBox.height,
+      52
     )
   );
-  lockedIds.push(numeratorId, lineId, denominatorId);
+  lockedIds.push(formulaId);
 }
 
 export function buildNativeContents(spec: CanvasActivitySpec): {
@@ -402,7 +421,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     contents,
     lockedIds,
     `${problem.id}-response-panel`,
-    { x: 40, y: 645, width: 1180, height: 125 },
+    { x: 40, y: 640, width: 1180, height: 108 },
     "#F8FAFC",
     "#9AA9BA"
   );
@@ -475,7 +494,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     lockedIds.push(fixed.id);
   }
 
-  addComposedFraction(
+  addNativeFractionFormula(
     contents,
     lockedIds,
     `${problem.id}-left-fraction`,
@@ -484,7 +503,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     { x: 610, y: 205, width: 90, height: 110 },
     { fill: "#FFF0E6", stroke: "#E98242" }
   );
-  addComposedFraction(
+  addNativeFractionFormula(
     contents,
     lockedIds,
     `${problem.id}-right-fraction`,
@@ -494,7 +513,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     { fill: "#EAFBFF", stroke: "#32B9D6" }
   );
 
-  addComposedFraction(
+  addNativeFractionFormula(
     contents,
     lockedIds,
     `${problem.id}-relation-left-fraction`,
@@ -503,7 +522,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     { x: 690, y: 510, width: 100, height: 110 },
     { fill: "#FFF0E6", stroke: "#E98242" }
   );
-  addComposedFraction(
+  addNativeFractionFormula(
     contents,
     lockedIds,
     `${problem.id}-relation-right-fraction`,
@@ -535,15 +554,16 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
   }
 
   for (const object of symbolObjects) {
+    const visibleSymbolBox = nativeComparisonSymbolBounds(object.bounds);
     contents.push(
       makeLatexObject(
         object.id,
         object.id.endsWith("less-symbol") ? "<" : ">",
-        object.bounds.x,
-        object.bounds.y,
-        object.bounds.width,
-        object.bounds.height,
-        64
+        visibleSymbolBox.x,
+        visibleSymbolBox.y,
+        visibleSymbolBox.width,
+        visibleSymbolBox.height,
+        52
       )
     );
   }
@@ -558,22 +578,22 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
       response.bounds.y,
       response.bounds.width,
       response.bounds.height,
-      "#FFFFFF",
-      "#718398"
+      "#FFF9E8",
+      "#2F78C4"
     )
   );
   lockedIds.push(responseSurfaceId);
   contents.push(
     makeTextObject(
       response.id,
-      response.placeholder,
-      response.bounds.x + 210,
+      "\u200B",
+      response.bounds.x + 24,
       response.bounds.y,
-      response.bounds.width - 210,
+      response.bounds.width - 48,
       response.bounds.height,
       {
-        fontSize: 30,
-        color: "#435065",
+        fontSize: 32,
+        color: "#172033",
         editable: true,
         fontSizeEditable: false
       }

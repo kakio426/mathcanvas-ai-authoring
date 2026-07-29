@@ -1,0 +1,45 @@
+{
+  "templateId": "fraction.compare.unlike-denominators.visual-v1",
+  "templateVersion": "2.4.0",
+  "setId": "set-v240-codex-final3-20260729",
+  "setHash": "82118d706b38f94797129a9dec778a019393f3d27d610eb0741ef1dbcb1459e5",
+  "createdAt": "2026-07-29T04:32:25.955Z",
+  "canvases": [
+    {
+      "canvasIndex": 1,
+      "problem": "3/8 < 3/5",
+      "payloadHash": "da0ee2662febc71474955ec3e230682d6393938043e51b60f4ca3c9460d417db",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "0aPmvg",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/0aPmvg"
+    },
+    {
+      "canvasIndex": 2,
+      "problem": "5/6 > 3/5",
+      "payloadHash": "35d5e76a7e8892645bae4593125263996671b0caabf9b452a9ba3dde762d748a",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "zXR93r",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/zXR93r"
+    },
+    {
+      "canvasIndex": 3,
+      "problem": "4/5 > 4/7",
+      "payloadHash": "19a19c22774f82a818ebc7d9ab291657a79e9472a4106413cccdf1aef9469c32",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "HMGrok",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/HMGrok"
+    },
+    {
+      "canvasIndex": 4,
+      "problem": "3/4 > 3/5",
+      "payloadHash": "83f7975ed888a304bfbebf72379ab6b5df07f9adedafc700d92d3a14369c7431",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "jUHc1-",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/jUHc1-"
+    }
+  ]
+}

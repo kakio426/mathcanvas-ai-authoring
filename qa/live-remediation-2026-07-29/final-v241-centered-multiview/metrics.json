@@ -1,0 +1,1477 @@
+{
+  "editorUrl": "https://mathcanvas.vivasam.com/ko/view/UVtPNy",
+  "problemId": "problem-1",
+  "checkedAt": "2026-07-29T04:57:58.255Z",
+  "results": [
+    {
+      "name": "user-reported-1630x1122",
+      "viewport": {
+        "innerWidth": 1630,
+        "innerHeight": 1122,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1630,
+        "scrollHeight": 1122
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": true,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "nativeFractionFormulasInsideCards": true,
+        "comparisonSymbolsCenteredInCards": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": true
+      },
+      "failedAssertions": [],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 351,
+          "y": 219,
+          "width": 960,
+          "height": 50,
+          "right": 1311,
+          "bottom": 269
+        },
+        "problem-1-order-label": {
+          "x": 1407,
+          "y": 219,
+          "width": 100,
+          "height": 42,
+          "right": 1507,
+          "bottom": 261
+        },
+        "problem-1-mat": {
+          "x": 327,
+          "y": 299,
+          "width": 1180,
+          "height": 390,
+          "right": 1507,
+          "bottom": 689
+        },
+        "problem-1-source-panel": {
+          "x": 347,
+          "y": 319,
+          "width": 500,
+          "height": 350,
+          "right": 847,
+          "bottom": 669
+        },
+        "problem-1-target-panel": {
+          "x": 877,
+          "y": 319,
+          "width": 620,
+          "height": 350,
+          "right": 1497,
+          "bottom": 669
+        },
+        "problem-1-symbol-panel": {
+          "x": 327,
+          "y": 689,
+          "width": 1180,
+          "height": 130,
+          "right": 1507,
+          "bottom": 819
+        },
+        "problem-1-response-panel": {
+          "x": 327,
+          "y": 829,
+          "width": 1180,
+          "height": 108,
+          "right": 1507,
+          "bottom": 937
+        },
+        "problem-1-left-strip-source-card": {
+          "x": 367,
+          "y": 394,
+          "width": 460,
+          "height": 110,
+          "right": 827,
+          "bottom": 504
+        },
+        "problem-1-right-strip-source-card": {
+          "x": 367,
+          "y": 539,
+          "width": 460,
+          "height": 110,
+          "right": 827,
+          "bottom": 649
+        },
+        "problem-1-left-strip": {
+          "x": 500,
+          "y": 409,
+          "width": 150,
+          "height": 80,
+          "right": 650,
+          "bottom": 489
+        },
+        "problem-1-right-strip": {
+          "x": 382,
+          "y": 554,
+          "width": 240,
+          "height": 80,
+          "right": 622,
+          "bottom": 634
+        },
+        "problem-1-left-lane-surface": {
+          "x": 1007,
+          "y": 409,
+          "width": 400,
+          "height": 80,
+          "right": 1407,
+          "bottom": 489
+        },
+        "problem-1-right-lane-surface": {
+          "x": 1007,
+          "y": 554,
+          "width": 400,
+          "height": 80,
+          "right": 1407,
+          "bottom": 634
+        },
+        "problem-1-move-step-label": {
+          "x": 357,
+          "y": 331,
+          "width": 220,
+          "height": 42,
+          "right": 577,
+          "bottom": 373
+        },
+        "problem-1-target-label": {
+          "x": 907,
+          "y": 331,
+          "width": 300,
+          "height": 36,
+          "right": 1207,
+          "bottom": 367
+        },
+        "problem-1-start-line": {
+          "x": 1001,
+          "y": 403,
+          "width": 12,
+          "height": 241,
+          "right": 1013,
+          "bottom": 644
+        },
+        "problem-1-start-label": {
+          "x": 1017,
+          "y": 373,
+          "width": 120,
+          "height": 26,
+          "right": 1137,
+          "bottom": 399
+        },
+        "problem-1-symbol-label": {
+          "x": 355,
+          "y": 737,
+          "width": 230,
+          "height": 42,
+          "right": 585,
+          "bottom": 779
+        },
+        "problem-1-less-symbol-source-card": {
+          "x": 617,
+          "y": 721,
+          "width": 80,
+          "height": 80,
+          "right": 697,
+          "bottom": 801
+        },
+        "problem-1-greater-symbol-source-card": {
+          "x": 727,
+          "y": 721,
+          "width": 80,
+          "height": 80,
+          "right": 807,
+          "bottom": 801
+        },
+        "problem-1-less-symbol": {
+          "x": 629,
+          "y": 721,
+          "width": 56,
+          "height": 80,
+          "right": 685,
+          "bottom": 801
+        },
+        "problem-1-greater-symbol": {
+          "x": 739,
+          "y": 721,
+          "width": 56,
+          "height": 80,
+          "right": 795,
+          "bottom": 801
+        },
+        "problem-1-relation-slot-surface": {
+          "x": 1097,
+          "y": 719,
+          "width": 84,
+          "height": 84,
+          "right": 1181,
+          "bottom": 803
+        },
+        "problem-1-left-fraction-card": {
+          "x": 897,
+          "y": 394,
+          "width": 90,
+          "height": 110,
+          "right": 987,
+          "bottom": 504
+        },
+        "problem-1-right-fraction-card": {
+          "x": 897,
+          "y": 539,
+          "width": 90,
+          "height": 110,
+          "right": 987,
+          "bottom": 649
+        },
+        "problem-1-relation-left-fraction-card": {
+          "x": 977,
+          "y": 699,
+          "width": 100,
+          "height": 110,
+          "right": 1077,
+          "bottom": 809
+        },
+        "problem-1-relation-right-fraction-card": {
+          "x": 1202,
+          "y": 699,
+          "width": 100,
+          "height": 110,
+          "right": 1302,
+          "bottom": 809
+        },
+        "problem-1-left-fraction-formula": {
+          "x": 915,
+          "y": 393,
+          "width": 54,
+          "height": 112,
+          "right": 969,
+          "bottom": 505
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 915,
+          "y": 538,
+          "width": 54,
+          "height": 112,
+          "right": 969,
+          "bottom": 650
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 1000,
+          "y": 698,
+          "width": 54,
+          "height": 112,
+          "right": 1054,
+          "bottom": 810
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 1225,
+          "y": 698,
+          "width": 54,
+          "height": 112,
+          "right": 1279,
+          "bottom": 810
+        },
+        "problem-1-response-label": {
+          "x": 355,
+          "y": 861,
+          "width": 360,
+          "height": 42,
+          "right": 715,
+          "bottom": 903
+        },
+        "problem-1-explanation-input-surface": {
+          "x": 747,
+          "y": 843,
+          "width": 750,
+          "height": 80,
+          "right": 1497,
+          "bottom": 923
+        },
+        "problem-1-explanation-input": {
+          "x": 771,
+          "y": 843,
+          "width": 702,
+          "height": 80,
+          "right": 1473,
+          "bottom": 923
+        },
+        "right-toolbar": {
+          "x": 1574,
+          "y": 457,
+          "width": 48,
+          "height": 208,
+          "right": 1622,
+          "bottom": 665
+        },
+        "bottom-common-toolbar": {
+          "x": 575,
+          "y": 1066,
+          "width": 480,
+          "height": 48,
+          "right": 1055,
+          "bottom": 1114
+        }
+      },
+      "visibleContentRects": {
+        "instruction-main": {
+          "x": 351,
+          "y": 219,
+          "width": 960,
+          "height": 50,
+          "right": 1311,
+          "bottom": 269
+        },
+        "problem-1-order-label": {
+          "x": 1407,
+          "y": 219,
+          "width": 100,
+          "height": 42,
+          "right": 1507,
+          "bottom": 261
+        },
+        "problem-1-mat": null,
+        "problem-1-source-panel": null,
+        "problem-1-target-panel": null,
+        "problem-1-symbol-panel": null,
+        "problem-1-response-panel": null,
+        "problem-1-left-strip-source-card": null,
+        "problem-1-right-strip-source-card": null,
+        "problem-1-left-strip": null,
+        "problem-1-right-strip": null,
+        "problem-1-left-lane-surface": null,
+        "problem-1-right-lane-surface": null,
+        "problem-1-move-step-label": {
+          "x": 357,
+          "y": 331,
+          "width": 220,
+          "height": 42,
+          "right": 577,
+          "bottom": 373
+        },
+        "problem-1-target-label": {
+          "x": 907,
+          "y": 331,
+          "width": 300,
+          "height": 36,
+          "right": 1207,
+          "bottom": 367
+        },
+        "problem-1-start-line": null,
+        "problem-1-start-label": {
+          "x": 1017,
+          "y": 373,
+          "width": 120,
+          "height": 26,
+          "right": 1137,
+          "bottom": 399
+        },
+        "problem-1-symbol-label": {
+          "x": 355,
+          "y": 737,
+          "width": 230,
+          "height": 42,
+          "right": 585,
+          "bottom": 779
+        },
+        "problem-1-less-symbol-source-card": null,
+        "problem-1-greater-symbol-source-card": null,
+        "problem-1-less-symbol": {
+          "x": 631,
+          "y": 723,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 683.15625,
+          "bottom": 799.390625
+        },
+        "problem-1-greater-symbol": {
+          "x": 741,
+          "y": 723,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 793.15625,
+          "bottom": 799.390625
+        },
+        "problem-1-relation-slot-surface": null,
+        "problem-1-left-fraction-card": null,
+        "problem-1-right-fraction-card": null,
+        "problem-1-relation-left-fraction-card": null,
+        "problem-1-relation-right-fraction-card": null,
+        "problem-1-left-fraction-formula": {
+          "x": 917,
+          "y": 395,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 967.15625,
+          "bottom": 503.1875
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 917,
+          "y": 540,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 967.15625,
+          "bottom": 648.1875
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 1002,
+          "y": 700,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 1052.15625,
+          "bottom": 808.1875
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 1227,
+          "y": 700,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 1277.15625,
+          "bottom": 808.1875
+        },
+        "problem-1-response-label": {
+          "x": 355,
+          "y": 861,
+          "width": 360,
+          "height": 42,
+          "right": 715,
+          "bottom": 903
+        },
+        "problem-1-explanation-input-surface": null,
+        "problem-1-explanation-input": {
+          "x": 771,
+          "y": 843,
+          "width": 702,
+          "height": 80,
+          "right": 1473,
+          "bottom": 923
+        },
+        "right-toolbar": null,
+        "bottom-common-toolbar": null
+      },
+      "centerMetrics": {
+        "fractions": {
+          "problem-1-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          }
+        },
+        "symbols": {
+          "less": {
+            "x": 0.078125,
+            "y": 0.1953125
+          },
+          "greater": {
+            "x": 0.078125,
+            "y": 0.1953125
+          }
+        }
+      }
+    },
+    {
+      "name": "reference-1280x800",
+      "viewport": {
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1280,
+        "scrollHeight": 800
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": false,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "nativeFractionFormulasInsideCards": true,
+        "comparisonSymbolsCenteredInCards": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": false
+      },
+      "failedAssertions": [
+        "activityInsideViewport",
+        "toolbarsDoNotCoverActivity"
+      ],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 176,
+          "y": 58,
+          "width": 960,
+          "height": 50,
+          "right": 1136,
+          "bottom": 108
+        },
+        "problem-1-order-label": {
+          "x": 1232,
+          "y": 58,
+          "width": 100,
+          "height": 42,
+          "right": 1332,
+          "bottom": 100
+        },
+        "problem-1-mat": {
+          "x": 152,
+          "y": 138,
+          "width": 1180,
+          "height": 390,
+          "right": 1332,
+          "bottom": 528
+        },
+        "problem-1-source-panel": {
+          "x": 172,
+          "y": 158,
+          "width": 500,
+          "height": 350,
+          "right": 672,
+          "bottom": 508
+        },
+        "problem-1-target-panel": {
+          "x": 702,
+          "y": 158,
+          "width": 620,
+          "height": 350,
+          "right": 1322,
+          "bottom": 508
+        },
+        "problem-1-symbol-panel": {
+          "x": 152,
+          "y": 528,
+          "width": 1180,
+          "height": 130,
+          "right": 1332,
+          "bottom": 658
+        },
+        "problem-1-response-panel": {
+          "x": 152,
+          "y": 668,
+          "width": 1180,
+          "height": 108,
+          "right": 1332,
+          "bottom": 776
+        },
+        "problem-1-left-strip-source-card": {
+          "x": 192,
+          "y": 233,
+          "width": 460,
+          "height": 110,
+          "right": 652,
+          "bottom": 343
+        },
+        "problem-1-right-strip-source-card": {
+          "x": 192,
+          "y": 378,
+          "width": 460,
+          "height": 110,
+          "right": 652,
+          "bottom": 488
+        },
+        "problem-1-left-strip": {
+          "x": 325,
+          "y": 248,
+          "width": 150,
+          "height": 80,
+          "right": 475,
+          "bottom": 328
+        },
+        "problem-1-right-strip": {
+          "x": 207,
+          "y": 393,
+          "width": 240,
+          "height": 80,
+          "right": 447,
+          "bottom": 473
+        },
+        "problem-1-left-lane-surface": {
+          "x": 832,
+          "y": 248,
+          "width": 400,
+          "height": 80,
+          "right": 1232,
+          "bottom": 328
+        },
+        "problem-1-right-lane-surface": {
+          "x": 832,
+          "y": 393,
+          "width": 400,
+          "height": 80,
+          "right": 1232,
+          "bottom": 473
+        },
+        "problem-1-move-step-label": {
+          "x": 182,
+          "y": 170,
+          "width": 220,
+          "height": 42,
+          "right": 402,
+          "bottom": 212
+        },
+        "problem-1-target-label": {
+          "x": 732,
+          "y": 170,
+          "width": 300,
+          "height": 36,
+          "right": 1032,
+          "bottom": 206
+        },
+        "problem-1-start-line": {
+          "x": 826,
+          "y": 242,
+          "width": 12,
+          "height": 241,
+          "right": 838,
+          "bottom": 483
+        },
+        "problem-1-start-label": {
+          "x": 842,
+          "y": 212,
+          "width": 120,
+          "height": 26,
+          "right": 962,
+          "bottom": 238
+        },
+        "problem-1-symbol-label": {
+          "x": 180,
+          "y": 576,
+          "width": 230,
+          "height": 42,
+          "right": 410,
+          "bottom": 618
+        },
+        "problem-1-less-symbol-source-card": {
+          "x": 442,
+          "y": 560,
+          "width": 80,
+          "height": 80,
+          "right": 522,
+          "bottom": 640
+        },
+        "problem-1-greater-symbol-source-card": {
+          "x": 552,
+          "y": 560,
+          "width": 80,
+          "height": 80,
+          "right": 632,
+          "bottom": 640
+        },
+        "problem-1-less-symbol": {
+          "x": 454,
+          "y": 560,
+          "width": 56,
+          "height": 80,
+          "right": 510,
+          "bottom": 640
+        },
+        "problem-1-greater-symbol": {
+          "x": 564,
+          "y": 560,
+          "width": 56,
+          "height": 80,
+          "right": 620,
+          "bottom": 640
+        },
+        "problem-1-relation-slot-surface": {
+          "x": 922,
+          "y": 558,
+          "width": 84,
+          "height": 84,
+          "right": 1006,
+          "bottom": 642
+        },
+        "problem-1-left-fraction-card": {
+          "x": 722,
+          "y": 233,
+          "width": 90,
+          "height": 110,
+          "right": 812,
+          "bottom": 343
+        },
+        "problem-1-right-fraction-card": {
+          "x": 722,
+          "y": 378,
+          "width": 90,
+          "height": 110,
+          "right": 812,
+          "bottom": 488
+        },
+        "problem-1-relation-left-fraction-card": {
+          "x": 802,
+          "y": 538,
+          "width": 100,
+          "height": 110,
+          "right": 902,
+          "bottom": 648
+        },
+        "problem-1-relation-right-fraction-card": {
+          "x": 1027,
+          "y": 538,
+          "width": 100,
+          "height": 110,
+          "right": 1127,
+          "bottom": 648
+        },
+        "problem-1-left-fraction-formula": {
+          "x": 740,
+          "y": 232,
+          "width": 54,
+          "height": 112,
+          "right": 794,
+          "bottom": 344
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 740,
+          "y": 377,
+          "width": 54,
+          "height": 112,
+          "right": 794,
+          "bottom": 489
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 825,
+          "y": 537,
+          "width": 54,
+          "height": 112,
+          "right": 879,
+          "bottom": 649
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 1050,
+          "y": 537,
+          "width": 54,
+          "height": 112,
+          "right": 1104,
+          "bottom": 649
+        },
+        "problem-1-response-label": {
+          "x": 180,
+          "y": 700,
+          "width": 360,
+          "height": 42,
+          "right": 540,
+          "bottom": 742
+        },
+        "problem-1-explanation-input-surface": {
+          "x": 572,
+          "y": 682,
+          "width": 750,
+          "height": 80,
+          "right": 1322,
+          "bottom": 762
+        },
+        "problem-1-explanation-input": {
+          "x": 596,
+          "y": 682,
+          "width": 702,
+          "height": 80,
+          "right": 1298,
+          "bottom": 762
+        },
+        "right-toolbar": {
+          "x": 1224,
+          "y": 296,
+          "width": 48,
+          "height": 208,
+          "right": 1272,
+          "bottom": 504
+        },
+        "bottom-common-toolbar": {
+          "x": 400,
+          "y": 744,
+          "width": 480,
+          "height": 48,
+          "right": 880,
+          "bottom": 792
+        }
+      },
+      "visibleContentRects": {
+        "instruction-main": {
+          "x": 176,
+          "y": 58,
+          "width": 960,
+          "height": 50,
+          "right": 1136,
+          "bottom": 108
+        },
+        "problem-1-order-label": {
+          "x": 1232,
+          "y": 58,
+          "width": 100,
+          "height": 42,
+          "right": 1332,
+          "bottom": 100
+        },
+        "problem-1-mat": null,
+        "problem-1-source-panel": null,
+        "problem-1-target-panel": null,
+        "problem-1-symbol-panel": null,
+        "problem-1-response-panel": null,
+        "problem-1-left-strip-source-card": null,
+        "problem-1-right-strip-source-card": null,
+        "problem-1-left-strip": null,
+        "problem-1-right-strip": null,
+        "problem-1-left-lane-surface": null,
+        "problem-1-right-lane-surface": null,
+        "problem-1-move-step-label": {
+          "x": 182,
+          "y": 170,
+          "width": 220,
+          "height": 42,
+          "right": 402,
+          "bottom": 212
+        },
+        "problem-1-target-label": {
+          "x": 732,
+          "y": 170,
+          "width": 300,
+          "height": 36,
+          "right": 1032,
+          "bottom": 206
+        },
+        "problem-1-start-line": null,
+        "problem-1-start-label": {
+          "x": 842,
+          "y": 212,
+          "width": 120,
+          "height": 26,
+          "right": 962,
+          "bottom": 238
+        },
+        "problem-1-symbol-label": {
+          "x": 180,
+          "y": 576,
+          "width": 230,
+          "height": 42,
+          "right": 410,
+          "bottom": 618
+        },
+        "problem-1-less-symbol-source-card": null,
+        "problem-1-greater-symbol-source-card": null,
+        "problem-1-less-symbol": {
+          "x": 456,
+          "y": 562,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 508.15625,
+          "bottom": 638.390625
+        },
+        "problem-1-greater-symbol": {
+          "x": 566,
+          "y": 562,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 618.15625,
+          "bottom": 638.390625
+        },
+        "problem-1-relation-slot-surface": null,
+        "problem-1-left-fraction-card": null,
+        "problem-1-right-fraction-card": null,
+        "problem-1-relation-left-fraction-card": null,
+        "problem-1-relation-right-fraction-card": null,
+        "problem-1-left-fraction-formula": {
+          "x": 742,
+          "y": 234,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 792.15625,
+          "bottom": 342.1875
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 742,
+          "y": 379,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 792.15625,
+          "bottom": 487.1875
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 827,
+          "y": 539,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 877.15625,
+          "bottom": 647.1875
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 1052,
+          "y": 539,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 1102.15625,
+          "bottom": 647.1875
+        },
+        "problem-1-response-label": {
+          "x": 180,
+          "y": 700,
+          "width": 360,
+          "height": 42,
+          "right": 540,
+          "bottom": 742
+        },
+        "problem-1-explanation-input-surface": null,
+        "problem-1-explanation-input": {
+          "x": 596,
+          "y": 682,
+          "width": 702,
+          "height": 80,
+          "right": 1298,
+          "bottom": 762
+        },
+        "right-toolbar": null,
+        "bottom-common-toolbar": null
+      },
+      "centerMetrics": {
+        "fractions": {
+          "problem-1-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          }
+        },
+        "symbols": {
+          "less": {
+            "x": 0.078125,
+            "y": 0.1953125
+          },
+          "greater": {
+            "x": 0.078125,
+            "y": 0.1953125
+          }
+        }
+      }
+    },
+    {
+      "name": "tablet-landscape-1024x768",
+      "viewport": {
+        "innerWidth": 1024,
+        "innerHeight": 768,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1024,
+        "scrollHeight": 768
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": false,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "nativeFractionFormulasInsideCards": true,
+        "comparisonSymbolsCenteredInCards": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": false
+      },
+      "failedAssertions": [
+        "activityInsideViewport",
+        "toolbarsDoNotCoverActivity"
+      ],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 48,
+          "y": 42,
+          "width": 960,
+          "height": 50,
+          "right": 1008,
+          "bottom": 92
+        },
+        "problem-1-order-label": {
+          "x": 1104,
+          "y": 42,
+          "width": 100,
+          "height": 42,
+          "right": 1204,
+          "bottom": 84
+        },
+        "problem-1-mat": {
+          "x": 24,
+          "y": 122,
+          "width": 1180,
+          "height": 390,
+          "right": 1204,
+          "bottom": 512
+        },
+        "problem-1-source-panel": {
+          "x": 44,
+          "y": 142,
+          "width": 500,
+          "height": 350,
+          "right": 544,
+          "bottom": 492
+        },
+        "problem-1-target-panel": {
+          "x": 574,
+          "y": 142,
+          "width": 620,
+          "height": 350,
+          "right": 1194,
+          "bottom": 492
+        },
+        "problem-1-symbol-panel": {
+          "x": 24,
+          "y": 512,
+          "width": 1180,
+          "height": 130,
+          "right": 1204,
+          "bottom": 642
+        },
+        "problem-1-response-panel": {
+          "x": 24,
+          "y": 652,
+          "width": 1180,
+          "height": 108,
+          "right": 1204,
+          "bottom": 760
+        },
+        "problem-1-left-strip-source-card": {
+          "x": 64,
+          "y": 217,
+          "width": 460,
+          "height": 110,
+          "right": 524,
+          "bottom": 327
+        },
+        "problem-1-right-strip-source-card": {
+          "x": 64,
+          "y": 362,
+          "width": 460,
+          "height": 110,
+          "right": 524,
+          "bottom": 472
+        },
+        "problem-1-left-strip": {
+          "x": 197,
+          "y": 232,
+          "width": 150,
+          "height": 80,
+          "right": 347,
+          "bottom": 312
+        },
+        "problem-1-right-strip": {
+          "x": 79,
+          "y": 377,
+          "width": 240,
+          "height": 80,
+          "right": 319,
+          "bottom": 457
+        },
+        "problem-1-left-lane-surface": {
+          "x": 704,
+          "y": 232,
+          "width": 400,
+          "height": 80,
+          "right": 1104,
+          "bottom": 312
+        },
+        "problem-1-right-lane-surface": {
+          "x": 704,
+          "y": 377,
+          "width": 400,
+          "height": 80,
+          "right": 1104,
+          "bottom": 457
+        },
+        "problem-1-move-step-label": {
+          "x": 54,
+          "y": 154,
+          "width": 220,
+          "height": 42,
+          "right": 274,
+          "bottom": 196
+        },
+        "problem-1-target-label": {
+          "x": 604,
+          "y": 154,
+          "width": 300,
+          "height": 36,
+          "right": 904,
+          "bottom": 190
+        },
+        "problem-1-start-line": {
+          "x": 698,
+          "y": 226,
+          "width": 12,
+          "height": 241,
+          "right": 710,
+          "bottom": 467
+        },
+        "problem-1-start-label": {
+          "x": 714,
+          "y": 196,
+          "width": 120,
+          "height": 26,
+          "right": 834,
+          "bottom": 222
+        },
+        "problem-1-symbol-label": {
+          "x": 52,
+          "y": 560,
+          "width": 230,
+          "height": 42,
+          "right": 282,
+          "bottom": 602
+        },
+        "problem-1-less-symbol-source-card": {
+          "x": 314,
+          "y": 544,
+          "width": 80,
+          "height": 80,
+          "right": 394,
+          "bottom": 624
+        },
+        "problem-1-greater-symbol-source-card": {
+          "x": 424,
+          "y": 544,
+          "width": 80,
+          "height": 80,
+          "right": 504,
+          "bottom": 624
+        },
+        "problem-1-less-symbol": {
+          "x": 326,
+          "y": 544,
+          "width": 56,
+          "height": 80,
+          "right": 382,
+          "bottom": 624
+        },
+        "problem-1-greater-symbol": {
+          "x": 436,
+          "y": 544,
+          "width": 56,
+          "height": 80,
+          "right": 492,
+          "bottom": 624
+        },
+        "problem-1-relation-slot-surface": {
+          "x": 794,
+          "y": 542,
+          "width": 84,
+          "height": 84,
+          "right": 878,
+          "bottom": 626
+        },
+        "problem-1-left-fraction-card": {
+          "x": 594,
+          "y": 217,
+          "width": 90,
+          "height": 110,
+          "right": 684,
+          "bottom": 327
+        },
+        "problem-1-right-fraction-card": {
+          "x": 594,
+          "y": 362,
+          "width": 90,
+          "height": 110,
+          "right": 684,
+          "bottom": 472
+        },
+        "problem-1-relation-left-fraction-card": {
+          "x": 674,
+          "y": 522,
+          "width": 100,
+          "height": 110,
+          "right": 774,
+          "bottom": 632
+        },
+        "problem-1-relation-right-fraction-card": {
+          "x": 899,
+          "y": 522,
+          "width": 100,
+          "height": 110,
+          "right": 999,
+          "bottom": 632
+        },
+        "problem-1-left-fraction-formula": {
+          "x": 612,
+          "y": 216,
+          "width": 54,
+          "height": 112,
+          "right": 666,
+          "bottom": 328
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 612,
+          "y": 361,
+          "width": 54,
+          "height": 112,
+          "right": 666,
+          "bottom": 473
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 697,
+          "y": 521,
+          "width": 54,
+          "height": 112,
+          "right": 751,
+          "bottom": 633
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 922,
+          "y": 521,
+          "width": 54,
+          "height": 112,
+          "right": 976,
+          "bottom": 633
+        },
+        "problem-1-response-label": {
+          "x": 52,
+          "y": 684,
+          "width": 360,
+          "height": 42,
+          "right": 412,
+          "bottom": 726
+        },
+        "problem-1-explanation-input-surface": {
+          "x": 444,
+          "y": 666,
+          "width": 750,
+          "height": 80,
+          "right": 1194,
+          "bottom": 746
+        },
+        "problem-1-explanation-input": {
+          "x": 468,
+          "y": 666,
+          "width": 702,
+          "height": 80,
+          "right": 1170,
+          "bottom": 746
+        },
+        "right-toolbar": {
+          "x": 968,
+          "y": 280,
+          "width": 48,
+          "height": 208,
+          "right": 1016,
+          "bottom": 488
+        },
+        "bottom-common-toolbar": {
+          "x": 272,
+          "y": 712,
+          "width": 480,
+          "height": 48,
+          "right": 752,
+          "bottom": 760
+        }
+      },
+      "visibleContentRects": {
+        "instruction-main": {
+          "x": 48,
+          "y": 42,
+          "width": 960,
+          "height": 50,
+          "right": 1008,
+          "bottom": 92
+        },
+        "problem-1-order-label": {
+          "x": 1104,
+          "y": 42,
+          "width": 100,
+          "height": 42,
+          "right": 1204,
+          "bottom": 84
+        },
+        "problem-1-mat": null,
+        "problem-1-source-panel": null,
+        "problem-1-target-panel": null,
+        "problem-1-symbol-panel": null,
+        "problem-1-response-panel": null,
+        "problem-1-left-strip-source-card": null,
+        "problem-1-right-strip-source-card": null,
+        "problem-1-left-strip": null,
+        "problem-1-right-strip": null,
+        "problem-1-left-lane-surface": null,
+        "problem-1-right-lane-surface": null,
+        "problem-1-move-step-label": {
+          "x": 54,
+          "y": 154,
+          "width": 220,
+          "height": 42,
+          "right": 274,
+          "bottom": 196
+        },
+        "problem-1-target-label": {
+          "x": 604,
+          "y": 154,
+          "width": 300,
+          "height": 36,
+          "right": 904,
+          "bottom": 190
+        },
+        "problem-1-start-line": null,
+        "problem-1-start-label": {
+          "x": 714,
+          "y": 196,
+          "width": 120,
+          "height": 26,
+          "right": 834,
+          "bottom": 222
+        },
+        "problem-1-symbol-label": {
+          "x": 52,
+          "y": 560,
+          "width": 230,
+          "height": 42,
+          "right": 282,
+          "bottom": 602
+        },
+        "problem-1-less-symbol-source-card": null,
+        "problem-1-greater-symbol-source-card": null,
+        "problem-1-less-symbol": {
+          "x": 328,
+          "y": 546,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 380.15625,
+          "bottom": 622.390625
+        },
+        "problem-1-greater-symbol": {
+          "x": 438,
+          "y": 546,
+          "width": 52.15625,
+          "height": 76.390625,
+          "right": 490.15625,
+          "bottom": 622.390625
+        },
+        "problem-1-relation-slot-surface": null,
+        "problem-1-left-fraction-card": null,
+        "problem-1-right-fraction-card": null,
+        "problem-1-relation-left-fraction-card": null,
+        "problem-1-relation-right-fraction-card": null,
+        "problem-1-left-fraction-formula": {
+          "x": 614,
+          "y": 218,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 664.15625,
+          "bottom": 326.1875
+        },
+        "problem-1-right-fraction-formula": {
+          "x": 614,
+          "y": 363,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 664.15625,
+          "bottom": 471.1875
+        },
+        "problem-1-relation-left-fraction-formula": {
+          "x": 699,
+          "y": 523,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 749.15625,
+          "bottom": 631.1875
+        },
+        "problem-1-relation-right-fraction-formula": {
+          "x": 924,
+          "y": 523,
+          "width": 50.15625,
+          "height": 108.1875,
+          "right": 974.15625,
+          "bottom": 631.1875
+        },
+        "problem-1-response-label": {
+          "x": 52,
+          "y": 684,
+          "width": 360,
+          "height": 42,
+          "right": 412,
+          "bottom": 726
+        },
+        "problem-1-explanation-input-surface": null,
+        "problem-1-explanation-input": {
+          "x": 468,
+          "y": 666,
+          "width": 702,
+          "height": 80,
+          "right": 1170,
+          "bottom": 746
+        },
+        "right-toolbar": null,
+        "bottom-common-toolbar": null
+      },
+      "centerMetrics": {
+        "fractions": {
+          "problem-1-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-left-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          },
+          "problem-1-relation-right-fraction": {
+            "x": 0.078125,
+            "y": 0.09375
+          }
+        },
+        "symbols": {
+          "less": {
+            "x": 0.078125,
+            "y": 0.1953125
+          },
+          "greater": {
+            "x": 0.078125,
+            "y": 0.1953125
+          }
+        }
+      }
+    }
+  ],
+  "manipulation": {
+    "skipped": true,
+    "assertions": {},
+    "failedAssertions": []
+  },
+  "passed": false
+}

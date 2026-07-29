@@ -41,6 +41,7 @@ const context = await chromium.launchPersistentContext(userDataDirectory, {
 });
 
 const tolerance = 1.5;
+const centerTolerance = 1;
 const results = [];
 
 function contained(outer, inner) {
@@ -64,6 +65,17 @@ function intersectionArea(left, right) {
   return width * height;
 }
 
+function centerDifference(outer, inner) {
+  return {
+    x: Math.abs(
+      inner.x + inner.width / 2 - (outer.x + outer.width / 2)
+    ),
+    y: Math.abs(
+      inner.y + inner.height / 2 - (outer.y + outer.height / 2)
+    )
+  };
+}
+
 try {
   const page = context.pages()[0] ?? (await context.newPage());
   await page.goto(editorUrl, {
@@ -79,19 +91,30 @@ try {
       const rect = (elementId) => {
         const element = document.getElementById(elementId);
         if (!element) return null;
-        let bounds;
-        if (/(?:numerator|denominator)$/.test(elementId)) {
-          const textNode = element.querySelector(".text-edit")?.firstChild;
-          if (!textNode) return null;
-          const range = document.createRange();
-          range.selectNodeContents(textNode);
-          bounds = range.getBoundingClientRect();
-        } else {
-          const measuredElement = elementId.endsWith("-explanation-input")
-            ? element.querySelector("foreignObject") ?? element
-            : element;
-          bounds = measuredElement.getBoundingClientRect();
-        }
+        const measuredElement = elementId.endsWith("-explanation-input")
+          ? element.querySelector("foreignObject") ?? element
+          : element;
+        const bounds = measuredElement.getBoundingClientRect();
+        return {
+          x: bounds.x,
+          y: bounds.y,
+          width: bounds.width,
+          height: bounds.height,
+          right: bounds.right,
+          bottom: bounds.bottom
+        };
+      };
+      const visibleContentRect = (elementId) => {
+        const root = document.getElementById(elementId);
+        const mathField = root?.querySelector("math-field");
+        const shadowGlyph =
+          mathField?.shadowRoot?.querySelector(".ML__mfrac") ??
+          mathField?.shadowRoot?.querySelector(".ML__base") ??
+          mathField?.shadowRoot?.querySelector(".ML__latex");
+        const content =
+          shadowGlyph ?? mathField ?? root?.querySelector(".text-edit");
+        if (!content) return null;
+        const bounds = content.getBoundingClientRect();
         return {
           x: bounds.x,
           y: bounds.y,
@@ -125,20 +148,14 @@ try {
         `${id}-less-symbol`,
         `${id}-greater-symbol`,
         `${id}-relation-slot-surface`,
+        `${id}-left-fraction-card`,
+        `${id}-right-fraction-card`,
         `${id}-relation-left-fraction-card`,
         `${id}-relation-right-fraction-card`,
-        `${id}-left-fraction-numerator`,
-        `${id}-left-fraction-line`,
-        `${id}-left-fraction-denominator`,
-        `${id}-right-fraction-numerator`,
-        `${id}-right-fraction-line`,
-        `${id}-right-fraction-denominator`,
-        `${id}-relation-left-fraction-numerator`,
-        `${id}-relation-left-fraction-line`,
-        `${id}-relation-left-fraction-denominator`,
-        `${id}-relation-right-fraction-numerator`,
-        `${id}-relation-right-fraction-line`,
-        `${id}-relation-right-fraction-denominator`,
+        `${id}-left-fraction-formula`,
+        `${id}-right-fraction-formula`,
+        `${id}-relation-left-fraction-formula`,
+        `${id}-relation-right-fraction-formula`,
         `${id}-response-label`,
         `${id}-explanation-input-surface`,
         `${id}-explanation-input`,
@@ -146,15 +163,18 @@ try {
         "bottom-common-toolbar"
       ];
       const fractionValue = (side) => {
-        const read = (part) => {
-          const text = document
-            .querySelector(`#${id}-${side}-fraction-${part} .text-edit`)
-            ?.textContent?.trim();
-          return Number(text);
-        };
+        const formula = document.getElementById(
+          `${id}-${side}-fraction-formula`
+        );
+        const numerator = Number(
+          formula?.querySelector(".mq-numerator")?.textContent?.trim()
+        );
+        const denominator = Number(
+          formula?.querySelector(".mq-denominator")?.textContent?.trim()
+        );
         return {
-          numerator: read("numerator"),
-          denominator: read("denominator")
+          numerator,
+          denominator
         };
       };
       return {
@@ -167,6 +187,9 @@ try {
         },
         rects: Object.fromEntries(
           ids.map((elementId) => [elementId, rect(elementId)])
+        ),
+        visibleContentRects: Object.fromEntries(
+          ids.map((elementId) => [elementId, visibleContentRect(elementId)])
         ),
         fractions: {
           left: fractionValue("left"),
@@ -189,6 +212,7 @@ try {
     await page.waitForTimeout(900);
     const state = await measure();
     const rects = state.rects;
+    const visibleContentRects = state.visibleContentRects;
     const fractionPrefixes = [
       `${problemId}-left-fraction`,
       `${problemId}-right-fraction`,
@@ -265,17 +289,21 @@ try {
             bounds && contained(rects[`${problemId}-symbol-panel`], bounds)
         ),
       responseIntegrated:
+        rects[`${problemId}-response-panel`] &&
         rects[`${problemId}-explanation-input-surface`] &&
-        [
-          rects[`${problemId}-response-label`],
+        rects[`${problemId}-response-label`] &&
+        rects[`${problemId}-explanation-input`] &&
+        contained(
+          rects[`${problemId}-response-panel`],
+          rects[`${problemId}-response-label`]
+        ) &&
+        contained(
+          rects[`${problemId}-response-panel`],
+          rects[`${problemId}-explanation-input-surface`]
+        ) &&
+        contained(
+          rects[`${problemId}-explanation-input-surface`],
           rects[`${problemId}-explanation-input`]
-        ].every(
-          (bounds) =>
-            bounds &&
-            contained(
-              rects[`${problemId}-explanation-input-surface`],
-              bounds
-            )
         ),
       sourceCueRequiresAlignment:
         typeof leftSourceEnd === "number" &&
@@ -295,17 +323,24 @@ try {
           rects[`${problemId}-start-label`],
           rects[`${problemId}-start-line`]
         ) === 0,
-      composedFractionsCentered: fractionPrefixes.every((prefix) => {
-        const numerator = rects[`${prefix}-numerator`];
-        const line = rects[`${prefix}-line`];
-        const denominator = rects[`${prefix}-denominator`];
-        if (!numerator || !line || !denominator) return false;
-        const lineCenter = line.x + line.width / 2;
+      nativeFractionFormulasInsideCards: fractionPrefixes.every((prefix) => {
+        const card = rects[`${prefix}-card`];
+        const formula = visibleContentRects[`${prefix}-formula`];
+        if (!card || !formula || !contained(card, formula)) return false;
+        const difference = centerDifference(card, formula);
         return (
-          Math.abs(numerator.x + numerator.width / 2 - lineCenter) <= 3 &&
-          Math.abs(denominator.x + denominator.width / 2 - lineCenter) <= 3 &&
-          numerator.bottom <= line.y + tolerance &&
-          denominator.y >= line.bottom - tolerance
+          difference.x <= centerTolerance &&
+          difference.y <= centerTolerance
+        );
+      }),
+      comparisonSymbolsCenteredInCards: ["less", "greater"].every((kind) => {
+        const card = rects[`${problemId}-${kind}-symbol-source-card`];
+        const symbol = visibleContentRects[`${problemId}-${kind}-symbol`];
+        if (!card || !symbol || !contained(card, symbol)) return false;
+        const difference = centerDifference(card, symbol);
+        return (
+          difference.x <= centerTolerance &&
+          difference.y <= centerTolerance
         );
       }),
       responseLabelInputGap:
@@ -349,7 +384,28 @@ try {
       assertions,
       failedAssertions,
       requiredIds,
-      rects
+      rects,
+      visibleContentRects,
+      centerMetrics: {
+        fractions: Object.fromEntries(
+          fractionPrefixes.map((prefix) => [
+            prefix,
+            centerDifference(
+              rects[`${prefix}-card`],
+              visibleContentRects[`${prefix}-formula`]
+            )
+          ])
+        ),
+        symbols: Object.fromEntries(
+          ["less", "greater"].map((kind) => [
+            kind,
+            centerDifference(
+              rects[`${problemId}-${kind}-symbol-source-card`],
+              visibleContentRects[`${problemId}-${kind}-symbol`]
+            )
+          ])
+        )
+      }
     });
     await page.screenshot({
       path: resolve(outputDirectory, `${viewport.name}-before.png`),
@@ -391,7 +447,7 @@ try {
       );
       await page.mouse.down();
       await page.mouse.move(
-        target.x + Math.min(source.width / 2, target.width / 2),
+        target.x + target.width / 2,
         target.y + target.height / 2,
         { steps: 16 }
       );
@@ -401,28 +457,25 @@ try {
 
     await drag(`${problemId}-left-strip`, `${problemId}-left-lane-surface`);
     await drag(`${problemId}-right-strip`, `${problemId}-right-lane-surface`);
-    async function readInteger(elementId) {
-      const text = await page
-        .locator(`#${elementId} .text-edit`)
-        .textContent();
-      const value = Number(text?.trim());
-      if (!Number.isInteger(value)) {
-        throw new Error(`${elementId}에서 분수 값을 읽지 못했습니다.`);
+    async function readFraction(side) {
+      const formula = page.locator(`#${problemId}-${side}-fraction-formula`);
+      const numerator = Number(
+        (await formula.locator(".mq-numerator").textContent())?.trim()
+      );
+      const denominator = Number(
+        (await formula.locator(".mq-denominator").textContent())?.trim()
+      );
+      if (!Number.isInteger(numerator) || !Number.isInteger(denominator)) {
+        throw new Error(`${side} 분수식에서 값을 읽지 못했습니다.`);
       }
-      return value;
+      return { numerator, denominator };
     }
-    const leftNumerator = await readInteger(
-      `${problemId}-left-fraction-numerator`
-    );
-    const leftDenominator = await readInteger(
-      `${problemId}-left-fraction-denominator`
-    );
-    const rightNumerator = await readInteger(
-      `${problemId}-right-fraction-numerator`
-    );
-    const rightDenominator = await readInteger(
-      `${problemId}-right-fraction-denominator`
-    );
+    const left = await readFraction("left");
+    const right = await readFraction("right");
+    const leftNumerator = left.numerator;
+    const leftDenominator = left.denominator;
+    const rightNumerator = right.numerator;
+    const rightDenominator = right.denominator;
     const leftFraction = `${leftNumerator}/${leftDenominator}`;
     const rightFraction = `${rightNumerator}/${rightDenominator}`;
     const leftIsLarger =
@@ -492,10 +545,20 @@ try {
             afterManipulation.rects[`${problemId}-right-lane-surface`].x
         ) <= 4,
       symbolMovedToSlot:
-        intersectionArea(
-          afterManipulation.rects[`${problemId}-${symbolKind}-symbol`],
-          afterManipulation.rects[`${problemId}-relation-slot-surface`]
-        ) > 0,
+        (() => {
+          const slot =
+            afterManipulation.rects[`${problemId}-relation-slot-surface`];
+          const symbol =
+            afterManipulation.visibleContentRects[
+              `${problemId}-${symbolKind}-symbol`
+            ];
+          if (!slot || !symbol || !contained(slot, symbol)) return false;
+          const difference = centerDifference(slot, symbol);
+          return (
+            difference.x <= centerTolerance &&
+            difference.y <= centerTolerance
+          );
+        })(),
       movedStripsDoNotCoverFixedText: movedStripAfterIds.every((stripId) =>
         fixedTextAfterIds.every(
           (textId) =>

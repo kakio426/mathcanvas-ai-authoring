@@ -20,7 +20,7 @@ import {
 } from "@mathcanvas/contracts";
 import { LEARNING_MAP_COMMIT } from "@mathcanvas/curriculum";
 
-export const FRACTION_TEMPLATE_VERSION = "2.3.0" as const;
+export const FRACTION_TEMPLATE_VERSION = "2.4.2" as const;
 
 export const fractionComparisonTemplateDefinition: TemplateDefinition =
   templateDefinitionSchema.parse({
@@ -394,9 +394,9 @@ function buildCanvasActivity(
       {
         id: `${prefix}-response-label`,
         kind: "label",
-        bounds: { x: 260, y: 680, width: 170, height: 42 },
+        bounds: { x: 68, y: 672, width: 360, height: 42 },
         locked: true,
-        text: "3. 까닭을 써요"
+        text: "3. 더 긴 띠와 까닭을 써요 →"
       }
     ],
     movableObjects: [
@@ -446,8 +446,8 @@ function buildCanvasActivity(
         id: `${prefix}-explanation-input`,
         kind: "explanation-text",
         problemId: prefix,
-        bounds: { x: 240, y: 662, width: 970, height: 88 },
-        placeholder: "어느 띠가 더 긴지 한 줄로 써요.",
+        bounds: { x: 460, y: 654, width: 750, height: 80 },
+        placeholder: "더 긴 띠와 까닭을 한 줄로 써요.",
         editable: true,
         collectResponse: false
       }

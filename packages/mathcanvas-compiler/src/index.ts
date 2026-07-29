@@ -115,7 +115,7 @@ export function compileCanvasActivitySpec(
         distance: { x: 40, y: 40 },
         isGridToggle: false
       },
-      scale: 5,
+      scale: 2,
       lockIds: native.lockedIds.map((id) => [id]),
       viewBox: spec.layout.viewBox,
       CR07BSArr: [],

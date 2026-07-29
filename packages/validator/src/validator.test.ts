@@ -257,48 +257,93 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     );
   });
 
-  it("분수 카드를 math-latex 분수식으로 되돌리면 차단한다", () => {
+  it("새 활동지가 기본 120% 배율이 아니면 차단한다", () => {
     const { spec, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
-    const numerator = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-numerator"
-    )!;
-    numerator.svgId = "math-latex";
-    numerator.text = "\\frac{3}{4}";
+    payload.canvasOption.scale = 5;
     const result = validateForCreation(spec, withPayload(compiled, payload));
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
-      "latex-fraction-formula-forbidden"
+      "project-contract-mismatch"
     );
   });
 
-  it("분모가 분수 카드 밖으로 나가면 차단한다", () => {
+  it("분수 카드가 math-latex 분수식이 아니면 차단한다", () => {
     const { spec, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
-    const denominator = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-denominator"
+    const formula = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-formula"
     )!;
-    denominator.y = 300;
-    denominator._y = 300;
+    formula.svgId = "input-text";
     const result = validateForCreation(spec, withPayload(compiled, payload));
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
-      "composed-fraction-card-invalid"
+      "native-fraction-formula-invalid"
     );
   });
 
-  it("분자 중심이 분수선 중심에서 벗어나면 차단한다", () => {
+  it("분수 수식이 카드 밖으로 나가면 차단한다", () => {
     const { spec, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
-    const numerator = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-numerator"
+    const formula = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-formula"
     )!;
-    numerator.x = Number(numerator.x) + 8;
-    numerator._x = Number(numerator._x) + 8;
+    formula.x = 300;
+    formula._x = 300;
     const result = validateForCreation(spec, withPayload(compiled, payload));
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
-      "composed-fraction-card-invalid"
+      "native-fraction-formula-invalid"
+    );
+  });
+
+  it("분수 수식이 카드 안에서 가운데를 벗어나면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const formula = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-formula"
+    )!;
+    formula.x = Number(formula.x) + 4;
+    formula._x = formula.x;
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "native-fraction-formula-invalid"
+    );
+  });
+
+  it("두 자리 분모의 수식 폭을 한 자리 폭으로 줄이면 차단한다", () => {
+    const { spec: fixtureSpec } = fixture();
+    const spec = structuredClone(fixtureSpec);
+    spec.problem.left = { numerator: 7, denominator: 12 };
+    spec.problem.right = { numerator: 2, denominator: 3 };
+    spec.problem.correctRelation = "<";
+    spec.canvasHash = canvasActivityHash(spec);
+    const compiled = compileCanvasActivitySpec(spec);
+    const payload = structuredClone(compiled.payload);
+    const formula = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-formula"
+    )!;
+    formula.width = 50;
+    formula._width = 50;
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "native-fraction-formula-invalid"
+    );
+  });
+
+  it("분수 수식의 값이 문제와 다르면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const formula = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-formula"
+    )!;
+    formula.text = "\\frac{1}{99}";
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "native-fraction-formula-invalid"
     );
   });
 
@@ -310,6 +355,21 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     )!;
     card.point1 = [800, 530];
     card.point2 = [880, 610];
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "symbol-source-card-invalid"
+    );
+  });
+
+  it("비교 기호가 준비 카드 가운데를 벗어나면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const symbol = payload.contentsJson.find(
+      (object) => object.id === "problem-1-less-symbol"
+    )!;
+    symbol.y = Number(symbol.y) + 3;
+    symbol._y = symbol.y;
     const result = validateForCreation(spec, withPayload(compiled, payload));
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
@@ -399,13 +459,13 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     );
   });
 
-  it("‘까닭’ 안내가 입력 상자 밖으로 나가면 차단한다", () => {
+  it("‘까닭’ 안내가 응답 패널 밖으로 나가면 차단한다", () => {
     const { spec } = fixture();
     const changed = structuredClone(spec);
     const label = changed.fixedObjects.find(
       (object) => object.id === `${changed.problem.id}-response-label`
     )!;
-    label.bounds.x = 60;
+    label.bounds.x = 0;
     changed.canvasHash = canvasActivityHash(changed);
     const compiled = compileCanvasActivitySpec(changed);
     const result = validateForCreation(changed, compiled);
@@ -415,7 +475,7 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     );
   });
 
-  it("‘까닭’ 안내와 입력 글자 사이 간격이 부족하면 차단한다", () => {
+  it("‘까닭’ 안내와 빈 입력칸 사이 간격이 부족하면 차단한다", () => {
     const { spec, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
     const label = spec.fixedObjects.find(

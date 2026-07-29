@@ -13,7 +13,8 @@ import {
 import {
   CREATE_PROJECT_ENDPOINT,
   FRACTION_SVG_BY_DENOMINATOR,
-  compileCanvasActivitySpec
+  compileCanvasActivitySpec,
+  nativeFractionFormulaBounds
 } from "./index.js";
 
 function compiled() {
@@ -71,6 +72,7 @@ describe("MathCanvas 컴파일러", () => {
     expect(result.payload.categoryId).toBe("rJa0d46MAy");
     expect(result.payload.studyLevel).toBe("elementary");
     expect(result.payload.isNoteworthy).toBe(false);
+    expect(result.payload.canvasOption.scale).toBe(2);
     expect(result.payload.projectTitle).toMatch(
       /^분수 띠로 크기 비교하기 · 5학년 · 보통 · 1\/4 \[AI-[A-F0-9]{12}\]$/
     );
@@ -166,72 +168,92 @@ describe("MathCanvas 컴파일러", () => {
     ).toBe(true);
   });
 
-  it("분수는 math-latex 없이 카드 안의 분자·분수선·분모로 만든다", () => {
-    const { compiled: result } = compiled();
-    expect(
-      result.payload.contentsJson.some(
-        (object) =>
-          object.svgId === "math-latex" &&
-          typeof object.text === "string" &&
-          object.text.includes("\\frac")
-      )
-    ).toBe(false);
+  it("읽는 분수는 수식 메뉴 계약의 한 개짜리 math-latex 객체로 만든다", () => {
+    const { spec, compiled: result } = compiled();
+    const contracts = [
+      ["problem-1-left-fraction", spec.problem.left],
+      ["problem-1-right-fraction", spec.problem.right],
+      ["problem-1-relation-left-fraction", spec.problem.left],
+      ["problem-1-relation-right-fraction", spec.problem.right]
+    ] as const;
 
+    for (const [prefix, fraction] of contracts) {
+      const card = result.payload.contentsJson.find(
+        (object) => object.id === `${prefix}-card`
+      )!;
+      const formula = result.payload.contentsJson.find(
+        (object) => object.id === `${prefix}-formula`
+      )!;
+      const [cardX, cardY] = card.point1 as [number, number];
+      const [cardRight, cardBottom] = card.point2 as [number, number];
+      expect(formula).toMatchObject({
+        svgId: "math-latex",
+        text: `\\frac{${fraction.numerator}}{${fraction.denominator}}`,
+        fill: "transparent",
+        parent: null,
+        isTextEditFontSize: true,
+        isMoveRotateHandler: false
+      });
+      expect(Number(formula.x)).toBeGreaterThanOrEqual(cardX);
+      expect(Number(formula.y)).toBeGreaterThanOrEqual(cardY);
+      expect(Number(formula.x) + Number(formula.width)).toBeLessThanOrEqual(
+        cardRight
+      );
+      expect(Number(formula.y) + Number(formula.height)).toBeLessThanOrEqual(
+        cardBottom
+      );
+      expect(
+        Number(formula.x) + Number(formula.width) / 2
+      ).toBe((cardX + cardRight) / 2 + 1);
+      expect(
+        Number(formula.y) + Number(formula.height) / 2
+      ).toBe((cardY + cardBottom) / 2);
+      expect(
+        result.payload.contentsJson.some((object) =>
+          [`${prefix}-numerator`, `${prefix}-line`, `${prefix}-denominator`]
+            .includes(String(object.id))
+        )
+      ).toBe(false);
+    }
+  });
+
+  it("두 자리 분모는 글리프가 잘리지 않는 넓은 수식 상자를 쓴다", () => {
+    const { spec: fixtureSpec } = compiled();
+    const spec = structuredClone(fixtureSpec);
+    spec.problem.left = { numerator: 7, denominator: 12 };
+    spec.problem.right = { numerator: 2, denominator: 3 };
+    spec.problem.correctRelation = "<";
+    spec.canvasHash = canvasActivityHash(spec);
+
+    const result = compileCanvasActivitySpec(spec);
     for (const prefix of [
       "problem-1-left-fraction",
-      "problem-1-right-fraction",
-      "problem-1-relation-left-fraction",
-      "problem-1-relation-right-fraction"
+      "problem-1-relation-left-fraction"
     ]) {
       const card = result.payload.contentsJson.find(
         (object) => object.id === `${prefix}-card`
       )!;
-      const numerator = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-numerator`
-      )!;
-      const line = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-line`
-      )!;
-      const denominator = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-denominator`
+      const formula = result.payload.contentsJson.find(
+        (object) => object.id === `${prefix}-formula`
       )!;
       const [cardX, cardY] = card.point1 as [number, number];
       const [cardRight, cardBottom] = card.point2 as [number, number];
-      expect(numerator).toMatchObject({
-        svgId: "input-text",
-        fontSize: 32
-      });
-      expect(line).toMatchObject({ svgId: "drawElem" });
-      expect(denominator).toMatchObject({
-        svgId: "input-text",
-        fontSize: 32
-      });
-      for (const piece of [numerator, denominator]) {
-        expect(Number(piece.x)).toBeGreaterThanOrEqual(cardX);
-        expect(Number(piece.y)).toBeGreaterThanOrEqual(cardY);
-        expect(Number(piece.x) + Number(piece.width)).toBeLessThanOrEqual(
-          cardRight
-        );
-        expect(Number(piece.y) + Number(piece.height)).toBeLessThanOrEqual(
-          cardBottom
-        );
-      }
-      const [lineX, lineY] = line.point1 as [number, number];
-      const [lineRight, lineBottom] = line.point2 as [number, number];
-      expect(lineX).toBeGreaterThanOrEqual(cardX);
-      expect(lineY).toBeGreaterThanOrEqual(cardY);
-      expect(lineRight).toBeLessThanOrEqual(cardRight);
-      expect(lineBottom).toBeLessThanOrEqual(cardBottom);
-      const lineCenter = (lineX + lineRight) / 2;
-      for (const piece of [numerator, denominator]) {
-        expect(
-          Number(piece.x) + Number(piece.width) / 2
-        ).toBeCloseTo(lineCenter);
-      }
-      expect(Number(numerator.y) + Number(numerator.height)).toBeLessThan(
-        lineY
+      const expected = nativeFractionFormulaBounds(
+        {
+          x: cardX,
+          y: cardY,
+          width: cardRight - cardX,
+          height: cardBottom - cardY
+        },
+        7,
+        12
       );
-      expect(Number(denominator.y)).toBeGreaterThan(lineBottom);
+      expect(formula).toMatchObject({
+        text: "\\frac{7}{12}",
+        ...expected
+      });
+      expect(expected.width).toBe(76);
+      expect(expected.x + expected.width).toBeLessThanOrEqual(cardRight);
     }
   });
 
@@ -321,7 +343,10 @@ describe("MathCanvas 컴파일러", () => {
     expect(less).toMatchObject({
       svgId: "math-latex",
       text: "<",
-      isMoveRotateHandler: false
+      isMoveRotateHandler: false,
+      fontSize: 52,
+      width: 52,
+      height: 76
     });
     expect(response).toMatchObject({
       svgId: "input-text",
@@ -329,13 +354,14 @@ describe("MathCanvas 컴파일러", () => {
       isTextEditFontSize: false,
       isMoveRotateHandler: false,
       playgroundIndex: 2,
-      x: spec.inputObjects[0]!.bounds.x + 210,
-      width: spec.inputObjects[0]!.bounds.width - 210
+      text: "\u200B",
+      x: spec.inputObjects[0]!.bounds.x + 24,
+      width: spec.inputObjects[0]!.bounds.width - 48
     });
     expect(responseSurface).toMatchObject({
       svgId: "drawElem",
-      fill: "#FFFFFF",
-      stroke: "#718398",
+      fill: "#FFF9E8",
+      stroke: "#2F78C4",
       isMoveRotateHandler: false
     });
     for (const card of [lessCard, greaterCard]) {
@@ -347,6 +373,14 @@ describe("MathCanvas 컴파일러", () => {
       expect(x).toBeGreaterThanOrEqual(0);
       expect(y).toBeGreaterThanOrEqual(0);
     }
+    const [lessCardX, lessCardY] = lessCard.point1 as [number, number];
+    const [lessCardRight, lessCardBottom] = lessCard.point2 as [number, number];
+    expect(Number(less.x) + Number(less.width) / 2).toBe(
+      (lessCardX + lessCardRight) / 2 + 1
+    );
+    expect(Number(less.y) + Number(less.height) / 2).toBe(
+      (lessCardY + lessCardBottom) / 2
+    );
   });
 
   it("캔버스 내용이 바뀌면 같은 세트에서도 생성 표식이 달라진다", () => {

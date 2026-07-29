@@ -177,12 +177,20 @@ describe("분수 비교 템플릿", () => {
         .map((object) => object.mathematicalDecision)
         .join(" ");
       expect(decisions).toContain("띠");
-      expect(canvas.inputObjects[0]?.placeholder).toContain("한 줄");
+      expect(canvas.inputObjects[0]?.placeholder).toBe(
+        "더 긴 띠와 까닭을 한 줄로 써요."
+      );
       expect(
         canvas.fixedObjects.find(
           (object) => object.id === `${canvas.problem.id}-response-label`
         )?.text
-      ).toBe("3. 까닭을 써요");
+      ).toBe("3. 더 긴 띠와 까닭을 써요 →");
+      expect(canvas.inputObjects[0]?.bounds).toEqual({
+        x: 460,
+        y: 654,
+        width: 750,
+        height: 80
+      });
       expect(
         canvas.fixedObjects.find(
           (object) => object.id === `${canvas.problem.id}-start-label`

@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-07-29T04:26:46.219Z",
+  "results": [
+    {
+      "index": 1,
+      "url": "https://mathcanvas.vivasam.com/ko/view/g6RTfb",
+      "activeItems": 0,
+      "formulaCount": 4,
+      "formulas": [
+        "\\frac{3}{8}",
+        "\\frac{3}{5}",
+        "\\frac{3}{8}",
+        "\\frac{3}{5}"
+      ],
+      "formulasInsideCards": true,
+      "legacyCount": 0,
+      "matWidth": 1180,
+      "responseBlank": true,
+      "responseGapToToolbar": 15.5,
+      "responseVisible": true,
+      "rowsSeparated": true,
+      "toolbarsClear": true,
+      "viewport": {
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true
+    },
+    {
+      "index": 2,
+      "url": "https://mathcanvas.vivasam.com/ko/view/gErsoC",
+      "activeItems": 0,
+      "formulaCount": 4,
+      "formulas": [
+        "\\frac{5}{6}",
+        "\\frac{3}{5}",
+        "\\frac{5}{6}",
+        "\\frac{3}{5}"
+      ],
+      "formulasInsideCards": true,
+      "legacyCount": 0,
+      "matWidth": 1180,
+      "responseBlank": true,
+      "responseGapToToolbar": 15.5,
+      "responseVisible": true,
+      "rowsSeparated": true,
+      "toolbarsClear": true,
+      "viewport": {
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true
+    },
+    {
+      "index": 3,
+      "url": "https://mathcanvas.vivasam.com/ko/view/r1CQT2",
+      "activeItems": 0,
+      "formulaCount": 4,
+      "formulas": [
+        "\\frac{4}{5}",
+        "\\frac{4}{7}",
+        "\\frac{4}{5}",
+        "\\frac{4}{7}"
+      ],
+      "formulasInsideCards": true,
+      "legacyCount": 0,
+      "matWidth": 1180,
+      "responseBlank": true,
+      "responseGapToToolbar": 15.5,
+      "responseVisible": true,
+      "rowsSeparated": true,
+      "toolbarsClear": true,
+      "viewport": {
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true
+    },
+    {
+      "index": 4,
+      "url": "https://mathcanvas.vivasam.com/ko/view/hmecJV",
+      "activeItems": 0,
+      "formulaCount": 4,
+      "formulas": [
+        "\\frac{3}{4}",
+        "\\frac{3}{5}",
+        "\\frac{3}{4}",
+        "\\frac{3}{5}"
+      ],
+      "formulasInsideCards": true,
+      "legacyCount": 0,
+      "matWidth": 1180,
+      "responseBlank": true,
+      "responseGapToToolbar": 15.5,
+      "responseVisible": true,
+      "rowsSeparated": true,
+      "toolbarsClear": true,
+      "viewport": {
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true
+    }
+  ]
+}
