@@ -95,7 +95,9 @@ export function compileCanvasActivitySpec(
     canvasIndex: spec.canvasIndex,
     seed: spec.seed,
     templateId: spec.templateId,
-    templateVersion: spec.templateVersion
+    templateVersion: spec.templateVersion,
+    canvasHash: spec.canvasHash,
+    nativeContentsHash: sha256Hex(native)
   })
     .slice(0, 12)
     .toUpperCase();

@@ -44,6 +44,52 @@ function intersects(left: Bounds, right: Bounds): boolean {
   );
 }
 
+function contains(outer: Bounds, inner: Bounds): boolean {
+  return (
+    inner.x >= outer.x &&
+    inner.y >= outer.y &&
+    inner.x + inner.width <= outer.x + outer.width &&
+    inner.y + inner.height <= outer.y + outer.height
+  );
+}
+
+function sameBounds(left: Bounds | undefined, right: Bounds): boolean {
+  return (
+    left?.x === right.x &&
+    left.y === right.y &&
+    left.width === right.width &&
+    left.height === right.height
+  );
+}
+
+function nativeBounds(
+  object: Record<string, unknown> | undefined
+): Bounds | undefined {
+  if (!object) return undefined;
+  if (
+    Array.isArray(object.point1) &&
+    Array.isArray(object.point2) &&
+    object.point1.length >= 2 &&
+    object.point2.length >= 2
+  ) {
+    const x = Number(object.point1[0]);
+    const y = Number(object.point1[1]);
+    const right = Number(object.point2[0]);
+    const bottom = Number(object.point2[1]);
+    if ([x, y, right, bottom].every(Number.isFinite)) {
+      return { x, y, width: right - x, height: bottom - y };
+    }
+  }
+  const x = Number(object.x);
+  const y = Number(object.y);
+  const width = Number(object.width);
+  const height = Number(object.height);
+  if ([x, y, width, height].every(Number.isFinite)) {
+    return { x, y, width, height };
+  }
+  return undefined;
+}
+
 function issue(
   issues: ValidationIssue[],
   code: string,
@@ -294,6 +340,22 @@ export function validateForCreation(
       );
     }
   }
+  const leftModel = models.find((model) => model.role === "left-strip");
+  const rightModel = models.find((model) => model.role === "right-strip");
+  if (leftModel && rightModel && actualRelation !== "=") {
+    const leftEnd = leftModel.bounds.x + leftModel.bounds.width;
+    const rightEnd = rightModel.bounds.x + rightModel.bounds.width;
+    const opposingCueGap =
+      actualRelation === ">" ? rightEnd - leftEnd : leftEnd - rightEnd;
+    if (opposingCueGap < spec.layout.minGap) {
+      issue(
+        issues,
+        "source-layout-does-not-require-alignment",
+        "pedagogy",
+        "준비 상자의 띠 끝만 보고 답을 고를 수 없도록, 옮기기 전 위치는 실제 관계와 반대여야 합니다."
+      );
+    }
+  }
 
   const lanes = spec.placementGuides.filter(
     (guide) => guide.kind === "comparison-lane"
@@ -305,6 +367,12 @@ export function validateForCreation(
   const wholeWidth = models[0]?.wholeWidth;
   const startLine = spec.fixedObjects.find(
     (object) => object.kind === "common-start-line"
+  );
+  const targetLabel = spec.fixedObjects.find(
+    (object) => object.id === `${problem.id}-target-label`
+  );
+  const startLabel = spec.fixedObjects.find(
+    (object) => object.id === `${problem.id}-start-label`
   );
   if (
     lanes.length !== 2 ||
@@ -328,6 +396,19 @@ export function validateForCreation(
     );
   }
   if (
+    !targetLabel ||
+    !startLabel ||
+    intersects(targetLabel.bounds, startLabel.bounds) ||
+    (startLine && intersects(startLabel.bounds, startLine.bounds))
+  ) {
+    issue(
+      issues,
+      "target-instructions-overlap",
+      "layout",
+      "목표 안내, 출발선 이름, 출발선은 서로 겹치지 않아야 합니다."
+    );
+  }
+  if (
     lanes.length === 2 &&
     intersects(lanes[0]!.bounds, lanes[1]!.bounds)
   ) {
@@ -347,6 +428,23 @@ export function validateForCreation(
       "relation-slot-overlaps-lane",
       "layout",
       "기호 자리와 분수 띠 자리가 겹칩니다."
+    );
+  }
+  if (
+    startLine &&
+    models.some(
+      (model) =>
+        lanes.some((lane) => intersects(model.bounds, lane.bounds)) ||
+        intersects(model.bounds, startLine.bounds) ||
+        model.bounds.x + model.bounds.width + spec.layout.minGap >
+          (commonStartX ?? 0)
+    )
+  ) {
+    issue(
+      issues,
+      "fraction-source-not-separated",
+      "layout",
+      "끌기 전 분수 띠는 빈 목표 자리와 출발선에서 떨어진 준비 상자 안에 있어야 합니다."
     );
   }
 
@@ -441,6 +539,10 @@ export function validateForCreation(
   if (
     !response ||
     symbols.some((symbol) => intersects(symbol.bounds, response.bounds)) ||
+    (relationSlots[0] &&
+      symbols.some((symbol) =>
+        intersects(symbol.bounds, relationSlots[0]!.bounds)
+      )) ||
     Math.min(...symbols.map((symbol) => symbol.bounds.y + symbol.bounds.height)) >
       response.bounds.y
   ) {
@@ -466,6 +568,21 @@ export function validateForCreation(
       "MathCanvas 네이티브 객체 ID가 없거나 중복됩니다."
     );
   }
+  if (
+    compiled.payload.contentsJson.some(
+      (object) =>
+        object.svgId === "math-latex" &&
+        typeof object.text === "string" &&
+        object.text.includes("\\frac")
+    )
+  ) {
+    issue(
+      issues,
+      "latex-fraction-formula-forbidden",
+      "layout",
+      "분수 표시는 카드 안의 잠긴 분자·분수선·분모로 만들어야 합니다."
+    );
+  }
   for (const fixed of spec.fixedObjects) {
     if (!nativeById.has(fixed.id) || !lockedIds.has(fixed.id)) {
       issue(
@@ -473,6 +590,91 @@ export function validateForCreation(
         "fixed-object-invalid",
         "interaction",
         `${fixed.id}가 없거나 잠겨 있지 않습니다.`
+      );
+    }
+  }
+  const panelContracts = [
+    {
+      id: `${problem.id}-source-panel`,
+      bounds: { x: 60, y: 130, width: 500, height: 350 }
+    },
+    {
+      id: `${problem.id}-target-panel`,
+      bounds: { x: 590, y: 130, width: 620, height: 350 }
+    },
+    {
+      id: `${problem.id}-symbol-panel`,
+      bounds: { x: 40, y: 500, width: 1180, height: 130 }
+    },
+    {
+      id: `${problem.id}-response-panel`,
+      bounds: { x: 40, y: 645, width: 1180, height: 125 }
+    }
+  ] as const;
+  for (const panel of panelContracts) {
+    const nativePanel = nativeById.get(panel.id);
+    if (
+      nativePanel?.svgId !== "drawElem" ||
+      !sameBounds(nativeBounds(nativePanel), panel.bounds) ||
+      !lockedIds.has(panel.id)
+    ) {
+      issue(
+        issues,
+        "layout-panel-contract-invalid",
+        "layout",
+        `${panel.id}의 위치·크기·잠금 상태가 화면 계약과 다릅니다.`
+      );
+    }
+  }
+  const panelChildContracts = [
+    {
+      panelId: `${problem.id}-source-panel`,
+      childIds: [
+        ...models.map((model) => `${model.id}-source-card`),
+        `${problem.id}-move-step-label`
+      ]
+    },
+    {
+      panelId: `${problem.id}-target-panel`,
+      childIds: [
+        ...lanes.map((lane) => `${lane.id}-surface`),
+        `${problem.id}-start-line`,
+        `${problem.id}-left-fraction-card`,
+        `${problem.id}-right-fraction-card`,
+        `${problem.id}-target-label`,
+        `${problem.id}-start-label`
+      ]
+    },
+    {
+      panelId: `${problem.id}-symbol-panel`,
+      childIds: [
+        ...(relationSlots[0] ? [`${relationSlots[0].id}-surface`] : []),
+        ...symbols.map((symbol) => `${symbol.id}-source-card`),
+        `${problem.id}-relation-left-fraction-card`,
+        `${problem.id}-relation-right-fraction-card`,
+        `${problem.id}-symbol-label`
+      ]
+    },
+    {
+      panelId: `${problem.id}-response-panel`,
+      childIds: [
+        ...(response ? [`${response.id}-surface`] : []),
+        `${problem.id}-response-label`
+      ]
+    }
+  ];
+  for (const contract of panelChildContracts) {
+    const panelBounds = nativeBounds(nativeById.get(contract.panelId));
+    const invalidChildId = contract.childIds.find((childId) => {
+      const childBounds = nativeBounds(nativeById.get(childId));
+      return !panelBounds || !childBounds || !contains(panelBounds, childBounds);
+    });
+    if (invalidChildId) {
+      issue(
+        issues,
+        "layout-panel-contract-invalid",
+        "layout",
+        `${invalidChildId}가 ${contract.panelId} 안에 들어 있지 않습니다.`
       );
     }
   }
@@ -536,6 +738,7 @@ export function validateForCreation(
       native.count !== model.fraction.numerator ||
       native.divider !== model.fraction.denominator ||
       native.defaultWidth !== model.wholeWidth ||
+      Math.abs(Number(native.width) - expectedGeometricWidth) > 0.001 ||
       native.isMoveRotateHandler !== false ||
       native.isFillChange !== false ||
       native.isSplit !== false ||
@@ -609,6 +812,25 @@ export function validateForCreation(
         `${model.id}의 실제 좌표가 원래 자리나 출발선 안내와 맞지 않습니다.`
       );
     }
+
+    const sourceCardId = `${model.id}-source-card`;
+    const sourceCard = nativeById.get(sourceCardId);
+    const sourceCardBounds = nativeBounds(sourceCard);
+    if (
+      sourceCard?.svgId !== "drawElem" ||
+      !sourceCardBounds ||
+      !contains(sourceCardBounds, model.bounds) ||
+      lanes.some((lane) => intersects(sourceCardBounds, lane.bounds)) ||
+      (startLine && intersects(sourceCardBounds, startLine.bounds)) ||
+      !lockedIds.has(sourceCardId)
+    ) {
+      issue(
+        issues,
+        "fraction-source-card-invalid",
+        "layout",
+        `${model.id}의 끌기 준비 상자가 없거나 목표 자리와 겹칩니다.`
+      );
+    }
   }
 
   for (const symbol of symbols) {
@@ -626,8 +848,102 @@ export function validateForCreation(
         `${symbol.id}가 이동 전용 기호 계약과 다릅니다.`
       );
     }
+    const sourceCardId = `${symbol.id}-source-card`;
+    const sourceCard = nativeById.get(sourceCardId);
+    const sourceCardBounds = nativeBounds(sourceCard);
+    if (
+      sourceCard?.svgId !== "drawElem" ||
+      !sourceCardBounds ||
+      !contains(sourceCardBounds, symbol.bounds) ||
+      (relationSlots[0] &&
+        intersects(sourceCardBounds, relationSlots[0].bounds)) ||
+      (response && intersects(sourceCardBounds, response.bounds)) ||
+      !lockedIds.has(sourceCardId)
+    ) {
+      issue(
+        issues,
+        "symbol-source-card-invalid",
+        "layout",
+        `${symbol.id}의 기호 준비 카드가 없거나 기호 자리·입력칸과 겹칩니다.`
+      );
+    }
+  }
+
+  const fractionCardPrefixes = [
+    `${problem.id}-left-fraction`,
+    `${problem.id}-right-fraction`,
+    `${problem.id}-relation-left-fraction`,
+    `${problem.id}-relation-right-fraction`
+  ];
+  for (const prefix of fractionCardPrefixes) {
+    const cardId = `${prefix}-card`;
+    const card = nativeById.get(cardId);
+    const cardBounds = nativeBounds(card);
+    const numerator = nativeById.get(`${prefix}-numerator`);
+    const line = nativeById.get(`${prefix}-line`);
+    const denominator = nativeById.get(`${prefix}-denominator`);
+    const numeratorBounds = nativeBounds(numerator);
+    const lineBounds = nativeBounds(line);
+    const denominatorBounds = nativeBounds(denominator);
+    const pieces = [numerator, line, denominator];
+    if (
+      card?.svgId !== "drawElem" ||
+      !cardBounds ||
+      numerator?.svgId !== "input-text" ||
+      line?.svgId !== "drawElem" ||
+      denominator?.svgId !== "input-text" ||
+      pieces.some((piece) => {
+        const bounds = nativeBounds(piece);
+        return !bounds || !contains(cardBounds, bounds);
+      }) ||
+      !numeratorBounds ||
+      !lineBounds ||
+      !denominatorBounds ||
+      Math.abs(
+        numeratorBounds.x +
+          numeratorBounds.width / 2 -
+          (lineBounds.x + lineBounds.width / 2)
+      ) > 0.001 ||
+      Math.abs(
+        denominatorBounds.x +
+          denominatorBounds.width / 2 -
+          (lineBounds.x + lineBounds.width / 2)
+      ) > 0.001 ||
+      numeratorBounds.y + numeratorBounds.height >= lineBounds.y ||
+      denominatorBounds.y <= lineBounds.y + lineBounds.height ||
+      [cardId, `${prefix}-numerator`, `${prefix}-line`, `${prefix}-denominator`]
+        .some((id) => !lockedIds.has(id))
+    ) {
+      issue(
+        issues,
+        "composed-fraction-card-invalid",
+        "layout",
+        `${prefix}의 분자·분수선·분모가 카드 안에 잠겨 있지 않습니다.`
+      );
+    }
   }
   const nativeResponse = response ? nativeById.get(response.id) : undefined;
+  const responseLabel = spec.fixedObjects.find(
+    (object) => object.id === `${problem.id}-response-label`
+  );
+  const nativeResponseBounds = nativeBounds(nativeResponse);
+  if (
+    !response ||
+    !responseLabel ||
+    !contains(response.bounds, responseLabel.bounds) ||
+    !nativeResponseBounds ||
+    !contains(response.bounds, nativeResponseBounds) ||
+    nativeResponseBounds.x -
+      (responseLabel.bounds.x + responseLabel.bounds.width) <
+      spec.layout.minGap
+  ) {
+    issue(
+      issues,
+      "response-label-not-integrated",
+      "layout",
+      "‘까닭’ 안내와 학생 입력 영역이 한 입력 상자 안에서 나뉘어 있지 않습니다."
+    );
+  }
   if (
     !response ||
     nativeResponse?.svgId !== "input-text" ||

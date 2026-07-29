@@ -105,7 +105,7 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     const secondLane = overlapping.placementGuides.find(
       (guide) => guide.id === "problem-1-right-lane"
     )!;
-    secondLane.bounds.y = 350;
+    secondLane.bounds.y = 260;
     const updated = rehash(overlapping);
     const result = validateForCreation(
       updated,
@@ -114,6 +114,47 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
       "comparison-lanes-overlap"
+    );
+  });
+
+  it("끌기 전 띠가 빈 목표 자리나 출발선에 닿으면 차단한다", () => {
+    const { spec } = fixture();
+    const misplaced = structuredClone(spec);
+    const model = misplaced.visualModels[0]!;
+    const movable = misplaced.movableObjects.find(
+      (object) => object.sourceModelId === model.id
+    )!;
+    model.bounds.x = model.commonStartX;
+    movable.bounds.x = model.commonStartX;
+    const updated = rehash(misplaced);
+    const result = validateForCreation(
+      updated,
+      compileCanvasActivitySpec(updated)
+    );
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "fraction-source-not-separated"
+    );
+  });
+
+  it("준비 상자의 띠 끝만 보고 정답을 알 수 있으면 차단한다", () => {
+    const { spec } = fixture();
+    const revealing = structuredClone(spec);
+    for (const model of revealing.visualModels) {
+      model.bounds.x = 95;
+      const movable = revealing.movableObjects.find(
+        (object) => object.sourceModelId === model.id
+      )!;
+      movable.bounds.x = 95;
+    }
+    const updated = rehash(revealing);
+    const result = validateForCreation(
+      updated,
+      compileCanvasActivitySpec(updated)
+    );
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "source-layout-does-not-require-alignment"
     );
   });
 
@@ -206,13 +247,73 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     const { spec, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
     const label = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-lane-label"
+      (object) => object.id === "problem-1-move-step-label"
     )!;
     label.fontSize = 20;
     const result = validateForCreation(spec, withPayload(compiled, payload));
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
       "student-font-too-small"
+    );
+  });
+
+  it("분수 카드를 math-latex 분수식으로 되돌리면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const numerator = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-numerator"
+    )!;
+    numerator.svgId = "math-latex";
+    numerator.text = "\\frac{3}{4}";
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "latex-fraction-formula-forbidden"
+    );
+  });
+
+  it("분모가 분수 카드 밖으로 나가면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const denominator = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-denominator"
+    )!;
+    denominator.y = 300;
+    denominator._y = 300;
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "composed-fraction-card-invalid"
+    );
+  });
+
+  it("분자 중심이 분수선 중심에서 벗어나면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const numerator = payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-fraction-numerator"
+    )!;
+    numerator.x = Number(numerator.x) + 8;
+    numerator._x = Number(numerator._x) + 8;
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "composed-fraction-card-invalid"
+    );
+  });
+
+  it("기호 준비 카드가 기호 목적지와 겹치면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const card = payload.contentsJson.find(
+      (object) => object.id === "problem-1-less-symbol-source-card"
+    )!;
+    card.point1 = [800, 530];
+    card.point2 = [880, 610];
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "symbol-source-card-invalid"
     );
   });
 
@@ -295,6 +396,73 @@ describe("한 문제 캔버스 생성 전 검증", () => {
     expect(result.canCreate).toBe(false);
     expect(result.issues.map((value) => value.code)).toContain(
       "response-input-surface-invalid"
+    );
+  });
+
+  it("‘까닭’ 안내가 입력 상자 밖으로 나가면 차단한다", () => {
+    const { spec } = fixture();
+    const changed = structuredClone(spec);
+    const label = changed.fixedObjects.find(
+      (object) => object.id === `${changed.problem.id}-response-label`
+    )!;
+    label.bounds.x = 60;
+    changed.canvasHash = canvasActivityHash(changed);
+    const compiled = compileCanvasActivitySpec(changed);
+    const result = validateForCreation(changed, compiled);
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "response-label-not-integrated"
+    );
+  });
+
+  it("‘까닭’ 안내와 입력 글자 사이 간격이 부족하면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const label = spec.fixedObjects.find(
+      (object) => object.id === `${spec.problem.id}-response-label`
+    )!;
+    const response = payload.contentsJson.find(
+      (object) => object.id === spec.inputObjects[0]!.id
+    )!;
+    response.x = label.bounds.x + label.bounds.width + 8;
+    response._x = response.x;
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "response-label-not-integrated"
+    );
+  });
+
+  it("목표 안내와 출발선 이름이 겹치면 차단한다", () => {
+    const { spec } = fixture();
+    const overlapping = structuredClone(spec);
+    const startLabel = overlapping.fixedObjects.find(
+      (object) => object.id === `${overlapping.problem.id}-start-label`
+    )!;
+    startLabel.bounds.y = 170;
+    const updated = rehash(overlapping);
+    const result = validateForCreation(
+      updated,
+      compileCanvasActivitySpec(updated)
+    );
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "target-instructions-overlap"
+    );
+  });
+
+  it("컴파일러 전용 패널의 위치가 바뀌면 차단한다", () => {
+    const { spec, compiled } = fixture();
+    const payload = structuredClone(compiled.payload);
+    const panel = payload.contentsJson.find(
+      (object) => object.id === `${spec.problem.id}-symbol-panel`
+    )!;
+    panel.point1 = [40, 515];
+    panel.point2 = [1240, 625];
+    const result = validateForCreation(spec, withPayload(compiled, payload));
+    expect(result.canCreate).toBe(false);
+    expect(result.issues.map((value) => value.code)).toContain(
+      "layout-panel-contract-invalid"
     );
   });
 });

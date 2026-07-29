@@ -1,5 +1,4 @@
 import type {
-  ActivityProblem,
   CanvasActivitySpec,
   VisualModel
 } from "@mathcanvas/contracts";
@@ -59,7 +58,7 @@ export function makeFractionObject(model: VisualModel): Record<string, unknown> 
   const { numerator, denominator } = model.fraction;
   const perWidth = model.wholeWidth / denominator;
   const geometricWidth = perWidth * numerator;
-  const width = Math.round(geometricWidth);
+  const width = geometricWidth;
   const cx = (geometricWidth - perWidth) / 2;
   const left = -perWidth / 2;
   const right = geometricWidth - perWidth / 2;
@@ -267,8 +266,91 @@ export function makeRectangleObject(
   };
 }
 
-export function problemLabel(problem: ActivityProblem): string {
-  return `\\frac{${problem.left.numerator}}{${problem.left.denominator}} \\; ? \\; \\frac{${problem.right.numerator}}{${problem.right.denominator}}`;
+function addLockedRectangle(
+  contents: Array<Record<string, unknown>>,
+  lockedIds: string[],
+  id: string,
+  bounds: { x: number; y: number; width: number; height: number },
+  fill: string,
+  stroke: string,
+  strokeDashArray = "none"
+): void {
+  contents.push(
+    makeRectangleObject(
+      id,
+      bounds.x,
+      bounds.y,
+      bounds.width,
+      bounds.height,
+      fill,
+      stroke,
+      strokeDashArray
+    )
+  );
+  lockedIds.push(id);
+}
+
+function addComposedFraction(
+  contents: Array<Record<string, unknown>>,
+  lockedIds: string[],
+  idPrefix: string,
+  numerator: number,
+  denominator: number,
+  bounds: { x: number; y: number; width: number; height: number },
+  colors: { fill: string; stroke: string }
+): void {
+  const cardId = `${idPrefix}-card`;
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    cardId,
+    bounds,
+    colors.fill,
+    colors.stroke
+  );
+
+  const textSlot = (value: number) => {
+    const width = String(value).length > 1 ? 50 : 40;
+    return {
+      x: bounds.x + (bounds.width - width) / 2,
+      width
+    };
+  };
+  const numeratorSlot = textSlot(numerator);
+  const denominatorSlot = textSlot(denominator);
+  const numeratorId = `${idPrefix}-numerator`;
+  const lineId = `${idPrefix}-line`;
+  const denominatorId = `${idPrefix}-denominator`;
+  contents.push(
+    makeTextObject(
+      numeratorId,
+      String(numerator),
+      numeratorSlot.x,
+      bounds.y,
+      numeratorSlot.width,
+      36,
+      { fontSize: 32 }
+    ),
+    makeRectangleObject(
+      lineId,
+      bounds.x + 20,
+      bounds.y + 52,
+      bounds.width - 40,
+      4,
+      "#172033",
+      "#172033"
+    ),
+    makeTextObject(
+      denominatorId,
+      String(denominator),
+      denominatorSlot.x,
+      bounds.y + 62,
+      denominatorSlot.width,
+      36,
+      { fontSize: 32 }
+    )
+  );
+  lockedIds.push(numeratorId, lineId, denominatorId);
 }
 
 export function buildNativeContents(spec: CanvasActivitySpec): {
@@ -283,18 +365,90 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
   );
   if (!mat) throw new Error(`${problem.id} 비교판이 없습니다.`);
 
-  contents.push(
-    makeRectangleObject(
-      mat.id,
-      mat.bounds.x,
-      mat.bounds.y,
-      mat.bounds.width,
-      mat.bounds.height,
-      "#F4FAFF",
-      "#9EB9CF"
-    )
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    mat.id,
+    mat.bounds,
+    "#F7FAFC",
+    "#9EB9CF"
   );
-  lockedIds.push(mat.id);
+
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    `${problem.id}-source-panel`,
+    { x: 60, y: 130, width: 500, height: 350 },
+    "#FFF9F3",
+    "#E7B181"
+  );
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    `${problem.id}-target-panel`,
+    { x: 590, y: 130, width: 620, height: 350 },
+    "#F1F8FF",
+    "#9EB9CF"
+  );
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    `${problem.id}-symbol-panel`,
+    { x: 40, y: 500, width: 1180, height: 130 },
+    "#FFFDF5",
+    "#D8B85B"
+  );
+  addLockedRectangle(
+    contents,
+    lockedIds,
+    `${problem.id}-response-panel`,
+    { x: 40, y: 645, width: 1180, height: 125 },
+    "#F8FAFC",
+    "#9AA9BA"
+  );
+
+  for (const model of spec.visualModels) {
+    addLockedRectangle(
+      contents,
+      lockedIds,
+      `${model.id}-source-card`,
+      {
+        x: 80,
+        y: model.bounds.y - 15,
+        width: 460,
+        height: 110
+      },
+      model.role === "left-strip" ? "#FFF0E6" : "#EAFBFF",
+      model.role === "left-strip" ? "#E98242" : "#32B9D6"
+    );
+  }
+
+  for (const guide of spec.placementGuides) {
+    const surfaceId = `${guide.id}-surface`;
+    addLockedRectangle(
+      contents,
+      lockedIds,
+      surfaceId,
+      guide.bounds,
+      "#FFFFFF",
+      guide.kind === "relation-slot" ? "#D49A25" : "#718398",
+      "10 8"
+    );
+  }
+
+  const symbolObjects = spec.movableObjects.filter(
+    (object) => object.kind === "comparison-symbol"
+  );
+  for (const symbol of symbolObjects) {
+    addLockedRectangle(
+      contents,
+      lockedIds,
+      `${symbol.id}-source-card`,
+      symbol.bounds,
+      "#FFFFFF",
+      "#D49A25"
+    );
+  }
 
   const fixedTextObjects = spec.fixedObjects.filter(
     (object) =>
@@ -306,7 +460,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     const color = fixed.id.endsWith("start-label")
       ? "#D93636"
       : "#172033";
-    const fontSize = fixed.kind === "instruction" ? 36 : 26;
+    const fontSize = fixed.kind === "instruction" ? 34 : 26;
     contents.push(
       makeTextObject(
         fixed.id,
@@ -321,89 +475,43 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     lockedIds.push(fixed.id);
   }
 
-  const leftCardId = `${problem.id}-left-fraction-card`;
-  const rightCardId = `${problem.id}-right-fraction-card`;
-  contents.push(
-    makeRectangleObject(
-      leftCardId,
-      320,
-      174,
-      210,
-      110,
-      "#FFF4EC",
-      "#E98242"
-    ),
-    makeRectangleObject(
-      rightCardId,
-      750,
-      174,
-      210,
-      110,
-      "#EAFBFF",
-      "#32B9D6"
-    )
+  addComposedFraction(
+    contents,
+    lockedIds,
+    `${problem.id}-left-fraction`,
+    problem.left.numerator,
+    problem.left.denominator,
+    { x: 610, y: 205, width: 90, height: 110 },
+    { fill: "#FFF0E6", stroke: "#E98242" }
   );
-  lockedIds.push(leftCardId, rightCardId);
-
-  const leftFormulaId = `${problem.id}-left-fraction`;
-  const rightFormulaId = `${problem.id}-right-fraction`;
-  contents.push(
-    makeLatexObject(
-      leftFormulaId,
-      `\\frac{${problem.left.numerator}}{${problem.left.denominator}}`,
-      370,
-      194,
-      120,
-      78,
-      58
-    ),
-    makeLatexObject(
-      rightFormulaId,
-      `\\frac{${problem.right.numerator}}{${problem.right.denominator}}`,
-      800,
-      194,
-      120,
-      78,
-      58
-    )
+  addComposedFraction(
+    contents,
+    lockedIds,
+    `${problem.id}-right-fraction`,
+    problem.right.numerator,
+    problem.right.denominator,
+    { x: 610, y: 350, width: 90, height: 110 },
+    { fill: "#EAFBFF", stroke: "#32B9D6" }
   );
-  lockedIds.push(leftFormulaId, rightFormulaId);
 
-  for (const guide of spec.placementGuides) {
-    const surfaceId = `${guide.id}-surface`;
-    contents.push(
-      makeRectangleObject(
-        surfaceId,
-        guide.bounds.x,
-        guide.bounds.y,
-        guide.bounds.width,
-        guide.bounds.height,
-        guide.kind === "relation-slot" ? "#FFF8E7" : "#FFFFFF",
-        guide.kind === "relation-slot" ? "#D49A25" : "#718398",
-        "10 8"
-      )
-    );
-    lockedIds.push(surfaceId);
-    if (guide.kind === "comparison-lane") {
-      const labelId = `${guide.id}-label`;
-      const isLeftLane = guide.id.endsWith("left-lane");
-      contents.push(
-        makeTextObject(
-          labelId,
-          guide.label,
-          isLeftLane ? 790 : 320,
-          guide.bounds.y + 20,
-          130,
-          42,
-          {
-            fontSize: 24,
-            color: isLeftLane ? "#B95E25" : "#1687A1"
-          }
-        )
-      );
-      lockedIds.push(labelId);
-    }
-  }
+  addComposedFraction(
+    contents,
+    lockedIds,
+    `${problem.id}-relation-left-fraction`,
+    problem.left.numerator,
+    problem.left.denominator,
+    { x: 690, y: 510, width: 100, height: 110 },
+    { fill: "#FFF0E6", stroke: "#E98242" }
+  );
+  addComposedFraction(
+    contents,
+    lockedIds,
+    `${problem.id}-relation-right-fraction`,
+    problem.right.numerator,
+    problem.right.denominator,
+    { x: 915, y: 510, width: 100, height: 110 },
+    { fill: "#EAFBFF", stroke: "#32B9D6" }
+  );
 
   const start = spec.fixedObjects.find(
     (object) => object.id === `${problem.id}-start-line`
@@ -426,9 +534,6 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     contents.push(makeFractionObject(model), makeMoveOnlyGroupObject(model));
   }
 
-  const symbolObjects = spec.movableObjects.filter(
-    (object) => object.kind === "comparison-symbol"
-  );
   for (const object of symbolObjects) {
     contents.push(
       makeLatexObject(
@@ -438,7 +543,7 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
         object.bounds.y,
         object.bounds.width,
         object.bounds.height,
-        72
+        64
       )
     );
   }
@@ -462,9 +567,9 @@ export function buildNativeContents(spec: CanvasActivitySpec): {
     makeTextObject(
       response.id,
       response.placeholder,
-      response.bounds.x,
+      response.bounds.x + 210,
       response.bounds.y,
-      response.bounds.width,
+      response.bounds.width - 210,
       response.bounds.height,
       {
         fontSize: 30,

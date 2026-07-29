@@ -150,11 +150,29 @@ describe("분수 비교 템플릿", () => {
     for (const canvas of canvases) {
       const models = canvas.visualModels;
       expect(new Set(models.map((model) => model.wholeWidth))).toEqual(
-        new Set([640])
+        new Set([400])
       );
       expect(new Set(models.map((model) => model.commonStartX))).toEqual(
-        new Set([300])
+        new Set([720])
       );
+      const leftModel = models.find(
+        (model) => model.role === "left-strip"
+      )!;
+      const rightModel = models.find(
+        (model) => model.role === "right-strip"
+      )!;
+      expect(new Set(models.map((model) => model.bounds.x)).size).toBe(2);
+      const leftEnd = leftModel.bounds.x + leftModel.bounds.width;
+      const rightEnd = rightModel.bounds.x + rightModel.bounds.width;
+      if (canvas.problem.correctRelation === ">") {
+        expect(leftEnd + canvas.layout.minGap).toBeLessThan(rightEnd);
+      } else {
+        expect(rightEnd + canvas.layout.minGap).toBeLessThan(leftEnd);
+      }
+      for (const model of models) {
+        expect(model.bounds.x).toBeGreaterThanOrEqual(95);
+        expect(model.bounds.x + model.bounds.width).toBeLessThanOrEqual(525);
+      }
       const decisions = canvas.movableObjects
         .map((object) => object.mathematicalDecision)
         .join(" ");
@@ -164,12 +182,37 @@ describe("분수 비교 템플릿", () => {
         canvas.fixedObjects.find(
           (object) => object.id === `${canvas.problem.id}-response-label`
         )?.text
-      ).toContain("까닭");
+      ).toBe("3. 까닭을 써요");
       expect(
         canvas.fixedObjects.find(
           (object) => object.id === `${canvas.problem.id}-start-label`
         )?.text
       ).toBe("출발선");
+      expect(canvas.instructions).toEqual([
+        "시작점이 다른 두 띠를 출발선에 맞춰요."
+      ]);
+
+      const lanes = canvas.placementGuides.filter(
+        (guide) => guide.kind === "comparison-lane"
+      );
+      const startLine = canvas.fixedObjects.find(
+        (object) => object.kind === "common-start-line"
+      )!;
+      for (const model of models) {
+        expect(model.bounds.x + model.bounds.width + canvas.layout.minGap)
+          .toBeLessThanOrEqual(model.commonStartX);
+        for (const lane of lanes) {
+          expect(
+            model.bounds.x < lane.bounds.x + lane.bounds.width &&
+              model.bounds.x + model.bounds.width > lane.bounds.x &&
+              model.bounds.y < lane.bounds.y + lane.bounds.height &&
+              model.bounds.y + model.bounds.height > lane.bounds.y
+          ).toBe(false);
+        }
+        expect(model.bounds.x + model.bounds.width).toBeLessThan(
+          startLine.bounds.x
+        );
+      }
     }
   });
 });

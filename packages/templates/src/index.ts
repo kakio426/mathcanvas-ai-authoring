@@ -20,7 +20,7 @@ import {
 } from "@mathcanvas/contracts";
 import { LEARNING_MAP_COMMIT } from "@mathcanvas/curriculum";
 
-export const FRACTION_TEMPLATE_VERSION = "2.0.0" as const;
+export const FRACTION_TEMPLATE_VERSION = "2.3.0" as const;
 
 export const fractionComparisonTemplateDefinition: TemplateDefinition =
   templateDefinitionSchema.parse({
@@ -239,18 +239,50 @@ function fractionRenderedWidth(
   return (wholeWidth / fraction.denominator) * fraction.numerator;
 }
 
+const SOURCE_CARD_LEFT = 80;
+const SOURCE_CARD_RIGHT = 540;
+const SOURCE_INSET = 15;
+const SOURCE_CONFLICT_GAP = 28;
+
+function sourcePositions(
+  problem: ActivityProblem,
+  leftWidth: number,
+  rightWidth: number
+): { leftSourceX: number; rightSourceX: number } {
+  const sourceStart = SOURCE_CARD_LEFT + SOURCE_INSET;
+  const leftIsLarger = problem.correctRelation === ">";
+  const leftSourceX = leftIsLarger
+    ? sourceStart
+    : sourceStart + (rightWidth - leftWidth) + SOURCE_CONFLICT_GAP;
+  const rightSourceX = leftIsLarger
+    ? sourceStart + (leftWidth - rightWidth) + SOURCE_CONFLICT_GAP
+    : sourceStart;
+  if (
+    leftSourceX < sourceStart ||
+    rightSourceX < sourceStart ||
+    leftSourceX + leftWidth > SOURCE_CARD_RIGHT - SOURCE_INSET ||
+    rightSourceX + rightWidth > SOURCE_CARD_RIGHT - SOURCE_INSET
+  ) {
+    throw new Error("분수 띠의 비교 전 위치를 준비 상자 안에 놓을 수 없습니다.");
+  }
+  return { leftSourceX, rightSourceX };
+}
+
 function buildCanvasActivity(
   set: ActivitySetSpec,
   problem: ActivityProblem
 ): CanvasActivitySpec {
   const prefix = problem.id;
-  const wholeWidth = 640;
+  const wholeWidth = 400;
   const segmentHeight = 80;
-  const commonStartX = 300;
-  const leftSourceX = 80;
-  const rightSourceX = 660;
+  const commonStartX = 720;
   const leftWidth = fractionRenderedWidth(problem.left, wholeWidth);
   const rightWidth = fractionRenderedWidth(problem.right, wholeWidth);
+  const { leftSourceX, rightSourceX } = sourcePositions(
+    problem,
+    leftWidth,
+    rightWidth
+  );
   const draft = canvasActivityDraftSchema.parse({
     schemaVersion: CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION,
     canvasId: `${set.setId}-canvas-${problem.order}`,
@@ -274,7 +306,7 @@ function buildCanvasActivity(
         fraction: problem.left,
         bounds: {
           x: leftSourceX,
-          y: 310,
+          y: 220,
           width: leftWidth,
           height: segmentHeight
         },
@@ -291,7 +323,7 @@ function buildCanvasActivity(
         fraction: problem.right,
         bounds: {
           x: rightSourceX,
-          y: 430,
+          y: 365,
           width: rightWidth,
           height: segmentHeight
         },
@@ -306,51 +338,65 @@ function buildCanvasActivity(
       {
         id: "instruction-main",
         kind: "instruction",
-        bounds: { x: 160, y: 82, width: 960, height: 54 },
+        bounds: { x: 64, y: 30, width: 960, height: 50 },
         locked: true,
-        text: "두 띠를 출발선에 맞춰 비교해 보세요."
+        text: "시작점이 다른 두 띠를 출발선에 맞춰요."
       },
       {
         id: `${prefix}-order-label`,
         kind: "label",
-        bounds: { x: 1060, y: 24, width: 160, height: 42 },
+        bounds: { x: 1120, y: 30, width: 100, height: 42 },
         locked: true,
         text: `${problem.order}/${set.problemCount}`
       },
       {
         id: `${prefix}-mat`,
         kind: "comparison-mat",
-        bounds: { x: 80, y: 160, width: 1120, height: 380 },
+        bounds: { x: 40, y: 110, width: 1180, height: 390 },
         locked: true,
         text: "분수 비교판"
       },
       {
+        id: `${prefix}-move-step-label`,
+        kind: "label",
+        bounds: { x: 70, y: 142, width: 220, height: 42 },
+        locked: true,
+        text: "1. 띠를 옮겨요"
+      },
+      {
+        id: `${prefix}-target-label`,
+        kind: "label",
+        bounds: { x: 620, y: 142, width: 300, height: 36 },
+        locked: true,
+        text: "같은 출발선에 맞춰요"
+      },
+      {
         id: `${prefix}-start-line`,
         kind: "common-start-line",
-        bounds: { x: commonStartX - 6, y: 306, width: 12, height: 194 },
+        bounds: { x: commonStartX - 6, y: 214, width: 12, height: 241 },
         locked: true,
         text: "출발선"
       },
       {
         id: `${prefix}-start-label`,
         kind: "label",
-        bounds: { x: 170, y: 388, width: 110, height: 42 },
+        bounds: { x: 730, y: 184, width: 120, height: 26 },
         locked: true,
         text: "출발선"
       },
       {
         id: `${prefix}-symbol-label`,
         kind: "label",
-        bounds: { x: 240, y: 582, width: 210, height: 42 },
+        bounds: { x: 68, y: 548, width: 230, height: 42 },
         locked: true,
-        text: "알맞은 기호"
+        text: "2. 기호를 놓아요"
       },
       {
         id: `${prefix}-response-label`,
         kind: "label",
-        bounds: { x: 145, y: 696, width: 210, height: 42 },
+        bounds: { x: 260, y: 680, width: 170, height: 42 },
         locked: true,
-        text: "비교한 까닭"
+        text: "3. 까닭을 써요"
       }
     ],
     movableObjects: [
@@ -361,7 +407,7 @@ function buildCanvasActivity(
         sourceModelId: `${prefix}-left-strip`,
         bounds: {
           x: leftSourceX,
-          y: 310,
+          y: 220,
           width: leftWidth,
           height: segmentHeight
         },
@@ -374,7 +420,7 @@ function buildCanvasActivity(
         sourceModelId: `${prefix}-right-strip`,
         bounds: {
           x: rightSourceX,
-          y: 430,
+          y: 365,
           width: rightWidth,
           height: segmentHeight
         },
@@ -384,14 +430,14 @@ function buildCanvasActivity(
         id: `${prefix}-less-symbol`,
         kind: "comparison-symbol",
         problemId: prefix,
-        bounds: { x: 500, y: 560, width: 96, height: 96 },
+        bounds: { x: 330, y: 532, width: 80, height: 80 },
         mathematicalDecision: "두 띠의 길이를 보고 작은 쪽을 나타냅니다."
       },
       {
         id: `${prefix}-greater-symbol`,
         kind: "comparison-symbol",
         problemId: prefix,
-        bounds: { x: 660, y: 560, width: 96, height: 96 },
+        bounds: { x: 440, y: 532, width: 80, height: 80 },
         mathematicalDecision: "두 띠의 길이를 보고 큰 쪽을 나타냅니다."
       }
     ],
@@ -400,8 +446,8 @@ function buildCanvasActivity(
         id: `${prefix}-explanation-input`,
         kind: "explanation-text",
         problemId: prefix,
-        bounds: { x: 380, y: 680, width: 760, height: 72 },
-        placeholder: "띠의 길이를 보고 한 줄로 써 보세요.",
+        bounds: { x: 240, y: 662, width: 970, height: 88 },
+        placeholder: "어느 띠가 더 긴지 한 줄로 써요.",
         editable: true,
         collectResponse: false
       }
@@ -413,7 +459,7 @@ function buildCanvasActivity(
         kind: "comparison-lane",
         bounds: {
           x: commonStartX,
-          y: 310,
+          y: 220,
           width: wholeWidth,
           height: segmentHeight
         },
@@ -427,7 +473,7 @@ function buildCanvasActivity(
         kind: "comparison-lane",
         bounds: {
           x: commonStartX,
-          y: 430,
+          y: 365,
           width: wholeWidth,
           height: segmentHeight
         },
@@ -439,7 +485,7 @@ function buildCanvasActivity(
         id: `${prefix}-relation-slot`,
         problemId: prefix,
         kind: "relation-slot",
-        bounds: { x: 585, y: 174, width: 110, height: 110 },
+        bounds: { x: 810, y: 530, width: 84, height: 84 },
         intendedObjectIds: [
           `${prefix}-less-symbol`,
           `${prefix}-greater-symbol`
@@ -455,7 +501,7 @@ function buildCanvasActivity(
       stageRatio: "16:10",
       minGap: 16
     },
-    instructions: ["두 띠를 출발선에 맞춰 비교해 보세요."],
+    instructions: ["시작점이 다른 두 띠를 출발선에 맞춰요."],
     provenance: set.provenance,
     templateId: set.templateId,
     templateVersion: set.templateVersion
