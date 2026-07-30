@@ -1,0 +1,347 @@
+{
+  "capturedAt": "2026-07-29T04:54:01.773Z",
+  "canvases": [
+    {
+      "activeItems": 0,
+      "allContained": true,
+      "centers": [
+        {
+          "card": "left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "left-fraction-formula"
+        },
+        {
+          "card": "right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "right-fraction-formula"
+        },
+        {
+          "card": "relation-left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-left-fraction-formula"
+        },
+        {
+          "card": "relation-right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-right-fraction-formula"
+        },
+        {
+          "card": "less-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "less-symbol"
+        },
+        {
+          "card": "greater-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "greater-symbol"
+        }
+      ],
+      "formulaCount": 4,
+      "formulaValues": [
+        {
+          "id": "problem-1-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-1-right-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-1-relation-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-1-relation-right-fraction-formula",
+          "readOnly": true
+        }
+      ],
+      "legacyPieceCount": 0,
+      "maxDx": 0.078125,
+      "maxDy": 0.19921875,
+      "responseBlank": true,
+      "responseEditObjectPresent": true,
+      "responseToToolbarGap": 15.5,
+      "viewport": {
+        "dpr": 2,
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true,
+      "url": "https://mathcanvas.vivasam.com/ko/view/UVtPNy",
+      "problemIndex": 1
+    },
+    {
+      "activeItems": 0,
+      "allContained": true,
+      "centers": [
+        {
+          "card": "left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "left-fraction-formula"
+        },
+        {
+          "card": "right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "right-fraction-formula"
+        },
+        {
+          "card": "relation-left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-left-fraction-formula"
+        },
+        {
+          "card": "relation-right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-right-fraction-formula"
+        },
+        {
+          "card": "less-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "less-symbol"
+        },
+        {
+          "card": "greater-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "greater-symbol"
+        }
+      ],
+      "formulaCount": 4,
+      "formulaValues": [
+        {
+          "id": "problem-2-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-2-right-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-2-relation-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-2-relation-right-fraction-formula",
+          "readOnly": true
+        }
+      ],
+      "legacyPieceCount": 0,
+      "maxDx": 0.078125,
+      "maxDy": 0.19921875,
+      "responseBlank": true,
+      "responseEditObjectPresent": true,
+      "responseToToolbarGap": 15.5,
+      "viewport": {
+        "dpr": 2,
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true,
+      "url": "https://mathcanvas.vivasam.com/ko/view/9aF2Cs",
+      "problemIndex": 2
+    },
+    {
+      "activeItems": 0,
+      "allContained": true,
+      "centers": [
+        {
+          "card": "left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "left-fraction-formula"
+        },
+        {
+          "card": "right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "right-fraction-formula"
+        },
+        {
+          "card": "relation-left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-left-fraction-formula"
+        },
+        {
+          "card": "relation-right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-right-fraction-formula"
+        },
+        {
+          "card": "less-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "less-symbol"
+        },
+        {
+          "card": "greater-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "greater-symbol"
+        }
+      ],
+      "formulaCount": 4,
+      "formulaValues": [
+        {
+          "id": "problem-3-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-3-right-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-3-relation-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-3-relation-right-fraction-formula",
+          "readOnly": true
+        }
+      ],
+      "legacyPieceCount": 0,
+      "maxDx": 0.078125,
+      "maxDy": 0.19921875,
+      "responseBlank": true,
+      "responseEditObjectPresent": true,
+      "responseToToolbarGap": 15.5,
+      "viewport": {
+        "dpr": 2,
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true,
+      "url": "https://mathcanvas.vivasam.com/ko/view/dnfp6W",
+      "problemIndex": 3
+    },
+    {
+      "activeItems": 0,
+      "allContained": true,
+      "centers": [
+        {
+          "card": "left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "left-fraction-formula"
+        },
+        {
+          "card": "right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "right-fraction-formula"
+        },
+        {
+          "card": "relation-left-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-left-fraction-formula"
+        },
+        {
+          "card": "relation-right-fraction-card",
+          "contained": true,
+          "dx": 0.078125,
+          "dy": 0.09765625,
+          "value": "relation-right-fraction-formula"
+        },
+        {
+          "card": "less-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "less-symbol"
+        },
+        {
+          "card": "greater-symbol-source-card",
+          "contained": true,
+          "dx": 0.07421875,
+          "dy": 0.19921875,
+          "value": "greater-symbol"
+        }
+      ],
+      "formulaCount": 4,
+      "formulaValues": [
+        {
+          "id": "problem-4-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-4-right-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-4-relation-left-fraction-formula",
+          "readOnly": true
+        },
+        {
+          "id": "problem-4-relation-right-fraction-formula",
+          "readOnly": true
+        }
+      ],
+      "legacyPieceCount": 0,
+      "maxDx": 0.078125,
+      "maxDy": 0.19921875,
+      "responseBlank": true,
+      "responseEditObjectPresent": true,
+      "responseToToolbarGap": 15.5,
+      "viewport": {
+        "dpr": 2,
+        "height": 895,
+        "width": 1710
+      },
+      "zoom120": true,
+      "url": "https://mathcanvas.vivasam.com/ko/view/ltGL20",
+      "problemIndex": 4
+    }
+  ],
+  "overlayStates": [
+    {
+      "problemIndex": 1,
+      "previewCalloutVisibleAtCapture": false
+    },
+    {
+      "problemIndex": 2,
+      "previewCalloutVisibleAtCapture": false
+    },
+    {
+      "problemIndex": 3,
+      "previewCalloutVisibleAtCapture": false
+    },
+    {
+      "problemIndex": 4,
+      "previewCalloutVisibleAtCapture": false
+    }
+  ]
+}

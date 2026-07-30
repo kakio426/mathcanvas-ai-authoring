@@ -1,0 +1,45 @@
+{
+  "templateId": "fraction.compare.unlike-denominators.visual-v1",
+  "templateVersion": "2.4.1",
+  "setId": "set-v241-centered-final-20260729",
+  "setHash": "f3dbf7fa472f20d9268677f7916ad67859d366f7672d63f79edbdaeb56ae4dcf",
+  "createdAt": "2026-07-29T04:51:26.325Z",
+  "canvases": [
+    {
+      "canvasIndex": 1,
+      "problem": "3/8 < 3/5",
+      "payloadHash": "4bc949b7404689bb34f37379d2bd4af2250c5253c11f1559c4d00646989322dd",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "UVtPNy",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/UVtPNy"
+    },
+    {
+      "canvasIndex": 2,
+      "problem": "5/6 > 3/5",
+      "payloadHash": "adb942fbe515e42b3ce68d3cb5fdfe7a364e71c2cd45ba6e24f668f74a7b6c46",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "9aF2Cs",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/9aF2Cs"
+    },
+    {
+      "canvasIndex": 3,
+      "problem": "4/5 > 4/7",
+      "payloadHash": "65f0c6f3c6e47a6937ffee6fe538c577874b9778f5867c6eec4020517a7c82eb",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "dnfp6W",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/dnfp6W"
+    },
+    {
+      "canvasIndex": 4,
+      "problem": "3/4 > 3/5",
+      "payloadHash": "8ebbb81d4e88b447dd9757c8ccdfd3df692cb3cc5fc254c6dd3c0cd5b618d5b3",
+      "validationCanCreate": true,
+      "validationIssues": [],
+      "projectId": "ltGL20",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/ltGL20"
+    }
+  ]
+}

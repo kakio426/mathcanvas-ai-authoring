@@ -1,0 +1,1816 @@
+{
+  "editorUrl": "https://mathcanvas.vivasam.com/ko/view/8gG40I",
+  "problemId": "problem-2",
+  "checkedAt": "2026-07-29T03:08:43.340Z",
+  "results": [
+    {
+      "name": "user-reported-1630x1122",
+      "viewport": {
+        "innerWidth": 1630,
+        "innerHeight": 1122,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1630,
+        "scrollHeight": 1122
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": true,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "composedFractionsCentered": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": true
+      },
+      "failedAssertions": [],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 593.6666870117188,
+          "y": 374.8796081542969,
+          "width": 555.5556030273438,
+          "height": 28.9351806640625,
+          "right": 1149.2222900390625,
+          "bottom": 403.8147888183594
+        },
+        "problem-2-order-label": {
+          "x": 1204.77783203125,
+          "y": 374.8796081542969,
+          "width": 57.870361328125,
+          "height": 24.305572509765625,
+          "right": 1262.648193359375,
+          "bottom": 399.1851806640625
+        },
+        "problem-2-mat": {
+          "x": 579.77783203125,
+          "y": 421.1759033203125,
+          "width": 682.870361328125,
+          "height": 225.6944580078125,
+          "right": 1262.648193359375,
+          "bottom": 646.870361328125
+        },
+        "problem-2-source-panel": {
+          "x": 591.3518676757812,
+          "y": 432.75,
+          "width": 289.35186767578125,
+          "height": 202.5462646484375,
+          "right": 880.7037353515625,
+          "bottom": 635.2962646484375
+        },
+        "problem-2-target-panel": {
+          "x": 898.0648803710938,
+          "y": 432.75,
+          "width": 358.79632568359375,
+          "height": 202.5462646484375,
+          "right": 1256.8612060546875,
+          "bottom": 635.2962646484375
+        },
+        "problem-2-symbol-panel": {
+          "x": 579.77783203125,
+          "y": 646.870361328125,
+          "width": 682.870361328125,
+          "height": 75.2314453125,
+          "right": 1262.648193359375,
+          "bottom": 722.101806640625
+        },
+        "problem-2-response-panel": {
+          "x": 579.77783203125,
+          "y": 730.7824096679688,
+          "width": 682.870361328125,
+          "height": 72.33795166015625,
+          "right": 1262.648193359375,
+          "bottom": 803.120361328125
+        },
+        "problem-2-left-strip-source-card": {
+          "x": 602.9259643554688,
+          "y": 476.15277099609375,
+          "width": 266.2037353515625,
+          "height": 63.65740966796875,
+          "right": 869.1296997070312,
+          "bottom": 539.8101806640625
+        },
+        "problem-2-right-strip-source-card": {
+          "x": 602.9259643554688,
+          "y": 560.0648193359375,
+          "width": 266.2037353515625,
+          "height": 63.65740966796875,
+          "right": 869.1296997070312,
+          "bottom": 623.7222290039062
+        },
+        "problem-2-left-strip": {
+          "x": 679.8935546875,
+          "y": 484.83331298828125,
+          "width": 86.8055419921875,
+          "height": 46.29632568359375,
+          "right": 766.6990966796875,
+          "bottom": 531.129638671875
+        },
+        "problem-2-right-strip": {
+          "x": 611.6065063476562,
+          "y": 568.745361328125,
+          "width": 138.888916015625,
+          "height": 46.2962646484375,
+          "right": 750.4954223632812,
+          "bottom": 615.0416259765625
+        },
+        "problem-2-left-lane-surface": {
+          "x": 973.2963256835938,
+          "y": 484.83331298828125,
+          "width": 231.48150634765625,
+          "height": 46.29632568359375,
+          "right": 1204.77783203125,
+          "bottom": 531.129638671875
+        },
+        "problem-2-right-lane-surface": {
+          "x": 973.2963256835938,
+          "y": 568.745361328125,
+          "width": 231.48150634765625,
+          "height": 46.2962646484375,
+          "right": 1204.77783203125,
+          "bottom": 615.0416259765625
+        },
+        "problem-2-move-step-label": {
+          "x": 597.138916015625,
+          "y": 439.6944274902344,
+          "width": 127.3148193359375,
+          "height": 24.305572509765625,
+          "right": 724.4537353515625,
+          "bottom": 464
+        },
+        "problem-2-target-label": {
+          "x": 915.4259643554688,
+          "y": 439.6944274902344,
+          "width": 173.61114501953125,
+          "height": 20.833343505859375,
+          "right": 1089.037109375,
+          "bottom": 460.52777099609375
+        },
+        "problem-2-start-line": {
+          "x": 969.8240966796875,
+          "y": 481.361083984375,
+          "width": 6.9444580078125,
+          "height": 139.46759033203125,
+          "right": 976.7685546875,
+          "bottom": 620.8286743164062
+        },
+        "problem-2-start-label": {
+          "x": 979.0833740234375,
+          "y": 464,
+          "width": 69.4444580078125,
+          "height": 15.046295166015625,
+          "right": 1048.52783203125,
+          "bottom": 479.0462951660156
+        },
+        "problem-2-symbol-label": {
+          "x": 595.9815063476562,
+          "y": 674.6481323242188,
+          "width": 133.10186767578125,
+          "height": 24.3055419921875,
+          "right": 729.0833740234375,
+          "bottom": 698.9536743164062
+        },
+        "problem-2-less-symbol-source-card": {
+          "x": 747.6018676757812,
+          "y": 665.3888549804688,
+          "width": 46.29632568359375,
+          "height": 46.29632568359375,
+          "right": 793.898193359375,
+          "bottom": 711.6851806640625
+        },
+        "problem-2-greater-symbol-source-card": {
+          "x": 811.25927734375,
+          "y": 665.3888549804688,
+          "width": 46.29632568359375,
+          "height": 46.29632568359375,
+          "right": 857.5556030273438,
+          "bottom": 711.6851806640625
+        },
+        "problem-2-less-symbol": {
+          "x": 746.4444580078125,
+          "y": 664.2314453125,
+          "width": 48.61114501953125,
+          "height": 48.61114501953125,
+          "right": 795.0556030273438,
+          "bottom": 712.8425903320312
+        },
+        "problem-2-greater-symbol": {
+          "x": 810.1018676757812,
+          "y": 664.2314453125,
+          "width": 48.61114501953125,
+          "height": 48.61114501953125,
+          "right": 858.7130126953125,
+          "bottom": 712.8425903320312
+        },
+        "problem-2-relation-slot-surface": {
+          "x": 1025.379638671875,
+          "y": 664.2314453125,
+          "width": 48.6112060546875,
+          "height": 48.61114501953125,
+          "right": 1073.9908447265625,
+          "bottom": 712.8425903320312
+        },
+        "problem-2-relation-left-fraction-card": {
+          "x": 955.9352416992188,
+          "y": 652.6574096679688,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 1013.8056030273438,
+          "bottom": 716.3148193359375
+        },
+        "problem-2-relation-right-fraction-card": {
+          "x": 1086.1435546875,
+          "y": 652.6574096679688,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 1144.013916015625,
+          "bottom": 716.3148193359375
+        },
+        "problem-2-left-fraction-numerator": {
+          "x": 928.7361450195312,
+          "y": 483.6759033203125,
+          "width": 11.42938232421875,
+          "height": 21.990753173828125,
+          "right": 940.16552734375,
+          "bottom": 505.6666564941406
+        },
+        "problem-2-left-fraction-line": {
+          "x": 921.2130126953125,
+          "y": 506.245361328125,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 950.148193359375,
+          "bottom": 508.5601806640625
+        },
+        "problem-2-left-fraction-denominator": {
+          "x": 928.7361450195312,
+          "y": 519.5555419921875,
+          "width": 11.23046875,
+          "height": 21.99072265625,
+          "right": 939.9666137695312,
+          "bottom": 541.5462646484375
+        },
+        "problem-2-right-fraction-numerator": {
+          "x": 928.7361450195312,
+          "y": 567.5879516601562,
+          "width": 11.42938232421875,
+          "height": 21.99072265625,
+          "right": 940.16552734375,
+          "bottom": 589.5786743164062
+        },
+        "problem-2-right-fraction-line": {
+          "x": 921.2130126953125,
+          "y": 590.1574096679688,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 950.148193359375,
+          "bottom": 592.4722290039062
+        },
+        "problem-2-right-fraction-denominator": {
+          "x": 928.7361450195312,
+          "y": 603.4675903320312,
+          "width": 11.04962158203125,
+          "height": 21.99072265625,
+          "right": 939.7857666015625,
+          "bottom": 625.4583129882812
+        },
+        "problem-2-relation-left-fraction-numerator": {
+          "x": 977.9259643554688,
+          "y": 660.1805419921875,
+          "width": 11.42938232421875,
+          "height": 21.99072265625,
+          "right": 989.3553466796875,
+          "bottom": 682.1712646484375
+        },
+        "problem-2-relation-left-fraction-line": {
+          "x": 967.50927734375,
+          "y": 682.75,
+          "width": 34.72222900390625,
+          "height": 2.3148193359375,
+          "right": 1002.2315063476562,
+          "bottom": 685.0648193359375
+        },
+        "problem-2-relation-left-fraction-denominator": {
+          "x": 977.9259643554688,
+          "y": 696.0601806640625,
+          "width": 11.23046875,
+          "height": 21.99072265625,
+          "right": 989.1564331054688,
+          "bottom": 718.0509033203125
+        },
+        "problem-2-relation-right-fraction-numerator": {
+          "x": 1108.13427734375,
+          "y": 660.1805419921875,
+          "width": 11.429443359375,
+          "height": 21.99072265625,
+          "right": 1119.563720703125,
+          "bottom": 682.1712646484375
+        },
+        "problem-2-relation-right-fraction-line": {
+          "x": 1097.7176513671875,
+          "y": 682.75,
+          "width": 34.72216796875,
+          "height": 2.3148193359375,
+          "right": 1132.4398193359375,
+          "bottom": 685.0648193359375
+        },
+        "problem-2-relation-right-fraction-denominator": {
+          "x": 1108.13427734375,
+          "y": 696.0601806640625,
+          "width": 11.0496826171875,
+          "height": 21.99072265625,
+          "right": 1119.1839599609375,
+          "bottom": 718.0509033203125
+        },
+        "problem-2-response-label": {
+          "x": 707.0926513671875,
+          "y": 751.0369873046875,
+          "width": 98.379638671875,
+          "height": 24.30560302734375,
+          "right": 805.4722900390625,
+          "bottom": 775.3425903320312
+        },
+        "problem-2-explanation-input-surface": {
+          "x": 695.5185546875,
+          "y": 740.620361328125,
+          "width": 561.3426513671875,
+          "height": 50.9259033203125,
+          "right": 1256.8612060546875,
+          "bottom": 791.5462646484375
+        },
+        "problem-2-explanation-input": {
+          "x": 817.0463256835938,
+          "y": 740.620361328125,
+          "width": 439.81488037109375,
+          "height": 50.9259033203125,
+          "right": 1256.8612060546875,
+          "bottom": 791.5462646484375
+        },
+        "right-toolbar": {
+          "x": 1574,
+          "y": 457,
+          "width": 48,
+          "height": 208,
+          "right": 1622,
+          "bottom": 665
+        },
+        "bottom-common-toolbar": {
+          "x": 575,
+          "y": 1066,
+          "width": 480,
+          "height": 48,
+          "right": 1055,
+          "bottom": 1114
+        }
+      }
+    },
+    {
+      "name": "reference-1280x800",
+      "viewport": {
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1280,
+        "scrollHeight": 800
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": true,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "composedFractionsCentered": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": true
+      },
+      "failedAssertions": [],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 418.6666564941406,
+          "y": 213.879638671875,
+          "width": 555.5555419921875,
+          "height": 28.9351806640625,
+          "right": 974.2221984863281,
+          "bottom": 242.8148193359375
+        },
+        "problem-2-order-label": {
+          "x": 1029.7777099609375,
+          "y": 213.879638671875,
+          "width": 57.870361328125,
+          "height": 24.305557250976562,
+          "right": 1087.6480712890625,
+          "bottom": 238.18519592285156
+        },
+        "problem-2-mat": {
+          "x": 404.77777099609375,
+          "y": 260.1759338378906,
+          "width": 682.8703002929688,
+          "height": 225.69442749023438,
+          "right": 1087.6480712890625,
+          "bottom": 485.870361328125
+        },
+        "problem-2-source-panel": {
+          "x": 416.3518371582031,
+          "y": 271.75,
+          "width": 289.3518371582031,
+          "height": 202.54629516601562,
+          "right": 705.7036743164062,
+          "bottom": 474.2962951660156
+        },
+        "problem-2-target-panel": {
+          "x": 723.0647583007812,
+          "y": 271.75,
+          "width": 358.79632568359375,
+          "height": 202.54629516601562,
+          "right": 1081.861083984375,
+          "bottom": 474.2962951660156
+        },
+        "problem-2-symbol-panel": {
+          "x": 404.77777099609375,
+          "y": 485.870361328125,
+          "width": 682.8703002929688,
+          "height": 75.23150634765625,
+          "right": 1087.6480712890625,
+          "bottom": 561.1018676757812
+        },
+        "problem-2-response-panel": {
+          "x": 404.77777099609375,
+          "y": 569.7824096679688,
+          "width": 682.8703002929688,
+          "height": 72.33795166015625,
+          "right": 1087.6480712890625,
+          "bottom": 642.120361328125
+        },
+        "problem-2-left-strip-source-card": {
+          "x": 427.9259033203125,
+          "y": 315.15277099609375,
+          "width": 266.20367431640625,
+          "height": 63.65740966796875,
+          "right": 694.1295776367188,
+          "bottom": 378.8101806640625
+        },
+        "problem-2-right-strip-source-card": {
+          "x": 427.9259033203125,
+          "y": 399.0648193359375,
+          "width": 266.20367431640625,
+          "height": 63.65740966796875,
+          "right": 694.1295776367188,
+          "bottom": 462.72222900390625
+        },
+        "problem-2-left-strip": {
+          "x": 504.89349365234375,
+          "y": 323.8333435058594,
+          "width": 86.8055419921875,
+          "height": 46.296295166015625,
+          "right": 591.6990356445312,
+          "bottom": 370.129638671875
+        },
+        "problem-2-right-strip": {
+          "x": 436.6064453125,
+          "y": 407.745361328125,
+          "width": 138.888916015625,
+          "height": 46.296295166015625,
+          "right": 575.495361328125,
+          "bottom": 454.0416564941406
+        },
+        "problem-2-left-lane-surface": {
+          "x": 798.2962646484375,
+          "y": 323.8333435058594,
+          "width": 231.4814453125,
+          "height": 46.296295166015625,
+          "right": 1029.7777099609375,
+          "bottom": 370.129638671875
+        },
+        "problem-2-right-lane-surface": {
+          "x": 798.2962646484375,
+          "y": 407.745361328125,
+          "width": 231.4814453125,
+          "height": 46.296295166015625,
+          "right": 1029.7777099609375,
+          "bottom": 454.0416564941406
+        },
+        "problem-2-move-step-label": {
+          "x": 422.13885498046875,
+          "y": 278.6944580078125,
+          "width": 127.3148193359375,
+          "height": 24.3055419921875,
+          "right": 549.4536743164062,
+          "bottom": 303
+        },
+        "problem-2-target-label": {
+          "x": 740.4259033203125,
+          "y": 278.6944580078125,
+          "width": 173.611083984375,
+          "height": 20.83331298828125,
+          "right": 914.0369873046875,
+          "bottom": 299.52777099609375
+        },
+        "problem-2-start-line": {
+          "x": 794.8240356445312,
+          "y": 320.3611145019531,
+          "width": 6.9444580078125,
+          "height": 139.46759033203125,
+          "right": 801.7684936523438,
+          "bottom": 459.8287048339844
+        },
+        "problem-2-start-label": {
+          "x": 804.0833129882812,
+          "y": 303,
+          "width": 69.44439697265625,
+          "height": 15.046295166015625,
+          "right": 873.5277099609375,
+          "bottom": 318.0462951660156
+        },
+        "problem-2-symbol-label": {
+          "x": 420.9814758300781,
+          "y": 513.6481323242188,
+          "width": 133.10183715820312,
+          "height": 24.3055419921875,
+          "right": 554.0833129882812,
+          "bottom": 537.9536743164062
+        },
+        "problem-2-less-symbol-source-card": {
+          "x": 572.601806640625,
+          "y": 504.3888854980469,
+          "width": 46.29632568359375,
+          "height": 46.296295166015625,
+          "right": 618.8981323242188,
+          "bottom": 550.6851806640625
+        },
+        "problem-2-greater-symbol-source-card": {
+          "x": 636.2592163085938,
+          "y": 504.3888854980469,
+          "width": 46.29632568359375,
+          "height": 46.296295166015625,
+          "right": 682.5555419921875,
+          "bottom": 550.6851806640625
+        },
+        "problem-2-less-symbol": {
+          "x": 571.4443969726562,
+          "y": 503.2314758300781,
+          "width": 48.61114501953125,
+          "height": 48.611114501953125,
+          "right": 620.0555419921875,
+          "bottom": 551.8425903320312
+        },
+        "problem-2-greater-symbol": {
+          "x": 635.101806640625,
+          "y": 503.2314758300781,
+          "width": 48.61114501953125,
+          "height": 48.611114501953125,
+          "right": 683.7129516601562,
+          "bottom": 551.8425903320312
+        },
+        "problem-2-relation-slot-surface": {
+          "x": 850.3795776367188,
+          "y": 503.2314758300781,
+          "width": 48.61114501953125,
+          "height": 48.611114501953125,
+          "right": 898.99072265625,
+          "bottom": 551.8425903320312
+        },
+        "problem-2-relation-left-fraction-card": {
+          "x": 780.9351806640625,
+          "y": 491.65740966796875,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 838.8055419921875,
+          "bottom": 555.3148193359375
+        },
+        "problem-2-relation-right-fraction-card": {
+          "x": 911.1434936523438,
+          "y": 491.65740966796875,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 969.0138549804688,
+          "bottom": 555.3148193359375
+        },
+        "problem-2-left-fraction-numerator": {
+          "x": 753.736083984375,
+          "y": 322.6759338378906,
+          "width": 11.42938232421875,
+          "height": 21.99072265625,
+          "right": 765.1654663085938,
+          "bottom": 344.6666564941406
+        },
+        "problem-2-left-fraction-line": {
+          "x": 746.2129516601562,
+          "y": 345.245361328125,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 775.1481323242188,
+          "bottom": 347.5601806640625
+        },
+        "problem-2-left-fraction-denominator": {
+          "x": 753.736083984375,
+          "y": 358.5555725097656,
+          "width": 11.23046875,
+          "height": 21.99072265625,
+          "right": 764.966552734375,
+          "bottom": 380.5462951660156
+        },
+        "problem-2-right-fraction-numerator": {
+          "x": 753.736083984375,
+          "y": 406.58795166015625,
+          "width": 11.42938232421875,
+          "height": 21.990753173828125,
+          "right": 765.1654663085938,
+          "bottom": 428.5787048339844
+        },
+        "problem-2-right-fraction-line": {
+          "x": 746.2129516601562,
+          "y": 429.15740966796875,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 775.1481323242188,
+          "bottom": 431.47222900390625
+        },
+        "problem-2-right-fraction-denominator": {
+          "x": 753.736083984375,
+          "y": 442.46759033203125,
+          "width": 11.04962158203125,
+          "height": 21.990753173828125,
+          "right": 764.7857055664062,
+          "bottom": 464.4583435058594
+        },
+        "problem-2-relation-left-fraction-numerator": {
+          "x": 802.9259033203125,
+          "y": 499.1805419921875,
+          "width": 11.42938232421875,
+          "height": 21.99078369140625,
+          "right": 814.3552856445312,
+          "bottom": 521.1713256835938
+        },
+        "problem-2-relation-left-fraction-line": {
+          "x": 792.5092163085938,
+          "y": 521.75,
+          "width": 34.72222900390625,
+          "height": 2.3148193359375,
+          "right": 827.2314453125,
+          "bottom": 524.0648193359375
+        },
+        "problem-2-relation-left-fraction-denominator": {
+          "x": 802.9259033203125,
+          "y": 535.0601806640625,
+          "width": 11.23046875,
+          "height": 21.99072265625,
+          "right": 814.1563720703125,
+          "bottom": 557.0509033203125
+        },
+        "problem-2-relation-right-fraction-numerator": {
+          "x": 933.1342163085938,
+          "y": 499.1805419921875,
+          "width": 11.42938232421875,
+          "height": 21.99078369140625,
+          "right": 944.5635986328125,
+          "bottom": 521.1713256835938
+        },
+        "problem-2-relation-right-fraction-line": {
+          "x": 922.717529296875,
+          "y": 521.75,
+          "width": 34.72222900390625,
+          "height": 2.3148193359375,
+          "right": 957.4397583007812,
+          "bottom": 524.0648193359375
+        },
+        "problem-2-relation-right-fraction-denominator": {
+          "x": 933.1342163085938,
+          "y": 535.0601806640625,
+          "width": 11.04962158203125,
+          "height": 21.99072265625,
+          "right": 944.183837890625,
+          "bottom": 557.0509033203125
+        },
+        "problem-2-response-label": {
+          "x": 532.0925903320312,
+          "y": 590.0370483398438,
+          "width": 98.37957763671875,
+          "height": 24.3055419921875,
+          "right": 630.47216796875,
+          "bottom": 614.3425903320312
+        },
+        "problem-2-explanation-input-surface": {
+          "x": 520.5184936523438,
+          "y": 579.620361328125,
+          "width": 561.3425903320312,
+          "height": 50.9259033203125,
+          "right": 1081.861083984375,
+          "bottom": 630.5462646484375
+        },
+        "problem-2-explanation-input": {
+          "x": 642.0462646484375,
+          "y": 579.620361328125,
+          "width": 439.8148193359375,
+          "height": 50.9259033203125,
+          "right": 1081.861083984375,
+          "bottom": 630.5462646484375
+        },
+        "right-toolbar": {
+          "x": 1224,
+          "y": 296,
+          "width": 48,
+          "height": 208,
+          "right": 1272,
+          "bottom": 504
+        },
+        "bottom-common-toolbar": {
+          "x": 400,
+          "y": 744,
+          "width": 480,
+          "height": 48,
+          "right": 880,
+          "bottom": 792
+        }
+      }
+    },
+    {
+      "name": "tablet-landscape-1024x768",
+      "viewport": {
+        "innerWidth": 1024,
+        "innerHeight": 768,
+        "devicePixelRatio": 1,
+        "scrollWidth": 1024,
+        "scrollHeight": 768
+      },
+      "assertions": {
+        "exactViewport": true,
+        "requiredObjectsPresent": true,
+        "pageOverflowFree": true,
+        "activityInsideViewport": true,
+        "sourceAndTargetSeparated": true,
+        "stripCardsInsideSource": true,
+        "targetsInsideTarget": true,
+        "symbolRowContained": true,
+        "responseIntegrated": true,
+        "sourceCueRequiresAlignment": true,
+        "fixedTargetLabelsSeparated": true,
+        "composedFractionsCentered": true,
+        "responseLabelInputGap": true,
+        "stageRowsSeparated": true,
+        "toolbarsDoNotCoverActivity": true
+      },
+      "failedAssertions": [],
+      "requiredIds": [],
+      "rects": {
+        "instruction-main": {
+          "x": 290.6666564941406,
+          "y": 197.879638671875,
+          "width": 555.5555419921875,
+          "height": 28.9351806640625,
+          "right": 846.2221984863281,
+          "bottom": 226.8148193359375
+        },
+        "problem-2-order-label": {
+          "x": 901.7777709960938,
+          "y": 197.879638671875,
+          "width": 57.870361328125,
+          "height": 24.3055419921875,
+          "right": 959.6481323242188,
+          "bottom": 222.1851806640625
+        },
+        "problem-2-mat": {
+          "x": 276.77777099609375,
+          "y": 244.17593383789062,
+          "width": 682.870361328125,
+          "height": 225.69442749023438,
+          "right": 959.6481323242188,
+          "bottom": 469.870361328125
+        },
+        "problem-2-source-panel": {
+          "x": 288.3518371582031,
+          "y": 255.75,
+          "width": 289.3518371582031,
+          "height": 202.54629516601562,
+          "right": 577.7036743164062,
+          "bottom": 458.2962951660156
+        },
+        "problem-2-target-panel": {
+          "x": 595.0648193359375,
+          "y": 255.75,
+          "width": 358.7962646484375,
+          "height": 202.54629516601562,
+          "right": 953.861083984375,
+          "bottom": 458.2962951660156
+        },
+        "problem-2-symbol-panel": {
+          "x": 276.77777099609375,
+          "y": 469.870361328125,
+          "width": 682.870361328125,
+          "height": 75.23150634765625,
+          "right": 959.6481323242188,
+          "bottom": 545.1018676757812
+        },
+        "problem-2-response-panel": {
+          "x": 276.77777099609375,
+          "y": 553.7824096679688,
+          "width": 682.870361328125,
+          "height": 72.33795166015625,
+          "right": 959.6481323242188,
+          "bottom": 626.120361328125
+        },
+        "problem-2-left-strip-source-card": {
+          "x": 299.9259338378906,
+          "y": 299.15277099609375,
+          "width": 266.2037048339844,
+          "height": 63.65740966796875,
+          "right": 566.129638671875,
+          "bottom": 362.8101806640625
+        },
+        "problem-2-right-strip-source-card": {
+          "x": 299.9259338378906,
+          "y": 383.0648193359375,
+          "width": 266.2037048339844,
+          "height": 63.65740966796875,
+          "right": 566.129638671875,
+          "bottom": 446.72222900390625
+        },
+        "problem-2-left-strip": {
+          "x": 376.8935241699219,
+          "y": 307.8333435058594,
+          "width": 86.8055419921875,
+          "height": 46.296295166015625,
+          "right": 463.6990661621094,
+          "bottom": 354.129638671875
+        },
+        "problem-2-right-strip": {
+          "x": 308.6064758300781,
+          "y": 391.745361328125,
+          "width": 138.88888549804688,
+          "height": 46.296295166015625,
+          "right": 447.495361328125,
+          "bottom": 438.0416564941406
+        },
+        "problem-2-left-lane-surface": {
+          "x": 670.2962646484375,
+          "y": 307.8333435058594,
+          "width": 231.48150634765625,
+          "height": 46.296295166015625,
+          "right": 901.7777709960938,
+          "bottom": 354.129638671875
+        },
+        "problem-2-right-lane-surface": {
+          "x": 670.2962646484375,
+          "y": 391.745361328125,
+          "width": 231.48150634765625,
+          "height": 46.296295166015625,
+          "right": 901.7777709960938,
+          "bottom": 438.0416564941406
+        },
+        "problem-2-move-step-label": {
+          "x": 294.1388854980469,
+          "y": 262.6944580078125,
+          "width": 127.3148193359375,
+          "height": 24.3055419921875,
+          "right": 421.4537048339844,
+          "bottom": 287
+        },
+        "problem-2-target-label": {
+          "x": 612.4259033203125,
+          "y": 262.6944580078125,
+          "width": 173.61114501953125,
+          "height": 20.83331298828125,
+          "right": 786.0370483398438,
+          "bottom": 283.52777099609375
+        },
+        "problem-2-start-line": {
+          "x": 666.8240356445312,
+          "y": 304.3611145019531,
+          "width": 6.9444580078125,
+          "height": 139.46759033203125,
+          "right": 673.7684936523438,
+          "bottom": 443.8287048339844
+        },
+        "problem-2-start-label": {
+          "x": 676.0833129882812,
+          "y": 287,
+          "width": 69.4444580078125,
+          "height": 15.046295166015625,
+          "right": 745.5277709960938,
+          "bottom": 302.0462951660156
+        },
+        "problem-2-symbol-label": {
+          "x": 292.9814758300781,
+          "y": 497.6481628417969,
+          "width": 133.10183715820312,
+          "height": 24.305572509765625,
+          "right": 426.08331298828125,
+          "bottom": 521.9537353515625
+        },
+        "problem-2-less-symbol-source-card": {
+          "x": 444.6018371582031,
+          "y": 488.3888854980469,
+          "width": 46.296295166015625,
+          "height": 46.296295166015625,
+          "right": 490.89813232421875,
+          "bottom": 534.6851806640625
+        },
+        "problem-2-greater-symbol-source-card": {
+          "x": 508.2592468261719,
+          "y": 488.3888854980469,
+          "width": 46.296295166015625,
+          "height": 46.296295166015625,
+          "right": 554.5555419921875,
+          "bottom": 534.6851806640625
+        },
+        "problem-2-less-symbol": {
+          "x": 443.4444274902344,
+          "y": 487.2314758300781,
+          "width": 48.611114501953125,
+          "height": 48.611114501953125,
+          "right": 492.0555419921875,
+          "bottom": 535.8425903320312
+        },
+        "problem-2-greater-symbol": {
+          "x": 507.1018371582031,
+          "y": 487.2314758300781,
+          "width": 48.611114501953125,
+          "height": 48.611114501953125,
+          "right": 555.7129516601562,
+          "bottom": 535.8425903320312
+        },
+        "problem-2-relation-slot-surface": {
+          "x": 722.379638671875,
+          "y": 487.2314758300781,
+          "width": 48.611083984375,
+          "height": 48.611114501953125,
+          "right": 770.99072265625,
+          "bottom": 535.8425903320312
+        },
+        "problem-2-relation-left-fraction-card": {
+          "x": 652.9351806640625,
+          "y": 475.65740966796875,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 710.8055419921875,
+          "bottom": 539.3148193359375
+        },
+        "problem-2-relation-right-fraction-card": {
+          "x": 783.1434936523438,
+          "y": 475.65740966796875,
+          "width": 57.870361328125,
+          "height": 63.65740966796875,
+          "right": 841.0138549804688,
+          "bottom": 539.3148193359375
+        },
+        "problem-2-left-fraction-numerator": {
+          "x": 625.736083984375,
+          "y": 306.6759338378906,
+          "width": 11.42938232421875,
+          "height": 21.99072265625,
+          "right": 637.1654663085938,
+          "bottom": 328.6666564941406
+        },
+        "problem-2-left-fraction-line": {
+          "x": 618.2129516601562,
+          "y": 329.245361328125,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 647.1481323242188,
+          "bottom": 331.5601806640625
+        },
+        "problem-2-left-fraction-denominator": {
+          "x": 625.736083984375,
+          "y": 342.5555419921875,
+          "width": 11.23046875,
+          "height": 21.990753173828125,
+          "right": 636.966552734375,
+          "bottom": 364.5462951660156
+        },
+        "problem-2-right-fraction-numerator": {
+          "x": 625.736083984375,
+          "y": 390.58795166015625,
+          "width": 11.42938232421875,
+          "height": 21.990753173828125,
+          "right": 637.1654663085938,
+          "bottom": 412.5787048339844
+        },
+        "problem-2-right-fraction-line": {
+          "x": 618.2129516601562,
+          "y": 413.15740966796875,
+          "width": 28.9351806640625,
+          "height": 2.3148193359375,
+          "right": 647.1481323242188,
+          "bottom": 415.47222900390625
+        },
+        "problem-2-right-fraction-denominator": {
+          "x": 625.736083984375,
+          "y": 426.46759033203125,
+          "width": 11.04962158203125,
+          "height": 21.990753173828125,
+          "right": 636.7857055664062,
+          "bottom": 448.4583435058594
+        },
+        "problem-2-relation-left-fraction-numerator": {
+          "x": 674.9259033203125,
+          "y": 483.1805419921875,
+          "width": 11.42938232421875,
+          "height": 21.990753173828125,
+          "right": 686.3552856445312,
+          "bottom": 505.1712951660156
+        },
+        "problem-2-relation-left-fraction-line": {
+          "x": 664.5092163085938,
+          "y": 505.75,
+          "width": 34.72222900390625,
+          "height": 2.3148193359375,
+          "right": 699.2314453125,
+          "bottom": 508.0648193359375
+        },
+        "problem-2-relation-left-fraction-denominator": {
+          "x": 674.9259033203125,
+          "y": 519.0601806640625,
+          "width": 11.23046875,
+          "height": 21.99072265625,
+          "right": 686.1563720703125,
+          "bottom": 541.0509033203125
+        },
+        "problem-2-relation-right-fraction-numerator": {
+          "x": 805.1342163085938,
+          "y": 483.1805419921875,
+          "width": 11.429443359375,
+          "height": 21.990753173828125,
+          "right": 816.5636596679688,
+          "bottom": 505.1712951660156
+        },
+        "problem-2-relation-right-fraction-line": {
+          "x": 794.7175903320312,
+          "y": 505.75,
+          "width": 34.72222900390625,
+          "height": 2.3148193359375,
+          "right": 829.4398193359375,
+          "bottom": 508.0648193359375
+        },
+        "problem-2-relation-right-fraction-denominator": {
+          "x": 805.1342163085938,
+          "y": 519.0601806640625,
+          "width": 11.04962158203125,
+          "height": 21.99072265625,
+          "right": 816.183837890625,
+          "bottom": 541.0509033203125
+        },
+        "problem-2-response-label": {
+          "x": 404.09259033203125,
+          "y": 574.0370483398438,
+          "width": 98.37960815429688,
+          "height": 24.3055419921875,
+          "right": 502.4721984863281,
+          "bottom": 598.3425903320312
+        },
+        "problem-2-explanation-input-surface": {
+          "x": 392.5185241699219,
+          "y": 563.620361328125,
+          "width": 561.342529296875,
+          "height": 50.92596435546875,
+          "right": 953.8610534667969,
+          "bottom": 614.5463256835938
+        },
+        "problem-2-explanation-input": {
+          "x": 514.0462646484375,
+          "y": 563.620361328125,
+          "width": 439.8148193359375,
+          "height": 50.92596435546875,
+          "right": 953.861083984375,
+          "bottom": 614.5463256835938
+        },
+        "right-toolbar": {
+          "x": 968,
+          "y": 280,
+          "width": 48,
+          "height": 208,
+          "right": 1016,
+          "bottom": 488
+        },
+        "bottom-common-toolbar": {
+          "x": 272,
+          "y": 712,
+          "width": 480,
+          "height": 48,
+          "right": 752,
+          "bottom": 760
+        }
+      }
+    }
+  ],
+  "manipulation": {
+    "skipped": false,
+    "assertions": {
+      "manipulationViewportExact": true,
+      "manipulationUsesFresh1630Layout": true,
+      "sourceCueRequiresAlignment": true,
+      "leftStripMovedToLane": true,
+      "rightStripMovedToLane": true,
+      "symbolMovedToSlot": true,
+      "movedStripsDoNotCoverFixedText": true,
+      "symbolDoesNotCoverRelationFractions": true,
+      "responseTextEntered": true,
+      "responseTextInsideSurface": true
+    },
+    "failedAssertions": [],
+    "beforeViewport": {
+      "innerWidth": 1630,
+      "innerHeight": 1122,
+      "devicePixelRatio": 1,
+      "scrollWidth": 1630,
+      "scrollHeight": 1122
+    },
+    "afterViewport": {
+      "innerWidth": 1630,
+      "innerHeight": 1122,
+      "devicePixelRatio": 1,
+      "scrollWidth": 1630,
+      "scrollHeight": 1122
+    },
+    "before": {
+      "instruction-main": {
+        "x": 593.6666870117188,
+        "y": 374.8796081542969,
+        "width": 555.5556030273438,
+        "height": 28.9351806640625,
+        "right": 1149.2222900390625,
+        "bottom": 403.8147888183594
+      },
+      "problem-2-order-label": {
+        "x": 1204.77783203125,
+        "y": 374.8796081542969,
+        "width": 57.870361328125,
+        "height": 24.305572509765625,
+        "right": 1262.648193359375,
+        "bottom": 399.1851806640625
+      },
+      "problem-2-mat": {
+        "x": 579.77783203125,
+        "y": 421.1759033203125,
+        "width": 682.870361328125,
+        "height": 225.6944580078125,
+        "right": 1262.648193359375,
+        "bottom": 646.870361328125
+      },
+      "problem-2-source-panel": {
+        "x": 591.3518676757812,
+        "y": 432.75,
+        "width": 289.35186767578125,
+        "height": 202.5462646484375,
+        "right": 880.7037353515625,
+        "bottom": 635.2962646484375
+      },
+      "problem-2-target-panel": {
+        "x": 898.0648803710938,
+        "y": 432.75,
+        "width": 358.79632568359375,
+        "height": 202.5462646484375,
+        "right": 1256.8612060546875,
+        "bottom": 635.2962646484375
+      },
+      "problem-2-symbol-panel": {
+        "x": 579.77783203125,
+        "y": 646.870361328125,
+        "width": 682.870361328125,
+        "height": 75.2314453125,
+        "right": 1262.648193359375,
+        "bottom": 722.101806640625
+      },
+      "problem-2-response-panel": {
+        "x": 579.77783203125,
+        "y": 730.7824096679688,
+        "width": 682.870361328125,
+        "height": 72.33795166015625,
+        "right": 1262.648193359375,
+        "bottom": 803.120361328125
+      },
+      "problem-2-left-strip-source-card": {
+        "x": 602.9259643554688,
+        "y": 476.15277099609375,
+        "width": 266.2037353515625,
+        "height": 63.65740966796875,
+        "right": 869.1296997070312,
+        "bottom": 539.8101806640625
+      },
+      "problem-2-right-strip-source-card": {
+        "x": 602.9259643554688,
+        "y": 560.0648193359375,
+        "width": 266.2037353515625,
+        "height": 63.65740966796875,
+        "right": 869.1296997070312,
+        "bottom": 623.7222290039062
+      },
+      "problem-2-left-strip": {
+        "x": 679.8935546875,
+        "y": 484.83331298828125,
+        "width": 86.8055419921875,
+        "height": 46.29632568359375,
+        "right": 766.6990966796875,
+        "bottom": 531.129638671875
+      },
+      "problem-2-right-strip": {
+        "x": 611.6065063476562,
+        "y": 568.745361328125,
+        "width": 138.888916015625,
+        "height": 46.2962646484375,
+        "right": 750.4954223632812,
+        "bottom": 615.0416259765625
+      },
+      "problem-2-left-lane-surface": {
+        "x": 973.2963256835938,
+        "y": 484.83331298828125,
+        "width": 231.48150634765625,
+        "height": 46.29632568359375,
+        "right": 1204.77783203125,
+        "bottom": 531.129638671875
+      },
+      "problem-2-right-lane-surface": {
+        "x": 973.2963256835938,
+        "y": 568.745361328125,
+        "width": 231.48150634765625,
+        "height": 46.2962646484375,
+        "right": 1204.77783203125,
+        "bottom": 615.0416259765625
+      },
+      "problem-2-move-step-label": {
+        "x": 597.138916015625,
+        "y": 439.6944274902344,
+        "width": 127.3148193359375,
+        "height": 24.305572509765625,
+        "right": 724.4537353515625,
+        "bottom": 464
+      },
+      "problem-2-target-label": {
+        "x": 915.4259643554688,
+        "y": 439.6944274902344,
+        "width": 173.61114501953125,
+        "height": 20.833343505859375,
+        "right": 1089.037109375,
+        "bottom": 460.52777099609375
+      },
+      "problem-2-start-line": {
+        "x": 969.8240966796875,
+        "y": 481.361083984375,
+        "width": 6.9444580078125,
+        "height": 139.46759033203125,
+        "right": 976.7685546875,
+        "bottom": 620.8286743164062
+      },
+      "problem-2-start-label": {
+        "x": 979.0833740234375,
+        "y": 464,
+        "width": 69.4444580078125,
+        "height": 15.046295166015625,
+        "right": 1048.52783203125,
+        "bottom": 479.0462951660156
+      },
+      "problem-2-symbol-label": {
+        "x": 595.9815063476562,
+        "y": 674.6481323242188,
+        "width": 133.10186767578125,
+        "height": 24.3055419921875,
+        "right": 729.0833740234375,
+        "bottom": 698.9536743164062
+      },
+      "problem-2-less-symbol-source-card": {
+        "x": 747.6018676757812,
+        "y": 665.3888549804688,
+        "width": 46.29632568359375,
+        "height": 46.29632568359375,
+        "right": 793.898193359375,
+        "bottom": 711.6851806640625
+      },
+      "problem-2-greater-symbol-source-card": {
+        "x": 811.25927734375,
+        "y": 665.3888549804688,
+        "width": 46.29632568359375,
+        "height": 46.29632568359375,
+        "right": 857.5556030273438,
+        "bottom": 711.6851806640625
+      },
+      "problem-2-less-symbol": {
+        "x": 746.4444580078125,
+        "y": 664.2314453125,
+        "width": 48.61114501953125,
+        "height": 48.61114501953125,
+        "right": 795.0556030273438,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-greater-symbol": {
+        "x": 810.1018676757812,
+        "y": 664.2314453125,
+        "width": 48.61114501953125,
+        "height": 48.61114501953125,
+        "right": 858.7130126953125,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-relation-slot-surface": {
+        "x": 1025.379638671875,
+        "y": 664.2314453125,
+        "width": 48.6112060546875,
+        "height": 48.61114501953125,
+        "right": 1073.9908447265625,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-relation-left-fraction-card": {
+        "x": 955.9352416992188,
+        "y": 652.6574096679688,
+        "width": 57.870361328125,
+        "height": 63.65740966796875,
+        "right": 1013.8056030273438,
+        "bottom": 716.3148193359375
+      },
+      "problem-2-relation-right-fraction-card": {
+        "x": 1086.1435546875,
+        "y": 652.6574096679688,
+        "width": 57.870361328125,
+        "height": 63.65740966796875,
+        "right": 1144.013916015625,
+        "bottom": 716.3148193359375
+      },
+      "problem-2-left-fraction-numerator": {
+        "x": 928.7361450195312,
+        "y": 483.6759033203125,
+        "width": 11.42938232421875,
+        "height": 21.990753173828125,
+        "right": 940.16552734375,
+        "bottom": 505.6666564941406
+      },
+      "problem-2-left-fraction-line": {
+        "x": 921.2130126953125,
+        "y": 506.245361328125,
+        "width": 28.9351806640625,
+        "height": 2.3148193359375,
+        "right": 950.148193359375,
+        "bottom": 508.5601806640625
+      },
+      "problem-2-left-fraction-denominator": {
+        "x": 928.7361450195312,
+        "y": 519.5555419921875,
+        "width": 11.23046875,
+        "height": 21.99072265625,
+        "right": 939.9666137695312,
+        "bottom": 541.5462646484375
+      },
+      "problem-2-right-fraction-numerator": {
+        "x": 928.7361450195312,
+        "y": 567.5879516601562,
+        "width": 11.42938232421875,
+        "height": 21.99072265625,
+        "right": 940.16552734375,
+        "bottom": 589.5786743164062
+      },
+      "problem-2-right-fraction-line": {
+        "x": 921.2130126953125,
+        "y": 590.1574096679688,
+        "width": 28.9351806640625,
+        "height": 2.3148193359375,
+        "right": 950.148193359375,
+        "bottom": 592.4722290039062
+      },
+      "problem-2-right-fraction-denominator": {
+        "x": 928.7361450195312,
+        "y": 603.4675903320312,
+        "width": 11.04962158203125,
+        "height": 21.99072265625,
+        "right": 939.7857666015625,
+        "bottom": 625.4583129882812
+      },
+      "problem-2-relation-left-fraction-numerator": {
+        "x": 977.9259643554688,
+        "y": 660.1805419921875,
+        "width": 11.42938232421875,
+        "height": 21.99072265625,
+        "right": 989.3553466796875,
+        "bottom": 682.1712646484375
+      },
+      "problem-2-relation-left-fraction-line": {
+        "x": 967.50927734375,
+        "y": 682.75,
+        "width": 34.72222900390625,
+        "height": 2.3148193359375,
+        "right": 1002.2315063476562,
+        "bottom": 685.0648193359375
+      },
+      "problem-2-relation-left-fraction-denominator": {
+        "x": 977.9259643554688,
+        "y": 696.0601806640625,
+        "width": 11.23046875,
+        "height": 21.99072265625,
+        "right": 989.1564331054688,
+        "bottom": 718.0509033203125
+      },
+      "problem-2-relation-right-fraction-numerator": {
+        "x": 1108.13427734375,
+        "y": 660.1805419921875,
+        "width": 11.429443359375,
+        "height": 21.99072265625,
+        "right": 1119.563720703125,
+        "bottom": 682.1712646484375
+      },
+      "problem-2-relation-right-fraction-line": {
+        "x": 1097.7176513671875,
+        "y": 682.75,
+        "width": 34.72216796875,
+        "height": 2.3148193359375,
+        "right": 1132.4398193359375,
+        "bottom": 685.0648193359375
+      },
+      "problem-2-relation-right-fraction-denominator": {
+        "x": 1108.13427734375,
+        "y": 696.0601806640625,
+        "width": 11.0496826171875,
+        "height": 21.99072265625,
+        "right": 1119.1839599609375,
+        "bottom": 718.0509033203125
+      },
+      "problem-2-response-label": {
+        "x": 707.0926513671875,
+        "y": 751.0369873046875,
+        "width": 98.379638671875,
+        "height": 24.30560302734375,
+        "right": 805.4722900390625,
+        "bottom": 775.3425903320312
+      },
+      "problem-2-explanation-input-surface": {
+        "x": 695.5185546875,
+        "y": 740.620361328125,
+        "width": 561.3426513671875,
+        "height": 50.9259033203125,
+        "right": 1256.8612060546875,
+        "bottom": 791.5462646484375
+      },
+      "problem-2-explanation-input": {
+        "x": 817.0463256835938,
+        "y": 740.620361328125,
+        "width": 439.81488037109375,
+        "height": 50.9259033203125,
+        "right": 1256.8612060546875,
+        "bottom": 791.5462646484375
+      },
+      "right-toolbar": {
+        "x": 1574,
+        "y": 457,
+        "width": 48,
+        "height": 208,
+        "right": 1622,
+        "bottom": 665
+      },
+      "bottom-common-toolbar": {
+        "x": 575,
+        "y": 1066,
+        "width": 480,
+        "height": 48,
+        "right": 1055,
+        "bottom": 1114
+      }
+    },
+    "after": {
+      "instruction-main": {
+        "x": 593.6666870117188,
+        "y": 374.8796081542969,
+        "width": 555.5556030273438,
+        "height": 28.9351806640625,
+        "right": 1149.2222900390625,
+        "bottom": 403.8147888183594
+      },
+      "problem-2-order-label": {
+        "x": 1204.77783203125,
+        "y": 374.8796081542969,
+        "width": 57.870361328125,
+        "height": 24.305572509765625,
+        "right": 1262.648193359375,
+        "bottom": 399.1851806640625
+      },
+      "problem-2-mat": {
+        "x": 579.77783203125,
+        "y": 421.1759033203125,
+        "width": 682.870361328125,
+        "height": 225.6944580078125,
+        "right": 1262.648193359375,
+        "bottom": 646.870361328125
+      },
+      "problem-2-source-panel": {
+        "x": 591.3518676757812,
+        "y": 432.75,
+        "width": 289.35186767578125,
+        "height": 202.5462646484375,
+        "right": 880.7037353515625,
+        "bottom": 635.2962646484375
+      },
+      "problem-2-target-panel": {
+        "x": 898.0648803710938,
+        "y": 432.75,
+        "width": 358.79632568359375,
+        "height": 202.5462646484375,
+        "right": 1256.8612060546875,
+        "bottom": 635.2962646484375
+      },
+      "problem-2-symbol-panel": {
+        "x": 579.77783203125,
+        "y": 646.870361328125,
+        "width": 682.870361328125,
+        "height": 75.2314453125,
+        "right": 1262.648193359375,
+        "bottom": 722.101806640625
+      },
+      "problem-2-response-panel": {
+        "x": 579.77783203125,
+        "y": 730.7824096679688,
+        "width": 682.870361328125,
+        "height": 72.33795166015625,
+        "right": 1262.648193359375,
+        "bottom": 803.120361328125
+      },
+      "problem-2-left-strip-source-card": {
+        "x": 602.9259643554688,
+        "y": 476.15277099609375,
+        "width": 266.2037353515625,
+        "height": 63.65740966796875,
+        "right": 869.1296997070312,
+        "bottom": 539.8101806640625
+      },
+      "problem-2-right-strip-source-card": {
+        "x": 602.9259643554688,
+        "y": 560.0648193359375,
+        "width": 266.2037353515625,
+        "height": 63.65740966796875,
+        "right": 869.1296997070312,
+        "bottom": 623.7222290039062
+      },
+      "problem-2-left-strip": {
+        "x": 973.2963256835938,
+        "y": 484.83331298828125,
+        "width": 86.80560302734375,
+        "height": 46.29632568359375,
+        "right": 1060.1019287109375,
+        "bottom": 531.129638671875
+      },
+      "problem-2-right-strip": {
+        "x": 973.2963256835938,
+        "y": 568.745361328125,
+        "width": 138.88885498046875,
+        "height": 46.2962646484375,
+        "right": 1112.1851806640625,
+        "bottom": 615.0416259765625
+      },
+      "problem-2-left-lane-surface": {
+        "x": 973.2963256835938,
+        "y": 484.83331298828125,
+        "width": 231.48150634765625,
+        "height": 46.29632568359375,
+        "right": 1204.77783203125,
+        "bottom": 531.129638671875
+      },
+      "problem-2-right-lane-surface": {
+        "x": 973.2963256835938,
+        "y": 568.745361328125,
+        "width": 231.48150634765625,
+        "height": 46.2962646484375,
+        "right": 1204.77783203125,
+        "bottom": 615.0416259765625
+      },
+      "problem-2-move-step-label": {
+        "x": 597.138916015625,
+        "y": 439.6944274902344,
+        "width": 127.3148193359375,
+        "height": 24.305572509765625,
+        "right": 724.4537353515625,
+        "bottom": 464
+      },
+      "problem-2-target-label": {
+        "x": 915.4259643554688,
+        "y": 439.6944274902344,
+        "width": 173.61114501953125,
+        "height": 20.833343505859375,
+        "right": 1089.037109375,
+        "bottom": 460.52777099609375
+      },
+      "problem-2-start-line": {
+        "x": 969.8240966796875,
+        "y": 481.361083984375,
+        "width": 6.9444580078125,
+        "height": 139.46759033203125,
+        "right": 976.7685546875,
+        "bottom": 620.8286743164062
+      },
+      "problem-2-start-label": {
+        "x": 979.0833740234375,
+        "y": 464,
+        "width": 69.4444580078125,
+        "height": 15.046295166015625,
+        "right": 1048.52783203125,
+        "bottom": 479.0462951660156
+      },
+      "problem-2-symbol-label": {
+        "x": 595.9815063476562,
+        "y": 674.6481323242188,
+        "width": 133.10186767578125,
+        "height": 24.3055419921875,
+        "right": 729.0833740234375,
+        "bottom": 698.9536743164062
+      },
+      "problem-2-less-symbol-source-card": {
+        "x": 747.6018676757812,
+        "y": 665.3888549804688,
+        "width": 46.29632568359375,
+        "height": 46.29632568359375,
+        "right": 793.898193359375,
+        "bottom": 711.6851806640625
+      },
+      "problem-2-greater-symbol-source-card": {
+        "x": 811.25927734375,
+        "y": 665.3888549804688,
+        "width": 46.29632568359375,
+        "height": 46.29632568359375,
+        "right": 857.5556030273438,
+        "bottom": 711.6851806640625
+      },
+      "problem-2-less-symbol": {
+        "x": 1025.3797607421875,
+        "y": 664.2314453125,
+        "width": 48.611083984375,
+        "height": 48.61114501953125,
+        "right": 1073.9908447265625,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-greater-symbol": {
+        "x": 810.1018676757812,
+        "y": 664.2314453125,
+        "width": 48.61114501953125,
+        "height": 48.61114501953125,
+        "right": 858.7130126953125,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-relation-slot-surface": {
+        "x": 1025.379638671875,
+        "y": 664.2314453125,
+        "width": 48.6112060546875,
+        "height": 48.61114501953125,
+        "right": 1073.9908447265625,
+        "bottom": 712.8425903320312
+      },
+      "problem-2-relation-left-fraction-card": {
+        "x": 955.9352416992188,
+        "y": 652.6574096679688,
+        "width": 57.870361328125,
+        "height": 63.65740966796875,
+        "right": 1013.8056030273438,
+        "bottom": 716.3148193359375
+      },
+      "problem-2-relation-right-fraction-card": {
+        "x": 1086.1435546875,
+        "y": 652.6574096679688,
+        "width": 57.870361328125,
+        "height": 63.65740966796875,
+        "right": 1144.013916015625,
+        "bottom": 716.3148193359375
+      },
+      "problem-2-left-fraction-numerator": {
+        "x": 928.7361450195312,
+        "y": 483.6759033203125,
+        "width": 11.42938232421875,
+        "height": 21.990753173828125,
+        "right": 940.16552734375,
+        "bottom": 505.6666564941406
+      },
+      "problem-2-left-fraction-line": {
+        "x": 921.2130126953125,
+        "y": 506.245361328125,
+        "width": 28.9351806640625,
+        "height": 2.3148193359375,
+        "right": 950.148193359375,
+        "bottom": 508.5601806640625
+      },
+      "problem-2-left-fraction-denominator": {
+        "x": 928.7361450195312,
+        "y": 519.5555419921875,
+        "width": 11.23046875,
+        "height": 21.99072265625,
+        "right": 939.9666137695312,
+        "bottom": 541.5462646484375
+      },
+      "problem-2-right-fraction-numerator": {
+        "x": 928.7361450195312,
+        "y": 567.5879516601562,
+        "width": 11.42938232421875,
+        "height": 21.99072265625,
+        "right": 940.16552734375,
+        "bottom": 589.5786743164062
+      },
+      "problem-2-right-fraction-line": {
+        "x": 921.2130126953125,
+        "y": 590.1574096679688,
+        "width": 28.9351806640625,
+        "height": 2.3148193359375,
+        "right": 950.148193359375,
+        "bottom": 592.4722290039062
+      },
+      "problem-2-right-fraction-denominator": {
+        "x": 928.7361450195312,
+        "y": 603.4675903320312,
+        "width": 11.04962158203125,
+        "height": 21.99072265625,
+        "right": 939.7857666015625,
+        "bottom": 625.4583129882812
+      },
+      "problem-2-relation-left-fraction-numerator": {
+        "x": 977.9259643554688,
+        "y": 660.1805419921875,
+        "width": 11.42938232421875,
+        "height": 21.99072265625,
+        "right": 989.3553466796875,
+        "bottom": 682.1712646484375
+      },
+      "problem-2-relation-left-fraction-line": {
+        "x": 967.50927734375,
+        "y": 682.75,
+        "width": 34.72222900390625,
+        "height": 2.3148193359375,
+        "right": 1002.2315063476562,
+        "bottom": 685.0648193359375
+      },
+      "problem-2-relation-left-fraction-denominator": {
+        "x": 977.9259643554688,
+        "y": 696.0601806640625,
+        "width": 11.23046875,
+        "height": 21.99072265625,
+        "right": 989.1564331054688,
+        "bottom": 718.0509033203125
+      },
+      "problem-2-relation-right-fraction-numerator": {
+        "x": 1108.13427734375,
+        "y": 660.1805419921875,
+        "width": 11.429443359375,
+        "height": 21.99072265625,
+        "right": 1119.563720703125,
+        "bottom": 682.1712646484375
+      },
+      "problem-2-relation-right-fraction-line": {
+        "x": 1097.7176513671875,
+        "y": 682.75,
+        "width": 34.72216796875,
+        "height": 2.3148193359375,
+        "right": 1132.4398193359375,
+        "bottom": 685.0648193359375
+      },
+      "problem-2-relation-right-fraction-denominator": {
+        "x": 1108.13427734375,
+        "y": 696.0601806640625,
+        "width": 11.0496826171875,
+        "height": 21.99072265625,
+        "right": 1119.1839599609375,
+        "bottom": 718.0509033203125
+      },
+      "problem-2-response-label": {
+        "x": 707.0926513671875,
+        "y": 751.0369873046875,
+        "width": 98.379638671875,
+        "height": 24.30560302734375,
+        "right": 805.4722900390625,
+        "bottom": 775.3425903320312
+      },
+      "problem-2-explanation-input-surface": {
+        "x": 695.5185546875,
+        "y": 740.620361328125,
+        "width": 561.3426513671875,
+        "height": 50.9259033203125,
+        "right": 1256.8612060546875,
+        "bottom": 791.5462646484375
+      },
+      "problem-2-explanation-input": {
+        "x": 817.0463256835938,
+        "y": 740.620361328125,
+        "width": 224.53704833984375,
+        "height": 35.3009033203125,
+        "right": 1041.5833740234375,
+        "bottom": 775.9212646484375
+      },
+      "right-toolbar": {
+        "x": 1574,
+        "y": 457,
+        "width": 48,
+        "height": 208,
+        "right": 1622,
+        "bottom": 665
+      },
+      "bottom-common-toolbar": {
+        "x": 575,
+        "y": 1066,
+        "width": 480,
+        "height": 48,
+        "right": 1055,
+        "bottom": 1114
+      }
+    },
+    "inputText": "3/5 띠가 3/8 띠보다 더 길어요."
+  },
+  "passed": true
+}

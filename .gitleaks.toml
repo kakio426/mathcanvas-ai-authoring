@@ -1,0 +1,14 @@
+title = "MathCanvas AI Authoring secret scan"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "jwt"
+
+    [[rules.allowlists]]
+    description = "Synthetic JWT used only to verify log redaction"
+    condition = "AND"
+    regexTarget = "line"
+    paths = ['''packages/contracts/src/contracts\.test\.ts$''']
+    regexes = ['''const jwt = "eyJhbGciOiJIUzI1NiJ9\.eyJzdWIiOiIxMjM0NTY3ODkwIn0\.abcdefghijklmnop";''']

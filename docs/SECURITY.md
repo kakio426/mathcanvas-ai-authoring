@@ -12,7 +12,7 @@
 1. MathCanvas 토큰은 MathCanvas 페이지 컨텍스트 밖으로 반환하지 않습니다.
 2. MCP 응답, AI 대화, 생성 작업 파일과 로그에는 토큰·Authorization 헤더·비밀번호를 넣지 않습니다.
 3. 기존 프로젝트 수정·삭제 API와 일반 목적 브라우저 제어 도구를 제공하지 않습니다.
-4. 교사가 확인한 `ActivitySpec` 해시와 실제 생성 payload 해시가 다르면 쓰지 않습니다.
+4. 교사가 확인한 `ActivitySetSpec` 해시, 문제별 `CanvasActivitySpec` 해시와 실제 생성 payload 해시가 다르면 쓰지 않습니다.
 5. validator 오류 또는 최신 객체 계약 불일치가 있으면 프로젝트를 만들지 않습니다.
 6. 로컬 HTTP 서버와 수신 포트를 열지 않고 stdio MCP만 사용합니다.
 
@@ -36,7 +36,7 @@
 
 ## 승인 신뢰 모델
 
-MCP 서버는 `draftId`, 교사가 본 `ActivitySpec` 해시, `teacherConfirmed: true`가 모두 있어야 외부 쓰기를 시작합니다. 서버는 추천 데이터와 생성 데이터의 동일성·만료·재사용을 검사하고, Codex·Claude Code의 도구 설명은 교사의 명시적 승인 뒤에만 쓰기 도구를 호출하도록 요구합니다.
+MCP 서버는 `draftId`, 교사가 본 `ActivitySetSpec`의 `setHash`, `teacherConfirmed: true`가 모두 있어야 외부 쓰기를 시작합니다. 서버는 세트와 모든 문제별 payload의 동일성·만료·재사용을 검사합니다. 중간 실패 시 이미 성공한 프로젝트는 다시 만들지 않고 빠진 항목만 재개합니다. Codex·Claude Code의 도구 설명은 교사의 명시적 승인 뒤에만 쓰기 도구를 호출하도록 요구합니다.
 
 ## 알려진 제한
 
