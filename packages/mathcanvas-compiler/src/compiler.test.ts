@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
   CONTRACT_SCHEMA_VERSION,
-  canvasActivityHash,
   sha256Hex
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
@@ -174,11 +173,9 @@ describe("MathCanvas 컴파일러", () => {
     expect(result.payload.categoryId).toBe("rJa0d46MAy");
     expect(result.payload.studyLevel).toBe("elementary");
     expect(result.payload.isNoteworthy).toBe(false);
-    expect(result.payload.canvasOption.scale).toBe(2);
     expect(result.payload.projectTitle).toMatch(
-      /^분수 띠로 크기 비교하기 · 5학년 · 보통 · 1\/4 \[AI-[A-F0-9]{12}\]$/
+      /^분수 띠로 크기 비교하기 · 5학년 · 4문제 · 보통 \[AI-[A-F0-9]{12}\]$/
     );
-    expect(result.payload.isShowMenuOnActivity).toBe(false);
     expect(result.payloadHash).toBe(sha256Hex(result.payload));
   });
 
@@ -210,9 +207,9 @@ describe("MathCanvas 컴파일러", () => {
       );
       expect(native?.count).toBe(model.fraction.numerator);
       expect(native?.divider).toBe(model.fraction.denominator);
-      const perWidth = model.wholeWidth / model.fraction.denominator;
+      const perWidth = 640 / model.fraction.denominator;
       const geometricWidth = perWidth * model.fraction.numerator;
-      expect(native?.width).toBeCloseTo(geometricWidth);
+      expect(native?.width).toBe(Math.round(geometricWidth));
       expect(native?.cx).toBeCloseTo(
         ((model.fraction.numerator - 1) * perWidth) / 2
       );
@@ -222,346 +219,67 @@ describe("MathCanvas 컴파일러", () => {
         [geometricWidth - perWidth / 2, 40],
         [-perWidth / 2, 40]
       ]);
-      expect(native?.x).toBeCloseTo(model.bounds.x + perWidth / 2);
-      expect(native?.y).toBe(model.bounds.y + 40);
-      expect(native).toMatchObject({
-        groupId: `${model.id}-move-group`,
-        isGroup: true,
-        isMoveRotateHandler: false,
-        isFillChange: false,
-        isSplit: false,
-        parent: { isResizeHandle: false, isAngleHandle: false }
-      });
-      const moveGroup = result.payload.contentsJson.find(
-        (object) => object.id === `${model.id}-move-group`
-      );
-      expect(moveGroup).toMatchObject({
-        svgId: "group-element",
-        groupId: `${model.id}-move-group`,
-        ids: [model.id],
-        viewBox: {
-          x: model.bounds.x,
-          y: model.bounds.y,
-          width: model.bounds.width,
-          height: model.bounds.height
-        },
-        isGroup: true,
-        isBluePrint: true,
-        playgroundIndex: 0,
-        isMoveRotateHandler: false
-      });
     }
   });
 
-  it("고정 표면만 잠그고 분수 띠·기호·입력칸은 학생이 조작하게 둔다", () => {
+  it("고정 표면만 잠그고 분수 띠와 기호는 움직일 수 있게 둔다", () => {
     const { spec, compiled: result } = compiled();
     const locked = new Set(result.payload.canvasOption.lockIds.flat());
-    for (const model of spec.visualModels) {
-      expect(locked.has(model.id)).toBe(false);
-      expect(locked.has(`${model.id}-move-group`)).toBe(false);
-    }
+    for (const model of spec.visualModels) expect(locked.has(model.id)).toBe(false);
     for (const object of spec.movableObjects)
       expect(locked.has(object.id)).toBe(false);
-    expect(locked.has(spec.inputObjects[0]!.id)).toBe(false);
     expect(locked.has("instruction-main")).toBe(true);
+    expect(locked.has("instruction-symbol")).toBe(true);
     expect(locked.has("problem-1-mat")).toBe(true);
-    expect(
-      locked.has(`${spec.inputObjects[0]!.id}-surface`)
-    ).toBe(true);
+    expect(locked.has("problem-1-left-lane-label")).toBe(true);
+    expect(locked.has("problem-1-relation-slot-label")).toBe(true);
   });
 
-  it("읽는 분수는 수식 메뉴 계약의 한 개짜리 math-latex 객체로 만든다", () => {
-    const { spec, compiled: result } = compiled();
-    const contracts = [
-      ["problem-1-left-fraction", spec.problem.left],
-      ["problem-1-right-fraction", spec.problem.right],
-      ["problem-1-relation-left-fraction", spec.problem.left],
-      ["problem-1-relation-right-fraction", spec.problem.right]
-    ] as const;
-
-    for (const [prefix, fraction] of contracts) {
-      const card = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-card`
-      )!;
-      const formula = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-formula`
-      )!;
-      const [cardX, cardY] = card.point1 as [number, number];
-      const [cardRight, cardBottom] = card.point2 as [number, number];
-      expect(formula).toMatchObject({
-        svgId: "math-latex",
-        text: `\\frac{${fraction.numerator}}{${fraction.denominator}}`,
-        fill: "transparent",
-        parent: null,
-        isTextEditFontSize: true,
-        isMoveRotateHandler: false
-      });
-      expect(Number(formula.x)).toBeGreaterThanOrEqual(cardX);
-      expect(Number(formula.y)).toBeGreaterThanOrEqual(cardY);
-      expect(Number(formula.x) + Number(formula.width)).toBeLessThanOrEqual(
-        cardRight
-      );
-      expect(Number(formula.y) + Number(formula.height)).toBeLessThanOrEqual(
-        cardBottom
-      );
-      expect(
-        Number(formula.x) + Number(formula.width) / 2
-      ).toBe((cardX + cardRight) / 2 + 1);
-      expect(
-        Number(formula.y) + Number(formula.height) / 2
-      ).toBe((cardY + cardBottom) / 2);
-      expect(
-        result.payload.contentsJson.some((object) =>
-          [`${prefix}-numerator`, `${prefix}-line`, `${prefix}-denominator`]
-            .includes(String(object.id))
-        )
-      ).toBe(false);
-    }
-  });
-
-  it("두 자리 분모는 글리프가 잘리지 않는 넓은 수식 상자를 쓴다", () => {
-    const { spec: fixtureSpec } = compiled();
-    const spec = structuredClone(fixtureSpec);
-    spec.problem.left = { numerator: 7, denominator: 12 };
-    spec.problem.right = { numerator: 2, denominator: 3 };
-    spec.problem.correctRelation = "<";
-    spec.canvasHash = canvasActivityHash(spec);
-
-    const result = compileCanvasActivitySpec(spec);
-    for (const prefix of [
-      "problem-1-left-fraction",
-      "problem-1-relation-left-fraction"
-    ]) {
-      const card = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-card`
-      )!;
-      const formula = result.payload.contentsJson.find(
-        (object) => object.id === `${prefix}-formula`
-      )!;
-      const [cardX, cardY] = card.point1 as [number, number];
-      const [cardRight, cardBottom] = card.point2 as [number, number];
-      const expected = nativeFractionFormulaBounds(
-        {
-          x: cardX,
-          y: cardY,
-          width: cardRight - cardX,
-          height: cardBottom - cardY
-        },
-        7,
-        12
-      );
-      expect(formula).toMatchObject({
-        text: "\\frac{7}{12}",
-        ...expected
-      });
-      expect(expected.width).toBe(76);
-      expect(expected.x + expected.width).toBeLessThanOrEqual(cardRight);
-    }
-  });
-
-  it("준비 상자와 빈 목표 자리를 물리적으로 나눈다", () => {
-    const { spec, compiled: result } = compiled();
-    const laneSurfaces = spec.placementGuides
-      .filter((guide) => guide.kind === "comparison-lane")
-      .map((guide) => ({
-        guide,
-        surface: result.payload.contentsJson.find(
-          (object) => object.id === `${guide.id}-surface`
-        )!
-      }));
-    const startLine = spec.fixedObjects.find(
-      (object) => object.kind === "common-start-line"
-    )!;
-    for (const model of spec.visualModels) {
-      const sourceCard = result.payload.contentsJson.find(
-        (object) => object.id === `${model.id}-source-card`
-      )!;
-      expect(sourceCard).toMatchObject({
-        svgId: "drawElem",
-        isMoveRotateHandler: false
-      });
-      const [, sourceTop] = sourceCard.point1 as [number, number];
-      const [sourceRight, sourceBottom] = sourceCard.point2 as [number, number];
-      expect(model.bounds.x).toBeGreaterThanOrEqual(
-        (sourceCard.point1 as [number, number])[0]
-      );
-      expect(model.bounds.y).toBeGreaterThanOrEqual(sourceTop);
-      expect(model.bounds.x + model.bounds.width).toBeLessThanOrEqual(
-        sourceRight
-      );
-      expect(model.bounds.y + model.bounds.height).toBeLessThanOrEqual(
-        sourceBottom
-      );
-      expect(sourceRight).toBeLessThan(startLine.bounds.x);
-      for (const { guide } of laneSurfaces) {
-        expect(sourceRight).toBeLessThan(guide.bounds.x);
-      }
-    }
-  });
-
-  it("단계 문구와 자리 안내는 읽기 쉬운 일반 글자로 만든다", () => {
+  it("문제 식과 기호 놓기 칸이 겹치지 않는다", () => {
     const { compiled: result } = compiled();
     const prompt = result.payload.contentsJson.find(
-      (object) => object.id === "instruction-main"
+      (object) => object.id === "problem-1-prompt"
     )!;
-    const order = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-order-label"
+    const slot = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-relation-slot-surface"
     )!;
-    expect(prompt).toMatchObject({
-      svgId: "input-text",
-      text: "시작점이 다른 두 띠를 출발선에 맞춰요.",
-      fontSize: 34
-    });
-    expect(order).toMatchObject({ svgId: "input-text", text: "1/4" });
-    expect(
-      result.payload.contentsJson.some(
-        (object) =>
-          object.id === "problem-1-left-lane-label" ||
-          object.id === "problem-1-right-lane-label"
-      )
-    ).toBe(false);
-  });
-
-  it("비교 기호는 이동 전용이고 비교 까닭 칸은 실제 편집 객체다", () => {
-    const { spec, compiled: result } = compiled();
-    const less = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-less-symbol"
-    )!;
-    const response = result.payload.contentsJson.find(
-      (object) => object.id === spec.inputObjects[0]!.id
-    )!;
-    const responseSurface = result.payload.contentsJson.find(
-      (object) => object.id === `${spec.inputObjects[0]!.id}-surface`
-    )!;
-    const lessCard = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-less-symbol-source-card"
-    )!;
-    const greaterCard = result.payload.contentsJson.find(
-      (object) => object.id === "problem-1-greater-symbol-source-card"
-    )!;
-    const relationSlot = spec.placementGuides.find(
-      (guide) => guide.kind === "relation-slot"
-    )!;
-    expect(less).toMatchObject({
-      svgId: "math-latex",
-      text: "<",
-      isMoveRotateHandler: false,
-      fontSize: 52,
-      width: 52,
-      height: 76
-    });
-    expect(response).toMatchObject({
-      svgId: "input-text",
-      isTextEdit: true,
-      isTextEditFontSize: false,
-      isMoveRotateHandler: false,
-      playgroundIndex: 2,
-      text: "\u200B",
-      x: spec.inputObjects[0]!.bounds.x + 24,
-      width: spec.inputObjects[0]!.bounds.width - 48
-    });
-    expect(responseSurface).toMatchObject({
+    expect(prompt.fill).toBe("transparent");
+    const promptBottom = Number(prompt.y) + Number(prompt.height);
+    const slotTop = (slot.point1 as [number, number])[1];
+    expect(promptBottom).toBeLessThanOrEqual(slotTop);
+    expect(slot).toMatchObject({
       svgId: "drawElem",
-      fill: "#FFF9E8",
-      stroke: "#2F78C4",
-      isMoveRotateHandler: false
+      x: 0,
+      y: 0,
+      strokeType: 1,
+      strokeWidth: 2,
+      isStrokeChange: true
     });
-    for (const card of [lessCard, greaterCard]) {
-      expect(card).toMatchObject({ svgId: "drawElem" });
-      const [x, y] = card.point1 as [number, number];
-      const [right, bottom] = card.point2 as [number, number];
-      expect(right).toBeLessThan(relationSlot.bounds.x);
-      expect(bottom).toBeLessThan(spec.inputObjects[0]!.bounds.y);
-      expect(x).toBeGreaterThanOrEqual(0);
-      expect(y).toBeGreaterThanOrEqual(0);
-    }
-    const [lessCardX, lessCardY] = lessCard.point1 as [number, number];
-    const [lessCardRight, lessCardBottom] = lessCard.point2 as [number, number];
-    expect(Number(less.x) + Number(less.width) / 2).toBe(
-      (lessCardX + lessCardRight) / 2 + 1
-    );
-    expect(Number(less.y) + Number(less.height) / 2).toBe(
-      (lessCardY + lessCardBottom) / 2
-    );
+    expect(slot).not.toHaveProperty("width");
+    expect(slot).not.toHaveProperty("height");
   });
 
-  it("캔버스 내용이 바뀌면 같은 세트에서도 생성 표식이 달라진다", () => {
-    const { spec, compiled: original } = compiled();
-    const changed = structuredClone(spec);
-    changed.visualModels[0]!.color = "#FFA26D";
-    changed.canvasHash = canvasActivityHash(changed);
-    const recompiled = compileCanvasActivitySpec(changed);
-    const marker = (title: string) => title.match(/\[AI-([A-F0-9]+)\]/)?.[1];
+  it("문제 번호는 일반 글자로, 분수 식은 수식으로 나누고 띠 이름을 비교판 안에 둔다", () => {
+    const { spec, compiled: result } = compiled();
+    const mat = spec.fixedObjects.find(
+      (object) => object.id === "problem-1-mat"
+    )!;
+    const prompt = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-prompt"
+    )!;
+    const number = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-number"
+    )!;
+    const laneLabel = result.payload.contentsJson.find(
+      (object) => object.id === "problem-1-left-lane-label"
+    )!;
 
-    expect(marker(original.payload.projectTitle)).toBeTruthy();
-    expect(marker(recompiled.payload.projectTitle)).toBeTruthy();
-    expect(marker(recompiled.payload.projectTitle)).not.toBe(
-      marker(original.payload.projectTitle)
+    expect(prompt.svgId).toBe("math-latex");
+    expect(String(prompt.text)).not.toContain("번");
+    expect(number).toMatchObject({ svgId: "input-text", text: "1번" });
+    expect(Number(laneLabel.x)).toBeGreaterThanOrEqual(mat.bounds.x);
+    expect(Number(laneLabel.x) + Number(laneLabel.width)).toBeLessThanOrEqual(
+      mat.bounds.x + mat.bounds.width
     );
-  });
-
-  it("분모 2부터 12까지 분수 띠를 준비 상자 안에 정확한 폭으로 만든다", () => {
-    const { spec: fixtureSpec } = compiled();
-    for (let denominator = 2; denominator <= 12; denominator += 1) {
-      const spec = structuredClone(fixtureSpec);
-      const numerator = denominator - 1;
-      const rightDenominator = denominator === 2 ? 3 : 2;
-      spec.problem.left = { numerator, denominator };
-      spec.problem.right = { numerator: 1, denominator: rightDenominator };
-      spec.problem.correctRelation = ">";
-
-      const leftModel = spec.visualModels.find(
-        (model) => model.role === "left-strip"
-      )!;
-      leftModel.fraction = { numerator, denominator };
-      leftModel.bounds.x = 95;
-      leftModel.bounds.width = (400 / denominator) * numerator;
-      const rightModel = spec.visualModels.find(
-        (model) => model.role === "right-strip"
-      )!;
-      rightModel.fraction = { numerator: 1, denominator: rightDenominator };
-      rightModel.bounds.width = 400 / rightDenominator;
-      for (const movable of spec.movableObjects) {
-        if (movable.sourceModelId === leftModel.id) {
-          movable.bounds.x = leftModel.bounds.x;
-          movable.bounds.width = leftModel.bounds.width;
-        }
-        if (movable.sourceModelId === rightModel.id) {
-          movable.bounds.width = rightModel.bounds.width;
-        }
-      }
-      spec.canvasHash = canvasActivityHash(spec);
-
-      const result = compileCanvasActivitySpec(spec);
-      const native = result.payload.contentsJson.find(
-        (object) => object.id === leftModel.id
-      )!;
-      const sourceCard = result.payload.contentsJson.find(
-        (object) => object.id === `${leftModel.id}-source-card`
-      )!;
-      const [cardX, cardY] = sourceCard.point1 as [number, number];
-      const [cardRight, cardBottom] = sourceCard.point2 as [number, number];
-      expect(native).toMatchObject({
-        svgId: FRACTION_SVG_BY_DENOMINATOR[denominator],
-        count: numerator,
-        divider: denominator,
-        defaultWidth: 400
-      });
-      const coordinates = native.coordinates as Array<[number, number]>;
-      expect(
-        Number(native.x) + Math.min(...coordinates.map((point) => point[0]))
-      ).toBeCloseTo(leftModel.bounds.x);
-      expect(
-        Number(native.y) + Math.min(...coordinates.map((point) => point[1]))
-      ).toBeCloseTo(leftModel.bounds.y);
-      expect(leftModel.bounds.x).toBeGreaterThanOrEqual(cardX);
-      expect(leftModel.bounds.y).toBeGreaterThanOrEqual(cardY);
-      expect(leftModel.bounds.x + leftModel.bounds.width).toBeLessThanOrEqual(
-        cardRight
-      );
-      expect(leftModel.bounds.y + leftModel.bounds.height).toBeLessThanOrEqual(
-        cardBottom
-      );
-    }
   });
 });

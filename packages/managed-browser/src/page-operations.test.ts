@@ -240,44 +240,6 @@ describe("페이지 컨텍스트 작업", () => {
     ).toBe(false);
   });
 
-  it("현재 MathCanvas의 쿠키 세션만으로도 새 프로젝트를 만든다", async () => {
-    installWindow(null);
-    const payload = {
-      projectTitle: "쿠키 로그인 분수 비교 활동지",
-      contentsJson: []
-    };
-    const requests: Array<{ url: string; init?: RequestInit }> = [];
-    globalThis.fetch = vi.fn(async (url: string | URL, init?: RequestInit) => {
-      requests.push({ url: String(url), ...(init ? { init } : {}) });
-      if (String(url).startsWith("/api/project?")) {
-        return new Response(JSON.stringify({ list: [] }), { status: 200 });
-      }
-      if (String(url) === "/api/project") {
-        return new Response(
-          JSON.stringify({ projectId: "P_cookie_created" }),
-          { status: 200 }
-        );
-      }
-      return new Response("", { status: 404 });
-    }) as typeof fetch;
-
-    await expect(
-      createProjectInMathCanvas({
-        payload,
-        expectedPayloadHash: sha256Hex(payload)
-      })
-    ).resolves.toEqual({
-      ok: true,
-      projectId: "P_cookie_created"
-    });
-    expect(
-      new Headers(requests[0]?.init?.headers).get("Authorization")
-    ).toBeNull();
-    expect(
-      new Headers(requests[1]?.init?.headers).get("Authorization")
-    ).toBeNull();
-  });
-
   it("분모 1~12 전체와 기본 객체 계약이 맞으면 연결 준비를 반환한다", async () => {
     installStaticContractFetch({ token: "browser-token" });
     await expect(inspectMathCanvasPage(true)).resolves.toEqual({
@@ -365,13 +327,6 @@ describe("페이지 컨텍스트 작업", () => {
     ).resolves.toEqual({ state: "ready" });
     expect(visited.some((path) => path.startsWith("/api/public-project/")))
       .toBe(false);
-  });
-
-  it("쿠키 세션만 있는 현재 MathCanvas 로그인도 연결 준비로 본다", async () => {
-    installStaticContractFetch({ token: null });
-    await expect(inspectMathCanvasPage(true)).resolves.toEqual({
-      state: "ready"
-    });
   });
 
   it("분모 12의 SVG ID가 바뀌면 쓰기 전에 계약 불일치로 중단한다", async () => {

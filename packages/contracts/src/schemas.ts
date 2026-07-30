@@ -2,8 +2,6 @@ import { z } from "zod";
 
 export const CONTRACT_SCHEMA_VERSION = "1.0.0" as const;
 export const ACTIVITY_SPEC_SCHEMA_VERSION = "1.0.0" as const;
-export const ACTIVITY_SET_SPEC_SCHEMA_VERSION = "2.0.0" as const;
-export const CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION = "2.0.0" as const;
 export const VERIFIED_TEMPLATE_ID =
   "fraction.compare.unlike-denominators.visual-v1" as const;
 export const MIN_VISUAL_FRACTION_DIFFERENCE_RATIO = 0.08 as const;
@@ -262,212 +260,6 @@ export const activitySpecSchema = z
   })
   .strict();
 
-/**
- * v1 ActivitySpec은 저장된 초안을 읽는 마이그레이션 경계로만 남긴다.
- * 새 생성 경로는 ActivitySetSpec → CanvasActivitySpec[]을 사용한다.
- */
-export const legacyActivitySpecSchema = activitySpecSchema;
-
-export const inputObjectSchema = z
-  .object({
-    id: identifier,
-    kind: z.literal("explanation-text"),
-    problemId: identifier,
-    bounds: boundsSchema,
-    placeholder: z.string().min(1).max(120),
-    editable: z.literal(true),
-    collectResponse: z.literal(false)
-  })
-  .strict();
-
-export const placementGuideSchema = z
-  .object({
-    id: identifier,
-    problemId: identifier,
-    kind: z.enum(["comparison-lane", "relation-slot"]),
-    bounds: boundsSchema,
-    intendedObjectIds: z.array(identifier).min(1).max(4),
-    label: z.string().min(1).max(80),
-    behavior: z.literal("visual-guide-only")
-  })
-  .strict();
-
-const activitySetShape = {
-  schemaVersion: z.literal(ACTIVITY_SET_SPEC_SCHEMA_VERSION),
-  setId: identifier,
-  seed: z.string().min(1).max(120),
-  title: z.string().min(1).max(80),
-  grade: z.number().int().min(1).max(6),
-  gradeBand: gradeBandSchema,
-  standardCode: z.string().regex(/^\[[246]수\d{2}-\d{2}\]$/),
-  learningObjective: z.string().min(1).max(500),
-  problemCount: z.number().int().min(2).max(6),
-  difficulty: difficultySchema,
-  manipulation: manipulationSchema,
-  problems: z.array(activityProblemSchema).min(2).max(6),
-  curriculumReferences: z.array(curriculumRecordSchema).min(1).max(4),
-  recommendationSnapshot: recommendationSchema,
-  provenance: z
-    .object({
-      generatedAt: z.string().datetime(),
-      requestId: identifier,
-      curriculumSourceIds: z.array(identifier).min(1).max(12),
-      auxiliarySnapshotSha: z.string().regex(/^[a-f0-9]{40}$/)
-    })
-    .strict(),
-  templateId: z.literal(VERIFIED_TEMPLATE_ID),
-  templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/)
-} as const;
-
-function validateActivitySetShape(
-  value: {
-    problemCount: number;
-    problems: Array<{ order: number }>;
-    grade: number;
-    gradeBand: "1-2" | "3-4" | "5-6";
-  },
-  context: z.RefinementCtx
-): void {
-  if (value.problemCount !== value.problems.length) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["problemCount"],
-      message: "problemCount는 실제 문제 수와 같아야 합니다."
-    });
-  }
-  const expectedOrders = value.problems.map((_, index) => index + 1);
-  if (
-    value.problems.some(
-      (problem, index) => problem.order !== expectedOrders[index]
-    )
-  ) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["problems"],
-      message: "문제 순서는 1부터 빠짐없이 이어져야 합니다."
-    });
-  }
-  const expectedBand =
-    value.grade <= 2 ? "1-2" : value.grade <= 4 ? "3-4" : "5-6";
-  if (value.gradeBand !== expectedBand) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["gradeBand"],
-      message: "학년과 학년군이 맞지 않습니다."
-    });
-  }
-}
-
-export const activitySetDraftSchema = z
-  .object(activitySetShape)
-  .strict()
-  .superRefine(validateActivitySetShape);
-
-export const activitySetSpecSchema = z
-  .object({
-    ...activitySetShape,
-    setHash: z.string().regex(/^[a-f0-9]{64}$/)
-  })
-  .strict()
-  .superRefine(validateActivitySetShape);
-
-const canvasActivityShape = {
-  schemaVersion: z.literal(CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION),
-  canvasId: identifier,
-  setId: identifier,
-  setHash: z.string().regex(/^[a-f0-9]{64}$/),
-  canvasIndex: z.number().int().min(1).max(6),
-  canvasCount: z.number().int().min(2).max(6),
-  seed: z.string().min(1).max(120),
-  title: z.string().min(1).max(80),
-  grade: z.number().int().min(1).max(6),
-  standardCode: z.string().regex(/^\[[246]수\d{2}-\d{2}\]$/),
-  learningObjective: z.string().min(1).max(500),
-  curriculumReferences: z.array(curriculumRecordSchema).min(1).max(4),
-  recommendationSnapshot: recommendationSchema,
-  problem: activityProblemSchema,
-  visualModels: z.array(visualModelSchema).length(2),
-  fixedObjects: z.array(fixedObjectSchema).min(6).max(32),
-  movableObjects: z.array(movableObjectSchema).length(4),
-  inputObjects: z.array(inputObjectSchema).length(1),
-  placementGuides: z.array(placementGuideSchema).length(3),
-  layout: z
-    .object({
-      width: z.literal(1280),
-      height: z.literal(800),
-      viewBox: z.tuple([
-        z.literal(0),
-        z.literal(0),
-        z.literal(1280),
-        z.literal(800)
-      ]),
-      stageRatio: z.literal("16:10"),
-      minGap: z.number().min(16).max(80)
-    })
-    .strict(),
-  instructions: z.array(z.string().min(1).max(120)).min(1).max(3),
-  provenance: z
-    .object({
-      generatedAt: z.string().datetime(),
-      requestId: identifier,
-      curriculumSourceIds: z.array(identifier).min(1).max(12),
-      auxiliarySnapshotSha: z.string().regex(/^[a-f0-9]{40}$/)
-    })
-    .strict(),
-  templateId: z.literal(VERIFIED_TEMPLATE_ID),
-  templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/)
-} as const;
-
-function validateCanvasActivityShape(
-  value: {
-    canvasIndex: number;
-    canvasCount: number;
-    problem: { id: string; order: number };
-    visualModels: Array<{ problemId: string }>;
-    movableObjects: Array<{ problemId: string }>;
-    inputObjects: Array<{ problemId: string }>;
-    placementGuides: Array<{ problemId: string }>;
-  },
-  context: z.RefinementCtx
-): void {
-  if (
-    value.canvasIndex > value.canvasCount ||
-    value.problem.order !== value.canvasIndex
-  ) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["canvasIndex"],
-      message: "캔버스 번호와 문제 순서가 맞아야 합니다."
-    });
-  }
-  const foreignProblemReference = [
-    ...value.visualModels,
-    ...value.movableObjects,
-    ...value.inputObjects,
-    ...value.placementGuides
-  ].some((object) => object.problemId !== value.problem.id);
-  if (foreignProblemReference) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["problem"],
-      message: "한 캔버스의 모든 학생 객체는 같은 문제 하나만 가리켜야 합니다."
-    });
-  }
-}
-
-export const canvasActivityDraftSchema = z
-  .object(canvasActivityShape)
-  .strict()
-  .superRefine(validateCanvasActivityShape);
-
-export const canvasActivitySpecSchema = z
-  .object({
-    ...canvasActivityShape,
-    canvasHash: z.string().regex(/^[a-f0-9]{64}$/)
-  })
-  .strict()
-  .superRefine(validateCanvasActivityShape);
-
 export const mathCanvasPayloadSchema = z
   .object({
     projectTitle: z.string().min(1).max(120),
@@ -508,22 +300,6 @@ export const compiledProjectSchema = z
   })
   .strict();
 
-export const compiledCanvasProjectSchema = z
-  .object({
-    schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
-    contractVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
-    sourceCanvasSpecId: identifier,
-    sourceCanvasSpecVersion: z.literal(CANVAS_ACTIVITY_SPEC_SCHEMA_VERSION),
-    setId: identifier,
-    setHash: z.string().regex(/^[a-f0-9]{64}$/),
-    canvasHash: z.string().regex(/^[a-f0-9]{64}$/),
-    templateId: z.literal(VERIFIED_TEMPLATE_ID),
-    templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
-    payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
-    payload: mathCanvasPayloadSchema
-  })
-  .strict();
-
 export const validationIssueSchema = z
   .object({
     code: identifier,
@@ -546,7 +322,7 @@ export const validationIssueSchema = z
 export const validationReportSchema = z
   .object({
     schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
-    canvasSpecId: identifier,
+    activitySpecId: identifier,
     compiledPayloadHash: z.string().regex(/^[a-f0-9]{64}$/),
     checkedAt: z.string().datetime(),
     issues: z.array(validationIssueSchema).max(200),
@@ -591,123 +367,6 @@ export const approvalReceiptSchema = z
   })
   .strict();
 
-export const activitySetApprovalReceiptSchema = z
-  .object({
-    schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
-    setHash: z.string().regex(/^[a-f0-9]{64}$/),
-    approvalHash: z.string().regex(/^[a-f0-9]{64}$/),
-    approvedAt: z.string().datetime(),
-    expiresAt: z.string().datetime()
-  })
-  .strict();
-
-export const creationBatchItemSchema = z
-  .object({
-    canvasIndex: z.number().int().min(1).max(6),
-    canvasHash: z.string().regex(/^[a-f0-9]{64}$/),
-    payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
-    status: z.enum([
-      "queued",
-      "creating",
-      "succeeded",
-      "failed",
-      "expired"
-    ]),
-    jobId: identifier.optional(),
-    projectId: z.string().min(1).max(160).optional(),
-    editorUrl: z.string().url().optional(),
-    errorCode: identifier.optional()
-  })
-  .strict()
-  .superRefine((item, context) => {
-    if (item.status === "succeeded" && (!item.projectId || !item.editorUrl)) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "성공한 캔버스에는 projectId와 editorUrl이 필요합니다."
-      });
-    }
-    if (item.status === "failed" && !item.errorCode) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "실패한 캔버스에는 errorCode가 필요합니다."
-      });
-    }
-  });
-
-export const creationBatchSchema = z
-  .object({
-    schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
-    batchId: z.string().regex(/^batch-[A-Za-z0-9-]+$/),
-    setId: identifier,
-    setHash: z.string().regex(/^[a-f0-9]{64}$/),
-    status: z.enum([
-      "queued",
-      "creating",
-      "partial",
-      "succeeded",
-      "failed",
-      "expired"
-    ]),
-    createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime(),
-    items: z.array(creationBatchItemSchema).min(2).max(6)
-  })
-  .strict()
-  .superRefine((batch, context) => {
-    const orders = batch.items.map((item) => item.canvasIndex);
-    if (
-      new Set(orders).size !== orders.length ||
-      orders.some((order, index) => order !== index + 1)
-    ) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["items"],
-        message: "배치 항목은 1부터 순서대로 한 번씩 있어야 합니다."
-      });
-    }
-    const statuses = new Set(batch.items.map((item) => item.status));
-    if (
-      (batch.status === "succeeded" && statuses.size !== 1) ||
-      (batch.status === "succeeded" && !statuses.has("succeeded"))
-    ) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["status"],
-        message: "배치 성공 상태는 모든 캔버스가 성공했을 때만 가능합니다."
-      });
-    }
-  });
-
-export const renderEvidenceSchema = z
-  .object({
-    schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
-    projectId: identifier,
-    canvasIndex: z.number().int().min(1).max(6),
-    viewport: z
-      .object({
-        width: z.number().int().positive(),
-        height: z.number().int().positive(),
-        deviceScaleFactor: z.number().positive()
-      })
-      .strict(),
-    editorScreenshot: z.string().min(1).max(1000),
-    previewScreenshot: z.string().min(1).max(1000),
-    measuredRects: z.array(
-      z
-        .object({
-          id: identifier,
-          x: z.number().finite(),
-          y: z.number().finite(),
-          width: z.number().nonnegative().finite(),
-          height: z.number().nonnegative().finite()
-        })
-        .strict()
-    ),
-    qaResult: z.enum(["passed", "failed"]),
-    issues: z.array(z.string().min(1).max(500)).max(100)
-  })
-  .strict();
-
 export const templateDefinitionSchema = z
   .object({
     id: identifier,
@@ -725,27 +384,14 @@ export const templateDefinitionSchema = z
 export type GenerationRequest = z.infer<typeof generationRequestSchema>;
 export type Recommendation = z.infer<typeof recommendationSchema>;
 export type ActivitySpec = z.infer<typeof activitySpecSchema>;
-export type ActivitySetDraft = z.infer<typeof activitySetDraftSchema>;
-export type ActivitySetSpec = z.infer<typeof activitySetSpecSchema>;
-export type CanvasActivityDraft = z.infer<typeof canvasActivityDraftSchema>;
-export type CanvasActivitySpec = z.infer<typeof canvasActivitySpecSchema>;
 export type ActivityProblem = z.infer<typeof activityProblemSchema>;
 export type VisualModel = z.infer<typeof visualModelSchema>;
 export type CompiledProject = z.infer<typeof compiledProjectSchema>;
-export type CompiledCanvasProject = z.infer<
-  typeof compiledCanvasProjectSchema
->;
 export type ValidationReport = z.infer<typeof validationReportSchema>;
 export type ValidationIssue = z.infer<typeof validationIssueSchema>;
 export type CreationJob = z.infer<typeof creationJobSchema>;
 export type CurriculumRecord = z.infer<typeof curriculumRecordSchema>;
 export type ApprovalReceipt = z.infer<typeof approvalReceiptSchema>;
-export type ActivitySetApprovalReceipt = z.infer<
-  typeof activitySetApprovalReceiptSchema
->;
-export type CreationBatch = z.infer<typeof creationBatchSchema>;
-export type CreationBatchItem = z.infer<typeof creationBatchItemSchema>;
-export type RenderEvidence = z.infer<typeof renderEvidenceSchema>;
 export type TemplateDefinition = z.infer<typeof templateDefinitionSchema>;
 export type Difficulty = z.infer<typeof difficultySchema>;
 export type DenominatorRelation = z.infer<

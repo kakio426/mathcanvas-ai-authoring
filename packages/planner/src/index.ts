@@ -256,7 +256,7 @@ export function recommendActivity(input: unknown): Recommendation {
       "첫 검증 패턴에 맞춰 분모가 서로 다른 두 분수를 비교하는 활동으로 구성합니다.",
       "같은 길이의 분수 띠를 같은 출발선에 놓으면 전체가 같다는 조건을 눈으로 확인할 수 있습니다.",
       "분수 띠를 직접 옮긴 뒤 비교 기호를 고르게 하여 학생의 크기 판단이 조작으로 드러납니다.",
-      `${problemCount}문제를 한 문제씩 새 캔버스로 나누어 학생이 현재 비교에 집중하게 합니다.`
+      `${problemCount}문제는 비교 방법을 익히고 적용하기에 충분하면서 한 캔버스가 지나치게 복잡해지지 않는 분량입니다.`
     ],
     confidence,
     caveats: curriculum.warnings,

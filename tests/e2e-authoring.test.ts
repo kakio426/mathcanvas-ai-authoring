@@ -7,12 +7,11 @@ import {
 import { MathCanvasAuthoringService } from "../apps/mcp-server/src/service.js";
 
 describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
-  it("교사 승인 뒤 문제별 새 캔버스를 만들고 첫 편집 화면을 연다", async () => {
+  it("교사 승인 뒤 관리형 브라우저가 한 번만 생성하고 편집 URL을 돌려준다", async () => {
     const now = new Date("2026-07-29T06:00:00.000Z");
     const clock = { now: () => now };
     let creationCalls = 0;
-    const capturedPayloads: Record<string, unknown>[] = [];
-    const openedEditorUrls: string[] = [];
+    let capturedPayload: Record<string, unknown> | undefined;
     const runtime: MathCanvasBrowserRuntime = {
       async openWorkspace() {
         return {
@@ -28,17 +27,14 @@ describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
       },
       async createProject(payload) {
         creationCalls += 1;
-        capturedPayloads.push(payload);
+        capturedPayload = payload;
         return {
           ok: true,
           completedAt: "2026-07-29T06:00:01.000Z",
-          projectId: `P_e2eGenerated_${creationCalls}`,
+          projectId: "P_e2eGenerated",
           editorUrl:
-            `https://mathcanvas.vivasam.com/ko/view/P_e2eGenerated_${creationCalls}`
+            "https://mathcanvas.vivasam.com/ko/view/P_e2eGenerated"
         };
-      },
-      async openEditor(editorUrl) {
-        openedEditorUrls.push(editorUrl);
       },
       async close() {}
     };
@@ -58,41 +54,32 @@ describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
     });
     expect(draft.supported).toBe(true);
 
-    const creation = await service.createActivitySet({
+    const creation = await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(creation.status).toBe("succeeded");
-    expect(creation.items).toHaveLength(4);
-    expect(creation.validations.every((value) => value.canCreate)).toBe(
-      true
-    );
-    expect(capturedPayloads[0]).toMatchObject({
+    expect(creation).toMatchObject({
+      status: "succeeded",
+      projectId: "P_e2eGenerated",
+      editorUrl:
+        "https://mathcanvas.vivasam.com/ko/view/P_e2eGenerated"
+    });
+    expect(creation.validation.canCreate).toBe(true);
+    expect(capturedPayload).toMatchObject({
       categoryId: "rJa0d46MAy",
       isNoteworthy: false,
       studyLevel: "elementary"
     });
-    expect(
-      capturedPayloads.map((payload) => String(payload.projectTitle))
-    ).toEqual([
-      expect.stringContaining("1/4"),
-      expect.stringContaining("2/4"),
-      expect.stringContaining("3/4"),
-      expect.stringContaining("4/4")
-    ]);
-    expect(JSON.stringify(capturedPayloads)).not.toMatch(
+    expect(JSON.stringify(capturedPayload)).not.toMatch(
       /accessToken|Authorization|Bearer|password/i
     );
-    expect(openedEditorUrls).toEqual([
-      "https://mathcanvas.vivasam.com/ko/view/P_e2eGenerated_1"
-    ]);
 
-    await service.createActivitySet({
+    await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(creationCalls).toBe(4);
+    expect(creationCalls).toBe(1);
   });
 });

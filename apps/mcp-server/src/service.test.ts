@@ -5,7 +5,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   CreationJobStore,
   MANAGED_BROWSER_VERSION,
@@ -20,26 +20,9 @@ const fixedClock = {
   now: () => new Date("2026-07-29T04:00:00.000Z")
 };
 
-function successResult(index: number): CreationResult {
-  return {
-    ok: true,
-    completedAt: `2026-07-29T04:00:${String(index).padStart(2, "0")}.000Z`,
-    projectId: `P_generated_${index}`,
-    editorUrl:
-      `https://mathcanvas.vivasam.com/ko/view/P_generated_${index}`
-  };
-}
-
 class FakeBrowserRuntime implements MathCanvasBrowserRuntime {
-  public readonly createCalls: Array<{
-    payload: Record<string, unknown>;
-    payloadHash: string;
-    openEditor: boolean | undefined;
-  }> = [];
-  public readonly openedEditorUrls: string[] = [];
+  public createCalls = 0;
   public openCalls = 0;
-  public creationResults: CreationResult[];
-  public firstCreationGate: Promise<void> | undefined;
 
   public constructor(
     public connection: BrowserConnection = {
@@ -49,10 +32,13 @@ class FakeBrowserRuntime implements MathCanvasBrowserRuntime {
       checkedAt: fixedClock.now().toISOString(),
       currentUrl: "https://mathcanvas.vivasam.com/ko/myCanvas"
     },
-    creationResults: CreationResult[] = []
-  ) {
-    this.creationResults = creationResults;
-  }
+    public creationResult: CreationResult = {
+      ok: true,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      projectId: "P_generated",
+      editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_generated"
+    }
+  ) {}
 
   public async openWorkspace(): Promise<BrowserConnection> {
     this.openCalls += 1;
@@ -63,27 +49,9 @@ class FakeBrowserRuntime implements MathCanvasBrowserRuntime {
     return this.connection;
   }
 
-  public async createProject(
-    payload: Record<string, unknown>,
-    payloadHash: string,
-    options?: { openEditor?: boolean }
-  ): Promise<CreationResult> {
-    this.createCalls.push({
-      payload,
-      payloadHash,
-      openEditor: options?.openEditor
-    });
-    if (this.createCalls.length === 1 && this.firstCreationGate) {
-      await this.firstCreationGate;
-    }
-    return (
-      this.creationResults.shift() ??
-      successResult(this.createCalls.length)
-    );
-  }
-
-  public async openEditor(editorUrl: string): Promise<void> {
-    this.openedEditorUrls.push(editorUrl);
+  public async createProject(): Promise<CreationResult> {
+    this.createCalls += 1;
+    return this.creationResult;
   }
 
   public async close(): Promise<void> {}
@@ -100,14 +68,6 @@ function createService(
     fixedClock,
     draftSnapshotPath ? { draftSnapshotPath } : {}
   );
-}
-
-function recommend(service: MathCanvasAuthoringService, problemCount = 4) {
-  return service.recommend({
-    prompt:
-      "분모가 다른 분수의 크기를 눈으로 비교하는 활동지를 만들어 주세요.",
-    problemCount
-  });
 }
 
 describe("MCP 서비스 흐름", () => {
@@ -141,85 +101,53 @@ describe("MCP 서비스 흐름", () => {
     expect(status.message).toContain("내 캔버스");
   });
 
-  it("추천한 문제 수만큼 한 문제짜리 새 캔버스를 만든다", async () => {
+  it("추천 뒤 교사 승인과 같은 해시가 있어야 새 프로젝트를 만든다", async () => {
     const runtime = new FakeBrowserRuntime();
     const service = createService(runtime);
-    const draft = recommend(service);
-
-    expect(draft.supported).toBe(true);
-    expect(draft.activitySetSummary).toMatchObject({
-      canvasCount: 4,
-      oneProblemPerCanvas: true
+    const draft = service.recommend({
+      prompt:
+        "분모가 다른 분수의 크기를 눈으로 비교하는 활동지를 만들어 주세요."
     });
+    expect(draft.supported).toBe(true);
     await expect(
-      service.createActivitySet({
+      service.createNewProject({
         draftId: draft.draftId!,
-        setHash: draft.setHash!,
+        activitySpecHash: draft.activitySpecHash!,
         teacherConfirmed: false
       })
     ).rejects.toThrow("명시적으로 승인");
     await expect(
-      service.createActivitySet({
+      service.createNewProject({
         draftId: draft.draftId!,
-        setHash: "0".repeat(64),
+        activitySpecHash: "0".repeat(64),
         teacherConfirmed: true
       })
     ).rejects.toThrow("다릅니다");
 
-    const created = await service.createActivitySet({
+    const created = await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
     expect(created.status).toBe("succeeded");
-    expect(created.validations).toHaveLength(4);
-    expect(created.validations.every((value) => value.canCreate)).toBe(true);
+    expect(created.validation.canCreate).toBe(true);
     expect(created.teacherAnswerKey).toHaveLength(4);
-    expect(created.items).toHaveLength(4);
-    expect(created.items.map((item) => item.canvasIndex)).toEqual([
-      1, 2, 3, 4
-    ]);
-    expect(runtime.createCalls).toHaveLength(4);
-    expect(
-      runtime.createCalls.every((call) => call.openEditor === false)
-    ).toBe(true);
-    expect(
-      runtime.createCalls.map((call) =>
-        String(call.payload.projectTitle)
-      )
-    ).toEqual([
-      expect.stringContaining("1/4"),
-      expect.stringContaining("2/4"),
-      expect.stringContaining("3/4"),
-      expect.stringContaining("4/4")
-    ]);
-    expect(runtime.openedEditorUrls).toEqual([
-      "https://mathcanvas.vivasam.com/ko/view/P_generated_1"
-    ]);
+    expect(created.teacherAnswerKey[0]?.explanation).toContain("통분하면");
+    expect(created.projectId).toBe("P_generated");
+    expect(created.editorUrl).toContain("/ko/view/P_generated");
+    expect(runtime.createCalls).toBe(1);
     expect(JSON.stringify(created)).not.toMatch(
       /accessToken|Authorization|Bearer/
     );
 
-    const repeated = await service.createActivitySet({
+    const repeated = await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(repeated.batchId).toBe(created.batchId);
-    expect(runtime.createCalls).toHaveLength(4);
-    expect(repeated.items.map((item) => item.projectId)).toEqual(
-      created.items.map((item) => item.projectId)
-    );
+    expect(repeated.jobId).toBe(created.jobId);
+    expect(runtime.createCalls).toBe(1);
   });
-
-  it.each([2, 4, 6])(
-    "%i문제를 요청하면 정확히 같은 수의 새 캔버스를 계획한다",
-    (problemCount) => {
-      const result = recommend(createService(), problemCount);
-      expect(result.activitySetSummary?.canvasCount).toBe(problemCount);
-      expect(result.teacherAnswerKey).toHaveLength(problemCount);
-    }
-  );
 
   it("지원하지 않는 요청은 draft를 만들지 않는다", () => {
     const result = createService().recommend({
@@ -229,84 +157,65 @@ describe("MCP 서비스 흐름", () => {
     expect(result.draftId).toBeUndefined();
   });
 
-  it("중간 실패 뒤 성공한 캔버스는 건너뛰고 빠진 항목부터 다시 만든다", async () => {
-    const runtime = new FakeBrowserRuntime(undefined, [
-      successResult(1),
-      {
-        ok: false,
-        completedAt: "2026-07-29T04:00:02.000Z",
-        errorCode: "login-required",
-        httpStatus: 401
-      }
-    ]);
+  it("브라우저 실패 코드를 교사가 행동할 수 있는 안내로 바꾼다", async () => {
+    const runtime = new FakeBrowserRuntime(undefined, {
+      ok: false,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      errorCode: "login-required",
+      httpStatus: 401
+    });
     const service = createService(runtime);
-    const draft = recommend(service);
-    const first = await service.createActivitySet({
+    const draft = service.recommend({
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
+    });
+    const created = await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-
-    expect(first.status).toBe("partial");
-    expect(first.items.map((item) => item.status)).toEqual([
-      "succeeded",
-      "failed",
-      "queued",
-      "queued"
-    ]);
-    expect(service.getBatchStatus(first.batchId).message).toContain(
-      "빠진 항목"
+    expect(created.status).toBe("failed");
+    expect(service.getJobStatus(created.jobId).message).toContain(
+      "다시 로그인"
     );
-    expect(runtime.openedEditorUrls).toHaveLength(0);
+  });
 
-    runtime.creationResults.push(
-      successResult(2),
-      successResult(3),
-      successResult(4)
-    );
-    const retried = await service.createActivitySet({
+  it("로그인 실패 뒤 같은 추천안과 같은 문제로 다시 생성할 수 있다", async () => {
+    const runtime = new FakeBrowserRuntime(undefined, {
+      ok: false,
+      completedAt: "2026-07-29T04:00:01.000Z",
+      errorCode: "login-required",
+      httpStatus: 401
+    });
+    const service = createService(runtime);
+    const draft = service.recommend({
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
+    });
+    const first = await service.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
+      teacherConfirmed: true
+    });
+    expect(first.status).toBe("failed");
+
+    runtime.creationResult = {
+      ok: true,
+      completedAt: "2026-07-29T04:00:02.000Z",
+      projectId: "P_retry",
+      editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_retry"
+    };
+    const retried = await service.createNewProject({
+      draftId: draft.draftId!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
     expect(retried.status).toBe("succeeded");
-    expect(retried.items[0]?.projectId).toBe("P_generated_1");
-    expect(runtime.createCalls).toHaveLength(5);
-    expect(runtime.openedEditorUrls).toEqual([
-      "https://mathcanvas.vivasam.com/ko/view/P_generated_1"
-    ]);
+    expect(retried.projectId).toBe("P_retry");
+    expect(retried.activitySpecHash).toBe(draft.activitySpecHash);
+    expect(retried.teacherAnswerKey).toEqual(first.teacherAnswerKey);
+    expect(runtime.createCalls).toBe(2);
   });
 
-  it("같은 승인 요청이 동시에 와도 캔버스를 중복 생성하지 않는다", async () => {
-    let releaseFirstCreation: (() => void) | undefined;
-    const runtime = new FakeBrowserRuntime();
-    runtime.firstCreationGate = new Promise<void>((resolve) => {
-      releaseFirstCreation = resolve;
-    });
-    const service = createService(runtime);
-    const draft = recommend(service);
-    const input = {
-      draftId: draft.draftId!,
-      setHash: draft.setHash!,
-      teacherConfirmed: true
-    };
-
-    const first = service.createActivitySet(input);
-    await vi.waitFor(() => {
-      expect(runtime.createCalls).toHaveLength(1);
-    });
-    const second = service.createActivitySet(input);
-    releaseFirstCreation?.();
-    const [firstResult, secondResult] = await Promise.all([first, second]);
-
-    expect(firstResult.batchId).toBe(secondResult.batchId);
-    expect(runtime.createCalls).toHaveLength(4);
-    expect(
-      new Set(firstResult.items.map((item) => item.projectId)).size
-    ).toBe(4);
-  });
-
-  it("서버 재시작 뒤 같은 배치를 다시 외부 쓰기 하지 않는다", async () => {
+  it("서버 재시작 뒤 같은 승인 결과를 다시 외부 쓰기 하지 않는다", async () => {
     const directory = mkdtempSync(join(tmpdir(), "mathcanvas-managed-jobs-"));
     const jobSnapshotPath = join(directory, "creation-jobs.json");
     const draftSnapshotPath = join(directory, "drafts.json");
@@ -316,13 +225,15 @@ describe("MCP 서비스 흐름", () => {
       new CreationJobStore({ snapshotPath: jobSnapshotPath }),
       draftSnapshotPath
     );
-    const draft = recommend(firstService);
-    const created = await firstService.createActivitySet({
+    const draft = firstService.recommend({
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
+    });
+    const created = await firstService.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
-    expect(firstRuntime.createCalls).toHaveLength(4);
+    expect(firstRuntime.createCalls).toBe(1);
 
     const restartedRuntime = new FakeBrowserRuntime();
     const restartedService = createService(
@@ -330,9 +241,9 @@ describe("MCP 서비스 흐름", () => {
       new CreationJobStore({ snapshotPath: jobSnapshotPath }),
       draftSnapshotPath
     );
-    const repeated = await restartedService.createActivitySet({
+    const repeated = await restartedService.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
     expect(repeated.jobId).toBe(created.jobId);
@@ -394,10 +305,12 @@ describe("MCP 서비스 흐름", () => {
       new CreationJobStore({ snapshotPath: jobSnapshotPath }),
       draftSnapshotPath
     );
-    const draft = recommend(firstService);
-    await firstService.createActivitySet({
+    const draft = firstService.recommend({
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요."
+    });
+    await firstService.createNewProject({
       draftId: draft.draftId!,
-      setHash: draft.setHash!,
+      activitySpecHash: draft.activitySpecHash!,
       teacherConfirmed: true
     });
 
@@ -427,24 +340,6 @@ describe("MCP 서비스 흐름", () => {
     delete stored.result;
     writeFileSync(jobSnapshotPath, JSON.stringify(snapshot));
 
-    const draftSnapshot = JSON.parse(
-      readFileSync(draftSnapshotPath, "utf8")
-    ) as {
-      drafts: Array<{
-        batch: {
-          status: string;
-          items: Array<{
-            canvasIndex: number;
-            status: string;
-          }>;
-        };
-      }>;
-    };
-    const firstItem = draftSnapshot.drafts[0]!.batch.items[0]!;
-    firstItem.status = "creating";
-    draftSnapshot.drafts[0]!.batch.status = "creating";
-    writeFileSync(draftSnapshotPath, JSON.stringify(draftSnapshot));
-
     const runtime = new FakeBrowserRuntime();
     const restarted = createService(
       runtime,
@@ -452,12 +347,12 @@ describe("MCP 서비스 흐름", () => {
       draftSnapshotPath
     );
     await expect(
-      restarted.createActivitySet({
+      restarted.createNewProject({
         draftId: draft.draftId!,
-        setHash: draft.setHash!,
+        activitySpecHash: draft.activitySpecHash!,
         teacherConfirmed: true
       })
     ).rejects.toThrow("안전하게 중단");
-    expect(runtime.createCalls).toHaveLength(0);
+    expect(runtime.createCalls).toBe(0);
   });
 });

@@ -518,7 +518,7 @@ export async function createProjectInMathCanvas({
   } catch {
     const projectTitle = payload.projectTitle;
     const token = window.localStorage.getItem("accessToken");
-    if (typeof projectTitle === "string") {
+    if (typeof projectTitle === "string" && token) {
       await new Promise((resolve) => setTimeout(resolve, 750));
       const reconciled = await findExistingProject(token, projectTitle);
       if (reconciled.ok && reconciled.projectId) {

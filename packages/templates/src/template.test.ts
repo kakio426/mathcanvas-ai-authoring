@@ -193,8 +193,8 @@ describe("분수 비교 템플릿", () => {
       generatedAt: "2026-07-28T02:00:00.000Z"
     };
     expect(
-      generateFractionComparisonActivitySet(recommendation(), options)
-    ).toEqual(generateFractionComparisonActivitySet(recommendation(), options));
+      generateFractionComparisonActivity(recommendation(), options)
+    ).toEqual(generateFractionComparisonActivity(recommendation(), options));
   });
 
   it("쉬움에서 어려움으로 갈수록 눈으로 구별할 길이 차이가 줄어든다", () => {
@@ -235,44 +235,6 @@ describe("분수 비교 템플릿", () => {
       }
     }
   });
-
-  it.each([2, 4, 6])(
-    "%i문제를 한 문제짜리 캔버스로 정확히 나눈다",
-    (problemCount) => {
-      const set = generateFractionComparisonActivitySet(
-        recommendation({ problemCount }),
-        {
-          seed: `canvas-count-${problemCount}`,
-          generatedAt: "2026-07-28T02:00:00.000Z"
-        }
-      );
-      const canvases = splitActivitySetIntoCanvases(set);
-      expect(canvases).toHaveLength(problemCount);
-      expect(canvases.map((canvas) => canvas.canvasIndex)).toEqual(
-        Array.from({ length: problemCount }, (_, index) => index + 1)
-      );
-      expect(new Set(canvases.map((canvas) => canvas.canvasHash)).size).toBe(
-        problemCount
-      );
-      for (const canvas of canvases) {
-        expect(canvas.layout).toEqual({
-          width: 1280,
-          height: 800,
-          viewBox: [0, 0, 1280, 800],
-          stageRatio: "16:10",
-          minGap: 16
-        });
-        expect(canvas.problem.order).toBe(canvas.canvasIndex);
-        expect(canvas.visualModels).toHaveLength(2);
-        expect(canvas.inputObjects).toHaveLength(1);
-        expect(
-          canvas.placementGuides.every(
-            (guide) => guide.behavior === "visual-guide-only"
-          )
-        ).toBe(true);
-      }
-    }
-  );
 
   it("문제마다 같은 전체와 실제 수학 판단이 있는 조작을 만든다", () => {
     const plan = generateFractionComparisonActivity(recommendation(), {

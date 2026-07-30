@@ -51,7 +51,7 @@ export class CreationJobStore {
       typeof snapshot !== "object" ||
       snapshot === null ||
       !("version" in snapshot) ||
-      (snapshot.version !== 2 && snapshot.version !== 3) ||
+      snapshot.version !== 2 ||
       !("jobs" in snapshot) ||
       !Array.isArray(snapshot.jobs)
     ) {
@@ -62,22 +62,7 @@ export class CreationJobStore {
         throw new Error("저장된 브라우저 작업 항목이 올바르지 않습니다.");
       }
       const record = item as Record<string, unknown>;
-      const parsedJob = queuedCreationSchema.safeParse(record.job);
-      if (!parsedJob.success) {
-        const legacyCompiled =
-          typeof record.job === "object" &&
-          record.job !== null &&
-          "compiledProject" in record.job &&
-          typeof record.job.compiledProject === "object" &&
-          record.job.compiledProject !== null &&
-          "sourceActivitySpecId" in record.job.compiledProject;
-        if (snapshot.version === 2 && legacyCompiled) {
-          // v1 다문제 작업은 새 배치로 재승인해야 한다. 파일은 읽되 실행 큐로 복구하지 않는다.
-          continue;
-        }
-        throw new Error("저장된 브라우저 작업 항목이 올바르지 않습니다.");
-      }
-      const job = parsedJob.data;
+      const job = queuedCreationSchema.parse(record.job);
       const status = record.status;
       if (
         status !== "queued" &&
@@ -139,7 +124,7 @@ export class CreationJobStore {
     writeFileSync(
       temporaryPath,
       `${JSON.stringify({
-        version: 3,
+        version: 2,
         jobs: [...this.#jobs.values()]
       })}\n`,
       { encoding: "utf8", mode: 0o600 }

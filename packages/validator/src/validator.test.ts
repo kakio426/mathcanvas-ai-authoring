@@ -3,8 +3,7 @@ import {
   CONTRACT_SCHEMA_VERSION,
   recommendationSchema,
   sha256Hex,
-  type CanvasActivitySpec,
-  type CompiledCanvasProject
+  type CompiledProject
 } from "@mathcanvas/contracts";
 import {
   compileActivity,
@@ -152,9 +151,8 @@ describe("생성 전 검증", () => {
       compiled,
       new Date("2026-07-28T03:00:00.000Z")
     );
-    expect(result.canCreate).toBe(true);
-    expect(result.issues).toEqual([]);
-    expect(result.canvasSpecId).toBe(spec.canvasId);
+    expect(report.canCreate).toBe(true);
+    expect(report.issues).toEqual([]);
   });
 
   it("눈으로 구별하기 어려운 분수 띠 쌍을 차단한다", () => {
@@ -174,9 +172,6 @@ describe("생성 전 검증", () => {
         model.role === "left-strip"
           ? { numerator: 4, denominator: 9 }
           : { numerator: 3, denominator: 7 };
-      model.bounds.width =
-        (model.wholeWidth / model.fraction.denominator) *
-        model.fraction.numerator;
     }
     const report = validateForCreation(close, compileActivity(close));
     expect(report.canCreate).toBe(false);
@@ -232,9 +227,9 @@ describe("생성 전 검증", () => {
       overlapping,
       compileActivity(overlapping)
     );
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "comparison-lanes-overlap"
+    expect(report.canCreate).toBe(false);
+    expect(report.issues.map((value) => value.code)).toContain(
+      "instruction-overlap"
     );
   });
 
@@ -249,9 +244,9 @@ describe("생성 전 검증", () => {
       tooClose,
       compileActivity(tooClose)
     );
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "fraction-source-not-separated"
+    expect(report.canCreate).toBe(false);
+    expect(report.issues.map((value) => value.code)).toContain(
+      "instruction-gap-too-small"
     );
   });
 
@@ -302,164 +297,12 @@ describe("생성 전 검증", () => {
     const fraction = payload.contentsJson.find((object) =>
       String(object.svgId).startsWith("NO03FM")
     )!;
-    fraction.x = Number(fraction.x) + 20;
-    fraction._x = Number(fraction._x) + 20;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-geometry-mismatch"
-    );
-  });
-
-  it("비교 까닭 입력칸이 잠기면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    payload.canvasOption.lockIds.push([spec.inputObjects[0]!.id]);
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-response-input-contract-mismatch"
-    );
-  });
-
-  it("학생 글자 크기를 24보다 작게 바꾸면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const label = payload.contentsJson.find(
-      (object) => object.id === "problem-1-move-step-label"
-    )!;
-    label.fontSize = 20;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "student-font-too-small"
-    );
-  });
-
-  it("새 활동지가 기본 120% 배율이 아니면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    payload.canvasOption.scale = 5;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "project-contract-mismatch"
-    );
-  });
-
-  it("분수 카드가 math-latex 분수식이 아니면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const formula = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-formula"
-    )!;
-    formula.svgId = "input-text";
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-formula-invalid"
-    );
-  });
-
-  it("분수 수식이 카드 밖으로 나가면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const formula = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-formula"
-    )!;
-    formula.x = 300;
-    formula._x = 300;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-formula-invalid"
-    );
-  });
-
-  it("분수 수식이 카드 안에서 가운데를 벗어나면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const formula = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-formula"
-    )!;
-    formula.x = Number(formula.x) + 4;
-    formula._x = formula.x;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-formula-invalid"
-    );
-  });
-
-  it("두 자리 분모의 수식 폭을 한 자리 폭으로 줄이면 차단한다", () => {
-    const { spec: fixtureSpec } = fixture();
-    const spec = structuredClone(fixtureSpec);
-    spec.problem.left = { numerator: 7, denominator: 12 };
-    spec.problem.right = { numerator: 2, denominator: 3 };
-    spec.problem.correctRelation = "<";
-    spec.canvasHash = canvasActivityHash(spec);
-    const compiled = compileCanvasActivitySpec(spec);
-    const payload = structuredClone(compiled.payload);
-    const formula = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-formula"
-    )!;
-    formula.width = 50;
-    formula._width = 50;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-formula-invalid"
-    );
-  });
-
-  it("분수 수식의 값이 문제와 다르면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const formula = payload.contentsJson.find(
-      (object) => object.id === "problem-1-left-fraction-formula"
-    )!;
-    formula.text = "\\frac{1}{99}";
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "native-fraction-formula-invalid"
-    );
-  });
-
-  it("기호 준비 카드가 기호 목적지와 겹치면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const card = payload.contentsJson.find(
-      (object) => object.id === "problem-1-less-symbol-source-card"
-    )!;
-    card.point1 = [800, 530];
-    card.point2 = [880, 610];
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "symbol-source-card-invalid"
-    );
-  });
-
-  it("비교 기호가 준비 카드 가운데를 벗어나면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const payload = structuredClone(compiled.payload);
-    const symbol = payload.contentsJson.find(
-      (object) => object.id === "problem-1-less-symbol"
-    )!;
-    symbol.y = Number(symbol.y) + 3;
-    symbol._y = symbol.y;
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "symbol-source-card-invalid"
-    );
-  });
-
-  it("지원하지 않는 스냅 accepts가 섞이면 차단한다", () => {
-    const { spec, compiled } = fixture();
-    const invalid = structuredClone(spec) as CanvasActivitySpec & {
-      accepts?: string[];
+    fraction.x = -1000;
+    fraction._x = -1000;
+    const altered = {
+      ...compiled,
+      payload,
+      payloadHash: sha256Hex(payload)
     };
     const report = validateForCreation(resolved, altered);
     expect(report.canCreate).toBe(false);
@@ -474,8 +317,8 @@ describe("생성 전 검증", () => {
       ...compiled,
       payloadHash: "0".repeat(64)
     });
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
+    expect(report.canCreate).toBe(false);
+    expect(report.issues.map((value) => value.code)).toContain(
       "payload-hash-mismatch"
     );
   });
@@ -595,25 +438,8 @@ describe("생성 전 검증", () => {
   it("분수 이외 네이티브 객체의 필드 변조도 차단한다", () => {
     const { resolved, compiled } = fixture();
     const payload = structuredClone(compiled.payload);
-    const surfaceId = `${spec.inputObjects[0]!.id}-surface`;
-    payload.contentsJson = payload.contentsJson.filter(
-      (object) => object.id !== surfaceId
-    );
-    payload.canvasOption.lockIds = payload.canvasOption.lockIds.filter(
-      (ids) => !ids.includes(surfaceId)
-    );
-    const result = validateForCreation(spec, withPayload(compiled, payload));
-    expect(result.canCreate).toBe(false);
-    expect(result.issues.map((value) => value.code)).toContain(
-      "response-input-surface-invalid"
-    );
-  });
-
-  it("‘까닭’ 안내가 응답 패널 밖으로 나가면 차단한다", () => {
-    const { spec } = fixture();
-    const changed = structuredClone(spec);
-    const label = changed.fixedObjects.find(
-      (object) => object.id === `${changed.problem.id}-response-label`
+    const surface = payload.contentsJson.find(
+      (object) => object.svgId === "drawElem"
     )!;
     surface.point2 = [9999, 9999];
     const altered = {

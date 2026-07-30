@@ -37,10 +37,10 @@ function toolError(error: unknown) {
 
 export function createMcpServer(service: MathCanvasAuthoringService): McpServer {
   const server = new McpServer(
-    { name: "mathcanvas-ai-authoring", version: "0.3.0" },
+    { name: "mathcanvas-ai-authoring", version: "0.2.0" },
     {
       instructions:
-        "처음에는 mathcanvas_open_workspace로 MathCanvas 전용 Chrome을 여세요. 교사가 그 창에서 로그인하고 ‘내 캔버스’까지 이동하면 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 추천한 문제 수만큼 새 캔버스를 만들며, 캔버스 하나에는 문제 하나만 둡니다. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_activity_set을 호출하세요. 기존 프로젝트 수정·삭제 도구는 제공하지 않습니다."
+        "처음에는 mathcanvas_open_workspace로 MathCanvas 전용 Chrome을 여세요. 교사가 그 창에서 로그인하고 ‘내 캔버스’까지 이동하면 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정 도구는 제공하지 않습니다."
     }
   );
 
@@ -101,7 +101,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     {
       title: "MathCanvas 활동 추천",
       description:
-        "교사 요청을 공식 교육과정과 검증된 템플릿에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. 문제 수만큼 서로 독립된 새 캔버스를 계획하고 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
+        "교사 요청을 공식 교육과정과 검증된 템플릿에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
       inputSchema: z
         .object({
           prompt: z.string().min(5).max(2000),
@@ -160,15 +160,15 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
   );
 
   server.registerTool(
-    "mathcanvas_create_activity_set",
+    "mathcanvas_create_new_project",
     {
-      title: "새 MathCanvas 활동 세트 만들기",
+      title: "새 MathCanvas 활동지 만들기",
       description:
-        "교사가 직전에 확인한 추천안을 명시적으로 승인했을 때만 문제 수만큼 새 캔버스를 만듭니다. 반드시 사용자가 '이대로 만들어줘'처럼 승인한 뒤 호출하세요. 성공한 항목은 보존하고 실패한 항목만 다시 시도하며, 기존 프로젝트는 수정하거나 삭제하지 않습니다.",
+        "교사가 직전에 확인한 추천안을 명시적으로 승인했을 때만 새 프로젝트를 만듭니다. 반드시 사용자가 '이대로 만들어줘'처럼 승인한 뒤 호출하세요. 기존 프로젝트는 수정하지 않습니다.",
       inputSchema: z
         .object({
           draftId: z.string().regex(/^draft-[A-Za-z0-9-]+$/),
-          setHash: z.string().regex(/^[a-f0-9]{64}$/),
+          activitySpecHash: z.string().regex(/^[a-f0-9]{64}$/),
           teacherConfirmed: z.literal(true)
         })
         .strict(),
@@ -183,7 +183,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
       try {
         return toolResult({
           ok: true,
-          ...(await service.createActivitySet(input))
+          ...(await service.createNewProject(input))
         });
       } catch (error) {
         return toolError(error);
@@ -192,14 +192,14 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
   );
 
   server.registerTool(
-    "mathcanvas_get_batch_status",
+    "mathcanvas_get_job_status",
     {
-      title: "MathCanvas 활동 세트 생성 상태 확인",
+      title: "MathCanvas 생성 상태 확인",
       description:
-        "새 캔버스 세트의 항목별 생성 상태와 성공한 편집 URL을 순서대로 확인합니다. 프로젝트를 수정하지 않습니다.",
+        "새 프로젝트 생성 작업의 진행 상태와 성공 시 편집 URL을 확인합니다. 프로젝트를 수정하지 않습니다.",
       inputSchema: z
         .object({
-          batchId: z.string().regex(/^batch-[A-Za-z0-9-]+$/)
+          jobId: z.string().regex(/^job-[A-Za-z0-9-]+$/)
         })
         .strict(),
       annotations: {
@@ -209,11 +209,11 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
         openWorldHint: false
       }
     },
-    async ({ batchId }) => {
+    async ({ jobId }) => {
       try {
         return toolResult({
           ok: true,
-          ...service.getBatchStatus(batchId)
+          ...service.getJobStatus(jobId)
         });
       } catch (error) {
         return toolError(error);

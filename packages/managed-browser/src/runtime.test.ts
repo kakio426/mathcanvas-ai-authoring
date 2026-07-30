@@ -127,7 +127,7 @@ describe("관리형 Chrome 런타임", () => {
     await mixedRuntime.close();
   });
 
-  it("외부 쓰기 직전 연결을 검사하고 같은 전용 탭에서 편집 화면을 연다", async () => {
+  it("외부 쓰기 직전 연결을 검사하고 성공 편집 탭을 연다", async () => {
     const workspace = new FakePage(
       "https://mathcanvas.vivasam.com/ko/myCanvas"
     );
@@ -151,33 +151,8 @@ describe("관리형 Chrome 런타임", () => {
       projectId: "P_runtime",
       editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_runtime"
     });
-    expect(context.tabs).toHaveLength(1);
-    expect(context.tabs[0]?.navigations).toEqual([
-      "https://mathcanvas.vivasam.com/ko/view/P_runtime"
-    ]);
-    expect(context.tabs[0]?.broughtToFront).toBe(2);
-  });
-
-  it("배치 생성 중에는 편집 화면을 열지 않고 마지막에 지정한 화면만 연다", async () => {
-    const workspace = new FakePage(
-      "https://mathcanvas.vivasam.com/ko/myCanvas"
-    );
-    const context = new FakeContext([workspace]);
-    const runtime = new ManagedChromeRuntime({
-      userDataDirectory: "/tmp/mathcanvas-runtime-batch",
-      launcher: async () => context
-    });
-    const payload = { projectTitle: "세트 1/4", contentsJson: [] };
-    const result = await runtime.createProject(payload, sha256Hex(payload), {
-      openEditor: false
-    });
-    expect(result.ok).toBe(true);
-    expect(workspace.navigations).toEqual([]);
-
-    await runtime.openEditor(
-      "https://mathcanvas.vivasam.com/ko/view/P_runtime"
-    );
-    expect(workspace.navigations).toEqual([
+    expect(context.tabs).toHaveLength(2);
+    expect(context.tabs[1]?.navigations).toEqual([
       "https://mathcanvas.vivasam.com/ko/view/P_runtime"
     ]);
     expect(context.tabs[1]?.broughtToFront).toBe(1);

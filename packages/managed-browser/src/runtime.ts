@@ -214,8 +214,7 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
 
   public async createProject(
     payload: Record<string, unknown>,
-    expectedPayloadHash: string,
-    options: { openEditor?: boolean } = {}
+    expectedPayloadHash: string
   ): Promise<CreationResult> {
     const completedAt = () => this.#now().toISOString();
     if (
@@ -296,9 +295,13 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
 
       const editorUrl =
         `https://mathcanvas.vivasam.com/ko/view/${pageResult.projectId}`;
-      if (options.openEditor ?? true) {
-        await this.openEditor(editorUrl);
-      }
+      const editorPage = await context.newPage();
+      await editorPage.goto(editorUrl, {
+        waitUntil: "domcontentloaded",
+        timeout: 30_000
+      });
+      await editorPage.bringToFront();
+      this.#workspacePage = editorPage;
       return creationResultSchema.parse({
         ok: true,
         completedAt: completedAt(),
@@ -312,24 +315,6 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
         errorCode: "mathcanvas-unavailable"
       });
     }
-  }
-
-  public async openEditor(editorUrl: string): Promise<void> {
-    const parsed = new URL(editorUrl);
-    if (
-      parsed.origin !== MATHCANVAS_ORIGIN ||
-      !/^\/ko\/view\/[A-Za-z0-9_-]{1,160}$/.test(parsed.pathname)
-    ) {
-      throw new Error("MathCanvas 편집 URL만 열 수 있습니다.");
-    }
-    const context = await this.#ensureContext();
-    const page = await this.#ensureWorkspacePage(context);
-    await page.goto(editorUrl, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000
-    });
-    await page.bringToFront();
-    this.#workspacePage = page;
   }
 
   public async close(): Promise<void> {

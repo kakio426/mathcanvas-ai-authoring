@@ -1,10 +1,10 @@
 import { z } from "zod";
 import {
-  compiledCanvasProjectSchema,
+  compiledProjectSchema,
   validationReportSchema
 } from "@mathcanvas/contracts";
 
-export const MANAGED_BROWSER_VERSION = "2.0.0" as const;
+export const MANAGED_BROWSER_VERSION = "1.0.0" as const;
 export const MATHCANVAS_HOME_URL =
   "https://mathcanvas.vivasam.com/ko/myCanvas" as const;
 export const MATHCANVAS_ORIGIN =
@@ -74,7 +74,7 @@ export const queuedCreationSchema = z
     payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
     createdAt: z.string().datetime(),
     expiresAt: z.string().datetime(),
-    compiledProject: compiledCanvasProjectSchema,
+    compiledProject: compiledProjectSchema,
     validationReport: validationReportSchema
   })
   .strict()
@@ -102,9 +102,7 @@ export interface MathCanvasBrowserRuntime {
   }): Promise<BrowserConnection>;
   createProject(
     payload: Record<string, unknown>,
-    expectedPayloadHash: string,
-    options?: { openEditor?: boolean }
+    expectedPayloadHash: string
   ): Promise<CreationResult>;
-  openEditor(editorUrl: string): Promise<void>;
   close(): Promise<void>;
 }
