@@ -2,7 +2,13 @@
 
 Codex 또는 Claude Code와 대화해 새 MathCanvas 활동지를 만드는 로컬 MCP 도구입니다. 별도 Chrome 추가 기능이나 화면 원격 조작 기능을 설치하지 않습니다. MCP 서버가 MathCanvas 전용 Chrome 창을 열고, 교사는 그 창에서 직접 로그인합니다.
 
-현재 검증된 활동은 초등 5학년 권장 `분모가 다른 분수의 크기 비교`입니다. 학생은 두 분수 띠를 같은 출발선에 옮겨 길이를 비교하고 `<` 또는 `>` 기호를 놓습니다. 생성 전 대화에는 학년·문제 수·난이도·조작 방식 추천과 교사용 정답지가 함께 나옵니다.
+출시 활동 3종은 구조 생성과 수학적 판단·오개념 갈등·자기검증을 요구하는 인지적 품질 게이트를 통과했습니다. 생성 전 대화에는 학년·문제 수·검증된 난이도·조작 방식 추천과 교사용 정답지가 함께 나옵니다.
+
+- 분수 크기 비교: 2~6문제, 쉬움·보통·어려움, 분모 관계 혼합·서로소·배수
+- 동치분수: 2~6문제, 기준 띠 1개와 후보 띠 6개를 예상·선택·검증·설명
+- 10 만들기: 2~5문제, 카드 6장 중 합이 10인 두 쌍을 예상·구성·열 칸 검증·설명·수정
+
+등록되지 않은 속성이나 검증 범위 밖 값은 임의로 생성하지 않고, 가장 가까운 안전한 기본안을 제안합니다.
 
 ## 설치
 
@@ -45,7 +51,7 @@ pnpm run smoke:browser
 - `apps/mcp-server`: Codex·Claude Code 공용 stdio MCP 서버
 - `packages/managed-browser`: 별도 영구 프로필로 Google Chrome을 실행하는 제한형 런타임
 - `packages/curriculum`: 공식 성취기준 우선 교육과정 해석
-- `packages/templates`: 검증된 활동 패턴
+- `packages/templates`: 등록된 blueprint와 유한 variation envelope
 - `packages/mathcanvas-compiler`: `ActivitySpec`을 MathCanvas 객체로 변환
 - `packages/validator`: 수학·교육·배치·API 계약 검증
 - `packages/contracts`: 승인·활동·검증 데이터 계약
@@ -68,4 +74,5 @@ pnpm run smoke:browser
 - 로그인, CAPTCHA, 2단계 인증은 교사가 전용 창에서 직접 처리합니다.
 - 학생 링크 자동 발행과 원격 AI 서비스는 구현하지 않았습니다.
 - MathCanvas 내부 웹 계약은 공개 SDK가 아닙니다. 계약이 바뀌면 생성하지 않고 중단합니다.
+- 연결 확인은 사용자 창을 앞으로 가져오지 않습니다. 로그인 창은 교사가 명시적으로 열기를 요청할 때만 엽니다.
 - 여러 교사에게 배포하기 전 [DISTRIBUTION_PERMISSION.md](./DISTRIBUTION_PERMISSION.md)의 허가 범위를 확정해야 합니다.

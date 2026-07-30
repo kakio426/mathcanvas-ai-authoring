@@ -1,7 +1,9 @@
 import {
+  ACTIVITY_IDS,
   CONTRACT_SCHEMA_VERSION,
   VERIFIED_TEMPLATE_ID,
   generationRequestSchema,
+  getActivitySupportState,
   recommendationSchema,
   type GenerationRequest,
   type Recommendation
@@ -16,6 +18,63 @@ const supportedIntentPatterns = [
 ];
 const comparisonPatterns = [/크기/, /비교/, /더\s*(큰|작은)/, /compare/i];
 const fractionPatterns = [/분수/, /fraction/i];
+const equivalentFractionPatterns = [
+  /동치\s*분수/,
+  /크기가\s*같은\s*분수/,
+  /약분/,
+  /통분/,
+  /equivalent\s*fraction/i
+];
+const makeTenPatterns = [
+  /10\s*(을|를)?\s*만들/,
+  /가르기와\s*모으기/,
+  /수\s*카드.*10/,
+  /number\s*bond/i
+];
+
+function verifiedCandidate(request: GenerationRequest):
+  | {
+      templateId: string;
+      standardCode: string;
+      manipulation: NonNullable<Recommendation["manipulation"]>;
+      grade: number;
+      gradeRange: readonly [number, number];
+      maximumProblemCount: number;
+    }
+  | undefined {
+  if (request.manipulation === "fraction-strip-common-start-drag") {
+    return undefined;
+  }
+  if (
+    request.manipulation === "equivalent-fraction-strip-match" ||
+    equivalentFractionPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.equivalentFraction,
+      standardCode: "[6수01-06]",
+      manipulation: "equivalent-fraction-strip-match",
+      grade: 5,
+      gradeRange: [5, 6],
+      maximumProblemCount: 6
+    };
+  }
+  if (
+    request.manipulation === "number-card-make-ten-drag" ||
+    makeTenPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.makeTenNumberCards,
+      standardCode: "[2수01-04]",
+      manipulation: "number-card-make-ten-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 5
+    };
+  }
+  return undefined;
+}
 
 function hasSupportedIntent(prompt: string): boolean {
   return (
@@ -50,6 +109,83 @@ export function recommendActivity(input: unknown): Recommendation {
     );
   }
   const request: GenerationRequest = parsed.data;
+  const candidate = request.manipulation
+    ? verifiedCandidate(request)
+    : makeTenPatterns.some((pattern) => pattern.test(request.prompt))
+      ? verifiedCandidate(request)
+      : hasSupportedIntent(request.prompt)
+        ? undefined
+        : verifiedCandidate(request);
+  if (candidate) {
+    const curriculum = resolveCurriculum(candidate.standardCode);
+    const supportState = getActivitySupportState(candidate.templateId);
+    const problemCount = request.problemCount ?? 4;
+    const difficulty = request.difficulty ?? "normal";
+    const unsupportedRequests = [
+      ...(problemCount > candidate.maximumProblemCount
+        ? [
+            `문제 수는 ${candidate.maximumProblemCount}개까지 검증되었습니다.`
+          ]
+        : []),
+      ...(difficulty !== "normal"
+        ? [
+            "이 활동의 난이도 선택은 아직 수학적 차이를 만들지 않아 기본값만 지원합니다."
+          ]
+        : []),
+      ...(request.denominatorRelation !== undefined
+        ? ["분모 관계 선택은 분수 크기 비교 활동에서만 지원합니다."]
+        : []),
+      ...(request.requestedGrade !== undefined &&
+      (request.requestedGrade < candidate.gradeRange[0] ||
+        request.requestedGrade > candidate.gradeRange[1])
+        ? [
+            `${request.requestedGrade}학년은 이 성취기준의 검증 학년군과 맞지 않습니다.`
+          ]
+        : [])
+    ];
+    const variationSupported = unsupportedRequests.length === 0;
+    return recommendationSchema.parse({
+      schemaVersion: CONTRACT_SCHEMA_VERSION,
+      requestId: request.requestId,
+      supported:
+        supportState === "released" && variationSupported,
+      templateId: candidate.templateId,
+      gradeBand: curriculum.record.gradeBand,
+      recommendedGrade: request.requestedGrade ?? candidate.grade,
+      standardCode: curriculum.record.code,
+      learningGoal: curriculum.record.officialGoal,
+      prerequisites: curriculum.record.prerequisites,
+      problemCount,
+      difficulty,
+      manipulation: candidate.manipulation,
+      rationale: [
+        "요청을 등록된 활동 유형과 성취기준에 연결했습니다."
+      ],
+      confidence: 0.98,
+      caveats: curriculum.warnings,
+      blockingReasons:
+        !variationSupported
+          ? unsupportedRequests
+          : supportState === "released"
+            ? []
+          : [
+              `활동은 ${supportState ?? "unregistered"} 상태이며 실제 생성에는 아직 공개되지 않았습니다.`
+            ],
+      ...(variationSupported
+        ? {}
+        : {
+            unsupportedRequests,
+            t0Proposal: {
+              problemCount: Math.min(
+                problemCount,
+                candidate.maximumProblemCount
+              ),
+              difficulty: "normal"
+            }
+          }),
+      curriculum: curriculum.record
+    });
+  }
   if (!hasSupportedIntent(request.prompt)) {
     return recommendationSchema.parse({
       schemaVersion: CONTRACT_SCHEMA_VERSION,
@@ -90,6 +226,8 @@ export function recommendActivity(input: unknown): Recommendation {
 
   const problemCount = request.problemCount ?? 4;
   const difficulty = request.difficulty ?? "normal";
+  const denominatorRelation =
+    request.denominatorRelation ?? "mixed";
   const manipulation =
     request.manipulation ?? "fraction-strip-common-start-drag";
   const confidence = 0.98;
@@ -112,6 +250,7 @@ export function recommendActivity(input: unknown): Recommendation {
     prerequisites: curriculum.record.prerequisites,
     problemCount,
     difficulty,
+    denominatorRelation,
     manipulation,
     rationale: [
       "첫 검증 패턴에 맞춰 분모가 서로 다른 두 분수를 비교하는 활동으로 구성합니다.",

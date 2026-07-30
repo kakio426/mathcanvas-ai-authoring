@@ -11,14 +11,14 @@ import { dirname } from "node:path";
 import {
   CONTRACT_SCHEMA_VERSION,
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
-  activitySpecSchema,
   createApprovalReceipt,
   generationRequestSchema,
   recommendationSchema,
+  resolvedActivitySchema,
   sha256Hex,
   verifyApprovalReceipt,
-  type ActivitySpec,
-  type Recommendation
+  type Recommendation,
+  type ResolvedActivity
 } from "@mathcanvas/contracts";
 import {
   CreationJobStore,
@@ -26,14 +26,24 @@ import {
   type QueuedCreation,
   type StoredCreationJob
 } from "@mathcanvas/managed-browser";
-import { compileActivitySpec } from "@mathcanvas/compiler";
+import {
+  compileActivity,
+  resolveActivity
+} from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "@mathcanvas/templates";
+import {
+  buildRegisteredTeacherAnswerKey,
+  getRegisteredBlueprintContentHash,
+  prepareRegisteredActivity,
+  projectRegisteredApprovalView
+} from "@mathcanvas/templates";
 import { validateForCreation } from "@mathcanvas/validator";
 
 interface Draft {
+  draftSchemaVersion: 3;
   draftId: string;
-  spec: ActivitySpec;
+  resolved: ResolvedActivity;
+  binding: ResolvedActivity["binding"];
   recommendation: Recommendation;
   activitySpecHash: string;
   createdAt: string;
@@ -55,10 +65,15 @@ export interface RecommendationSummary {
   learningGoal?: string;
   problemCount?: number;
   difficulty?: "easy" | "normal" | "hard";
-  manipulation?: "fraction-strip-common-start-drag";
+  denominatorRelation?: NonNullable<
+    Recommendation["denominatorRelation"]
+  >;
+  manipulation?: NonNullable<Recommendation["manipulation"]>;
   rationale: string[];
   caveats: string[];
   blockingReasons: string[];
+  unsupportedRequests?: string[];
+  t0Proposal?: NonNullable<Recommendation["t0Proposal"]>;
   sources?: Array<{
     title: string;
     url: string;
@@ -86,12 +101,27 @@ function summarizeRecommendation(
     ...(recommendation.difficulty === undefined
       ? {}
       : { difficulty: recommendation.difficulty }),
+    ...(recommendation.denominatorRelation === undefined
+      ? {}
+      : {
+          denominatorRelation:
+            recommendation.denominatorRelation
+        }),
     ...(recommendation.manipulation === undefined
       ? {}
       : { manipulation: recommendation.manipulation }),
     rationale: recommendation.rationale,
     caveats: recommendation.caveats,
     blockingReasons: recommendation.blockingReasons,
+    ...(recommendation.unsupportedRequests === undefined
+      ? {}
+      : {
+          unsupportedRequests:
+            recommendation.unsupportedRequests
+        }),
+    ...(recommendation.t0Proposal === undefined
+      ? {}
+      : { t0Proposal: recommendation.t0Proposal }),
     ...(recommendation.curriculum
       ? {
           sources: [
@@ -107,52 +137,10 @@ function summarizeRecommendation(
   };
 }
 
-function teacherAnswerKey(spec: ActivitySpec): TeacherAnswer[] {
-  const greatestCommonDivisor = (left: number, right: number): number => {
-    let a = Math.abs(left);
-    let b = Math.abs(right);
-    while (b !== 0) {
-      const remainder = a % b;
-      a = b;
-      b = remainder;
-    }
-    return a || 1;
-  };
-  return spec.problems.map((problem) => {
-    const commonDenominator =
-      (problem.left.denominator * problem.right.denominator) /
-      greatestCommonDivisor(
-        problem.left.denominator,
-        problem.right.denominator
-      );
-    const leftEquivalent =
-      problem.left.numerator *
-      (commonDenominator / problem.left.denominator);
-    const rightEquivalent =
-      problem.right.numerator *
-      (commonDenominator / problem.right.denominator);
-    return {
-      problemNumber: problem.order,
-      answer:
-        `${problem.left.numerator}/${problem.left.denominator} ` +
-        `${problem.correctRelation} ` +
-        `${problem.right.numerator}/${problem.right.denominator}`,
-      explanation:
-        `통분하면 ${problem.left.numerator}/${problem.left.denominator}=` +
-        `${leftEquivalent}/${commonDenominator}, ` +
-        `${problem.right.numerator}/${problem.right.denominator}=` +
-        `${rightEquivalent}/${commonDenominator}입니다. ` +
-        `${leftEquivalent}${problem.correctRelation}${rightEquivalent}이므로 ` +
-        `${problem.left.numerator}/${problem.left.denominator}` +
-        `${problem.correctRelation}` +
-        `${problem.right.numerator}/${problem.right.denominator}입니다. ` +
-        problem.explanation
-    };
-  });
-}
-
 const retryableCreationErrors = new Set([
   "login-required",
+  "auth-required",
+  "contract-probe-unavailable",
   "browser-launch-failed",
   "mathcanvas-unavailable",
   "project-create-failed"
@@ -174,6 +162,7 @@ export class AuthoringServiceError extends Error {
     public readonly code:
       | "draft-not-found"
       | "draft-expired"
+      | "draft-schema-expired"
       | "approval-required"
       | "activity-spec-changed"
       | "validation-failed"
@@ -206,10 +195,21 @@ export class MathCanvasAuthoringService {
       typeof snapshot !== "object" ||
       snapshot === null ||
       !("version" in snapshot) ||
-      snapshot.version !== 1 ||
+      snapshot.version !== 3 ||
       !("drafts" in snapshot) ||
       !Array.isArray(snapshot.drafts)
     ) {
+      if (
+        typeof snapshot === "object" &&
+        snapshot !== null &&
+        "version" in snapshot &&
+        (snapshot.version === 1 || snapshot.version === 2)
+      ) {
+        throw new AuthoringServiceError(
+          "draft-schema-expired",
+          "이전 추천안 형식은 만료되었습니다. 새 추천을 받아 주세요."
+        );
+      }
       throw new Error("저장된 추천안 파일 형식이 올바르지 않습니다.");
     }
     for (const item of snapshot.drafts) {
@@ -223,16 +223,21 @@ export class MathCanvasAuthoringService {
       const expiresAt = record.expiresAt;
       const jobId = record.jobId;
       const payloadHash = record.payloadHash;
-      const spec = activitySpecSchema.parse(record.spec);
+      const draftSchemaVersion = record.draftSchemaVersion;
+      const resolved = resolvedActivitySchema.parse(record.resolved);
+      const binding = record.binding;
+      const spec = projectRegisteredApprovalView(resolved);
       const recommendation = recommendationSchema.parse(record.recommendation);
       if (
+        draftSchemaVersion !== 3 ||
         typeof draftId !== "string" ||
         !/^draft-[A-Za-z0-9-]+$/.test(draftId) ||
         typeof activitySpecHash !== "string" ||
         !/^[a-f0-9]{64}$/.test(activitySpecHash) ||
         sha256Hex(spec) !== activitySpecHash ||
         sha256Hex(recommendation) !==
-          sha256Hex(spec.recommendationSnapshot) ||
+          sha256Hex(resolved.recommendationSnapshot) ||
+        sha256Hex(binding) !== sha256Hex(resolved.binding) ||
         typeof createdAt !== "string" ||
         Number.isNaN(Date.parse(createdAt)) ||
         typeof expiresAt !== "string" ||
@@ -249,8 +254,10 @@ export class MathCanvasAuthoringService {
         throw new Error(`저장된 추천안 ${String(draftId)}가 올바르지 않습니다.`);
       }
       this.#drafts.set(draftId, {
+        draftSchemaVersion: 3,
         draftId,
-        spec,
+        resolved,
+        binding: resolved.binding,
         recommendation,
         activitySpecHash,
         createdAt,
@@ -269,7 +276,7 @@ export class MathCanvasAuthoringService {
     writeFileSync(
       temporaryPath,
       `${JSON.stringify({
-        version: 1,
+        version: 3,
         drafts: [...this.#drafts.values()]
       })}\n`,
       { encoding: "utf8", mode: 0o600 }
@@ -309,7 +316,7 @@ export class MathCanvasAuthoringService {
   }> {
     const connection = await this.browserRuntime.checkConnection({
       forceContractCheck: true,
-      bringToFront: true
+      bringToFront: false
     });
     return this.#connectionSummary(connection);
   }
@@ -356,7 +363,10 @@ export class MathCanvasAuthoringService {
     requestedGrade?: number;
     problemCount?: number;
     difficulty?: "easy" | "normal" | "hard";
-    manipulation?: "fraction-strip-common-start-drag";
+    denominatorRelation?: NonNullable<
+      Recommendation["denominatorRelation"]
+    >;
+    manipulation?: NonNullable<Recommendation["manipulation"]>;
   }): {
     supported: boolean;
     recommendation: RecommendationSummary;
@@ -366,7 +376,7 @@ export class MathCanvasAuthoringService {
     activitySummary?: {
       title: string;
       studentInstructions: string[];
-      minimumVisualDifferencePercent: number;
+      minimumVisualDifferencePercent?: number;
     };
     teacherAnswerKey?: TeacherAnswer[];
     approvalPrompt?: string;
@@ -398,6 +408,12 @@ export class MathCanvasAuthoringService {
       ...(input.difficulty === undefined
         ? {}
         : { difficulty: input.difficulty }),
+      ...(input.denominatorRelation === undefined
+        ? {}
+        : {
+            denominatorRelation:
+              input.denominatorRelation
+          }),
       ...(input.manipulation === undefined
         ? {}
         : { manipulation: input.manipulation }),
@@ -413,15 +429,19 @@ export class MathCanvasAuthoringService {
 
     const draftId = `draft-${randomUUID()}`;
     const expiresAt = new Date(now.getTime() + 30 * 60 * 1000);
-    const spec = generateFractionComparisonActivity(recommendation, {
+    const plan = prepareRegisteredActivity(recommendation, {
       seed: request.requestId,
       generatedAt: now.toISOString(),
       activityId: `activity-${randomUUID()}`
     });
+    const resolved = resolveActivity(plan);
+    const spec = projectRegisteredApprovalView(resolved);
     const activitySpecHash = sha256Hex(spec);
     this.#drafts.set(draftId, {
+      draftSchemaVersion: 3,
       draftId,
-      spec,
+      resolved,
+      binding: resolved.binding,
       recommendation,
       activitySpecHash,
       createdAt: now.toISOString(),
@@ -435,12 +455,16 @@ export class MathCanvasAuthoringService {
       activitySpecHash,
       expiresAt: expiresAt.toISOString(),
       activitySummary: {
-        title: spec.title,
-        studentInstructions: spec.instructions,
-        minimumVisualDifferencePercent:
-          MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100
+        title: resolved.title,
+        studentInstructions: resolved.instructions,
+        ...(recommendation.denominatorRelation === undefined
+          ? {}
+          : {
+              minimumVisualDifferencePercent:
+                MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100
+            })
       },
-      teacherAnswerKey: teacherAnswerKey(spec),
+      teacherAnswerKey: buildRegisteredTeacherAnswerKey(resolved),
       approvalPrompt:
         "추천한 학년, 문제 수, 난이도와 조작 방식을 확인한 뒤 ‘이대로 만들어줘’라고 승인해 주세요."
     };
@@ -477,6 +501,14 @@ export class MathCanvasAuthoringService {
       );
     }
     const now = this.clock.now();
+    const canonicalResolved = resolveActivity(
+      prepareRegisteredActivity(draft.recommendation, {
+        seed: draft.binding.seed,
+        generatedAt: draft.resolved.provenance.generatedAt,
+        activityId: draft.resolved.id
+      })
+    );
+    const canonicalBinding = canonicalResolved.binding;
     if (Date.parse(draft.expiresAt) <= now.getTime()) {
       this.#drafts.delete(input.draftId);
       this.#persistDrafts();
@@ -487,7 +519,19 @@ export class MathCanvasAuthoringService {
     }
     if (
       input.activitySpecHash !== draft.activitySpecHash ||
-      sha256Hex(draft.spec) !== draft.activitySpecHash
+      sha256Hex(
+        projectRegisteredApprovalView(draft.resolved)
+      ) !== draft.activitySpecHash ||
+      sha256Hex(draft.binding) !==
+        sha256Hex(draft.resolved.binding) ||
+      sha256Hex(draft.binding) !==
+        sha256Hex(canonicalBinding) ||
+      sha256Hex(draft.resolved) !==
+        sha256Hex(canonicalResolved) ||
+      draft.binding.blueprintContentHash !==
+        getRegisteredBlueprintContentHash(
+          draft.binding.blueprintId
+        )
     ) {
       throw new AuthoringServiceError(
         "activity-spec-changed",
@@ -519,8 +563,8 @@ export class MathCanvasAuthoringService {
           recovered,
           draft,
           validateForCreation(
-            draft.spec,
-            compileActivitySpec(draft.spec),
+            draft.resolved,
+            compileActivity(draft.resolved),
             now
           ),
           "같은 생성 요청의 기존 작업 결과를 확인했습니다."
@@ -528,8 +572,12 @@ export class MathCanvasAuthoringService {
       }
     }
 
-    const compiled = compileActivitySpec(draft.spec);
-    const validation = validateForCreation(draft.spec, compiled, now);
+    const compiled = compileActivity(draft.resolved);
+    const validation = validateForCreation(
+      draft.resolved,
+      compiled,
+      now
+    );
     if (!validation.canCreate) {
       throw new AuthoringServiceError(
         "validation-failed",
@@ -558,8 +606,14 @@ export class MathCanvasAuthoringService {
       );
     }
     const approvalExpiresAt = new Date(now.getTime() + 10 * 60 * 1000);
-    const approval = createApprovalReceipt(draft.spec, now, approvalExpiresAt);
-    if (!verifyApprovalReceipt(draft.spec, approval, now)) {
+    const approvalView =
+      projectRegisteredApprovalView(draft.resolved);
+    const approval = createApprovalReceipt(
+      approvalView,
+      now,
+      approvalExpiresAt
+    );
+    if (!verifyApprovalReceipt(approvalView, approval, now)) {
       throw new Error("승인 무결성 검증에 실패했습니다.");
     }
     const jobId = `job-${randomUUID()}`;
@@ -591,9 +645,9 @@ export class MathCanvasAuthoringService {
     stored: StoredCreationJob,
     draft: Draft
   ): Promise<StoredCreationJob> {
-    const canonicalCompiled = compileActivitySpec(draft.spec);
+    const canonicalCompiled = compileActivity(draft.resolved);
     const currentValidation = validateForCreation(
-      draft.spec,
+      draft.resolved,
       canonicalCompiled,
       this.clock.now()
     );
@@ -647,7 +701,7 @@ export class MathCanvasAuthoringService {
       payloadHash: stored.job.payloadHash,
       expiresAt: stored.job.expiresAt,
       validation,
-      teacherAnswerKey: teacherAnswerKey(draft.spec),
+      teacherAnswerKey: buildRegisteredTeacherAnswerKey(draft.resolved),
       message,
       ...(stored.result?.projectId
         ? { projectId: stored.result.projectId }
@@ -688,12 +742,16 @@ export class MathCanvasAuthoringService {
     const failureMessages: Record<string, string> = {
       "login-required":
         "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
+      "auth-required":
+        "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
       "mathcanvas-tab-missing":
         "MathCanvas 전용 Chrome에서 ‘내 캔버스’를 연 뒤 새 추천을 받아 주세요.",
       "browser-launch-failed":
         "Chrome을 열지 못했습니다. 설치 상태를 확인해 주세요.",
       "contract-mismatch":
         "MathCanvas 연결 방식이 달라져 안전하게 멈췄어요. 도구를 업데이트해 주세요.",
+      "contract-probe-unavailable":
+        "생성에 필요한 도구 검사 프로젝트를 확인할 수 없어 안전하게 멈췄어요.",
       "permission-denied":
         "현재 MathCanvas 계정에 새 프로젝트를 만들 권한이 있는지 확인해 주세요.",
       "mathcanvas-unavailable":

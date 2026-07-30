@@ -2,7 +2,6 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import {
   ACTIVITY_SPEC_SCHEMA_VERSION,
   CONTRACT_SCHEMA_VERSION,
-  type ActivitySpec,
   type ApprovalReceipt
 } from "./schemas.js";
 import { assertNoSensitiveKeys } from "./security.js";
@@ -37,7 +36,7 @@ export function sha256Hex(value: unknown): string {
 }
 
 export function createApprovalReceipt(
-  spec: ActivitySpec,
+  spec: unknown,
   approvedAt: Date,
   expiresAt: Date
 ): ApprovalReceipt {
@@ -63,7 +62,7 @@ export function createApprovalReceipt(
 }
 
 export function verifyApprovalReceipt(
-  spec: ActivitySpec,
+  spec: unknown,
   receipt: ApprovalReceipt,
   now: Date
 ): boolean {

@@ -15,6 +15,7 @@ class FakePage implements ManagedPage {
   public broughtToFront = 0;
   public closed = false;
   public evaluateError: Error | undefined;
+  public evaluationArguments: unknown[] = [];
 
   public constructor(
     public currentUrl = "about:blank",
@@ -39,9 +40,11 @@ class FakePage implements ManagedPage {
   }
 
   public async evaluate<R, A>(
-    pageFunction: (argument: A) => Promise<R>
+    pageFunction: (argument: A) => Promise<R>,
+    argument: A
   ): Promise<R> {
     if (this.evaluateError) throw this.evaluateError;
+    this.evaluationArguments.push(argument);
     return (
       pageFunction.name === "inspectMathCanvasPage"
         ? this.inspection
@@ -103,6 +106,25 @@ describe("관리형 Chrome 런타임", () => {
     expect(connection.ready).toBe(true);
     await runtime.close();
     expect(context.closed).toBe(true);
+
+    const staleApiPage = new FakePage(
+      "https://mathcanvas.vivasam.com/api/project/stale"
+    );
+    const interactivePage = new FakePage(
+      "https://mathcanvas.vivasam.com/ko"
+    );
+    const mixedContext = new FakeContext([
+      staleApiPage,
+      interactivePage
+    ]);
+    const mixedRuntime = new ManagedChromeRuntime({
+      userDataDirectory: "/tmp/mathcanvas-interactive-page",
+      launcher: async () => mixedContext
+    });
+    await mixedRuntime.openWorkspace();
+    expect(staleApiPage.broughtToFront).toBe(0);
+    expect(interactivePage.broughtToFront).toBe(1);
+    await mixedRuntime.close();
   });
 
   it("외부 쓰기 직전 연결을 검사하고 성공 편집 탭을 연다", async () => {
@@ -115,7 +137,13 @@ describe("관리형 Chrome 런타임", () => {
       launcher: async () => context,
       now: () => new Date("2026-07-29T07:00:01.000Z")
     });
-    const payload = { projectTitle: "새 분수 활동지", contentsJson: [] };
+    const payload = {
+      projectTitle: "새 수 카드 활동지",
+      contentsJson: [{ svgId: "input-text" }],
+      canvasOption: {
+        moduleArr: { Unit01: { NO04NT: true } }
+      }
+    };
     const result = await runtime.createProject(payload, sha256Hex(payload));
 
     expect(result).toMatchObject({
@@ -128,6 +156,10 @@ describe("관리형 Chrome 런타임", () => {
       "https://mathcanvas.vivasam.com/ko/view/P_runtime"
     ]);
     expect(context.tabs[1]?.broughtToFront).toBe(1);
+    expect(workspace.evaluationArguments[0]).toMatchObject({
+      verifyStaticContract: true,
+      requiredModules: ["NO04NT", "input-text"]
+    });
   });
 
   it("payload가 바뀌면 브라우저에 전달하기 전에 중단한다", async () => {

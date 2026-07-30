@@ -1,0 +1,20 @@
+{
+  "checkpointId": "wave2-common-draw-canary-create-checkpoint-v1",
+  "network": {
+    "allowedWrites": [
+      {
+        "method": "POST",
+        "path": "/api/project",
+        "payloadHash": "04a392cf4ddea8b5d02db59c9f9e74b44811e1b2a5f372b5e163e0affad080e1",
+        "status": 201
+      }
+    ]
+  },
+  "observedAt": "2026-07-29T19:02:11.961Z",
+  "phase": "create-response-captured-before-ui-draw",
+  "provenance": {
+    "submittedPayloadHash": "04a392cf4ddea8b5d02db59c9f9e74b44811e1b2a5f372b5e163e0affad080e1"
+  },
+  "runId": "20260729T190211Z",
+  "schemaVersion": "1.0.0"
+}

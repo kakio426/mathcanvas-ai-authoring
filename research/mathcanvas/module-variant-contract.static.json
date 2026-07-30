@@ -1,0 +1,4600 @@
+{
+  "bundle": {
+    "bytes": 3861645,
+    "path": "/assets/index-fb571b04.js",
+    "sha256": "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584"
+  },
+  "clusters": [
+    {
+      "clusterId": "cluster:021eacf1a2e3a8f6",
+      "constructorFamily": "element:n2|parent:Kh",
+      "elementToken": "n2",
+      "fieldSignature": [
+        "categoryBoxInfo",
+        "fill",
+        "globalCentroidFlg",
+        "graduationNum",
+        "isCategoryOn",
+        "isEyeOn",
+        "isFillChange",
+        "isFullGraduation",
+        "label",
+        "labelColor",
+        "labelCount",
+        "labelValue",
+        "r",
+        "selectedIndex",
+        "svgId",
+        "title"
+      ],
+      "parentElementToken": "Kh",
+      "shapeFamily": "shape:a623bff6c00b8608"
+    },
+    {
+      "clusterId": "cluster:02d66e79ba7cc5be",
+      "constructorFamily": "element:Ye|parent:d1",
+      "elementToken": "Ye",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "initCoordinates",
+        "isFillChange",
+        "numberFrameSnap",
+        "order",
+        "svgId"
+      ],
+      "parentElementToken": "d1",
+      "shapeFamily": "shape:57068fc8c1a65c82"
+    },
+    {
+      "clusterId": "cluster:05a66d97865ff8fb",
+      "constructorFamily": "element:a3|parent:M1",
+      "elementToken": "a3",
+      "fieldSignature": [
+        "hasWeight",
+        "keypadID",
+        "n",
+        "plate",
+        "svgId",
+        "type"
+      ],
+      "parentElementToken": "M1",
+      "shapeFamily": "shape:764051d848e62f9d"
+    },
+    {
+      "clusterId": "cluster:062c717350d79bbf",
+      "constructorFamily": "element:s0|parent:U4",
+      "elementToken": "s0",
+      "fieldSignature": [
+        "coordinates",
+        "deps",
+        "editTitle",
+        "elemSplice",
+        "fill",
+        "firstFill",
+        "firstGraphValue",
+        "globalCentroidFlg",
+        "graphName",
+        "height",
+        "heightCount",
+        "heightDeps",
+        "isFillChange",
+        "isFirstGraph",
+        "isOnlyOneGraph",
+        "isShuffled",
+        "isWave",
+        "keys",
+        "label",
+        "labelCount",
+        "labelGroupCount",
+        "name",
+        "secondFill",
+        "secondGraphValue",
+        "start",
+        "svgId",
+        "title",
+        "toolbarHeight",
+        "toolbarWidth",
+        "type",
+        "unit",
+        "waveCount",
+        "width",
+        "widthCount"
+      ],
+      "parentElementToken": "U4",
+      "shapeFamily": "shape:59aeaab4e8a3773b"
+    },
+    {
+      "clusterId": "cluster:081df74a5492d86e",
+      "constructorFamily": "element:vi|parent:_s",
+      "elementToken": "vi",
+      "fieldSignature": [
+        "coordinates",
+        "count",
+        "defaultWidth",
+        "divider",
+        "fill",
+        "height",
+        "isDecimal",
+        "isEyeOn",
+        "isFillChange",
+        "isMoveRotateHandler",
+        "perWidth",
+        "svgId",
+        "type",
+        "width"
+      ],
+      "parentElementToken": "_s",
+      "shapeFamily": "shape:ee41595adb14b8b4"
+    },
+    {
+      "clusterId": "cluster:0df271ba54965de2",
+      "constructorFamily": "element:f2|parent:od",
+      "elementToken": "f2",
+      "fieldSignature": [
+        "combinedIndex",
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "editTitle",
+        "elemSplice",
+        "fill",
+        "firstFill",
+        "flg",
+        "graphName",
+        "height",
+        "intervalIndex",
+        "isDouble",
+        "isEdit",
+        "isFillChange",
+        "isFirstGraph",
+        "isGraphType1",
+        "isGraphType2",
+        "isOnlyOneGraph",
+        "isSame",
+        "items",
+        "keys",
+        "labelCount",
+        "labelGroupCount",
+        "lineFill",
+        "minHeight",
+        "minWidth",
+        "perHeight",
+        "perWidth",
+        "secondFill",
+        "secondItems",
+        "states",
+        "svgId",
+        "titles",
+        "tmpHeightInterval",
+        "units",
+        "valueHandleIndex",
+        "width"
+      ],
+      "parentElementToken": "od",
+      "shapeFamily": "shape:d0a875bdf52b0b0f"
+    },
+    {
+      "clusterId": "cluster:11f448032f593ba9",
+      "constructorFamily": "element:mo|parent:av",
+      "elementToken": "mo",
+      "fieldSignature": [
+        "cellCount",
+        "coordinates",
+        "elemSplice",
+        "globalCentroidFlg",
+        "isCol",
+        "isPresetToolbar",
+        "isSorted",
+        "keys",
+        "length",
+        "name",
+        "perHeight",
+        "perWidth",
+        "perWidthCount",
+        "presets",
+        "showNumber",
+        "sortedTableCell",
+        "svgId",
+        "tableCell",
+        "title"
+      ],
+      "parentElementToken": "av",
+      "shapeFamily": "shape:4207930146cce15a"
+    },
+    {
+      "clusterId": "cluster:11ff0efc639a8d92",
+      "constructorFamily": "element:cc|parent:H6",
+      "elementToken": "cc",
+      "fieldSignature": [
+        "coordinates",
+        "graph",
+        "point1",
+        "svgId"
+      ],
+      "parentElementToken": "H6",
+      "shapeFamily": "shape:8e4ccbdbb9e79bfd"
+    },
+    {
+      "clusterId": "cluster:12bcd2a6d2e748a0",
+      "constructorFamily": "element:uS|parent:Kl",
+      "elementToken": "uS",
+      "fieldSignature": [
+        "arr",
+        "keypadID"
+      ],
+      "parentElementToken": "Kl",
+      "shapeFamily": "shape:3af29f06b7b080a7"
+    },
+    {
+      "clusterId": "cluster:17a6c6696fc34a3a",
+      "constructorFamily": "element:nE|parent:l3",
+      "elementToken": "nE",
+      "fieldSignature": [
+        "active",
+        "coordinates",
+        "keypadID",
+        "n",
+        "type"
+      ],
+      "parentElementToken": "l3",
+      "shapeFamily": "shape:328acfc956733caf"
+    },
+    {
+      "clusterId": "cluster:19aef1f0c73532ed",
+      "constructorFamily": "element:_lt|parent:Mlt",
+      "elementToken": "_lt",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "isFillChange",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isStrokeChange",
+        "isSurroundRect",
+        "isVerticalFlip",
+        "lastAnimatedVertex",
+        "minResizeStep",
+        "n",
+        "pendingRemoveVertexIndices",
+        "polygonSize",
+        "previousQuotient",
+        "selectedVertexIndices",
+        "strokeDashArray",
+        "strokeOpacity",
+        "strokeWidth",
+        "surroundCoordinates",
+        "svgId",
+        "vx",
+        "vy"
+      ],
+      "parentElementToken": "Mlt",
+      "shapeFamily": "shape:676171dd62b7c37f"
+    },
+    {
+      "clusterId": "cluster:1f3efcee5a6a7f11",
+      "constructorFamily": "element:tl|parent:H6",
+      "elementToken": "tl",
+      "fieldSignature": [
+        "center",
+        "coordinates",
+        "graph",
+        "isStrokeChange",
+        "perInterval",
+        "point1",
+        "point2",
+        "stroke",
+        "svgId"
+      ],
+      "parentElementToken": "H6",
+      "shapeFamily": "shape:6eec66f03283a3b6"
+    },
+    {
+      "clusterId": "cluster:2074b697849bb0fd",
+      "constructorFamily": "element:k3|parent:qh",
+      "elementToken": "k3",
+      "fieldSignature": [
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "elemSplice",
+        "frequencyItems",
+        "height",
+        "isCalc",
+        "isFrequency",
+        "isRelativeFrequency",
+        "keys",
+        "leftPadding",
+        "leftWidth",
+        "minHeight",
+        "names",
+        "padding",
+        "perHeight",
+        "perRectHeight",
+        "perRectWidth",
+        "perWidth",
+        "relativeFrequencyItems",
+        "states",
+        "svgId",
+        "titles",
+        "total",
+        "value",
+        "width"
+      ],
+      "parentElementToken": "qh",
+      "shapeFamily": "shape:a6b387ac6ef652df"
+    },
+    {
+      "clusterId": "cluster:25949decfcbdd248",
+      "constructorFamily": "element:w3|parent:nc",
+      "elementToken": "w3",
+      "fieldSignature": [
+        "coordinates",
+        "numberFrameSnap",
+        "type"
+      ],
+      "parentElementToken": "nc",
+      "shapeFamily": "shape:732a57f45de9b236"
+    },
+    {
+      "clusterId": "cluster:26f1a84b4ef37786",
+      "constructorFamily": "element:Yc|parent:Wa",
+      "elementToken": "Yc",
+      "fieldSignature": [
+        "beadX",
+        "coordinates",
+        "count",
+        "fill",
+        "globalCentroidFlg",
+        "isChanged",
+        "isFillChange",
+        "svgId"
+      ],
+      "parentElementToken": "Wa",
+      "shapeFamily": "shape:d550053e860632f5"
+    },
+    {
+      "clusterId": "cluster:2850f067ffb403e0",
+      "constructorFamily": "element:blt|parent:pa",
+      "elementToken": "blt",
+      "fieldSignature": [
+        "coordinates",
+        "isEyeOn"
+      ],
+      "parentElementToken": "pa",
+      "shapeFamily": "shape:c555d23cb4566dfb"
+    },
+    {
+      "clusterId": "cluster:2abd148c84d87b27",
+      "constructorFamily": "element:_i|parent:dr",
+      "elementToken": "_i",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "height",
+        "isBluePrint",
+        "isEyeOn",
+        "isMoveRotateHandler",
+        "n",
+        "perWidth",
+        "stroke",
+        "surroundCoordinates",
+        "svgId",
+        "valueType",
+        "width"
+      ],
+      "parentElementToken": "dr",
+      "shapeFamily": "shape:895272c600f8de29"
+    },
+    {
+      "clusterId": "cluster:2ac3a9218428cf15",
+      "constructorFamily": "element:n1|parent:M1",
+      "elementToken": "n1",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "isCardBack",
+        "isFillChange",
+        "isHFlip",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isVFlip",
+        "isVerticalFlip",
+        "numberFrameSnap",
+        "svgId"
+      ],
+      "parentElementToken": "M1",
+      "shapeFamily": "shape:ffc0903ba43cf722"
+    },
+    {
+      "clusterId": "cluster:2be6e8e9fc65f0cf",
+      "constructorFamily": "element:zo|parent:ai",
+      "elementToken": "zo",
+      "fieldSignature": [
+        "connectedElementsId",
+        "coordinates",
+        "elements",
+        "globalCentroidFlg",
+        "height",
+        "isEyeOn",
+        "isNotMultiSelect",
+        "keypadID",
+        "n",
+        "number",
+        "playgroundIndex",
+        "shapeType",
+        "svgId",
+        "width"
+      ],
+      "parentElementToken": "ai",
+      "shapeFamily": "shape:fbada38f2856dcb2"
+    },
+    {
+      "clusterId": "cluster:30443f2ebb693d54",
+      "constructorFamily": "element:il|parent:U0",
+      "elementToken": "il",
+      "fieldSignature": [],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:b4bbc4696326b874"
+    },
+    {
+      "clusterId": "cluster:31a7143a6f059637",
+      "constructorFamily": "element:Y3|parent:J0",
+      "elementToken": "Y3",
+      "fieldSignature": [
+        "column",
+        "globalCentroidFlg",
+        "headerCols",
+        "headerRows",
+        "height",
+        "isFillChange",
+        "items",
+        "keys",
+        "maxColumn",
+        "maxRow",
+        "minColumn",
+        "minRow",
+        "multiSelect",
+        "numbers",
+        "perHeight",
+        "perWidth",
+        "playgroundIndex",
+        "row",
+        "selectedRect",
+        "sign",
+        "snaps",
+        "svgId",
+        "tempColors",
+        "width"
+      ],
+      "parentElementToken": "J0",
+      "shapeFamily": "shape:9a1b0f83fd283f88"
+    },
+    {
+      "clusterId": "cluster:3637238fcc6c6f6c",
+      "constructorFamily": "element:n1|parent:cr",
+      "elementToken": "n1",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "isCardBack",
+        "isFillChange",
+        "isHFlip",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isVFlip",
+        "isVerticalFlip",
+        "numberFrameSnap",
+        "svgId"
+      ],
+      "parentElementToken": "cr",
+      "shapeFamily": "shape:ffc0903ba43cf722"
+    },
+    {
+      "clusterId": "cluster:3755173854639c57",
+      "constructorFamily": "element:$a|parent:U0",
+      "elementToken": "$a",
+      "fieldSignature": [],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:b4bbc4696326b874"
+    },
+    {
+      "clusterId": "cluster:38572fe9cbba2678",
+      "constructorFamily": "element:n9|parent:T6t",
+      "elementToken": "n9",
+      "fieldSignature": [
+        "addBoxSize",
+        "coordinates",
+        "dataMax",
+        "dataMin",
+        "deps",
+        "globalCentroidFlg",
+        "height",
+        "isDataConnected",
+        "isEyeOn",
+        "isHorizontal",
+        "name",
+        "rowCount",
+        "svgId",
+        "title",
+        "valueList01",
+        "valueList02",
+        "width"
+      ],
+      "parentElementToken": "T6t",
+      "shapeFamily": "shape:507f693628e8c4f8"
+    },
+    {
+      "clusterId": "cluster:38defd2c127783ee",
+      "constructorFamily": "element:Z1|parent:ks",
+      "elementToken": "Z1",
+      "fieldSignature": [
+        "currentPosition",
+        "currentQuaternion",
+        "isRefresh",
+        "netIndex",
+        "rangeValue"
+      ],
+      "parentElementToken": "ks",
+      "shapeFamily": "shape:cd8d356e0ef816f0"
+    },
+    {
+      "clusterId": "cluster:39ec0888943c9cce",
+      "constructorFamily": "element:lE|parent:U0",
+      "elementToken": "lE",
+      "fieldSignature": [
+        "_numbers",
+        "numbers"
+      ],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:8dfd00e4533ab2b3"
+    },
+    {
+      "clusterId": "cluster:3c35e54d22561b83",
+      "constructorFamily": "element:klt|parent:pa",
+      "elementToken": "klt",
+      "fieldSignature": [
+        "coordinates",
+        "isEyeOn"
+      ],
+      "parentElementToken": "pa",
+      "shapeFamily": "shape:c555d23cb4566dfb"
+    },
+    {
+      "clusterId": "cluster:3c8f8ab8bd3b5cf6",
+      "constructorFamily": "element:sn|parent:av",
+      "elementToken": "sn",
+      "fieldSignature": [
+        "cellCount",
+        "countName",
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "elemSplice",
+        "globalCentroidFlg",
+        "isCol",
+        "isPercent",
+        "isSum",
+        "keys",
+        "length",
+        "name",
+        "nameTag",
+        "perHeight",
+        "perWidth",
+        "perWidthCount",
+        "percentCell1",
+        "percentCell2",
+        "svgId",
+        "tableCell1",
+        "tableCell2",
+        "title",
+        "totalPercent",
+        "totalSum"
+      ],
+      "parentElementToken": "av",
+      "shapeFamily": "shape:2739d25f76d77c50"
+    },
+    {
+      "clusterId": "cluster:3d57fa611e2b3f97",
+      "constructorFamily": "element:o0|parent:A6",
+      "elementToken": "o0",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "height",
+        "isFillChange",
+        "isSurroundRect",
+        "strokeWidth",
+        "svgId",
+        "width"
+      ],
+      "parentElementToken": "A6",
+      "shapeFamily": "shape:b8a68555e1e20308"
+    },
+    {
+      "clusterId": "cluster:3d8edcb3af60f4ea",
+      "constructorFamily": "element:Di|parent:Ri",
+      "elementToken": "Di",
+      "fieldSignature": [
+        "coordinates",
+        "flg",
+        "initCoordinates",
+        "isFillChange",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isStrokeChange",
+        "isSurroundRect",
+        "isVerticalFlip",
+        "keypadID",
+        "keys",
+        "minResizeStep",
+        "n",
+        "polygonSize",
+        "previousQuotient",
+        "selectedVertexIndex",
+        "strokeType",
+        "surroundCoordinates",
+        "vertexIndex",
+        "vertexInputs",
+        "vertexLabelOn",
+        "vx",
+        "vy"
+      ],
+      "parentElementToken": "Ri",
+      "shapeFamily": "shape:0af263dede8d0b75"
+    },
+    {
+      "clusterId": "cluster:410d9be1fa0c154a",
+      "constructorFamily": "element:Cr|parent:Wc",
+      "elementToken": "Cr",
+      "fieldSignature": [
+        "angle",
+        "beforeType",
+        "centerText",
+        "coordinates",
+        "isEyeOn",
+        "isFillChange",
+        "isStrokeChange",
+        "isSurroundRect",
+        "itemRotate",
+        "keypadID",
+        "point1",
+        "point2",
+        "r",
+        "strokeType",
+        "svgId",
+        "type"
+      ],
+      "parentElementToken": "Wc",
+      "shapeFamily": "shape:e449d2fe83e5a789"
+    },
+    {
+      "clusterId": "cluster:41c819738b5680f9",
+      "constructorFamily": "element:c2|parent:M1",
+      "elementToken": "c2",
+      "fieldSignature": [
+        "circleColor",
+        "coordinates",
+        "firstCount",
+        "height",
+        "isBluePrint",
+        "isFillChange",
+        "isMoveRotateHandler",
+        "openKeyboard",
+        "order",
+        "r",
+        "secondCount",
+        "surroundCoordinates",
+        "svgId",
+        "type",
+        "width"
+      ],
+      "parentElementToken": "M1",
+      "shapeFamily": "shape:a4fa123a4f45757e"
+    },
+    {
+      "clusterId": "cluster:45d2deec3047a771",
+      "constructorFamily": "element:o1|parent:ai",
+      "elementToken": "o1",
+      "fieldSignature": [
+        "color",
+        "connectedBoardId",
+        "connectedBoardIdx",
+        "coordinates",
+        "elemScale",
+        "globalCentroidFlg",
+        "isRegular",
+        "isRotate",
+        "shapeType",
+        "strokeWidth",
+        "svgId"
+      ],
+      "parentElementToken": "ai",
+      "shapeFamily": "shape:43aa1e20802c5207"
+    },
+    {
+      "clusterId": "cluster:48c4e9272ac173f9",
+      "constructorFamily": "element:el|parent:Kl",
+      "elementToken": "el",
+      "fieldSignature": [
+        "coordinates",
+        "count",
+        "isChanged",
+        "keypadID",
+        "n",
+        "value",
+        "width"
+      ],
+      "parentElementToken": "Kl",
+      "shapeFamily": "shape:4da5e0a87d84d8f2"
+    },
+    {
+      "clusterId": "cluster:4a89fc8f2fa3609e",
+      "constructorFamily": "element:ps|parent:U0",
+      "elementToken": "ps",
+      "fieldSignature": [
+        "curveCount",
+        "p1",
+        "p2",
+        "segmentWidth"
+      ],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:9654c5db3b5bdbe9"
+    },
+    {
+      "clusterId": "cluster:508cbbce61947b59",
+      "constructorFamily": "element:La|parent:M1",
+      "elementToken": "La",
+      "fieldSignature": [
+        "plate",
+        "svgId",
+        "type",
+        "value"
+      ],
+      "parentElementToken": "M1",
+      "shapeFamily": "shape:582086fc7e08aeb2"
+    },
+    {
+      "clusterId": "cluster:56ea2f56b9c508cc",
+      "constructorFamily": "element:s2|parent:q0",
+      "elementToken": "s2",
+      "fieldSignature": [
+        "color",
+        "coordinates",
+        "isBluePrint",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isVerticalFlip",
+        "surroundCoordinates",
+        "svgId"
+      ],
+      "parentElementToken": "q0",
+      "shapeFamily": "shape:a4df5a51f88faaa0"
+    },
+    {
+      "clusterId": "cluster:59a30944cb06f2a0",
+      "constructorFamily": "element:oc|parent:ld",
+      "elementToken": "oc",
+      "fieldSignature": [
+        "coordinates",
+        "count",
+        "counterFill",
+        "fill",
+        "isColorInverted",
+        "isFillChange",
+        "numberFrameSnap",
+        "svgId",
+        "type"
+      ],
+      "parentElementToken": "ld",
+      "shapeFamily": "shape:ee48d2b09984ae1d"
+    },
+    {
+      "clusterId": "cluster:5b74aad2ed414ed4",
+      "constructorFamily": "element:wi|parent:ho",
+      "elementToken": "wi",
+      "fieldSignature": [
+        "color",
+        "coordinates",
+        "isBluePrint",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isVerticalFlip",
+        "surroundCoordinates",
+        "svgId"
+      ],
+      "parentElementToken": "ho",
+      "shapeFamily": "shape:a4df5a51f88faaa0"
+    },
+    {
+      "clusterId": "cluster:672564b56783edf5",
+      "constructorFamily": "element:gl|parent:Xv",
+      "elementToken": "gl",
+      "fieldSignature": [
+        "cameraState",
+        "currentMax",
+        "currentPosition",
+        "currentQuaternion",
+        "isRectVisible",
+        "pointInfo",
+        "shapeMode"
+      ],
+      "parentElementToken": "Xv",
+      "shapeFamily": "shape:fe590808e402bcce"
+    },
+    {
+      "clusterId": "cluster:725f70dcaf50ed71",
+      "constructorFamily": "element:Q0|parent:iv",
+      "elementToken": "Q0",
+      "fieldSignature": [
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "elemSplice",
+        "gap",
+        "height",
+        "isHorizontalSizeHandle",
+        "isPresetToolbar",
+        "isSorted",
+        "items",
+        "keys",
+        "maxLength",
+        "minHeight",
+        "minWidth",
+        "padding",
+        "paddingWidth",
+        "perHeight",
+        "perWidth",
+        "presetIndex",
+        "presets",
+        "presetsSize",
+        "svgId",
+        "titles",
+        "units",
+        "ut1",
+        "value",
+        "width"
+      ],
+      "parentElementToken": "iv",
+      "shapeFamily": "shape:8bc54e0c81f4a8f9"
+    },
+    {
+      "clusterId": "cluster:7748eabb2322d1f5",
+      "constructorFamily": "element:g2|parent:S3",
+      "elementToken": "g2",
+      "fieldSignature": [
+        "bottomGroup",
+        "coordinates",
+        "count",
+        "cubeColors",
+        "cubeFill",
+        "fill",
+        "fills",
+        "groups",
+        "isEyeOn",
+        "isFillChange",
+        "perWidth",
+        "rotate",
+        "svgId",
+        "type",
+        "upperGroup"
+      ],
+      "parentElementToken": "S3",
+      "shapeFamily": "shape:99b1316114c69ce5"
+    },
+    {
+      "clusterId": "cluster:7b79db092f3fb046",
+      "constructorFamily": "element:Ps|parent:M1",
+      "elementToken": "Ps",
+      "fieldSignature": [
+        "canEquilibrium",
+        "defaultLine",
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "leftArea",
+        "leftArr",
+        "leftIncluded",
+        "leftLine",
+        "line",
+        "mouseX",
+        "mouseY",
+        "plate",
+        "playgroundIndex",
+        "rightArea",
+        "rightArr",
+        "rightIncluded",
+        "rightLine",
+        "svgId"
+      ],
+      "parentElementToken": "M1",
+      "shapeFamily": "shape:a8c6287b1b364b42"
+    },
+    {
+      "clusterId": "cluster:7c225c829a5e6d61",
+      "constructorFamily": "element:Q2|parent:Yl",
+      "elementToken": "Q2",
+      "fieldSignature": [
+        "color",
+        "coordinates",
+        "isBluePrint",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isVerticalFlip",
+        "surroundCoordinates",
+        "svgId"
+      ],
+      "parentElementToken": "Yl",
+      "shapeFamily": "shape:a4df5a51f88faaa0"
+    },
+    {
+      "clusterId": "cluster:7d834b1b90099615",
+      "constructorFamily": "element:s9|parent:h6t",
+      "elementToken": "s9",
+      "fieldSignature": [
+        "colorArr",
+        "coordinates",
+        "globalCentroidFlg",
+        "svgId",
+        "tag"
+      ],
+      "parentElementToken": "h6t",
+      "shapeFamily": "shape:546d56605d9935fe"
+    },
+    {
+      "clusterId": "cluster:8671e4fd160e5be3",
+      "constructorFamily": "element:y3|parent:nc",
+      "elementToken": "y3",
+      "fieldSignature": [
+        "coordinates",
+        "numberFrameSnap",
+        "type"
+      ],
+      "parentElementToken": "nc",
+      "shapeFamily": "shape:732a57f45de9b236"
+    },
+    {
+      "clusterId": "cluster:8c272ee731cba362",
+      "constructorFamily": "element:mn|parent:en",
+      "elementToken": "mn",
+      "fieldSignature": [
+        "coordinates",
+        "isBluePrint",
+        "isEyeOn",
+        "isMoveRotateHandler",
+        "preventDoubleClick",
+        "svgId"
+      ],
+      "parentElementToken": "en",
+      "shapeFamily": "shape:520ca8442d69606e"
+    },
+    {
+      "clusterId": "cluster:9dd09de2631392b3",
+      "constructorFamily": "element:cl|parent:A6",
+      "elementToken": "cl",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "isFillChange",
+        "isSurroundRect",
+        "keypadID",
+        "r",
+        "strokeWidth",
+        "svgId",
+        "text",
+        "textRotate"
+      ],
+      "parentElementToken": "A6",
+      "shapeFamily": "shape:33fda85e4cbe4514"
+    },
+    {
+      "clusterId": "cluster:9e653908a5f05965",
+      "constructorFamily": "element:M3|parent:H6",
+      "elementToken": "M3",
+      "fieldSignature": [
+        "center",
+        "coordinates",
+        "getQuadraticFunction",
+        "getSlope",
+        "graph",
+        "isStrokeChange",
+        "perInterval",
+        "point1",
+        "point2",
+        "stroke",
+        "svgId"
+      ],
+      "parentElementToken": "H6",
+      "shapeFamily": "shape:0bf705e92f336d3f"
+    },
+    {
+      "clusterId": "cluster:9f0ad21210541cc0",
+      "constructorFamily": "element:uu|parent:I6t",
+      "elementToken": "uu",
+      "fieldSignature": [
+        "cellCount",
+        "coordinates",
+        "elemSplice",
+        "globalCentroidFlg",
+        "isPresetToolbar",
+        "isSorted",
+        "keys",
+        "length",
+        "name",
+        "perHeight",
+        "perWidth",
+        "presets",
+        "rowCount",
+        "sortedTableCell01",
+        "sortedTableCell02",
+        "svgId",
+        "tableCell01",
+        "tableCell02",
+        "title"
+      ],
+      "parentElementToken": "I6t",
+      "shapeFamily": "shape:eee782040b5be670"
+    },
+    {
+      "clusterId": "cluster:a0cbac61e30c3af8",
+      "constructorFamily": "element:$lt|parent:Wc",
+      "elementToken": "$lt",
+      "fieldSignature": [
+        "centerText",
+        "coordinates",
+        "isEyeOn",
+        "isFillChange",
+        "isStrokeChange",
+        "isSurroundRect",
+        "keypadID",
+        "r",
+        "strokeType",
+        "svgId"
+      ],
+      "parentElementToken": "Wc",
+      "shapeFamily": "shape:3eaf215c3371afe3"
+    },
+    {
+      "clusterId": "cluster:a261ed809d04937d",
+      "constructorFamily": "element:uo|parent:l3",
+      "elementToken": "uo",
+      "fieldSignature": [
+        "coordinates",
+        "elements",
+        "originalNumber",
+        "type"
+      ],
+      "parentElementToken": "l3",
+      "shapeFamily": "shape:aef14a65d4e86f29"
+    },
+    {
+      "clusterId": "cluster:aaac46ffb2f5f150",
+      "constructorFamily": "element:ic|parent:iv",
+      "elementToken": "ic",
+      "fieldSignature": [
+        "colors",
+        "count",
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "gap",
+        "height",
+        "isHorizontalSizeHandle",
+        "isToolbarFlg",
+        "items",
+        "keys",
+        "minHeight",
+        "minWidth",
+        "padding",
+        "perHeight",
+        "perWidth",
+        "result",
+        "resultText",
+        "resultTmp",
+        "sum",
+        "svgId",
+        "titles",
+        "toolbarValue",
+        "width"
+      ],
+      "parentElementToken": "iv",
+      "shapeFamily": "shape:6da5c7400e14d4cd"
+    },
+    {
+      "clusterId": "cluster:ad380d204c8f7ea9",
+      "constructorFamily": "element:If|parent:qh",
+      "elementToken": "If",
+      "fieldSignature": [
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "elemSplice",
+        "frequencyItems1",
+        "frequencyItems2",
+        "height",
+        "isCalc",
+        "isFrequency",
+        "isRelativeFrequency",
+        "keys",
+        "leftPadding",
+        "leftWidth",
+        "minHeight",
+        "names",
+        "padding",
+        "perHeight",
+        "perRectHeight",
+        "perRectWidth",
+        "perWidth",
+        "relativeFrequencyItems1",
+        "relativeFrequencyItems2",
+        "states",
+        "subNames",
+        "svgId",
+        "titles",
+        "total",
+        "value",
+        "width"
+      ],
+      "parentElementToken": "qh",
+      "shapeFamily": "shape:dc4d6c860c433f23"
+    },
+    {
+      "clusterId": "cluster:b196a8ee141368be",
+      "constructorFamily": "element:n0|parent:hc",
+      "elementToken": "n0",
+      "fieldSignature": [
+        "cellCoordinates",
+        "cellFills",
+        "isFillChange",
+        "isHorizontalFlip",
+        "isStrokeChange",
+        "isVerticalFlip",
+        "selectedCells",
+        "size",
+        "stroke",
+        "strokeDashArray",
+        "strokeOpacity",
+        "strokeType",
+        "strokeWidth",
+        "svgId",
+        "type"
+      ],
+      "parentElementToken": "hc",
+      "shapeFamily": "shape:64ea7d53123cd857"
+    },
+    {
+      "clusterId": "cluster:bb295945f8bff1cd",
+      "constructorFamily": "element:Vn|parent:oy",
+      "elementToken": "Vn",
+      "fieldSignature": [
+        "addMinutes",
+        "clickPlace",
+        "clockScale",
+        "coordinates",
+        "defaultHours",
+        "defaultMinutes",
+        "fill",
+        "globalCentroidFlg",
+        "halfOrFull",
+        "hasMirror",
+        "hours",
+        "isAm",
+        "isEyeOn",
+        "isFillChange",
+        "isFirst",
+        "isMinutesGuide",
+        "isWorking",
+        "minutes",
+        "r",
+        "revolutionCount",
+        "seconds",
+        "surroundCoordinates",
+        "svgId",
+        "timer",
+        "type"
+      ],
+      "parentElementToken": "oy",
+      "shapeFamily": "shape:7060b82a5231e2c1"
+    },
+    {
+      "clusterId": "cluster:bb4e1f05f3d10ea3",
+      "constructorFamily": "element:iE|parent:A6",
+      "elementToken": "iE",
+      "fieldSignature": [
+        "d",
+        "fill",
+        "isFillChange",
+        "svgId"
+      ],
+      "parentElementToken": "A6",
+      "shapeFamily": "shape:300e64e74588b962"
+    },
+    {
+      "clusterId": "cluster:c2c68cd483875e0a",
+      "constructorFamily": "element:_3|parent:ad",
+      "elementToken": "_3",
+      "fieldSignature": [
+        "categoryBoxInfo",
+        "categoryCnt",
+        "categoryId",
+        "coordinates",
+        "elemSplice",
+        "fill",
+        "globalCentroidFlg",
+        "graphValue",
+        "height",
+        "heightCount",
+        "heightDeps",
+        "heightLengthArr",
+        "isCategoryOn",
+        "isHorizontal",
+        "item",
+        "keys",
+        "label",
+        "labelCount",
+        "name",
+        "selectedIndex",
+        "settingState",
+        "svgId",
+        "title",
+        "toolbarHeight",
+        "toolbarWidth",
+        "totalHeight",
+        "units",
+        "width",
+        "widthCount"
+      ],
+      "parentElementToken": "ad",
+      "shapeFamily": "shape:f341d8c162472d4a"
+    },
+    {
+      "clusterId": "cluster:c2c90d4d6f67f142",
+      "constructorFamily": "element:yi|parent:_s",
+      "elementToken": "yi",
+      "fieldSignature": [
+        "angle",
+        "c",
+        "coordinates",
+        "count",
+        "cx",
+        "cy",
+        "fill",
+        "height",
+        "isAngleHandle",
+        "isDecimal",
+        "isEyeOn",
+        "isFillChange",
+        "isMoveRotateHandler",
+        "point1",
+        "point2",
+        "r",
+        "surroundCoordinates",
+        "svgId",
+        "type",
+        "width"
+      ],
+      "parentElementToken": "_s",
+      "shapeFamily": "shape:cd416c2538a58847"
+    },
+    {
+      "clusterId": "cluster:c490fa7462b6d840",
+      "constructorFamily": "element:ji|parent:Kh",
+      "elementToken": "ji",
+      "fieldSignature": [
+        "categoryBoxInfo",
+        "coordinates",
+        "fill",
+        "globalCentroidFlg",
+        "graduationNum",
+        "height",
+        "isCategoryOn",
+        "isEyeOn",
+        "isFillChange",
+        "isFullGraduation",
+        "label",
+        "labelColor",
+        "labelCount",
+        "labelValue",
+        "name",
+        "narrowCount",
+        "selectedIndex",
+        "svgId",
+        "title",
+        "width"
+      ],
+      "parentElementToken": "Kh",
+      "shapeFamily": "shape:2dd8ed047670de39"
+    },
+    {
+      "clusterId": "cluster:c73fa0b6d28205b8",
+      "constructorFamily": "element:qa|parent:A6",
+      "elementToken": "qa",
+      "fieldSignature": [
+        "arr",
+        "index",
+        "isFillChange",
+        "items"
+      ],
+      "parentElementToken": "A6",
+      "shapeFamily": "shape:194b5469d013b3a5"
+    },
+    {
+      "clusterId": "cluster:ca8203685499cd27",
+      "constructorFamily": "element:Zi|parent:oy",
+      "elementToken": "Zi",
+      "fieldSignature": [
+        "clockScale",
+        "connectedClockId",
+        "coordinates",
+        "digitToSegment",
+        "fill",
+        "globalCentroidFlg",
+        "halfOrFull",
+        "height",
+        "hours",
+        "inputTime",
+        "inputType",
+        "isAm",
+        "isFillChange",
+        "isFirst",
+        "isWorking",
+        "minutes",
+        "newHours",
+        "opacity",
+        "seconds",
+        "surroundCoordinates",
+        "svgId",
+        "timer",
+        "type",
+        "visibleSeconds",
+        "width"
+      ],
+      "parentElementToken": "oy",
+      "shapeFamily": "shape:1ae3da69abf22aa9"
+    },
+    {
+      "clusterId": "cluster:d0b9f81f5198de66",
+      "constructorFamily": "element:rE|parent:U0",
+      "elementToken": "rE",
+      "fieldSignature": [],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:b4bbc4696326b874"
+    },
+    {
+      "clusterId": "cluster:d1704480d4641741",
+      "constructorFamily": "element:eE|parent:pa",
+      "elementToken": "eE",
+      "fieldSignature": [
+        "coordinates",
+        "isEyeOn",
+        "type"
+      ],
+      "parentElementToken": "pa",
+      "shapeFamily": "shape:4b3cd09217c361ce"
+    },
+    {
+      "clusterId": "cluster:d2d5aac9a1a7cdd2",
+      "constructorFamily": "element:rv|parent:ov",
+      "elementToken": "rv",
+      "fieldSignature": [
+        "_items",
+        "_leftItems",
+        "_stems",
+        "centerWidth",
+        "defaultTransFromX",
+        "defaultTransFromY",
+        "gap",
+        "headerHeight",
+        "height",
+        "isSorted",
+        "items",
+        "keys",
+        "leftItems",
+        "leftLeaf",
+        "leftWidth",
+        "maxIndex",
+        "minDefaultWidth",
+        "minHeight",
+        "minWidth",
+        "padding",
+        "perHeight",
+        "perSmallWidth",
+        "perWidth",
+        "rightLeaf",
+        "stems",
+        "svgId",
+        "titles",
+        "units",
+        "value",
+        "width"
+      ],
+      "parentElementToken": "ov",
+      "shapeFamily": "shape:0716e5bd4e001fe2"
+    },
+    {
+      "clusterId": "cluster:d3dfaf62da9ef4d6",
+      "constructorFamily": "element:sc|parent:nc",
+      "elementToken": "sc",
+      "fieldSignature": [
+        "coordinates",
+        "numberFrameSnap",
+        "preventDoubleClick",
+        "type"
+      ],
+      "parentElementToken": "nc",
+      "shapeFamily": "shape:16a3a68a8deab4fa"
+    },
+    {
+      "clusterId": "cluster:d80584f8563ed618",
+      "constructorFamily": "element:on|parent:gr",
+      "elementToken": "on",
+      "fieldSignature": [
+        "coordinates",
+        "count",
+        "fill",
+        "n",
+        "numberFrameSnap",
+        "r",
+        "svgId"
+      ],
+      "parentElementToken": "gr",
+      "shapeFamily": "shape:9d2998420abb2ba6"
+    },
+    {
+      "clusterId": "cluster:d88663cfdf0a5ee5",
+      "constructorFamily": "element:sE|parent:pa",
+      "elementToken": "sE",
+      "fieldSignature": [
+        "coordinates",
+        "isEyeOn",
+        "type"
+      ],
+      "parentElementToken": "pa",
+      "shapeFamily": "shape:4b3cd09217c361ce"
+    },
+    {
+      "clusterId": "cluster:d9821ed3a7a69687",
+      "constructorFamily": "element:d6t|parent:du",
+      "elementToken": "d6t",
+      "fieldSignature": [
+        "coordinates",
+        "defaultCoordinates",
+        "isFillChange",
+        "isHorizontalFlip",
+        "isMoveRotateHandler",
+        "isOpen",
+        "isStrokeChange",
+        "isVerticalFlip",
+        "size",
+        "strokeType",
+        "strokeWidth",
+        "surroundCoordinates",
+        "svgId",
+        "type",
+        "vertexIndex",
+        "vx",
+        "vy"
+      ],
+      "parentElementToken": "du",
+      "shapeFamily": "shape:a67856e388520a09"
+    },
+    {
+      "clusterId": "cluster:da44dd161503dc95",
+      "constructorFamily": "element:cu|parent:hc",
+      "elementToken": "cu",
+      "fieldSignature": [
+        "coordinates",
+        "editMode",
+        "globalCentroidFlg",
+        "heightCount",
+        "isFillChange",
+        "playgroundIndex",
+        "rectCoordinates",
+        "size",
+        "svgId",
+        "type",
+        "widthCount"
+      ],
+      "parentElementToken": "hc",
+      "shapeFamily": "shape:106b7b85c26657cc"
+    },
+    {
+      "clusterId": "cluster:dbaa92a95947a093",
+      "constructorFamily": "element:Y1|parent:U0",
+      "elementToken": "Y1",
+      "fieldSignature": [],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:b4bbc4696326b874"
+    },
+    {
+      "clusterId": "cluster:e3e19f6e136d545a",
+      "constructorFamily": "element:w0|parent:F5t",
+      "elementToken": "w0",
+      "fieldSignature": [
+        "currentBlockPositions",
+        "currentPosition",
+        "currentQuaternion",
+        "isCreating",
+        "zoom"
+      ],
+      "parentElementToken": "F5t",
+      "shapeFamily": "shape:74377ee61584c581"
+    },
+    {
+      "clusterId": "cluster:e4066dbb0382a78a",
+      "constructorFamily": "element:W4|parent:sl",
+      "elementToken": "W4",
+      "fieldSignature": [
+        "coordinates",
+        "fill",
+        "initCoordinates",
+        "initSizeScale",
+        "isBluePrint",
+        "isMoveRotateHandler",
+        "polygonCoordinates",
+        "sizeScale",
+        "surroundCoordinates",
+        "svgId"
+      ],
+      "parentElementToken": "sl",
+      "shapeFamily": "shape:ae716ae3bdecdb81"
+    },
+    {
+      "clusterId": "cluster:ed0db81668dfcc6e",
+      "constructorFamily": "element:Ds|parent:l3",
+      "elementToken": "Ds",
+      "fieldSignature": [
+        "coordinates",
+        "elements",
+        "head",
+        "n",
+        "originalNumber",
+        "result",
+        "step",
+        "type"
+      ],
+      "parentElementToken": "l3",
+      "shapeFamily": "shape:3969cf2a0e5f49f0"
+    },
+    {
+      "clusterId": "cluster:ee258c0581e6dd38",
+      "constructorFamily": "element:Uh|parent:U0",
+      "elementToken": "Uh",
+      "fieldSignature": [
+        "_numbers",
+        "a1",
+        "a2",
+        "divide",
+        "isToolbar",
+        "numbers",
+        "perWidth"
+      ],
+      "parentElementToken": "U0",
+      "shapeFamily": "shape:6498c15872d3d9e8"
+    },
+    {
+      "clusterId": "cluster:f612add096680235",
+      "constructorFamily": "element:W3|parent:J0",
+      "elementToken": "W3",
+      "fieldSignature": [
+        "column",
+        "coordinates",
+        "globalCentroidFlg",
+        "height",
+        "isFillChange",
+        "items",
+        "keys",
+        "maxColumn",
+        "maxRow",
+        "minColumn",
+        "minRow",
+        "multiSelect",
+        "numbers",
+        "perHeight",
+        "perWidth",
+        "playgroundIndex",
+        "row",
+        "selectedRect",
+        "snaps",
+        "svgId",
+        "tempColors",
+        "width"
+      ],
+      "parentElementToken": "J0",
+      "shapeFamily": "shape:4ed271fa249cf16b"
+    },
+    {
+      "clusterId": "cluster:f6480a8f46dd992e",
+      "constructorFamily": "element:li|parent:H6",
+      "elementToken": "li",
+      "fieldSignature": [
+        "ORIGIN_CANDIDATES",
+        "bottomHeight",
+        "coordinates",
+        "dotInput",
+        "dotInputMap",
+        "getSlope",
+        "graphInfo",
+        "hiddenDotIds",
+        "isEyeOn",
+        "isNotMultiSelect",
+        "isStrokeChange",
+        "keys",
+        "leftWidth",
+        "perInterval",
+        "playgroundIndex",
+        "rightWidth",
+        "selectedGraphInfo",
+        "svgId",
+        "topHeight"
+      ],
+      "parentElementToken": "H6",
+      "shapeFamily": "shape:e0bd6b4970e42c35"
+    },
+    {
+      "clusterId": "cluster:fac39faf0fd5421c",
+      "constructorFamily": "element:Aa|parent:J0",
+      "elementToken": "Aa",
+      "fieldSignature": [
+        "angle",
+        "connectedElementsId",
+        "coordinates",
+        "count",
+        "cx",
+        "cy",
+        "fill",
+        "height",
+        "horizonFlipped",
+        "isFillChange",
+        "isHFlip",
+        "isHorizontalFlip",
+        "isRotate",
+        "isSnapped",
+        "isVFlip",
+        "isVerticalFlip",
+        "maxCount",
+        "minCount",
+        "p1",
+        "p2",
+        "perHeight",
+        "perWidth",
+        "surroundCoordinates",
+        "svdId",
+        "verticalFlipped",
+        "width",
+        "x1",
+        "x2",
+        "y1",
+        "y2"
+      ],
+      "parentElementToken": "J0",
+      "shapeFamily": "shape:e566b0d8451bd3a4"
+    },
+    {
+      "clusterId": "cluster:fe21f66f713de600",
+      "constructorFamily": "element:dn|parent:rd",
+      "elementToken": "dn",
+      "fieldSignature": [
+        "changedRow",
+        "colors",
+        "column",
+        "coordinates",
+        "globalCentroidFlg",
+        "height",
+        "isDefaultFrame",
+        "isNotMultiSelect",
+        "isResize",
+        "isSelected",
+        "isStackUp",
+        "items",
+        "perHeight",
+        "perWidth",
+        "playgroundIndex",
+        "row",
+        "svgId",
+        "width"
+      ],
+      "parentElementToken": "rd",
+      "shapeFamily": "shape:81ec9f285cb81aa2"
+    }
+  ],
+  "counts": {
+    "clusters": 79,
+    "modules": 46,
+    "options": 66,
+    "shapeFamilies": 70,
+    "variants": 304
+  },
+  "integrity": {
+    "algorithm": "sha256-canonical-json",
+    "payloadSha256": "cee57b8b46544457d67d9de876bcd79d39707bba2c80eef97bce86c5a7104e51"
+  },
+  "modules": [
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR02AB",
+      "observedName": "속성블록",
+      "optionKeys": [
+        "changeFill",
+        "changeSize"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:e4066dbb0382a78a",
+          "paramsExpression": "[0,0,\"CR02AB-01\"]",
+          "variantId": "CR02AB-01"
+        },
+        {
+          "clusterId": "cluster:e4066dbb0382a78a",
+          "paramsExpression": "[0,0,\"CR02AB-02\"]",
+          "variantId": "CR02AB-02"
+        },
+        {
+          "clusterId": "cluster:e4066dbb0382a78a",
+          "paramsExpression": "[0,0,\"CR02AB-03\"]",
+          "variantId": "CR02AB-03"
+        },
+        {
+          "clusterId": "cluster:e4066dbb0382a78a",
+          "paramsExpression": "[0,0,\"CR02AB-04\"]",
+          "variantId": "CR02AB-04"
+        },
+        {
+          "clusterId": "cluster:e4066dbb0382a78a",
+          "paramsExpression": "[0,0,\"CR02AB-05\"]",
+          "variantId": "CR02AB-05"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR07AT",
+      "observedName": "대수 막대",
+      "optionKeys": [
+        "invertSign"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-01\"]",
+          "variantId": "CR07AT-01"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-02\"]",
+          "variantId": "CR07AT-02"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-03\"]",
+          "variantId": "CR07AT-03"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-04\"]",
+          "variantId": "CR07AT-04"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-05\"]",
+          "variantId": "CR07AT-05"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-06\"]",
+          "variantId": "CR07AT-06"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-07\"]",
+          "variantId": "CR07AT-07"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-08\"]",
+          "variantId": "CR07AT-08"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-09\"]",
+          "variantId": "CR07AT-09"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-10\"]",
+          "variantId": "CR07AT-10"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-11\"]",
+          "variantId": "CR07AT-11"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-12\"]",
+          "variantId": "CR07AT-12"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-13\"]",
+          "variantId": "CR07AT-13"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-14\"]",
+          "variantId": "CR07AT-14"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-15\"]",
+          "variantId": "CR07AT-15"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-16\"]",
+          "variantId": "CR07AT-16"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-17\"]",
+          "variantId": "CR07AT-17"
+        },
+        {
+          "clusterId": "cluster:8c272ee731cba362",
+          "paramsExpression": "[0,0,\"CR07AT-18\"]",
+          "variantId": "CR07AT-18"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR07BS",
+      "observedName": "접시저울",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:7b79db092f3fb046",
+          "paramsExpression": "[0,0]",
+          "variantId": "CR07BS-01"
+        },
+        {
+          "clusterId": "cluster:508cbbce61947b59",
+          "paramsExpression": "[0,0,\"CR07BS-02\"]",
+          "variantId": "CR07BS-02"
+        },
+        {
+          "clusterId": "cluster:508cbbce61947b59",
+          "paramsExpression": "[0,0,\"CR07BS-03\"]",
+          "variantId": "CR07BS-03"
+        },
+        {
+          "clusterId": "cluster:508cbbce61947b59",
+          "paramsExpression": "[0,0,\"CR07BS-04\"]",
+          "variantId": "CR07BS-04"
+        },
+        {
+          "clusterId": "cluster:05a66d97865ff8fb",
+          "paramsExpression": "[0,0]",
+          "variantId": "CR07BS-05"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR07CP",
+      "observedName": "좌표평면",
+      "optionKeys": [
+        "hideGridLines",
+        "hideLabel",
+        "showGridLines",
+        "showLabel"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:f6480a8f46dd992e",
+          "paramsExpression": "[0,0]",
+          "variantId": "CR07CP-01"
+        },
+        {
+          "clusterId": "cluster:11ff0efc639a8d92",
+          "paramsExpression": "[0,0]",
+          "variantId": "CR07CP-02"
+        },
+        {
+          "clusterId": "cluster:1f3efcee5a6a7f11",
+          "paramsExpression": "[0,0,[-1,1],[1,-1]]",
+          "variantId": "CR07CP-03"
+        },
+        {
+          "clusterId": "cluster:9e653908a5f05965",
+          "paramsExpression": "[0,0,[0,0],[2,-2]]",
+          "variantId": "CR07CP-04"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR10AB",
+      "observedName": "대수 블록",
+      "optionKeys": [
+        "spin"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:3c35e54d22561b83",
+          "paramsExpression": "[0,0,60,60]",
+          "variantId": "CR10AB-01"
+        },
+        {
+          "clusterId": "cluster:d1704480d4641741",
+          "paramsExpression": "[0,0,60,120]",
+          "variantId": "CR10AB-02"
+        },
+        {
+          "clusterId": "cluster:d88663cfdf0a5ee5",
+          "paramsExpression": "[0,0,120,160]",
+          "variantId": "CR10AB-03"
+        },
+        {
+          "clusterId": "cluster:2850f067ffb403e0",
+          "paramsExpression": "[0,0,160,160]",
+          "variantId": "CR10AB-04"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit02",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "CR10CS",
+      "observedName": "공간좌표(3D)",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:672564b56783edf5",
+          "paramsExpression": "[0,0,\"cr10cs-object\",\"coordinate-plane\"]",
+          "variantId": "CR10CS-01"
+        },
+        {
+          "clusterId": "cluster:672564b56783edf5",
+          "paramsExpression": "[0,0,\"cr10cs-object\",\"coordinate-plane\",\"sphere\"]",
+          "variantId": "CR10CS-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP02TG",
+      "observedName": "자료와 표",
+      "optionKeys": [
+        "autoCalculate",
+        "hideLabel",
+        "showLabel",
+        "switchToHorizontal",
+        "switchToVertical"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:11f448032f593ba9",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP02TG-01"
+        },
+        {
+          "clusterId": "cluster:3c8f8ab8bd3b5cf6",
+          "paramsExpression": "[0,0,3]",
+          "variantId": "DP02TG-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP03PG",
+      "observedName": "그림그래프",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:c2c68cd483875e0a",
+          "paramsExpression": "[0,0,!1,2]",
+          "variantId": "DP03PG-01"
+        },
+        {
+          "clusterId": "cluster:c2c68cd483875e0a",
+          "paramsExpression": "[0,0,!0,2]",
+          "variantId": "DP03PG-02"
+        },
+        {
+          "clusterId": "cluster:c2c68cd483875e0a",
+          "paramsExpression": "[0,0,!0,3]",
+          "variantId": "DP03PG-03"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP04BC",
+      "observedName": "막대그래프",
+      "optionKeys": [
+        "switchToHorizontal",
+        "switchToVertical"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:062c717350d79bbf",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "DP04BC-01"
+        },
+        {
+          "clusterId": "cluster:062c717350d79bbf",
+          "paramsExpression": "[0,0,2]",
+          "variantId": "DP04BC-02"
+        },
+        {
+          "clusterId": "cluster:062c717350d79bbf",
+          "paramsExpression": "[0,0,2,!0]",
+          "variantId": "DP04BC-03"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP05LC",
+      "observedName": "꺾은선그래프",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:062c717350d79bbf",
+          "paramsExpression": "[0,0,2]",
+          "variantId": "DP05LC-01"
+        },
+        {
+          "clusterId": "cluster:062c717350d79bbf",
+          "paramsExpression": "[0,0,2,!0]",
+          "variantId": "DP05LC-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP06RC",
+      "observedName": "비율 그래프",
+      "optionKeys": [
+        "changeScale",
+        "hideRatios",
+        "showRatios",
+        "switchToBarChart",
+        "switchToPieChart"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:c490fa7462b6d840",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP06RC-01"
+        },
+        {
+          "clusterId": "cluster:021eacf1a2e3a8f6",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP06RC-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07CF",
+      "observedName": "상대도수 그래프",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:0df271ba54965de2",
+          "paramsExpression": "[0,0,!0,!0]",
+          "variantId": "DP07CF-01"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07FP",
+      "observedName": "도수분포다각형",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:0df271ba54965de2",
+          "paramsExpression": "[0,0,!0,!1]",
+          "variantId": "DP07FP-01"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07FT",
+      "observedName": "도수분포표",
+      "optionKeys": [
+        "autoCalculate"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:2074b697849bb0fd",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP07FT-01"
+        },
+        {
+          "clusterId": "cluster:ad380d204c8f7ea9",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP07FT-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07HG",
+      "observedName": "히스토그램",
+      "optionKeys": [
+        "hideFrequencyPolygon",
+        "hideHistogram",
+        "showFrequencyPolygon",
+        "showHistogram"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:0df271ba54965de2",
+          "paramsExpression": "[0,0,!1,!1]",
+          "variantId": "DP07HG-01"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07MC",
+      "observedName": "자료와 대푯값",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:aaac46ffb2f5f150",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP07MC-01"
+        },
+        {
+          "clusterId": "cluster:725f70dcaf50ed71",
+          "paramsExpression": "[0,0]",
+          "variantId": "DP07MC-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP07SL",
+      "observedName": "줄기와 잎 그림",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:d2d5aac9a1a7cdd2",
+          "paramsExpression": "[0,0,!1]",
+          "variantId": "DP07SL-01"
+        },
+        {
+          "clusterId": "cluster:d2d5aac9a1a7cdd2",
+          "paramsExpression": "[0,0,!0]",
+          "variantId": "DP07SL-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit04",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "DP09BP",
+      "observedName": "상자 그림",
+      "optionKeys": [
+        "hideGridLines",
+        "showGridLines"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:9f0ad21210541cc0",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "DP09BP-01"
+        },
+        {
+          "clusterId": "cluster:38572fe9cbba2678",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "DP09BP-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO01LC",
+      "observedName": "연결 모형",
+      "optionKeys": [
+        "hideLabel",
+        "showLabel",
+        "spin"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:7748eabb2322d1f5",
+          "paramsExpression": "td(3)",
+          "variantId": "NO01LC-01"
+        },
+        {
+          "clusterId": "cluster:7748eabb2322d1f5",
+          "paramsExpression": "td(2)",
+          "variantId": "NO01LC-02"
+        },
+        {
+          "clusterId": "cluster:7748eabb2322d1f5",
+          "paramsExpression": "td(1)",
+          "variantId": "NO01LC-03"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO01NR",
+      "observedName": "수 구슬",
+      "optionKeys": [
+        "invertColors"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:26f1a84b4ef37786",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "NO01NR-01"
+        },
+        {
+          "clusterId": "cluster:26f1a84b4ef37786",
+          "paramsExpression": "[0,0,2]",
+          "variantId": "NO01NR-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO01SC",
+      "observedName": "수 세기 모형",
+      "optionKeys": [
+        "changeSize"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-01\"]",
+          "variantId": "NO01SC-01"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-02\"]",
+          "variantId": "NO01SC-02"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-03\"]",
+          "variantId": "NO01SC-03"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-04\"]",
+          "variantId": "NO01SC-04"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-05\"]",
+          "variantId": "NO01SC-05"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-06\"]",
+          "variantId": "NO01SC-06"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-07\"]",
+          "variantId": "NO01SC-07"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-08\"]",
+          "variantId": "NO01SC-08"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-09\"]",
+          "variantId": "NO01SC-09"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-10\"]",
+          "variantId": "NO01SC-10"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-11\"]",
+          "variantId": "NO01SC-11"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-12\"]",
+          "variantId": "NO01SC-12"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-13\"]",
+          "variantId": "NO01SC-13"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-14\"]",
+          "variantId": "NO01SC-14"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-15\"]",
+          "variantId": "NO01SC-15"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-16\"]",
+          "variantId": "NO01SC-16"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-17\"]",
+          "variantId": "NO01SC-17"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-18\"]",
+          "variantId": "NO01SC-18"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-19\"]",
+          "variantId": "NO01SC-19"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-20\"]",
+          "variantId": "NO01SC-20"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-21\"]",
+          "variantId": "NO01SC-21"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-22\"]",
+          "variantId": "NO01SC-22"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-23\"]",
+          "variantId": "NO01SC-23"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-24\"]",
+          "variantId": "NO01SC-24"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-25\"]",
+          "variantId": "NO01SC-25"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-26\"]",
+          "variantId": "NO01SC-26"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-27\"]",
+          "variantId": "NO01SC-27"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-28\"]",
+          "variantId": "NO01SC-28"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-29\"]",
+          "variantId": "NO01SC-29"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-30\"]",
+          "variantId": "NO01SC-30"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-31\"]",
+          "variantId": "NO01SC-31"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-32\"]",
+          "variantId": "NO01SC-32"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-33\"]",
+          "variantId": "NO01SC-33"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-34\"]",
+          "variantId": "NO01SC-34"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-35\"]",
+          "variantId": "NO01SC-35"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-36\"]",
+          "variantId": "NO01SC-36"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-37\"]",
+          "variantId": "NO01SC-37"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-38\"]",
+          "variantId": "NO01SC-38"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-39\"]",
+          "variantId": "NO01SC-39"
+        },
+        {
+          "clusterId": "cluster:02d66e79ba7cc5be",
+          "paramsExpression": "[0,0,\"NO01SC-40\"]",
+          "variantId": "NO01SC-40"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO01TF",
+      "observedName": "십 배열판",
+      "optionKeys": [
+        "flip",
+        "stackUp"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:59a30944cb06f2a0",
+          "paramsExpression": "[0,0,1,\"circle\"]",
+          "variantId": "NO01TF-01"
+        },
+        {
+          "clusterId": "cluster:59a30944cb06f2a0",
+          "paramsExpression": "[0,0,5,\"circle\"]",
+          "variantId": "NO01TF-02"
+        },
+        {
+          "clusterId": "cluster:59a30944cb06f2a0",
+          "paramsExpression": "[0,0,10,\"circle\"]",
+          "variantId": "NO01TF-03"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO02CB",
+      "observedName": "색 막대",
+      "optionKeys": [
+        "eyeOff",
+        "eyeOn",
+        "grid",
+        "number"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,1,\"#FFFFFF\",\"#0000001A\"]",
+          "variantId": "NO02CB-01"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,2,\"#FF5862\",\"#CC7A7B\"]",
+          "variantId": "NO02CB-02"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,3,\"#4FF13D\",\"#A5BA53\"]",
+          "variantId": "NO02CB-03"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,4,\"#B675FF\",\"#A683CC\"]",
+          "variantId": "NO02CB-04"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,5,\"#FFE100\",\"#CBBB65\"]",
+          "variantId": "NO02CB-05"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,6,\"#7FD50F\",\"#509E07\"]",
+          "variantId": "NO02CB-06"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,7,\"#97A0B5\",\"#4B4B4B\"]",
+          "variantId": "NO02CB-07"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,8,\"#E08A09\",\"#966A27\"]",
+          "variantId": "NO02CB-08"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,9,\"#32CCFF\",\"#4078CC\"]",
+          "variantId": "NO02CB-09"
+        },
+        {
+          "clusterId": "cluster:2abd148c84d87b27",
+          "paramsExpression": "[0,0,10,\"#FF8E25\",\"#CC9225\"]",
+          "variantId": "NO02CB-10"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO02DM",
+      "observedName": "도미노",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:41c819738b5680f9",
+          "paramsExpression": "[0,0,null,null,6]",
+          "variantId": "NO02DM-01"
+        },
+        {
+          "clusterId": "cluster:41c819738b5680f9",
+          "paramsExpression": "[0,0,null,null,9]",
+          "variantId": "NO02DM-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO03BT",
+      "observedName": "수 모형",
+      "optionKeys": [
+        "merge",
+        "sort",
+        "spin",
+        "split"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:45d2deec3047a771",
+          "paramsExpression": "L6(1)",
+          "variantId": "NO03BT-01"
+        },
+        {
+          "clusterId": "cluster:45d2deec3047a771",
+          "paramsExpression": "L6(2)",
+          "variantId": "NO03BT-02"
+        },
+        {
+          "clusterId": "cluster:45d2deec3047a771",
+          "paramsExpression": "L6(3)",
+          "variantId": "NO03BT-03"
+        },
+        {
+          "clusterId": "cluster:45d2deec3047a771",
+          "paramsExpression": "L6(4)",
+          "variantId": "NO03BT-04"
+        },
+        {
+          "clusterId": "cluster:2be6e8e9fc65f0cf",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO03BT-05"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [
+        "research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=verified:NO03FM"
+      ],
+      "moduleKey": "NO03FM",
+      "observedName": "분수 모형",
+      "optionKeys": [
+        "split"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "기존 released 근거는 직사각형 분수 모형 일부에 한정되며 전체 variant 저장 ID는 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,10,\"#DD77FF\"]",
+          "variantId": "NO03FM-01"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,9,\"#C183FF\"]",
+          "variantId": "NO03FM-02"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,8,\"#8688FF\"]",
+          "variantId": "NO03FM-03"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,7,\"#83C1FF\"]",
+          "variantId": "NO03FM-04"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,6,\"#65F0FF\"]",
+          "variantId": "NO03FM-05"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,5,\"#62FFB6\"]",
+          "variantId": "NO03FM-06"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,4,\"#D0F046\"]",
+          "variantId": "NO03FM-07"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,3,\"#FFE83D\"]",
+          "variantId": "NO03FM-08"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,2,\"#FFA26C\"]",
+          "variantId": "NO03FM-09"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,1,\"#FF727B\"]",
+          "variantId": "NO03FM-10"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,10,\"#DD77FF\"]",
+          "variantId": "NO03FM-11"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,9,\"#C183FF\"]",
+          "variantId": "NO03FM-12"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,8,\"#8688FF\"]",
+          "variantId": "NO03FM-13"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,7,\"#83C1FF\"]",
+          "variantId": "NO03FM-14"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,6,\"#65F0FF\"]",
+          "variantId": "NO03FM-15"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,5,\"#62FFB6\"]",
+          "variantId": "NO03FM-16"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,4,\"#D0F046\"]",
+          "variantId": "NO03FM-17"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,3,\"#FFE83D\"]",
+          "variantId": "NO03FM-18"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,2,\"#FFA26C\"]",
+          "variantId": "NO03FM-19"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,1,\"#FF727B\"]",
+          "variantId": "NO03FM-20"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,11,\"#d9d9d9\"]",
+          "variantId": "NO03FM-21"
+        },
+        {
+          "clusterId": "cluster:081df74a5492d86e",
+          "paramsExpression": "[0,0,12,\"#acacac\"]",
+          "variantId": "NO03FM-22"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,11,\"#d9d9d9\"]",
+          "variantId": "NO03FM-23"
+        },
+        {
+          "clusterId": "cluster:c2c90d4d6f67f142",
+          "paramsExpression": "[0,0,12,\"#acacac\"]",
+          "variantId": "NO03FM-24"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO04NG",
+      "observedName": "배열표",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:f612add096680235",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO04NG-01"
+        },
+        {
+          "clusterId": "cluster:31a7143a6f059637",
+          "paramsExpression": "[0,0,\"+\"]",
+          "variantId": "NO04NG-02"
+        },
+        {
+          "clusterId": "cluster:31a7143a6f059637",
+          "paramsExpression": "[0,0,\"x\"]",
+          "variantId": "NO04NG-03"
+        },
+        {
+          "clusterId": "cluster:fac39faf0fd5421c",
+          "paramsExpression": "[0,0,\"#FF4143\",0]",
+          "variantId": "NO04NG-04"
+        },
+        {
+          "clusterId": "cluster:fac39faf0fd5421c",
+          "paramsExpression": "[0,0,\"#4183FF\",90]",
+          "variantId": "NO04NG-05"
+        },
+        {
+          "clusterId": "cluster:fac39faf0fd5421c",
+          "paramsExpression": "[0,0,\"#3CE726\",45]",
+          "variantId": "NO04NG-06"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO04NT",
+      "observedName": "수 카드",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-01\"]",
+          "variantId": "NO04NT-01"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-02\"]",
+          "variantId": "NO04NT-02"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-03\"]",
+          "variantId": "NO04NT-03"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-04\"]",
+          "variantId": "NO04NT-04"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-05\"]",
+          "variantId": "NO04NT-05"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-06\"]",
+          "variantId": "NO04NT-06"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-07\"]",
+          "variantId": "NO04NT-07"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-08\"]",
+          "variantId": "NO04NT-08"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-09\"]",
+          "variantId": "NO04NT-09"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-10\"]",
+          "variantId": "NO04NT-10"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-11\"]",
+          "variantId": "NO04NT-11"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-12\"]",
+          "variantId": "NO04NT-12"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-13\"]",
+          "variantId": "NO04NT-13"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-14\"]",
+          "variantId": "NO04NT-14"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-15\"]",
+          "variantId": "NO04NT-15"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-16\"]",
+          "variantId": "NO04NT-16"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-17\"]",
+          "variantId": "NO04NT-17"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-18\"]",
+          "variantId": "NO04NT-18"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-19\"]",
+          "variantId": "NO04NT-19"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-20\"]",
+          "variantId": "NO04NT-20"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-21\"]",
+          "variantId": "NO04NT-21"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-22\"]",
+          "variantId": "NO04NT-22"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-23\"]",
+          "variantId": "NO04NT-23"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-24\"]",
+          "variantId": "NO04NT-24"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-25\"]",
+          "variantId": "NO04NT-25"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-26\"]",
+          "variantId": "NO04NT-26"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-27\"]",
+          "variantId": "NO04NT-27"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-28\"]",
+          "variantId": "NO04NT-28"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-29\"]",
+          "variantId": "NO04NT-29"
+        },
+        {
+          "clusterId": "cluster:2ac3a9218428cf15",
+          "paramsExpression": "[0,0,\"NO04NT-30\"]",
+          "variantId": "NO04NT-30"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-31\"]",
+          "variantId": "NO04NT-31"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-32\"]",
+          "variantId": "NO04NT-32"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-33\"]",
+          "variantId": "NO04NT-33"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-34\"]",
+          "variantId": "NO04NT-34"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-35\"]",
+          "variantId": "NO04NT-35"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-36\"]",
+          "variantId": "NO04NT-36"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-37\"]",
+          "variantId": "NO04NT-37"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-38\"]",
+          "variantId": "NO04NT-38"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-39\"]",
+          "variantId": "NO04NT-39"
+        },
+        {
+          "clusterId": "cluster:3637238fcc6c6f6c",
+          "paramsExpression": "[0,0,\"NO04NT-40\"]",
+          "variantId": "NO04NT-40"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO04PC",
+      "observedName": "자릿값 카드",
+      "optionKeys": [
+        "expand",
+        "sort",
+        "stack"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:48c4e9272ac173f9",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "NO04PC-01"
+        },
+        {
+          "clusterId": "cluster:48c4e9272ac173f9",
+          "paramsExpression": "[0,0,2]",
+          "variantId": "NO04PC-02"
+        },
+        {
+          "clusterId": "cluster:48c4e9272ac173f9",
+          "paramsExpression": "[0,0,3]",
+          "variantId": "NO04PC-03"
+        },
+        {
+          "clusterId": "cluster:48c4e9272ac173f9",
+          "paramsExpression": "[0,0,4]",
+          "variantId": "NO04PC-04"
+        },
+        {
+          "clusterId": "cluster:48c4e9272ac173f9",
+          "paramsExpression": "[0,0,5]",
+          "variantId": "NO04PC-05"
+        },
+        {
+          "clusterId": "cluster:12bcd2a6d2e748a0",
+          "paramsExpression": "[0,0,[]]",
+          "variantId": "NO04PC-GROUP"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO04PD",
+      "observedName": "자릿값 모형",
+      "optionKeys": [
+        "merge",
+        "split"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[1e4,0,0]",
+          "variantId": "NO04PD-01"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[1e3,0,0]",
+          "variantId": "NO04PD-02"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[100,0,0]",
+          "variantId": "NO04PD-03"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[10,0,0]",
+          "variantId": "NO04PD-04"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[1,0,0]",
+          "variantId": "NO04PD-05"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[.1,0,0]",
+          "variantId": "NO04PD-06"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[.01,0,0]",
+          "variantId": "NO04PD-07"
+        },
+        {
+          "clusterId": "cluster:d80584f8563ed618",
+          "paramsExpression": "[.001,0,0]",
+          "variantId": "NO04PD-08"
+        },
+        {
+          "clusterId": "cluster:fe21f66f713de600",
+          "paramsExpression": "[0,0,\"NUMBER_FRAME3\"]",
+          "variantId": "NO04PD-09"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO07IC",
+      "observedName": "셈돌",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:8671e4fd160e5be3",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO07IC-01"
+        },
+        {
+          "clusterId": "cluster:d3dfaf62da9ef4d6",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO07IC-02"
+        },
+        {
+          "clusterId": "cluster:25949decfcbdd248",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO07IC-03"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO07NL",
+      "observedName": "수직선",
+      "optionKeys": [
+        "leftArrow",
+        "rightArrow"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:d0b9f81f5198de66",
+          "paramsExpression": "[0,0,\"NO07NL-01\"]",
+          "variantId": "NO07NL-01"
+        },
+        {
+          "clusterId": "cluster:ee258c0581e6dd38",
+          "paramsExpression": "[0,0,\"NO07NL-02\"]",
+          "variantId": "NO07NL-02"
+        },
+        {
+          "clusterId": "cluster:39ec0888943c9cce",
+          "paramsExpression": "[0,0,\"NO07NL-03\"]",
+          "variantId": "NO07NL-03"
+        },
+        {
+          "clusterId": "cluster:30443f2ebb693d54",
+          "paramsExpression": "[0,0,\"NO07NL-04\"]",
+          "variantId": "NO07NL-04"
+        },
+        {
+          "clusterId": "cluster:3755173854639c57",
+          "paramsExpression": "[0,0,\"NO07NL-05\"]",
+          "variantId": "NO07NL-05"
+        },
+        {
+          "clusterId": "cluster:dbaa92a95947a093",
+          "paramsExpression": "[0,0,\"NO07NL-06\"]",
+          "variantId": "NO07NL-06"
+        },
+        {
+          "clusterId": "cluster:4a89fc8f2fa3609e",
+          "paramsExpression": "[0,0,\"NO07NL-07\"]",
+          "variantId": "NO07NL-07"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO07PF",
+      "observedName": "소인수분해",
+      "optionKeys": [
+        "fold",
+        "switchFactorization",
+        "unFold"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:ed0db81668dfcc6e",
+          "paramsExpression": "[0,0,15]",
+          "variantId": "NO07PF-01"
+        },
+        {
+          "clusterId": "cluster:ed0db81668dfcc6e",
+          "paramsExpression": "[0,0,28]",
+          "variantId": "NO07PF-02"
+        },
+        {
+          "clusterId": "cluster:17a6c6696fc34a3a",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO07PF-03"
+        },
+        {
+          "clusterId": "cluster:a261ed809d04937d",
+          "paramsExpression": "[0,0]",
+          "variantId": "NO07PF-04"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit01",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "NO10VD",
+      "observedName": "벤 다이어그램",
+      "optionKeys": [
+        "merge",
+        "split"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryVariantIdMismatch",
+          "reason": "factory ID와 params 내부 variant ID의 module prefix가 달라 실제 savedSvgId를 별도로 확인해야 합니다."
+        },
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:9dd09de2631392b3",
+          "paramsExpression": "[0,0,\"NO01VD-01\"]",
+          "variantId": "NO10VD-01"
+        },
+        {
+          "clusterId": "cluster:3d57fa611e2b3f97",
+          "paramsExpression": "[0,0,\"NO01VD-02\"]",
+          "variantId": "NO10VD-02"
+        },
+        {
+          "clusterId": "cluster:bb4e1f05f3d10ea3",
+          "paramsExpression": "[0,0,\"NO01VD-03\"]",
+          "variantId": "NO10VD-03"
+        },
+        {
+          "clusterId": "cluster:c73fa0b6d28205b8",
+          "paramsExpression": "[0,0,\"NO01VD-04\"]",
+          "variantId": "NO10VD-04"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM02AD",
+      "observedName": "시계",
+      "optionKeys": [
+        "hideSecond",
+        "pause",
+        "showSecond",
+        "start",
+        "timeFormat"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:bb295945f8bff1cd",
+          "paramsExpression": "[0,0]",
+          "variantId": "SM02AD-01"
+        },
+        {
+          "clusterId": "cluster:ca8203685499cd27",
+          "paramsExpression": "[0,0,\"geared\"]",
+          "variantId": "SM02AD-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM02PB",
+      "observedName": "패턴블록",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(1)",
+          "variantId": "SM02PB-01"
+        },
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(2)",
+          "variantId": "SM02PB-02"
+        },
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(3)",
+          "variantId": "SM02PB-03"
+        },
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(4)",
+          "variantId": "SM02PB-04"
+        },
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(5)",
+          "variantId": "SM02PB-05"
+        },
+        {
+          "clusterId": "cluster:7c225c829a5e6d61",
+          "paramsExpression": "Wl(6)",
+          "variantId": "SM02PB-06"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM02TG",
+      "observedName": "칠교판",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(1)",
+          "variantId": "SM02TG-01"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(2)",
+          "variantId": "SM02TG-02"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(3)",
+          "variantId": "SM02TG-03"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(4)",
+          "variantId": "SM02TG-04"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(5)",
+          "variantId": "SM02TG-05"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(6)",
+          "variantId": "SM02TG-06"
+        },
+        {
+          "clusterId": "cluster:56ea2f56b9c508cc",
+          "paramsExpression": "z0(7)",
+          "variantId": "SM02TG-07"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM03GB",
+      "observedName": "도형판",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:da44dd161503dc95",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "SM03GB-01"
+        },
+        {
+          "clusterId": "cluster:da44dd161503dc95",
+          "paramsExpression": "[0,0,2]",
+          "variantId": "SM03GB-02"
+        },
+        {
+          "clusterId": "cluster:d9821ed3a7a69687",
+          "paramsExpression": "[0,0,!1,[[0,0],[0,0],[0,0],[0,0]],1]",
+          "variantId": "SM03GB-03"
+        },
+        {
+          "clusterId": "cluster:b196a8ee141368be",
+          "paramsExpression": "[0,0,1]",
+          "variantId": "SM03GB-04"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM04PM",
+      "observedName": "펜토미노",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(1)",
+          "variantId": "SM04PM-01"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(2)",
+          "variantId": "SM04PM-02"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(3)",
+          "variantId": "SM04PM-03"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(4)",
+          "variantId": "SM04PM-04"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(5)",
+          "variantId": "SM04PM-05"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(6)",
+          "variantId": "SM04PM-06"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(7)",
+          "variantId": "SM04PM-07"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(8)",
+          "variantId": "SM04PM-08"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(9)",
+          "variantId": "SM04PM-09"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(10)",
+          "variantId": "SM04PM-10"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(11)",
+          "variantId": "SM04PM-11"
+        },
+        {
+          "clusterId": "cluster:5b74aad2ed414ed4",
+          "paramsExpression": "co(12)",
+          "variantId": "SM04PM-12"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM05PG",
+      "observedName": "다각형",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "nestedObjectLifecycle",
+          "reason": "container·board 계열 자식 객체의 생성·저장·재열기 계약을 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(3)",
+          "variantId": "SM05PG-03"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(4)",
+          "variantId": "SM05PG-04"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(5)",
+          "variantId": "SM05PG-05"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(6)",
+          "variantId": "SM05PG-06"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(7)",
+          "variantId": "SM05PG-07"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(8)",
+          "variantId": "SM05PG-08"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(9)",
+          "variantId": "SM05PG-09"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(10)",
+          "variantId": "SM05PG-10"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(11)",
+          "variantId": "SM05PG-11"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(12)",
+          "variantId": "SM05PG-12"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(13)",
+          "variantId": "SM05PG-13"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(14)",
+          "variantId": "SM05PG-14"
+        },
+        {
+          "clusterId": "cluster:3d8edcb3af60f4ea",
+          "paramsExpression": "mi(15)",
+          "variantId": "SM05PG-15"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM05RP",
+      "observedName": "정다각형",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "factoryParameterSemantics",
+          "reason": "bundle helper 호출형 params의 인자 의미를 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:19aef1f0c73532ed",
+          "paramsExpression": "mi(6)",
+          "variantId": "SM05RP-01"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM06PH",
+      "observedName": "다면체(3D)",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cube-triangle\"]",
+          "variantId": "SM06PH-01"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cube-rectangle\"]",
+          "variantId": "SM06PH-02"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cube-pentagon\"]",
+          "variantId": "SM06PH-03"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cube-hexagon\"]",
+          "variantId": "SM06PH-04"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"pyramid\"]",
+          "variantId": "SM06PH-05"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"pyramid-rect\"]",
+          "variantId": "SM06PH-06"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"pyramid-penta\"]",
+          "variantId": "SM06PH-07"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"pyramid-hexa\"]",
+          "variantId": "SM06PH-08"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"ladder-triangle\"]",
+          "variantId": "SM06PH-09"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"ladder-rectangle\"]",
+          "variantId": "SM06PH-10"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"ladder-pentagon\"]",
+          "variantId": "SM06PH-11"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"ladder-hexagon\"]",
+          "variantId": "SM06PH-12"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cylinder\"]",
+          "variantId": "SM06PH-13"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"cone\"]",
+          "variantId": "SM06PH-14"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm06ph-object\",\"truncatedcone\"]",
+          "variantId": "SM06PH-15"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM06UC",
+      "observedName": "쌓기나무(3D)",
+      "optionKeys": [
+        "directionLabel",
+        "reset"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:e3e19f6e136d545a",
+          "paramsExpression": "[0,0,\"sm06uc-object\",\"building-blocks\"]",
+          "variantId": "SM06UC-01"
+        },
+        {
+          "clusterId": "cluster:7d834b1b90099615",
+          "paramsExpression": "[0,0]",
+          "variantId": "SM06UC-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM07CS",
+      "observedName": "원과 부채꼴",
+      "optionKeys": [
+        "arc",
+        "chord",
+        "sector",
+        "segment"
+      ],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:a0cbac61e30c3af8",
+          "paramsExpression": "[0,0,200]",
+          "variantId": "SM07CS-01"
+        },
+        {
+          "clusterId": "cluster:410d9be1fa0c154a",
+          "paramsExpression": "[0,0,200,{x:200,y:0},{x:0,y:-200},90]",
+          "variantId": "SM07CS-02"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM07PS",
+      "observedName": "정다면체(3D)",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07ps-object\",\"three\"]",
+          "variantId": "SM07PS-01"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07ps-object\",\"six\"]",
+          "variantId": "SM07PS-02"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07ps-object\",\"eight\"]",
+          "variantId": "SM07PS-03"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07ps-object\",\"twelve\"]",
+          "variantId": "SM07PS-04"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07ps-object\",\"twenty\"]",
+          "variantId": "SM07PS-05"
+        }
+      ]
+    },
+    {
+      "categoryId": "Unit03",
+      "lifecycleEvidenceIds": [],
+      "moduleKey": "SM07SR",
+      "observedName": "회전체(3D)",
+      "optionKeys": [],
+      "staticEvidenceState": "captured",
+      "unknown": [
+        {
+          "field": "savedSvgId",
+          "reason": "factory variant ID와 실제 저장 svgId의 동일성을 lifecycle에서 확인하지 않았습니다."
+        },
+        {
+          "field": "serverNormalization",
+          "reason": "생성·저장·재열기에서 서버가 native field를 보존·정규화·거절하는지 확인하지 않았습니다."
+        },
+        {
+          "field": "wireFieldTypes",
+          "reason": "constructor field 이름은 확인했지만 실제 저장 JSON의 값 타입은 확인하지 않았습니다."
+        }
+      ],
+      "variants": [
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"cylinder\"]",
+          "variantId": "SM07SR-01"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"cone\"]",
+          "variantId": "SM07SR-02"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"globe\"]",
+          "variantId": "SM07SR-03"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"doublecone\"]",
+          "variantId": "SM07SR-04"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"cylincone\"]",
+          "variantId": "SM07SR-05"
+        },
+        {
+          "clusterId": "cluster:38defd2c127783ee",
+          "paramsExpression": "[0,0,\"sm07sr-object\",\"truncatedcone\"]",
+          "variantId": "SM07SR-06"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": "1.0.0",
+  "scope": {
+    "categoryIds": [
+      "Unit01",
+      "Unit02",
+      "Unit03",
+      "Unit04"
+    ],
+    "moduleKeys": [
+      "CR02AB",
+      "CR07AT",
+      "CR07BS",
+      "CR07CP",
+      "CR10AB",
+      "CR10CS",
+      "DP02TG",
+      "DP03PG",
+      "DP04BC",
+      "DP05LC",
+      "DP06RC",
+      "DP07CF",
+      "DP07FP",
+      "DP07FT",
+      "DP07HG",
+      "DP07MC",
+      "DP07SL",
+      "DP09BP",
+      "NO01LC",
+      "NO01NR",
+      "NO01SC",
+      "NO01TF",
+      "NO02CB",
+      "NO02DM",
+      "NO03BT",
+      "NO03FM",
+      "NO04NG",
+      "NO04NT",
+      "NO04PC",
+      "NO04PD",
+      "NO07IC",
+      "NO07NL",
+      "NO07PF",
+      "NO10VD",
+      "SM02AD",
+      "SM02PB",
+      "SM02TG",
+      "SM03GB",
+      "SM04PM",
+      "SM05PG",
+      "SM05RP",
+      "SM06PH",
+      "SM06UC",
+      "SM07CS",
+      "SM07PS",
+      "SM07SR"
+    ]
+  },
+  "snapshotId": "mathcanvas-all-module-variant-static-2026-07-29",
+  "sourcePolicy": {
+    "analysis": "local-bundle-snapshot-derived",
+    "networkRequestCount": 0,
+    "productWriteCount": 0,
+    "rawSourceCommitted": false
+  }
+}

@@ -98,6 +98,7 @@ export interface MathCanvasBrowserRuntime {
   checkConnection(options?: {
     forceContractCheck?: boolean;
     bringToFront?: boolean;
+    requiredModules?: string[];
   }): Promise<BrowserConnection>;
   createProject(
     payload: Record<string, unknown>,

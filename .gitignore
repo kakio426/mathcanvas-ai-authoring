@@ -5,3 +5,6 @@ coverage/
 *.log
 *.tsbuildinfo
 .mathcanvas-local/
+.mathcanvas-contract-lab/
+research/mathcanvas/wave1-released-baseline.artifacts.json
+research/mathcanvas/wave1-released-baseline.roundtrip.json

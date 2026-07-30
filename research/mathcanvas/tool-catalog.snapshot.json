@@ -1,0 +1,1556 @@
+{
+  "categories": [
+    {
+      "categoryId": "bottom-common-toolbar",
+      "observedName": "하단 공통 도구",
+      "stableKey": "common-authoring",
+      "surfaceKind": "common-authoring"
+    },
+    {
+      "categoryId": "Unit01",
+      "observedName": "수와 연산",
+      "stableKey": "Unit01",
+      "surfaceKind": "math-palette"
+    },
+    {
+      "categoryId": "Unit02",
+      "observedName": "변화와 관계",
+      "stableKey": "Unit02",
+      "surfaceKind": "math-palette"
+    },
+    {
+      "categoryId": "Unit03",
+      "observedName": "도형과 측정",
+      "stableKey": "Unit03",
+      "surfaceKind": "math-palette"
+    },
+    {
+      "categoryId": "Unit04",
+      "observedName": "자료와 가능성",
+      "stableKey": "Unit04",
+      "surfaceKind": "math-palette"
+    }
+  ],
+  "counts": {
+    "categories": 5,
+    "tools": 56,
+    "toolsByCategory": {
+      "common-authoring": 10,
+      "Unit01": 16,
+      "Unit02": 6,
+      "Unit03": 12,
+      "Unit04": 12
+    }
+  },
+  "observation": {
+    "accountScope": "authenticated-current-user",
+    "observationDate": "2026-07-29",
+    "origin": "https://mathcanvas.vivasam.com",
+    "sourcePath": "/ko/view/<creator-owned-project>"
+  },
+  "paletteFingerprint": "d476f912c1ac934e69e2960c64f7a05e70ee4eb6e08443ea0a37af4d6b8c4edd",
+  "schemaVersion": "1.0.0",
+  "snapshotId": "mathcanvas-palette-2026-07-29",
+  "tools": [
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "도형 primitive 공통 계약을 사각형과 함께 검증해야 합니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:원",
+          "type": "dom"
+        }
+      ],
+      "observedName": "원",
+      "shortcut": "O",
+      "stableKey": "common.circle",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:O"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "edit-action",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "지우개는 새 객체 생성보다 기존 객체 수정·삭제 의미가 우선입니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:지우개",
+          "type": "dom"
+        }
+      ],
+      "observedName": "지우개",
+      "shortcut": "E",
+      "stableKey": "common.eraser",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:E"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "현재 활동의 분수 식과 수학 기호가 사용하는 핵심 도구입니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:수식",
+          "type": "dom"
+        }
+      ],
+      "observedName": "수식",
+      "shortcut": null,
+      "stableKey": "common.formula",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "공통 authoring primitive와 penElements 저장 계약을 확인해야 합니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:펜",
+          "type": "dom"
+        }
+      ],
+      "observedName": "펜",
+      "shortcut": "P",
+      "stableKey": "common.pen",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:P"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "선·점은 여러 활동이 공유할 도형 primitive 후보입니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:점 / 선",
+          "type": "dom"
+        }
+      ],
+      "observedName": "점 / 선",
+      "shortcut": "L",
+      "stableKey": "common.point-line",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:L"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "현재 활동이 비교판과 드롭 영역 표면에 사용합니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:사각형",
+          "type": "dom"
+        }
+      ],
+      "observedName": "사각형",
+      "shortcut": "R",
+      "stableKey": "common.rectangle",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:R"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "history-action",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "create-only MCP에서는 기존 프로젝트 편집 명령으로 공개하지 않습니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:다시 실행",
+          "type": "dom"
+        }
+      ],
+      "observedName": "다시 실행",
+      "shortcut": null,
+      "stableKey": "common.redo",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "selection-action",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "선택은 생성 payload가 아니라 편집기 상호작용 상태입니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:선택",
+          "type": "dom"
+        }
+      ],
+      "observedName": "선택",
+      "shortcut": "V",
+      "stableKey": "common.select",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:V"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "현재 활동의 안내문·문항 번호가 사용하는 핵심 도구입니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:텍스트",
+          "type": "dom"
+        }
+      ],
+      "observedName": "텍스트",
+      "shortcut": "T",
+      "stableKey": "common.text",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": [
+        "keyboard:T"
+      ]
+    },
+    {
+      "categoryId": "bottom-common-toolbar",
+      "categoryStableKey": "common-authoring",
+      "controlKind": "history-action",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "create-only MCP에서는 기존 프로젝트 편집 명령으로 공개하지 않습니다.",
+      "evidence": [
+        {
+          "locator": "#bottom-common-toolbar:실행 취소",
+          "type": "dom"
+        }
+      ],
+      "observedName": "실행 취소",
+      "shortcut": null,
+      "stableKey": "common.undo",
+      "supportState": "captured",
+      "surfaceKind": "common-authoring",
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "공통 도구는 수학 module API 항목이 아니며 native 저장 계약 deep-probe 전입니다."
+        },
+        {
+          "field": "toolId",
+          "reason": "화면 DOM은 공개 tool ID를 노출하지 않으며 native 저장 계약 deep-probe 전입니다."
+        }
+      ],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>연결 모형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO01LC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO01LC",
+      "observedName": "연결 모형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO01LC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO01LC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>수 구슬",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO01NR",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO01NR",
+      "observedName": "수 구슬",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO01NR",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO01NR",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p2",
+      "deepProbeReason": "10 가르기·모으기 또는 비분수 적합성 활동의 후보 도구입니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>수 세기 모형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO01SC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO01SC",
+      "observedName": "수 세기 모형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO01SC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO01SC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p2",
+      "deepProbeReason": "10 가르기·모으기 또는 비분수 적합성 활동의 후보 도구입니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>십 배열판",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO01TF",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO01TF",
+      "observedName": "십 배열판",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO01TF",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO01TF",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>색 막대",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO02CB",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO02CB",
+      "observedName": "색 막대",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO02CB",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO02CB",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>도미노",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO02DM",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO02DM",
+      "observedName": "도미노",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO02DM",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO02DM",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>수 모형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO03BT",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO03BT",
+      "observedName": "수 모형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO03BT",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO03BT",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "현재 분수 비교 활동에서 이미 사용하는 네이티브 수학 도구입니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>분수 모형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO03FM",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO03FM",
+      "observedName": "분수 모형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO03FM",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO03FM",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>배열표",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO04NG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO04NG",
+      "observedName": "배열표",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO04NG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO04NG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p2",
+      "deepProbeReason": "10 가르기·모으기 또는 비분수 적합성 활동의 후보 도구입니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>수 카드",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO04NT",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO04NT",
+      "observedName": "수 카드",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO04NT",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO04NT",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>자릿값 카드",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO04PC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO04PC",
+      "observedName": "자릿값 카드",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO04PC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO04PC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>자릿값 모형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO04PD",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO04PD",
+      "observedName": "자릿값 모형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO04PD",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO04PD",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>셈돌",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO07IC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO07IC",
+      "observedName": "셈돌",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO07IC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO07IC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "p3",
+      "deepProbeReason": "수 표현 variation을 검증할 수직선 후보입니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>수직선",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO07NL",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO07NL",
+      "observedName": "수직선",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO07NL",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO07NL",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>소인수분해",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO07PF",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO07PF",
+      "observedName": "소인수분해",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO07PF",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO07PF",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit01",
+      "categoryStableKey": "Unit01",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:수와 연산>벤 다이어그램",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit01/NO10VD",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "NO10VD",
+      "observedName": "벤 다이어그램",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "NO10VD",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "NO10VD",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>속성블록",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR02AB",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR02AB",
+      "observedName": "속성블록",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR02AB",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR02AB",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>대수 막대",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR07AT",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR07AT",
+      "observedName": "대수 막대",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR07AT",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR07AT",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>접시저울",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR07BS",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR07BS",
+      "observedName": "접시저울",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR07BS",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR07BS",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>좌표평면",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR07CP",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR07CP",
+      "observedName": "좌표평면",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR07CP",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR07CP",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>대수 블록",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR10AB",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR10AB",
+      "observedName": "대수 블록",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR10AB",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR10AB",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit02",
+      "categoryStableKey": "Unit02",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:변화와 관계>공간좌표(3D)",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit02/CR10CS",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "CR10CS",
+      "observedName": "공간좌표(3D)",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "CR10CS",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "CR10CS",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>시계",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM02AD",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM02AD",
+      "observedName": "시계",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM02AD",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM02AD",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>패턴블록",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM02PB",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM02PB",
+      "observedName": "패턴블록",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM02PB",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM02PB",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>칠교판",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM02TG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM02TG",
+      "observedName": "칠교판",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM02TG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM02TG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>도형판",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM03GB",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM03GB",
+      "observedName": "도형판",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM03GB",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM03GB",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>펜토미노",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM04PM",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM04PM",
+      "observedName": "펜토미노",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM04PM",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM04PM",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>다각형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM05PG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM05PG",
+      "observedName": "다각형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM05PG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM05PG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>정다각형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM05RP",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM05RP",
+      "observedName": "정다각형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM05RP",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM05RP",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>다면체(3D)",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM06PH",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM06PH",
+      "observedName": "다면체(3D)",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM06PH",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM06PH",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>쌓기나무(3D)",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM06UC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM06UC",
+      "observedName": "쌓기나무(3D)",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM06UC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM06UC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>원과 부채꼴",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM07CS",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM07CS",
+      "observedName": "원과 부채꼴",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM07CS",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM07CS",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>정다면체(3D)",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM07PS",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM07PS",
+      "observedName": "정다면체(3D)",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM07PS",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM07PS",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit03",
+      "categoryStableKey": "Unit03",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:도형과 측정>회전체(3D)",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit03/SM07SR",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "SM07SR",
+      "observedName": "회전체(3D)",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "SM07SR",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "SM07SR",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>자료와 표",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP02TG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP02TG",
+      "observedName": "자료와 표",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP02TG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP02TG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>그림그래프",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP03PG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP03PG",
+      "observedName": "그림그래프",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP03PG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP03PG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>막대그래프",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP04BC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP04BC",
+      "observedName": "막대그래프",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP04BC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP04BC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>꺾은선그래프",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP05LC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP05LC",
+      "observedName": "꺾은선그래프",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP05LC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP05LC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>비율 그래프",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP06RC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP06RC",
+      "observedName": "비율 그래프",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP06RC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP06RC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>상대도수 그래프",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07CF",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07CF",
+      "observedName": "상대도수 그래프",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07CF",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07CF",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>도수분포다각형",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07FP",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07FP",
+      "observedName": "도수분포다각형",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07FP",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07FP",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>도수분포표",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07FT",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07FT",
+      "observedName": "도수분포표",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07FT",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07FT",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>히스토그램",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07HG",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07HG",
+      "observedName": "히스토그램",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07HG",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07HG",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>자료와 대푯값",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07MC",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07MC",
+      "observedName": "자료와 대푯값",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07MC",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07MC",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>줄기와 잎 그림",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP07SL",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP07SL",
+      "observedName": "줄기와 잎 그림",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP07SL",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP07SL",
+      "unknowns": [],
+      "visibleOptions": []
+    },
+    {
+      "categoryId": "Unit04",
+      "categoryStableKey": "Unit04",
+      "controlKind": "content-tool",
+      "deepProbePriority": "backlog",
+      "deepProbeReason": "전체 계약 지도에는 포함하지만 현재 명명된 활동 wave의 직접 소비자는 아닙니다.",
+      "evidence": [
+        {
+          "locator": "tool-settings:자료와 가능성>상자 그림",
+          "type": "dom"
+        },
+        {
+          "locator": "/api/canvas/toolbar#Unit04/DP09BP",
+          "type": "network"
+        }
+      ],
+      "moduleKey": "DP09BP",
+      "observedName": "상자 그림",
+      "optionObservation": "도구 설정 화면은 활성화 선택만 제공하며 도구별 옵션은 펼치지 않습니다.",
+      "stableKey": "DP09BP",
+      "supportState": "captured",
+      "surfaceKind": "math-palette",
+      "toolId": "DP09BP",
+      "unknowns": [],
+      "visibleOptions": []
+    }
+  ]
+}

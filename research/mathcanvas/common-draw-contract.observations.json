@@ -1,0 +1,637 @@
+{
+  "accessPolicy": {
+    "allowedMethod": "GET",
+    "productWriteCount": 0,
+    "rawResponsePersisted": false
+  },
+  "drawObservation": {
+    "observedWireShapes": [
+      {
+        "fieldNames": [
+          "_x",
+          "_y",
+          "clickCount",
+          "coordinates",
+          "curveOffset",
+          "cx",
+          "cy",
+          "elemSplice",
+          "fill",
+          "fillOpacity",
+          "groupId",
+          "id",
+          "initSizeScale",
+          "isBluePrint",
+          "isCenterGravityPolygon",
+          "isColorInverted",
+          "isEyeOn",
+          "isFillChange",
+          "isGroup",
+          "isGroupElement",
+          "isGroupGridOn",
+          "isHorizontalFlip",
+          "isMerge",
+          "isMoveRotateHandler",
+          "isSplit",
+          "isStackUp",
+          "isStrokeChange",
+          "isSurroundRect",
+          "isTextEdit",
+          "isTextEditFontSize",
+          "isVerticalFlip",
+          "parent",
+          "playgroundIndex",
+          "point1",
+          "point2",
+          "radius",
+          "rotate",
+          "rx",
+          "ry",
+          "scale",
+          "sizeScale",
+          "stroke",
+          "strokeDashArray",
+          "strokeOpacity",
+          "strokeType",
+          "strokeWidth",
+          "svgId",
+          "type",
+          "x",
+          "y"
+        ],
+        "fieldTypes": {
+          "_x": [
+            "number"
+          ],
+          "_y": [
+            "number"
+          ],
+          "clickCount": [
+            "number"
+          ],
+          "coordinates": [
+            "array"
+          ],
+          "curveOffset": [
+            "number"
+          ],
+          "cx": [
+            "number"
+          ],
+          "cy": [
+            "number"
+          ],
+          "elemSplice": [
+            "boolean"
+          ],
+          "fill": [
+            "string"
+          ],
+          "fillOpacity": [
+            "number"
+          ],
+          "groupId": [
+            "string"
+          ],
+          "id": [
+            "string"
+          ],
+          "initSizeScale": [
+            "number"
+          ],
+          "isBluePrint": [
+            "boolean"
+          ],
+          "isCenterGravityPolygon": [
+            "boolean"
+          ],
+          "isColorInverted": [
+            "boolean"
+          ],
+          "isEyeOn": [
+            "boolean"
+          ],
+          "isFillChange": [
+            "boolean"
+          ],
+          "isGroup": [
+            "boolean"
+          ],
+          "isGroupElement": [
+            "boolean"
+          ],
+          "isGroupGridOn": [
+            "boolean"
+          ],
+          "isHorizontalFlip": [
+            "boolean"
+          ],
+          "isMerge": [
+            "boolean"
+          ],
+          "isMoveRotateHandler": [
+            "boolean"
+          ],
+          "isSplit": [
+            "boolean"
+          ],
+          "isStackUp": [
+            "boolean"
+          ],
+          "isStrokeChange": [
+            "boolean"
+          ],
+          "isSurroundRect": [
+            "boolean"
+          ],
+          "isTextEdit": [
+            "boolean"
+          ],
+          "isTextEditFontSize": [
+            "boolean"
+          ],
+          "isVerticalFlip": [
+            "boolean"
+          ],
+          "parent": [
+            "object"
+          ],
+          "playgroundIndex": [
+            "number"
+          ],
+          "point1": [
+            "array"
+          ],
+          "point2": [
+            "array"
+          ],
+          "radius": [
+            "number"
+          ],
+          "rotate": [
+            "number"
+          ],
+          "rx": [
+            "number"
+          ],
+          "ry": [
+            "number"
+          ],
+          "scale": [
+            "number"
+          ],
+          "sizeScale": [
+            "number"
+          ],
+          "stroke": [
+            "string"
+          ],
+          "strokeDashArray": [
+            "string"
+          ],
+          "strokeOpacity": [
+            "number"
+          ],
+          "strokeType": [
+            "number"
+          ],
+          "strokeWidth": [
+            "number"
+          ],
+          "svgId": [
+            "string"
+          ],
+          "type": [
+            "string"
+          ],
+          "x": [
+            "number"
+          ],
+          "y": [
+            "number"
+          ]
+        },
+        "sampleCount": 2,
+        "wireSvgId": "drawElem",
+        "wireType": "rect"
+      }
+    ],
+    "residualWireShapes": [
+      {
+        "classification": "catalog-math-module",
+        "evidenceIds": [
+          "research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC"
+        ],
+        "fieldNames": [
+          "_x",
+          "_y",
+          "clickCount",
+          "coordinates",
+          "cx",
+          "cy",
+          "elemSplice",
+          "fill",
+          "fillOpacity",
+          "groupId",
+          "id",
+          "initCoordinates",
+          "initSizeScale",
+          "isBluePrint",
+          "isCenterGravityPolygon",
+          "isColorInverted",
+          "isEyeOn",
+          "isFillChange",
+          "isGroup",
+          "isGroupElement",
+          "isGroupGridOn",
+          "isHorizontalFlip",
+          "isMerge",
+          "isMoveRotateHandler",
+          "isSplit",
+          "isStackUp",
+          "isStrokeChange",
+          "isSurroundRect",
+          "isTextEdit",
+          "isTextEditFontSize",
+          "isVerticalFlip",
+          "numberFrameSnap",
+          "order",
+          "parent",
+          "playgroundIndex",
+          "rotate",
+          "rx",
+          "ry",
+          "scale",
+          "sizeScale",
+          "stroke",
+          "strokeDashArray",
+          "strokeOpacity",
+          "strokeType",
+          "strokeWidth",
+          "svgId",
+          "x",
+          "y"
+        ],
+        "fieldTypes": {
+          "_x": [
+            "number"
+          ],
+          "_y": [
+            "number"
+          ],
+          "clickCount": [
+            "number"
+          ],
+          "coordinates": [
+            "array"
+          ],
+          "cx": [
+            "number"
+          ],
+          "cy": [
+            "number"
+          ],
+          "elemSplice": [
+            "boolean"
+          ],
+          "fill": [
+            "string"
+          ],
+          "fillOpacity": [
+            "number"
+          ],
+          "groupId": [
+            "string"
+          ],
+          "id": [
+            "string"
+          ],
+          "initCoordinates": [
+            "array"
+          ],
+          "initSizeScale": [
+            "number"
+          ],
+          "isBluePrint": [
+            "boolean"
+          ],
+          "isCenterGravityPolygon": [
+            "boolean"
+          ],
+          "isColorInverted": [
+            "boolean"
+          ],
+          "isEyeOn": [
+            "boolean"
+          ],
+          "isFillChange": [
+            "boolean"
+          ],
+          "isGroup": [
+            "boolean"
+          ],
+          "isGroupElement": [
+            "boolean"
+          ],
+          "isGroupGridOn": [
+            "boolean"
+          ],
+          "isHorizontalFlip": [
+            "boolean"
+          ],
+          "isMerge": [
+            "boolean"
+          ],
+          "isMoveRotateHandler": [
+            "boolean"
+          ],
+          "isSplit": [
+            "boolean"
+          ],
+          "isStackUp": [
+            "boolean"
+          ],
+          "isStrokeChange": [
+            "boolean"
+          ],
+          "isSurroundRect": [
+            "boolean"
+          ],
+          "isTextEdit": [
+            "boolean"
+          ],
+          "isTextEditFontSize": [
+            "boolean"
+          ],
+          "isVerticalFlip": [
+            "boolean"
+          ],
+          "numberFrameSnap": [
+            "boolean"
+          ],
+          "order": [
+            "number"
+          ],
+          "parent": [
+            "object"
+          ],
+          "playgroundIndex": [
+            "number"
+          ],
+          "rotate": [
+            "number"
+          ],
+          "rx": [
+            "number"
+          ],
+          "ry": [
+            "number"
+          ],
+          "scale": [
+            "number"
+          ],
+          "sizeScale": [
+            "number"
+          ],
+          "stroke": [
+            "string"
+          ],
+          "strokeDashArray": [
+            "string"
+          ],
+          "strokeOpacity": [
+            "number"
+          ],
+          "strokeType": [
+            "number"
+          ],
+          "strokeWidth": [
+            "number"
+          ],
+          "svgId": [
+            "string"
+          ],
+          "x": [
+            "number"
+          ],
+          "y": [
+            "number"
+          ]
+        },
+        "moduleKey": "NO01SC",
+        "sampleCount": 1,
+        "wireSvgId": "NO01SC-12",
+        "wireType": "<absent>"
+      }
+    ],
+    "unresolvedCandidateShapes": [],
+    "wireAccounting": {
+      "catalogMathModuleObjectCount": 1,
+      "knownReleasedOrWrapperObjectCount": 30,
+      "totalObjectCount": 31,
+      "unexplainedResidualObjectCount": 0
+    }
+  },
+  "integrity": {
+    "algorithm": "sha256-canonical-json",
+    "payloadSha256": "51a92bc9593d5b071eaeb3037222fdee9171fcca33630b274cd50bbed8243de0"
+  },
+  "observationDate": "2026-07-29",
+  "observationId": "mathcanvas-common-draw-read-only-2026-07-29",
+  "penObservation": {
+    "allObservedArraysEmpty": true,
+    "observedElementCount": 0,
+    "sourcePayloadCount": 2
+  },
+  "schemaVersion": "1.0.0",
+  "sources": [
+    {
+      "contentsCount": 9,
+      "method": "GET",
+      "path": "/api/public-project/<redacted-project>",
+      "penElementsCount": 0,
+      "sourceIndex": 1,
+      "sourceKind": "public-project-fixture",
+      "status": 200,
+      "wireSignatureHistogram": [
+        {
+          "count": 2,
+          "wireSvgId": "input-text",
+          "wireType": "<absent>"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO01SC-12",
+          "wireType": "<absent>"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-04",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-05",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-06",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-07",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-08",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-09",
+          "wireType": "rect"
+        }
+      ]
+    },
+    {
+      "contentsCount": 22,
+      "method": "GET",
+      "path": "/api/public-project/<redacted-project>",
+      "penElementsCount": 0,
+      "sourceIndex": 2,
+      "sourceKind": "public-project-fixture",
+      "status": 200,
+      "wireSignatureHistogram": [
+        {
+          "count": 2,
+          "wireSvgId": "drawElem",
+          "wireType": "rect"
+        },
+        {
+          "count": 2,
+          "wireSvgId": "group-element",
+          "wireType": "<absent>"
+        },
+        {
+          "count": 4,
+          "wireSvgId": "input-text",
+          "wireType": "<absent>"
+        },
+        {
+          "count": 2,
+          "wireSvgId": "math-latex",
+          "wireType": "<absent>"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-01",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-02",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-03",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-04",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-05",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-06",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-07",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-08",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-09",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-10",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-21",
+          "wireType": "rect"
+        },
+        {
+          "count": 1,
+          "wireSvgId": "NO03FM-22",
+          "wireType": "rect"
+        }
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "evidenceIds": [
+        "research/mathcanvas/bundle-contract.snapshot.json#key=commonNativeFactories",
+        "research/mathcanvas/common-draw-contract.observations.json#key=drawObservation"
+      ],
+      "stableKey": "common.circle",
+      "unknownFields": [
+        "geometry",
+        "hydrationDefaults",
+        "moduleActivation",
+        "wireSvgId",
+        "wireType"
+      ],
+      "unknownReason": "circleElem 독립 factory가 정적 registry에 없고 공개 fixture에도 원 객체가 없어 drawElem 공유 여부를 확정할 수 없습니다."
+    },
+    {
+      "evidenceIds": [
+        "research/mathcanvas/common-draw-contract.observations.json#key=penObservation"
+      ],
+      "stableKey": "common.pen",
+      "unknownFields": [
+        "coordinateEncoding",
+        "elementSchema",
+        "lockIdsParticipation",
+        "strokeUnit"
+      ],
+      "unknownReason": "공개 fixture의 canvasOption.penElements는 모두 빈 배열이어서 비어 있지 않은 pen element의 wire 계약을 관찰할 수 없습니다."
+    },
+    {
+      "evidenceIds": [
+        "research/mathcanvas/bundle-contract.snapshot.json#key=commonNativeFactories",
+        "research/mathcanvas/common-draw-contract.observations.json#key=drawObservation"
+      ],
+      "stableKey": "common.point-line",
+      "unknownFields": [
+        "angleElemRelationship",
+        "geometry",
+        "hydrationDefaults",
+        "pointLineObjectCardinality",
+        "wireSvgId",
+        "wireType"
+      ],
+      "unknownReason": "pointElem과 straightElem 독립 factory가 없고 공개 fixture에도 점·선 객체가 없습니다. 발견된 angleElem과 하단 점/선 도구의 관계도 확인되지 않았습니다."
+    }
+  ]
+}

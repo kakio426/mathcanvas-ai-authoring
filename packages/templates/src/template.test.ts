@@ -1,11 +1,19 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
-  MIN_VISUAL_FRACTION_DIFFERENCE_RATIO
+  MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
+  parseActivityBlueprint
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "./index.js";
-import { VISUAL_DIFFERENCE_BANDS } from "./index.js";
+import {
+  FRACTION_PAIR_VARIATION_CAPACITY_CELLS,
+  VISUAL_DIFFERENCE_BANDS,
+  equivalentFractionBlueprint,
+  fractionComparisonBlueprint,
+  generateFractionComparisonActivity,
+  makeTenNumberCardsBlueprint,
+  resolveRegisteredVariation
+} from "./index.js";
 
 function recommendation(
   overrides: Record<string, unknown> = {}
@@ -20,38 +28,157 @@ function recommendation(
 }
 
 describe("분수 비교 템플릿", () => {
+  it("blueprint의 절대 좌표, raw payload, 함수, 직접 정답을 거부한다", () => {
+    const base = generateFractionComparisonActivity(
+      recommendation(),
+      {
+        seed: "blueprint-negative",
+        generatedAt: "2026-07-28T02:00:00.000Z"
+      }
+    ).blueprint;
+    const cases: unknown[] = [];
+    const absolute = structuredClone(base) as unknown as Record<
+      string,
+      unknown
+    >;
+    absolute.x = 10;
+    cases.push(absolute);
+    const raw = structuredClone(base) as unknown as Record<
+      string,
+      unknown
+    >;
+    raw.contentsJson = [];
+    cases.push(raw);
+    cases.push({
+      ...base,
+      variationDefaults: {
+        ...base.variationDefaults,
+        run: () => true
+      }
+    });
+    const answered = structuredClone(base) as unknown as {
+      generator: { parameters: Record<string, unknown> };
+    };
+    answered.generator.parameters.correctRelation = ">";
+    cases.push(answered);
+    cases.forEach((candidate) =>
+      expect(() => parseActivityBlueprint(candidate)).toThrow(
+        /blueprint-(key|function)-forbidden/
+      )
+    );
+    expect(() =>
+      resolveRegisteredVariation(fractionComparisonBlueprint.id, {
+        problemCount: 1
+      })
+    ).toThrow("variation-value-unsupported");
+    expect(() =>
+      resolveRegisteredVariation(fractionComparisonBlueprint.id, {
+        problemCount: 7
+      })
+    ).toThrow("variation-value-unsupported");
+    expect(() =>
+      resolveRegisteredVariation(fractionComparisonBlueprint.id, {
+        problemCount: 4,
+        unknownKnob: true
+      })
+    ).toThrow("variation-key-unsupported");
+    expect(() =>
+      resolveRegisteredVariation(fractionComparisonBlueprint.id, {
+        denominatorRelation: "random"
+      })
+    ).toThrow("variation-value-unsupported");
+    expect(() =>
+      resolveRegisteredVariation(equivalentFractionBlueprint.id, {
+        problemCount: 4,
+        difficulty: "hard"
+      })
+    ).toThrow("variation-pinned-override");
+    expect(() =>
+      resolveRegisteredVariation(equivalentFractionBlueprint.id, {
+        denominatorRelation: "mixed"
+      })
+    ).toThrow("variation-key-unsupported");
+    expect(() =>
+      resolveRegisteredVariation(makeTenNumberCardsBlueprint.id, {
+        problemCount: 6
+      })
+    ).toThrow("variation-value-unsupported");
+  });
+
+  it("고정 seed와 generator version에서 의미 문항과 provenance가 byte-stable하다", () => {
+    const options = {
+      seed: "generator-stability",
+      generatedAt: "2026-07-28T02:00:00.000Z"
+    };
+    const first = generateFractionComparisonActivity(
+      recommendation(),
+      options
+    );
+    const second = generateFractionComparisonActivity(
+      recommendation(),
+      options
+    );
+    expect(first.items).toEqual(second.items);
+    expect(
+      new Set(
+        first.items.map(
+          (item) =>
+            `${item.provenance.generatorId}:${item.provenance.generatorVersion}:${item.provenance.seed}`
+        )
+      ).size
+    ).toBe(1);
+  });
+
   it.each(["easy", "normal", "hard"] as const)(
     "%s 난이도에서 정확한 서로 다른 분모 문제를 만든다",
     (difficulty) => {
-      const spec = generateFractionComparisonActivity(
+      const plan = generateFractionComparisonActivity(
         recommendation({ difficulty }),
         {
           seed: `seed-${difficulty}`,
           generatedAt: "2026-07-28T02:00:00.000Z"
         }
       );
-      expect(spec.problems).toHaveLength(4);
-      const comparisonKeys = spec.problems.map((problem) =>
+      expect(plan.items).toHaveLength(4);
+      const comparisonKeys = plan.items.map((item) => {
+        const left = item.values.left as {
+          numerator: number;
+          denominator: number;
+        };
+        const right = item.values.right as {
+          numerator: number;
+          denominator: number;
+        };
+        return (
         [
-          `${problem.left.numerator}/${problem.left.denominator}`,
-          `${problem.right.numerator}/${problem.right.denominator}`
+          `${left.numerator}/${left.denominator}`,
+          `${right.numerator}/${right.denominator}`
         ]
           .sort()
           .join("|")
-      );
+        );
+      });
       expect(new Set(comparisonKeys).size).toBe(comparisonKeys.length);
-      for (const problem of spec.problems) {
-        expect(problem.left.denominator).not.toBe(problem.right.denominator);
+      for (const item of plan.items) {
+        const left = item.values.left as {
+          numerator: number;
+          denominator: number;
+        };
+        const right = item.values.right as {
+          numerator: number;
+          denominator: number;
+        };
+        expect(left.denominator).not.toBe(right.denominator);
         const relation =
-          problem.left.numerator * problem.right.denominator >
-          problem.right.numerator * problem.left.denominator
+          left.numerator * right.denominator >
+          right.numerator * left.denominator
             ? ">"
             : "<";
-        expect(problem.correctRelation).toBe(relation);
+        expect(item.values.correctRelation).toBe(relation);
         expect(
           Math.abs(
-            problem.left.numerator / problem.left.denominator -
-              problem.right.numerator / problem.right.denominator
+            left.numerator / left.denominator -
+              right.numerator / right.denominator
           )
         ).toBeGreaterThanOrEqual(
           MIN_VISUAL_FRACTION_DIFFERENCE_RATIO
@@ -71,6 +198,7 @@ describe("분수 비교 템플릿", () => {
   });
 
   it("쉬움에서 어려움으로 갈수록 눈으로 구별할 길이 차이가 줄어든다", () => {
+    expect(FRACTION_PAIR_VARIATION_CAPACITY_CELLS).toBe(9);
     expect(VISUAL_DIFFERENCE_BANDS.easy.min).toBeGreaterThan(
       VISUAL_DIFFERENCE_BANDS.normal.max
     );
@@ -78,17 +206,25 @@ describe("분수 비교 템플릿", () => {
       VISUAL_DIFFERENCE_BANDS.hard.max
     );
     for (const difficulty of ["easy", "normal", "hard"] as const) {
-      const spec = generateFractionComparisonActivity(
+      const plan = generateFractionComparisonActivity(
         recommendation({ difficulty, problemCount: 6 }),
         {
           seed: `difficulty-band-${difficulty}`,
           generatedAt: "2026-07-28T02:00:00.000Z"
         }
       );
-      for (const problem of spec.problems) {
+      for (const item of plan.items) {
+        const left = item.values.left as {
+          numerator: number;
+          denominator: number;
+        };
+        const right = item.values.right as {
+          numerator: number;
+          denominator: number;
+        };
         const difference = Math.abs(
-          problem.left.numerator / problem.left.denominator -
-            problem.right.numerator / problem.right.denominator
+          left.numerator / left.denominator -
+            right.numerator / right.denominator
         );
         expect(difference).toBeGreaterThanOrEqual(
           VISUAL_DIFFERENCE_BANDS[difficulty].min
@@ -101,35 +237,28 @@ describe("분수 비교 템플릿", () => {
   });
 
   it("문제마다 같은 전체와 실제 수학 판단이 있는 조작을 만든다", () => {
-    const spec = generateFractionComparisonActivity(recommendation(), {
+    const plan = generateFractionComparisonActivity(recommendation(), {
       seed: "visual-seed",
       generatedAt: "2026-07-28T02:00:00.000Z"
     });
-    for (const problem of spec.problems) {
-      const models = spec.visualModels.filter(
-        (model) => model.problemId === problem.id
-      );
-      expect(new Set(models.map((model) => model.wholeWidth))).toEqual(
-        new Set([640])
-      );
-      expect(new Set(models.map((model) => model.commonStartX))).toEqual(
-        new Set([720])
-      );
-      const decisions = spec.movableObjects
-        .filter((object) => object.problemId === problem.id)
-        .map((object) => object.mathematicalDecision)
-        .join(" ");
-      expect(decisions).toContain("크기");
-    }
+    expect(plan.blueprint.toolRoles.filter((role) => role.movable))
+      .toHaveLength(5);
     expect(
-      spec.fixedObjects.find(
-        (object) => object.id === "instruction-symbol"
-      )?.text
+      plan.blueprint.toolRoles
+        .filter((role) => role.movable)
+        .map((role) => role.instructionalIntent)
+        .join(" ")
+    ).toContain("크기");
+    expect(
+      plan.blueprint.instructions[2]
     ).toContain("기호");
     expect(
-      spec.fixedObjects.find(
-        (object) => object.id === "instruction-explain"
-      )?.text
-    ).toContain("말해");
+      plan.blueprint.instructions[3]
+    ).toContain("설명");
+    expect(
+      plan.blueprint.constraints.some(
+        (constraint) => constraint.requiresStudentAction
+      )
+    ).toBe(true);
   });
 });

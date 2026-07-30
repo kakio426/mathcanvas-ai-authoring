@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0.0",
+  "globs": [
+    "packages/contracts/src/vocabulary/**",
+    "packages/mathcanvas-compiler/src/core/**",
+    "packages/mathcanvas-compiler/src/resolve/**",
+    "packages/validator/src/layers/**",
+    "packages/mathcanvas-compiler/src/index.ts",
+    "packages/validator/src/index.ts"
+  ],
+  "files": [
+    {
+      "path": "packages/contracts/src/vocabulary/blueprint.ts",
+      "sha256": "bf6a5678b30c782febe36c8efc88a3133f04df2ae839319e8c38d8dd478bd7d4"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/constraints.ts",
+      "sha256": "1921a0e8e73da67a79a635809ac82e128e358e82712b30dc048a8c51f6a964e9"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/ids.ts",
+      "sha256": "1d911ac5b01e26fd0af2c8ea8313b6fd8193849a8ac97f945a6254fc4c74de2f"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/json.ts",
+      "sha256": "591fef0c1c21cc6efef136b2f893b92cdc65752ff685e8543e134ee19f718ef4"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/layout-tokens.ts",
+      "sha256": "7eeedcb3f33b20ec14dc2d1e9da70fef07dbfa7b6b36098d7602f910a4ad7768"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/layout.ts",
+      "sha256": "59ba0ff2e73f8595284301d6598e04a3caabd2d8082114daec32ab1e41874fe2"
+    },
+    {
+      "path": "packages/contracts/src/vocabulary/resolved.ts",
+      "sha256": "8a223dee4a67d08ea1a3afefa1448cb371b671c4dea7fb65a3c0333666168c81"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/core/compile-resolved.ts",
+      "sha256": "d99b0be69fe168281cb43abe84d5296f3aa662964c6080c466beb0d36dac5fb2"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/index.ts",
+      "sha256": "cf462466bfcc1a841a9688d4bf35d18aca6c8aa860af5e9ccdcbdb2ec857c74b"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/layout-resolver.ts",
+      "sha256": "3f380369fbe060b3d95e86c3b10c5bc8833fb9831b09dd5137c4b9c0bb20b552"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts",
+      "sha256": "722161a615eb1fba2772dccc16917f3cd3b2e30a7342771890f29a11aed4e898"
+    },
+    {
+      "path": "packages/validator/src/index.ts",
+      "sha256": "a51c1f4c57bafe2ee025384a80a95440e5726dd5cd63a44f3958de68375b4798"
+    },
+    {
+      "path": "packages/validator/src/layers/native-safety.ts",
+      "sha256": "1864052e92c1690b0dd5fe83bf0a3fa36de9b06403d309856d4087f90fbd60df"
+    },
+    {
+      "path": "packages/validator/src/layers/reference.ts",
+      "sha256": "ecc65a9dfd75b434020abab4ede27cc38566b6c16776380df5f1d5096602f901"
+    },
+    {
+      "path": "packages/validator/src/layers/semantic.ts",
+      "sha256": "e5c30cf0f6a7ca8f814f2e358153f6dc50a25059ff5fd3f3ce34cd43479736ac"
+    },
+    {
+      "path": "packages/validator/src/layers/shared.ts",
+      "sha256": "3f3e40e689fb63ec88496c10da9d6a9b17a8b1dee66e0b6b8a1c7821f8ae4588"
+    },
+    {
+      "path": "packages/validator/src/layers/structure.ts",
+      "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
+    }
+  ],
+  "manifestHash": "afeefc8c756541f89e9e9bec99a6d20849777037b32003822ebff907e3e5e800"
+}

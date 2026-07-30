@@ -1,0 +1,51 @@
+{
+  "observedAt": "2026-07-30T11:42:10.279Z",
+  "probeId": "p3-release-canary-v1",
+  "results": [
+    {
+      "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
+      "createRequestCount": 1,
+      "editorPath": "/ko/view/<redacted-project>",
+      "existingProjectWriteCount": 0,
+      "payloadHash": "eade7df497d18cdbe10d69b106b3a735ec66c7e37f66984e15e81a07f22dcd23",
+      "projectReferenceHash": "301b2550b0a484162989c6fa44366e6a42b0fb322a4442b8f4128129f20a6870",
+      "status": "pass",
+      "variation": {
+        "denominatorRelation": "mixed",
+        "difficulty": "normal",
+        "problemCount": 4
+      }
+    },
+    {
+      "blueprintId": "fraction.equivalent.same-whole.visual-v1",
+      "createRequestCount": 1,
+      "editorPath": "/ko/view/<redacted-project>",
+      "existingProjectWriteCount": 0,
+      "payloadHash": "ae8c92dac0354f51a098b0ce5a62b31ad3b999ebf3acde6e0360b9e2cc243ed5",
+      "projectReferenceHash": "f832a229c053588cdc18818c3b21d2e860f878b7b968680afad9fe920150ee1b",
+      "status": "pass",
+      "variation": {
+        "difficulty": "normal",
+        "problemCount": 4
+      }
+    },
+    {
+      "blueprintId": "number.make-10.cards-v1",
+      "createRequestCount": 1,
+      "editorPath": "/ko/view/<redacted-project>",
+      "existingProjectWriteCount": 0,
+      "payloadHash": "eb830a916e163887cb1084c9ad7a14dc91134d18718bd0ed59de28d0506e622e",
+      "projectReferenceHash": "a1ea47752ded48839e30cdd48af295663e9fb8273155d524c7b74737cca2a7f7",
+      "status": "pass",
+      "variation": {
+        "difficulty": "normal",
+        "problemCount": 4
+      }
+    }
+  ],
+  "schemaVersion": "1.0.0",
+  "summary": {
+    "overallStatus": "pass",
+    "passCount": 3
+  }
+}

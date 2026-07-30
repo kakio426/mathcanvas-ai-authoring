@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "snapshotId": "p0-test-catalog",
+  "observation": {
+    "observationDate": "2026-07-29",
+    "origin": "https://mathcanvas.vivasam.com",
+    "sourcePath": "/ko/view/test",
+    "accountScope": "authenticated-current-user"
+  },
+  "categories": [
+    {
+      "stableKey": "number",
+      "observedName": "수와 연산",
+      "categoryId": "category-number"
+    }
+  ],
+  "tools": [
+    {
+      "stableKey": "fraction-model",
+      "observedName": "분수 모형",
+      "toolId": "fraction-model",
+      "categoryStableKey": "number",
+      "categoryId": "category-number",
+      "visibleOptions": ["원", "막대"],
+      "unknowns": [
+        {
+          "field": "moduleKey",
+          "reason": "synthetic DOM fixture에는 module key가 없습니다."
+        }
+      ],
+      "evidence": [
+        {
+          "type": "dom",
+          "locator": "[data-tool='fraction-model']"
+        }
+      ],
+      "supportState": "captured",
+      "deepProbePriority": "p1",
+      "deepProbeReason": "현재 분수 비교 활동이 사용합니다."
+    }
+  ],
+  "counts": {
+    "categories": 0,
+    "tools": 0
+  },
+  "paletteFingerprint": ""
+}

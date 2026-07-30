@@ -1,6 +1,8 @@
 import type { CurriculumRecord } from "@mathcanvas/contracts";
 import {
   LEARNING_MAP_COMMIT,
+  equivalentFractionRecord,
+  numberCompositionRecord,
   unlikeDenominatorComparisonRecord
 } from "./data.js";
 
@@ -26,16 +28,24 @@ export interface CurriculumResolution {
 export function resolveCurriculum(
   standardCode = "[6수01-07]"
 ): CurriculumResolution {
-  if (standardCode !== "[6수01-07]") {
+  const records: Readonly<Record<string, CurriculumRecord>> = {
+    "[2수01-04]": numberCompositionRecord,
+    "[6수01-06]": equivalentFractionRecord,
+    "[6수01-07]": unlikeDenominatorComparisonRecord
+  };
+  const record = records[standardCode];
+  if (!record) {
     throw new CurriculumResolutionError(
       "unsupported-standard",
-      `첫 버전에서 검증된 성취기준은 [6수01-07]뿐입니다: ${standardCode}`
+      `검증되지 않은 성취기준입니다: ${standardCode}`
     );
   }
-  const record = unlikeDenominatorComparisonRecord;
   if (
     record.officialSource.sourceKind !== "official" ||
-    record.officialSource.verificationStatus !== "official-text-verified"
+    (record.officialSource.verificationStatus !==
+      "official-text-verified" &&
+      record.officialSource.verificationStatus !==
+        "official-source-checked")
   ) {
     throw new CurriculumResolutionError(
       "official-source-missing",
@@ -48,7 +58,9 @@ export function resolveCurriculum(
     if (source.caveat) warnings.push(source.caveat);
   }
   warnings.push(
-    "이 템플릿은 분수 띠로 크기를 비교하는 개념 형성 활동입니다. 성취기준 전체를 평가하려면 학생이 비교 방법을 말하거나 쓰는 후속 확인이 필요합니다."
+    standardCode === "[6수01-07]"
+      ? "이 템플릿은 분수 띠로 크기를 비교하는 개념 형성 활동입니다. 성취기준 전체를 평가하려면 학생이 비교 방법을 말하거나 쓰는 후속 확인이 필요합니다."
+      : "조작 뒤 학생의 설명을 확인하는 후속 활동이 필요합니다."
   );
 
   return {
@@ -60,5 +72,7 @@ export function resolveCurriculum(
 
 export {
   LEARNING_MAP_COMMIT,
+  equivalentFractionRecord,
+  numberCompositionRecord,
   unlikeDenominatorComparisonRecord
 } from "./data.js";

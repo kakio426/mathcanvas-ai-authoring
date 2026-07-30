@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "probeId": "wave4-number-card-canary-v1",
+  "observedAt": "2026-07-30T08:43:02.000Z",
+  "provenance": {
+    "source": "teacher-owned-connected-chrome",
+    "artifactsHash": "7138c2def8edffa670c32fa83321c628a2adf367bc835cb3dc244f183c581c24",
+    "artifactsHashScope": "categoryIds+tool+lifecycle+savedWireExample",
+    "submittedPayloadHash": "c0ed033d6cacced462b5f182fa767accc2979dd953664ba47327766671f90853",
+    "submittedPayloadHashScope": "savedWireExample-only"
+  },
+  "writeBoundary": {
+    "mode": "one-create-one-save-asserted",
+    "assertedOriginalCreateCount": 1,
+    "assertedOriginalSaveCount": 1,
+    "originalWriteCountMeasured": false,
+    "existingTeacherProjectReadCount": 0,
+    "externalRequestInstrumentation": "unavailable-in-connected-chrome"
+  },
+  "categoryIds": {
+    "수와 연산": "rJa0d46MAy",
+    "변화와 관계": "4l_eHBivNq",
+    "도형과 측정": "kaplNGyBBd",
+    "자료와 가능성": "ZS0MczMDuY"
+  },
+  "tool": {
+    "moduleKey": "NO04NT",
+    "observedName": "수 카드",
+    "variantIds": [
+      "NO04NT-01",
+      "NO04NT-02",
+      "NO04NT-03",
+      "NO04NT-04",
+      "NO04NT-05",
+      "NO04NT-06",
+      "NO04NT-07",
+      "NO04NT-08",
+      "NO04NT-09",
+      "NO04NT-10"
+    ],
+    "clusterId": "cluster:2ac3a9218428cf15"
+  },
+  "lifecycle": {
+    "initialObjectCount": 0,
+    "createdObjectCount": 10,
+    "renderedObjectCount": 10,
+    "reopenedObjectCount": 10,
+    "objectIdsPreserved": true,
+    "savedSvgIdsPreserved": true,
+    "fieldSetCount": 1,
+    "varyingFieldsExcludingPlacementAndSvgId": [],
+    "parentVariations": [
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25,
+      25
+    ]
+  },
+  "savedWireExample": {
+    "_x": 0,
+    "_y": 0,
+    "clickCount": 1,
+    "coordinates": [
+      [
+        -40,
+        -40
+      ],
+      [
+        40,
+        -40
+      ],
+      [
+        40,
+        40
+      ],
+      [
+        -40,
+        40
+      ]
+    ],
+    "cx": 0,
+    "cy": 0,
+    "elemSplice": false,
+    "fill": "#2194FF",
+    "fillOpacity": 1,
+    "groupId": "",
+    "id": "[redacted-object-id]",
+    "initSizeScale": 1,
+    "isBluePrint": false,
+    "isCardBack": false,
+    "isCenterGravityPolygon": false,
+    "isColorInverted": false,
+    "isEyeOn": false,
+    "isFillChange": true,
+    "isGroup": false,
+    "isGroupElement": false,
+    "isGroupGridOn": false,
+    "isHFlip": false,
+    "isHorizontalFlip": true,
+    "isMerge": false,
+    "isMoveRotateHandler": true,
+    "isSplit": false,
+    "isStackUp": false,
+    "isStrokeChange": false,
+    "isSurroundRect": false,
+    "isTextEdit": false,
+    "isTextEditFontSize": false,
+    "isVFlip": false,
+    "isVerticalFlip": true,
+    "numberFrameSnap": true,
+    "parent": {
+      "variation": 25
+    },
+    "playgroundIndex": 1,
+    "rotate": 0,
+    "rx": 0,
+    "ry": 0,
+    "scale": 1,
+    "sizeScale": 1,
+    "stroke": "#000000",
+    "strokeDashArray": "",
+    "strokeOpacity": 1,
+    "strokeType": 1,
+    "strokeWidth": 4,
+    "svgId": "NO04NT-01",
+    "x": 711.6,
+    "y": 492
+  },
+  "claims": {
+    "NO04NT": {
+      "verified": "0~9 수 카드 10개가 생성·렌더·저장·재열기 후 같은 object ID와 svgId로 유지됐습니다.",
+      "released": "NO04NT-01~10은 number-card adapter의 fail-closed 범위로 사용할 수 있습니다.",
+      "lifecycle": "빈 새 프로젝트에서 10개 생성 후 한 번 저장하고 재열기했습니다."
+    }
+  }
+}

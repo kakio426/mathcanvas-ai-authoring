@@ -166,13 +166,23 @@ function installStaticContractFetch(options: {
 }
 
 describe("페이지 컨텍스트 작업", () => {
-  it("로그인 토큰이 없으면 쓰기 없이 로그인 필요를 반환한다", async () => {
+  it("Bearer 토큰이 없어도 cookie 인증을 검사하고 미인증만 차단한다", async () => {
     installWindow(null);
-    globalThis.fetch = vi.fn();
+    globalThis.fetch = vi.fn(
+      async () => new Response("", { status: 401 })
+    ) as typeof fetch;
     await expect(inspectMathCanvasPage(false)).resolves.toEqual({
-      state: "login-required"
+      state: "login-required",
+      detailCode: "auth-required"
     });
-    expect(globalThis.fetch).not.toHaveBeenCalled();
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+
+    globalThis.fetch = vi.fn(
+      async () => new Response("{}", { status: 200 })
+    ) as typeof fetch;
+    await expect(inspectMathCanvasPage(false)).resolves.toEqual({
+      state: "ready"
+    });
   });
 
   it("토큰은 페이지 안에서만 사용하고 프로젝트 ID만 반환한다", async () => {
@@ -206,6 +216,28 @@ describe("페이지 컨텍스트 작업", () => {
       new Headers(requests[1]?.init?.headers).get("Authorization")
     ).toBe("Bearer secret-browser-token");
     expect(requests[1]?.init?.method).toBe("POST");
+
+    installWindow(null);
+    requests.length = 0;
+    globalThis.fetch = vi.fn(
+      async (url: string | URL, init?: RequestInit) => {
+        requests.push({ url: String(url), ...(init ? { init } : {}) });
+        return String(url).startsWith("/api/project?")
+          ? new Response(JSON.stringify({ list: [] }), { status: 200 })
+          : new Response(JSON.stringify({ projectId: "P_cookie" }), {
+              status: 200
+            });
+      }
+    ) as typeof fetch;
+    await expect(
+      createProjectInMathCanvas({
+        payload,
+        expectedPayloadHash: sha256Hex(payload)
+      })
+    ).resolves.toEqual({ ok: true, projectId: "P_cookie" });
+    expect(
+      new Headers(requests[1]?.init?.headers).has("Authorization")
+    ).toBe(false);
   });
 
   it("분모 1~12 전체와 기본 객체 계약이 맞으면 연결 준비를 반환한다", async () => {
@@ -213,6 +245,88 @@ describe("페이지 컨텍스트 작업", () => {
     await expect(inspectMathCanvasPage(true)).resolves.toEqual({
       state: "ready"
     });
+
+    const visited: string[] = [];
+    installWindow("browser-token");
+    globalThis.fetch = vi.fn(async (url: string | URL) => {
+      const path = String(url);
+      visited.push(path);
+      if (path === "/api/auth/me") {
+        return new Response("{}", { status: 200 });
+      }
+      if (path === "/api/project-category") {
+        return new Response(
+          JSON.stringify({
+            list: [
+              {
+                categoryId: "rJa0d46MAy",
+                categoryName: "수와 연산"
+              }
+            ]
+          }),
+          { status: 200 }
+        );
+      }
+      if (path.startsWith("/api/project?")) {
+        return new Response(
+          JSON.stringify({
+            list: [
+              {
+                projectId: "P_owned_probe",
+                projectTitle: "AI-CONTRACT-PROBE-W4-NO04NT-DIGITS"
+              },
+              {
+                projectId: "P_owned_common",
+                projectTitle: "AI-CONTRACT-PROBE-P3-COMMON"
+              }
+            ]
+          }),
+          { status: 200 }
+        );
+      }
+      if (path === "/api/project/P_owned_probe") {
+        return new Response(
+          JSON.stringify({
+            contentsJson: Array.from({ length: 10 }, (_, index) => ({
+              svgId: `NO04NT-${String(index + 1).padStart(2, "0")}`,
+              fill: "#2194FF",
+              numberFrameSnap: true,
+              parent: { variation: 25 },
+              coordinates: [
+                [-40, -40],
+                [40, -40],
+                [40, 40],
+                [-40, 40]
+              ]
+            })),
+            canvasOption: {
+              moduleArr: { Unit01: { NO04NT: true } }
+            }
+          }),
+          { status: 200 }
+        );
+      }
+      if (path === "/api/project/P_owned_common") {
+        return new Response(
+          JSON.stringify({
+            contentsJson: [{ svgId: "input-text" }],
+            canvasOption: {
+              moduleArr: { Unit01: {} }
+            }
+          }),
+          { status: 200 }
+        );
+      }
+      return new Response("", { status: 404 });
+    }) as typeof fetch;
+    await expect(
+      inspectMathCanvasPage({
+        verifyStaticContract: true,
+        requiredModules: ["NO04NT", "input-text"]
+      })
+    ).resolves.toEqual({ state: "ready" });
+    expect(visited.some((path) => path.startsWith("/api/public-project/")))
+      .toBe(false);
   });
 
   it("분모 12의 SVG ID가 바뀌면 쓰기 전에 계약 불일치로 중단한다", async () => {
@@ -222,7 +336,54 @@ describe("페이지 컨텍스트 작업", () => {
     });
     await expect(inspectMathCanvasPage(true)).resolves.toEqual({
       state: "contract-mismatch",
-      detailCode: "fraction-fixture-contract-mismatch"
+      detailCode: "contract-mismatch"
+    });
+
+    const visited: string[] = [];
+    installWindow("browser-token");
+    globalThis.fetch = vi.fn(async (url: string | URL) => {
+      const path = String(url);
+      visited.push(path);
+      if (path === "/api/auth/me") {
+        return new Response("{}", { status: 200 });
+      }
+      if (path === "/api/project-category") {
+        return new Response(
+          JSON.stringify({
+            list: [
+              {
+                categoryId: "rJa0d46MAy",
+                categoryName: "수와 연산"
+              }
+            ]
+          }),
+          { status: 200 }
+        );
+      }
+      if (path.startsWith("/api/project?")) {
+        return new Response(JSON.stringify({ list: [] }), {
+          status: 200
+        });
+      }
+      throw new Error(`unexpected fallback: ${path}`);
+    }) as typeof fetch;
+    await expect(
+      inspectMathCanvasPage({
+        verifyStaticContract: true,
+        requiredModules: ["NO04NT"]
+      })
+    ).resolves.toEqual({
+      state: "contract-mismatch",
+      detailCode: "contract-probe-unavailable"
+    });
+    expect(
+      visited.some((path) => path.startsWith("/api/public-project/"))
+    ).toBe(false);
+
+    globalThis.fetch = vi.fn(async () => new Response("", { status: 500 }));
+    await expect(inspectMathCanvasPage(true)).resolves.toEqual({
+      state: "contract-mismatch",
+      detailCode: "contract-probe-unavailable"
     });
   });
 });

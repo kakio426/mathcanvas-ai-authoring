@@ -13,7 +13,16 @@ const identifier = z
   .regex(/^[A-Za-z0-9._:-]+$/, "식별자에는 영문, 숫자, . _ : -만 사용할 수 있습니다.");
 
 export const difficultySchema = z.enum(["easy", "normal", "hard"]);
-export const manipulationSchema = z.enum(["fraction-strip-common-start-drag"]);
+export const denominatorRelationSchema = z.enum([
+  "mixed",
+  "coprime",
+  "multiple"
+]);
+export const manipulationSchema = z.enum([
+  "fraction-strip-common-start-drag",
+  "equivalent-fraction-strip-match",
+  "number-card-make-ten-drag"
+]);
 export const gradeBandSchema = z.enum(["1-2", "3-4", "5-6"]);
 
 export const boundsSchema = z
@@ -84,6 +93,7 @@ export const generationRequestSchema = z
     requestedGrade: z.number().int().min(1).max(6).optional(),
     problemCount: z.number().int().min(2).max(6).optional(),
     difficulty: difficultySchema.optional(),
+    denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
     createdAt: z.string().datetime()
   })
@@ -94,7 +104,7 @@ export const recommendationSchema = z
     schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
     requestId: identifier,
     supported: z.boolean(),
-    templateId: z.literal(VERIFIED_TEMPLATE_ID).optional(),
+    templateId: identifier.optional(),
     gradeBand: gradeBandSchema.optional(),
     recommendedGrade: z.number().int().min(1).max(6).optional(),
     standardCode: z.string().optional(),
@@ -102,11 +112,21 @@ export const recommendationSchema = z
     prerequisites: z.array(z.string().min(1).max(500)).max(12),
     problemCount: z.number().int().min(2).max(6).optional(),
     difficulty: difficultySchema.optional(),
+    denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
     rationale: z.array(z.string().min(1).max(500)).min(1).max(8),
     confidence: z.number().min(0).max(1),
     caveats: z.array(z.string().min(1).max(1000)).max(12),
     blockingReasons: z.array(z.string().min(1).max(1000)).max(12),
+    unsupportedRequests: z.array(z.string().min(1).max(500)).max(8).optional(),
+    t0Proposal: z
+      .object({
+        problemCount: z.number().int().min(2).max(6),
+        difficulty: difficultySchema,
+        denominatorRelation: denominatorRelationSchema.optional()
+      })
+      .strict()
+      .optional(),
     curriculum: curriculumRecordSchema.optional()
   })
   .strict()
@@ -235,7 +255,7 @@ export const activitySpecSchema = z
         auxiliarySnapshotSha: z.string().regex(/^[a-f0-9]{40}$/)
       })
       .strict(),
-    templateId: z.literal(VERIFIED_TEMPLATE_ID),
+    templateId: identifier,
     templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/)
   })
   .strict();
@@ -273,7 +293,7 @@ export const compiledProjectSchema = z
     contractVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
     sourceActivitySpecId: identifier,
     sourceActivitySpecVersion: z.literal(ACTIVITY_SPEC_SCHEMA_VERSION),
-    templateId: z.literal(VERIFIED_TEMPLATE_ID),
+    templateId: identifier,
     templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
     payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
     payload: mathCanvasPayloadSchema
@@ -349,7 +369,7 @@ export const approvalReceiptSchema = z
 
 export const templateDefinitionSchema = z
   .object({
-    id: z.literal(VERIFIED_TEMPLATE_ID),
+    id: identifier,
     version: z.string().regex(/^\d+\.\d+\.\d+$/),
     supportedGradeBands: z.array(gradeBandSchema).min(1),
     supportedStandards: z.array(z.string()).min(1),
@@ -374,3 +394,6 @@ export type CurriculumRecord = z.infer<typeof curriculumRecordSchema>;
 export type ApprovalReceipt = z.infer<typeof approvalReceiptSchema>;
 export type TemplateDefinition = z.infer<typeof templateDefinitionSchema>;
 export type Difficulty = z.infer<typeof difficultySchema>;
+export type DenominatorRelation = z.infer<
+  typeof denominatorRelationSchema
+>;

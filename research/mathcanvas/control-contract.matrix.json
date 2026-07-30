@@ -1,0 +1,2302 @@
+{
+  "catalogFingerprint": "d476f912c1ac934e69e2960c64f7a05e70ee4eb6e08443ea0a37af4d6b8c4edd",
+  "counts": {
+    "bundleAnalyzedMathTools": 46,
+    "bundleSubToolbarOptions": 66,
+    "bundleVariants": 304,
+    "catalogTools": 56,
+    "editorControls": 18,
+    "toolMappings": 56,
+    "totalObservedControls": 74
+  },
+  "editorControls": [
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.category-toggle.Unit01",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "팔레트 탐색 UI이며 adapter registry는 category ID로 직접 찾습니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "수와 연산 펼치기/접기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.category-toggle.Unit02",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "팔레트 탐색 UI이며 adapter registry는 category ID로 직접 찾습니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "변화와 관계 펼치기/접기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.category-toggle.Unit03",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "팔레트 탐색 UI이며 adapter registry는 category ID로 직접 찾습니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "도형과 측정 펼치기/접기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.category-toggle.Unit04",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "팔레트 탐색 UI이며 adapter registry는 category ID로 직접 찾습니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "자료와 가능성 펼치기/접기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.panel-collapse",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "편집기 표시 상태일 뿐 생성 payload의 학습 콘텐츠가 아닙니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "도구 패널 접기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "left.tool-settings",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "도구 활성화 설정은 새 payload의 moduleArr로 컴파일하며 UI 클릭 자체는 공개하지 않습니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "도구 설정",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "기존 프로젝트 설정을 UI로 수정하지 않습니다.",
+      "surface": "left-navigation"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.capture",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "승인 전 미리보기와 시각 회귀 증거 생성 후보입니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "캡처",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "캡처 파일은 민감정보 검사와 로컬 raw 경계를 따릅니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.copy-url",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "UI clipboard 대신 create/job 결과의 editorUrl을 반환합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "URL 복사",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "클립보드를 읽거나 쓰지 않습니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.exit",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "편집기 탐색 UI이며 저작 결과의 의미나 저장 계약이 아닙니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "나가기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.make-activity",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "별도 학생 배포 lifecycle은 현재 create-only 저작 범위 밖이며 후속 계약 조사가 필요합니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "활동 만들기",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "동작을 추측해 자동 클릭하지 않습니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.save",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "별도 save MCP가 아니라 승인된 create 요청의 서버 저장 성공으로 대체합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "저장",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "POST 새 프로젝트 생성 외의 PUT/PATCH 저장은 금지합니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "lifecycle.settings",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "새 프로젝트 설정은 payload로 컴파일하고 기존 프로젝트 설정 UI는 수정하지 않습니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "설정",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "기존 프로젝트 update 호출을 공개하지 않습니다.",
+      "surface": "top-lifecycle"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.fullscreen",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "표시 모드이며 생성 payload나 수학 의미를 바꾸지 않습니다.",
+      "integrationTarget": "excluded-by-policy",
+      "observedName": "전체 화면",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "공개 MCP 표면에 추가하지 않습니다.",
+      "surface": "right-viewport"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.grid",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "활동 blueprint의 canvas option으로 컴파일하고 UI 토글은 공개하지 않습니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "그리드",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "승인된 새 프로젝트 payload에서만 설정합니다.",
+      "surface": "right-viewport"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.pan",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "렌더 확인을 위한 viewport 탐색에만 사용합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "이동",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "프로젝트 객체를 이동시키는 편집 명령과 분리합니다.",
+      "surface": "right-viewport"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.refresh",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "canary 재열기와 렌더 검증 과정에서만 사용합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "새로고침",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "미저장 변경이 있는 사용자 프로젝트에는 실행하지 않습니다.",
+      "surface": "right-viewport"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.zoom-in",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "시각 검증의 viewport 정규화에만 사용합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "확대",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "프로젝트 콘텐츠와 분리된 표시 상태로 취급합니다.",
+      "surface": "right-viewport"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "contractStatus": "captured",
+      "controlId": "viewport.zoom-out",
+      "controlKind": "editor-control",
+      "exclusionOrOperationReason": "시각 검증의 viewport 정규화에만 사용합니다.",
+      "integrationTarget": "managed-browser-operation",
+      "observedName": "축소",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "프로젝트 콘텐츠와 분리된 표시 상태로 취급합니다.",
+      "surface": "right-viewport"
+    }
+  ],
+  "existingPublicMcpTools": [
+    "mathcanvas_check_connection",
+    "mathcanvas_create_new_project",
+    "mathcanvas_get_job_status",
+    "mathcanvas_open_workspace",
+    "mathcanvas_recommend_activity"
+  ],
+  "matrixId": "mathcanvas-control-contract-2026-07-29",
+  "observation": {
+    "accountScope": "authenticated-current-user",
+    "observationDate": "2026-07-29",
+    "origin": "https://mathcanvas.vivasam.com",
+    "sourcePath": "/ko/view/<creator-owned-project>"
+  },
+  "publicMcpRule": "화면 버튼마다 MCP 도구를 만들지 않고 추천→명시적 승인→create-only 흐름에서 registry를 간접 사용합니다.",
+  "schemaVersion": "1.0.0",
+  "toolMappings": [
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": null,
+      "contractFamily": "native-draw-object",
+      "contractStatus": "captured",
+      "controlId": "common.circle",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "원",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "bundleEvidence": null,
+      "contractStatus": "captured",
+      "controlId": "common.eraser",
+      "controlKind": "edit-action",
+      "exclusionOrOperationReason": "지우개는 새 객체 생성보다 기존 객체 수정·삭제 의미가 우선입니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "지우개",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "create-only 경계에서 기존 객체를 편집·삭제하는 공개 명령을 만들지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "registered",
+      "bundleEvidence": null,
+      "contractFamily": "native-latex-object",
+      "contractStatus": "captured",
+      "controlId": "common.formula",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수식",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": null,
+      "contractFamily": "canvas-pen-elements",
+      "contractStatus": "captured",
+      "controlId": "common.pen",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "펜",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": null,
+      "contractFamily": "native-draw-object",
+      "contractStatus": "captured",
+      "controlId": "common.point-line",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "점 / 선",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "registered",
+      "bundleEvidence": null,
+      "contractFamily": "native-draw-object",
+      "contractStatus": "captured",
+      "controlId": "common.rectangle",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "사각형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "bundleEvidence": null,
+      "contractStatus": "captured",
+      "controlId": "common.redo",
+      "controlKind": "history-action",
+      "exclusionOrOperationReason": "create-only MCP에서는 기존 프로젝트 편집 명령으로 공개하지 않습니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "다시 실행",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "create-only 경계에서 기존 객체를 편집·삭제하는 공개 명령을 만들지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "bundleEvidence": null,
+      "contractStatus": "captured",
+      "controlId": "common.select",
+      "controlKind": "selection-action",
+      "exclusionOrOperationReason": "선택은 생성 payload가 아니라 편집기 상호작용 상태입니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "선택",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "create-only 경계에서 기존 객체를 편집·삭제하는 공개 명령을 만들지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "registered",
+      "bundleEvidence": null,
+      "contractFamily": "native-text-object",
+      "contractStatus": "captured",
+      "controlId": "common.text",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "텍스트",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "excluded-by-policy",
+      "bundleEvidence": null,
+      "contractStatus": "captured",
+      "controlId": "common.undo",
+      "controlKind": "history-action",
+      "exclusionOrOperationReason": "create-only MCP에서는 기존 프로젝트 편집 명령으로 공개하지 않습니다.",
+      "integrationTarget": "internal-editor-action",
+      "observedName": "실행 취소",
+      "publicMcpExposure": "none",
+      "requiredLifecycle": [],
+      "safetyDecision": "create-only 경계에서 기존 객체를 편집·삭제하는 공개 명령을 만들지 않습니다.",
+      "surface": "common-authoring"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 5,
+          "factoryEntries": 5,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:ae716ae3bdecdb81"
+        ],
+        "subToolbarOptions": [
+          "색깔 바꾸기",
+          "크기 바꾸기"
+        ],
+        "variants": 5
+      },
+      "contractFamily": "bundle-shape-family:shape:ae716ae3bdecdb81",
+      "contractStatus": "captured",
+      "controlId": "CR02AB",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "속성블록",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 18,
+          "factoryEntries": 18,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:520ca8442d69606e"
+        ],
+        "subToolbarOptions": [
+          "부호 반전"
+        ],
+        "variants": 18
+      },
+      "contractFamily": "bundle-shape-family:shape:520ca8442d69606e",
+      "contractStatus": "captured",
+      "controlId": "CR07AT",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "대수 막대",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 5,
+          "factoryEntries": 5,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:582086fc7e08aeb2",
+          "shape:764051d848e62f9d",
+          "shape:a8c6287b1b364b42"
+        ],
+        "subToolbarOptions": [],
+        "variants": 5
+      },
+      "contractFamily": "bundle-shape-family:shape:582086fc7e08aeb2+shape:764051d848e62f9d+shape:a8c6287b1b364b42",
+      "contractStatus": "captured",
+      "controlId": "CR07BS",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "접시저울",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 4,
+          "factoryEntries": 4,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:0bf705e92f336d3f",
+          "shape:6eec66f03283a3b6",
+          "shape:8e4ccbdbb9e79bfd",
+          "shape:e0bd6b4970e42c35"
+        ],
+        "subToolbarOptions": [
+          "눈금 숨기기",
+          "점 이름 숨기기",
+          "눈금 보이기",
+          "점 이름 보이기"
+        ],
+        "variants": 4
+      },
+      "contractFamily": "bundle-shape-family:shape:0bf705e92f336d3f+shape:6eec66f03283a3b6+shape:8e4ccbdbb9e79bfd+shape:e0bd6b4970e42c35",
+      "contractStatus": "captured",
+      "controlId": "CR07CP",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "좌표평면",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 4,
+          "factoryEntries": 4,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:4b3cd09217c361ce",
+          "shape:c555d23cb4566dfb"
+        ],
+        "subToolbarOptions": [
+          "회전"
+        ],
+        "variants": 4
+      },
+      "contractFamily": "bundle-shape-family:shape:4b3cd09217c361ce+shape:c555d23cb4566dfb",
+      "contractStatus": "captured",
+      "controlId": "CR10AB",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "대수 블록",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:fe590808e402bcce"
+        ],
+        "subToolbarOptions": [],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:fe590808e402bcce",
+      "contractStatus": "captured",
+      "controlId": "CR10CS",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "공간좌표(3D)",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:2739d25f76d77c50",
+          "shape:4207930146cce15a"
+        ],
+        "subToolbarOptions": [
+          "자동 계산",
+          "순서 가리기",
+          "순서 표시",
+          "가로 전환",
+          "세로 전환"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:2739d25f76d77c50+shape:4207930146cce15a",
+      "contractStatus": "captured",
+      "controlId": "DP02TG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "자료와 표",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 3,
+          "factoryEntries": 3,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:f341d8c162472d4a"
+        ],
+        "subToolbarOptions": [],
+        "variants": 3
+      },
+      "contractFamily": "bundle-shape-family:shape:f341d8c162472d4a",
+      "contractStatus": "captured",
+      "controlId": "DP03PG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "그림그래프",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 3,
+          "factoryEntries": 3,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:59aeaab4e8a3773b"
+        ],
+        "subToolbarOptions": [
+          "가로 전환",
+          "세로 전환"
+        ],
+        "variants": 3
+      },
+      "contractFamily": "bundle-shape-family:shape:59aeaab4e8a3773b",
+      "contractStatus": "captured",
+      "controlId": "DP04BC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "막대그래프",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:59aeaab4e8a3773b"
+        ],
+        "subToolbarOptions": [],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:59aeaab4e8a3773b",
+      "contractStatus": "captured",
+      "controlId": "DP05LC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "꺾은선그래프",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:2dd8ed047670de39",
+          "shape:a623bff6c00b8608"
+        ],
+        "subToolbarOptions": [
+          "눈금 변경",
+          "비율 숨기기",
+          "비율 보이기",
+          "띠그래프 변경",
+          "원그래프 변경"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:2dd8ed047670de39+shape:a623bff6c00b8608",
+      "contractStatus": "captured",
+      "controlId": "DP06RC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "비율 그래프",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 1,
+          "factoryEntries": 1,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:d0a875bdf52b0b0f"
+        ],
+        "subToolbarOptions": [],
+        "variants": 1
+      },
+      "contractFamily": "bundle-shape-family:shape:d0a875bdf52b0b0f",
+      "contractStatus": "captured",
+      "controlId": "DP07CF",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "상대도수 그래프",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 1,
+          "factoryEntries": 1,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:d0a875bdf52b0b0f"
+        ],
+        "subToolbarOptions": [],
+        "variants": 1
+      },
+      "contractFamily": "bundle-shape-family:shape:d0a875bdf52b0b0f",
+      "contractStatus": "captured",
+      "controlId": "DP07FP",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "도수분포다각형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:a6b387ac6ef652df",
+          "shape:dc4d6c860c433f23"
+        ],
+        "subToolbarOptions": [
+          "자동 계산"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:a6b387ac6ef652df+shape:dc4d6c860c433f23",
+      "contractStatus": "captured",
+      "controlId": "DP07FT",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "도수분포표",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 1,
+          "factoryEntries": 1,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:d0a875bdf52b0b0f"
+        ],
+        "subToolbarOptions": [
+          "도수분포다각형 가리기",
+          "히스토그램 가리기",
+          "도수분포다각형 보이기",
+          "히스토그램 보이기"
+        ],
+        "variants": 1
+      },
+      "contractFamily": "bundle-shape-family:shape:d0a875bdf52b0b0f",
+      "contractStatus": "captured",
+      "controlId": "DP07HG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "히스토그램",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:6da5c7400e14d4cd",
+          "shape:8bc54e0c81f4a8f9"
+        ],
+        "subToolbarOptions": [],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:6da5c7400e14d4cd+shape:8bc54e0c81f4a8f9",
+      "contractStatus": "captured",
+      "controlId": "DP07MC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "자료와 대푯값",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:0716e5bd4e001fe2"
+        ],
+        "subToolbarOptions": [],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:0716e5bd4e001fe2",
+      "contractStatus": "captured",
+      "controlId": "DP07SL",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "줄기와 잎 그림",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:507f693628e8c4f8",
+          "shape:eee782040b5be670"
+        ],
+        "subToolbarOptions": [
+          "눈금 숨기기",
+          "눈금 보이기"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:507f693628e8c4f8+shape:eee782040b5be670",
+      "contractStatus": "captured",
+      "controlId": "DP09BP",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "상자 그림",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 3,
+          "factoryEntries": 3,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:99b1316114c69ce5"
+        ],
+        "subToolbarOptions": [
+          "숫자 숨기기",
+          "숫자 보이기",
+          "회전"
+        ],
+        "variants": 3
+      },
+      "contractFamily": "bundle-shape-family:shape:99b1316114c69ce5",
+      "contractStatus": "captured",
+      "controlId": "NO01LC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "연결 모형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:d550053e860632f5"
+        ],
+        "subToolbarOptions": [
+          "반전"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:d550053e860632f5",
+      "contractStatus": "captured",
+      "controlId": "NO01NR",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수 구슬",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 40,
+          "factoryEntries": 40,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:57068fc8c1a65c82"
+        ],
+        "subToolbarOptions": [
+          "크기 바꾸기"
+        ],
+        "variants": 40
+      },
+      "contractFamily": "bundle-shape-family:shape:57068fc8c1a65c82",
+      "contractStatus": "captured",
+      "controlId": "NO01SC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수 세기 모형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 3,
+          "factoryEntries": 3,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:ee48d2b09984ae1d"
+        ],
+        "subToolbarOptions": [
+          "뒤집기",
+          "채우기"
+        ],
+        "variants": 3
+      },
+      "contractFamily": "bundle-shape-family:shape:ee48d2b09984ae1d",
+      "contractStatus": "captured",
+      "controlId": "NO01TF",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "십 배열판",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 10,
+          "factoryEntries": 10,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:895272c600f8de29"
+        ],
+        "subToolbarOptions": [
+          "숨기기",
+          "보이기",
+          "그리드 표시",
+          "숫자 표시"
+        ],
+        "variants": 10
+      },
+      "contractFamily": "bundle-shape-family:shape:895272c600f8de29",
+      "contractStatus": "captured",
+      "controlId": "NO02CB",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "색 막대",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:a4fa123a4f45757e"
+        ],
+        "subToolbarOptions": [],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:a4fa123a4f45757e",
+      "contractStatus": "captured",
+      "controlId": "NO02DM",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "도미노",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 5,
+          "factoryEntries": 5,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:43aa1e20802c5207",
+          "shape:fbada38f2856dcb2"
+        ],
+        "subToolbarOptions": [
+          "합치기",
+          "정렬",
+          "회전",
+          "쪼개기"
+        ],
+        "variants": 5
+      },
+      "contractFamily": "bundle-shape-family:shape:43aa1e20802c5207+shape:fbada38f2856dcb2",
+      "contractStatus": "captured",
+      "controlId": "NO03BT",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수 모형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "registered",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 24,
+          "factoryEntries": 24,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:cd416c2538a58847",
+          "shape:ee41595adb14b8b4"
+        ],
+        "subToolbarOptions": [
+          "자르기"
+        ],
+        "variants": 24
+      },
+      "contractFamily": "bundle-shape-family:shape:cd416c2538a58847+shape:ee41595adb14b8b4",
+      "contractStatus": "captured",
+      "controlId": "NO03FM",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "분수 모형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 6,
+          "factoryEntries": 6,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:4ed271fa249cf16b",
+          "shape:9a1b0f83fd283f88",
+          "shape:e566b0d8451bd3a4"
+        ],
+        "subToolbarOptions": [],
+        "variants": 6
+      },
+      "contractFamily": "bundle-shape-family:shape:4ed271fa249cf16b+shape:9a1b0f83fd283f88+shape:e566b0d8451bd3a4",
+      "contractStatus": "captured",
+      "controlId": "NO04NG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "배열표",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 40,
+          "factoryEntries": 40,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:ffc0903ba43cf722"
+        ],
+        "subToolbarOptions": [],
+        "variants": 40
+      },
+      "contractFamily": "bundle-shape-family:shape:ffc0903ba43cf722",
+      "contractStatus": "captured",
+      "controlId": "NO04NT",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수 카드",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 6,
+          "factoryEntries": 6,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:3af29f06b7b080a7",
+          "shape:4da5e0a87d84d8f2"
+        ],
+        "subToolbarOptions": [
+          "펼치기",
+          "정렬",
+          "겹치기"
+        ],
+        "variants": 6
+      },
+      "contractFamily": "bundle-shape-family:shape:3af29f06b7b080a7+shape:4da5e0a87d84d8f2",
+      "contractStatus": "captured",
+      "controlId": "NO04PC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "자릿값 카드",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 9,
+          "factoryEntries": 9,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:81ec9f285cb81aa2",
+          "shape:9d2998420abb2ba6"
+        ],
+        "subToolbarOptions": [
+          "합치기",
+          "쪼개기"
+        ],
+        "variants": 9
+      },
+      "contractFamily": "bundle-shape-family:shape:81ec9f285cb81aa2+shape:9d2998420abb2ba6",
+      "contractStatus": "captured",
+      "controlId": "NO04PD",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "자릿값 모형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 3,
+          "factoryEntries": 3,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:16a3a68a8deab4fa",
+          "shape:732a57f45de9b236"
+        ],
+        "subToolbarOptions": [],
+        "variants": 3
+      },
+      "contractFamily": "bundle-shape-family:shape:16a3a68a8deab4fa+shape:732a57f45de9b236",
+      "contractStatus": "captured",
+      "controlId": "NO07IC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "셈돌",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 7,
+          "factoryEntries": 7,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:6498c15872d3d9e8",
+          "shape:8dfd00e4533ab2b3",
+          "shape:9654c5db3b5bdbe9",
+          "shape:b4bbc4696326b874"
+        ],
+        "subToolbarOptions": [
+          "왼쪽 화살표",
+          "오른쪽 화살표"
+        ],
+        "variants": 7
+      },
+      "contractFamily": "bundle-shape-family:shape:6498c15872d3d9e8+shape:8dfd00e4533ab2b3+shape:9654c5db3b5bdbe9+shape:b4bbc4696326b874",
+      "contractStatus": "captured",
+      "controlId": "NO07NL",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "수직선",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 4,
+          "factoryEntries": 4,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:328acfc956733caf",
+          "shape:3969cf2a0e5f49f0",
+          "shape:aef14a65d4e86f29"
+        ],
+        "subToolbarOptions": [
+          "접기",
+          "분해 모양 변경",
+          "펼치기"
+        ],
+        "variants": 4
+      },
+      "contractFamily": "bundle-shape-family:shape:328acfc956733caf+shape:3969cf2a0e5f49f0+shape:aef14a65d4e86f29",
+      "contractStatus": "captured",
+      "controlId": "NO07PF",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "소인수분해",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 4,
+          "factoryEntries": 4,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:194b5469d013b3a5",
+          "shape:300e64e74588b962",
+          "shape:33fda85e4cbe4514",
+          "shape:b8a68555e1e20308"
+        ],
+        "subToolbarOptions": [
+          "결합",
+          "분리"
+        ],
+        "variants": 4
+      },
+      "contractFamily": "bundle-shape-family:shape:194b5469d013b3a5+shape:300e64e74588b962+shape:33fda85e4cbe4514+shape:b8a68555e1e20308",
+      "contractStatus": "captured",
+      "controlId": "NO10VD",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "벤 다이어그램",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:1ae3da69abf22aa9",
+          "shape:7060b82a5231e2c1"
+        ],
+        "subToolbarOptions": [
+          "초침 가리기",
+          "정지",
+          "초침 보이기",
+          "재생",
+          "시간 설정 변경"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:1ae3da69abf22aa9+shape:7060b82a5231e2c1",
+      "contractStatus": "captured",
+      "controlId": "SM02AD",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "시계",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 6,
+          "factoryEntries": 6,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:a4df5a51f88faaa0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 6
+      },
+      "contractFamily": "bundle-shape-family:shape:a4df5a51f88faaa0",
+      "contractStatus": "captured",
+      "controlId": "SM02PB",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "패턴블록",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 7,
+          "factoryEntries": 7,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:a4df5a51f88faaa0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 7
+      },
+      "contractFamily": "bundle-shape-family:shape:a4df5a51f88faaa0",
+      "contractStatus": "captured",
+      "controlId": "SM02TG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "칠교판",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 4,
+          "factoryEntries": 4,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:106b7b85c26657cc",
+          "shape:64ea7d53123cd857",
+          "shape:a67856e388520a09"
+        ],
+        "subToolbarOptions": [],
+        "variants": 4
+      },
+      "contractFamily": "bundle-shape-family:shape:106b7b85c26657cc+shape:64ea7d53123cd857+shape:a67856e388520a09",
+      "contractStatus": "captured",
+      "controlId": "SM03GB",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "도형판",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 12,
+          "factoryEntries": 12,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:a4df5a51f88faaa0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 12
+      },
+      "contractFamily": "bundle-shape-family:shape:a4df5a51f88faaa0",
+      "contractStatus": "captured",
+      "controlId": "SM04PM",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "펜토미노",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 13,
+          "factoryEntries": 13,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:0af263dede8d0b75"
+        ],
+        "subToolbarOptions": [],
+        "variants": 13
+      },
+      "contractFamily": "bundle-shape-family:shape:0af263dede8d0b75",
+      "contractStatus": "captured",
+      "controlId": "SM05PG",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "다각형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 1,
+          "factoryEntries": 1,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:676171dd62b7c37f"
+        ],
+        "subToolbarOptions": [],
+        "variants": 1
+      },
+      "contractFamily": "bundle-shape-family:shape:676171dd62b7c37f",
+      "contractStatus": "captured",
+      "controlId": "SM05RP",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "정다각형",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 15,
+          "factoryEntries": 15,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:cd8d356e0ef816f0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 15
+      },
+      "contractFamily": "bundle-shape-family:shape:cd8d356e0ef816f0",
+      "contractStatus": "captured",
+      "controlId": "SM06PH",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "다면체(3D)",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:546d56605d9935fe",
+          "shape:74377ee61584c581"
+        ],
+        "subToolbarOptions": [
+          "방향 이름표",
+          "초기화"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:546d56605d9935fe+shape:74377ee61584c581",
+      "contractStatus": "captured",
+      "controlId": "SM06UC",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "쌓기나무(3D)",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 2,
+          "factoryEntries": 2,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:3eaf215c3371afe3",
+          "shape:e449d2fe83e5a789"
+        ],
+        "subToolbarOptions": [
+          "호",
+          "현",
+          "부채꼴",
+          "활꼴"
+        ],
+        "variants": 2
+      },
+      "contractFamily": "bundle-shape-family:shape:3eaf215c3371afe3+shape:e449d2fe83e5a789",
+      "contractStatus": "captured",
+      "controlId": "SM07CS",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "원과 부채꼴",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 5,
+          "factoryEntries": 5,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:cd8d356e0ef816f0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 5
+      },
+      "contractFamily": "bundle-shape-family:shape:cd8d356e0ef816f0",
+      "contractStatus": "captured",
+      "controlId": "SM07PS",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "정다면체(3D)",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    },
+    {
+      "adapterStatus": "queued",
+      "bundleEvidence": {
+        "factoryCoverage": {
+          "discoveredVariants": 6,
+          "factoryEntries": 6,
+          "missingFactoryEntries": []
+        },
+        "shapeFamilies": [
+          "shape:cd8d356e0ef816f0"
+        ],
+        "subToolbarOptions": [],
+        "variants": 6
+      },
+      "contractFamily": "bundle-shape-family:shape:cd8d356e0ef816f0",
+      "contractStatus": "captured",
+      "controlId": "SM07SR",
+      "controlKind": "content-tool",
+      "integrationTarget": "tool-adapter",
+      "observedName": "회전체(3D)",
+      "publicMcpExposure": "indirect-existing-flow",
+      "publicMcpPath": [
+        "mathcanvas_recommend_activity",
+        "mathcanvas_create_new_project"
+      ],
+      "requiredLifecycle": [
+        "compile",
+        "create-canary",
+        "render",
+        "manipulate-if-required",
+        "save",
+        "reopen",
+        "round-trip-compare"
+      ],
+      "safetyDecision": "명시적 교사 승인 뒤 새 프로젝트 payload에만 사용하며 기존 프로젝트는 수정하지 않습니다.",
+      "surface": "math-palette"
+    }
+  ]
+}

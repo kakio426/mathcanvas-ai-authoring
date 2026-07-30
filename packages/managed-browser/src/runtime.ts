@@ -5,7 +5,8 @@ import {
   createProjectInMathCanvas,
   inspectMathCanvasPage,
   type PageCreationResult,
-  type PageInspection
+  type PageInspection,
+  type PageInspectionInput
 } from "./page-operations.js";
 import {
   MANAGED_BROWSER_VERSION,
@@ -68,6 +69,19 @@ function isMathCanvasUrl(value: string): boolean {
   }
 }
 
+function isInteractiveMathCanvasUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return (
+      url.origin === MATHCANVAS_ORIGIN &&
+      (url.pathname === "/ko" ||
+        url.pathname.startsWith("/ko/"))
+    );
+  } catch {
+    return false;
+  }
+}
+
 export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
   readonly #userDataDirectory: string;
   readonly #launcher: PersistentContextLauncher;
@@ -119,9 +133,11 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
       return this.#workspacePage;
     }
     const pages = context.pages();
-    const mathCanvasPage = pages.find((page) =>
-      isMathCanvasUrl(page.url())
-    );
+    const mathCanvasPage =
+      pages.find((page) =>
+        isInteractiveMathCanvasUrl(page.url())
+      ) ??
+      pages.find((page) => isMathCanvasUrl(page.url()));
     const candidate = mathCanvasPage ?? pages[0] ?? (await context.newPage());
     this.#workspacePage = candidate;
     if (!isMathCanvasUrl(candidate.url())) {
@@ -144,6 +160,7 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
     options: {
       forceContractCheck?: boolean;
       bringToFront?: boolean;
+      requiredModules?: string[];
     } = {}
   ): Promise<BrowserConnection> {
     const checkedAt = this.#now().toISOString();
@@ -162,9 +179,17 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
     try {
       const page = await this.#ensureWorkspacePage(context);
       if (options.bringToFront ?? true) await page.bringToFront();
-      const inspection = await page.evaluate<PageInspection, boolean>(
+      const inspection = await page.evaluate<
+        PageInspection,
+        PageInspectionInput
+      >(
         inspectMathCanvasPage,
-        options.forceContractCheck ?? true
+        {
+          verifyStaticContract: options.forceContractCheck ?? true,
+          ...(options.requiredModules
+            ? { requiredModules: options.requiredModules }
+            : {})
+        }
       );
       return browserConnectionSchema.parse({
         runtimeVersion: MANAGED_BROWSER_VERSION,
@@ -203,17 +228,44 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
       });
     }
 
+    const canvasOption = payload.canvasOption as
+      | {
+          moduleArr?: { Unit01?: Record<string, unknown> };
+        }
+      | undefined;
+    const contents = Array.isArray(payload.contentsJson)
+      ? (payload.contentsJson as Array<Record<string, unknown>>)
+      : [];
+    const requiredModules = [
+      ...Object.entries(canvasOption?.moduleArr?.Unit01 ?? {})
+        .filter(([, enabled]) => enabled === true)
+        .map(([module]) => module),
+      ...contents.flatMap((object) =>
+        ["input-text", "math-latex", "drawElem"].includes(
+          String(object.svgId)
+        )
+          ? [String(object.svgId)]
+          : []
+      )
+    ];
     const connection = await this.checkConnection({
       forceContractCheck: true,
-      bringToFront: true
+      bringToFront: true,
+      requiredModules: [...new Set(requiredModules)]
     });
     if (!connection.ready) {
       return creationResultSchema.parse({
         ok: false,
         completedAt: completedAt(),
         errorCode:
-          connection.state === "login-required"
-            ? "login-required"
+          connection.detailCode === "auth-required"
+            ? "auth-required"
+            : connection.detailCode === "contract-probe-unavailable"
+              ? "contract-probe-unavailable"
+              : connection.detailCode === "contract-mismatch"
+                ? "contract-mismatch"
+                : connection.state === "login-required"
+                  ? "auth-required"
             : connection.state === "browser-launch-failed"
               ? "browser-launch-failed"
               : "contract-mismatch"

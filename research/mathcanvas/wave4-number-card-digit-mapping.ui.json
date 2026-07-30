@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "probeTitle": "AI-CONTRACT-PROBE-W4-NO04NT-DIGITS-20260730T084302Z",
+  "observedAt": "2026-07-30T10:39:00.000Z",
+  "source": "teacher-owned-connected-chrome",
+  "writePerformed": false,
+  "method": "MathCanvas 수 카드 메뉴의 실제 SVG id와 화면에 렌더된 숫자를 같은 행·열 순서로 대조",
+  "mapping": [
+    { "value": 0, "variantId": "NO04NT-01", "row": 1, "column": 1 },
+    { "value": 1, "variantId": "NO04NT-02", "row": 1, "column": 2 },
+    { "value": 2, "variantId": "NO04NT-03", "row": 1, "column": 3 },
+    { "value": 3, "variantId": "NO04NT-04", "row": 1, "column": 4 },
+    { "value": 4, "variantId": "NO04NT-05", "row": 1, "column": 5 },
+    { "value": 5, "variantId": "NO04NT-06", "row": 2, "column": 1 },
+    { "value": 6, "variantId": "NO04NT-07", "row": 2, "column": 2 },
+    { "value": 7, "variantId": "NO04NT-08", "row": 2, "column": 3 },
+    { "value": 8, "variantId": "NO04NT-09", "row": 2, "column": 4 },
+    { "value": 9, "variantId": "NO04NT-10", "row": 2, "column": 5 }
+  ],
+  "claims": {
+    "digitMapping": "0~9의 실제 UI 표기와 NO04NT-01~10의 DOM id가 순서대로 일치합니다.",
+    "lifecycleEvidence": "생성·저장·재열기 필드 계약은 wave4-number-card-canary.roundtrip.json에서 별도로 고정합니다."
+  }
+}

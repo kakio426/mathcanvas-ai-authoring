@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-07-29T06:00:00.000Z",
+  "accountEmail": "teacher@example.com",
+  "authorization": "Bearer super-secret-value",
+  "nested": {
+    "cookie": "session=secret",
+    "pageUrl": "https://mathcanvas.vivasam.com/ko/myCanvas?account=123#private",
+    "projectPath": "/ko/view/privateProject123",
+    "safeName": "분수 모형"
+  }
+}

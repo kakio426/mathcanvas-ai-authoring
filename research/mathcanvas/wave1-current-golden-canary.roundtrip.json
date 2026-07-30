@@ -1,0 +1,163 @@
+{
+  "claims": {
+    "common.formula": {
+      "lifecycle": {
+        "finalRenderedObjectCount": 12,
+        "persistedObjectCount": 12
+      },
+      "released": {
+        "finalComparableHash": "a2944726f1f31b94d5fa033cae7aa0ef1a8a6c86a72567fab3cb8297ea6e1498",
+        "persistedAfterGuardedSave": true,
+        "recoveryMode": true
+      },
+      "verified": {
+        "finalReopenedObjectCount": 12,
+        "submittedObjectCount": 12
+      }
+    },
+    "common.rectangle": {
+      "lifecycle": {
+        "finalRenderedObjectCount": 20,
+        "persistedObjectCount": 20
+      },
+      "released": {
+        "finalComparableHash": "a2944726f1f31b94d5fa033cae7aa0ef1a8a6c86a72567fab3cb8297ea6e1498",
+        "persistedAfterGuardedSave": true,
+        "recoveryMode": true
+      },
+      "verified": {
+        "finalReopenedObjectCount": 20,
+        "submittedObjectCount": 20
+      }
+    },
+    "common.text": {
+      "lifecycle": {
+        "finalRenderedObjectCount": 19,
+        "persistedObjectCount": 19
+      },
+      "released": {
+        "finalComparableHash": "a2944726f1f31b94d5fa033cae7aa0ef1a8a6c86a72567fab3cb8297ea6e1498",
+        "persistedAfterGuardedSave": true,
+        "recoveryMode": true
+      },
+      "verified": {
+        "finalReopenedObjectCount": 19,
+        "submittedObjectCount": 19
+      }
+    },
+    "NO03FM": {
+      "lifecycle": {
+        "finalRenderedObjectCount": 8,
+        "persistedObjectCount": 8
+      },
+      "released": {
+        "finalComparableHash": "a2944726f1f31b94d5fa033cae7aa0ef1a8a6c86a72567fab3cb8297ea6e1498",
+        "persistedAfterGuardedSave": true,
+        "recoveryMode": true
+      },
+      "verified": {
+        "finalReopenedObjectCount": 8,
+        "submittedObjectCount": 8
+      }
+    }
+  },
+  "interaction": {
+    "automaticSaveMetadataFields": [
+      "canvasOption.isCaptured",
+      "canvasOption.viewBox"
+    ],
+    "changedFields": [
+      "x",
+      "y"
+    ],
+    "changedObjectIds": [
+      "problem-1-left-strip"
+    ],
+    "clientTransformChanged": true,
+    "delta": {
+      "_x": 0,
+      "_y": 0,
+      "x": 103.67999267578125,
+      "y": 34.55999755859375
+    },
+    "editorRehydration": {
+      "rectangleIsEyeOnDefaultCount": 20,
+      "targetPointerMetadataFields": [
+        "parent.mouseX",
+        "parent.mouseY"
+      ],
+      "textEditSnapshotsDefaultCount": 19
+    },
+    "targetObjectId": "problem-1-left-strip",
+    "toolKey": "NO03FM"
+  },
+  "observedAt": "2026-07-29T10:59:32.197Z",
+  "probeId": "wave1-current-golden-canary-recovery-v1",
+  "provenance": {
+    "artifactsHash": "c4ea8b9b93f6bb15ecb4e92c0e9ee8f5df0c5908ab394f02639e50100413bb7f",
+    "goldenFixtureId": "fraction-comparison.p0-v1",
+    "goldenFixtureVersion": "1.0.0",
+    "goldenPayloadHash": "fa0b8e750338ef3a083b22e64e1fc820fa680b8bfd8fb20781e31a661bace861",
+    "runId": "20260729T103957Z",
+    "source": "current-golden-guarded-save-recovery",
+    "submittedPayloadHash": "89b3e2b3d3040883a3966d689c369d4447e3e9a3d321ed2680c2f8ad62d82a1f"
+  },
+  "recoveryLimitation": "The original 2xx PUT and request body passed the guarded route, but the raw operation log was not persisted before the render assertion failed. The saved body is reconstructed from the current UI save contract and final GET, so reconstructionConsistency is not an independent PUT-to-GET measurement and original write counts are asserted, not measured.",
+  "render": {
+    "finalItemGroupCount": 59,
+    "finalVisibleObjectCount": 59,
+    "submittedObjectCount": 59
+  },
+  "roundTrip": {
+    "numericTolerance": 1e-12,
+    "reconstructionConsistency": {
+      "derivedFromFinalGet": true,
+      "independentlyCheckedPersistedFields": [
+        "categoryId",
+        "isNoteworthy",
+        "isShowMenuOnActivity",
+        "studyLevel"
+      ],
+      "maximumNumericDelta": 2.842170943040401e-14,
+      "normalizedEqual": true,
+      "numericDifferenceCount": 7,
+      "unexpectedDifferenceCount": 0,
+      "unexpectedDifferences": []
+    }
+  },
+  "schemaVersion": "1.0.0",
+  "toolResults": [
+    {
+      "finalRenderedObjectCount": 8,
+      "finalReopenedObjectCount": 8,
+      "submittedObjectCount": 8,
+      "toolKey": "NO03FM"
+    },
+    {
+      "finalRenderedObjectCount": 12,
+      "finalReopenedObjectCount": 12,
+      "submittedObjectCount": 12,
+      "toolKey": "common.formula"
+    },
+    {
+      "finalRenderedObjectCount": 20,
+      "finalReopenedObjectCount": 20,
+      "submittedObjectCount": 20,
+      "toolKey": "common.rectangle"
+    },
+    {
+      "finalRenderedObjectCount": 19,
+      "finalReopenedObjectCount": 19,
+      "submittedObjectCount": 19,
+      "toolKey": "common.text"
+    }
+  ],
+  "writeBoundary": {
+    "assertedOriginalCreateCount": 1,
+    "assertedOriginalSaveCount": 1,
+    "measuredRecoveryWriteCount": 0,
+    "mode": "read-only-recovery-after-one-create-one-save",
+    "originalRawWriteLogPersisted": false,
+    "originalWriteCountMeasured": false
+  }
+}

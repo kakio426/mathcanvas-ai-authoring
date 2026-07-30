@@ -5,12 +5,22 @@ import {
   sha256Hex
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
-import { generateFractionComparisonActivity } from "@mathcanvas/templates";
+import {
+  generateFractionComparisonActivity,
+  projectFractionComparisonApprovalView
+} from "@mathcanvas/templates";
 import {
   CREATE_PROJECT_ENDPOINT,
   FRACTION_SVG_BY_DENOMINATOR,
-  compileActivitySpec
+  compileActivity,
+  getLayoutPreset,
+  resolveActivity,
+  resolveLayout
 } from "./index.js";
+import type {
+  LayoutPreset,
+  LayoutToken
+} from "@mathcanvas/contracts";
 
 function compiled() {
   const recommendation = recommendActivity({
@@ -20,14 +30,111 @@ function compiled() {
     problemCount: 4,
     createdAt: "2026-07-28T00:00:00.000Z"
   });
-  const spec = generateFractionComparisonActivity(recommendation, {
+  const plan = generateFractionComparisonActivity(recommendation, {
     seed: "compiler-seed",
     generatedAt: "2026-07-28T02:00:00.000Z"
   });
-  return { spec, compiled: compileActivitySpec(spec) };
+  const resolved = resolveActivity(plan);
+  const spec = projectFractionComparisonApprovalView(resolved);
+  return { spec, resolved, compiled: compileActivity(resolved) };
 }
 
 describe("MathCanvas 컴파일러", () => {
+  it("같은 blueprint와 seed에서 같은 상대 배치와 ResolvedActivity를 만든다", () => {
+    const recommendation = recommendActivity({
+      schemaVersion: CONTRACT_SCHEMA_VERSION,
+      requestId: "resolver-stable",
+      prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
+      createdAt: "2026-07-28T00:00:00.000Z"
+    });
+    const plan = generateFractionComparisonActivity(recommendation, {
+      seed: "resolver-stable-seed",
+      generatedAt: "2026-07-28T02:00:00.000Z"
+    });
+    expect(resolveActivity(plan)).toEqual(resolveActivity(plan));
+  });
+
+  it("layout missing/cycle/negative/overlap/overflow를 stable code로 차단한다", () => {
+    const plan = generateFractionComparisonActivity(
+      recommendActivity({
+        schemaVersion: CONTRACT_SCHEMA_VERSION,
+        requestId: "layout-errors",
+        prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
+        createdAt: "2026-07-28T00:00:00.000Z"
+      }),
+      {
+        seed: "layout-errors",
+        generatedAt: "2026-07-28T02:00:00.000Z"
+      }
+    );
+    const preset = getLayoutPreset(plan.blueprint.layout.tokenSet);
+    const altered = (
+      patch: Record<string, LayoutToken>
+    ): LayoutPreset => ({
+      ...preset,
+      tokens: { ...preset.tokens, ...patch }
+    });
+    const primary = preset.tokens["header.primary"]!;
+    const secondary = preset.tokens["header.secondary"]!;
+    const cases: Array<[string, LayoutPreset]> = [
+      [
+        "layout-missing-anchor",
+        altered({
+          "header.primary": {
+            ...primary,
+            relativeTo: "missing.anchor"
+          }
+        })
+      ],
+      [
+        "layout-cyclic-reference",
+        altered({
+          "header.primary": {
+            ...primary,
+            relativeTo: "header.secondary"
+          },
+          "header.secondary": {
+            ...secondary,
+            relativeTo: "header.primary"
+          }
+        })
+      ],
+      [
+        "layout-negative-size",
+        altered({
+          "header.primary": { ...primary, width: -1 }
+        })
+      ],
+      [
+        "layout-overlap",
+        altered({
+          "header.secondary": {
+            scope: secondary.scope,
+            x: primary.x,
+            y: primary.y,
+            width: secondary.width,
+            height: secondary.height
+          }
+        })
+      ],
+      [
+        "layout-canvas-overflow",
+        altered({
+          "header.primary": { ...primary, x: 2390 }
+        })
+      ]
+    ];
+    cases.forEach(([code, tokens]) =>
+      expect(() =>
+        resolveLayout(
+          plan.blueprint.layout,
+          plan.items.map((item) => item.id),
+          tokens
+        )
+      ).toThrow(code)
+    );
+  });
+
   it("공개 프로젝트에서 관찰한 네이티브 객체 계약을 따른다", () => {
     const observed = JSON.parse(
       readFileSync(

@@ -74,6 +74,15 @@ describe("MCP 도구 seam", () => {
       "mathcanvas_recommend_activity"
     ]);
     expect(JSON.stringify(tools)).not.toContain("확장 프로그램");
+    const recommendTool = tools.tools.find(
+      (tool) => tool.name === "mathcanvas_recommend_activity"
+    );
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "denominatorRelation"
+    );
+    expect(JSON.stringify(tools)).not.toMatch(
+      /rawPayload|contentsJson|absoluteCoordinates|nativeToolId|toolKey/
+    );
   });
 
   it("전용 Chrome 열기 도구가 로그인 위치를 반환한다", async () => {

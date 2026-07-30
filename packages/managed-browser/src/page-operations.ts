@@ -3,22 +3,128 @@ export interface PageInspection {
   detailCode?: string;
 }
 
+export interface PageInspectionInput {
+  verifyStaticContract?: boolean;
+  requiredModules?: string[];
+}
+
 export async function inspectMathCanvasPage(
-  verifyStaticContract = true
+  input: boolean | PageInspectionInput = true
 ): Promise<PageInspection> {
+  const options =
+    typeof input === "boolean"
+      ? { verifyStaticContract: input }
+      : input;
+  const verifyStaticContract = options.verifyStaticContract ?? true;
+  const requiredModules =
+    options.requiredModules?.length
+      ? [...new Set(options.requiredModules)]
+      : ["NO03FM", "input-text", "math-latex", "drawElem"];
+  const headers = (token: string | null) =>
+    token ? { Authorization: `Bearer ${token}` } : {};
+  const creatorContractMatches = (
+    body: {
+      contentsJson?: Array<Record<string, unknown>>;
+      canvasOption?: {
+        moduleArr?: { Unit01?: Record<string, unknown> };
+      };
+    },
+    modules: readonly string[]
+  ): boolean => {
+    const objects = body.contentsJson ?? [];
+    const enabled = body.canvasOption?.moduleArr?.Unit01 ?? {};
+    const expectedFractionSvgByDenominator: Record<number, string> = {
+      1: "NO03FM-10",
+      2: "NO03FM-09",
+      3: "NO03FM-08",
+      4: "NO03FM-07",
+      5: "NO03FM-06",
+      6: "NO03FM-05",
+      7: "NO03FM-04",
+      8: "NO03FM-03",
+      9: "NO03FM-02",
+      10: "NO03FM-01",
+      11: "NO03FM-21",
+      12: "NO03FM-22"
+    };
+    return modules.every((module) => {
+      if (module === "NO03FM") {
+        if (enabled.NO03FM !== true) return false;
+        const fractions = objects.filter(
+          (object) =>
+            typeof object.divider === "number" &&
+            typeof object.count === "number"
+        );
+        return (
+          fractions.length > 0 &&
+          fractions.every((object) => {
+            const denominator = Number(object.divider);
+            return (
+              object.svgId ===
+                expectedFractionSvgByDenominator[denominator] &&
+              typeof object.defaultWidth === "number" &&
+              typeof object.perWidth === "number" &&
+              object.isMoveRotateHandler === true
+            );
+          })
+        );
+      }
+      if (module === "NO04NT") {
+        if (enabled.NO04NT !== true) return false;
+        const cards = objects.filter(
+          (object) =>
+            typeof object.svgId === "string" &&
+            /^NO04NT-(0[1-9]|10)$/.test(object.svgId)
+        );
+        return (
+          new Set(cards.map((card) => card.svgId)).size === 10 &&
+          cards.every(
+            (card) =>
+              card.fill === "#2194FF" &&
+              card.numberFrameSnap === true &&
+              typeof card.parent === "object" &&
+              card.parent !== null &&
+              (card.parent as Record<string, unknown>).variation === 25 &&
+              Array.isArray(card.coordinates) &&
+              card.coordinates.length === 4
+          )
+        );
+      }
+      return objects.some((object) => object.svgId === module);
+    });
+  };
+
   try {
     if (window.location.origin !== "https://mathcanvas.vivasam.com") {
-      return { state: "login-required", detailCode: "login-page-visible" };
+      return { state: "login-required", detailCode: "auth-required" };
+    }
+
+    const token = window.localStorage.getItem("accessToken");
+    const authResponse = await fetch("/api/auth/me", {
+      headers: headers(token),
+      credentials: "include",
+      cache: "no-store"
+    });
+    if (authResponse.status === 401 || authResponse.status === 403) {
+      return { state: "login-required", detailCode: "auth-required" };
+    }
+    if (!authResponse.ok) {
+      return {
+        state: "contract-mismatch",
+        detailCode: "contract-probe-unavailable"
+      };
     }
 
     if (verifyStaticContract) {
       const categoryResponse = await fetch("/api/project-category", {
+        headers: headers(token),
+        credentials: "include",
         cache: "no-store"
       });
       if (!categoryResponse.ok) {
         return {
           state: "contract-mismatch",
-          detailCode: "category-api-failed"
+          detailCode: "contract-probe-unavailable"
         };
       }
       const categoryBody = (await categoryResponse.json()) as {
@@ -33,7 +139,82 @@ export async function inspectMathCanvasPage(
       ) {
         return {
           state: "contract-mismatch",
-          detailCode: "number-operations-category-mismatch"
+          detailCode: "contract-mismatch"
+        };
+      }
+
+      const query = new URLSearchParams({
+        projectTitle: "AI-CONTRACT-PROBE",
+        offset: "1",
+        limit: "100",
+        sortCondition: "createdAt",
+        sortOrder: "desc"
+      });
+      const ownedResponse = await fetch(`/api/project?${query.toString()}`, {
+        headers: headers(token),
+        credentials: "include",
+        cache: "no-store"
+      });
+      if (ownedResponse.ok) {
+        const ownedBody = (await ownedResponse.json()) as {
+          list?: Array<{
+            projectId?: unknown;
+            projectTitle?: unknown;
+          }>;
+        };
+        const candidates =
+          ownedBody.list?.filter(
+            (project) =>
+              typeof project.projectId === "string" &&
+              typeof project.projectTitle === "string" &&
+              project.projectTitle.startsWith("AI-CONTRACT-PROBE")
+          ) ?? [];
+        const verifiedCreatorModules = new Set<string>();
+        for (const candidate of candidates) {
+          const detailResponse = await fetch(
+            `/api/project/${encodeURIComponent(String(candidate.projectId))}`,
+            {
+              headers: headers(token),
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+          if (!detailResponse.ok) continue;
+          const detail = (await detailResponse.json()) as {
+            contentsJson?: Array<Record<string, unknown>>;
+            canvasOption?: {
+              moduleArr?: { Unit01?: Record<string, unknown> };
+            };
+          };
+          for (const module of requiredModules) {
+            if (creatorContractMatches(detail, [module])) {
+              verifiedCreatorModules.add(module);
+            }
+          }
+          if (
+            requiredModules.every((module) =>
+              verifiedCreatorModules.has(module)
+            )
+          ) {
+            return { state: "ready" };
+          }
+        }
+      }
+
+      const publicFallbackModules = new Set([
+        "NO03FM",
+        "input-text",
+        "math-latex",
+        "drawElem"
+      ]);
+      if (
+        requiredModules.some(
+          (module) => !publicFallbackModules.has(module)
+        )
+      ) {
+        return {
+          state: "contract-mismatch",
+          detailCode: "contract-probe-unavailable"
         };
       }
 
@@ -53,7 +234,7 @@ export async function inspectMathCanvasPage(
       ) {
         return {
           state: "contract-mismatch",
-          detailCode: "fraction-fixture-api-failed"
+          detailCode: "contract-probe-unavailable"
         };
       }
 
@@ -181,32 +362,15 @@ export async function inspectMathCanvasPage(
       ) {
         return {
           state: "contract-mismatch",
-          detailCode: "fraction-fixture-contract-mismatch"
+          detailCode: "contract-mismatch"
         };
       }
-    }
-
-    const token = window.localStorage.getItem("accessToken");
-    if (!token) return { state: "login-required" };
-    const authResponse = await fetch("/api/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
-      credentials: "include",
-      cache: "no-store"
-    });
-    if (authResponse.status === 401 || authResponse.status === 403) {
-      return { state: "login-required" };
-    }
-    if (!authResponse.ok) {
-      return {
-        state: "contract-mismatch",
-        detailCode: "auth-api-failed"
-      };
     }
     return { state: "ready" };
   } catch {
     return {
       state: "contract-mismatch",
-      detailCode: "preflight-failed"
+      detailCode: "contract-probe-unavailable"
     };
   }
 }
@@ -258,7 +422,7 @@ export async function createProjectInMathCanvas({
             : "project-create-failed";
   }
   async function findExistingProject(
-    token: string,
+    token: string | null,
     projectTitle: string
   ): Promise<
     | { ok: true; projectId?: string }
@@ -273,7 +437,9 @@ export async function createProjectInMathCanvas({
         sortOrder: "desc"
       });
       const response = await fetch(`/api/project?${query.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: token
+          ? { Authorization: `Bearer ${token}` }
+          : {},
         credentials: "include",
         cache: "no-store"
       });
@@ -310,7 +476,6 @@ export async function createProjectInMathCanvas({
       return { ok: false, errorCode: "contract-mismatch" };
     }
     const token = window.localStorage.getItem("accessToken");
-    if (!token) return { ok: false, errorCode: "login-required" };
     const existing = await findExistingProject(token, projectTitle);
     if (!existing.ok) return existing;
     if (existing.projectId) {
@@ -321,7 +486,9 @@ export async function createProjectInMathCanvas({
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        Authorization: `Bearer ${token}`
+        ...(token
+          ? { Authorization: `Bearer ${token}` }
+          : {})
       },
       credentials: "include",
       body: JSON.stringify(payload)

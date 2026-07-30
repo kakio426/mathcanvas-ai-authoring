@@ -1,0 +1,39 @@
+{
+  "blueprintContentHash": "88764b04c30d933667ee65bbb0f3e958c5a9bde073f1442581510608eb81c61b",
+  "blueprintId": "number.make-10.cards-v1",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "headless": true,
+  "observedAt": "2026-07-30T13:49:46.496Z",
+  "opticalReview": {
+    "observation": "실제 MathCanvas headless 캡처에서 두 슬롯, +, =, 10이 같은 수학축으로 읽히고 네 인접 간격이 균일하다. 연산자와 결과의 잉크가 위아래로 떠 보이거나 서로 겹치지 않는다.",
+    "reviewer": "Codex visual inspection",
+    "status": "pass"
+  },
+  "payloadHash": "87dbdd61523db1c7afcc2c421ff399e2d171fc935c9fcb69afff10691db32a50",
+  "probeId": "w3-equation-rail-optical-v1",
+  "schemaVersion": "1.0.0",
+  "screenshot": {
+    "rawPath": ".mathcanvas-contract-lab/raw/w3-equation-rail-optical.raw.png",
+    "sha256": "7d03d94cbb58503f604b4aa54094b7df01395e71023088877e630c81e842313c"
+  },
+  "structuralRail": {
+    "centerDelta": 0,
+    "fontSize": 64,
+    "gaps": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "renderer": "common.formula",
+    "roles": [
+      "left-slot",
+      "plus-operator",
+      "right-slot",
+      "equals-operator",
+      "total-value"
+    ]
+  }
+}

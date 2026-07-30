@@ -1,0 +1,79 @@
+{
+  "bundle": {
+    "bytes": 3861645,
+    "path": "/assets/index-fb571b04.js",
+    "sha256": "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584"
+  },
+  "integrity": {
+    "algorithm": "sha256-canonical-json",
+    "payloadSha256": "ed60de9368ea075fc388d58ee308c4dbf0400866b4c04de9188d2ac5dbcf7318"
+  },
+  "schemaVersion": "1.0.0",
+  "snapshotId": "mathcanvas-pen-static-contract-2026-07-29",
+  "sourcePolicy": {
+    "analysis": "local-gitignored-bundle",
+    "networkRequestCount": 0,
+    "productWriteCount": 0,
+    "rawSourceCommitted": false
+  },
+  "staticContract": {
+    "bundleFactoryReconciliation": "pen-is-store-path-list-not-P6t-factory",
+    "contractFamily": "canvas-pen-elements",
+    "coordinateSource": "outermost-svg-user-space",
+    "createdFieldShape": [
+      "d",
+      "id",
+      "isColor",
+      "stroke",
+      "strokeWidth"
+    ],
+    "degenerateStrokeRule": {
+      "allPointsEqualRejected": true,
+      "minimumNumericTokens": 4,
+      "totalLengthMustBeFinite": true,
+      "totalLengthMustBePositive": true
+    },
+    "idRule": {
+      "entropySource": "crypto.randomUUID",
+      "prefix": "p"
+    },
+    "lockIdsParticipation": "none-in-pen-handlers",
+    "moduleActivation": "none",
+    "pathRule": {
+      "appendCommand": "L",
+      "initialCommand": "M"
+    },
+    "payloadPath": "canvasOption.penElements",
+    "rehydrateReadFields": [
+      "d",
+      "id",
+      "stroke",
+      "strokeWidth"
+    ],
+    "renderTarget": "#pen-board path",
+    "studentErasable": true,
+    "tagContribution": "none"
+  },
+  "unknown": [
+    {
+      "field": "authoredCreatePersistence",
+      "reason": "비어 있지 않은 penElements를 POST한 생성·재열기 lifecycle은 관찰하지 않았습니다."
+    },
+    {
+      "field": "coordinateSpaceIdentity",
+      "reason": "pen-board와 outermost viewBox의 생성 직후 동일성은 실제 렌더에서 확인하지 않았습니다."
+    },
+    {
+      "field": "isColorPersistence",
+      "reason": "UI 생성 시 isColor=false를 기록하지만 서버 저장·재열기 보존 여부는 관찰하지 않았습니다."
+    },
+    {
+      "field": "serverNormalization",
+      "reason": "서버가 pen field, id, path를 보존·정규화·거절하는지 관찰하지 않았습니다."
+    },
+    {
+      "field": "strokeWidthWireType",
+      "reason": "store 기본값은 number이고 DOM getAttribute는 string이므로 실제 저장 JSON 타입을 관찰해야 합니다."
+    }
+  ]
+}

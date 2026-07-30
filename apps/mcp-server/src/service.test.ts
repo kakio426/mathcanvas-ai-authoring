@@ -71,6 +71,21 @@ function createService(
 }
 
 describe("MCP 서비스 흐름", () => {
+  it("v1·v2 저장 draft는 묵시 변환하지 않고 만료 오류로 격리한다", () => {
+    const directory = mkdtempSync(join(tmpdir(), "mathcanvas-v1-draft-"));
+    const snapshotPath = join(directory, "drafts.json");
+    for (const version of [1, 2]) {
+      writeFileSync(snapshotPath, JSON.stringify({ version, drafts: [] }));
+      expect(() =>
+        createService(
+          new FakeBrowserRuntime(),
+          new CreationJobStore(),
+          snapshotPath
+        )
+      ).toThrow("이전 추천안 형식은 만료");
+    }
+  });
+
   it("전용 Chrome을 열고 로그인 위치를 정확히 안내한다", async () => {
     const runtime = new FakeBrowserRuntime({
       runtimeVersion: MANAGED_BROWSER_VERSION,
@@ -234,6 +249,51 @@ describe("MCP 서비스 흐름", () => {
     expect(repeated.jobId).toBe(created.jobId);
     expect(repeated.projectId).toBe("P_generated");
     expect(restartedRuntime.createCalls).toBe(0);
+
+    const snapshot = JSON.parse(
+      readFileSync(draftSnapshotPath, "utf8")
+    ) as {
+      drafts: Array<{
+        activitySpecHash: string;
+        binding: {
+          variation: Record<string, unknown>;
+        };
+        resolved: {
+          binding: {
+            variation: Record<string, unknown>;
+          };
+        } & Record<string, unknown>;
+      }>;
+    };
+    const tampered = snapshot.drafts[0]!;
+    tampered.binding.variation.problemCount = 6;
+    tampered.resolved.binding.variation.problemCount = 6;
+    tampered.activitySpecHash = sha256Hex({
+      approvalViewSchemaVersion: "2.0.0",
+      ...tampered.resolved
+    });
+    const tamperedSnapshotPath = join(
+      directory,
+      "tampered-drafts.json"
+    );
+    writeFileSync(
+      tamperedSnapshotPath,
+      JSON.stringify(snapshot)
+    );
+    const tamperedRuntime = new FakeBrowserRuntime();
+    const tamperedService = createService(
+      tamperedRuntime,
+      new CreationJobStore({ snapshotPath: jobSnapshotPath }),
+      tamperedSnapshotPath
+    );
+    await expect(
+      tamperedService.createNewProject({
+        draftId: draft.draftId!,
+        activitySpecHash: tampered.activitySpecHash,
+        teacherConfirmed: true
+      })
+    ).rejects.toThrow("추천안과 만들려는 활동이 다릅니다");
+    expect(tamperedRuntime.createCalls).toBe(0);
   });
 
   it("저장된 작업 payload가 바뀌면 재시작 복구 중 외부 쓰기를 막는다", async () => {

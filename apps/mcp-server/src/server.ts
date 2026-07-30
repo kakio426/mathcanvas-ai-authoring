@@ -108,8 +108,15 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
           requestedGrade: z.number().int().min(1).max(6).optional(),
           problemCount: z.number().int().min(2).max(6).optional(),
           difficulty: z.enum(["easy", "normal", "hard"]).optional(),
+          denominatorRelation: z
+            .enum(["mixed", "coprime", "multiple"])
+            .optional(),
           manipulation: z
-            .literal("fraction-strip-common-start-drag")
+            .enum([
+              "fraction-strip-common-start-drag",
+              "equivalent-fraction-strip-match",
+              "number-card-make-ten-drag"
+            ])
             .optional()
         })
         .strict(),
@@ -135,6 +142,12 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
             ...(input.difficulty === undefined
               ? {}
               : { difficulty: input.difficulty }),
+            ...(input.denominatorRelation === undefined
+              ? {}
+              : {
+                  denominatorRelation:
+                    input.denominatorRelation
+                }),
             ...(input.manipulation === undefined
               ? {}
               : { manipulation: input.manipulation })
