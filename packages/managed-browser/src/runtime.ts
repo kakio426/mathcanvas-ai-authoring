@@ -49,6 +49,14 @@ function launchChrome(
     channel: "chrome",
     headless: options.headless,
     viewport: options.headless ? { width: 1280, height: 800 } : null,
+    ...(process.platform === "darwin"
+      ? {
+          ignoreDefaultArgs: [
+            "--password-store=basic",
+            "--use-mock-keychain"
+          ]
+        }
+      : {}),
     args: options.launchArguments
   }) as unknown as Promise<ManagedContext>;
 }
@@ -56,7 +64,7 @@ function launchChrome(
 export interface ManagedChromeRuntimeOptions {
   userDataDirectory: string;
   launcher?: PersistentContextLauncher;
-  headless?: boolean;
+  headless: boolean;
   launchArguments?: string[];
   now?: () => Date;
 }
@@ -96,7 +104,7 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
       options.launcher ??
       ((directory) =>
         launchChrome(directory, {
-          headless: options.headless ?? false,
+          headless: options.headless,
           launchArguments:
             options.launchArguments ??
             (options.headless ? [] : ["--start-maximized"])
@@ -250,25 +258,27 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
     ];
     const connection = await this.checkConnection({
       forceContractCheck: true,
-      bringToFront: true,
+      bringToFront: false,
       requiredModules: [...new Set(requiredModules)]
     });
     if (!connection.ready) {
+      const errorCode =
+        connection.detailCode === "auth-required"
+          ? "auth-required"
+          : connection.detailCode === "contract-probe-unavailable"
+            ? "contract-probe-unavailable"
+            : connection.detailCode === "contract-mismatch"
+              ? "contract-mismatch"
+              : connection.state === "login-required"
+                ? "auth-required"
+                : connection.state === "browser-launch-failed"
+                  ? "browser-launch-failed"
+                  : "contract-mismatch";
+      if (errorCode === "auth-required") await this.close();
       return creationResultSchema.parse({
         ok: false,
         completedAt: completedAt(),
-        errorCode:
-          connection.detailCode === "auth-required"
-            ? "auth-required"
-            : connection.detailCode === "contract-probe-unavailable"
-              ? "contract-probe-unavailable"
-              : connection.detailCode === "contract-mismatch"
-                ? "contract-mismatch"
-                : connection.state === "login-required"
-                  ? "auth-required"
-            : connection.state === "browser-launch-failed"
-              ? "browser-launch-failed"
-              : "contract-mismatch"
+        errorCode
       });
     }
 
@@ -283,6 +293,9 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
         }
       >(createProjectInMathCanvas, { payload, expectedPayloadHash });
       if (!pageResult.ok) {
+        if (pageResult.errorCode === "auth-required") {
+          await this.close();
+        }
         return creationResultSchema.parse({
           ok: false,
           completedAt: completedAt(),
@@ -292,16 +305,16 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
             : {})
         });
       }
+      if (!/^[A-Za-z0-9_-]{1,160}$/.test(pageResult.projectId)) {
+        return creationResultSchema.parse({
+          ok: false,
+          completedAt: completedAt(),
+          errorCode: "contract-mismatch"
+        });
+      }
 
       const editorUrl =
         `https://mathcanvas.vivasam.com/ko/view/${pageResult.projectId}`;
-      const editorPage = await context.newPage();
-      await editorPage.goto(editorUrl, {
-        waitUntil: "domcontentloaded",
-        timeout: 30_000
-      });
-      await editorPage.bringToFront();
-      this.#workspacePage = editorPage;
       return creationResultSchema.parse({
         ok: true,
         completedAt: completedAt(),

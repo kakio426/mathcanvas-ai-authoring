@@ -707,8 +707,8 @@ describe("P0 contract-lab 격리와 정규화", () => {
         { kind: "number-card", toolKey: "NO04NT", value: 0 },
         {
           id: "[redacted-object-id]",
-          x: 711.6,
-          y: 492,
+          x: 671.6,
+          y: 452,
           width: 80,
           height: 80
         }
@@ -1024,5 +1024,15 @@ describe("P0 contract-lab 격리와 정규화", () => {
         summary: { passCount: 3, overallStatus: "pass" }
       })
     ).toThrow("p3-canary-result-invalid");
+  });
+
+  it("커밋된 P3 출시 canary 봉투를 그대로 검증한다", () => {
+    const evidence = JSON.parse(
+      readFileSync(
+        join(root, "research", "mathcanvas", "p3-release-canary.json"),
+        "utf8"
+      )
+    );
+    expect(validateP3ReleaseCanaryEvidence(evidence)).toBe(evidence);
   });
 });

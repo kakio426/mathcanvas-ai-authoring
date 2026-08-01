@@ -1,21 +1,156 @@
 export {
   FRACTION_TEMPLATE_VERSION,
   buildRegisteredTeacherAnswerKey,
+  balancedEquationCardsTemplateDefinition,
+  balanceScaleSumTemplateDefinition,
+  clockHourHandBoundaryTemplateDefinition,
+  elapsedTimeClockPairTemplateDefinition,
+  sameDenominatorFractionSumTemplateDefinition,
+  sameDenominatorImproperSumTemplateDefinition,
+  unlikeDenominatorCommonUnitSumTemplateDefinition,
+  unlikeDenominatorCommonUnitDifferenceTemplateDefinition,
+  barGraphScaleUnitTemplateDefinition,
+  brokenRulerLengthTemplateDefinition,
+  placeValueTenExchangeTemplateDefinition,
+  repeatingPatternUnitTemplateDefinition,
+  multiplicationArrayMeaningTemplateDefinition,
+  probabilityBagComparisonTemplateDefinition,
   equivalentFractionTemplateDefinition,
   fractionComparisonTemplateDefinition,
   generateEquivalentFractionActivity,
   generateFractionComparisonActivity,
   generateMakeTenNumberCardsActivity,
+  generateBalancedEquationCardsActivity,
+  generateBalanceScaleSumActivity,
+  generateClockHourHandBoundaryActivity,
+  generateElapsedTimeClockPairActivity,
+  generateSameDenominatorFractionSumActivity,
+  generateSameDenominatorImproperSumActivity,
+  generateUnlikeDenominatorCommonUnitSumActivity,
+  generateUnlikeDenominatorCommonUnitDifferenceActivity,
+  generateBarGraphScaleUnitActivity,
+  generateBrokenRulerLengthActivity,
+  generatePlaceValueTenExchangeActivity,
+  generateRepeatingPatternUnitActivity,
+  generateMultiplicationArrayMeaningActivity,
+  generateProbabilityBagComparisonActivity,
   getRegisteredBlueprintContentHash,
   getRegisteredActivitySupportState,
   makeTenNumberCardsTemplateDefinition,
   listRegisteredBlueprints,
   prepareRegisteredActivity,
+  prepareRegisteredActivityForEnvelopeValidation,
   projectRegisteredApprovalView,
   type GenerateActivitySpecOptions,
   type RegisteredTeacherAnswer,
   type RegisteredActivityPlan
 } from "./registry.js";
+export {
+  balancedEquationCardsBlueprint
+} from "./blueprints/balanced-equation-cards.js";
+export {
+  balanceScaleSumBlueprint
+} from "./blueprints/balance-scale-sum.js";
+export {
+  clockHourHandBoundaryBlueprint
+} from "./blueprints/clock-hour-hand-boundary.js";
+export {
+  elapsedTimeClockPairBlueprint
+} from "./blueprints/elapsed-time-clock-pair.js";
+export {
+  sameDenominatorFractionSumBlueprint
+} from "./blueprints/same-denominator-fraction-sum.js";
+export {
+  sameDenominatorImproperSumBlueprint
+} from "./blueprints/same-denominator-improper-sum.js";
+export {
+  unlikeDenominatorCommonUnitSumBlueprint
+} from "./blueprints/unlike-denominator-common-unit-sum.js";
+export {
+  unlikeDenominatorCommonUnitDifferenceBlueprint
+} from "./blueprints/unlike-denominator-common-unit-difference.js";
+export {
+  barGraphScaleUnitBlueprint
+} from "./blueprints/bar-graph-scale-unit.js";
+export {
+  brokenRulerLengthBlueprint
+} from "./blueprints/broken-ruler-length.js";
+export {
+  placeValueTenExchangeBlueprint
+} from "./blueprints/place-value-ten-exchange.js";
+export { repeatingPatternUnitBlueprint } from "./blueprints/repeating-pattern-unit.js";
+export { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication-array-meaning.js";
+export { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
+export {
+  BALANCE_SCALE_SUM_GENERATOR_ID,
+  BALANCE_SCALE_SUM_GENERATOR_VERSION,
+  generateBalanceScaleSumItems
+} from "./item-generators/balance-scale-sum.js";
+export {
+  CLOCK_HOUR_HAND_BOUNDARY_GENERATOR_ID,
+  CLOCK_HOUR_HAND_BOUNDARY_GENERATOR_VERSION,
+  generateClockHourHandBoundaryItems
+} from "./item-generators/clock-hour-hand-boundary.js";
+export {
+  ELAPSED_TIME_CLOCK_PAIR_GENERATOR_ID,
+  ELAPSED_TIME_CLOCK_PAIR_GENERATOR_VERSION,
+  generateElapsedTimeClockPairItems
+} from "./item-generators/elapsed-time-clock-pair.js";
+export {
+  SAME_DENOMINATOR_FRACTION_SUM_GENERATOR_ID,
+  SAME_DENOMINATOR_FRACTION_SUM_GENERATOR_VERSION,
+  generateSameDenominatorFractionSumItems
+} from "./item-generators/same-denominator-fraction-sum.js";
+export {
+  SAME_DENOMINATOR_IMPROPER_SUM_GENERATOR_ID,
+  SAME_DENOMINATOR_IMPROPER_SUM_GENERATOR_VERSION,
+  generateSameDenominatorImproperSumItems
+} from "./item-generators/same-denominator-improper-sum.js";
+export {
+  UNLIKE_DENOMINATOR_COMMON_UNIT_SUM_GENERATOR_ID,
+  UNLIKE_DENOMINATOR_COMMON_UNIT_SUM_GENERATOR_VERSION,
+  generateUnlikeDenominatorCommonUnitSumItems
+} from "./item-generators/unlike-denominator-common-unit-sum.js";
+export {
+  UNLIKE_DENOMINATOR_COMMON_UNIT_DIFFERENCE_GENERATOR_ID,
+  UNLIKE_DENOMINATOR_COMMON_UNIT_DIFFERENCE_GENERATOR_VERSION,
+  generateUnlikeDenominatorCommonUnitDifferenceItems
+} from "./item-generators/unlike-denominator-common-unit-difference.js";
+export {
+  BAR_GRAPH_SCALE_CONFIGURATION_CAPACITY,
+  BAR_GRAPH_SCALE_UNIT_GENERATOR_ID,
+  BAR_GRAPH_SCALE_UNIT_GENERATOR_VERSION,
+  generateBarGraphScaleUnitItems
+} from "./item-generators/bar-graph-scale-unit.js";
+export {
+  BROKEN_RULER_LENGTH_CONFIGURATION_CAPACITY,
+  BROKEN_RULER_LENGTH_GENERATOR_ID,
+  BROKEN_RULER_LENGTH_GENERATOR_VERSION,
+  brokenRulerCandidateValues,
+  generateBrokenRulerLengthItems
+} from "./item-generators/broken-ruler-length.js";
+export {
+  PLACE_VALUE_TEN_EXCHANGE_CONFIGURATION_CAPACITY,
+  PLACE_VALUE_TEN_EXCHANGE_GENERATOR_ID,
+  PLACE_VALUE_TEN_EXCHANGE_GENERATOR_VERSION,
+  generatePlaceValueTenExchangeItems,
+  placeValueExchangeIdeas
+} from "./item-generators/place-value-ten-exchange.js";
+export {
+  REPEATING_PATTERN_UNIT_GENERATOR_ID,
+  REPEATING_PATTERN_UNIT_GENERATOR_VERSION,
+  generateRepeatingPatternUnitItems
+} from "./item-generators/repeating-pattern-unit.js";
+export {
+  MULTIPLICATION_ARRAY_MEANING_GENERATOR_ID,
+  MULTIPLICATION_ARRAY_MEANING_GENERATOR_VERSION,
+  generateMultiplicationArrayMeaningItems
+} from "./item-generators/multiplication-array-meaning.js";
+export {
+  PROBABILITY_BAG_PAIR_GENERATOR_ID,
+  PROBABILITY_BAG_PAIR_GENERATOR_VERSION,
+  generateProbabilityBagPairItems
+} from "./item-generators/probability-bag-pair.js";
 export {
   equivalentFractionBlueprint
 } from "./blueprints/equivalent-fraction.js";
@@ -28,6 +163,11 @@ export {
 export {
   projectFractionComparisonApprovalView
 } from "./blueprints/fraction-comparison.approval-view.js";
+export {
+  BALANCED_EQUATION_GENERATOR_ID,
+  BALANCED_EQUATION_GENERATOR_VERSION,
+  generateBalancedEquationItems
+} from "./item-generators/balanced-equation.js";
 export {
   EQUIVALENT_FRACTION_GENERATOR_ID,
   EQUIVALENT_FRACTION_GENERATOR_VERSION,

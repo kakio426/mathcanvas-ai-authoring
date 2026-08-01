@@ -5,20 +5,48 @@ import {
   type ResolvedVariation,
   type VariationEnvelopeDeclaration
 } from "@mathcanvas/contracts";
+import { balancedEquationCardsVariationEnvelope } from "./balanced-equation-cards.js";
+import { balanceScaleSumVariationEnvelope } from "./balance-scale-sum.js";
 import { equivalentFractionVariationEnvelope } from "./equivalent-fraction.js";
 import { fractionComparisonVariationEnvelope } from "./fraction-comparison.js";
 import { makeTenNumberCardsVariationEnvelope } from "./make-ten-number-cards.js";
+import { clockHourHandBoundaryVariationEnvelope } from "./clock-hour-hand-boundary.js";
+import { elapsedTimeClockPairVariationEnvelope } from "./elapsed-time-clock-pair.js";
+import { sameDenominatorFractionSumVariationEnvelope } from "./same-denominator-fraction-sum.js";
+import { sameDenominatorImproperSumVariationEnvelope } from "./same-denominator-improper-sum.js";
+import { unlikeDenominatorCommonUnitSumVariationEnvelope } from "./unlike-denominator-common-unit-sum.js";
+import { unlikeDenominatorCommonUnitDifferenceVariationEnvelope } from "./unlike-denominator-common-unit-difference.js";
+import { barGraphScaleUnitVariationEnvelope } from "./bar-graph-scale-unit.js";
+import { brokenRulerLengthVariationEnvelope } from "./broken-ruler-length.js";
+import { placeValueTenExchangeVariationEnvelope } from "./place-value-ten-exchange.js";
+import { repeatingPatternUnitVariationEnvelope } from "./repeating-pattern-unit.js";
+import { multiplicationArrayMeaningVariationEnvelope } from "./multiplication-array-meaning.js";
+import { probabilityBagComparisonVariationEnvelope } from "./probability-bag-comparison.js";
 
 export const REGISTERED_VARIATION_ENVELOPES = [
   fractionComparisonVariationEnvelope,
   equivalentFractionVariationEnvelope,
-  makeTenNumberCardsVariationEnvelope
+  makeTenNumberCardsVariationEnvelope,
+  balancedEquationCardsVariationEnvelope,
+  balanceScaleSumVariationEnvelope,
+  clockHourHandBoundaryVariationEnvelope,
+  elapsedTimeClockPairVariationEnvelope,
+  sameDenominatorFractionSumVariationEnvelope,
+  sameDenominatorImproperSumVariationEnvelope,
+  unlikeDenominatorCommonUnitSumVariationEnvelope,
+  unlikeDenominatorCommonUnitDifferenceVariationEnvelope,
+  barGraphScaleUnitVariationEnvelope,
+  brokenRulerLengthVariationEnvelope,
+  placeValueTenExchangeVariationEnvelope,
+  repeatingPatternUnitVariationEnvelope,
+  multiplicationArrayMeaningVariationEnvelope,
+  probabilityBagComparisonVariationEnvelope
 ] as const;
 
 export const REGISTERED_VARIATION_COMBINATION_COUNT =
   assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
 
-if (REGISTERED_VARIATION_COMBINATION_COUNT !== 54) {
+if (REGISTERED_VARIATION_COMBINATION_COUNT !== 89) {
   throw new Error(
     `registered-variation-suite-drift:${REGISTERED_VARIATION_COMBINATION_COUNT}`
   );

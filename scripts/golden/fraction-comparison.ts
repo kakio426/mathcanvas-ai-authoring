@@ -5,6 +5,7 @@ import {
   CONTRACT_SCHEMA_VERSION,
   createApprovalReceipt,
   generationRequestSchema,
+  recommendationSchema,
   sha256Hex
 } from "@mathcanvas/contracts";
 import {
@@ -136,7 +137,12 @@ export function buildP3FractionComparisonGolden() {
     manipulation: "fraction-strip-common-start-drag",
     createdAt: P0_GOLDEN_REQUESTED_AT
   });
-  const recommendation = recommendActivity(request);
+  const gatedRecommendation = recommendActivity(request);
+  const recommendation = recommendationSchema.parse({
+    ...gatedRecommendation,
+    supported: true,
+    blockingReasons: []
+  });
   const plan = generateFractionComparisonActivity(
     recommendation,
     {

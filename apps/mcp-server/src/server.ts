@@ -40,16 +40,16 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     { name: "mathcanvas-ai-authoring", version: "0.2.0" },
     {
       instructions:
-        "처음에는 mathcanvas_open_workspace로 MathCanvas 전용 Chrome을 여세요. 교사가 그 창에서 로그인하고 ‘내 캔버스’까지 이동하면 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정 도구는 제공하지 않습니다."
+        "처음에는 mathcanvas_open_workspace로 로그인 상태를 확인하세요. 로그인이 필요하면 전용 로그인 절차를 안내하고, 완료 후 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정 도구는 제공하지 않습니다."
     }
   );
 
   server.registerTool(
     "mathcanvas_open_workspace",
     {
-      title: "MathCanvas 전용 Chrome 열기",
+      title: "MathCanvas 로그인 상태 확인",
       description:
-        "이 도구만 사용하는 전용 Chrome 창을 열고 MathCanvas 로그인 화면을 보여 줍니다. 프로젝트를 만들거나 수정하지 않습니다.",
+        "전용 headless Chrome에서 MathCanvas 로그인 상태를 확인합니다. 사용자 화면을 점유하거나 프로젝트를 만들거나 수정하지 않습니다.",
       inputSchema: z.object({}).strict(),
       annotations: {
         readOnlyHint: false,
@@ -115,7 +115,17 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
             .enum([
               "fraction-strip-common-start-drag",
               "equivalent-fraction-strip-match",
-              "number-card-make-ten-drag"
+              "number-card-make-ten-drag",
+              "number-card-balanced-equation-drag",
+              "balance-scale-sum-card-drag",
+              "clock-hour-hand-boundary-drag",
+              "elapsed-time-clock-pair-drag",
+              "same-denominator-fraction-sum-drag",
+              "same-denominator-improper-sum-drag",
+              "unlike-denominator-common-unit-drag",
+              "unlike-denominator-common-unit-difference-drag",
+              "bar-graph-scale-unit-drag",
+              "length-unit-iteration-drag"
             ])
             .optional()
         })

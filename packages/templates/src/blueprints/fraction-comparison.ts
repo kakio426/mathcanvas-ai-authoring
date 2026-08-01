@@ -23,7 +23,7 @@ const block = (
 export const fractionComparisonBlueprint = defineActivityBlueprint({
   schemaVersion: "1.0.0",
   id: VERIFIED_TEMPLATE_ID,
-  version: "1.0.0",
+  version: "1.1.0",
   title: "분수 띠로 크기 비교하기",
   learningObjective:
     "분모가 다른 분수의 크기를 비교하고 그 방법을 설명할 수 있다.",
@@ -53,8 +53,8 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "활동의 핵심 조작을 안내합니다.",
       properties: {
-        text: "분수 띠를 같은 출발선에 놓아요.",
-        fontSize: 48
+        text: "① 분수 띠를 옮기기 전에, 알맞다고 생각한 기호를 써 보세요.",
+        fontSize: 42
       },
       bindings: {}
     },
@@ -69,8 +69,8 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "비교 기호 선택을 안내합니다.",
       properties: {
-        text: "두 띠의 길이를 보고 기호를 놓아요.",
-        fontSize: 38
+        text: "② 두 분수 띠를 같은 출발선에 놓고 길이를 비교해 보세요.",
+        fontSize: 36
       },
       bindings: {}
     },
@@ -85,8 +85,8 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "수학적 이유 설명을 안내합니다.",
       properties: {
-        text: "고른 기호를 띠의 길이와 같은 전체를 근거로 설명하세요.",
-        fontSize: 38
+        text: "③ 알맞은 기호를 놓고, 그렇게 생각한 까닭을 써 보세요.",
+        fontSize: 36
       },
       bindings: {}
     },
@@ -102,6 +102,33 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       instructionalIntent: "문항 조작 영역의 시각적 경계를 제공합니다.",
       properties: { fill: "#F7FAFF", stroke: "#65758B" },
       bindings: {}
+    },
+    {
+      role: "choice-pool",
+      scope: "each-item",
+      layoutRole: "choice-pool",
+      idRole: "choice-pool",
+      toolKey: "common.rectangle",
+      intentKind: "draw-rectangle",
+      locked: true,
+      movable: false,
+      instructionalIntent: "비교 기호를 하나의 선택 묶음으로 구분합니다.",
+      properties: { fill: "#F7FAFF", stroke: "#65758B" },
+      bindings: {}
+    },
+    {
+      role: "choice-pool-label",
+      scope: "each-item",
+      layoutRole: "choice-pool-label",
+      idRole: "choice-pool-label",
+      toolKey: "common.text",
+      intentKind: "text",
+      locked: true,
+      movable: false,
+      instructionalIntent: "학생이 고를 비교 기호 묶음을 안내합니다.",
+      properties: { text: "비교 기호", fontSize: 22 },
+      bindings: {},
+      containerRole: "choice-pool"
     },
     {
       role: "number",
@@ -141,7 +168,7 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "조작 전 관계를 먼저 예상하도록 안내합니다.",
-      properties: { text: "먼저 예상", fontSize: 24 },
+      properties: { text: "예상한 기호", fontSize: 24 },
       bindings: {},
       containerRole: "mat"
     },
@@ -189,7 +216,7 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "첫 번째 띠의 목표 위치를 표시합니다.",
-      properties: { text: "첫째 띠", fontSize: 24 },
+      properties: { text: "첫째 띠", fontSize: 20 },
       bindings: {},
       containerRole: "mat"
     },
@@ -220,7 +247,7 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "두 번째 띠의 목표 위치를 표시합니다.",
-      properties: { text: "둘째 띠", fontSize: 24 },
+      properties: { text: "둘째 띠", fontSize: 20 },
       bindings: {},
       containerRole: "mat"
     },
@@ -264,7 +291,7 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "비교 기호의 목표 위치를 안내합니다.",
-      properties: { text: "기호 놓는 곳", fontSize: 26 },
+      properties: { text: "기호 놓기", fontSize: 26 },
       bindings: {},
       containerRole: "mat"
     },
@@ -278,7 +305,7 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "수학적 근거를 쓰는 영역을 안내합니다.",
-      properties: { text: "근거와 수정", fontSize: 24 },
+      properties: { text: "비교한 까닭", fontSize: 24 },
       bindings: {},
       containerRole: "mat"
     },
@@ -390,7 +417,22 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
           "once",
           { flowGroup: "instructions" }
         ),
-        block("mat", "band", "item.panel", "each-item"),
+        block("mat", "band", "item.panel", "each-item", {
+          flowGroup: "item-primary-flow"
+        }),
+        block(
+          "choice-pool",
+          "band",
+          "item.choice-pool",
+          "each-item",
+          { flowGroup: "item-primary-flow" }
+        ),
+        block(
+          "choice-pool-label",
+          "slot",
+          "item.choice-pool-label",
+          "each-item"
+        ),
         block("number", "slot", "item.number", "each-item"),
         block("prompt", "slot", "item.prompt", "each-item"),
         block(
@@ -593,13 +635,92 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
           "start-line"
         ]
       }
+    },
+    {
+      kind: "language.classroom-korean",
+      parameters: {
+        instructionRoles: [
+          "instruction-main",
+          "instruction-symbol",
+          "instruction-explain"
+        ],
+        labelRoles: [
+          "prediction-label",
+          "left-lane-label",
+          "right-lane-label",
+          "relation-slot-label",
+          "explanation-label",
+          "choice-pool-label"
+        ],
+        maximumInstructionLength: 80,
+        maximumLabelLength: 12
+      }
+    },
+    {
+      kind: "visual.text-fit",
+      parameters: {
+        roles: [
+          "instruction-main",
+          "instruction-symbol",
+          "instruction-explain",
+          "prediction-label",
+          "left-lane-label",
+          "right-lane-label",
+          "relation-slot-label",
+          "explanation-label",
+          "choice-pool-label"
+        ],
+        maximumFillRatio: 0.96
+      }
+    },
+    {
+      kind: "visual.labeled-pool-row",
+      parameters: {
+        labelRole: "choice-pool-label",
+        memberRoles: [
+          "less-symbol",
+          "equal-symbol",
+          "greater-symbol"
+        ],
+        containerRole: "choice-pool",
+        rowCenterTolerance: 2,
+        gapTolerance: 2,
+        groupCenterTolerance: 2,
+        labelAlignmentTolerance: 2,
+        minimumLabelGap: 12,
+        maximumLabelGap: 24
+      }
+    },
+    {
+      kind: "visual.no-overlap",
+      parameters: {
+        roles: [
+          "number",
+          "prompt",
+          "prediction-label",
+          "prediction-box",
+          "left-lane-surface",
+          "left-lane-label",
+          "right-lane-surface",
+          "right-lane-label",
+          "relation-slot-surface",
+          "relation-slot-label",
+          "explanation-label",
+          "explanation-box",
+          "choice-pool-label",
+          "left-strip",
+          "right-strip",
+          "less-symbol",
+          "equal-symbol",
+          "greater-symbol"
+        ]
+      }
     }
   ],
   instructions: [
-    "띠를 옮기기 전에 <, =, > 중 하나를 먼저 예상해 쓰세요.",
-    "두 분수 띠를 같은 출발선에 놓아 확인하세요.",
-    "띠의 길이를 보고 알맞은 기호 하나를 고르세요.",
-    "예상과 달랐다면 고친 뒤, 같은 전체와 길이를 근거로 설명하세요."
+    "분수 띠를 옮기기 전에, <, =, > 중 알맞다고 생각한 기호를 써 보세요.",
+    "두 분수 띠를 같은 출발선에 놓고 길이를 비교해 보세요.",
+    "알맞은 기호를 놓고, 그렇게 생각한 까닭을 써 보세요."
   ],
   payload: {
     categoryId:

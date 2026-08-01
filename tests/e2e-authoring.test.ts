@@ -1,3 +1,6 @@
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   CreationJobStore,
@@ -5,9 +8,12 @@ import {
   type MathCanvasBrowserRuntime
 } from "@mathcanvas/managed-browser";
 import { MathCanvasAuthoringService } from "../apps/mcp-server/src/service.js";
+import {
+  writeVerifiedDraftFixture
+} from "./helpers/verified-draft-fixture.js";
 
 describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
-  it("교사 승인 뒤 관리형 브라우저가 한 번만 생성하고 편집 URL을 돌려준다", async () => {
+  it("출시 추천안은 승인 뒤 한 번만 생성하고 편집 URL을 반환한다", async () => {
     const now = new Date("2026-07-29T06:00:00.000Z");
     const clock = { now: () => now };
     let creationCalls = 0;
@@ -38,25 +44,22 @@ describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
       },
       async close() {}
     };
+    const directory = mkdtempSync(
+      join(tmpdir(), "mathcanvas-e2e-verified-")
+    );
+    const draft = writeVerifiedDraftFixture(directory, now);
     const service = new MathCanvasAuthoringService(
       runtime,
       new CreationJobStore(),
-      clock
+      clock,
+      { draftSnapshotPath: draft.snapshotPath }
     );
 
     expect((await service.checkConnection()).ready).toBe(true);
-    const draft = service.recommend({
-      prompt:
-        "분모가 다른 분수의 크기를 분수 띠로 직접 비교하는 활동지를 만들어 주세요.",
-      requestedGrade: 5,
-      problemCount: 4,
-      difficulty: "normal"
-    });
-    expect(draft.supported).toBe(true);
 
     const creation = await service.createNewProject({
-      draftId: draft.draftId!,
-      activitySpecHash: draft.activitySpecHash!,
+      draftId: draft.draftId,
+      activitySpecHash: draft.activitySpecHash,
       teacherConfirmed: true
     });
     expect(creation).toMatchObject({
@@ -74,10 +77,9 @@ describe("추천부터 새 편집 화면까지의 모의 전체 흐름", () => {
     expect(JSON.stringify(capturedPayload)).not.toMatch(
       /accessToken|Authorization|Bearer|password/i
     );
-
     await service.createNewProject({
-      draftId: draft.draftId!,
-      activitySpecHash: draft.activitySpecHash!,
+      draftId: draft.draftId,
+      activitySpecHash: draft.activitySpecHash,
       teacherConfirmed: true
     });
     expect(creationCalls).toBe(1);

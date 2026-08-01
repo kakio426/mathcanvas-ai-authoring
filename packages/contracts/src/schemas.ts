@@ -21,7 +21,21 @@ export const denominatorRelationSchema = z.enum([
 export const manipulationSchema = z.enum([
   "fraction-strip-common-start-drag",
   "equivalent-fraction-strip-match",
-  "number-card-make-ten-drag"
+  "number-card-make-ten-drag",
+  "number-card-balanced-equation-drag",
+  "balance-scale-sum-card-drag",
+  "clock-hour-hand-boundary-drag",
+  "elapsed-time-clock-pair-drag",
+  "same-denominator-fraction-sum-drag",
+  "same-denominator-improper-sum-drag",
+  "unlike-denominator-common-unit-drag",
+  "unlike-denominator-common-unit-difference-drag",
+  "bar-graph-scale-unit-drag",
+  "length-unit-iteration-drag",
+  "place-value-ten-exchange-drag",
+  "pattern-block-repeat-unit-drag",
+  "multiplication-array-choice-drag",
+  "probability-fraction-strip-drag"
 ]);
 export const gradeBandSchema = z.enum(["1-2", "3-4", "5-6"]);
 
@@ -69,7 +83,12 @@ export const curriculumRecordSchema = z
     key: identifier,
     code: z.string().regex(/^\[[246]수\d{2}-\d{2}\]$/),
     gradeBand: gradeBandSchema,
-    domain: z.literal("수와 연산"),
+    domain: z.enum([
+      "수와 연산",
+      "변화와 관계",
+      "도형과 측정",
+      "자료와 가능성"
+    ]),
     officialGoal: z.string().min(1).max(500),
     prerequisites: z.array(z.string().min(1).max(500)).max(12),
     officialSource: curriculumSourceSchema.refine(

@@ -6,5 +6,6 @@ coverage/
 *.tsbuildinfo
 .mathcanvas-local/
 .mathcanvas-contract-lab/
+.kiro/
 research/mathcanvas/wave1-released-baseline.artifacts.json
 research/mathcanvas/wave1-released-baseline.roundtrip.json

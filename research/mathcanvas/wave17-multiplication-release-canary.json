@@ -1,0 +1,45 @@
+{
+  "blueprintContentHash": "80cf04ea422c3fc5373a0ca0c5de22c7fa569497cd00bd530cf07e144aec03a5",
+  "blueprintId": "number.multiplication.group-array-meaning-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit01",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-expression-and-check-grouped-array",
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "moveDistance": 93.14974513622194,
+    "movedRoleCount": 1,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "df0b51e8ca3d21acd068e156194aab0611abd48c14e6da1d778cf485d82657db",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-01T01:58:25.639Z",
+  "payloadHash": "c2c9d85a740af5bc777cfb753d2e75fcd1155d25935770c85b2c12228049ddc6",
+  "persistedShape": {
+    "arrayTextCount": 2,
+    "candidateCount": 10,
+    "fractionModuleActive": false,
+    "fractionStripCount": 0,
+    "objectCount": 47,
+    "patternBlockCount": 0,
+    "patternModuleActive": false
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave17/multiplication-array.png",
+  "probeId": "wave17-multiplication-release-canary-v1",
+  "problemCount": 2,
+  "projectReferenceHash": "f3d8faa9f304c681192420c6eae126c22cb6f7cb90128601f535bda7cdb971ba",
+  "releasedTools": [],
+  "reopenShape": {
+    "explanationBoxCount": 2,
+    "idCount": 76,
+    "predictionBoxCount": 2,
+    "sourceRoleCount": 2,
+    "targetRoleCount": 2
+  },
+  "reusedExisting": true,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

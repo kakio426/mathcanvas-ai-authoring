@@ -2,7 +2,7 @@ import type { LayoutPreset } from "@mathcanvas/contracts";
 
 export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
   itemOriginY: 360,
-  itemPitch: 720,
+  itemPitch: 760,
   canvasBaseHeight: 440,
   minGap: 24,
   tokens: {
@@ -41,7 +41,21 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       x: 380,
       y: 20,
       width: 1640,
-      height: 450
+      height: 500
+    },
+    "item.choice-pool": {
+      scope: "item",
+      x: 940,
+      y: 544,
+      width: 520,
+      height: 180
+    },
+    "item.choice-pool-label": {
+      scope: "item",
+      x: 1000,
+      y: 556,
+      width: 160,
+      height: 32
     },
     "item.number": {
       scope: "item",
@@ -78,37 +92,37 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
     "item.left-lane": {
       scope: "item",
       x: 740,
-      y: 130,
+      y: 190,
       width: 640,
       height: 80
     },
     "item.left-lane-label": {
       scope: "item",
       relativeTo: "item.panel",
-      x: 130,
-      y: 120,
-      width: 70,
+      x: 220,
+      y: 180,
+      width: 100,
       height: 50
     },
     "item.right-lane": {
       scope: "item",
       x: 740,
-      y: 240,
+      y: 300,
       width: 640,
       height: 80
     },
     "item.right-lane-label": {
       scope: "item",
       relativeTo: "item.panel",
-      x: 130,
-      y: 230,
-      width: 70,
+      x: 220,
+      y: 290,
+      width: 100,
       height: 50
     },
     "item.start-line": {
       scope: "item",
       x: 732,
-      y: 130,
+      y: 190,
       width: 16,
       height: 190
     },
@@ -131,7 +145,7 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       scope: "item",
       relativeTo: "item.panel",
       x: 30,
-      y: 354,
+      y: 404,
       width: 170,
       height: 42
     },
@@ -139,42 +153,42 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       scope: "item",
       relativeTo: "item.panel",
       x: 210,
-      y: 338,
+      y: 388,
       width: 1180,
       height: 90
     },
     "item.left-source": {
       scope: "item",
       x: 260,
-      y: 520,
+      y: 580,
       width: 640,
       height: 80
     },
     "item.right-source": {
       scope: "item",
       x: 1500,
-      y: 520,
+      y: 580,
       width: 640,
       height: 80
     },
     "item.less-choice": {
       scope: "item",
-      x: 970,
-      y: 510,
+      x: 1000,
+      y: 604,
       width: 100,
       height: 100
     },
     "item.equal-choice": {
       scope: "item",
-      x: 1120,
-      y: 510,
+      x: 1150,
+      y: 604,
       width: 100,
       height: 100
     },
     "item.greater-choice": {
       scope: "item",
-      x: 1270,
-      y: 510,
+      x: 1300,
+      y: 604,
       width: 100,
       height: 100
     }

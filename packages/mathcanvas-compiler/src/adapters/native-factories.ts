@@ -1,13 +1,23 @@
 import type {
+  AnalogClockIntent,
+  BalanceScaleIntent,
   FractionModelIntent,
   LatexIntent,
   NativeToolPlacement,
   NumberCardIntent,
+  PatternBlockIntent,
+  PlaceValueModelIntent,
   RectangleIntent,
   TextIntent
 } from "./native-tool-contracts.js";
 import { assertReleasedModuleVariant } from "./native-module-variant-contracts.js";
 import { NUMBER_CARD_SVG_BY_VALUE } from "./number-card-digit-contract.js";
+import {
+  NUMBER_CARD_RENDERED_SIZE,
+  PLACE_VALUE_MODEL_RENDERED_DIAMETER,
+  resolveNativeRenderedBounds
+} from "./native-rendered-bounds.js";
+import { PATTERN_BLOCK_VARIANTS } from "./native-pattern-block-contract.js";
 
 export {
   NUMBER_CARD_DIGIT_CONTRACT_EVIDENCE,
@@ -29,6 +39,20 @@ export const FRACTION_SVG_BY_DENOMINATOR: Readonly<Record<number, string>> = {
   11: "NO03FM-21",
   12: "NO03FM-22"
 };
+
+export const PLACE_VALUE_SVG_BY_VALUE = {
+  100: "NO04PD-03",
+  10: "NO04PD-04",
+  1: "NO04PD-05"
+} as const satisfies Readonly<Record<PlaceValueModelIntent["value"], string>>;
+
+const PLACE_VALUE_FILL_BY_VALUE = {
+  100: "#7FD50F",
+  10: "#18C5FF",
+  1: "#FF5862"
+} as const satisfies Readonly<Record<PlaceValueModelIntent["value"], string>>;
+
+const ANALOG_CLOCK_DESIGN_DIAMETER = 360;
 
 const objectCommon = {
   rx: 0,
@@ -77,12 +101,14 @@ export function makeFractionObject(
   const cx = (geometricWidth - perWidth) / 2;
   const left = -perWidth / 2;
   const right = geometricWidth - perWidth / 2;
+  const x = placement.x + perWidth / 2;
+  const y = placement.y + placement.height / 2;
   return {
     ...objectCommon,
-    x: placement.x,
-    y: placement.y,
-    _x: placement.x,
-    _y: placement.y,
+    x,
+    y,
+    _x: x,
+    _y: y,
     cx,
     cy: 0,
     id: placement.id,
@@ -99,7 +125,7 @@ export function makeFractionObject(
       isResizeHandle: false
     },
     divider: denominator,
-    isEyeOn: true,
+    isEyeOn: intent.showLabel !== false,
     perWidth,
     isDecimal: false,
     coordinates: [
@@ -124,10 +150,13 @@ export function makeNumberCardObject(
     throw new Error(`Unsupported number card value: ${intent.value}`);
   }
   assertReleasedModuleVariant("NO04NT", svgId);
+  const halfSize = NUMBER_CARD_RENDERED_SIZE / 2;
+  const x = placement.x + placement.width / 2;
+  const y = placement.y + placement.height / 2;
   return {
     ...objectCommon,
-    x: placement.x,
-    y: placement.y,
+    x,
+    y,
     _x: 0,
     _y: 0,
     cx: 0,
@@ -144,10 +173,251 @@ export function makeNumberCardObject(
     isHorizontalFlip: true,
     isVerticalFlip: true,
     coordinates: [
-      [-40, -40],
-      [40, -40],
-      [40, 40],
-      [-40, 40]
+      [-halfSize, -halfSize],
+      [halfSize, -halfSize],
+      [halfSize, halfSize],
+      [-halfSize, halfSize]
+    ]
+  };
+}
+
+export function makePlaceValueModelObject(
+  intent: PlaceValueModelIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  const svgId = PLACE_VALUE_SVG_BY_VALUE[intent.value];
+  if (!svgId) {
+    throw new Error(`place-value-model-unsupported-value:${intent.value}`);
+  }
+  assertReleasedModuleVariant("NO04PD", svgId);
+  const radius = PLACE_VALUE_MODEL_RENDERED_DIAMETER / 2;
+  const x = placement.x + placement.width / 2;
+  const y = placement.y + placement.height / 2;
+  return {
+    ...objectCommon,
+    x,
+    y,
+    _x: 0,
+    _y: 0,
+    cx: 0,
+    cy: 0,
+    id: placement.id,
+    fill: PLACE_VALUE_FILL_BY_VALUE[intent.value],
+    svgId,
+    parent: {},
+    count: 1,
+    n: intent.value,
+    r: radius,
+    numberFrameSnap: true,
+    isEyeOn: false,
+    isFillChange: false,
+    isMoveRotateHandler: false,
+    coordinates: [
+      [-radius, -radius],
+      [radius, -radius],
+      [radius, radius],
+      [-radius, radius]
+    ]
+  };
+}
+
+export function makePatternBlockObject(
+  intent: PatternBlockIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  const contract = PATTERN_BLOCK_VARIANTS[intent.variant];
+  if (!contract) {
+    throw new Error(`pattern-block-variant-unsupported:${intent.variant}`);
+  }
+  assertReleasedModuleVariant("SM02PB", contract.svgId);
+  const x = placement.x + placement.width / 2;
+  const y = placement.y + placement.height / 2;
+  const coordinates = contract.coordinates.map((point) => [...point]);
+  const rendered = resolveNativeRenderedBounds(intent, placement);
+  const surroundCoordinates = [
+    [rendered.x - x, rendered.y - y],
+    [rendered.x + rendered.width - x, rendered.y - y],
+    [rendered.x + rendered.width - x, rendered.y + rendered.height - y],
+    [rendered.x - x, rendered.y + rendered.height - y]
+  ];
+  return {
+    ...objectCommon,
+    x,
+    y,
+    _x: x,
+    _y: y,
+    cx: 0,
+    cy: 0,
+    id: placement.id,
+    svgId: contract.svgId,
+    color: contract.color,
+    coordinates,
+    surroundCoordinates,
+    isMoveRotateHandler: true,
+    isHorizontalFlip: true,
+    isVerticalFlip: true,
+    isBluePrint: true
+  };
+}
+
+export function makeBalanceScaleObject(
+  intent: BalanceScaleIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  if (intent.initialDirection !== "left") {
+    throw new Error(
+      `balance-scale-initial-direction-invalid:${intent.initialDirection}`
+    );
+  }
+  assertReleasedModuleVariant("CR07BS", "CR07BS-01");
+  const x = placement.x + placement.width / 2;
+  const y = placement.y + placement.height - 110;
+  const leftLine = "M143,15 L143,87 L575,37 L575,-35";
+  const rightLine = "M143,-35 L143,37 L575,87 L575,15";
+  const defaultLine = "M143,-10 L143,62 L575,62 L575,-10";
+  return {
+    ...objectCommon,
+    x,
+    y,
+    _x: x,
+    _y: y,
+    cx: 0,
+    cy: 0,
+    id: placement.id,
+    fill: "#ffffff",
+    svgId: "CR07BS-01",
+    parent: {
+      variation: 25,
+      mouseX: 0,
+      mouseY: 0,
+      isEquilibriumHandle: false,
+      isPlateMoveHandle: false
+    },
+    coordinates: [],
+    playgroundIndex: 0,
+    isEyeOn: false,
+    isFillChange: false,
+    isMoveRotateHandler: false,
+    leftArr: [
+      [15, -35],
+      [264, -35],
+      [264, -275],
+      [15, -275]
+    ],
+    rightArr: [
+      [445, -35],
+      [694, -35],
+      [694, -275],
+      [445, -275]
+    ],
+    leftIncluded: [],
+    rightIncluded: [],
+    leftArea: [],
+    rightArea: [],
+    mouseX: 0,
+    mouseY: 0,
+    defaultTransFromX: -356,
+    defaultTransFromY: -61,
+    leftLine,
+    rightLine,
+    defaultLine,
+    line: leftLine,
+    plate: { left: 25, right: -25 },
+    canEquilibrium: false
+  };
+}
+
+export function makeAnalogClockObject(
+  intent: AnalogClockIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  if (
+    !Number.isInteger(intent.hours) ||
+    intent.hours < 1 ||
+    intent.hours > 12 ||
+    !Number.isInteger(intent.minutes) ||
+    intent.minutes < 0 ||
+    intent.minutes > 59 ||
+    intent.clockType !== "geared" ||
+    intent.isWorking !== false
+  ) {
+    throw new Error(
+      `analog-clock-time-invalid:${intent.hours}:${intent.minutes}`
+    );
+  }
+  assertReleasedModuleVariant("SM02AD", "SM02AD-01");
+  const size = Math.min(placement.width, placement.height);
+  const radius = ANALOG_CLOCK_DESIGN_DIAMETER / 2;
+  const clockScale = size / ANALOG_CLOCK_DESIGN_DIAMETER;
+  const x = placement.x + (placement.width - size) / 2;
+  const y = placement.y + (placement.height - size) / 2;
+  return {
+    ...objectCommon,
+    x,
+    y,
+    _x: x,
+    _y: y,
+    cx: 0,
+    cy: 0,
+    id: placement.id,
+    fill: "#97A0B5",
+    svgId: "SM02AD-01",
+    type: "geared",
+    parent: {
+      beforeHours: null,
+      boundingClientRect: null,
+      changeTypeToggle: false,
+      clocks: null,
+      connectToggle: false,
+      curClockType: null,
+      currentAngle: null,
+      defaultAngle: null,
+      defaultScale: null,
+      defaultX: null,
+      defaultY: null,
+      draggingHandle: null,
+      editToggle: false,
+      element: null,
+      hours: 2,
+      isCulAnalog: null,
+      isSizeHandle: null,
+      minuteGuidePrevMinute: null,
+      minuteGuideRevolutionCount: null,
+      minuteGuideToggle: false,
+      minutes: 30,
+      mirrorToggle: false,
+      observer: null,
+      revolutionCount: null,
+      seconds: 0,
+      startMinuteGuide: false,
+      syncClock: null
+    },
+    r: radius,
+    hours: intent.hours,
+    minutes: intent.minutes,
+    seconds: 0,
+    timer: null,
+    isWorking: false,
+    isFirst: false,
+    isAm: false,
+    halfOrFull: "half",
+    clockScale,
+    clickPlace: 0,
+    addMinutes: 0,
+    defaultHours: null,
+    defaultMinutes: null,
+    revolutionCount: 0,
+    globalCentroidFlg: true,
+    hasMirror: false,
+    isMinutesGuide: false,
+    isEyeOn: false,
+    isMoveRotateHandler: false,
+    coordinates: [[radius, radius]],
+    surroundCoordinates: [
+      [0, 0],
+      [ANALOG_CLOCK_DESIGN_DIAMETER, 0],
+      [ANALOG_CLOCK_DESIGN_DIAMETER, ANALOG_CLOCK_DESIGN_DIAMETER],
+      [0, ANALOG_CLOCK_DESIGN_DIAMETER]
     ]
   };
 }
@@ -215,8 +485,10 @@ export function makeRectangleObject(
   intent: RectangleIntent,
   placement: NativeToolPlacement
 ): Record<string, unknown> {
-  const point2X = placement.x + placement.width;
-  const point2Y = placement.y + placement.height;
+  const rendered = resolveNativeRenderedBounds(intent, placement);
+  const point1X = rendered.x;
+  const point2X = rendered.x + rendered.width;
+  const point2Y = rendered.y + rendered.height;
   const stroke = intent.stroke ?? "#8A94A6";
   const strokeDashArray = intent.strokeDashArray ?? "none";
   return {
@@ -244,15 +516,15 @@ export function makeRectangleObject(
       isCurveHandler: false,
       isRadiusHandler: false
     },
-    point1: [placement.x, placement.y],
+    point1: [point1X, rendered.y],
     point2: [point2X, point2Y],
     radius: 12,
     stroke,
     coordinates: [
-      [placement.x, placement.y],
-      [point2X, placement.y],
+      [point1X, rendered.y],
+      [point2X, rendered.y],
       [point2X, point2Y],
-      [placement.x, point2Y]
+      [point1X, point2Y]
     ],
     curveOffset: 0,
     strokeWidth: 2,

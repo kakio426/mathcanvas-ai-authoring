@@ -98,7 +98,7 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(result.structuredContent)).toContain("내 캔버스");
   });
 
-  it("추천 도구가 로컬 draft와 승인 안내를 반환한다", async () => {
+  it("출시 활동 추천은 로컬 draft와 승인 안내를 반환한다", async () => {
     const client = await connectedClient();
     const result = await client.callTool({
       name: "mathcanvas_recommend_activity",

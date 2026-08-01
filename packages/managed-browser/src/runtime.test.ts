@@ -90,6 +90,7 @@ describe("관리형 Chrome 런타임", () => {
     let launchedDirectory = "";
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-dedicated-profile",
+      headless: false,
       launcher: async (directory) => {
         launchedDirectory = directory;
         return context;
@@ -119,6 +120,7 @@ describe("관리형 Chrome 런타임", () => {
     ]);
     const mixedRuntime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-interactive-page",
+      headless: false,
       launcher: async () => mixedContext
     });
     await mixedRuntime.openWorkspace();
@@ -127,13 +129,14 @@ describe("관리형 Chrome 런타임", () => {
     await mixedRuntime.close();
   });
 
-  it("외부 쓰기 직전 연결을 검사하고 성공 편집 탭을 연다", async () => {
+  it("외부 쓰기 직전 연결을 검사하고 포커스 이동 없이 편집 링크를 반환한다", async () => {
     const workspace = new FakePage(
       "https://mathcanvas.vivasam.com/ko/myCanvas"
     );
     const context = new FakeContext([workspace]);
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-create",
+      headless: true,
       launcher: async () => context,
       now: () => new Date("2026-07-29T07:00:01.000Z")
     });
@@ -151,21 +154,42 @@ describe("관리형 Chrome 런타임", () => {
       projectId: "P_runtime",
       editorUrl: "https://mathcanvas.vivasam.com/ko/view/P_runtime"
     });
-    expect(context.tabs).toHaveLength(2);
-    expect(context.tabs[1]?.navigations).toEqual([
-      "https://mathcanvas.vivasam.com/ko/view/P_runtime"
-    ]);
-    expect(context.tabs[1]?.broughtToFront).toBe(1);
+    expect(context.tabs).toHaveLength(1);
+    expect(workspace.broughtToFront).toBe(0);
     expect(workspace.evaluationArguments[0]).toMatchObject({
       verifyStaticContract: true,
       requiredModules: ["NO04NT", "input-text"]
     });
   });
 
+  it("생성 직전 로그인이 만료되면 headless 프로필을 놓는다", async () => {
+    const context = new FakeContext([
+      new FakePage(
+        "https://mathcanvas.vivasam.com/ko/myCanvas",
+        { state: "login-required", detailCode: "auth-required" }
+      )
+    ]);
+    const runtime = new ManagedChromeRuntime({
+      userDataDirectory: "/tmp/mathcanvas-runtime-auth-expired",
+      headless: true,
+      launcher: async () => context
+    });
+    const payload = { projectTitle: "로그인 만료 확인" };
+
+    await expect(
+      runtime.createProject(payload, sha256Hex(payload))
+    ).resolves.toMatchObject({
+      ok: false,
+      errorCode: "auth-required"
+    });
+    expect(context.closed).toBe(true);
+  });
+
   it("payload가 바뀌면 브라우저에 전달하기 전에 중단한다", async () => {
     let launches = 0;
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-hash",
+      headless: true,
       launcher: async () => {
         launches += 1;
         return new FakeContext([]);
@@ -185,6 +209,7 @@ describe("관리형 Chrome 런타임", () => {
   it("Chrome 실행 실패를 민감한 오류 원문 없이 반환한다", async () => {
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-fail",
+      headless: true,
       launcher: async () => {
         throw new Error("sensitive local path");
       }
@@ -201,6 +226,7 @@ describe("관리형 Chrome 런타임", () => {
     const context = new FakeContext([initialPage]);
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-self-heal",
+      headless: false,
       launcher: async () => context
     });
 
@@ -216,6 +242,7 @@ describe("관리형 Chrome 런타임", () => {
     );
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-origin",
+      headless: false,
       launcher: async () => new FakeContext([initialPage])
     });
 
@@ -232,6 +259,7 @@ describe("관리형 Chrome 런타임", () => {
     page.evaluateError = new Error("page was closed");
     const runtime = new ManagedChromeRuntime({
       userDataDirectory: "/tmp/mathcanvas-runtime-page-fail",
+      headless: true,
       launcher: async () => new FakeContext([page])
     });
 

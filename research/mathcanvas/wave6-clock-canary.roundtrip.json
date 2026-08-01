@@ -1,0 +1,410 @@
+{
+  "evidenceId": "wave6-clock-canary-roundtrip",
+  "interaction": {
+    "action": "drag-minute-hand-to-55-minutes",
+    "afterHourAngle": 207.5,
+    "afterMinuteAngle": 330,
+    "beforeMinuteAngle": 282,
+    "existingProjectWriteCount": 0,
+    "handAngleResidual": 0,
+    "transientOnly": true
+  },
+  "lifecycle": {
+    "createdProjectCount": 1,
+    "existingProjectWriteCount": 0,
+    "identityPreserved": true,
+    "recoveryState": "save-completed-before-evidence-finalization",
+    "reopenedObjectCount": 2,
+    "saveCount": 1,
+    "savedObjectCount": 2,
+    "serverNormalizationFields": [
+      "parent"
+    ],
+    "stoppedTimePreserved": true,
+    "wirePreservedAfterKnownNormalization": true
+  },
+  "observedAt": "2026-07-31T09:46:50.118Z",
+  "savedWireExamples": [
+    {
+      "_x": 809.7973022460938,
+      "_y": 1465.365966796875,
+      "addMinutes": 0,
+      "clickCount": 1,
+      "clickPlace": 0,
+      "clockScale": 1,
+      "coordinates": [
+        [
+          180,
+          180
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "defaultHours": null,
+      "defaultMinutes": null,
+      "elemSplice": false,
+      "fill": "#97A0B5",
+      "fillOpacity": 1,
+      "globalCentroidFlg": true,
+      "groupId": "",
+      "halfOrFull": "half",
+      "hasMirror": false,
+      "hours": 6,
+      "id": "<object-id:SM02AD-01>",
+      "initSizeScale": 1,
+      "isAm": false,
+      "isBluePrint": false,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": false,
+      "isFillChange": true,
+      "isFirst": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMinutesGuide": false,
+      "isMoveRotateHandler": false,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "isWorking": false,
+      "minutes": 43,
+      "parent": {
+        "beforeHours": null,
+        "boundingClientRect": null,
+        "changeTypeToggle": false,
+        "clocks": null,
+        "connectToggle": false,
+        "curClockType": null,
+        "currentAngle": null,
+        "defaultAngle": null,
+        "defaultScale": null,
+        "defaultX": 998.4639892578124,
+        "defaultY": 1622.365966796875,
+        "draggingHandle": null,
+        "editToggle": false,
+        "element": null,
+        "hours": 2,
+        "isCulAnalog": null,
+        "isSizeHandle": null,
+        "minuteGuidePrevMinute": null,
+        "minuteGuideRevolutionCount": null,
+        "minuteGuideToggle": false,
+        "minutes": 30,
+        "mirrorToggle": false,
+        "observer": {},
+        "revolutionCount": null,
+        "seconds": 0,
+        "startMinuteGuide": false,
+        "syncClock": null
+      },
+      "playgroundIndex": 1,
+      "r": 180,
+      "revolutionCount": 0,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "seconds": 22,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "surroundCoordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          360,
+          0
+        ],
+        [
+          360,
+          360
+        ],
+        [
+          0,
+          360
+        ]
+      ],
+      "svgId": "SM02AD-01",
+      "timer": 9,
+      "type": "geared",
+      "x": 809.7973022460938,
+      "y": 1465.365966796875
+    },
+    {
+      "_x": 843.7973022460938,
+      "_y": 1606.115966796875,
+      "clickCount": 1,
+      "clockScale": 1,
+      "connectedClockId": null,
+      "coordinates": [
+        [
+          0,
+          0
+        ],
+        [
+          286,
+          0
+        ],
+        [
+          286,
+          120
+        ],
+        [
+          0,
+          120
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "digitToSegment": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1
+        ]
+      ],
+      "elemSplice": false,
+      "fill": "#97A0B5",
+      "fillOpacity": 1,
+      "globalCentroidFlg": true,
+      "groupId": "",
+      "halfOrFull": "half",
+      "height": 120,
+      "hours": "18",
+      "id": "<object-id:SM02AD-02>",
+      "initSizeScale": 1,
+      "inputTime": [
+        "",
+        "",
+        ""
+      ],
+      "inputType": null,
+      "isAm": false,
+      "isBluePrint": false,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": false,
+      "isFillChange": true,
+      "isFirst": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": false,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "isWorking": false,
+      "minutes": "43",
+      "newHours": "06",
+      "opacity": 1,
+      "parent": {
+        "beforeHours": null,
+        "boundingClientRect": null,
+        "changeTypeToggle": false,
+        "clocks": null,
+        "connectToggle": false,
+        "curClockType": null,
+        "currentAngle": null,
+        "defaultAngle": null,
+        "defaultScale": null,
+        "defaultX": 1000.4639282226562,
+        "defaultY": 1667.615966796875,
+        "draggingHandle": null,
+        "editToggle": false,
+        "element": null,
+        "hours": 2,
+        "isCulAnalog": null,
+        "isSizeHandle": null,
+        "minuteGuidePrevMinute": null,
+        "minuteGuideRevolutionCount": null,
+        "minuteGuideToggle": false,
+        "minutes": 30,
+        "mirrorToggle": false,
+        "observer": {},
+        "revolutionCount": null,
+        "seconds": 0,
+        "startMinuteGuide": false,
+        "syncClock": null
+      },
+      "playgroundIndex": 1,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "seconds": "23",
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "surroundCoordinates": [
+        [
+          -2,
+          0
+        ],
+        [
+          290,
+          0
+        ],
+        [
+          290,
+          120
+        ],
+        [
+          -2,
+          120
+        ]
+      ],
+      "svgId": "SM02AD-02",
+      "timer": 16,
+      "type": "geared",
+      "visibleSeconds": false,
+      "width": 286,
+      "x": 843.7973022460938,
+      "y": 1606.115966796875
+    }
+  ],
+  "schemaVersion": "1.0.0",
+  "scope": {
+    "category": "도형과 측정",
+    "categoryId": "kaplNGyBBd",
+    "moduleKey": "SM02AD",
+    "observedName": "시계"
+  },
+  "variants": {
+    "analogGeared": "SM02AD-01",
+    "digital": "SM02AD-02"
+  },
+  "writeBoundary": {
+    "allowedWrites": [
+      {
+        "method": "POST",
+        "path": "/api/project",
+        "recovery": "exact-single-persisted-probe-project",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/project/<redacted-project>",
+        "recovery": "persisted-save-observed",
+        "status": 200
+      }
+    ],
+    "blockedWrites": [
+      {
+        "method": "POST",
+        "path": "https://lc.getunicorn.org/l",
+        "reason": "unexpected-write-blocked"
+      },
+      {
+        "method": "POST",
+        "path": "https://lc.getunicorn.org/l",
+        "reason": "unexpected-write-blocked"
+      }
+    ]
+  }
+}

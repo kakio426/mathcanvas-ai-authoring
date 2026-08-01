@@ -57,6 +57,12 @@ export function validateP3ReleaseCanaryEvidence(evidence) {
       typeof result?.blueprintId !== "string" ||
       !P3_BLUEPRINT_IDS.has(result.blueprintId) ||
       ids.has(result.blueprintId) ||
+      !/^[a-f0-9]{64}$/.test(
+        result?.blueprintContentHash ?? ""
+      ) ||
+      !/^[a-f0-9]{64}$/.test(
+        result?.layoutPresetContentHash ?? ""
+      ) ||
       !P3_CANARY_STATES.includes(result.status) ||
       !/^[a-f0-9]{64}$/.test(result?.payloadHash ?? "") ||
       result?.existingProjectWriteCount !== 0 ||

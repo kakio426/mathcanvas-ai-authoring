@@ -1,0 +1,51 @@
+{
+  "blueprintContentHash": "80e1a9b4f22cfbb9d1df1484e49b9f3111098ad1d36d4864e358b677a91b616d",
+  "blueprintId": "measure.time.clock.hour-hand-boundary-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit03",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "drag-minute-hand-to-generated-minute",
+    "afterHourAngle": 235,
+    "afterMinuteAngle": 300,
+    "existingProjectWriteCount": 0,
+    "handAngleResidual": 0,
+    "itemId": "clock-boundary-1",
+    "startHour": 7,
+    "targetMinute": 50,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "b408f84286a69a49772583c81f5be352959e5b3cf744eba7090de0774711aaa0",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-07-31T10:29:01.992Z",
+  "payloadHash": "5223caffadfcb75b12fdb7f53569becee5347e76bc134d76e068961111a2e177",
+  "persistedShape": {
+    "candidateTextCount": 10,
+    "clockCount": 2,
+    "clockModuleActive": true,
+    "gearedClockCount": 2,
+    "initialMinuteCount": 2,
+    "objectCount": 43,
+    "stoppedClockCount": 2
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave6/clock-boundary.png",
+  "probeId": "wave6-clock-release-canary-v2",
+  "problemCount": 2,
+  "projectReferenceHash": "e1998af9542ed76e33db03fc1b63d81014354628dedb81cab96055bbf81807a6",
+  "releasedTools": [
+    "SM02AD"
+  ],
+  "reopenShape": {
+    "candidateTextCount": 10,
+    "clockCount": 2,
+    "explanationBoxCount": 2,
+    "gearedClockCount": 2,
+    "predictionBoxCount": 2,
+    "visibleClockCount": 2
+  },
+  "reusedExisting": false,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

@@ -1,14 +1,16 @@
 {
-  "observedAt": "2026-07-30T11:42:10.279Z",
+  "observedAt": "2026-07-31T06:24:53.641Z",
   "probeId": "p3-release-canary-v1",
   "results": [
     {
+      "blueprintContentHash": "ac847ba9fd23b713f39134a823b51c816e538d85182251467f03d4220876327c",
       "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
       "createRequestCount": 1,
       "editorPath": "/ko/view/<redacted-project>",
       "existingProjectWriteCount": 0,
-      "payloadHash": "eade7df497d18cdbe10d69b106b3a735ec66c7e37f66984e15e81a07f22dcd23",
-      "projectReferenceHash": "301b2550b0a484162989c6fa44366e6a42b0fb322a4442b8f4128129f20a6870",
+      "layoutPresetContentHash": "e5c1aeaccfda1e20d830f995b88ee661ef0d54750f71fdb4aa02f223acb325af",
+      "payloadHash": "b2c0dffac344c567d13d20955db95e6fef7a2ad157063cf6a6f6ee15c65c1a3c",
+      "projectReferenceHash": "462954e7e699148641f9450fd86b69eb10128eef2f43a42ed51b6534f19cc0f6",
       "status": "pass",
       "variation": {
         "denominatorRelation": "mixed",
@@ -17,12 +19,14 @@
       }
     },
     {
+      "blueprintContentHash": "cdad32cd29656d18549278089570b93ab05cc46fef651d3e0b2955e712ae670f",
       "blueprintId": "fraction.equivalent.same-whole.visual-v1",
       "createRequestCount": 1,
       "editorPath": "/ko/view/<redacted-project>",
       "existingProjectWriteCount": 0,
-      "payloadHash": "ae8c92dac0354f51a098b0ce5a62b31ad3b999ebf3acde6e0360b9e2cc243ed5",
-      "projectReferenceHash": "f832a229c053588cdc18818c3b21d2e860f878b7b968680afad9fe920150ee1b",
+      "layoutPresetContentHash": "be816e47b31b7628923505855ba512a86efd6395e331396576b3faf26af5d674",
+      "payloadHash": "58a9d3140de0eadd09aacdcd10acdb82dda36827f39ae0420f4b0147da954e38",
+      "projectReferenceHash": "2cc27a8fba23550fc4ebae0c1a9b12d8a3d726bc71b4468385ac0c1425d97b44",
       "status": "pass",
       "variation": {
         "difficulty": "normal",
@@ -30,12 +34,14 @@
       }
     },
     {
+      "blueprintContentHash": "eb2a287e00fe4009a4e28e931520a91a5de4c472df8473fe74935dc1cfdb1da2",
       "blueprintId": "number.make-10.cards-v1",
       "createRequestCount": 1,
       "editorPath": "/ko/view/<redacted-project>",
       "existingProjectWriteCount": 0,
-      "payloadHash": "eb830a916e163887cb1084c9ad7a14dc91134d18718bd0ed59de28d0506e622e",
-      "projectReferenceHash": "a1ea47752ded48839e30cdd48af295663e9fb8273155d524c7b74737cca2a7f7",
+      "layoutPresetContentHash": "715078fed315cfa8b08e5a77bf70416882401dd3bc59eec5b1936ae2b148a5d9",
+      "payloadHash": "585027c10721a529e4c2726888e9ef83c432c86ae904f6618c1ed2f75b85d9f9",
+      "projectReferenceHash": "b364a884468001bd2f831fe0ce3f04c47e44146054d394e097ae5b2ea0a55c63",
       "status": "pass",
       "variation": {
         "difficulty": "normal",

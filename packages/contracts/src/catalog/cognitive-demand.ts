@@ -87,6 +87,10 @@ export const cognitiveDemandManifestSchema = z
           "same-whole-length",
           "countable-unit-model",
           "balance",
+          "linked-time-hands",
+          "elapsed-time-clock-pair",
+          "common-unit-cells",
+          "common-unit-remainder",
           "coordinate-or-graph",
           "data-representation"
         ]),

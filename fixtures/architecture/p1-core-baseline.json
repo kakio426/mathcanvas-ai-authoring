@@ -35,11 +35,11 @@
     },
     {
       "path": "packages/contracts/src/vocabulary/resolved.ts",
-      "sha256": "8a223dee4a67d08ea1a3afefa1448cb371b671c4dea7fb65a3c0333666168c81"
+      "sha256": "2f232e1d2fa4c2eb07774ffc2d319f210c51e8f2f45fa0d20bae645c7b6e2f20"
     },
     {
       "path": "packages/mathcanvas-compiler/src/core/compile-resolved.ts",
-      "sha256": "d99b0be69fe168281cb43abe84d5296f3aa662964c6080c466beb0d36dac5fb2"
+      "sha256": "ed3829bc0f5cfb33e9a9be95d5db683633eaca2c5ad186638d2592c3f2219a24"
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
@@ -51,7 +51,7 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts",
-      "sha256": "722161a615eb1fba2772dccc16917f3cd3b2e30a7342771890f29a11aed4e898"
+      "sha256": "aefa50ad4e620d4c902304013d4bc432df3e4df4ed4aee2d883fc273dcb94009"
     },
     {
       "path": "packages/validator/src/index.ts",
@@ -78,5 +78,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "afeefc8c756541f89e9e9bec99a6d20849777037b32003822ebff907e3e5e800"
+  "manifestHash": "3293cafcb0173d28315f65a88f0d2f6472aa8e0454e5c982e0874d42453847ed"
 }

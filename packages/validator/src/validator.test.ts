@@ -21,11 +21,16 @@ import {
 import { validateForCreation } from "./index.js";
 
 function fixture() {
-  const recommendation = recommendActivity({
+  const gated = recommendActivity({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
     requestId: "validator-request",
     prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
     createdAt: "2026-07-28T00:00:00.000Z"
+  });
+  const recommendation = recommendationSchema.parse({
+    ...gated,
+    supported: true,
+    blockingReasons: []
   });
   const plan = generateFractionComparisonActivity(recommendation, {
     seed: "validator-seed",
@@ -733,5 +738,39 @@ describe("생성 전 검증", () => {
         plus.bounds.x += 20;
       })
     ).toContain("equation-rail-spacing-uneven");
+
+    expect(
+      makeTenIssueCodes((resolved) => {
+        const instruction = resolved.emissions.find(
+          (emission) =>
+            emission.role === "instruction-predict"
+        )!;
+        instruction.toolIntent.properties.text = "먼저 예상";
+      })
+    ).toContain("classroom-language-unclear");
+
+    expect(
+      makeTenIssueCodes((resolved) => {
+        const first = resolved.items[0]!;
+        const label = resolved.emissions.find(
+          (emission) =>
+            emission.itemId === first.id &&
+            emission.role === "pool-label"
+        )!;
+        label.bounds.x -= 40;
+      })
+    ).toContain("labeled-pool-row-invalid");
+
+    expect(
+      makeTenIssueCodes((resolved) => {
+        const first = resolved.items[0]!;
+        const label = resolved.emissions.find(
+          (emission) =>
+            emission.itemId === first.id &&
+            emission.role === "frame-label"
+        )!;
+        label.bounds.width = 100;
+      })
+    ).toContain("text-region-overflow-risk");
   });
 });

@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import {
   COGNITIVE_GATE_IDS,
+  ACTIVITY_RELEASE_EVIDENCE,
   ACTIVITY_SUPPORT,
   sha256Hex
 } from "../../packages/contracts/dist/index.js";
@@ -13,6 +14,15 @@ import {
   listCognitiveDemandManifests,
   listRegisteredBlueprints
 } from "../../packages/templates/dist/index.js";
+import {
+  getLayoutPreset
+} from "../../packages/mathcanvas-compiler/dist/index.js";
+import {
+  validateP3ReleaseCanaryEvidence
+} from "../contract-lab/validate-p3-release-canary.mjs";
+import {
+  validateActivityReleaseCanaryEvidence
+} from "../contract-lab/validate-activity-release-canary.mjs";
 
 const failures = [];
 const blueprints = listRegisteredBlueprints();
@@ -39,6 +49,11 @@ const learningMapTopicIds = new Set(
 const sameSet = (left, right) =>
   left.length === right.length &&
   left.every((value) => right.includes(value));
+
+const flattenLayoutBlocks = (block) => [
+  block,
+  ...block.children.flatMap(flattenLayoutBlocks)
+];
 
 for (const gateId of COGNITIVE_GATE_IDS) {
   const docs = await readFile(
@@ -120,6 +135,180 @@ for (const manifest of manifests) {
   const roleByName = new Map(
     blueprint.toolRoles.map((role) => [role.role, role])
   );
+  const layoutBlocks = flattenLayoutBlocks(blueprint.layout.root);
+  const layoutPreset = getLayoutPreset(blueprint.layout.tokenSet);
+  const forbiddenLearnerPhrases = [
+    "먼저 예상",
+    "세어 확인",
+    "근거와 수정",
+    "수 카드 모음",
+    "검증",
+    "불변량",
+    "후보"
+  ];
+  const learnerText = [
+    ...blueprint.toolRoles
+      .map((role) => role.properties.text)
+      .filter((text) => typeof text === "string"),
+    ...blueprint.instructions
+  ];
+  const classroomLanguagePredicate =
+    blueprint.valuePredicates.find(
+      (predicate) =>
+        predicate.kind === "language.classroom-korean"
+    );
+  const textFitPredicate = blueprint.valuePredicates.find(
+    (predicate) => predicate.kind === "visual.text-fit"
+  );
+  const visibleKoreanRoles = blueprint.toolRoles
+    .filter(
+      (role) =>
+        typeof role.properties.text === "string" &&
+        /[가-힣]/.test(role.properties.text)
+    )
+    .map((role) => role.role);
+  const classroomCoveredRoles = [
+    ...(Array.isArray(
+      classroomLanguagePredicate?.parameters.instructionRoles
+    )
+      ? classroomLanguagePredicate.parameters.instructionRoles
+      : []),
+    ...(Array.isArray(
+      classroomLanguagePredicate?.parameters.labelRoles
+    )
+      ? classroomLanguagePredicate.parameters.labelRoles
+      : []),
+    ...(Array.isArray(
+      classroomLanguagePredicate?.parameters.promptRoles
+    )
+      ? classroomLanguagePredicate.parameters.promptRoles
+      : [])
+  ].filter((role) => typeof role === "string");
+  const textFitCoveredRoles = (
+    Array.isArray(textFitPredicate?.parameters.roles)
+      ? textFitPredicate.parameters.roles
+      : []
+  ).filter((role) => typeof role === "string");
+  if (
+    !classroomLanguagePredicate ||
+    visibleKoreanRoles.some(
+      (role) => !classroomCoveredRoles.includes(role)
+    ) ||
+    learnerText.some((text) =>
+      forbiddenLearnerPhrases.some((phrase) =>
+        text.includes(phrase)
+      )
+    )
+  ) {
+    failures.push(
+      `classroom-language-contract-invalid:${blueprint.id}`
+    );
+  }
+  if (
+    !textFitPredicate ||
+    visibleKoreanRoles.some(
+      (role) => !textFitCoveredRoles.includes(role)
+    )
+  ) {
+    failures.push(`text-fit-contract-missing:${blueprint.id}`);
+  }
+  if (
+    !blueprint.valuePredicates.some(
+      (predicate) => predicate.kind === "visual.no-overlap"
+    )
+  ) {
+    failures.push(`no-overlap-contract-missing:${blueprint.id}`);
+  }
+  const decisionMemberRoles =
+    manifest.decision.mode === "select-one"
+      ? manifest.decision.candidateRoles
+      : manifest.decision.pieceRoles;
+  const decisionMembers = decisionMemberRoles.map((role) =>
+    roleByName.get(role)
+  );
+  const isHomogeneousMovablePool =
+    decisionMembers.length >= 2 &&
+    decisionMembers.every(
+      (role) =>
+        role?.scope === "each-item" &&
+        role.movable &&
+        !role.locked
+    ) &&
+    new Set(decisionMembers.map((role) => role?.toolKey)).size ===
+      1;
+  if (isHomogeneousMovablePool) {
+    const poolPredicate = blueprint.valuePredicates.find(
+      (predicate) =>
+        predicate.kind === "visual.labeled-pool-row" &&
+        Array.isArray(predicate.parameters.memberRoles) &&
+        sameSet(
+          predicate.parameters.memberRoles.filter(
+            (role) => typeof role === "string"
+          ),
+          decisionMemberRoles
+        )
+    );
+    const labelRole =
+      typeof poolPredicate?.parameters.labelRole === "string"
+        ? roleByName.get(poolPredicate.parameters.labelRole)
+        : undefined;
+    const containerRole =
+      typeof poolPredicate?.parameters.containerRole === "string"
+        ? roleByName.get(poolPredicate.parameters.containerRole)
+        : undefined;
+    const containerBlock = containerRole
+      ? layoutBlocks.find(
+          (block) => block.id === containerRole.layoutRole
+        )
+      : undefined;
+    const itemBands = layoutBlocks.filter(
+      (block) =>
+        block.kind === "band" && block.repeat === "each-item"
+    );
+    const primaryWorkPanel = [...itemBands].sort(
+      (left, right) => {
+        const leftToken = layoutPreset.tokens[left.preset];
+        const rightToken = layoutPreset.tokens[right.preset];
+        return (
+          (rightToken?.width ?? 0) *
+            (rightToken?.height ?? 0) -
+          (leftToken?.width ?? 0) *
+            (leftToken?.height ?? 0)
+        );
+      }
+    )[0];
+    const containerIsPrimaryWorkPanel =
+      containerBlock?.id === primaryWorkPanel?.id;
+    const hasGuardedOuterGap =
+      typeof containerBlock?.flowGroup === "string" &&
+      primaryWorkPanel?.id !== containerBlock.id &&
+      primaryWorkPanel?.flowGroup === containerBlock.flowGroup;
+    if (
+      !poolPredicate ||
+      !labelRole ||
+      labelRole.scope !== "each-item" ||
+      labelRole.movable ||
+      !labelRole.locked ||
+      !containerRole ||
+      containerRole.scope !== "each-item" ||
+      containerRole.movable ||
+      !containerRole.locked ||
+      !containerBlock
+    ) {
+      failures.push(
+        `labeled-pool-layout-contract-missing:${blueprint.id}`
+      );
+    }
+    if (
+      containerBlock &&
+      !containerIsPrimaryWorkPanel &&
+      !hasGuardedOuterGap
+    ) {
+      failures.push(
+        `labeled-pool-outer-gap-contract-missing:${blueprint.id}`
+      );
+    }
+  }
   let itemDecisionConstraints = [];
   if (manifest.decision.mode === "select-one") {
     const candidates = manifest.decision.candidateRoles.map((role) =>
@@ -298,6 +487,62 @@ for (const blueprint of blueprints) {
     !manifestById.has(blueprint.id)
   ) {
     failures.push(`G0_MANIFEST_BOUND:${blueprint.id}`);
+  }
+  if (ACTIVITY_SUPPORT[blueprint.id] === "released") {
+    const evidencePaths =
+      ACTIVITY_RELEASE_EVIDENCE[blueprint.id] ?? [];
+    if (evidencePaths.length === 0) {
+      failures.push(`release-evidence-missing:${blueprint.id}`);
+      continue;
+    }
+    for (const evidencePath of evidencePaths) {
+      let evidence;
+      try {
+        evidence = JSON.parse(
+          await readFile(
+          new URL(`../../${evidencePath}`, import.meta.url),
+          "utf8"
+          )
+        );
+      } catch {
+        failures.push(
+          `release-evidence-unreadable:${blueprint.id}:${evidencePath}`
+        );
+        continue;
+      }
+      let normalizedEvidence;
+      try {
+        normalizedEvidence =
+          evidence.probeId === "p3-release-canary-v1"
+            ? validateP3ReleaseCanaryEvidence(evidence)
+            : {
+                results: [
+                  validateActivityReleaseCanaryEvidence(
+                    evidence
+                  )
+                ]
+              };
+      } catch {
+        failures.push(
+          `release-evidence-envelope-invalid:${blueprint.id}:${evidencePath}`
+        );
+        continue;
+      }
+      const boundResult = normalizedEvidence.results.find(
+        (result) => result.blueprintId === blueprint.id
+      );
+      if (
+        boundResult?.status !== "pass" ||
+        boundResult?.blueprintContentHash !==
+          blueprint.contentHash ||
+        boundResult?.layoutPresetContentHash !==
+          sha256Hex(getLayoutPreset(blueprint.layout.tokenSet))
+      ) {
+        failures.push(
+          `release-evidence-stale-or-unbound:${blueprint.id}:${evidencePath}`
+        );
+      }
+    }
   }
 }
 

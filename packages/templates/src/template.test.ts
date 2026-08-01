@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
   MIN_VISUAL_FRACTION_DIFFERENCE_RATIO,
-  parseActivityBlueprint
+  parseActivityBlueprint,
+  recommendationSchema
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
 import {
@@ -18,12 +19,17 @@ import {
 function recommendation(
   overrides: Record<string, unknown> = {}
 ) {
-  return recommendActivity({
+  const gated = recommendActivity({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
     requestId: "template-request",
     prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
     createdAt: "2026-07-28T00:00:00.000Z",
     ...overrides
+  });
+  return recommendationSchema.parse({
+    ...gated,
+    supported: true,
+    blockingReasons: []
   });
 }
 
@@ -253,8 +259,8 @@ describe("분수 비교 템플릿", () => {
       plan.blueprint.instructions[2]
     ).toContain("기호");
     expect(
-      plan.blueprint.instructions[3]
-    ).toContain("설명");
+      plan.blueprint.instructions[2]
+    ).toContain("까닭");
     expect(
       plan.blueprint.constraints.some(
         (constraint) => constraint.requiresStudentAction

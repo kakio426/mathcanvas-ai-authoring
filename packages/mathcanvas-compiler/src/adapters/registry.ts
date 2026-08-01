@@ -2,9 +2,13 @@ import {
   assertReleasedTool
 } from "@mathcanvas/contracts";
 import {
+  makeBalanceScaleObject,
+  makeAnalogClockObject,
   makeFractionObject,
   makeLatexObject,
   makeNumberCardObject,
+  makePatternBlockObject,
+  makePlaceValueModelObject,
   makeRectangleObject,
   makeTextObject
 } from "./native-factories.js";
@@ -18,14 +22,25 @@ import type {
 
 export type NativeToolCompileRequest = NativeToolIntent;
 export type {
+  AnalogClockIntent,
+  BalanceScaleIntent,
   FractionModelIntent,
   LatexIntent,
   NativeToolIntent,
   NativeToolPlacement,
   NumberCardIntent,
+  PatternBlockIntent,
+  PlaceValueModelIntent,
   RectangleIntent,
   TextIntent
 } from "./native-tool-contracts.js";
+export { PLACE_VALUE_SVG_BY_VALUE } from "./native-factories.js";
+export {
+  NUMBER_CARD_RENDERED_SIZE,
+  PLACE_VALUE_MODEL_RENDERED_DIAMETER,
+  resolveNativeRenderedBounds,
+  type NativeRenderedBounds
+} from "./native-rendered-bounds.js";
 
 export interface CompiledToolFragment {
   readonly object: Record<string, unknown>;
@@ -33,6 +48,16 @@ export interface CompiledToolFragment {
 }
 
 export const REGISTERED_TOOL_ADAPTERS = [
+  {
+    adapterKey: "analog-clock",
+    toolKey: "SM02AD",
+    contractFamily: "native-geared-clock"
+  },
+  {
+    adapterKey: "balance-scale",
+    toolKey: "CR07BS",
+    contractFamily: "native-balance-scale"
+  },
   {
     adapterKey: "fraction-model",
     toolKey: "NO03FM",
@@ -42,6 +67,16 @@ export const REGISTERED_TOOL_ADAPTERS = [
     adapterKey: "number-card",
     toolKey: "NO04NT",
     contractFamily: "native-module-variant"
+  },
+  {
+    adapterKey: "place-value-model",
+    toolKey: "NO04PD",
+    contractFamily: "native-module-variant"
+  },
+  {
+    adapterKey: "pattern-block",
+    toolKey: "SM02PB",
+    contractFamily: "native-pattern-block"
   },
   {
     adapterKey: "text",
@@ -71,6 +106,11 @@ export function compileNativeTool(
     );
   }
   switch (request.kind) {
+    case "analog-clock":
+      return {
+        object: makeAnalogClockObject(request, placement),
+        requiredModuleKeys: ["SM02AD"]
+      };
     case "fraction-model":
       return {
         object: makeFractionObject(request, placement),
@@ -80,6 +120,21 @@ export function compileNativeTool(
       return {
         object: makeNumberCardObject(request, placement),
         requiredModuleKeys: ["NO04NT"]
+      };
+    case "place-value-model":
+      return {
+        object: makePlaceValueModelObject(request, placement),
+        requiredModuleKeys: ["NO04PD"]
+      };
+    case "pattern-block":
+      return {
+        object: makePatternBlockObject(request, placement),
+        requiredModuleKeys: ["SM02PB"]
+      };
+    case "balance-scale":
+      return {
+        object: makeBalanceScaleObject(request, placement),
+        requiredModuleKeys: ["CR07BS"]
       };
     case "text":
       return {

@@ -8,6 +8,7 @@ export * from "./adapters/module-activation.js";
 export * from "./adapters/canvas-pen-contract.js";
 export * from "./adapters/native-draw-contracts.js";
 export * from "./adapters/native-module-variant-contracts.js";
+export * from "./adapters/native-pattern-block-contract.js";
 export * from "./adapters/registry.js";
 export * from "./native-objects.js";
 export * from "./layout-presets/registry.js";

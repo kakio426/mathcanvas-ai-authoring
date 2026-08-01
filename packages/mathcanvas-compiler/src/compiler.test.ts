@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
   CONTRACT_SCHEMA_VERSION,
+  recommendationSchema,
   sha256Hex
 } from "@mathcanvas/contracts";
 import { recommendActivity } from "@mathcanvas/planner";
@@ -22,8 +23,19 @@ import type {
   LayoutToken
 } from "@mathcanvas/contracts";
 
+function internalRecommendation(
+  input: Parameters<typeof recommendActivity>[0]
+) {
+  const gated = recommendActivity(input);
+  return recommendationSchema.parse({
+    ...gated,
+    supported: true,
+    blockingReasons: []
+  });
+}
+
 function compiled() {
-  const recommendation = recommendActivity({
+  const recommendation = internalRecommendation({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
     requestId: "compiler-request",
     prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
@@ -41,7 +53,7 @@ function compiled() {
 
 describe("MathCanvas 컴파일러", () => {
   it("같은 blueprint와 seed에서 같은 상대 배치와 ResolvedActivity를 만든다", () => {
-    const recommendation = recommendActivity({
+    const recommendation = internalRecommendation({
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: "resolver-stable",
       prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",
@@ -56,7 +68,7 @@ describe("MathCanvas 컴파일러", () => {
 
   it("layout missing/cycle/negative/overlap/overflow를 stable code로 차단한다", () => {
     const plan = generateFractionComparisonActivity(
-      recommendActivity({
+      internalRecommendation({
         schemaVersion: CONTRACT_SCHEMA_VERSION,
         requestId: "layout-errors",
         prompt: "분모가 다른 분수의 크기를 비교하는 활동지를 만들어 주세요.",

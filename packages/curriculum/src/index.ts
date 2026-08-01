@@ -1,9 +1,20 @@
 import type { CurriculumRecord } from "@mathcanvas/contracts";
 import {
   LEARNING_MAP_COMMIT,
+  barGraphInterpretationRecord,
+  lengthMeasurementRecord,
+  clockReadingRecord,
+  timeDurationRecord,
+  sameDenominatorFractionOperationsRecord,
+  equalityRelationRecord,
   equivalentFractionRecord,
   numberCompositionRecord,
-  unlikeDenominatorComparisonRecord
+  placeValueRecord,
+  repeatingPatternRecord,
+  multiplicationMeaningRecord,
+  probabilityComparisonRecord,
+  unlikeDenominatorComparisonRecord,
+  unlikeDenominatorFractionOperationsRecord
 } from "./data.js";
 
 export class CurriculumResolutionError extends Error {
@@ -29,9 +40,20 @@ export function resolveCurriculum(
   standardCode = "[6수01-07]"
 ): CurriculumResolution {
   const records: Readonly<Record<string, CurriculumRecord>> = {
+    "[2수01-02]": placeValueRecord,
     "[2수01-04]": numberCompositionRecord,
+    "[2수01-10]": multiplicationMeaningRecord,
+    "[2수02-01]": repeatingPatternRecord,
+    "[2수03-07]": clockReadingRecord,
+    "[2수03-08]": timeDurationRecord,
+    "[2수03-10]": lengthMeasurementRecord,
+    "[4수01-15]": sameDenominatorFractionOperationsRecord,
+    "[4수02-03]": equalityRelationRecord,
+    "[4수04-01]": barGraphInterpretationRecord,
     "[6수01-06]": equivalentFractionRecord,
-    "[6수01-07]": unlikeDenominatorComparisonRecord
+    "[6수01-07]": unlikeDenominatorComparisonRecord,
+    "[6수01-08]": unlikeDenominatorFractionOperationsRecord,
+    "[6수04-04]": probabilityComparisonRecord
   };
   const record = records[standardCode];
   if (!record) {
@@ -72,7 +94,18 @@ export function resolveCurriculum(
 
 export {
   LEARNING_MAP_COMMIT,
+  barGraphInterpretationRecord,
+  lengthMeasurementRecord,
+  clockReadingRecord,
+  timeDurationRecord,
+  sameDenominatorFractionOperationsRecord,
+  equalityRelationRecord,
   equivalentFractionRecord,
   numberCompositionRecord,
-  unlikeDenominatorComparisonRecord
+  placeValueRecord,
+  repeatingPatternRecord,
+  multiplicationMeaningRecord,
+  probabilityComparisonRecord,
+  unlikeDenominatorComparisonRecord,
+  unlikeDenominatorFractionOperationsRecord
 } from "./data.js";

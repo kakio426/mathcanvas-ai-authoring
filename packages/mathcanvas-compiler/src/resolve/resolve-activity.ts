@@ -14,6 +14,10 @@ import {
   type ResolvedToolIntent
 } from "@mathcanvas/contracts";
 import { evaluateInitialConstraint } from "../constraint-handlers/registry.js";
+import {
+  resolveNativeRenderedBounds,
+  type NativeToolIntent
+} from "../adapters/registry.js";
 import { getLayoutPreset } from "../layout-presets/registry.js";
 import { resolveLayout } from "./layout-resolver.js";
 
@@ -67,6 +71,27 @@ function materializeIntent(
     toolKey,
     properties: intentProperties
   });
+}
+
+function renderedBoundsFor(
+  id: string,
+  bounds: ResolvedEmission["bounds"],
+  toolIntent: ResolvedToolIntent
+): ResolvedEmission["renderedBounds"] {
+  const rendered = resolveNativeRenderedBounds(
+    {
+      kind: toolIntent.kind,
+      toolKey: toolIntent.toolKey,
+      ...toolIntent.properties
+    } as NativeToolIntent,
+    { id, ...bounds }
+  );
+  return rendered.x === bounds.x &&
+    rendered.y === bounds.y &&
+    rendered.width === bounds.width &&
+    rendered.height === bounds.height
+    ? undefined
+    : rendered;
 }
 
 function resolveConstraints(
@@ -169,47 +194,69 @@ export function resolveActivity(input: {
   for (const role of blueprint.toolRoles.filter(
     (candidate) => candidate.scope === "activity"
   )) {
+    const id = mintResolvedId(role.idRole, role.scope);
+    const layoutSlot = slot(role.layoutRole);
+    const toolIntent = materializeIntent(role, undefined);
+    const renderedBounds = renderedBoundsFor(
+      id,
+      layoutSlot.bounds,
+      toolIntent
+    );
     emissions.push({
-      id: mintResolvedId(role.idRole, role.scope),
+      id,
       role: role.role,
-      bounds: slot(role.layoutRole).bounds,
+      bounds: layoutSlot.bounds,
+      ...(renderedBounds ? { renderedBounds } : {}),
       locked: role.locked,
       movable: role.movable,
       instructionalIntent: role.instructionalIntent,
-      ...(slot(role.layoutRole).flowGroup
-        ? { flowGroup: slot(role.layoutRole).flowGroup }
+      ...(layoutSlot.flowGroup
+        ? { flowGroup: layoutSlot.flowGroup }
         : {}),
-      ...(slot(role.layoutRole).collisionGroup
+      ...(layoutSlot.collisionGroup
         ? {
             collisionGroup:
-              slot(role.layoutRole).collisionGroup
+              layoutSlot.collisionGroup
           }
         : {}),
-      toolIntent: materializeIntent(role, undefined)
+      toolIntent
     });
   }
   for (const item of items) {
     for (const role of blueprint.toolRoles.filter(
       (candidate) => candidate.scope === "each-item"
     )) {
+      const id = mintResolvedId(
+        role.idRole,
+        role.scope,
+        item.id
+      );
+      const layoutSlot = slot(role.layoutRole, item.id);
+      const toolIntent = materializeIntent(role, item);
+      const renderedBounds = renderedBoundsFor(
+        id,
+        layoutSlot.bounds,
+        toolIntent
+      );
       emissions.push({
-        id: mintResolvedId(role.idRole, role.scope, item.id),
+        id,
         role: role.role,
         itemId: item.id,
-        bounds: slot(role.layoutRole, item.id).bounds,
+        bounds: layoutSlot.bounds,
+        ...(renderedBounds ? { renderedBounds } : {}),
         locked: role.locked,
         movable: role.movable,
         instructionalIntent: role.instructionalIntent,
-        ...(slot(role.layoutRole, item.id).flowGroup
+        ...(layoutSlot.flowGroup
           ? {
               flowGroup:
-                slot(role.layoutRole, item.id).flowGroup
+                layoutSlot.flowGroup
             }
           : {}),
-        ...(slot(role.layoutRole, item.id).collisionGroup
+        ...(layoutSlot.collisionGroup
           ? {
               collisionGroup:
-                slot(role.layoutRole, item.id).collisionGroup
+                layoutSlot.collisionGroup
             }
           : {}),
         ...(role.containerRole
@@ -221,7 +268,7 @@ export function resolveActivity(input: {
               )
             }
           : {}),
-        toolIntent: materializeIntent(role, item)
+        toolIntent
       });
     }
   }

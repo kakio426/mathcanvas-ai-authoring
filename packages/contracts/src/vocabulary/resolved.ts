@@ -50,6 +50,15 @@ export const resolvedEmissionSchema = z
         height: z.number().positive().finite()
       })
       .strict(),
+    renderedBounds: z
+      .object({
+        x: z.number().finite(),
+        y: z.number().finite(),
+        width: z.number().positive().finite(),
+        height: z.number().positive().finite()
+      })
+      .strict()
+      .optional(),
     locked: z.boolean(),
     movable: z.boolean(),
     instructionalIntent: z.string().min(1).max(300),

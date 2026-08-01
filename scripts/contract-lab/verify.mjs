@@ -14,6 +14,58 @@ const commands = [
     "--digit-mapping",
     "research/mathcanvas/wave4-number-card-digit-mapping.ui.json"
   ],
+  ["validate-activity-release-canary.mjs"],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave5-balance-scale-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave6-clock-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave7-elapsed-time-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave8-fraction-sum-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave9-improper-sum-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave10-common-unit-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave11-common-unit-difference-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave12-bar-graph-scale-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave13-broken-ruler-release-canary.json"
+  ],
+  [
+    "validate-activity-release-canary.mjs",
+    "--input",
+    "research/mathcanvas/wave14-place-value-release-canary.json"
+  ],
+  ["validate-wave14-place-value-model-canary.mjs"],
   ["validate-control-matrix.mjs"],
   ["validate-common-draw-contract.mjs"],
   ["validate-wave1-canary.mjs"],

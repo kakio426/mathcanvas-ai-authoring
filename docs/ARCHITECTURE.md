@@ -40,7 +40,7 @@ flowchart LR
 - 엄격한 Zod 스키마와 버전
 - 공식 교육과정 우선 resolver
 - 활동별 blueprint와 결정적 item generator
-- `T1/T2` 유한 variation envelope(현재 54조합)
+- `T1/T2` 유한 variation envelope(현재 89조합)
 - MathCanvas 네이티브 객체 컴파일러
 - 수학·교수학습·배치·상호작용·계약 validator
 - MCP 도구 5개
@@ -51,7 +51,7 @@ flowchart LR
 
 ## P3 출시 경계
 
-- 출시 활동 3종, variation 54조합을 전수 컴파일·검증합니다.
+- 등록 활동 3종(모두 새 화면 canary 대기 `verified`), variation 54조합을 전수 컴파일·검증합니다.
 - 분수 비교는 문제 수·난이도·분모 관계를 지원합니다.
 - 동치분수는 문제 수만, 10 만들기는 2~5문제만 바꿀 수 있습니다.
 - 고정 값이나 알 수 없는 key를 바꾸려 하면 fail-closed로 중단합니다.

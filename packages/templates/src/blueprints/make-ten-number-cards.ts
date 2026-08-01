@@ -80,7 +80,7 @@ const poolSources = pieceRoles.map((role) => ({
 export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
   schemaVersion: "1.0.0",
   id: "number.make-10.cards-v1",
-  version: "2.0.0",
+  version: "2.1.0",
   title: "여러 방법으로 10 만들기",
   learningObjective:
     "여러 수 중에서 합이 10인 두 수를 찾고, 열 칸 모형을 근거로 다른 방법과 비교하여 설명할 수 있다.",
@@ -108,8 +108,8 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       instructionalIntent:
         "수 카드를 움직이기 전에 합이 10인 두 수를 예상하게 합니다.",
       properties: {
-        text: "먼저 10이 될 것 같은 두 수를 예상해 쓰고, 카드 두 장을 골라 식을 완성하세요.",
-        fontSize: 44
+        text: "① 카드를 옮기기 전에, 합이 10이 되는 두 수를 예상해 써 보세요.",
+        fontSize: 40
       },
       bindings: {}
     },
@@ -125,7 +125,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       instructionalIntent:
         "열 칸을 하나씩 세어 선택한 합을 스스로 확인하게 합니다.",
       properties: {
-        text: "고른 두 수만큼 열 칸에 표시해 보며 정말 10인지 확인하세요.",
+        text: "② 수 카드 두 장을 골라 식의 빈칸에 놓고, 10칸에 나타내어 확인하세요.",
         fontSize: 34
       },
       bindings: {}
@@ -142,7 +142,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       instructionalIntent:
         "다른 해를 찾고 근거에 따라 선택을 수정하도록 안내합니다.",
       properties: {
-        text: "쓰지 않은 카드 중 다른 답도 찾아 비교하고, 예상이 틀렸다면 선택과 설명을 고쳐 보세요.",
+        text: "③ 다른 방법도 찾아보세요. 처음 생각과 달랐다면 고친 까닭을 써 보세요.",
         fontSize: 32
       },
       bindings: {}
@@ -184,7 +184,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "조작 전 예상을 쓰는 곳을 안내합니다.",
-      properties: { text: "먼저 예상", fontSize: 26 },
+      properties: { text: "예상한 두 수", fontSize: 26 },
       bindings: {},
       containerRole: "work-panel"
     },
@@ -292,7 +292,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "열 칸 모형으로 합을 확인하도록 안내합니다.",
-      properties: { text: "세어 확인", fontSize: 26 },
+      properties: { text: "10칸에 나타내기", fontSize: 26 },
       bindings: {},
       containerRole: "work-panel"
     },
@@ -307,7 +307,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "열 칸에서 확인한 수학적 근거를 요구합니다.",
-      properties: { text: "근거와 수정", fontSize: 26 },
+      properties: { text: "다른 방법과 까닭", fontSize: 26 },
       bindings: {},
       containerRole: "work-panel"
     },
@@ -339,7 +339,7 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "선택하거나 버릴 수 있는 후보 수 카드 모음을 표시합니다.",
-      properties: { text: "수 카드 모음", fontSize: 28 },
+      properties: { text: "수 카드", fontSize: 28 },
       bindings: {}
     },
     ...pieceRoles.map((_, index) => pieceRole(index + 1))
@@ -530,21 +530,73 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
       }
     },
     {
+      kind: "language.classroom-korean",
+      parameters: {
+        instructionRoles: [
+          "instruction-predict",
+          "instruction-verify",
+          "instruction-explain"
+        ],
+        labelRoles: [
+          "prediction-label",
+          "frame-label",
+          "explanation-label",
+          "pool-label"
+        ],
+        maximumInstructionLength: 70,
+        maximumLabelLength: 12
+      }
+    },
+    {
+      kind: "visual.text-fit",
+      parameters: {
+        roles: [
+          "instruction-predict",
+          "instruction-verify",
+          "instruction-explain",
+          "prediction-label",
+          "frame-label",
+          "explanation-label",
+          "pool-label"
+        ],
+        maximumFillRatio: 0.96
+      }
+    },
+    {
+      kind: "visual.labeled-pool-row",
+      parameters: {
+        labelRole: "pool-label",
+        memberRoles: pieceRoles,
+        containerRole: "work-panel",
+        rowCenterTolerance: 2,
+        gapTolerance: 2,
+        groupCenterTolerance: 2,
+        labelAlignmentTolerance: 2,
+        minimumLabelGap: 12,
+        maximumLabelGap: 32
+      }
+    },
+    {
       kind: "visual.no-overlap",
       parameters: {
         roles: [
           "prediction-box",
+          "prediction-label",
           ...equationRoles,
+          "frame-label",
           ...frameCellRoles,
+          "explanation-label",
           "explanation-box",
+          "pool-label",
           ...pieceRoles
         ]
       }
     }
   ],
   instructions: [
-    "10이 될 두 수를 먼저 예상하고, 여섯 카드 중 두 장을 골라 식을 완성하세요.",
-    "열 칸을 하나씩 세어 합을 확인한 뒤 다른 방법을 찾고 근거를 설명하세요."
+    "카드를 옮기기 전에, 합이 10이 되는 두 수를 예상해 써 보세요.",
+    "수 카드 두 장을 골라 식의 빈칸에 놓고, 10칸에 나타내어 확인하세요.",
+    "다른 방법도 찾아보고 처음 생각과 달랐다면 고친 까닭을 써 보세요."
   ],
   payload: {
     categoryId: MATHCANVAS_PROJECT_CATEGORIES["수와 연산"].categoryId,

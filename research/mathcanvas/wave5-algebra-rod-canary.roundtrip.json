@@ -1,0 +1,1347 @@
+{
+  "commonFieldNames": [
+    "_x",
+    "_y",
+    "clickCount",
+    "coordinates",
+    "cx",
+    "cy",
+    "elemSplice",
+    "fill",
+    "fillOpacity",
+    "groupId",
+    "id",
+    "initSizeScale",
+    "isBluePrint",
+    "isCenterGravityPolygon",
+    "isColorInverted",
+    "isEyeOn",
+    "isFillChange",
+    "isGroup",
+    "isGroupElement",
+    "isGroupGridOn",
+    "isHorizontalFlip",
+    "isMerge",
+    "isMoveRotateHandler",
+    "isSplit",
+    "isStackUp",
+    "isStrokeChange",
+    "isSurroundRect",
+    "isTextEdit",
+    "isTextEditFontSize",
+    "isVerticalFlip",
+    "parent",
+    "playgroundIndex",
+    "preventDoubleClick",
+    "rotate",
+    "rx",
+    "ry",
+    "scale",
+    "sizeScale",
+    "stroke",
+    "strokeDashArray",
+    "strokeOpacity",
+    "strokeType",
+    "strokeWidth",
+    "svgId",
+    "x",
+    "y"
+  ],
+  "evidenceId": "wave5-algebra-rod-canary-roundtrip",
+  "lifecycle": {
+    "basePaletteVariantCount": 6,
+    "createdProjectCount": 1,
+    "exactWirePreserved": false,
+    "existingProjectWriteCount": 0,
+    "identityPreserved": true,
+    "oppositePairMergeCount": 6,
+    "reopenedObjectCount": 18,
+    "saveCount": 1,
+    "savedObjectCount": 18,
+    "serverNormalizationFields": [
+      "x"
+    ],
+    "signInversionCount": 12,
+    "wirePreservedAfterKnownNormalization": true
+  },
+  "observedAt": "2026-07-31T07:14:30.020Z",
+  "savedWireExamples": [
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -100
+        ],
+        [
+          100,
+          -100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          -100,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-01>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-01",
+      "x": 1006.4639892578124,
+      "y": 1691.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -100
+        ],
+        [
+          30,
+          -100
+        ],
+        [
+          30,
+          100
+        ],
+        [
+          -30,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-02>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-02",
+      "x": 1111.4639892578125,
+      "y": 1796.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -30
+        ],
+        [
+          30,
+          -30
+        ],
+        [
+          30,
+          30
+        ],
+        [
+          -30,
+          30
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-03>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-03",
+      "x": 1216.4639892578125,
+      "y": 1901.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -80,
+          -80
+        ],
+        [
+          80,
+          -80
+        ],
+        [
+          80,
+          80
+        ],
+        [
+          -80,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-04>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-04",
+      "x": 1321.4639892578125,
+      "y": 2006.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -80
+        ],
+        [
+          30,
+          -80
+        ],
+        [
+          30,
+          80
+        ],
+        [
+          -30,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-05>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-05",
+      "x": 1426.4639892578125,
+      "y": 2111.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -80
+        ],
+        [
+          100,
+          -80
+        ],
+        [
+          100,
+          80
+        ],
+        [
+          -100,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-06>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-06",
+      "x": 1531.4639892578125,
+      "y": 2216.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -100
+        ],
+        [
+          100,
+          -100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          -100,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-07>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-07",
+      "x": 1041.4639892578125,
+      "y": 1726.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -100
+        ],
+        [
+          30,
+          -100
+        ],
+        [
+          30,
+          100
+        ],
+        [
+          -30,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-08>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-08",
+      "x": 1146.4639892578125,
+      "y": 1831.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -30
+        ],
+        [
+          30,
+          -30
+        ],
+        [
+          30,
+          30
+        ],
+        [
+          -30,
+          30
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-09>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-09",
+      "x": 1251.4639892578125,
+      "y": 1936.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -80,
+          -80
+        ],
+        [
+          80,
+          -80
+        ],
+        [
+          80,
+          80
+        ],
+        [
+          -80,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-10>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-10",
+      "x": 1356.4639892578125,
+      "y": 2041.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -80
+        ],
+        [
+          30,
+          -80
+        ],
+        [
+          30,
+          80
+        ],
+        [
+          -30,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-11>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-11",
+      "x": 1461.4639892578125,
+      "y": 2146.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -80
+        ],
+        [
+          100,
+          -80
+        ],
+        [
+          100,
+          80
+        ],
+        [
+          -100,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-12>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-12",
+      "x": 1566.4639892578125,
+      "y": 2251.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -100
+        ],
+        [
+          100,
+          -100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          -100,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-13>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-13",
+      "x": 1076.4639892578125,
+      "y": 1761.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -100
+        ],
+        [
+          30,
+          -100
+        ],
+        [
+          30,
+          100
+        ],
+        [
+          -30,
+          100
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-14>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-14",
+      "x": 1181.4639892578125,
+      "y": 1866.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -30
+        ],
+        [
+          30,
+          -30
+        ],
+        [
+          30,
+          30
+        ],
+        [
+          -30,
+          30
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-15>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-15",
+      "x": 1286.4639892578125,
+      "y": 1971.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -80,
+          -80
+        ],
+        [
+          80,
+          -80
+        ],
+        [
+          80,
+          80
+        ],
+        [
+          -80,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-16>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-16",
+      "x": 1391.4639892578125,
+      "y": 2076.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -30,
+          -80
+        ],
+        [
+          30,
+          -80
+        ],
+        [
+          30,
+          80
+        ],
+        [
+          -30,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-17>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-17",
+      "x": 1496.4639892578125,
+      "y": 2181.615966796875
+    },
+    {
+      "_x": 0,
+      "_y": 0,
+      "clickCount": 1,
+      "coordinates": [
+        [
+          -100,
+          -80
+        ],
+        [
+          100,
+          -80
+        ],
+        [
+          100,
+          80
+        ],
+        [
+          -100,
+          80
+        ]
+      ],
+      "cx": 0,
+      "cy": 0,
+      "elemSplice": false,
+      "fill": "#ffffff",
+      "fillOpacity": 1,
+      "groupId": "",
+      "id": "<object-id:CR07AT-18>",
+      "initSizeScale": 1,
+      "isBluePrint": true,
+      "isCenterGravityPolygon": false,
+      "isColorInverted": false,
+      "isEyeOn": true,
+      "isFillChange": false,
+      "isGroup": false,
+      "isGroupElement": false,
+      "isGroupGridOn": false,
+      "isHorizontalFlip": false,
+      "isMerge": false,
+      "isMoveRotateHandler": true,
+      "isSplit": false,
+      "isStackUp": false,
+      "isStrokeChange": false,
+      "isSurroundRect": false,
+      "isTextEdit": false,
+      "isTextEditFontSize": false,
+      "isVerticalFlip": false,
+      "parent": {
+        "mouseX": 0,
+        "mouseY": 0
+      },
+      "playgroundIndex": 1,
+      "preventDoubleClick": false,
+      "rotate": 0,
+      "rx": 0,
+      "ry": 0,
+      "scale": 1,
+      "sizeScale": 1,
+      "stroke": "#000000",
+      "strokeDashArray": "",
+      "strokeOpacity": 1,
+      "strokeType": 1,
+      "strokeWidth": 4,
+      "svgId": "CR07AT-18",
+      "x": 1601.4639892578125,
+      "y": 2286.615966796875
+    }
+  ],
+  "schemaVersion": "1.0.0",
+  "scope": {
+    "category": "변화와 관계",
+    "categoryId": "4l_eHBivNq",
+    "moduleKey": "CR07AT",
+    "observedName": "대수 막대"
+  },
+  "variants": [
+    "CR07AT-01",
+    "CR07AT-02",
+    "CR07AT-03",
+    "CR07AT-04",
+    "CR07AT-05",
+    "CR07AT-06",
+    "CR07AT-07",
+    "CR07AT-08",
+    "CR07AT-09",
+    "CR07AT-10",
+    "CR07AT-11",
+    "CR07AT-12",
+    "CR07AT-13",
+    "CR07AT-14",
+    "CR07AT-15",
+    "CR07AT-16",
+    "CR07AT-17",
+    "CR07AT-18"
+  ],
+  "writeBoundary": {
+    "allowedWrites": [
+      {
+        "method": "POST",
+        "path": "/api/project",
+        "recovery": "exact-single-persisted-probe-project",
+        "status": 201
+      },
+      {
+        "method": "PUT",
+        "path": "/api/project/<redacted-project>",
+        "recovery": "persisted-save-observed-before-evidence-write",
+        "status": 200
+      }
+    ],
+    "blockedWrites": [
+      {
+        "method": "POST",
+        "path": "https://lc.getunicorn.org/l"
+      },
+      {
+        "method": "POST",
+        "path": "https://lc.getunicorn.org/l"
+      }
+    ]
+  }
+}

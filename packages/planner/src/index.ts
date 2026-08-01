@@ -1,5 +1,6 @@
 import {
   ACTIVITY_IDS,
+  ACTIVITY_LEARNING_GOALS,
   CONTRACT_SCHEMA_VERSION,
   VERIFIED_TEMPLATE_ID,
   generationRequestSchema,
@@ -31,6 +32,82 @@ const makeTenPatterns = [
   /수\s*카드.*10/,
   /number\s*bond/i
 ];
+const balancedEquationPatterns = [
+  /등호/,
+  /동치\s*관계/,
+  /양쪽.*(같|같게)/,
+  /equal\s*sign/i
+];
+const balanceScalePatterns = [
+  /접시\s*저울/,
+  /양팔\s*저울/,
+  /balance\s*scale/i
+];
+const clockPatterns = [
+  /시계/,
+  /시각/,
+  /긴바늘/,
+  /짧은바늘/,
+  /clock/i
+];
+const elapsedTimePatterns = [
+  /걸린\s*시간/,
+  /경과\s*시간/,
+  /몇\s*분\s*걸/,
+  /1시간.*60분/,
+  /elapsed\s*time/i
+];
+const sameDenominatorFractionSumPatterns = [
+  /분모가\s*같은.*(덧셈|더하|합)/,
+  /같은\s*분모.*(덧셈|더하|합)/,
+  /동분모.*(덧셈|더하|합)/,
+  /same[-\s]?denominator.*(add|sum)/i
+];
+const unlikeDenominatorFractionSumPatterns = [
+  /분모가\s*다른.*(덧셈|더하|합)/,
+  /이분모.*(덧셈|더하|합)/,
+  /통분.*(덧셈|더하|합)/,
+  /unlike[-\s]?denominator.*(add|sum)/i
+];
+const unlikeDenominatorFractionDifferencePatterns = [
+  /분모가\s*다른.*(뺄셈|빼|차)/,
+  /이분모.*(뺄셈|빼|차)/,
+  /통분.*(뺄셈|빼|차)/,
+  /unlike[-\s]?denominator.*(subtract|difference)/i
+];
+const sameDenominatorImproperSumPatterns = [
+  /가분수/,
+  /1보다\s*큰/,
+  /1을?\s*넘/,
+  /improper/i
+];
+const barGraphScalePatterns = [
+  /막대\s*그래프/,
+  /막대그래프/,
+  /눈금.*막대/,
+  /그래프.*눈금/,
+  /bar\s*graph/i
+];
+const lengthUnitIterationPatterns = [
+  /길이.*(재|측정)/,
+  /(자로|자를|자와|자의|자에|자에서|눈금자).*(길이|cm|센티미터)/,
+  /(길이|cm|센티미터).*(자로|자를|자의|눈금자)/,
+  /1\s*cm.*(반복|옮겨|재)/i,
+  /눈금.*(시작|끝).*길이/,
+  /broken\s*ruler/i,
+  /measure.*length/i
+];
+const placeValueTenExchangePatterns = [
+  /자릿값/,
+  /십\s*모형.*10\s*개/,
+  /백\s*모형.*(바꾸|교환)/,
+  /10\s*개씩\s*묶/,
+  /place\s*value/i,
+  /regroup/i
+];
+const repeatingPatternPatterns = [/규칙\s*찾기/, /반복\s*(무늬|단위)/, /패턴\s*블록/, /repeat(?:ing)?\s*pattern/i];
+const multiplicationMeaningPatterns = [/곱셈.*(묶|배열|의미)/, /같은\s*수씩\s*묶/, /multiplication.*(array|group)/i];
+const probabilityComparisonPatterns = [/가능성.*(비교|큰|작은)/, /(주머니|공).*(나올|뽑).*(가능성|확률)/, /probability.*compar/i];
 
 function verifiedCandidate(request: GenerationRequest):
   | {
@@ -44,6 +121,208 @@ function verifiedCandidate(request: GenerationRequest):
   | undefined {
   if (request.manipulation === "fraction-strip-common-start-drag") {
     return undefined;
+  }
+  if (
+    request.manipulation === "pattern-block-repeat-unit-drag" ||
+    repeatingPatternPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return { templateId: ACTIVITY_IDS.repeatingPatternUnit, standardCode: "[2수02-01]", manipulation: "pattern-block-repeat-unit-drag", grade: 2, gradeRange: [1, 2], maximumProblemCount: 3 };
+  }
+  if (
+    request.manipulation === "multiplication-array-choice-drag" ||
+    multiplicationMeaningPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return { templateId: ACTIVITY_IDS.multiplicationArrayMeaning, standardCode: "[2수01-10]", manipulation: "multiplication-array-choice-drag", grade: 2, gradeRange: [1, 2], maximumProblemCount: 3 };
+  }
+  if (
+    request.manipulation === "probability-fraction-strip-drag" ||
+    probabilityComparisonPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return { templateId: ACTIVITY_IDS.probabilityBagComparison, standardCode: "[6수04-04]", manipulation: "probability-fraction-strip-drag", grade: 6, gradeRange: [5, 6], maximumProblemCount: 4 };
+  }
+  if (request.manipulation === "length-unit-iteration-drag") {
+    return {
+      templateId: ACTIVITY_IDS.brokenRulerLength,
+      standardCode: "[2수03-10]",
+      manipulation: "length-unit-iteration-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation === "place-value-ten-exchange-drag" ||
+    placeValueTenExchangePatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.placeValueTenExchange,
+      standardCode: "[2수01-02]",
+      manipulation: "place-value-ten-exchange-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation === "bar-graph-scale-unit-drag" ||
+    barGraphScalePatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.barGraphScaleUnit,
+      standardCode: "[4수04-01]",
+      manipulation: "bar-graph-scale-unit-drag",
+      grade: 4,
+      gradeRange: [3, 4],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation ===
+      "unlike-denominator-common-unit-difference-drag" ||
+    unlikeDenominatorFractionDifferencePatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId:
+        ACTIVITY_IDS.unlikeDenominatorCommonUnitDifference,
+      standardCode: "[6수01-08]",
+      manipulation:
+        "unlike-denominator-common-unit-difference-drag",
+      grade: 5,
+      gradeRange: [5, 6],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation ===
+      "unlike-denominator-common-unit-drag" ||
+    unlikeDenominatorFractionSumPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId:
+        ACTIVITY_IDS.unlikeDenominatorCommonUnitSum,
+      standardCode: "[6수01-08]",
+      manipulation:
+        "unlike-denominator-common-unit-drag",
+      grade: 5,
+      gradeRange: [5, 6],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation ===
+      "same-denominator-improper-sum-drag" ||
+    (sameDenominatorFractionSumPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    ) &&
+      sameDenominatorImproperSumPatterns.some((pattern) =>
+        pattern.test(request.prompt)
+      ))
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.sameDenominatorImproperSum,
+      standardCode: "[4수01-15]",
+      manipulation: "same-denominator-improper-sum-drag",
+      grade: 4,
+      gradeRange: [3, 4],
+      maximumProblemCount: 4
+    };
+  }
+  if (
+    request.manipulation ===
+      "same-denominator-fraction-sum-drag" ||
+    sameDenominatorFractionSumPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.sameDenominatorFractionSum,
+      standardCode: "[4수01-15]",
+      manipulation: "same-denominator-fraction-sum-drag",
+      grade: 4,
+      gradeRange: [3, 4],
+      maximumProblemCount: 4
+    };
+  }
+  if (
+    lengthUnitIterationPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.brokenRulerLength,
+      standardCode: "[2수03-10]",
+      manipulation: "length-unit-iteration-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 3
+    };
+  }
+  if (
+    request.manipulation === "elapsed-time-clock-pair-drag" ||
+    elapsedTimePatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.elapsedTimeClockPair,
+      standardCode: "[2수03-08]",
+      manipulation: "elapsed-time-clock-pair-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 4
+    };
+  }
+  if (
+    request.manipulation === "clock-hour-hand-boundary-drag" ||
+    clockPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.clockHourHandBoundary,
+      standardCode: "[2수03-07]",
+      manipulation: "clock-hour-hand-boundary-drag",
+      grade: 2,
+      gradeRange: [1, 2],
+      maximumProblemCount: 4
+    };
+  }
+  if (
+    request.manipulation === "balance-scale-sum-card-drag" ||
+    balanceScalePatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.balanceScaleSum,
+      standardCode: "[4수02-03]",
+      manipulation: "balance-scale-sum-card-drag",
+      grade: 4,
+      gradeRange: [3, 4],
+      maximumProblemCount: 4
+    };
+  }
+  if (
+    request.manipulation ===
+      "number-card-balanced-equation-drag" ||
+    balancedEquationPatterns.some((pattern) =>
+      pattern.test(request.prompt)
+    )
+  ) {
+    return {
+      templateId: ACTIVITY_IDS.balancedEquationCards,
+      standardCode: "[4수02-03]",
+      manipulation: "number-card-balanced-equation-drag",
+      grade: 4,
+      gradeRange: [3, 4],
+      maximumProblemCount: 4
+    };
   }
   if (
     request.manipulation === "equivalent-fraction-strip-match" ||
@@ -119,7 +398,9 @@ export function recommendActivity(input: unknown): Recommendation {
   if (candidate) {
     const curriculum = resolveCurriculum(candidate.standardCode);
     const supportState = getActivitySupportState(candidate.templateId);
-    const problemCount = request.problemCount ?? 4;
+    const problemCount =
+      request.problemCount ??
+      Math.min(4, candidate.maximumProblemCount);
     const difficulty = request.difficulty ?? "normal";
     const unsupportedRequests = [
       ...(problemCount > candidate.maximumProblemCount
@@ -153,7 +434,10 @@ export function recommendActivity(input: unknown): Recommendation {
       gradeBand: curriculum.record.gradeBand,
       recommendedGrade: request.requestedGrade ?? candidate.grade,
       standardCode: curriculum.record.code,
-      learningGoal: curriculum.record.officialGoal,
+      learningGoal:
+        ACTIVITY_LEARNING_GOALS[
+          candidate.templateId as keyof typeof ACTIVITY_LEARNING_GOALS
+        ],
       prerequisites: curriculum.record.prerequisites,
       problemCount,
       difficulty,
@@ -169,7 +453,9 @@ export function recommendActivity(input: unknown): Recommendation {
           : supportState === "released"
             ? []
           : [
-              `활동은 ${supportState ?? "unregistered"} 상태이며 실제 생성에는 아직 공개되지 않았습니다.`
+              supportState === "verified"
+                ? "이 활동은 새 화면을 확인하는 중이라 실제 생성에는 아직 공개되지 않았습니다."
+                : "이 활동은 아직 등록되지 않아 실제 생성에 사용할 수 없습니다."
             ],
       ...(variationSupported
         ? {}
@@ -231,6 +517,9 @@ export function recommendActivity(input: unknown): Recommendation {
   const manipulation =
     request.manipulation ?? "fraction-strip-common-start-drag";
   const confidence = 0.98;
+  const supportState = getActivitySupportState(
+    VERIFIED_TEMPLATE_ID
+  );
   if (confidence < 0.9) {
     throw new PlanningError(
       "low-confidence",
@@ -241,12 +530,13 @@ export function recommendActivity(input: unknown): Recommendation {
   return recommendationSchema.parse({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
     requestId: request.requestId,
-    supported: true,
+    supported: supportState === "released",
     templateId: VERIFIED_TEMPLATE_ID,
     gradeBand: "5-6",
     recommendedGrade: request.requestedGrade ?? 5,
     standardCode: curriculum.record.code,
-    learningGoal: curriculum.record.officialGoal,
+    learningGoal:
+      ACTIVITY_LEARNING_GOALS[VERIFIED_TEMPLATE_ID],
     prerequisites: curriculum.record.prerequisites,
     problemCount,
     difficulty,
@@ -260,7 +550,14 @@ export function recommendActivity(input: unknown): Recommendation {
     ],
     confidence,
     caveats: curriculum.warnings,
-    blockingReasons: [],
+    blockingReasons:
+      supportState === "released"
+        ? []
+        : [
+            supportState === "verified"
+              ? "이 활동은 새 화면을 확인하는 중이라 실제 생성에는 아직 공개되지 않았습니다."
+              : "이 활동은 아직 등록되지 않아 실제 생성에 사용할 수 없습니다."
+          ],
     curriculum: curriculum.record
   });
 }

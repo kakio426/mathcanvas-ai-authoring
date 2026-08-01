@@ -10,7 +10,7 @@ const baseRequest = {
 } as const;
 
 describe("활동 추천", () => {
-  it("첫 검증 패턴과 안전한 기본값을 추천한다", () => {
+  it("출시 활동의 안전한 기본값을 추천한다", () => {
     const result = recommendActivity(baseRequest);
     expect(result.supported).toBe(true);
     expect(result.templateId).toBe(
@@ -20,6 +20,7 @@ describe("활동 추천", () => {
     expect(result.difficulty).toBe("normal");
     expect(result.recommendedGrade).toBe(5);
     expect(result.learningGoal).toContain("분모가 다른 분수의 크기");
+    expect(result.blockingReasons).toEqual([]);
   });
 
   it("교사가 요청한 검증 범위 내 조건을 보존한다", () => {
@@ -34,7 +35,7 @@ describe("활동 추천", () => {
     expect(result.recommendedGrade).toBe(6);
   });
 
-  it("자연스러운 분수 크기 비교 요청도 첫 검증 패턴으로 추천한다", () => {
+  it("자연스러운 분수 크기 비교 요청도 같은 출시 활동에 연결한다", () => {
     const result = recommendActivity({
       ...baseRequest,
       prompt: "5학년 분수 크기 비교 활동지를 만들어 주세요."
@@ -57,6 +58,12 @@ describe("활동 추천", () => {
         prompt: "number bond로 10을 만들며 두 수를 비교해 보세요."
       }).templateId
     ).toBe("number.make-10.cards-v1");
+    expect(
+      recommendActivity({
+        ...baseRequest,
+        prompt: "분자가 다른 두 분수의 크기를 비교하는 활동지"
+      }).templateId
+    ).toBe("fraction.compare.unlike-denominators.visual-v1");
   });
 
   it("미지원 요청은 막고 출시 활동의 검증된 variation만 추천한다", () => {

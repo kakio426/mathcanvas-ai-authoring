@@ -89,6 +89,16 @@ function byRole(
   );
 }
 
+function activityRole(
+  resolved: ResolvedActivity,
+  role: string
+): ResolvedEmission | undefined {
+  return resolved.emissions.find(
+    (emission) =>
+      emission.itemId === undefined && emission.role === role
+  );
+}
+
 function stringArrayParameter(
   predicate: ValuePredicate,
   key: string,
@@ -218,7 +228,7 @@ function sameStringSet(
   );
 }
 
-const handlers: Readonly<Record<string, Handler>> = {
+const handlers: Record<string, Handler> = {
   "ratio.equivalent": (resolved, predicate, issues) => {
     for (const item of resolved.items) {
       const pair = ratioPair(item.values, predicate);
@@ -525,6 +535,1465 @@ const handlers: Readonly<Record<string, Handler>> = {
           "aggregate-value-mismatch",
           "mathematics",
           `${item.id}의 부분을 모은 값이 전체와 다릅니다.`
+        );
+      }
+    }
+  },
+  "values.balanced-equation-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const aPath = stringParameter(predicate, "aPath");
+    const bPath = stringParameter(predicate, "bPath");
+    const cPath = stringParameter(predicate, "cPath");
+    const solutionPath = stringParameter(
+      predicate,
+      "solutionPath"
+    );
+    const operationalAnswerPath = stringParameter(
+      predicate,
+      "operationalAnswerPath"
+    );
+    const mirrorValuePath = stringParameter(
+      predicate,
+      "mirrorValuePath"
+    );
+    const nearMissValuePath = stringParameter(
+      predicate,
+      "nearMissValuePath"
+    );
+    const surplusPath = stringParameter(
+      predicate,
+      "surplusPath"
+    );
+    const unitCellCountPath = stringParameter(
+      predicate,
+      "unitCellCountPath"
+    );
+    const piecePaths = stringArrayParameter(
+      predicate,
+      "piecePaths",
+      4
+    );
+    const minimumSurplus = parameter(
+      predicate,
+      "minimumSurplus"
+    );
+    if (
+      typeof minimumSurplus !== "number" ||
+      !Number.isInteger(minimumSurplus) ||
+      minimumSurplus < 1
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:minimumSurplus`
+      );
+    }
+    for (const item of resolved.items) {
+      const a = item.values[aPath];
+      const b = item.values[bPath];
+      const c = item.values[cPath];
+      const solution = item.values[solutionPath];
+      const operationalAnswer =
+        item.values[operationalAnswerPath];
+      const mirrorValue = item.values[mirrorValuePath];
+      const nearMissValue = item.values[nearMissValuePath];
+      const pieces = numericValues(item.values, piecePaths);
+      const surplus = item.values[surplusPath];
+      const unitCellCount =
+        item.values[unitCellCountPath];
+      const integers = [
+        a,
+        b,
+        c,
+        solution,
+        operationalAnswer,
+        mirrorValue,
+        nearMissValue
+      ];
+      const valid =
+        integers.every(
+          (value) =>
+            typeof value === "number" &&
+            Number.isInteger(value) &&
+            value >= 0 &&
+            value <= 9
+        ) &&
+        pieces !== undefined &&
+        pieces.length === piecePaths.length &&
+        new Set(pieces).size === pieces.length &&
+        typeof a === "number" &&
+        typeof b === "number" &&
+        typeof c === "number" &&
+        typeof solution === "number" &&
+        typeof unitCellCount === "number" &&
+        Number.isInteger(unitCellCount) &&
+        unitCellCount >= 1 &&
+        a + b === c + solution &&
+        operationalAnswer === a + b &&
+        mirrorValue === c &&
+        typeof nearMissValue === "number" &&
+        Math.abs(nearMissValue - solution) === 1 &&
+        pieces.filter((value) => value === solution).length === 1 &&
+        pieces.includes(operationalAnswer as number) &&
+        pieces.includes(mirrorValue as number) &&
+        pieces.includes(nearMissValue) &&
+        pieces.every(
+          (value) => c + value <= unitCellCount
+        ) &&
+        Array.isArray(surplus) &&
+        surplus.length >= minimumSurplus &&
+        surplus.every(
+          (value) =>
+            typeof value === "number" &&
+            Number.isInteger(value) &&
+            pieces.includes(value)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "balanced-equation-distractor-structure-invalid",
+          "pedagogy",
+          `${item.id}의 카드에는 정답과 등호 오개념을 드러내는 그럴듯한 선택지가 필요합니다.`
+        );
+      }
+    }
+  },
+  "values.balance-card-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const aPath = stringParameter(predicate, "aPath");
+    const bPath = stringParameter(predicate, "bPath");
+    const correctPath = stringParameter(
+      predicate,
+      "correctPath"
+    );
+    const differencePath = stringParameter(
+      predicate,
+      "differencePath"
+    );
+    const nearMissPath = stringParameter(
+      predicate,
+      "nearMissPath"
+    );
+    const surplusPath = stringParameter(
+      predicate,
+      "surplusPath"
+    );
+    const piecePaths = stringArrayParameter(
+      predicate,
+      "piecePaths",
+      5
+    );
+    for (const item of resolved.items) {
+      const a = item.values[aPath];
+      const b = item.values[bPath];
+      const correct = item.values[correctPath];
+      const difference = item.values[differencePath];
+      const nearMiss = item.values[nearMissPath];
+      const pieces = numericValues(item.values, piecePaths);
+      const surplus = item.values[surplusPath];
+      const valid =
+        [a, b, correct, difference, nearMiss].every(
+          (value) =>
+            typeof value === "number" &&
+            Number.isInteger(value) &&
+            value >= 0 &&
+            value <= 9
+        ) &&
+        typeof a === "number" &&
+        typeof b === "number" &&
+        typeof correct === "number" &&
+        typeof difference === "number" &&
+        typeof nearMiss === "number" &&
+        a + b === correct &&
+        Math.abs(a - b) === difference &&
+        Math.abs(nearMiss - correct) === 1 &&
+        pieces !== undefined &&
+        pieces.length === 5 &&
+        new Set(pieces).size === 5 &&
+        [a, b, correct, difference, nearMiss].every(
+          (value) => pieces.includes(value)
+        ) &&
+        pieces.filter((value) => value === correct).length === 1 &&
+        Array.isArray(surplus) &&
+        surplus.length === 4 &&
+        surplus.every(
+          (value) =>
+            typeof value === "number" &&
+            Number.isInteger(value) &&
+            value !== correct &&
+            pieces.includes(value)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "balance-card-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 덧셈 결과·두 수 반복·차·1 차이 오답을 구별할 카드가 없습니다.`
+        );
+      }
+    }
+  },
+  "values.clock-boundary-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const startHourPath = stringParameter(
+      predicate,
+      "startHourPath"
+    );
+    const targetMinutePath = stringParameter(
+      predicate,
+      "targetMinutePath"
+    );
+    const nextHourPath = stringParameter(
+      predicate,
+      "nextHourPath"
+    );
+    const minuteNumberPath = stringParameter(
+      predicate,
+      "minuteNumberPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "currentHourTextPath"),
+      stringParameter(predicate, "betweenStartTextPath"),
+      stringParameter(predicate, "nextHourTextPath"),
+      stringParameter(predicate, "minuteNumberTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    for (const item of resolved.items) {
+      const startHour = item.values[startHourPath];
+      const targetMinute = item.values[targetMinutePath];
+      const nextHour = item.values[nextHourPath];
+      const minuteNumber = item.values[minuteNumberPath];
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const expectedNext =
+        startHour === 12 ? 1 : Number(startHour) + 1;
+      const valid =
+        typeof startHour === "number" &&
+        Number.isInteger(startHour) &&
+        startHour >= 1 &&
+        startHour <= 12 &&
+        typeof targetMinute === "number" &&
+        (targetMinute === 50 || targetMinute === 55) &&
+        nextHour === expectedNext &&
+        minuteNumber === targetMinute / 5 &&
+        typeof correct === "string" &&
+        misconceptions.every(
+          (value) => typeof value === "string"
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "clock-boundary-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 짧은바늘 고정·성급한 다음 시·분침 숫자 혼동을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "visual.clock-time-consistent": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const clockRole = stringParameter(predicate, "clockRole");
+    const hoursPath = stringParameter(predicate, "hoursPath");
+    const minutesPath = stringParameter(predicate, "minutesPath");
+    for (const item of resolved.items) {
+      const clock = byRole(resolved, item.id, clockRole);
+      if (
+        !clock ||
+        clock.toolIntent.kind !== "analog-clock" ||
+        clock.toolIntent.properties.hours !==
+          item.values[hoursPath] ||
+        clock.toolIntent.properties.minutes !==
+          item.values[minutesPath] ||
+        clock.toolIntent.properties.clockType !== "geared" ||
+        clock.toolIntent.properties.isWorking !== false
+      ) {
+        issue(
+          issues,
+          "clock-time-visual-mismatch",
+          "mathematics",
+          `${item.id}의 시계가 문항의 시작 시각과 맞지 않습니다.`
+        );
+      }
+    }
+  },
+  "values.same-denominator-sum-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const denominatorPath = stringParameter(
+      predicate,
+      "denominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    const sumNumeratorPath = stringParameter(
+      predicate,
+      "sumNumeratorPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "addBothTextPath"),
+      stringParameter(predicate, "largerAddendTextPath"),
+      stringParameter(predicate, "doubleCountTextPath"),
+      stringParameter(predicate, "differenceTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    const candidateLatexPaths = candidatePaths.map(
+      (path) => `${path}Latex`
+    );
+    const correctLatexPath = correctPath.endsWith("Text")
+      ? `${correctPath.slice(0, -4)}Latex`
+      : `${correctPath}Latex`;
+    for (const item of resolved.items) {
+      const denominator = item.values[denominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const sumNumerator = item.values[sumNumeratorPath];
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const expectedSum =
+        Number(leftNumerator) + Number(rightNumerator);
+      const expectedMisconceptions = [
+        `${expectedSum}/${Number(denominator) * 2}`,
+        `${Math.max(
+          Number(leftNumerator),
+          Number(rightNumerator)
+        )}/${String(denominator)}`,
+        `${expectedSum + 1}/${String(denominator)}`,
+        `${Math.abs(
+          Number(leftNumerator) - Number(rightNumerator)
+        )}/${String(denominator)}`
+      ];
+      const parsedCandidates = candidates.map((value) => {
+        if (typeof value !== "string") return undefined;
+        const match = /^(\d+)\/(\d+)$/.exec(value);
+        if (!match) return undefined;
+        return {
+          numerator: Number(match[1]),
+          denominator: Number(match[2])
+        };
+      });
+      const candidateLatex = parsedCandidates.map((value) =>
+        value
+          ? `\\frac{${value.numerator}}{${value.denominator}}`
+          : undefined
+      );
+      const valid =
+        typeof denominator === "number" &&
+        Number.isInteger(denominator) &&
+        denominator >= 3 &&
+        denominator <= 10 &&
+        typeof leftNumerator === "number" &&
+        Number.isInteger(leftNumerator) &&
+        leftNumerator > 0 &&
+        typeof rightNumerator === "number" &&
+        Number.isInteger(rightNumerator) &&
+        rightNumerator > 0 &&
+        leftNumerator !== rightNumerator &&
+        sumNumerator === expectedSum &&
+        expectedSum < denominator &&
+        correct === `${expectedSum}/${denominator}` &&
+        misconceptions.every(
+          (value, index) =>
+            value === expectedMisconceptions[index]
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        ) &&
+        parsedCandidates.every(
+          (value): value is Ratio => value !== undefined
+        ) &&
+        new Set(
+          parsedCandidates
+            .filter((value): value is Ratio => value !== undefined)
+            .map(reducedKey)
+        ).size === 5 &&
+        item.values[correctLatexPath] ===
+          `\\frac{${expectedSum}}{${String(denominator)}}` &&
+        candidateLatex.every(
+          (value, index) =>
+            value !== undefined &&
+            item.values[candidateLatexPaths[index]!] === value
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "same-denominator-sum-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 분모까지 더하기·큰 덧수 유지·경계 중복 세기·빼기 오개념을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "values.unlike-denominator-sum-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const leftDenominatorPath = stringParameter(
+      predicate,
+      "leftDenominatorPath"
+    );
+    const rightDenominatorPath = stringParameter(
+      predicate,
+      "rightDenominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    const commonDenominatorPath = stringParameter(
+      predicate,
+      "commonDenominatorPath"
+    );
+    const leftCellsPath = stringParameter(
+      predicate,
+      "leftCellsPath"
+    );
+    const rightCellsPath = stringParameter(
+      predicate,
+      "rightCellsPath"
+    );
+    const sumCellsPath = stringParameter(
+      predicate,
+      "sumCellsPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "addBothTextPath"),
+      stringParameter(predicate, "sameNumeratorTextPath"),
+      stringParameter(predicate, "largerPartTextPath"),
+      stringParameter(predicate, "productTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    const candidateLatexPaths = candidatePaths.map(
+      (path) => `${path}Latex`
+    );
+    const correctLatexPath = correctPath.endsWith("Text")
+      ? `${correctPath.slice(0, -4)}Latex`
+      : `${correctPath}Latex`;
+    const gcd = (left: number, right: number): number => {
+      let a = Math.abs(left);
+      let b = Math.abs(right);
+      while (b !== 0) [a, b] = [b, a % b];
+      return a || 1;
+    };
+    const seenReducedAdditions = new Set<string>();
+    for (const item of resolved.items) {
+      const leftDenominator = item.values[leftDenominatorPath];
+      const rightDenominator = item.values[rightDenominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const commonDenominator =
+        item.values[commonDenominatorPath];
+      const leftCells = item.values[leftCellsPath];
+      const rightCells = item.values[rightCellsPath];
+      const sumCells = item.values[sumCellsPath];
+      const expectedCommon =
+        (Number(leftDenominator) *
+          Number(rightDenominator)) /
+        gcd(
+          Number(leftDenominator),
+          Number(rightDenominator)
+        );
+      const expectedLeftCells =
+        Number(leftNumerator) *
+        (expectedCommon / Number(leftDenominator));
+      const expectedRightCells =
+        Number(rightNumerator) *
+        (expectedCommon / Number(rightDenominator));
+      const expectedSum =
+        expectedLeftCells + expectedRightCells;
+      const reducedAdditionKey = [
+        reducedKey({
+          numerator: Number(leftNumerator),
+          denominator: Number(leftDenominator)
+        }),
+        reducedKey({
+          numerator: Number(rightNumerator),
+          denominator: Number(rightDenominator)
+        })
+      ]
+        .sort()
+        .join("+");
+      const duplicateReducedAddition =
+        seenReducedAdditions.has(reducedAdditionKey);
+      seenReducedAdditions.add(reducedAdditionKey);
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const expectedMisconceptions = [
+        `${Number(leftNumerator) + Number(rightNumerator)}/` +
+          `${Number(leftDenominator) + Number(rightDenominator)}`,
+        `${Number(leftNumerator) + Number(rightNumerator)}/` +
+          `${expectedCommon}`,
+        `${Math.max(
+          expectedLeftCells,
+          expectedRightCells
+        )}/${expectedCommon}`,
+        `${Number(leftNumerator) * Number(rightNumerator)}/` +
+          `${Number(leftDenominator) * Number(rightDenominator)}`
+      ];
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const parsedCandidates = candidates.map((value) => {
+        if (typeof value !== "string") return undefined;
+        const match = /^(\d+)\/(\d+)$/.exec(value);
+        if (!match) return undefined;
+        return {
+          numerator: Number(match[1]),
+          denominator: Number(match[2])
+        };
+      });
+      const valid =
+        typeof leftDenominator === "number" &&
+        Number.isInteger(leftDenominator) &&
+        leftDenominator >= 2 &&
+        typeof rightDenominator === "number" &&
+        Number.isInteger(rightDenominator) &&
+        rightDenominator > leftDenominator &&
+        rightDenominator <= 12 &&
+        typeof leftNumerator === "number" &&
+        Number.isInteger(leftNumerator) &&
+        leftNumerator > 0 &&
+        leftNumerator < leftDenominator &&
+        gcd(leftNumerator, leftDenominator) === 1 &&
+        typeof rightNumerator === "number" &&
+        Number.isInteger(rightNumerator) &&
+        rightNumerator > 0 &&
+        rightNumerator < rightDenominator &&
+        gcd(rightNumerator, rightDenominator) === 1 &&
+        !duplicateReducedAddition &&
+        commonDenominator === expectedCommon &&
+        expectedCommon <= 12 &&
+        expectedCommon > rightDenominator &&
+        720 % leftDenominator === 0 &&
+        720 % rightDenominator === 0 &&
+        720 % expectedCommon === 0 &&
+        leftCells === expectedLeftCells &&
+        rightCells === expectedRightCells &&
+        sumCells === expectedSum &&
+        expectedSum < expectedCommon &&
+        correct === `${expectedSum}/${expectedCommon}` &&
+        misconceptions.every(
+          (value, index) =>
+            value === expectedMisconceptions[index]
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        ) &&
+        parsedCandidates.every(
+          (value): value is Ratio => value !== undefined
+        ) &&
+        new Set(
+          parsedCandidates
+            .filter((value): value is Ratio => value !== undefined)
+            .map(reducedKey)
+        ).size === 5 &&
+        item.values[correctLatexPath] ===
+          `\\frac{${expectedSum}}{${expectedCommon}}` &&
+        parsedCandidates.every(
+          (value, index) =>
+            value !== undefined &&
+            item.values[candidateLatexPaths[index]!] ===
+              `\\frac{${value.numerator}}{${value.denominator}}`
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "unlike-denominator-sum-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 분모끼리 더하기·분자 유지·큰 부분만 읽기·곱셈 혼동 오개념을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "values.unlike-denominator-difference-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const leftDenominatorPath = stringParameter(
+      predicate,
+      "leftDenominatorPath"
+    );
+    const rightDenominatorPath = stringParameter(
+      predicate,
+      "rightDenominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    const commonDenominatorPath = stringParameter(
+      predicate,
+      "commonDenominatorPath"
+    );
+    const leftCellsPath = stringParameter(
+      predicate,
+      "leftCellsPath"
+    );
+    const rightCellsPath = stringParameter(
+      predicate,
+      "rightCellsPath"
+    );
+    const differenceCellsPath = stringParameter(
+      predicate,
+      "differenceCellsPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "oneSideCommonTextPath"),
+      stringParameter(predicate, "coveredPartTextPath"),
+      stringParameter(predicate, "minuendOnlyTextPath"),
+      stringParameter(predicate, "denominatorSumTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    const candidateLatexPaths = candidatePaths.map(
+      (path) => `${path}Latex`
+    );
+    const correctLatexPath = correctPath.endsWith("Text")
+      ? `${correctPath.slice(0, -4)}Latex`
+      : `${correctPath}Latex`;
+    const gcd = (left: number, right: number): number => {
+      let a = Math.abs(left);
+      let b = Math.abs(right);
+      while (b !== 0) [a, b] = [b, a % b];
+      return a || 1;
+    };
+    const seenDenominatorPairs = new Set<string>();
+    const seenReducedDifferences = new Set<string>();
+    for (const item of resolved.items) {
+      const leftDenominator = item.values[leftDenominatorPath];
+      const rightDenominator = item.values[rightDenominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const commonDenominator =
+        item.values[commonDenominatorPath];
+      const leftCells = item.values[leftCellsPath];
+      const rightCells = item.values[rightCellsPath];
+      const differenceCells =
+        item.values[differenceCellsPath];
+      const expectedCommon =
+        (Number(leftDenominator) *
+          Number(rightDenominator)) /
+        gcd(
+          Number(leftDenominator),
+          Number(rightDenominator)
+        );
+      const expectedLeftCells =
+        Number(leftNumerator) *
+        (expectedCommon / Number(leftDenominator));
+      const expectedRightCells =
+        Number(rightNumerator) *
+        (expectedCommon / Number(rightDenominator));
+      const expectedDifference =
+        expectedLeftCells - expectedRightCells;
+      const denominatorPairKey = [
+        Number(leftDenominator),
+        Number(rightDenominator)
+      ]
+        .sort((left, right) => left - right)
+        .join(":");
+      const reducedDifferenceKey = [
+        reducedKey({
+          numerator: Number(leftNumerator),
+          denominator: Number(leftDenominator)
+        }),
+        reducedKey({
+          numerator: Number(rightNumerator),
+          denominator: Number(rightDenominator)
+        })
+      ].join("-");
+      const duplicateDenominatorPair =
+        seenDenominatorPairs.has(denominatorPairKey);
+      const duplicateReducedDifference =
+        seenReducedDifferences.has(reducedDifferenceKey);
+      seenDenominatorPairs.add(denominatorPairKey);
+      seenReducedDifferences.add(reducedDifferenceKey);
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const expectedMisconceptions = [
+        `${expectedLeftCells - Number(rightNumerator)}/` +
+          `${expectedCommon}`,
+        `${expectedRightCells}/${expectedCommon}`,
+        `${expectedLeftCells}/${expectedCommon}`,
+        `${expectedDifference}/` +
+          `${Number(leftDenominator) + Number(rightDenominator)}`
+      ];
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const parsedCandidates = candidates.map((value) => {
+        if (typeof value !== "string") return undefined;
+        const match = /^(\d+)\/(\d+)$/.exec(value);
+        if (!match) return undefined;
+        return {
+          numerator: Number(match[1]),
+          denominator: Number(match[2])
+        };
+      });
+      const valid =
+        typeof leftDenominator === "number" &&
+        Number.isInteger(leftDenominator) &&
+        leftDenominator >= 2 &&
+        leftDenominator <= 12 &&
+        typeof rightDenominator === "number" &&
+        Number.isInteger(rightDenominator) &&
+        rightDenominator >= 2 &&
+        rightDenominator <= 12 &&
+        rightDenominator !== leftDenominator &&
+        typeof leftNumerator === "number" &&
+        Number.isInteger(leftNumerator) &&
+        leftNumerator > 0 &&
+        leftNumerator < leftDenominator &&
+        gcd(leftNumerator, leftDenominator) === 1 &&
+        typeof rightNumerator === "number" &&
+        Number.isInteger(rightNumerator) &&
+        rightNumerator > 0 &&
+        rightNumerator < rightDenominator &&
+        gcd(rightNumerator, rightDenominator) === 1 &&
+        !duplicateDenominatorPair &&
+        !duplicateReducedDifference &&
+        commonDenominator === expectedCommon &&
+        expectedCommon <= 12 &&
+        expectedCommon >
+          Math.max(leftDenominator, rightDenominator) &&
+        720 % leftDenominator === 0 &&
+        720 % rightDenominator === 0 &&
+        720 % expectedCommon === 0 &&
+        leftCells === expectedLeftCells &&
+        rightCells === expectedRightCells &&
+        differenceCells === expectedDifference &&
+        expectedDifference >= 1 &&
+        expectedDifference < expectedCommon &&
+        gcd(expectedDifference, expectedCommon) === 1 &&
+        correct ===
+          `${expectedDifference}/${expectedCommon}` &&
+        misconceptions.every(
+          (value, index) =>
+            value === expectedMisconceptions[index]
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        ) &&
+        parsedCandidates.every(
+          (value): value is Ratio =>
+            value !== undefined &&
+            Number.isInteger(value.numerator) &&
+            Number.isInteger(value.denominator) &&
+            value.numerator >= 1 &&
+            value.numerator < value.denominator
+        ) &&
+        new Set(
+          parsedCandidates
+            .filter((value): value is Ratio => value !== undefined)
+            .map(reducedKey)
+        ).size === 5 &&
+        item.values[correctLatexPath] ===
+          `\\frac{${expectedDifference}}{${expectedCommon}}` &&
+        parsedCandidates.every(
+          (value, index) =>
+            value !== undefined &&
+            item.values[candidateLatexPaths[index]!] ===
+              `\\frac{${value.numerator}}{${value.denominator}}`
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "unlike-denominator-difference-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 한쪽만 통분하기·덮은 양 읽기·빼기 생략·분모 합 오개념을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "geometry.common-unit-sum-strips": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const leftStripRole = stringParameter(
+      predicate,
+      "leftStripRole"
+    );
+    const rightStripRole = stringParameter(
+      predicate,
+      "rightStripRole"
+    );
+    const joinLaneRole = stringParameter(
+      predicate,
+      "joinLaneRole"
+    );
+    const unitRulerRole = stringParameter(
+      predicate,
+      "unitRulerRole"
+    );
+    const startLineRole = stringParameter(
+      predicate,
+      "startLineRole"
+    );
+    const leftDenominatorPath = stringParameter(
+      predicate,
+      "leftDenominatorPath"
+    );
+    const rightDenominatorPath = stringParameter(
+      predicate,
+      "rightDenominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    const commonDenominatorPath = stringParameter(
+      predicate,
+      "commonDenominatorPath"
+    );
+    const sumCellsPath = stringParameter(
+      predicate,
+      "sumCellsPath"
+    );
+    for (const item of resolved.items) {
+      const leftDenominator =
+        item.values[leftDenominatorPath];
+      const rightDenominator =
+        item.values[rightDenominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const commonDenominator =
+        item.values[commonDenominatorPath];
+      const sumCells = item.values[sumCellsPath];
+      const left = byRole(resolved, item.id, leftStripRole);
+      const right = byRole(resolved, item.id, rightStripRole);
+      const lane = byRole(resolved, item.id, joinLaneRole);
+      const ruler = byRole(resolved, item.id, unitRulerRole);
+      const startLine = byRole(
+        resolved,
+        item.id,
+        startLineRole
+      );
+      const leftFraction =
+        left?.toolIntent.kind === "fraction-model"
+          ? ratio(
+              {
+                fraction:
+                  left.toolIntent.properties.fraction
+              },
+              "fraction"
+            )
+          : undefined;
+      const rightFraction =
+        right?.toolIntent.kind === "fraction-model"
+          ? ratio(
+              {
+                fraction:
+                  right.toolIntent.properties.fraction
+              },
+              "fraction"
+            )
+          : undefined;
+      const rulerFraction =
+        ruler?.toolIntent.kind === "fraction-model"
+          ? ratio(
+              {
+                fraction:
+                  ruler.toolIntent.properties.fraction
+              },
+              "fraction"
+            )
+          : undefined;
+      const valid =
+        left &&
+        right &&
+        lane &&
+        ruler &&
+        startLine &&
+        left.movable &&
+        !left.locked &&
+        right.movable &&
+        !right.locked &&
+        !ruler.movable &&
+        ruler.locked &&
+        leftFraction?.numerator === leftNumerator &&
+        leftFraction?.denominator === leftDenominator &&
+        rightFraction?.numerator === rightNumerator &&
+        rightFraction?.denominator === rightDenominator &&
+        rulerFraction?.numerator === commonDenominator &&
+        rulerFraction?.denominator === commonDenominator &&
+        Number(commonDenominator) %
+          Number(leftDenominator) ===
+          0 &&
+        Number(commonDenominator) %
+          Number(rightDenominator) ===
+          0 &&
+        Number(commonDenominator) >
+          Math.max(
+            Number(leftDenominator),
+            Number(rightDenominator)
+          ) &&
+        Number(sumCells) < Number(commonDenominator) &&
+        left.bounds.x === right.bounds.x &&
+        left.bounds.x === lane.bounds.x &&
+        left.bounds.x === ruler.bounds.x &&
+        left.bounds.width === right.bounds.width &&
+        left.bounds.width === lane.bounds.width &&
+        left.bounds.width === ruler.bounds.width &&
+        startLine.bounds.x + startLine.bounds.width / 2 ===
+          lane.bounds.x &&
+        ruler.bounds.y >=
+          lane.bounds.y + lane.bounds.height;
+      if (!valid) {
+        issue(
+          issues,
+          "common-unit-sum-strip-geometry-invalid",
+          "pedagogy",
+          `${item.id}의 두 분수 띠와 공통 단위 자가 같은 전체·출발선·칸 단위를 사용하지 않습니다.`
+        );
+      }
+    }
+  },
+  "values.improper-sum-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const denominatorPath = stringParameter(
+      predicate,
+      "denominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    const sumNumeratorPath = stringParameter(
+      predicate,
+      "sumNumeratorPath"
+    );
+    const overflowNumeratorPath = stringParameter(
+      predicate,
+      "overflowNumeratorPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "addBothTextPath"),
+      stringParameter(predicate, "capAtOneTextPath"),
+      stringParameter(predicate, "overflowOnlyTextPath"),
+      stringParameter(predicate, "largerAddendTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    const candidateLatexPaths = candidatePaths.map(
+      (path) => `${path}Latex`
+    );
+    const correctLatexPath = correctPath.endsWith("Text")
+      ? `${correctPath.slice(0, -4)}Latex`
+      : `${correctPath}Latex`;
+    for (const item of resolved.items) {
+      const denominator = item.values[denominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const sumNumerator = item.values[sumNumeratorPath];
+      const overflowNumerator =
+        item.values[overflowNumeratorPath];
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const expectedSum =
+        Number(leftNumerator) + Number(rightNumerator);
+      const expectedOverflow =
+        expectedSum - Number(denominator);
+      const expectedMisconceptions = [
+        `${expectedSum}/${Number(denominator) * 2}`,
+        `${String(denominator)}/${String(denominator)}`,
+        `${expectedOverflow}/${String(denominator)}`,
+        `${Math.max(
+          Number(leftNumerator),
+          Number(rightNumerator)
+        )}/${String(denominator)}`
+      ];
+      const parsedCandidates = candidates.map((value) => {
+        if (typeof value !== "string") return undefined;
+        const match = /^(\d+)\/(\d+)$/.exec(value);
+        if (!match) return undefined;
+        return {
+          numerator: Number(match[1]),
+          denominator: Number(match[2])
+        };
+      });
+      const candidateLatex = parsedCandidates.map((value) =>
+        value
+          ? `\\frac{${value.numerator}}{${value.denominator}}`
+          : undefined
+      );
+      const valid =
+        typeof denominator === "number" &&
+        Number.isInteger(denominator) &&
+        denominator >= 4 &&
+        denominator <= 10 &&
+        typeof leftNumerator === "number" &&
+        Number.isInteger(leftNumerator) &&
+        leftNumerator > 0 &&
+        leftNumerator < denominator &&
+        typeof rightNumerator === "number" &&
+        Number.isInteger(rightNumerator) &&
+        rightNumerator > 0 &&
+        rightNumerator < denominator &&
+        leftNumerator !== rightNumerator &&
+        sumNumerator === expectedSum &&
+        expectedSum > denominator &&
+        expectedSum <= denominator * 2 - 2 &&
+        overflowNumerator === expectedOverflow &&
+        correct === `${expectedSum}/${denominator}` &&
+        misconceptions.every(
+          (value, index) =>
+            value === expectedMisconceptions[index]
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        ) &&
+        parsedCandidates.every(
+          (value): value is Ratio => value !== undefined
+        ) &&
+        new Set(
+          parsedCandidates
+            .filter((value): value is Ratio => value !== undefined)
+            .map(reducedKey)
+        ).size === 5 &&
+        item.values[correctLatexPath] ===
+          `\\frac{${expectedSum}}{${String(denominator)}}` &&
+        candidateLatex.every(
+          (value, index) =>
+            value !== undefined &&
+            item.values[candidateLatexPaths[index]!] === value
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "improper-sum-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 분모까지 더하기·1에서 멈추기·넘은 부분만 읽기·큰 덧수 유지 오개념을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "geometry.same-denominator-sum-strips": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const leftStripRole = stringParameter(
+      predicate,
+      "leftStripRole"
+    );
+    const rightStripRole = stringParameter(
+      predicate,
+      "rightStripRole"
+    );
+    const joinLaneRole = stringParameter(
+      predicate,
+      "joinLaneRole"
+    );
+    const startLineRole = stringParameter(
+      predicate,
+      "startLineRole"
+    );
+    const wholeCountValue = parameter(
+      predicate,
+      "wholeCount"
+    );
+    const wholeCount =
+      wholeCountValue === undefined ? 1 : wholeCountValue;
+    const requireImproperSumValue = parameter(
+      predicate,
+      "requireImproperSum"
+    );
+    const requireImproperSum =
+      requireImproperSumValue === true;
+    const wholeBoundaryRoleValue = parameter(
+      predicate,
+      "wholeBoundaryRole"
+    );
+    if (
+      !Number.isInteger(wholeCount) ||
+      Number(wholeCount) < 1 ||
+      Number(wholeCount) > 2 ||
+      !(
+        requireImproperSumValue === undefined ||
+        typeof requireImproperSumValue === "boolean"
+      ) ||
+      !(
+        wholeBoundaryRoleValue === undefined ||
+        typeof wholeBoundaryRoleValue === "string"
+      ) ||
+      (Number(wholeCount) > 1 &&
+        typeof wholeBoundaryRoleValue !== "string")
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:whole`
+      );
+    }
+    const denominatorPath = stringParameter(
+      predicate,
+      "denominatorPath"
+    );
+    const leftNumeratorPath = stringParameter(
+      predicate,
+      "leftNumeratorPath"
+    );
+    const rightNumeratorPath = stringParameter(
+      predicate,
+      "rightNumeratorPath"
+    );
+    for (const item of resolved.items) {
+      const denominator = item.values[denominatorPath];
+      const leftNumerator = item.values[leftNumeratorPath];
+      const rightNumerator = item.values[rightNumeratorPath];
+      const left = byRole(resolved, item.id, leftStripRole);
+      const right = byRole(resolved, item.id, rightStripRole);
+      const lane = byRole(resolved, item.id, joinLaneRole);
+      const startLine = byRole(resolved, item.id, startLineRole);
+      const wholeBoundary =
+        typeof wholeBoundaryRoleValue === "string"
+          ? byRole(
+              resolved,
+              item.id,
+              wholeBoundaryRoleValue
+            )
+          : undefined;
+      const leftFraction =
+        left?.toolIntent.kind === "fraction-model"
+          ? ratio(
+              {
+                fraction:
+                  left.toolIntent.properties.fraction
+              },
+              "fraction"
+            )
+          : undefined;
+      const rightFraction =
+        right?.toolIntent.kind === "fraction-model"
+          ? ratio(
+              {
+                fraction:
+                  right.toolIntent.properties.fraction
+              },
+              "fraction"
+            )
+          : undefined;
+      const valid =
+        left &&
+        right &&
+        lane &&
+        startLine &&
+        left.movable &&
+        !left.locked &&
+        right.movable &&
+        !right.locked &&
+        leftFraction?.numerator === leftNumerator &&
+        leftFraction?.denominator === denominator &&
+        rightFraction?.numerator === rightNumerator &&
+        rightFraction?.denominator === denominator &&
+        left.bounds.x === right.bounds.x &&
+        left.bounds.x === lane.bounds.x &&
+        left.bounds.width === right.bounds.width &&
+        left.bounds.width * Number(wholeCount) ===
+          lane.bounds.width &&
+        startLine.bounds.x + startLine.bounds.width / 2 ===
+          lane.bounds.x &&
+        (Number(wholeCount) === 1 ||
+          (wholeBoundary &&
+            wholeBoundary.bounds.x +
+              wholeBoundary.bounds.width / 2 ===
+              lane.bounds.x + left.bounds.width)) &&
+        (requireImproperSum
+          ? Number(leftNumerator) +
+              Number(rightNumerator) >
+              Number(denominator) &&
+            Number(leftNumerator) +
+              Number(rightNumerator) <
+              Number(denominator) * 2
+          : Number(leftNumerator) +
+              Number(rightNumerator) <
+            Number(denominator));
+      if (!valid) {
+        issue(
+          issues,
+          "same-denominator-sum-strip-geometry-invalid",
+          "pedagogy",
+          `${item.id}의 두 분수 띠가 같은 전체·같은 단위와 공통 출발선을 사용하지 않습니다.`
+        );
+      }
+    }
+  },
+  "values.elapsed-time-distractors": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const startHourPath = stringParameter(
+      predicate,
+      "startHourPath"
+    );
+    const startMinutePath = stringParameter(
+      predicate,
+      "startMinutePath"
+    );
+    const endHourPath = stringParameter(
+      predicate,
+      "endHourPath"
+    );
+    const endMinutePath = stringParameter(
+      predicate,
+      "endMinutePath"
+    );
+    const elapsedMinutesPath = stringParameter(
+      predicate,
+      "elapsedMinutesPath"
+    );
+    const correctPath = stringParameter(predicate, "correctPath");
+    const misconceptionPaths = [
+      stringParameter(predicate, "minuteDifferenceTextPath"),
+      stringParameter(predicate, "hourOnlyTextPath"),
+      stringParameter(predicate, "decimalBorrowTextPath"),
+      stringParameter(predicate, "startMinuteTextPath")
+    ];
+    const candidatePaths = stringArrayParameter(
+      predicate,
+      "candidatePaths",
+      5
+    );
+    for (const item of resolved.items) {
+      const startHour = item.values[startHourPath];
+      const startMinute = item.values[startMinutePath];
+      const endHour = item.values[endHourPath];
+      const endMinute = item.values[endMinutePath];
+      const elapsedMinutes = item.values[elapsedMinutesPath];
+      const correct = item.values[correctPath];
+      const misconceptions = misconceptionPaths.map(
+        (path) => item.values[path]
+      );
+      const candidates = candidatePaths.map(
+        (path) => item.values[path]
+      );
+      const expectedEndHour =
+        startHour === 12 ? 1 : Number(startHour) + 1;
+      const expectedEndMinute =
+        Number(startMinute) + Number(elapsedMinutes) - 60;
+      const expectedMisconceptions = [
+        `${Math.abs(
+          Number(endMinute) - Number(startMinute)
+        )}분`,
+        "60분",
+        `${100 - Number(startMinute) + Number(endMinute)}분`,
+        `${String(startMinute)}분`
+      ];
+      const valid =
+        typeof startHour === "number" &&
+        Number.isInteger(startHour) &&
+        startHour >= 1 &&
+        startHour <= 12 &&
+        typeof startMinute === "number" &&
+        Number.isInteger(startMinute) &&
+        startMinute >= 35 &&
+        startMinute <= 55 &&
+        startMinute % 5 === 0 &&
+        typeof elapsedMinutes === "number" &&
+        Number.isInteger(elapsedMinutes) &&
+        elapsedMinutes >= 15 &&
+        elapsedMinutes <= 45 &&
+        elapsedMinutes % 5 === 0 &&
+        Number(startMinute) + elapsedMinutes >= 60 &&
+        endHour === expectedEndHour &&
+        endMinute === expectedEndMinute &&
+        correct === `${elapsedMinutes}분` &&
+        misconceptions.every(
+          (value, index) =>
+            value === expectedMisconceptions[index]
+        ) &&
+        candidates.every(
+          (value) => typeof value === "string"
+        ) &&
+        new Set(candidates).size === 5 &&
+        [correct, ...misconceptions].every(
+          (value) =>
+            typeof value === "string" &&
+            candidates.includes(value)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "elapsed-time-distractors-invalid",
+          "pedagogy",
+          `${item.id}에 분끼리 빼기·60분 고정·100분 빌림 오개념을 드러내는 선택지가 없습니다.`
+        );
+      }
+    }
+  },
+  "visual.clock-pair-consistent": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const startClockRole = stringParameter(
+      predicate,
+      "startClockRole"
+    );
+    const endClockRole = stringParameter(
+      predicate,
+      "endClockRole"
+    );
+    const startHourPath = stringParameter(
+      predicate,
+      "startHourPath"
+    );
+    const startMinutePath = stringParameter(
+      predicate,
+      "startMinutePath"
+    );
+    const endHourPath = stringParameter(
+      predicate,
+      "endHourPath"
+    );
+    const endMinutePath = stringParameter(
+      predicate,
+      "endMinutePath"
+    );
+    for (const item of resolved.items) {
+      const startClock = byRole(
+        resolved,
+        item.id,
+        startClockRole
+      );
+      const endClock = byRole(resolved, item.id, endClockRole);
+      const clockMatches = (
+        clock: ResolvedEmission | undefined,
+        hourPath: string,
+        minutePath: string
+      ) =>
+        clock?.toolIntent.kind === "analog-clock" &&
+        clock.toolIntent.properties.hours ===
+          item.values[hourPath] &&
+        clock.toolIntent.properties.minutes ===
+          item.values[minutePath] &&
+        clock.toolIntent.properties.clockType === "geared" &&
+        clock.toolIntent.properties.isWorking === false;
+      if (
+        !clockMatches(
+          startClock,
+          startHourPath,
+          startMinutePath
+        ) ||
+        !clockMatches(endClock, endHourPath, endMinutePath)
+      ) {
+        issue(
+          issues,
+          "clock-pair-visual-mismatch",
+          "mathematics",
+          `${item.id}의 시작·끝 시계가 문항 시각과 맞지 않습니다.`
         );
       }
     }
@@ -1241,6 +2710,401 @@ const handlers: Readonly<Record<string, Handler>> = {
       }
     }
   },
+  "language.classroom-korean": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const instructionRoles = stringArrayParameter(
+      predicate,
+      "instructionRoles"
+    );
+    const labelRoles = stringArrayParameter(
+      predicate,
+      "labelRoles"
+    );
+    const promptRoles = Array.isArray(
+      predicate.parameters.promptRoles
+    )
+      ? stringArrayParameter(predicate, "promptRoles")
+      : [];
+    const maximumInstructionLength = parameter(
+      predicate,
+      "maximumInstructionLength"
+    );
+    const maximumLabelLength = parameter(
+      predicate,
+      "maximumLabelLength"
+    );
+    if (
+      typeof maximumInstructionLength !== "number" ||
+      typeof maximumLabelLength !== "number" ||
+      !Number.isInteger(maximumInstructionLength) ||
+      !Number.isInteger(maximumLabelLength) ||
+      maximumInstructionLength < 20 ||
+      maximumLabelLength < 2
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:length`
+      );
+    }
+
+    const systemPhrases = [
+      "먼저 예상",
+      "세어 확인",
+      "근거와 수정",
+      "수 카드 모음",
+      "검증",
+      "불변량",
+      "후보"
+    ];
+    const actionPattern =
+      /(고르|골라|놓|나타내|확인|찾|비교|쓰|써|고치|옮기|바꾸)/;
+    const textOf = (
+      emission: ResolvedEmission | undefined
+    ): string | undefined => {
+      const text = emission?.toolIntent.properties.text;
+      return typeof text === "string" ? text.trim() : undefined;
+    };
+
+    const sequenceMarkers = ["①", "②", "③", "④", "⑤", "⑥"];
+    for (const [index, role] of instructionRoles.entries()) {
+      const text = textOf(activityRole(resolved, role));
+      if (
+        !text ||
+        Array.from(text).length > maximumInstructionLength ||
+        !text.endsWith("세요.") ||
+        !actionPattern.test(text) ||
+        (instructionRoles.length >= 3 &&
+          !text.startsWith(`${sequenceMarkers[index]} `)) ||
+        systemPhrases.some((phrase) => text.includes(phrase))
+      ) {
+        issue(
+          issues,
+          "classroom-language-unclear",
+          "pedagogy",
+          `${role} 지시문이 학생의 대상과 행동을 자연스러운 교실 문장으로 안내하지 않습니다.`
+        );
+      }
+    }
+
+    for (const item of resolved.items) {
+      for (const role of promptRoles) {
+        const text = textOf(byRole(resolved, item.id, role));
+        if (
+          !text ||
+          Array.from(text).length > maximumInstructionLength ||
+          !/[.?]$/.test(text) ||
+          !/(몇|어느|무엇|어떻게|왜)/.test(text) ||
+          systemPhrases.some((phrase) => text.includes(phrase))
+        ) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${item.id}의 ${role} 문장이 학생이 화면에서 해결할 질문을 자연스럽게 묻지 않습니다.`
+          );
+        }
+      }
+      for (const role of labelRoles) {
+        const text = textOf(byRole(resolved, item.id, role));
+        if (
+          !text ||
+          Array.from(text).length > maximumLabelLength ||
+          /[.!?]$/.test(text) ||
+          /(?:하|해|보)세요/.test(text) ||
+          systemPhrases.some((phrase) => text.includes(phrase))
+        ) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${item.id}의 ${role} 라벨이 학생이 할 일을 바로 알 수 있는 교실 용어가 아닙니다.`
+          );
+        }
+      }
+    }
+  },
+  "visual.text-fit": (resolved, predicate, issues) => {
+    const roles = stringArrayParameter(predicate, "roles");
+    const maximumFillRatio = parameter(
+      predicate,
+      "maximumFillRatio"
+    );
+    if (
+      typeof maximumFillRatio !== "number" ||
+      !Number.isFinite(maximumFillRatio) ||
+      maximumFillRatio <= 0 ||
+      maximumFillRatio > 1
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:maximumFillRatio`
+      );
+    }
+
+    const estimatedWidth = (
+      text: string,
+      fontSize: number
+    ): number =>
+      Array.from(text).reduce((width, character) => {
+        if (/\s/u.test(character)) {
+          return width + fontSize * 0.36;
+        }
+        if (/[A-Za-z0-9<>=+\-.,!?()\[\]①②③④⑤⑥]/u.test(character)) {
+          return width + fontSize * 0.62;
+        }
+        return width + fontSize;
+      }, 0);
+
+    const check = (
+      emission: ResolvedEmission | undefined,
+      context: string
+    ): void => {
+      const text = emission?.toolIntent.properties.text;
+      const fontSize =
+        emission?.toolIntent.properties.fontSize;
+      if (
+        !emission ||
+        typeof text !== "string" ||
+        typeof fontSize !== "number" ||
+        estimatedWidth(text, fontSize) >
+          emission.bounds.width * maximumFillRatio
+      ) {
+        issue(
+          issues,
+          "text-region-overflow-risk",
+          "layout",
+          `${context}의 고정 문구가 지정한 너비를 넘을 수 있습니다.`
+        );
+      }
+    };
+
+    for (const role of roles) {
+      const activityEmission = activityRole(resolved, role);
+      if (activityEmission) {
+        check(activityEmission, role);
+        continue;
+      }
+      for (const item of resolved.items) {
+        check(
+          byRole(resolved, item.id, role),
+          `${item.id}의 ${role}`
+        );
+      }
+    }
+  },
+  "visual.labeled-pool-row": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const labelRole = stringParameter(predicate, "labelRole");
+    const memberRoles = stringArrayParameter(
+      predicate,
+      "memberRoles",
+      2
+    );
+    const containerRole = stringParameter(
+      predicate,
+      "containerRole"
+    );
+    const rowCenterTolerance = parameter(
+      predicate,
+      "rowCenterTolerance"
+    );
+    const gapTolerance = parameter(predicate, "gapTolerance");
+    const groupCenterTolerance = parameter(
+      predicate,
+      "groupCenterTolerance"
+    );
+    const labelAlignmentTolerance = parameter(
+      predicate,
+      "labelAlignmentTolerance"
+    );
+    const minimumLabelGap = parameter(
+      predicate,
+      "minimumLabelGap"
+    );
+    const maximumLabelGap = parameter(
+      predicate,
+      "maximumLabelGap"
+    );
+    const metrics = [
+      rowCenterTolerance,
+      gapTolerance,
+      groupCenterTolerance,
+      labelAlignmentTolerance,
+      minimumLabelGap,
+      maximumLabelGap
+    ];
+    if (
+      metrics.some(
+        (value) =>
+          typeof value !== "number" ||
+          !Number.isFinite(value) ||
+          value < 0
+      ) ||
+      (minimumLabelGap as number) >
+        (maximumLabelGap as number)
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:metrics`
+      );
+    }
+
+    for (const item of resolved.items) {
+      const label = byRole(resolved, item.id, labelRole);
+      const container = byRole(
+        resolved,
+        item.id,
+        containerRole
+      );
+      const members = memberRoles.map((role) =>
+        byRole(resolved, item.id, role)
+      );
+      if (
+        !label ||
+        !container ||
+        members.some((member) => !member)
+      ) {
+        issue(
+          issues,
+          "labeled-pool-row-invalid",
+          "layout",
+          `${item.id}의 라벨이 있는 카드 모음이 완전하지 않습니다.`
+        );
+        continue;
+      }
+
+      const present = members as ResolvedEmission[];
+      const contained = [label, ...present].every(
+        (emission) =>
+          emission.bounds.x >= container.bounds.x &&
+          emission.bounds.y >= container.bounds.y &&
+          emission.bounds.x + emission.bounds.width <=
+            container.bounds.x + container.bounds.width &&
+          emission.bounds.y + emission.bounds.height <=
+            container.bounds.y + container.bounds.height
+      );
+      const rows: ResolvedEmission[][] = [];
+      for (const member of [...present].sort((left, right) => {
+        const vertical =
+          left.bounds.y +
+          left.bounds.height / 2 -
+          (right.bounds.y + right.bounds.height / 2);
+        return vertical || left.bounds.x - right.bounds.x;
+      })) {
+        const center =
+          member.bounds.y + member.bounds.height / 2;
+        const row = rows.find((candidate) => {
+          const candidateCenter =
+            candidate.reduce(
+              (sum, emission) =>
+                sum +
+                emission.bounds.y +
+                emission.bounds.height / 2,
+              0
+            ) / candidate.length;
+          return (
+            Math.abs(center - candidateCenter) <=
+            (rowCenterTolerance as number)
+          );
+        });
+        if (row) {
+          row.push(member);
+        } else {
+          rows.push([member]);
+        }
+      }
+      const orderedRows = rows
+        .map((row) =>
+          [...row].sort(
+            (left, right) => left.bounds.x - right.bounds.x
+          )
+        )
+        .sort(
+          (left, right) =>
+            left[0]!.bounds.y - right[0]!.bounds.y
+        );
+      const rowMetrics = orderedRows.map((row) => {
+        const centers = row.map(
+          (emission) =>
+            emission.bounds.y + emission.bounds.height / 2
+        );
+        const gaps = row.slice(1).map((emission, index) => {
+          const previous = row[index]!;
+          return (
+            emission.bounds.x -
+            (previous.bounds.x + previous.bounds.width)
+          );
+        });
+        const left = row[0]!.bounds.x;
+        const last = row.at(-1)!;
+        const right = last.bounds.x + last.bounds.width;
+        return {
+          left,
+          centers,
+          gaps,
+          center: (left + right) / 2,
+          top: Math.min(
+            ...row.map((emission) => emission.bounds.y)
+          ),
+          bottom: Math.max(
+            ...row.map(
+              (emission) =>
+                emission.bounds.y + emission.bounds.height
+            )
+          )
+        };
+      });
+      const containerCenter =
+        container.bounds.x + container.bounds.width / 2;
+      const groupLeft = Math.min(
+        ...rowMetrics.map((row) => row.left)
+      );
+      const verticalGaps = rowMetrics
+        .slice(1)
+        .map(
+          (row, index) =>
+            row.top - rowMetrics[index]!.bottom
+        );
+      const labelGap =
+        rowMetrics[0]!.top -
+        (label.bounds.y + label.bounds.height);
+      const valid =
+        contained &&
+        rowMetrics.every(
+          (row) =>
+            Math.max(...row.centers) -
+              Math.min(...row.centers) <=
+              (rowCenterTolerance as number) &&
+            row.gaps.every((gap) => gap >= 0) &&
+            (row.gaps.length < 2 ||
+              Math.max(...row.gaps) -
+                Math.min(...row.gaps) <=
+                (gapTolerance as number)) &&
+            Math.abs(row.center - containerCenter) <=
+              (groupCenterTolerance as number)
+        ) &&
+        verticalGaps.every((gap) => gap >= 0) &&
+        (verticalGaps.length < 2 ||
+          Math.max(...verticalGaps) -
+            Math.min(...verticalGaps) <=
+            (gapTolerance as number)) &&
+        Math.abs(label.bounds.x - groupLeft) <=
+          (labelAlignmentTolerance as number) &&
+        labelGap >= (minimumLabelGap as number) &&
+        labelGap <= (maximumLabelGap as number);
+      if (!valid) {
+        issue(
+          issues,
+          "labeled-pool-row-invalid",
+          "layout",
+          `${item.id}의 선택 묶음이 컨테이너 안에서 가운데·등간격 행과 위쪽 라벨로 정렬되지 않았습니다.`
+        );
+      }
+    }
+  },
   "visual.no-overlap": (resolved, predicate, issues) => {
     const roles = stringArrayParameter(predicate, "roles", 2);
     for (const item of resolved.items) {
@@ -1262,8 +3126,10 @@ const handlers: Readonly<Record<string, Handler>> = {
           right < regions.length;
           right += 1
         ) {
-          const leftBounds = regions[left]!.bounds;
-          const rightBounds = regions[right]!.bounds;
+          const leftBounds =
+            regions[left]!.renderedBounds ?? regions[left]!.bounds;
+          const rightBounds =
+            regions[right]!.renderedBounds ?? regions[right]!.bounds;
           const overlaps =
             leftBounds.x < rightBounds.x + rightBounds.width &&
             leftBounds.x + leftBounds.width > rightBounds.x &&
@@ -1369,6 +3235,860 @@ const handlers: Readonly<Record<string, Handler>> = {
           `${item.id}의 연산자가 같은 수식 렌더러와 크기를 사용하지 않습니다.`
         );
       }
+    }
+  }
+};
+
+handlers["values.bar-graph-scale-distractors"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const totalCellsPath = stringParameter(
+    predicate,
+    "totalCellsPath"
+  );
+  const peoplePerCellPath = stringParameter(
+    predicate,
+    "peoplePerCellPath"
+  );
+  const referenceCellsPath = stringParameter(
+    predicate,
+    "referenceCellsPath"
+  );
+  const questionCellsPath = stringParameter(
+    predicate,
+    "questionCellsPath"
+  );
+  const referenceValuePath = stringParameter(
+    predicate,
+    "referenceValuePath"
+  );
+  const questionValuePath = stringParameter(
+    predicate,
+    "questionValuePath"
+  );
+  const correctPath = stringParameter(predicate, "correctPath");
+  const misconceptionPaths = [
+    stringParameter(predicate, "cellCountTextPath"),
+    stringParameter(predicate, "referenceCopyTextPath"),
+    stringParameter(predicate, "unitAsOneTextPath"),
+    stringParameter(predicate, "boundaryExtraTextPath")
+  ];
+  const candidatePaths = stringArrayParameter(
+    predicate,
+    "candidatePaths",
+    5
+  );
+  const seenPeoplePerCell = new Set<number>();
+  for (const item of resolved.items) {
+    const totalCells = item.values[totalCellsPath];
+    const peoplePerCell = item.values[peoplePerCellPath];
+    const referenceCells = item.values[referenceCellsPath];
+    const questionCells = item.values[questionCellsPath];
+    const referenceValue = item.values[referenceValuePath];
+    const questionValue = item.values[questionValuePath];
+    const expectedReferenceValue =
+      Number(referenceCells) * Number(peoplePerCell);
+    const expectedQuestionValue =
+      Number(questionCells) * Number(peoplePerCell);
+    const expectedMisconceptions = [
+      String(questionCells),
+      String(referenceValue),
+      String(
+        Number(referenceValue) +
+          (Number(questionCells) - Number(referenceCells))
+      ),
+      String(
+        (Number(questionCells) + 1) * Number(peoplePerCell)
+      )
+    ];
+    const candidates = candidatePaths.map(
+      (path) => item.values[path]
+    );
+    const duplicatePeoplePerCell =
+      typeof peoplePerCell === "number" &&
+      seenPeoplePerCell.has(peoplePerCell);
+    if (typeof peoplePerCell === "number") {
+      seenPeoplePerCell.add(peoplePerCell);
+    }
+    const valid =
+      (totalCells === 10 || totalCells === 12) &&
+      (peoplePerCell === 2 ||
+        peoplePerCell === 5 ||
+        peoplePerCell === 10) &&
+      Number.isInteger(referenceCells) &&
+      Number(referenceCells) >= 2 &&
+      Number(referenceCells) <= Number(totalCells) - 3 &&
+      Number.isInteger(questionCells) &&
+      Number(questionCells) > Number(referenceCells) &&
+      Number(questionCells) <= Number(totalCells) - 1 &&
+      referenceValue === expectedReferenceValue &&
+      questionValue === expectedQuestionValue &&
+      expectedReferenceValue <= 100 &&
+      expectedQuestionValue <= 100 &&
+      !duplicatePeoplePerCell &&
+      item.values[correctPath] === String(expectedQuestionValue) &&
+      misconceptionPaths.every(
+        (path, index) =>
+          item.values[path] === expectedMisconceptions[index]
+      ) &&
+      candidates.every((value) => typeof value === "string") &&
+      new Set(candidates).size === 5 &&
+      [
+        String(expectedQuestionValue),
+        ...expectedMisconceptions
+      ].every((value) => candidates.includes(value)) &&
+      candidatePaths.every(
+        (path) =>
+          item.values[`${path}Latex`] === item.values[path]
+      );
+    if (!valid) {
+      issue(
+        issues,
+        "bar-graph-scale-distractors-invalid",
+        "pedagogy",
+        `${item.id}에 눈금 칸 수를 값으로 읽기·기준값 복사·한 칸을 1로 읽기·경계 하나 더 세기 오개념을 드러내는 선택지가 없습니다.`
+      );
+    }
+  }
+};
+
+handlers["geometry.bar-graph-scale-cells"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const referenceBarRole = stringParameter(
+    predicate,
+    "referenceBarRole"
+  );
+  const questionBarRole = stringParameter(
+    predicate,
+    "questionBarRole"
+  );
+  const workspaceRole = stringParameter(
+    predicate,
+    "workspaceRole"
+  );
+  const referenceLaneRole = stringParameter(
+    predicate,
+    "referenceLaneRole"
+  );
+  const questionLaneRole = stringParameter(
+    predicate,
+    "questionLaneRole"
+  );
+  const trackRole = stringParameter(predicate, "trackRole");
+  const startLineRole = stringParameter(
+    predicate,
+    "startLineRole"
+  );
+  const totalCellsPath = stringParameter(
+    predicate,
+    "totalCellsPath"
+  );
+  const referenceCellsPath = stringParameter(
+    predicate,
+    "referenceCellsPath"
+  );
+  const questionCellsPath = stringParameter(
+    predicate,
+    "questionCellsPath"
+  );
+  for (const item of resolved.items) {
+    const totalCells = item.values[totalCellsPath];
+    const referenceCells = item.values[referenceCellsPath];
+    const questionCells = item.values[questionCellsPath];
+    const referenceBar = byRole(
+      resolved,
+      item.id,
+      referenceBarRole
+    );
+    const questionBar = byRole(
+      resolved,
+      item.id,
+      questionBarRole
+    );
+    const workspace = byRole(
+      resolved,
+      item.id,
+      workspaceRole
+    );
+    const referenceLane = byRole(
+      resolved,
+      item.id,
+      referenceLaneRole
+    );
+    const questionLane = byRole(
+      resolved,
+      item.id,
+      questionLaneRole
+    );
+    const track = byRole(resolved, item.id, trackRole);
+    const startLine = byRole(
+      resolved,
+      item.id,
+      startLineRole
+    );
+    const fractionOf = (
+      emission: ResolvedEmission | undefined
+    ): Ratio | undefined =>
+      emission?.toolIntent.kind === "fraction-model"
+        ? ratio(
+            {
+              fraction:
+                emission.toolIntent.properties.fraction
+            },
+            "fraction"
+          )
+        : undefined;
+    const referenceFraction = fractionOf(referenceBar);
+    const questionFraction = fractionOf(questionBar);
+    const trackFraction = fractionOf(track);
+    const valid =
+      Number.isInteger(totalCells) &&
+      (totalCells === 10 || totalCells === 12) &&
+      Number.isInteger(referenceCells) &&
+      Number.isInteger(questionCells) &&
+      Number(referenceCells) < Number(questionCells) &&
+      referenceBar &&
+      questionBar &&
+      workspace &&
+      referenceLane &&
+      questionLane &&
+      track &&
+      startLine &&
+      referenceBar.movable &&
+      !referenceBar.locked &&
+      questionBar.movable &&
+      !questionBar.locked &&
+      !track.movable &&
+      track.locked &&
+      referenceFraction?.numerator === referenceCells &&
+      referenceFraction?.denominator === totalCells &&
+      questionFraction?.numerator === questionCells &&
+      questionFraction?.denominator === totalCells &&
+      trackFraction?.numerator === totalCells &&
+      trackFraction?.denominator === totalCells &&
+      Math.abs(
+        referenceBar.bounds.x - referenceLane.bounds.x
+      ) >= 30 &&
+      Math.abs(
+        questionBar.bounds.x - questionLane.bounds.x
+      ) >= 30 &&
+      referenceBar.bounds.x !== questionBar.bounds.x &&
+      referenceBar.bounds.width === questionBar.bounds.width &&
+      referenceBar.bounds.width === referenceLane.bounds.width &&
+      questionBar.bounds.width === questionLane.bounds.width &&
+      referenceBar.bounds.width === track.bounds.width &&
+      referenceLane.bounds.x === questionLane.bounds.x &&
+      referenceLane.bounds.x === track.bounds.x &&
+      referenceLane.bounds.width === questionLane.bounds.width &&
+      referenceLane.bounds.width === track.bounds.width &&
+      workspace.bounds.x === referenceLane.bounds.x &&
+      workspace.bounds.width === referenceLane.bounds.width &&
+      workspace.bounds.y <= referenceLane.bounds.y &&
+      workspace.bounds.y + workspace.bounds.height >=
+        questionLane.bounds.y + questionLane.bounds.height &&
+      startLine.bounds.x + startLine.bounds.width / 2 ===
+        referenceLane.bounds.x &&
+      startLine.bounds.y <= referenceLane.bounds.y &&
+      startLine.bounds.y + startLine.bounds.height >=
+        questionLane.bounds.y + questionLane.bounds.height &&
+      referenceBar.bounds.height <= referenceLane.bounds.height &&
+      questionBar.bounds.height <= questionLane.bounds.height &&
+      referenceLane.bounds.y + referenceLane.bounds.height + 10 <=
+        questionLane.bounds.y &&
+      referenceBar.bounds.y + referenceBar.bounds.height <
+        referenceLane.bounds.y &&
+      questionBar.bounds.y + questionBar.bounds.height <
+        referenceLane.bounds.y &&
+      track.bounds.y >=
+        questionLane.bounds.y + questionLane.bounds.height + 10;
+    if (!valid) {
+      issue(
+        issues,
+        "bar-graph-scale-geometry-invalid",
+        "pedagogy",
+        `${item.id}의 막대가 처음에는 어긋나 있고 조작 후에는 서로 다른 두 행에서 같은 출발선·전체 폭·칸 단위를 사용해야 합니다.`
+      );
+    }
+  }
+};
+
+handlers["values.broken-ruler-length-distractors"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const totalUnitsPath = stringParameter(
+    predicate,
+    "totalUnitsPath"
+  );
+  const startMarkPath = stringParameter(
+    predicate,
+    "startMarkPath"
+  );
+  const lengthPath = stringParameter(predicate, "lengthPath");
+  const endMarkPath = stringParameter(predicate, "endMarkPath");
+  const correctPath = stringParameter(predicate, "correctPath");
+  const candidatePaths = stringArrayParameter(
+    predicate,
+    "candidatePaths"
+  );
+
+  for (const item of resolved.items) {
+    const totalUnits = item.values[totalUnitsPath];
+    const startMark = item.values[startMarkPath];
+    const length = item.values[lengthPath];
+    const endMark = item.values[endMarkPath];
+    const orderedIdeas = [
+      length,
+      Number(length) + 1,
+      Number(length) - 1,
+      totalUnits,
+      Number(totalUnits) - Number(length)
+    ];
+    const expected = [
+      ...new Set(
+        orderedIdeas.filter(
+          (value) =>
+            Number.isInteger(value) &&
+            Number(value) >= 1 &&
+            Number(value) <= Number(totalUnits)
+        )
+      )
+    ]
+      .slice(0, 5)
+      .map(String);
+    const candidates = candidatePaths.map(
+      (path) => item.values[path]
+    );
+    const valid =
+      Number.isInteger(totalUnits) &&
+      [8, 12].includes(Number(totalUnits)) &&
+      Number.isInteger(startMark) &&
+      Number(startMark) >= 1 &&
+      Number.isInteger(length) &&
+      Number(length) >= 2 &&
+      Number.isInteger(endMark) &&
+      Number(endMark) === Number(startMark) + Number(length) &&
+      Number(endMark) <= Number(totalUnits) &&
+      expected.length === 5 &&
+      item.values[correctPath] === String(length) &&
+      candidates.every((value) => typeof value === "string") &&
+      new Set(candidates).size === 5 &&
+      expected.every((value) => candidates.includes(value)) &&
+      candidatePaths.every(
+        (path) => item.values[`${path}Latex`] === item.values[path]
+      );
+    if (!valid) {
+      issue(
+        issues,
+        "broken-ruler-length-distractors-invalid",
+        "pedagogy",
+        `${item.id}에 실제 길이·경계 하나 더 세기·간격 하나 빠뜨리기·자 전체 길이·연필이 덮지 않은 길이를 구별하는 다섯 선택지가 없습니다.`
+      );
+    }
+  }
+};
+
+handlers["values.place-value-ten-exchange-distractors"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const hundredsPath = stringParameter(predicate, "hundredsPath");
+  const tensPath = stringParameter(predicate, "tensPath");
+  const onesPath = stringParameter(predicate, "onesPath");
+  const exchangeTensPath = stringParameter(
+    predicate,
+    "exchangeTensPath"
+  );
+  const correctPath = stringParameter(predicate, "correctPath");
+  const misconceptionPaths = [
+    stringParameter(predicate, "concatenatePath"),
+    stringParameter(predicate, "omitExchangePath"),
+    stringParameter(predicate, "tenTensAsOnesPath"),
+    stringParameter(predicate, "reversePath")
+  ];
+  const candidatePaths = stringArrayParameter(
+    predicate,
+    "candidatePaths",
+    5
+  );
+
+  for (const item of resolved.items) {
+    const hundreds = item.values[hundredsPath];
+    const tens = item.values[tensPath];
+    const ones = item.values[onesPath];
+    const exchangeTens = item.values[exchangeTensPath];
+    const correct =
+      (Number(hundreds) + 1) * 100 +
+      Number(tens) * 10 +
+      Number(ones);
+    const expectedMisconceptions = [
+      Number(`${String(hundreds)}${Number(tens) + 10}${String(ones)}`),
+      Number(hundreds) * 100 + Number(tens) * 10 + Number(ones),
+      Number(hundreds) * 100 + Number(tens) * 10 + 10 + Number(ones),
+      Number(ones) * 100 + (Number(hundreds) + 1) * 10 + Number(tens)
+    ].map(String);
+    const candidates = candidatePaths.map(
+      (path) => item.values[path]
+    );
+    const valid =
+      Number.isInteger(hundreds) &&
+      Number(hundreds) >= 1 &&
+      Number(hundreds) <= 4 &&
+      Number.isInteger(tens) &&
+      Number(tens) >= 0 &&
+      Number(tens) <= 4 &&
+      Number.isInteger(ones) &&
+      Number(ones) >= 1 &&
+      Number(ones) <= 8 &&
+      exchangeTens === 10 &&
+      item.values[correctPath] === String(correct) &&
+      misconceptionPaths.every(
+        (path, index) =>
+          item.values[path] === expectedMisconceptions[index]
+      ) &&
+      candidates.every((value) => typeof value === "string") &&
+      new Set(candidates).size === 5 &&
+      [String(correct), ...expectedMisconceptions].every((value) =>
+        candidates.includes(value)
+      ) &&
+      candidatePaths.every(
+        (path) => item.values[`${path}Latex`] === item.values[path]
+      );
+    if (!valid) {
+      issue(
+        issues,
+        "place-value-ten-exchange-distractors-invalid",
+        "pedagogy",
+        `${item.id}에 개수 이어 쓰기·십 묶음 누락·십 모형을 일로 세기·자리 뒤바꾸기 오개념을 드러내는 선택지가 없습니다.`
+      );
+    }
+  }
+};
+
+handlers["geometry.place-value-ten-exchange"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const tenRoles = stringArrayParameter(predicate, "tenRoles", 10);
+  const slotRoles = stringArrayParameter(predicate, "slotRoles", 10);
+  const gridRowRoles = stringArrayParameter(predicate, "gridRowRoles", 10);
+  const tenBankRole = stringParameter(predicate, "tenBankRole");
+  const exchangeBoxRole = stringParameter(
+    predicate,
+    "exchangeBoxRole"
+  );
+  const hundredGridPanelRole = stringParameter(
+    predicate,
+    "hundredGridPanelRole"
+  );
+  const relationRole = stringParameter(predicate, "relationRole");
+  const isPlaceValue = (
+    emission: ResolvedEmission | undefined,
+    value: 10,
+    movable: boolean
+  ) =>
+    emission?.toolIntent.kind === "place-value-model" &&
+    emission.toolIntent.properties.value === value &&
+    emission.movable === movable &&
+    emission.locked === !movable;
+  const visualBounds = (emission: ResolvedEmission) =>
+    emission.renderedBounds ?? emission.bounds;
+  const inside = (
+    child: ResolvedEmission,
+    parent: ResolvedEmission
+  ) => {
+    const childBounds = visualBounds(child);
+    const parentBounds = visualBounds(parent);
+    return (
+      childBounds.x >= parentBounds.x &&
+      childBounds.y >= parentBounds.y &&
+      childBounds.x + childBounds.width <=
+        parentBounds.x + parentBounds.width &&
+      childBounds.y + childBounds.height <=
+        parentBounds.y + parentBounds.height
+    );
+  };
+  const overlaps = (
+    left: ResolvedEmission,
+    right: ResolvedEmission
+  ) => {
+    const leftBounds = visualBounds(left);
+    const rightBounds = visualBounds(right);
+    return (
+      leftBounds.x < rightBounds.x + rightBounds.width &&
+      leftBounds.x + leftBounds.width > rightBounds.x &&
+      leftBounds.y < rightBounds.y + rightBounds.height &&
+      leftBounds.y + leftBounds.height > rightBounds.y
+    );
+  };
+
+  for (const item of resolved.items) {
+    const tens = tenRoles.map((role) =>
+      byRole(resolved, item.id, role)
+    );
+    const slots = slotRoles.map((role) =>
+      byRole(resolved, item.id, role)
+    );
+    const gridRows = gridRowRoles.map((role) =>
+      byRole(resolved, item.id, role)
+    );
+    const tenBank = byRole(resolved, item.id, tenBankRole);
+    const exchangeBox = byRole(
+      resolved,
+      item.id,
+      exchangeBoxRole
+    );
+    const hundredGridPanel = byRole(
+      resolved,
+      item.id,
+      hundredGridPanelRole
+    );
+    const relation = byRole(resolved, item.id, relationRole);
+    const presentTens = tens.filter(
+      (emission): emission is ResolvedEmission => emission !== undefined
+    );
+    const presentSlots = slots.filter(
+      (emission): emission is ResolvedEmission => emission !== undefined
+    );
+    const presentGridRows = gridRows.filter(
+      (emission): emission is ResolvedEmission => emission !== undefined
+    );
+    const firstRow = presentGridRows[0];
+    const gridIsExact =
+      firstRow !== undefined &&
+      presentGridRows.length === 10 &&
+      presentGridRows.every((row, index) => {
+        const first = visualBounds(firstRow);
+        const current = visualBounds(row);
+        return (
+          row.toolIntent.kind === "text" &&
+          row.toolIntent.properties.text === "□□□□□□□□□□" &&
+          row.locked &&
+          !row.movable &&
+          current.width >= 200 &&
+          current.height >= 20 &&
+          current.width === first.width &&
+          current.height === first.height &&
+          current.x === first.x &&
+          current.y === first.y + index * first.height &&
+          (hundredGridPanel ? inside(row, hundredGridPanel) : false)
+        );
+      });
+    const sourceDisksDoNotOverlap = presentTens.every(
+      (left, index) =>
+        presentTens
+          .slice(index + 1)
+          .every((right) => !overlaps(left, right))
+    );
+    const slotsDoNotOverlap = presentSlots.every(
+      (left, index) =>
+        presentSlots
+          .slice(index + 1)
+          .every((right) => !overlaps(left, right))
+    );
+    const valid =
+      tenRoles.length === 10 &&
+      new Set(tenRoles).size === 10 &&
+      slotRoles.length === 10 &&
+      new Set(slotRoles).size === 10 &&
+      gridRowRoles.length === 10 &&
+      new Set(gridRowRoles).size === 10 &&
+      presentTens.length === 10 &&
+      presentTens.every((emission) =>
+        isPlaceValue(emission, 10, true)
+      ) &&
+      tenBank?.toolIntent.kind === "draw-rectangle" &&
+      tenBank.locked &&
+      !tenBank.movable &&
+      exchangeBox?.toolIntent.kind === "draw-rectangle" &&
+      exchangeBox.locked &&
+      !exchangeBox.movable &&
+      hundredGridPanel?.toolIntent.kind === "draw-rectangle" &&
+      hundredGridPanel.locked &&
+      !hundredGridPanel.movable &&
+      relation?.toolIntent.kind === "text" &&
+      relation.toolIntent.properties.text === "10 × 10 = 100" &&
+      relation.locked &&
+      !relation.movable &&
+      presentTens.every((emission) =>
+        tenBank ? inside(emission, tenBank) : false
+      ) &&
+      presentSlots.length === 10 &&
+      presentSlots.every(
+        (slot) =>
+          slot.toolIntent.kind === "draw-rectangle" &&
+          slot.locked &&
+          !slot.movable &&
+          visualBounds(slot).width >= 120 &&
+          visualBounds(slot).height >= 120 &&
+          (exchangeBox ? inside(slot, exchangeBox) : false)
+      ) &&
+      sourceDisksDoNotOverlap &&
+      slotsDoNotOverlap &&
+      gridIsExact &&
+      (exchangeBox && hundredGridPanel
+        ? visualBounds(exchangeBox).x +
+            visualBounds(exchangeBox).width +
+            20 <=
+          visualBounds(hundredGridPanel).x
+        : false) &&
+      presentTens.every(
+        (emission) =>
+          exchangeBox !== undefined &&
+          !inside(emission, exchangeBox) &&
+          presentSlots.every((slot) => !overlaps(emission, slot)) &&
+          presentGridRows.every((row) => !overlaps(emission, row))
+      );
+    if (!valid) {
+      issue(
+        issues,
+        "place-value-ten-exchange-geometry-invalid",
+        "pedagogy",
+        `${item.id}에는 겹치지 않는 십 모형 10개, 서로 다른 열 칸, 10×10의 100칸 모형이 실제 렌더 크기로 연결되어야 합니다.`
+      );
+    }
+  }
+};
+
+handlers["geometry.unit-ruler-offset-length"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const measuredBarRole = stringParameter(
+    predicate,
+    "measuredBarRole"
+  );
+  const unitStickRole = stringParameter(
+    predicate,
+    "unitStickRole"
+  );
+  const measureLaneRole = stringParameter(
+    predicate,
+    "measureLaneRole"
+  );
+  const rulerRole = stringParameter(predicate, "rulerRole");
+  const startLineRole = stringParameter(
+    predicate,
+    "startLineRole"
+  );
+  const totalUnitsPath = stringParameter(
+    predicate,
+    "totalUnitsPath"
+  );
+  const startMarkPath = stringParameter(
+    predicate,
+    "startMarkPath"
+  );
+  const lengthPath = stringParameter(predicate, "lengthPath");
+  const endMarkPath = stringParameter(predicate, "endMarkPath");
+  const spanPath = stringParameter(predicate, "spanPath");
+
+  const fractionOf = (
+    emission: ResolvedEmission | undefined
+  ): Ratio | undefined =>
+    emission?.toolIntent.kind === "fraction-model"
+      ? ratio(
+          { fraction: emission.toolIntent.properties.fraction },
+          "fraction"
+        )
+      : undefined;
+
+  for (const item of resolved.items) {
+    const totalUnits = item.values[totalUnitsPath];
+    const startMark = item.values[startMarkPath];
+    const length = item.values[lengthPath];
+    const endMark = item.values[endMarkPath];
+    const measuredBar = byRole(
+      resolved,
+      item.id,
+      measuredBarRole
+    );
+    const unitStick = byRole(resolved, item.id, unitStickRole);
+    const measureLane = byRole(
+      resolved,
+      item.id,
+      measureLaneRole
+    );
+    const ruler = byRole(resolved, item.id, rulerRole);
+    const startLine = byRole(resolved, item.id, startLineRole);
+    const measuredFraction = fractionOf(measuredBar);
+    const unitFraction = fractionOf(unitStick);
+    const rulerFraction = fractionOf(ruler);
+    const measuredRendered = measuredBar?.renderedBounds;
+    const unitRendered = unitStick?.renderedBounds;
+    const unitSpan =
+      measuredBar?.toolIntent.kind === "draw-rectangle" &&
+      measuredBar.toolIntent.properties.unitSpan !== null &&
+      typeof measuredBar.toolIntent.properties.unitSpan === "object" &&
+      !Array.isArray(measuredBar.toolIntent.properties.unitSpan)
+        ? measuredBar.toolIntent.properties.unitSpan as Record<string, unknown>
+        : undefined;
+    const pencilSpan =
+      item.values[spanPath] !== null &&
+      typeof item.values[spanPath] === "object" &&
+      !Array.isArray(item.values[spanPath])
+        ? item.values[spanPath] as Record<string, unknown>
+        : undefined;
+    const valid =
+      Number.isInteger(totalUnits) &&
+      [8, 12].includes(Number(totalUnits)) &&
+      Number.isInteger(startMark) &&
+      Number(startMark) >= 1 &&
+      Number.isInteger(length) &&
+      Number(length) >= 2 &&
+      Number.isInteger(endMark) &&
+      Number(endMark) === Number(startMark) + Number(length) &&
+      Number(endMark) <= Number(totalUnits) &&
+      measuredBar &&
+      unitStick &&
+      measureLane &&
+      ruler &&
+      startLine &&
+      !measuredBar.movable &&
+      measuredBar.locked &&
+      unitStick.movable &&
+      !unitStick.locked &&
+      !ruler.movable &&
+      ruler.locked &&
+      measuredFraction === undefined &&
+      unitSpan?.from === startMark &&
+      unitSpan?.to === endMark &&
+      unitSpan?.of === totalUnits &&
+      pencilSpan?.from === startMark &&
+      pencilSpan?.to === endMark &&
+      pencilSpan?.of === totalUnits &&
+      Number(unitSpan?.to) - Number(unitSpan?.from) === length &&
+      unitFraction?.numerator === 1 &&
+      unitFraction.denominator === totalUnits &&
+      rulerFraction?.numerator === totalUnits &&
+      rulerFraction.denominator === totalUnits &&
+      measureLane.toolIntent.kind === "draw-rectangle" &&
+      measureLane.toolIntent.properties.fill === "none" &&
+      measuredBar.bounds.width === ruler.bounds.width &&
+      unitStick.bounds.width === ruler.bounds.width &&
+      measureLane.bounds.width === ruler.bounds.width &&
+      measuredBar.bounds.x === ruler.bounds.x &&
+      unitStick.bounds.x === ruler.bounds.x &&
+      measureLane.bounds.x === ruler.bounds.x &&
+      ruler.bounds.width % Number(totalUnits) === 0 &&
+      measuredRendered !== undefined &&
+      unitRendered !== undefined &&
+      measuredRendered.x ===
+        ruler.bounds.x +
+          ruler.bounds.width / Number(totalUnits) * Number(startMark) &&
+      measuredRendered.y === measuredBar.bounds.y &&
+      measuredRendered.width ===
+        ruler.bounds.width / Number(totalUnits) * Number(length) &&
+      measuredRendered.height === measuredBar.bounds.height &&
+      unitRendered.x === unitStick.bounds.x &&
+      unitRendered.y === unitStick.bounds.y &&
+      unitRendered.width ===
+        ruler.bounds.width / Number(totalUnits) &&
+      unitRendered.height === unitStick.bounds.height &&
+      measuredBar.bounds.y >= measureLane.bounds.y &&
+      measuredBar.bounds.y + measuredBar.bounds.height <=
+        measureLane.bounds.y + measureLane.bounds.height &&
+      measureLane.bounds.y + measureLane.bounds.height -
+        (measuredBar.bounds.y + measuredBar.bounds.height) >=
+        unitRendered.height &&
+      unitStick.bounds.y + unitStick.bounds.height <
+        measureLane.bounds.y &&
+      ruler.bounds.y >=
+        measureLane.bounds.y + measureLane.bounds.height + 10 &&
+      startLine.bounds.x + startLine.bounds.width / 2 ===
+        measureLane.bounds.x &&
+      startLine.bounds.y <= measureLane.bounds.y &&
+      startLine.bounds.y + startLine.bounds.height >=
+        measureLane.bounds.y + measureLane.bounds.height;
+    if (!valid) {
+      issue(
+        issues,
+        "unit-ruler-offset-length-invalid",
+        "pedagogy",
+        `${item.id}의 분할선 없는 연필 양끝이 자의 눈금과 맞고, 1 cm 막대 한 개를 옮겨 길이를 확인할 수 있어야 합니다.`
+      );
+    }
+  }
+};
+
+handlers["visual.hidden-fraction-labels"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  const roles = stringArrayParameter(predicate, "roles");
+  for (const item of resolved.items) {
+    const emissions = roles.map((role) =>
+      byRole(resolved, item.id, role)
+    );
+    if (
+      emissions.some(
+        (emission) =>
+          !emission ||
+          emission.toolIntent.kind !== "fraction-model" ||
+          emission.toolIntent.properties.showLabel !== false
+      )
+    ) {
+      issue(
+        issues,
+        "fraction-label-must-be-hidden",
+        "pedagogy",
+        `${item.id}의 시각 막대에 분수 표기가 노출되어 활동에서 다루는 단위의 의미와 충돌합니다.`
+      );
+    }
+  }
+};
+
+handlers["geometry.common-unit-lane-strips"] = (
+  resolved,
+  predicate,
+  issues
+) => {
+  handlers["geometry.common-unit-sum-strips"]!(
+    resolved,
+    predicate,
+    issues
+  );
+  const leftCellsPath = stringParameter(
+    predicate,
+    "leftCellsPath"
+  );
+  const rightCellsPath = stringParameter(
+    predicate,
+    "rightCellsPath"
+  );
+  const differenceCellsPath = stringParameter(
+    predicate,
+    "differenceCellsPath"
+  );
+  for (const item of resolved.items) {
+    const leftCells = item.values[leftCellsPath];
+    const rightCells = item.values[rightCellsPath];
+    const differenceCells =
+      item.values[differenceCellsPath];
+    if (
+      !Number.isInteger(leftCells) ||
+      !Number.isInteger(rightCells) ||
+      !Number.isInteger(differenceCells) ||
+      Number(rightCells) >= Number(leftCells) ||
+      Number(differenceCells) !==
+        Number(leftCells) - Number(rightCells)
+    ) {
+      issue(
+        issues,
+        "common-unit-difference-cover-invalid",
+        "pedagogy",
+        `${item.id}의 덮는 띠가 처음 띠보다 짧고 남은 공통 단위 칸과 정확히 대응하지 않습니다.`
+      );
     }
   }
 };

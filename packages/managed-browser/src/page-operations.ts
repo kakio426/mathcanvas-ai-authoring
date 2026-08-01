@@ -90,6 +90,33 @@ export async function inspectMathCanvasPage(
           )
         );
       }
+      if (module === "NO04PD") {
+        if (enabled.NO04PD !== true) return false;
+        const expectedValues: Readonly<Record<string, number>> = {
+          "NO04PD-03": 100,
+          "NO04PD-04": 10,
+          "NO04PD-05": 1
+        };
+        const placeValueModels = objects.filter(
+          (object) =>
+            typeof object.svgId === "string" &&
+            Object.hasOwn(expectedValues, object.svgId)
+        );
+        return (
+          new Set(placeValueModels.map((object) => object.svgId)).size ===
+            3 &&
+          placeValueModels.every(
+            (object) =>
+              object.n === expectedValues[String(object.svgId)] &&
+              object.numberFrameSnap === true &&
+              object.count === 1 &&
+              typeof object.parent === "object" &&
+              object.parent !== null &&
+              Array.isArray(object.coordinates) &&
+              object.coordinates.length === 4
+          )
+        );
+      }
       return objects.some((object) => object.svgId === module);
     });
   };

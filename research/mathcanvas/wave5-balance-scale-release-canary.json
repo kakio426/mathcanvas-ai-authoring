@@ -1,0 +1,52 @@
+{
+  "blueprintContentHash": "9934295024247fb6a2baf8c9814ff7c625a31eceda2cd1608bdf473494a3a7a0",
+  "blueprintId": "relation.equal-sign.balance-scale.sum-card-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit02",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "correctButtonDisabled": true,
+    "correctCardOnRightPan": true,
+    "correctLine": "M143,-10 L143,62 L575,62 L575,-10",
+    "wrongButtonDisabled": true,
+    "wrongCardOnRightPan": true,
+    "wrongLine": "M143,-35 L143,37 L575,87 L575,15"
+  },
+  "layoutPresetContentHash": "e13bf3465369373594acb2662281cbbaec82abf1938e7b8ff4441964fdb2d408",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-07-31T09:25:41.095Z",
+  "payloadHash": "e7d317831b6e4cb1cc78bfbb744da90f40a83c26b4ca164f4a6cdf3285c2574c",
+  "persistedShape": {
+    "balanceModuleActive": true,
+    "candidateCardCount": 10,
+    "candidateWithPlateCount": 0,
+    "disabledEquilibriumScaleCount": 2,
+    "fixedPlateMemberCount": 4,
+    "numberCardModuleActive": true,
+    "objectCount": 45,
+    "scaleCount": 2,
+    "tiltedScaleCount": 2
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave5/balance-scale.png",
+  "probeId": "wave5-balance-scale-release-canary-v3",
+  "problemCount": 2,
+  "projectReferenceHash": "8b61459062527dce98b27061b19c8789a575a0b99435d5e3b3e9a59210175ff0",
+  "releasedTools": [
+    "CR07BS",
+    "NO04NT"
+  ],
+  "reopenShape": {
+    "candidateCardCount": 10,
+    "explanationBoxCount": 2,
+    "fixedCardCount": 4,
+    "leftTiltCount": 2,
+    "predictionBoxCount": 2,
+    "scaleCount": 2,
+    "visibleScaleCount": 2
+  },
+  "reusedExisting": true,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

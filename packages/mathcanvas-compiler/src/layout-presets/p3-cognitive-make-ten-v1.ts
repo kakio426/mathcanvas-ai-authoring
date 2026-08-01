@@ -124,7 +124,7 @@ export const p3CognitiveMakeTenLayoutPreset: LayoutPreset = {
       x: 300,
       y: 20,
       width: 1800,
-      height: 500
+      height: 660
     },
     "item.number": {
       scope: "item",
@@ -153,9 +153,9 @@ export const p3CognitiveMakeTenLayoutPreset: LayoutPreset = {
     ...buildRail(620, 140),
     "item.frame-label": {
       scope: "item",
-      x: 1320,
+      x: 1260,
       y: 168,
-      width: 140,
+      width: 220,
       height: 48
     },
     ...buildFrame(1480, 140),
@@ -163,32 +163,32 @@ export const p3CognitiveMakeTenLayoutPreset: LayoutPreset = {
       scope: "item",
       relativeTo: "item.panel",
       x: 30,
-      y: 352,
-      width: 170,
+      y: 480,
+      width: 220,
       height: 44
     },
     "item.explanation-box": {
       scope: "item",
       relativeTo: "item.panel",
-      x: 210,
-      y: 330,
-      width: 1360,
+      x: 260,
+      y: 460,
+      width: 1310,
       height: 130
     },
     "item.pool-label": {
       scope: "item",
-      x: 460,
-      y: 566,
-      width: 190,
-      height: 48
+      x: 860,
+      y: 300,
+      width: 140,
+      height: 44
     },
     ...Object.fromEntries(
       Array.from({ length: 6 }, (_, index) => [
         `item.piece-card-${index + 1}`,
         {
           scope: "item" as const,
-          x: 720 + index * 120,
-          y: 550,
+          x: 860 + index * 120,
+          y: 360,
           width: 80,
           height: 80
         }

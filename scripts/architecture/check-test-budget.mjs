@@ -2,7 +2,7 @@
 import { spawnSync } from "node:child_process";
 
 const minimumTestCount = 133;
-const maximumTestCount = 140;
+const maximumTestCount = 149;
 const result = spawnSync(
   process.platform === "win32" ? "pnpm.cmd" : "pnpm",
   ["exec", "vitest", "list", "--json"],

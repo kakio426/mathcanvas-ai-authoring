@@ -7,14 +7,18 @@ type Handler = (input: {
 }) => boolean;
 
 function contains(
-  source: ResolvedEmission["bounds"],
-  target: ResolvedEmission["bounds"]
+  source: ResolvedEmission,
+  target: ResolvedEmission
 ): boolean {
+  const sourceBounds = source.renderedBounds ?? source.bounds;
+  const targetBounds = target.renderedBounds ?? target.bounds;
   return (
-    source.x >= target.x &&
-    source.y >= target.y &&
-    source.x + source.width <= target.x + target.width &&
-    source.y + source.height <= target.y + target.height
+    sourceBounds.x >= targetBounds.x &&
+    sourceBounds.y >= targetBounds.y &&
+    sourceBounds.x + sourceBounds.width <=
+      targetBounds.x + targetBounds.width &&
+    sourceBounds.y + sourceBounds.height <=
+      targetBounds.y + targetBounds.height
   );
 }
 
@@ -36,15 +40,15 @@ const handlers: Readonly<Record<string, Handler>> = {
   },
   "place-in": ({ sources, target }) =>
     sources.every((source) =>
-      contains(source.bounds, target.bounds)
+      contains(source, target)
     ),
   "select-one-of": ({ sources, target }) =>
     sources.some((source) =>
-      contains(source.bounds, target.bounds)
+      contains(source, target)
     ),
   "fill-from-pool": ({ sources, target }) =>
     sources.some((source) =>
-      contains(source.bounds, target.bounds)
+      contains(source, target)
     )
 };
 

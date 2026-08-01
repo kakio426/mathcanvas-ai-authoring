@@ -1,0 +1,47 @@
+{
+  "blueprintContentHash": "9ce3fd386a5449c4b10821bb93260fb4164dcd77ca85f3de8232e059d77b721d",
+  "blueprintId": "probability.compare.bag-ratios-v1",
+  "blueprintVersion": "1.1.0",
+  "categoryUnit": "Unit04",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-relation-and-align-probability-strips",
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "moveDistance": 366.3135233400538,
+    "movedRoleCount": 3,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "5c8ab56976a4cd2c9e3b9c2fdeda0c8eadeb19bb8f5887d5d097c88e136cb5d7",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-01T01:58:29.183Z",
+  "payloadHash": "bdb1ce7b95a4b78653d79cc4bf0c25a4ccd39cefde62ed3625165cf3df325310",
+  "persistedShape": {
+    "arrayTextCount": 0,
+    "candidateCount": 0,
+    "fractionModuleActive": true,
+    "fractionStripCount": 4,
+    "objectCount": 47,
+    "patternBlockCount": 0,
+    "patternModuleActive": false
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave17/probability-bag-comparison.png",
+  "probeId": "wave17-probability-release-canary-v1",
+  "problemCount": 2,
+  "projectReferenceHash": "141fbb48714f998af7386305dfa6692b649e4f188b34fca8dbf142f9d4d2c9fe",
+  "releasedTools": [
+    "NO03FM"
+  ],
+  "reopenShape": {
+    "explanationBoxCount": 2,
+    "idCount": 104,
+    "predictionBoxCount": 2,
+    "sourceRoleCount": 2,
+    "targetRoleCount": 2
+  },
+  "reusedExisting": true,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

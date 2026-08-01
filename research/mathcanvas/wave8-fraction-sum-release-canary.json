@@ -1,0 +1,60 @@
+{
+  "blueprintContentHash": "74af4eb88a639f220c202b841b25d99ea372fc24d2f11bc3e4fb091ff56cf42e",
+  "blueprintId": "fraction.add.same-denominator.strips-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit01",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "drag-two-fraction-strips-end-to-end",
+    "denominator": 10,
+    "endpointResidual": 2.893524169921875,
+    "existingProjectWriteCount": 0,
+    "itemId": "same-denominator-sum-1",
+    "joinedWidth": 280.09259033203125,
+    "joinedWidthResidual": 1.3889038085937386,
+    "joinResidual": 2.3148193359375,
+    "laneWidth": 348.3796081542969,
+    "leftNumerator": 5,
+    "leftStripWidth": 175.9259033203125,
+    "rightNumerator": 3,
+    "rightStripWidth": 106.48150634765625,
+    "startResidual": 0.578704833984375,
+    "sumNumerator": 8,
+    "transientOnly": true,
+    "verticalContainmentResidual": 0.5787353515625,
+    "verticalRowResidual": 0
+  },
+  "layoutPresetContentHash": "088ac43f4159dc4c30e0e276fe18cc7eae33bd8c03c3eefe9959faf019d074e6",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-07-31T11:36:57.741Z",
+  "payloadHash": "0cdeca0f61f246be24498e3a354a7043f0a6f2c9e6360cdf89f2b339115202e6",
+  "persistedShape": {
+    "candidateFormulaCount": 10,
+    "configuredFractionMatchCount": 4,
+    "fractionModuleActive": true,
+    "fractionStripCount": 4,
+    "leftStripCount": 2,
+    "objectCount": 55,
+    "rightStripCount": 2
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave8/fraction-sum.png",
+  "probeId": "wave8-fraction-sum-release-canary-v4",
+  "problemCount": 2,
+  "projectReferenceHash": "acc5c67e97a8d81b557409d29956975087b6dc5764ae7fdb11889c56bae27bd1",
+  "releasedTools": [
+    "NO03FM"
+  ],
+  "reopenShape": {
+    "candidateTextCount": 10,
+    "explanationBoxCount": 2,
+    "fractionStripCount": 4,
+    "joinLaneCount": 2,
+    "predictionBoxCount": 2,
+    "visibleFractionStripCount": 4
+  },
+  "reusedExisting": false,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

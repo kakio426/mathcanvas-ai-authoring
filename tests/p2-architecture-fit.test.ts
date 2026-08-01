@@ -86,6 +86,63 @@ function envelopeRecommendation(
     "number.make-10.cards-v1": {
       manipulation: "number-card-make-ten-drag",
       grade: 2
+    },
+    "relation.equal-sign.balanced-equation.cards-v1": {
+      manipulation: "number-card-balanced-equation-drag",
+      grade: 4
+    },
+    "relation.equal-sign.balance-scale.sum-card-v1": {
+      manipulation: "balance-scale-sum-card-drag",
+      grade: 4
+    },
+    "measure.time.clock.hour-hand-boundary-v1": {
+      manipulation: "clock-hour-hand-boundary-drag",
+      grade: 2
+    },
+    "measure.time.elapsed.clock-pair-v1": {
+      manipulation: "elapsed-time-clock-pair-drag",
+      grade: 2
+    },
+    "fraction.add.same-denominator.strips-v1": {
+      manipulation: "same-denominator-fraction-sum-drag",
+      grade: 4
+    },
+    "fraction.add.same-denominator.improper-sum-v1": {
+      manipulation: "same-denominator-improper-sum-drag",
+      grade: 4
+    },
+    "fraction.add.unlike-denominators.common-unit-v1": {
+      manipulation: "unlike-denominator-common-unit-drag",
+      grade: 5
+    },
+    "fraction.subtract.unlike-denominators.common-unit-v1": {
+      manipulation:
+        "unlike-denominator-common-unit-difference-drag",
+      grade: 5
+    },
+    "data.bar-graph.scale-unit.read-v1": {
+      manipulation: "bar-graph-scale-unit-drag",
+      grade: 4
+    },
+    "measure.length.unit-iteration.ruler-v1": {
+      manipulation: "length-unit-iteration-drag",
+      grade: 2
+    },
+    "number.place-value.regroup-ten-bundles-v1": {
+      manipulation: "place-value-ten-exchange-drag",
+      grade: 2
+    },
+    "pattern.repeat-unit.pattern-blocks-v1": {
+      manipulation: "pattern-block-repeat-unit-drag",
+      grade: 2
+    },
+    "number.multiplication.group-array-meaning-v1": {
+      manipulation: "multiplication-array-choice-drag",
+      grade: 2
+    },
+    "probability.compare.bag-ratios-v1": {
+      manipulation: "probability-fraction-strip-drag",
+      grade: 6
     }
   };
   const control = controls[blueprint.id];
@@ -457,6 +514,6 @@ describe("P2 구조 적합성", () => {
         envelopeRunCount += 1;
       }
     }
-    expect(envelopeRunCount).toBe(54);
-  });
+    expect(envelopeRunCount).toBe(89);
+  }, 10_000);
 });

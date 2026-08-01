@@ -19,10 +19,10 @@
     "seed": "p0-fraction-comparison-seed-v1"
   },
   "invariants": {
-    "activitySpecHash": "4d422bc2959b81d209bf9ed590dee0e450bf2f890d05bab860f3ea365ff4f9f3",
-    "approvalHash": "de7664e245c3ca38a6bd155551f3b784f0ac412be407cbf506a2fd53af0f00e5",
-    "compiledPayloadHash": "5ad348d561427d2a627d912f42674d95be6bae673f7dd02072cb2f22c330a9f9",
-    "payloadHash": "5ad348d561427d2a627d912f42674d95be6bae673f7dd02072cb2f22c330a9f9",
+    "activitySpecHash": "cc9e6d5ec9b772a4acc4f670851eda10b3ad8b40394d71acbb714e659f5c4b19",
+    "approvalHash": "f030778c19d35461809b8f79b35f896bdcd7cd13d1be47893ca9711aa1ad4ac7",
+    "compiledPayloadHash": "3eaf2cb877d900d2c63d737963fb74a23efe9bca6bb82e9dbd3caf1fffe668a7",
+    "payloadHash": "3eaf2cb877d900d2c63d737963fb74a23efe9bca6bb82e9dbd3caf1fffe668a7",
     "schemaVersion": "1.0.0",
     "validationCanCreate": true,
     "validationIssueCodes": []
@@ -31,9 +31,9 @@
     "activitySpec": {
       "approvalViewSchemaVersion": "2.0.0",
       "binding": {
-        "blueprintContentHash": "d68d8840949537996aa9783a34b5ba97af7fa90ccf87f90102db2886f83e96c1",
+        "blueprintContentHash": "ac847ba9fd23b713f39134a823b51c816e538d85182251467f03d4220876327c",
         "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
-        "blueprintVersion": "1.0.0",
+        "blueprintVersion": "1.1.0",
         "generatorId": "fraction-pair.unlike-denominators",
         "generatorVersion": "1.0.0",
         "seed": "p0-fraction-comparison-seed-v1",
@@ -259,8 +259,8 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 48,
-              "text": "분수 띠를 같은 출발선에 놓아요."
+              "fontSize": 42,
+              "text": "① 분수 띠를 옮기기 전에, 알맞다고 생각한 기호를 써 보세요."
             },
             "toolKey": "common.text"
           }
@@ -281,8 +281,8 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 38,
-              "text": "두 띠의 길이를 보고 기호를 놓아요."
+              "fontSize": 36,
+              "text": "② 두 분수 띠를 같은 출발선에 놓고 길이를 비교해 보세요."
             },
             "toolKey": "common.text"
           }
@@ -303,19 +303,20 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 38,
-              "text": "고른 기호를 띠의 길이와 같은 전체를 근거로 설명하세요."
+              "fontSize": 36,
+              "text": "③ 알맞은 기호를 놓고, 그렇게 생각한 까닭을 써 보세요."
             },
             "toolKey": "common.text"
           }
         },
         {
           "bounds": {
-            "height": 450,
+            "height": 500,
             "width": 1640,
             "x": 380,
             "y": 380
           },
+          "flowGroup": "item-primary-flow",
           "id": "problem-1-mat",
           "instructionalIntent": "문항 조작 영역의 시각적 경계를 제공합니다.",
           "itemId": "problem-1",
@@ -329,6 +330,52 @@
               "stroke": "#65758B"
             },
             "toolKey": "common.rectangle"
+          }
+        },
+        {
+          "bounds": {
+            "height": 180,
+            "width": 520,
+            "x": 940,
+            "y": 904
+          },
+          "flowGroup": "item-primary-flow",
+          "id": "problem-1-choice-pool",
+          "instructionalIntent": "비교 기호를 하나의 선택 묶음으로 구분합니다.",
+          "itemId": "problem-1",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool",
+          "toolIntent": {
+            "kind": "draw-rectangle",
+            "properties": {
+              "fill": "#F7FAFF",
+              "stroke": "#65758B"
+            },
+            "toolKey": "common.rectangle"
+          }
+        },
+        {
+          "bounds": {
+            "height": 32,
+            "width": 160,
+            "x": 1000,
+            "y": 916
+          },
+          "containerId": "problem-1-choice-pool",
+          "id": "problem-1-choice-pool-label",
+          "instructionalIntent": "학생이 고를 비교 기호 묶음을 안내합니다.",
+          "itemId": "problem-1",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool-label",
+          "toolIntent": {
+            "kind": "text",
+            "properties": {
+              "fontSize": 22,
+              "text": "비교 기호"
+            },
+            "toolKey": "common.text"
           }
         },
         {
@@ -395,7 +442,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "먼저 예상"
+              "text": "예상한 기호"
             },
             "toolKey": "common.text"
           }
@@ -428,7 +475,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 490
+            "y": 550
           },
           "collisionGroup": "comparison-targets",
           "id": "problem-1-left-lane-surface",
@@ -450,9 +497,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 500
+            "width": 100,
+            "x": 600,
+            "y": 560
           },
           "collisionGroup": "comparison-targets",
           "containerId": "problem-1-mat",
@@ -465,7 +512,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "첫째 띠"
             },
             "toolKey": "common.text"
@@ -476,7 +523,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 600
+            "y": 660
           },
           "id": "problem-1-right-lane-surface",
           "instructionalIntent": "두 번째 띠를 놓는 목표 영역입니다.",
@@ -497,9 +544,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 610
+            "width": 100,
+            "x": 600,
+            "y": 670
           },
           "containerId": "problem-1-mat",
           "id": "problem-1-right-lane-label",
@@ -511,7 +558,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "둘째 띠"
             },
             "toolKey": "common.text"
@@ -522,7 +569,7 @@
             "height": 190,
             "width": 16,
             "x": 732,
-            "y": 490
+            "y": 550
           },
           "id": "problem-1-start-line",
           "instructionalIntent": "두 띠를 맞출 공통 출발선을 표시합니다.",
@@ -580,7 +627,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 26,
-              "text": "기호 놓는 곳"
+              "text": "기호 놓기"
             },
             "toolKey": "common.text"
           }
@@ -590,7 +637,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 734
+            "y": 784
           },
           "containerId": "problem-1-mat",
           "id": "problem-1-explanation-label",
@@ -603,7 +650,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "근거와 수정"
+              "text": "비교한 까닭"
             },
             "toolKey": "common.text"
           }
@@ -613,7 +660,7 @@
             "height": 90,
             "width": 1180,
             "x": 590,
-            "y": 718
+            "y": 768
           },
           "id": "problem-1-explanation-box",
           "instructionalIntent": "띠의 길이와 같은 전체를 근거로 설명하고 예상을 수정하는 빈 영역입니다.",
@@ -636,13 +683,19 @@
             "height": 80,
             "width": 640,
             "x": 260,
-            "y": 880
+            "y": 940
           },
           "id": "problem-1-left-strip",
           "instructionalIntent": "첫 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-1",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 533.3333333333334,
+            "x": 260,
+            "y": 940
+          },
           "role": "left-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -661,13 +714,19 @@
             "height": 80,
             "width": 640,
             "x": 1500,
-            "y": 880
+            "y": 940
           },
           "id": "problem-1-right-strip",
           "instructionalIntent": "두 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-1",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 384,
+            "x": 1500,
+            "y": 940
+          },
           "role": "right-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -685,8 +744,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 970,
-            "y": 870
+            "x": 1000,
+            "y": 964
           },
           "id": "problem-1-less-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -707,8 +766,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1270,
-            "y": 870
+            "x": 1300,
+            "y": 964
           },
           "id": "problem-1-greater-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -729,8 +788,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1120,
-            "y": 870
+            "x": 1150,
+            "y": 964
           },
           "id": "problem-1-equal-symbol",
           "instructionalIntent": "두 분수가 같은지도 후보로 검토합니다.",
@@ -749,11 +808,12 @@
         },
         {
           "bounds": {
-            "height": 450,
+            "height": 500,
             "width": 1640,
             "x": 380,
-            "y": 1100
+            "y": 1140
           },
+          "flowGroup": "item-primary-flow",
           "id": "problem-2-mat",
           "instructionalIntent": "문항 조작 영역의 시각적 경계를 제공합니다.",
           "itemId": "problem-2",
@@ -771,10 +831,56 @@
         },
         {
           "bounds": {
+            "height": 180,
+            "width": 520,
+            "x": 940,
+            "y": 1664
+          },
+          "flowGroup": "item-primary-flow",
+          "id": "problem-2-choice-pool",
+          "instructionalIntent": "비교 기호를 하나의 선택 묶음으로 구분합니다.",
+          "itemId": "problem-2",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool",
+          "toolIntent": {
+            "kind": "draw-rectangle",
+            "properties": {
+              "fill": "#F7FAFF",
+              "stroke": "#65758B"
+            },
+            "toolKey": "common.rectangle"
+          }
+        },
+        {
+          "bounds": {
+            "height": 32,
+            "width": 160,
+            "x": 1000,
+            "y": 1676
+          },
+          "containerId": "problem-2-choice-pool",
+          "id": "problem-2-choice-pool-label",
+          "instructionalIntent": "학생이 고를 비교 기호 묶음을 안내합니다.",
+          "itemId": "problem-2",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool-label",
+          "toolIntent": {
+            "kind": "text",
+            "properties": {
+              "fontSize": 22,
+              "text": "비교 기호"
+            },
+            "toolKey": "common.text"
+          }
+        },
+        {
+          "bounds": {
             "height": 52,
             "width": 110,
             "x": 410,
-            "y": 1118
+            "y": 1158
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-number",
@@ -797,7 +903,7 @@
             "height": 66,
             "width": 420,
             "x": 1070,
-            "y": 1112
+            "y": 1152
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-prompt",
@@ -820,7 +926,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 1192
+            "y": 1232
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-prediction-label",
@@ -833,7 +939,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "먼저 예상"
+              "text": "예상한 기호"
             },
             "toolKey": "common.text"
           }
@@ -843,7 +949,7 @@
             "height": 70,
             "width": 260,
             "x": 590,
-            "y": 1180
+            "y": 1220
           },
           "id": "problem-2-prediction-box",
           "instructionalIntent": "학생이 조작 전에 예상한 관계를 기록하는 빈 영역입니다.",
@@ -866,7 +972,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 1210
+            "y": 1310
           },
           "collisionGroup": "comparison-targets",
           "id": "problem-2-left-lane-surface",
@@ -888,9 +994,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 1220
+            "width": 100,
+            "x": 600,
+            "y": 1320
           },
           "collisionGroup": "comparison-targets",
           "containerId": "problem-2-mat",
@@ -903,7 +1009,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "첫째 띠"
             },
             "toolKey": "common.text"
@@ -914,7 +1020,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 1320
+            "y": 1420
           },
           "id": "problem-2-right-lane-surface",
           "instructionalIntent": "두 번째 띠를 놓는 목표 영역입니다.",
@@ -935,9 +1041,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 1330
+            "width": 100,
+            "x": 600,
+            "y": 1430
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-right-lane-label",
@@ -949,7 +1055,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "둘째 띠"
             },
             "toolKey": "common.text"
@@ -960,7 +1066,7 @@
             "height": 190,
             "width": 16,
             "x": 732,
-            "y": 1210
+            "y": 1310
           },
           "id": "problem-2-start-line",
           "instructionalIntent": "두 띠를 맞출 공통 출발선을 표시합니다.",
@@ -982,7 +1088,7 @@
             "height": 120,
             "width": 120,
             "x": 1460,
-            "y": 1250
+            "y": 1290
           },
           "id": "problem-2-relation-slot-surface",
           "instructionalIntent": "선택한 비교 기호를 놓는 목표 영역입니다.",
@@ -1005,7 +1111,7 @@
             "height": 42,
             "width": 180,
             "x": 1595,
-            "y": 1286
+            "y": 1326
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-relation-slot-label",
@@ -1018,7 +1124,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 26,
-              "text": "기호 놓는 곳"
+              "text": "기호 놓기"
             },
             "toolKey": "common.text"
           }
@@ -1028,7 +1134,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 1454
+            "y": 1544
           },
           "containerId": "problem-2-mat",
           "id": "problem-2-explanation-label",
@@ -1041,7 +1147,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "근거와 수정"
+              "text": "비교한 까닭"
             },
             "toolKey": "common.text"
           }
@@ -1051,7 +1157,7 @@
             "height": 90,
             "width": 1180,
             "x": 590,
-            "y": 1438
+            "y": 1528
           },
           "id": "problem-2-explanation-box",
           "instructionalIntent": "띠의 길이와 같은 전체를 근거로 설명하고 예상을 수정하는 빈 영역입니다.",
@@ -1074,13 +1180,19 @@
             "height": 80,
             "width": 640,
             "x": 260,
-            "y": 1600
+            "y": 1700
           },
           "id": "problem-2-left-strip",
           "instructionalIntent": "첫 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-2",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 240,
+            "x": 260,
+            "y": 1700
+          },
           "role": "left-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1099,13 +1211,19 @@
             "height": 80,
             "width": 640,
             "x": 1500,
-            "y": 1600
+            "y": 1700
           },
           "id": "problem-2-right-strip",
           "instructionalIntent": "두 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-2",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 384,
+            "x": 1500,
+            "y": 1700
+          },
           "role": "right-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1123,8 +1241,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 970,
-            "y": 1590
+            "x": 1000,
+            "y": 1724
           },
           "id": "problem-2-less-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -1145,8 +1263,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1270,
-            "y": 1590
+            "x": 1300,
+            "y": 1724
           },
           "id": "problem-2-greater-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -1167,8 +1285,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1120,
-            "y": 1590
+            "x": 1150,
+            "y": 1724
           },
           "id": "problem-2-equal-symbol",
           "instructionalIntent": "두 분수가 같은지도 후보로 검토합니다.",
@@ -1187,11 +1305,12 @@
         },
         {
           "bounds": {
-            "height": 450,
+            "height": 500,
             "width": 1640,
             "x": 380,
-            "y": 1820
+            "y": 1900
           },
+          "flowGroup": "item-primary-flow",
           "id": "problem-3-mat",
           "instructionalIntent": "문항 조작 영역의 시각적 경계를 제공합니다.",
           "itemId": "problem-3",
@@ -1209,10 +1328,56 @@
         },
         {
           "bounds": {
+            "height": 180,
+            "width": 520,
+            "x": 940,
+            "y": 2424
+          },
+          "flowGroup": "item-primary-flow",
+          "id": "problem-3-choice-pool",
+          "instructionalIntent": "비교 기호를 하나의 선택 묶음으로 구분합니다.",
+          "itemId": "problem-3",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool",
+          "toolIntent": {
+            "kind": "draw-rectangle",
+            "properties": {
+              "fill": "#F7FAFF",
+              "stroke": "#65758B"
+            },
+            "toolKey": "common.rectangle"
+          }
+        },
+        {
+          "bounds": {
+            "height": 32,
+            "width": 160,
+            "x": 1000,
+            "y": 2436
+          },
+          "containerId": "problem-3-choice-pool",
+          "id": "problem-3-choice-pool-label",
+          "instructionalIntent": "학생이 고를 비교 기호 묶음을 안내합니다.",
+          "itemId": "problem-3",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool-label",
+          "toolIntent": {
+            "kind": "text",
+            "properties": {
+              "fontSize": 22,
+              "text": "비교 기호"
+            },
+            "toolKey": "common.text"
+          }
+        },
+        {
+          "bounds": {
             "height": 52,
             "width": 110,
             "x": 410,
-            "y": 1838
+            "y": 1918
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-number",
@@ -1235,7 +1400,7 @@
             "height": 66,
             "width": 420,
             "x": 1070,
-            "y": 1832
+            "y": 1912
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-prompt",
@@ -1258,7 +1423,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 1912
+            "y": 1992
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-prediction-label",
@@ -1271,7 +1436,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "먼저 예상"
+              "text": "예상한 기호"
             },
             "toolKey": "common.text"
           }
@@ -1281,7 +1446,7 @@
             "height": 70,
             "width": 260,
             "x": 590,
-            "y": 1900
+            "y": 1980
           },
           "id": "problem-3-prediction-box",
           "instructionalIntent": "학생이 조작 전에 예상한 관계를 기록하는 빈 영역입니다.",
@@ -1304,7 +1469,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 1930
+            "y": 2070
           },
           "collisionGroup": "comparison-targets",
           "id": "problem-3-left-lane-surface",
@@ -1326,9 +1491,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 1940
+            "width": 100,
+            "x": 600,
+            "y": 2080
           },
           "collisionGroup": "comparison-targets",
           "containerId": "problem-3-mat",
@@ -1341,7 +1506,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "첫째 띠"
             },
             "toolKey": "common.text"
@@ -1352,7 +1517,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 2040
+            "y": 2180
           },
           "id": "problem-3-right-lane-surface",
           "instructionalIntent": "두 번째 띠를 놓는 목표 영역입니다.",
@@ -1373,9 +1538,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 2050
+            "width": 100,
+            "x": 600,
+            "y": 2190
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-right-lane-label",
@@ -1387,7 +1552,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "둘째 띠"
             },
             "toolKey": "common.text"
@@ -1398,7 +1563,7 @@
             "height": 190,
             "width": 16,
             "x": 732,
-            "y": 1930
+            "y": 2070
           },
           "id": "problem-3-start-line",
           "instructionalIntent": "두 띠를 맞출 공통 출발선을 표시합니다.",
@@ -1420,7 +1585,7 @@
             "height": 120,
             "width": 120,
             "x": 1460,
-            "y": 1970
+            "y": 2050
           },
           "id": "problem-3-relation-slot-surface",
           "instructionalIntent": "선택한 비교 기호를 놓는 목표 영역입니다.",
@@ -1443,7 +1608,7 @@
             "height": 42,
             "width": 180,
             "x": 1595,
-            "y": 2006
+            "y": 2086
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-relation-slot-label",
@@ -1456,7 +1621,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 26,
-              "text": "기호 놓는 곳"
+              "text": "기호 놓기"
             },
             "toolKey": "common.text"
           }
@@ -1466,7 +1631,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 2174
+            "y": 2304
           },
           "containerId": "problem-3-mat",
           "id": "problem-3-explanation-label",
@@ -1479,7 +1644,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "근거와 수정"
+              "text": "비교한 까닭"
             },
             "toolKey": "common.text"
           }
@@ -1489,7 +1654,7 @@
             "height": 90,
             "width": 1180,
             "x": 590,
-            "y": 2158
+            "y": 2288
           },
           "id": "problem-3-explanation-box",
           "instructionalIntent": "띠의 길이와 같은 전체를 근거로 설명하고 예상을 수정하는 빈 영역입니다.",
@@ -1512,13 +1677,19 @@
             "height": 80,
             "width": 640,
             "x": 260,
-            "y": 2320
+            "y": 2460
           },
           "id": "problem-3-left-strip",
           "instructionalIntent": "첫 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-3",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 320,
+            "x": 260,
+            "y": 2460
+          },
           "role": "left-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1537,13 +1708,19 @@
             "height": 80,
             "width": 640,
             "x": 1500,
-            "y": 2320
+            "y": 2460
           },
           "id": "problem-3-right-strip",
           "instructionalIntent": "두 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-3",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 426.6666666666667,
+            "x": 1500,
+            "y": 2460
+          },
           "role": "right-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1561,8 +1738,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 970,
-            "y": 2310
+            "x": 1000,
+            "y": 2484
           },
           "id": "problem-3-less-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -1583,8 +1760,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1270,
-            "y": 2310
+            "x": 1300,
+            "y": 2484
           },
           "id": "problem-3-greater-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -1605,8 +1782,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1120,
-            "y": 2310
+            "x": 1150,
+            "y": 2484
           },
           "id": "problem-3-equal-symbol",
           "instructionalIntent": "두 분수가 같은지도 후보로 검토합니다.",
@@ -1625,11 +1802,12 @@
         },
         {
           "bounds": {
-            "height": 450,
+            "height": 500,
             "width": 1640,
             "x": 380,
-            "y": 2540
+            "y": 2660
           },
+          "flowGroup": "item-primary-flow",
           "id": "problem-4-mat",
           "instructionalIntent": "문항 조작 영역의 시각적 경계를 제공합니다.",
           "itemId": "problem-4",
@@ -1647,10 +1825,56 @@
         },
         {
           "bounds": {
+            "height": 180,
+            "width": 520,
+            "x": 940,
+            "y": 3184
+          },
+          "flowGroup": "item-primary-flow",
+          "id": "problem-4-choice-pool",
+          "instructionalIntent": "비교 기호를 하나의 선택 묶음으로 구분합니다.",
+          "itemId": "problem-4",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool",
+          "toolIntent": {
+            "kind": "draw-rectangle",
+            "properties": {
+              "fill": "#F7FAFF",
+              "stroke": "#65758B"
+            },
+            "toolKey": "common.rectangle"
+          }
+        },
+        {
+          "bounds": {
+            "height": 32,
+            "width": 160,
+            "x": 1000,
+            "y": 3196
+          },
+          "containerId": "problem-4-choice-pool",
+          "id": "problem-4-choice-pool-label",
+          "instructionalIntent": "학생이 고를 비교 기호 묶음을 안내합니다.",
+          "itemId": "problem-4",
+          "locked": true,
+          "movable": false,
+          "role": "choice-pool-label",
+          "toolIntent": {
+            "kind": "text",
+            "properties": {
+              "fontSize": 22,
+              "text": "비교 기호"
+            },
+            "toolKey": "common.text"
+          }
+        },
+        {
+          "bounds": {
             "height": 52,
             "width": 110,
             "x": 410,
-            "y": 2558
+            "y": 2678
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-number",
@@ -1673,7 +1897,7 @@
             "height": 66,
             "width": 420,
             "x": 1070,
-            "y": 2552
+            "y": 2672
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-prompt",
@@ -1696,7 +1920,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 2632
+            "y": 2752
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-prediction-label",
@@ -1709,7 +1933,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "먼저 예상"
+              "text": "예상한 기호"
             },
             "toolKey": "common.text"
           }
@@ -1719,7 +1943,7 @@
             "height": 70,
             "width": 260,
             "x": 590,
-            "y": 2620
+            "y": 2740
           },
           "id": "problem-4-prediction-box",
           "instructionalIntent": "학생이 조작 전에 예상한 관계를 기록하는 빈 영역입니다.",
@@ -1742,7 +1966,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 2650
+            "y": 2830
           },
           "collisionGroup": "comparison-targets",
           "id": "problem-4-left-lane-surface",
@@ -1764,9 +1988,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 2660
+            "width": 100,
+            "x": 600,
+            "y": 2840
           },
           "collisionGroup": "comparison-targets",
           "containerId": "problem-4-mat",
@@ -1779,7 +2003,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "첫째 띠"
             },
             "toolKey": "common.text"
@@ -1790,7 +2014,7 @@
             "height": 80,
             "width": 640,
             "x": 740,
-            "y": 2760
+            "y": 2940
           },
           "id": "problem-4-right-lane-surface",
           "instructionalIntent": "두 번째 띠를 놓는 목표 영역입니다.",
@@ -1811,9 +2035,9 @@
         {
           "bounds": {
             "height": 50,
-            "width": 70,
-            "x": 510,
-            "y": 2770
+            "width": 100,
+            "x": 600,
+            "y": 2950
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-right-lane-label",
@@ -1825,7 +2049,7 @@
           "toolIntent": {
             "kind": "text",
             "properties": {
-              "fontSize": 24,
+              "fontSize": 20,
               "text": "둘째 띠"
             },
             "toolKey": "common.text"
@@ -1836,7 +2060,7 @@
             "height": 190,
             "width": 16,
             "x": 732,
-            "y": 2650
+            "y": 2830
           },
           "id": "problem-4-start-line",
           "instructionalIntent": "두 띠를 맞출 공통 출발선을 표시합니다.",
@@ -1858,7 +2082,7 @@
             "height": 120,
             "width": 120,
             "x": 1460,
-            "y": 2690
+            "y": 2810
           },
           "id": "problem-4-relation-slot-surface",
           "instructionalIntent": "선택한 비교 기호를 놓는 목표 영역입니다.",
@@ -1881,7 +2105,7 @@
             "height": 42,
             "width": 180,
             "x": 1595,
-            "y": 2726
+            "y": 2846
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-relation-slot-label",
@@ -1894,7 +2118,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 26,
-              "text": "기호 놓는 곳"
+              "text": "기호 놓기"
             },
             "toolKey": "common.text"
           }
@@ -1904,7 +2128,7 @@
             "height": 42,
             "width": 170,
             "x": 410,
-            "y": 2894
+            "y": 3064
           },
           "containerId": "problem-4-mat",
           "id": "problem-4-explanation-label",
@@ -1917,7 +2141,7 @@
             "kind": "text",
             "properties": {
               "fontSize": 24,
-              "text": "근거와 수정"
+              "text": "비교한 까닭"
             },
             "toolKey": "common.text"
           }
@@ -1927,7 +2151,7 @@
             "height": 90,
             "width": 1180,
             "x": 590,
-            "y": 2878
+            "y": 3048
           },
           "id": "problem-4-explanation-box",
           "instructionalIntent": "띠의 길이와 같은 전체를 근거로 설명하고 예상을 수정하는 빈 영역입니다.",
@@ -1950,13 +2174,19 @@
             "height": 80,
             "width": 640,
             "x": 260,
-            "y": 3040
+            "y": 3220
           },
           "id": "problem-4-left-strip",
           "instructionalIntent": "첫 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-4",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 400,
+            "x": 260,
+            "y": 3220
+          },
           "role": "left-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1975,13 +2205,19 @@
             "height": 80,
             "width": 640,
             "x": 1500,
-            "y": 3040
+            "y": 3220
           },
           "id": "problem-4-right-strip",
           "instructionalIntent": "두 번째 분수 띠를 출발선에 맞춥니다.",
           "itemId": "problem-4",
           "locked": false,
           "movable": true,
+          "renderedBounds": {
+            "height": 80,
+            "width": 274.2857142857143,
+            "x": 1500,
+            "y": 3220
+          },
           "role": "right-strip",
           "toolIntent": {
             "kind": "fraction-model",
@@ -1999,8 +2235,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 970,
-            "y": 3030
+            "x": 1000,
+            "y": 3244
           },
           "id": "problem-4-less-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -2021,8 +2257,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1270,
-            "y": 3030
+            "x": 1300,
+            "y": 3244
           },
           "id": "problem-4-greater-symbol",
           "instructionalIntent": "두 분수의 크기를 보고 알맞은 기호를 고릅니다.",
@@ -2043,8 +2279,8 @@
           "bounds": {
             "height": 100,
             "width": 100,
-            "x": 1120,
-            "y": 3030
+            "x": 1150,
+            "y": 3244
           },
           "id": "problem-4-equal-symbol",
           "instructionalIntent": "두 분수가 같은지도 후보로 검토합니다.",
@@ -2064,10 +2300,9 @@
       ],
       "id": "p0-fraction-comparison-golden-v1",
       "instructions": [
-        "띠를 옮기기 전에 <, =, > 중 하나를 먼저 예상해 쓰세요.",
-        "두 분수 띠를 같은 출발선에 놓아 확인하세요.",
-        "띠의 길이를 보고 알맞은 기호 하나를 고르세요.",
-        "예상과 달랐다면 고친 뒤, 같은 전체와 길이를 근거로 설명하세요."
+        "분수 띠를 옮기기 전에, <, =, > 중 알맞다고 생각한 기호를 써 보세요.",
+        "두 분수 띠를 같은 출발선에 놓고 길이를 비교해 보세요.",
+        "알맞은 기호를 놓고, 그렇게 생각한 까닭을 써 보세요."
       ],
       "items": [
         {
@@ -2172,13 +2407,13 @@
         }
       ],
       "layout": {
-        "height": 3320,
+        "height": 3480,
         "minGap": 24,
         "viewBox": [
           0,
           0,
           2400,
-          3320
+          3480
         ],
         "width": 2400
       },
@@ -2186,7 +2421,7 @@
       "legacy": {
         "sourceActivitySpecVersion": "1.0.0",
         "templateId": "fraction.compare.unlike-denominators.visual-v1",
-        "templateVersion": "1.0.0"
+        "templateVersion": "1.1.0"
       },
       "payload": {
         "categoryId": "rJa0d46MAy",
@@ -2367,12 +2602,92 @@
               "start-line"
             ]
           }
+        },
+        {
+          "kind": "language.classroom-korean",
+          "parameters": {
+            "instructionRoles": [
+              "instruction-main",
+              "instruction-symbol",
+              "instruction-explain"
+            ],
+            "labelRoles": [
+              "prediction-label",
+              "left-lane-label",
+              "right-lane-label",
+              "relation-slot-label",
+              "explanation-label",
+              "choice-pool-label"
+            ],
+            "maximumInstructionLength": 80,
+            "maximumLabelLength": 12
+          }
+        },
+        {
+          "kind": "visual.text-fit",
+          "parameters": {
+            "maximumFillRatio": 0.96,
+            "roles": [
+              "instruction-main",
+              "instruction-symbol",
+              "instruction-explain",
+              "prediction-label",
+              "left-lane-label",
+              "right-lane-label",
+              "relation-slot-label",
+              "explanation-label",
+              "choice-pool-label"
+            ]
+          }
+        },
+        {
+          "kind": "visual.labeled-pool-row",
+          "parameters": {
+            "containerRole": "choice-pool",
+            "gapTolerance": 2,
+            "groupCenterTolerance": 2,
+            "labelAlignmentTolerance": 2,
+            "labelRole": "choice-pool-label",
+            "maximumLabelGap": 24,
+            "memberRoles": [
+              "less-symbol",
+              "equal-symbol",
+              "greater-symbol"
+            ],
+            "minimumLabelGap": 12,
+            "rowCenterTolerance": 2
+          }
+        },
+        {
+          "kind": "visual.no-overlap",
+          "parameters": {
+            "roles": [
+              "number",
+              "prompt",
+              "prediction-label",
+              "prediction-box",
+              "left-lane-surface",
+              "left-lane-label",
+              "right-lane-surface",
+              "right-lane-label",
+              "relation-slot-surface",
+              "relation-slot-label",
+              "explanation-label",
+              "explanation-box",
+              "choice-pool-label",
+              "left-strip",
+              "right-strip",
+              "less-symbol",
+              "equal-symbol",
+              "greater-symbol"
+            ]
+          }
         }
       ]
     },
     "approvalReceipt": {
-      "activitySpecHash": "4d422bc2959b81d209bf9ed590dee0e450bf2f890d05bab860f3ea365ff4f9f3",
-      "approvalHash": "de7664e245c3ca38a6bd155551f3b784f0ac412be407cbf506a2fd53af0f00e5",
+      "activitySpecHash": "cc9e6d5ec9b772a4acc4f670851eda10b3ad8b40394d71acbb714e659f5c4b19",
+      "approvalHash": "f030778c19d35461809b8f79b35f896bdcd7cd13d1be47893ca9711aa1ad4ac7",
       "approvedAt": "2026-07-29T00:03:00.000Z",
       "expiresAt": "2026-07-29T00:18:00.000Z",
       "schemaVersion": "1.0.0"
@@ -2383,7 +2698,7 @@
         "canvasOption": {
           "canvasCenterCoordinate": {
             "cx": 1200,
-            "cy": 1660
+            "cy": 1740
           },
           "CR07BSArr": [],
           "CR07BSObj": {
@@ -2414,6 +2729,12 @@
             ],
             [
               "problem-1-mat"
+            ],
+            [
+              "problem-1-choice-pool"
+            ],
+            [
+              "problem-1-choice-pool-label"
             ],
             [
               "problem-1-number"
@@ -2458,6 +2779,12 @@
               "problem-2-mat"
             ],
             [
+              "problem-2-choice-pool"
+            ],
+            [
+              "problem-2-choice-pool-label"
+            ],
+            [
               "problem-2-number"
             ],
             [
@@ -2500,6 +2827,12 @@
               "problem-3-mat"
             ],
             [
+              "problem-3-choice-pool"
+            ],
+            [
+              "problem-3-choice-pool-label"
+            ],
+            [
               "problem-3-number"
             ],
             [
@@ -2540,6 +2873,12 @@
             ],
             [
               "problem-4-mat"
+            ],
+            [
+              "problem-4-choice-pool"
+            ],
+            [
+              "problem-4-choice-pool-label"
             ],
             [
               "problem-4-number"
@@ -2643,7 +2982,7 @@
             0,
             0,
             2400,
-            3320
+            3480
           ]
         },
         "categoryId": "rJa0d46MAy",
@@ -2658,7 +2997,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 48,
+            "fontSize": 42,
             "groupId": "",
             "height": 90,
             "id": "instruction-main",
@@ -2696,7 +3035,7 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "분수 띠를 같은 출발선에 놓아요.",
+            "text": "① 분수 띠를 옮기기 전에, 알맞다고 생각한 기호를 써 보세요.",
             "width": 1920,
             "x": 240,
             "y": 70
@@ -2711,7 +3050,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 38,
+            "fontSize": 36,
             "groupId": "",
             "height": 62,
             "id": "instruction-symbol",
@@ -2749,7 +3088,7 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "두 띠의 길이를 보고 기호를 놓아요.",
+            "text": "② 두 분수 띠를 같은 출발선에 놓고 길이를 비교해 보세요.",
             "width": 1920,
             "x": 240,
             "y": 184
@@ -2764,7 +3103,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 38,
+            "fontSize": 36,
             "groupId": "",
             "height": 62,
             "id": "instruction-explain",
@@ -2802,7 +3141,7 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "고른 기호를 띠의 길이와 같은 전체를 근거로 설명하세요.",
+            "text": "③ 알맞은 기호를 놓고, 그렇게 생각한 까닭을 써 보세요.",
             "width": 1920,
             "x": 240,
             "y": 270
@@ -2822,11 +3161,11 @@
               ],
               [
                 2020,
-                830
+                880
               ],
               [
                 380,
-                830
+                880
               ]
             ],
             "curveOffset": 0,
@@ -2874,7 +3213,7 @@
             ],
             "point2": [
               2020,
-              830
+              880
             ],
             "radius": 12,
             "rotate": 0,
@@ -2892,6 +3231,145 @@
             "type": "rect",
             "x": 0,
             "y": 0
+          },
+          {
+            "_x": 0,
+            "_y": 0,
+            "clickCount": 1,
+            "coordinates": [
+              [
+                940,
+                904
+              ],
+              [
+                1460,
+                904
+              ],
+              [
+                1460,
+                1084
+              ],
+              [
+                940,
+                1084
+              ]
+            ],
+            "curveOffset": 0,
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#F7FAFF",
+            "fillOpacity": 1,
+            "groupId": "",
+            "id": "problem-1-choice-pool",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": true,
+            "isSurroundRect": false,
+            "isTextEdit": false,
+            "isTextEditFontSize": false,
+            "isVerticalFlip": false,
+            "parent": {
+              "curveMaxOffset": 140,
+              "defaultX": null,
+              "defaultY": null,
+              "endX": null,
+              "endY": null,
+              "isCircle1": false,
+              "isCircle2": false,
+              "isCurveHandler": false,
+              "isRadiusHandler": false,
+              "r": null
+            },
+            "playgroundIndex": 1,
+            "point1": [
+              940,
+              904
+            ],
+            "point2": [
+              1460,
+              1084
+            ],
+            "radius": 12,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#65758B",
+            "strokeDashArray": "none",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 2,
+            "svgId": "drawElem",
+            "text": "",
+            "type": "rect",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "_x": 1000,
+            "_y": 916,
+            "clickCount": 0,
+            "coordinates": [],
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#000000",
+            "fillOpacity": 1,
+            "fontSize": 22,
+            "groupId": "",
+            "height": 32,
+            "id": "problem-1-choice-pool-label",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isEyeOn": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": false,
+            "isSurroundRect": false,
+            "isTextEdit": true,
+            "isTextEditFontSize": true,
+            "isVerticalFlip": false,
+            "parent": {
+              "observer": null
+            },
+            "playgroundIndex": 2,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#000000",
+            "strokeDashArray": "",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 4,
+            "svgId": "input-text",
+            "text": "비교 기호",
+            "width": 160,
+            "x": 1000,
+            "y": 916
           },
           {
             "_x": 410,
@@ -3045,7 +3523,7 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "먼저 예상",
+            "text": "예상한 기호",
             "width": 170,
             "x": 410,
             "y": 472
@@ -3143,19 +3621,19 @@
             "coordinates": [
               [
                 740,
-                490
+                550
               ],
               [
                 1380,
-                490
+                550
               ],
               [
                 1380,
-                570
+                630
               ],
               [
                 740,
-                570
+                630
               ]
             ],
             "curveOffset": 0,
@@ -3199,11 +3677,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              490
+              550
             ],
             "point2": [
               1380,
-              570
+              630
             ],
             "radius": 12,
             "rotate": 0,
@@ -3223,8 +3701,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 500,
+            "_x": 600,
+            "_y": 560,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -3232,7 +3710,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-1-left-lane-label",
@@ -3271,9 +3749,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "첫째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 500
+            "width": 100,
+            "x": 600,
+            "y": 560
           },
           {
             "_x": 0,
@@ -3282,19 +3760,19 @@
             "coordinates": [
               [
                 740,
-                600
+                660
               ],
               [
                 1380,
-                600
+                660
               ],
               [
                 1380,
-                680
+                740
               ],
               [
                 740,
-                680
+                740
               ]
             ],
             "curveOffset": 0,
@@ -3338,11 +3816,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              600
+              660
             ],
             "point2": [
               1380,
-              680
+              740
             ],
             "radius": 12,
             "rotate": 0,
@@ -3362,8 +3840,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 610,
+            "_x": 600,
+            "_y": 670,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -3371,7 +3849,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-1-right-lane-label",
@@ -3410,9 +3888,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "둘째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 610
+            "width": 100,
+            "x": 600,
+            "y": 670
           },
           {
             "_x": 0,
@@ -3421,19 +3899,19 @@
             "coordinates": [
               [
                 732,
-                490
+                550
               ],
               [
                 748,
-                490
+                550
               ],
               [
                 748,
-                680
+                740
               ],
               [
                 732,
-                680
+                740
               ]
             ],
             "curveOffset": 0,
@@ -3477,11 +3955,11 @@
             "playgroundIndex": 1,
             "point1": [
               732,
-              490
+              550
             ],
             "point2": [
               748,
-              680
+              740
             ],
             "radius": 12,
             "rotate": 0,
@@ -3634,14 +4112,14 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "기호 놓는 곳",
+            "text": "기호 놓기",
             "width": 180,
             "x": 1595,
             "y": 566
           },
           {
             "_x": 410,
-            "_y": 734,
+            "_y": 784,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -3687,10 +4165,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "근거와 수정",
+            "text": "비교한 까닭",
             "width": 170,
             "x": 410,
-            "y": 734
+            "y": 784
           },
           {
             "_x": 0,
@@ -3699,19 +4177,19 @@
             "coordinates": [
               [
                 590,
-                718
+                768
               ],
               [
                 1770,
-                718
+                768
               ],
               [
                 1770,
-                808
+                858
               ],
               [
                 590,
-                808
+                858
               ]
             ],
             "curveOffset": 0,
@@ -3755,11 +4233,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              718
+              768
             ],
             "point2": [
               1770,
-              808
+              858
             ],
             "radius": 12,
             "rotate": 0,
@@ -3779,8 +4257,8 @@
             "y": 0
           },
           {
-            "_x": 260,
-            "_y": 880,
+            "_x": 313.3333333333333,
+            "_y": 980,
             "clickCount": 1,
             "coordinates": [
               [
@@ -3852,12 +4330,12 @@
             "svgId": "NO03FM-05",
             "type": "rect",
             "width": 533,
-            "x": 260,
-            "y": 880
+            "x": 313.3333333333333,
+            "y": 980
           },
           {
-            "_x": 1500,
-            "_y": 880,
+            "_x": 1564,
+            "_y": 980,
             "clickCount": 1,
             "coordinates": [
               [
@@ -3929,12 +4407,12 @@
             "svgId": "NO03FM-06",
             "type": "rect",
             "width": 384,
-            "x": 1500,
-            "y": 880
+            "x": 1564,
+            "y": 980
           },
           {
-            "_x": 970,
-            "_y": 870,
+            "_x": 1000,
+            "_y": 964,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -3980,12 +4458,12 @@
             "svgId": "math-latex",
             "text": "<",
             "width": 100,
-            "x": 970,
-            "y": 870
+            "x": 1000,
+            "y": 964
           },
           {
-            "_x": 1270,
-            "_y": 870,
+            "_x": 1300,
+            "_y": 964,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -4031,12 +4509,12 @@
             "svgId": "math-latex",
             "text": ">",
             "width": 100,
-            "x": 1270,
-            "y": 870
+            "x": 1300,
+            "y": 964
           },
           {
-            "_x": 1120,
-            "_y": 870,
+            "_x": 1150,
+            "_y": 964,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -4082,8 +4560,8 @@
             "svgId": "math-latex",
             "text": "=",
             "width": 100,
-            "x": 1120,
-            "y": 870
+            "x": 1150,
+            "y": 964
           },
           {
             "_x": 0,
@@ -4092,19 +4570,19 @@
             "coordinates": [
               [
                 380,
-                1100
+                1140
               ],
               [
                 2020,
-                1100
+                1140
               ],
               [
                 2020,
-                1550
+                1640
               ],
               [
                 380,
-                1550
+                1640
               ]
             ],
             "curveOffset": 0,
@@ -4148,11 +4626,11 @@
             "playgroundIndex": 1,
             "point1": [
               380,
-              1100
+              1140
             ],
             "point2": [
               2020,
-              1550
+              1640
             ],
             "radius": 12,
             "rotate": 0,
@@ -4172,8 +4650,147 @@
             "y": 0
           },
           {
+            "_x": 0,
+            "_y": 0,
+            "clickCount": 1,
+            "coordinates": [
+              [
+                940,
+                1664
+              ],
+              [
+                1460,
+                1664
+              ],
+              [
+                1460,
+                1844
+              ],
+              [
+                940,
+                1844
+              ]
+            ],
+            "curveOffset": 0,
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#F7FAFF",
+            "fillOpacity": 1,
+            "groupId": "",
+            "id": "problem-2-choice-pool",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": true,
+            "isSurroundRect": false,
+            "isTextEdit": false,
+            "isTextEditFontSize": false,
+            "isVerticalFlip": false,
+            "parent": {
+              "curveMaxOffset": 140,
+              "defaultX": null,
+              "defaultY": null,
+              "endX": null,
+              "endY": null,
+              "isCircle1": false,
+              "isCircle2": false,
+              "isCurveHandler": false,
+              "isRadiusHandler": false,
+              "r": null
+            },
+            "playgroundIndex": 1,
+            "point1": [
+              940,
+              1664
+            ],
+            "point2": [
+              1460,
+              1844
+            ],
+            "radius": 12,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#65758B",
+            "strokeDashArray": "none",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 2,
+            "svgId": "drawElem",
+            "text": "",
+            "type": "rect",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "_x": 1000,
+            "_y": 1676,
+            "clickCount": 0,
+            "coordinates": [],
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#000000",
+            "fillOpacity": 1,
+            "fontSize": 22,
+            "groupId": "",
+            "height": 32,
+            "id": "problem-2-choice-pool-label",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isEyeOn": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": false,
+            "isSurroundRect": false,
+            "isTextEdit": true,
+            "isTextEditFontSize": true,
+            "isVerticalFlip": false,
+            "parent": {
+              "observer": null
+            },
+            "playgroundIndex": 2,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#000000",
+            "strokeDashArray": "",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 4,
+            "svgId": "input-text",
+            "text": "비교 기호",
+            "width": 160,
+            "x": 1000,
+            "y": 1676
+          },
+          {
             "_x": 410,
-            "_y": 1118,
+            "_y": 1158,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4222,11 +4839,11 @@
             "text": "2번",
             "width": 110,
             "x": 410,
-            "y": 1118
+            "y": 1158
           },
           {
             "_x": 1070,
-            "_y": 1112,
+            "_y": 1152,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -4273,11 +4890,11 @@
             "text": "\\frac{3}{8} \\; ? \\; \\frac{3}{5}",
             "width": 420,
             "x": 1070,
-            "y": 1112
+            "y": 1152
           },
           {
             "_x": 410,
-            "_y": 1192,
+            "_y": 1232,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4323,10 +4940,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "먼저 예상",
+            "text": "예상한 기호",
             "width": 170,
             "x": 410,
-            "y": 1192
+            "y": 1232
           },
           {
             "_x": 0,
@@ -4335,19 +4952,19 @@
             "coordinates": [
               [
                 590,
-                1180
+                1220
               ],
               [
                 850,
-                1180
+                1220
               ],
               [
                 850,
-                1250
+                1290
               ],
               [
                 590,
-                1250
+                1290
               ]
             ],
             "curveOffset": 0,
@@ -4391,11 +5008,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              1180
+              1220
             ],
             "point2": [
               850,
-              1250
+              1290
             ],
             "radius": 12,
             "rotate": 0,
@@ -4421,19 +5038,19 @@
             "coordinates": [
               [
                 740,
-                1210
+                1310
               ],
               [
                 1380,
-                1210
+                1310
               ],
               [
                 1380,
-                1290
+                1390
               ],
               [
                 740,
-                1290
+                1390
               ]
             ],
             "curveOffset": 0,
@@ -4477,11 +5094,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              1210
+              1310
             ],
             "point2": [
               1380,
-              1290
+              1390
             ],
             "radius": 12,
             "rotate": 0,
@@ -4501,8 +5118,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 1220,
+            "_x": 600,
+            "_y": 1320,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4510,7 +5127,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-2-left-lane-label",
@@ -4549,9 +5166,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "첫째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 1220
+            "width": 100,
+            "x": 600,
+            "y": 1320
           },
           {
             "_x": 0,
@@ -4560,19 +5177,19 @@
             "coordinates": [
               [
                 740,
-                1320
+                1420
               ],
               [
                 1380,
-                1320
+                1420
               ],
               [
                 1380,
-                1400
+                1500
               ],
               [
                 740,
-                1400
+                1500
               ]
             ],
             "curveOffset": 0,
@@ -4616,11 +5233,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              1320
+              1420
             ],
             "point2": [
               1380,
-              1400
+              1500
             ],
             "radius": 12,
             "rotate": 0,
@@ -4640,8 +5257,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 1330,
+            "_x": 600,
+            "_y": 1430,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4649,7 +5266,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-2-right-lane-label",
@@ -4688,9 +5305,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "둘째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 1330
+            "width": 100,
+            "x": 600,
+            "y": 1430
           },
           {
             "_x": 0,
@@ -4699,19 +5316,19 @@
             "coordinates": [
               [
                 732,
-                1210
+                1310
               ],
               [
                 748,
-                1210
+                1310
               ],
               [
                 748,
-                1400
+                1500
               ],
               [
                 732,
-                1400
+                1500
               ]
             ],
             "curveOffset": 0,
@@ -4755,11 +5372,11 @@
             "playgroundIndex": 1,
             "point1": [
               732,
-              1210
+              1310
             ],
             "point2": [
               748,
-              1400
+              1500
             ],
             "radius": 12,
             "rotate": 0,
@@ -4785,19 +5402,19 @@
             "coordinates": [
               [
                 1460,
-                1250
+                1290
               ],
               [
                 1580,
-                1250
+                1290
               ],
               [
                 1580,
-                1370
+                1410
               ],
               [
                 1460,
-                1370
+                1410
               ]
             ],
             "curveOffset": 0,
@@ -4841,11 +5458,11 @@
             "playgroundIndex": 1,
             "point1": [
               1460,
-              1250
+              1290
             ],
             "point2": [
               1580,
-              1370
+              1410
             ],
             "radius": 12,
             "rotate": 0,
@@ -4866,7 +5483,7 @@
           },
           {
             "_x": 1595,
-            "_y": 1286,
+            "_y": 1326,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4912,14 +5529,14 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "기호 놓는 곳",
+            "text": "기호 놓기",
             "width": 180,
             "x": 1595,
-            "y": 1286
+            "y": 1326
           },
           {
             "_x": 410,
-            "_y": 1454,
+            "_y": 1544,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -4965,10 +5582,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "근거와 수정",
+            "text": "비교한 까닭",
             "width": 170,
             "x": 410,
-            "y": 1454
+            "y": 1544
           },
           {
             "_x": 0,
@@ -4977,19 +5594,19 @@
             "coordinates": [
               [
                 590,
-                1438
-              ],
-              [
-                1770,
-                1438
+                1528
               ],
               [
                 1770,
                 1528
+              ],
+              [
+                1770,
+                1618
               ],
               [
                 590,
-                1528
+                1618
               ]
             ],
             "curveOffset": 0,
@@ -5033,11 +5650,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              1438
+              1528
             ],
             "point2": [
               1770,
-              1528
+              1618
             ],
             "radius": 12,
             "rotate": 0,
@@ -5057,8 +5674,8 @@
             "y": 0
           },
           {
-            "_x": 260,
-            "_y": 1600,
+            "_x": 300,
+            "_y": 1740,
             "clickCount": 1,
             "coordinates": [
               [
@@ -5130,12 +5747,12 @@
             "svgId": "NO03FM-03",
             "type": "rect",
             "width": 240,
-            "x": 260,
-            "y": 1600
+            "x": 300,
+            "y": 1740
           },
           {
-            "_x": 1500,
-            "_y": 1600,
+            "_x": 1564,
+            "_y": 1740,
             "clickCount": 1,
             "coordinates": [
               [
@@ -5207,12 +5824,12 @@
             "svgId": "NO03FM-06",
             "type": "rect",
             "width": 384,
-            "x": 1500,
-            "y": 1600
+            "x": 1564,
+            "y": 1740
           },
           {
-            "_x": 970,
-            "_y": 1590,
+            "_x": 1000,
+            "_y": 1724,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -5258,12 +5875,12 @@
             "svgId": "math-latex",
             "text": "<",
             "width": 100,
-            "x": 970,
-            "y": 1590
+            "x": 1000,
+            "y": 1724
           },
           {
-            "_x": 1270,
-            "_y": 1590,
+            "_x": 1300,
+            "_y": 1724,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -5309,12 +5926,12 @@
             "svgId": "math-latex",
             "text": ">",
             "width": 100,
-            "x": 1270,
-            "y": 1590
+            "x": 1300,
+            "y": 1724
           },
           {
-            "_x": 1120,
-            "_y": 1590,
+            "_x": 1150,
+            "_y": 1724,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -5360,8 +5977,8 @@
             "svgId": "math-latex",
             "text": "=",
             "width": 100,
-            "x": 1120,
-            "y": 1590
+            "x": 1150,
+            "y": 1724
           },
           {
             "_x": 0,
@@ -5370,19 +5987,19 @@
             "coordinates": [
               [
                 380,
-                1820
+                1900
               ],
               [
                 2020,
-                1820
+                1900
               ],
               [
                 2020,
-                2270
+                2400
               ],
               [
                 380,
-                2270
+                2400
               ]
             ],
             "curveOffset": 0,
@@ -5426,11 +6043,11 @@
             "playgroundIndex": 1,
             "point1": [
               380,
-              1820
+              1900
             ],
             "point2": [
               2020,
-              2270
+              2400
             ],
             "radius": 12,
             "rotate": 0,
@@ -5450,8 +6067,147 @@
             "y": 0
           },
           {
+            "_x": 0,
+            "_y": 0,
+            "clickCount": 1,
+            "coordinates": [
+              [
+                940,
+                2424
+              ],
+              [
+                1460,
+                2424
+              ],
+              [
+                1460,
+                2604
+              ],
+              [
+                940,
+                2604
+              ]
+            ],
+            "curveOffset": 0,
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#F7FAFF",
+            "fillOpacity": 1,
+            "groupId": "",
+            "id": "problem-3-choice-pool",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": true,
+            "isSurroundRect": false,
+            "isTextEdit": false,
+            "isTextEditFontSize": false,
+            "isVerticalFlip": false,
+            "parent": {
+              "curveMaxOffset": 140,
+              "defaultX": null,
+              "defaultY": null,
+              "endX": null,
+              "endY": null,
+              "isCircle1": false,
+              "isCircle2": false,
+              "isCurveHandler": false,
+              "isRadiusHandler": false,
+              "r": null
+            },
+            "playgroundIndex": 1,
+            "point1": [
+              940,
+              2424
+            ],
+            "point2": [
+              1460,
+              2604
+            ],
+            "radius": 12,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#65758B",
+            "strokeDashArray": "none",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 2,
+            "svgId": "drawElem",
+            "text": "",
+            "type": "rect",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "_x": 1000,
+            "_y": 2436,
+            "clickCount": 0,
+            "coordinates": [],
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#000000",
+            "fillOpacity": 1,
+            "fontSize": 22,
+            "groupId": "",
+            "height": 32,
+            "id": "problem-3-choice-pool-label",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isEyeOn": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": false,
+            "isSurroundRect": false,
+            "isTextEdit": true,
+            "isTextEditFontSize": true,
+            "isVerticalFlip": false,
+            "parent": {
+              "observer": null
+            },
+            "playgroundIndex": 2,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#000000",
+            "strokeDashArray": "",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 4,
+            "svgId": "input-text",
+            "text": "비교 기호",
+            "width": 160,
+            "x": 1000,
+            "y": 2436
+          },
+          {
             "_x": 410,
-            "_y": 1838,
+            "_y": 1918,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -5500,11 +6256,11 @@
             "text": "3번",
             "width": 110,
             "x": 410,
-            "y": 1838
+            "y": 1918
           },
           {
             "_x": 1070,
-            "_y": 1832,
+            "_y": 1912,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -5551,11 +6307,11 @@
             "text": "\\frac{1}{2} \\; ? \\; \\frac{2}{3}",
             "width": 420,
             "x": 1070,
-            "y": 1832
+            "y": 1912
           },
           {
             "_x": 410,
-            "_y": 1912,
+            "_y": 1992,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -5601,10 +6357,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "먼저 예상",
+            "text": "예상한 기호",
             "width": 170,
             "x": 410,
-            "y": 1912
+            "y": 1992
           },
           {
             "_x": 0,
@@ -5613,19 +6369,19 @@
             "coordinates": [
               [
                 590,
-                1900
+                1980
               ],
               [
                 850,
-                1900
+                1980
               ],
               [
                 850,
-                1970
+                2050
               ],
               [
                 590,
-                1970
+                2050
               ]
             ],
             "curveOffset": 0,
@@ -5669,11 +6425,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              1900
+              1980
             ],
             "point2": [
               850,
-              1970
+              2050
             ],
             "radius": 12,
             "rotate": 0,
@@ -5699,19 +6455,19 @@
             "coordinates": [
               [
                 740,
-                1930
+                2070
               ],
               [
                 1380,
-                1930
+                2070
               ],
               [
                 1380,
-                2010
+                2150
               ],
               [
                 740,
-                2010
+                2150
               ]
             ],
             "curveOffset": 0,
@@ -5755,11 +6511,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              1930
+              2070
             ],
             "point2": [
               1380,
-              2010
+              2150
             ],
             "radius": 12,
             "rotate": 0,
@@ -5779,8 +6535,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 1940,
+            "_x": 600,
+            "_y": 2080,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -5788,7 +6544,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-3-left-lane-label",
@@ -5827,9 +6583,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "첫째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 1940
+            "width": 100,
+            "x": 600,
+            "y": 2080
           },
           {
             "_x": 0,
@@ -5838,19 +6594,19 @@
             "coordinates": [
               [
                 740,
-                2040
+                2180
               ],
               [
                 1380,
-                2040
+                2180
               ],
               [
                 1380,
-                2120
+                2260
               ],
               [
                 740,
-                2120
+                2260
               ]
             ],
             "curveOffset": 0,
@@ -5894,11 +6650,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              2040
+              2180
             ],
             "point2": [
               1380,
-              2120
+              2260
             ],
             "radius": 12,
             "rotate": 0,
@@ -5918,8 +6674,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 2050,
+            "_x": 600,
+            "_y": 2190,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -5927,7 +6683,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-3-right-lane-label",
@@ -5966,9 +6722,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "둘째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 2050
+            "width": 100,
+            "x": 600,
+            "y": 2190
           },
           {
             "_x": 0,
@@ -5977,19 +6733,19 @@
             "coordinates": [
               [
                 732,
-                1930
+                2070
               ],
               [
                 748,
-                1930
+                2070
               ],
               [
                 748,
-                2120
+                2260
               ],
               [
                 732,
-                2120
+                2260
               ]
             ],
             "curveOffset": 0,
@@ -6033,11 +6789,11 @@
             "playgroundIndex": 1,
             "point1": [
               732,
-              1930
+              2070
             ],
             "point2": [
               748,
-              2120
+              2260
             ],
             "radius": 12,
             "rotate": 0,
@@ -6063,19 +6819,19 @@
             "coordinates": [
               [
                 1460,
-                1970
+                2050
               ],
               [
                 1580,
-                1970
+                2050
               ],
               [
                 1580,
-                2090
+                2170
               ],
               [
                 1460,
-                2090
+                2170
               ]
             ],
             "curveOffset": 0,
@@ -6119,11 +6875,11 @@
             "playgroundIndex": 1,
             "point1": [
               1460,
-              1970
+              2050
             ],
             "point2": [
               1580,
-              2090
+              2170
             ],
             "radius": 12,
             "rotate": 0,
@@ -6144,7 +6900,7 @@
           },
           {
             "_x": 1595,
-            "_y": 2006,
+            "_y": 2086,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -6190,14 +6946,14 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "기호 놓는 곳",
+            "text": "기호 놓기",
             "width": 180,
             "x": 1595,
-            "y": 2006
+            "y": 2086
           },
           {
             "_x": 410,
-            "_y": 2174,
+            "_y": 2304,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -6243,10 +6999,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "근거와 수정",
+            "text": "비교한 까닭",
             "width": 170,
             "x": 410,
-            "y": 2174
+            "y": 2304
           },
           {
             "_x": 0,
@@ -6255,19 +7011,19 @@
             "coordinates": [
               [
                 590,
-                2158
+                2288
               ],
               [
                 1770,
-                2158
+                2288
               ],
               [
                 1770,
-                2248
+                2378
               ],
               [
                 590,
-                2248
+                2378
               ]
             ],
             "curveOffset": 0,
@@ -6311,11 +7067,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              2158
+              2288
             ],
             "point2": [
               1770,
-              2248
+              2378
             ],
             "radius": 12,
             "rotate": 0,
@@ -6335,8 +7091,8 @@
             "y": 0
           },
           {
-            "_x": 260,
-            "_y": 2320,
+            "_x": 420,
+            "_y": 2500,
             "clickCount": 1,
             "coordinates": [
               [
@@ -6408,12 +7164,12 @@
             "svgId": "NO03FM-09",
             "type": "rect",
             "width": 320,
-            "x": 260,
-            "y": 2320
+            "x": 420,
+            "y": 2500
           },
           {
-            "_x": 1500,
-            "_y": 2320,
+            "_x": 1606.6666666666667,
+            "_y": 2500,
             "clickCount": 1,
             "coordinates": [
               [
@@ -6485,12 +7241,12 @@
             "svgId": "NO03FM-08",
             "type": "rect",
             "width": 427,
-            "x": 1500,
-            "y": 2320
+            "x": 1606.6666666666667,
+            "y": 2500
           },
           {
-            "_x": 970,
-            "_y": 2310,
+            "_x": 1000,
+            "_y": 2484,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -6536,12 +7292,12 @@
             "svgId": "math-latex",
             "text": "<",
             "width": 100,
-            "x": 970,
-            "y": 2310
+            "x": 1000,
+            "y": 2484
           },
           {
-            "_x": 1270,
-            "_y": 2310,
+            "_x": 1300,
+            "_y": 2484,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -6587,12 +7343,12 @@
             "svgId": "math-latex",
             "text": ">",
             "width": 100,
-            "x": 1270,
-            "y": 2310
+            "x": 1300,
+            "y": 2484
           },
           {
-            "_x": 1120,
-            "_y": 2310,
+            "_x": 1150,
+            "_y": 2484,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -6638,8 +7394,8 @@
             "svgId": "math-latex",
             "text": "=",
             "width": 100,
-            "x": 1120,
-            "y": 2310
+            "x": 1150,
+            "y": 2484
           },
           {
             "_x": 0,
@@ -6648,19 +7404,19 @@
             "coordinates": [
               [
                 380,
-                2540
+                2660
               ],
               [
                 2020,
-                2540
+                2660
               ],
               [
                 2020,
-                2990
+                3160
               ],
               [
                 380,
-                2990
+                3160
               ]
             ],
             "curveOffset": 0,
@@ -6704,11 +7460,11 @@
             "playgroundIndex": 1,
             "point1": [
               380,
-              2540
+              2660
             ],
             "point2": [
               2020,
-              2990
+              3160
             ],
             "radius": 12,
             "rotate": 0,
@@ -6728,8 +7484,147 @@
             "y": 0
           },
           {
+            "_x": 0,
+            "_y": 0,
+            "clickCount": 1,
+            "coordinates": [
+              [
+                940,
+                3184
+              ],
+              [
+                1460,
+                3184
+              ],
+              [
+                1460,
+                3364
+              ],
+              [
+                940,
+                3364
+              ]
+            ],
+            "curveOffset": 0,
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#F7FAFF",
+            "fillOpacity": 1,
+            "groupId": "",
+            "id": "problem-4-choice-pool",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": true,
+            "isSurroundRect": false,
+            "isTextEdit": false,
+            "isTextEditFontSize": false,
+            "isVerticalFlip": false,
+            "parent": {
+              "curveMaxOffset": 140,
+              "defaultX": null,
+              "defaultY": null,
+              "endX": null,
+              "endY": null,
+              "isCircle1": false,
+              "isCircle2": false,
+              "isCurveHandler": false,
+              "isRadiusHandler": false,
+              "r": null
+            },
+            "playgroundIndex": 1,
+            "point1": [
+              940,
+              3184
+            ],
+            "point2": [
+              1460,
+              3364
+            ],
+            "radius": 12,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#65758B",
+            "strokeDashArray": "none",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 2,
+            "svgId": "drawElem",
+            "text": "",
+            "type": "rect",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "_x": 1000,
+            "_y": 3196,
+            "clickCount": 0,
+            "coordinates": [],
+            "cx": 0,
+            "cy": 0,
+            "elemSplice": false,
+            "fill": "#000000",
+            "fillOpacity": 1,
+            "fontSize": 22,
+            "groupId": "",
+            "height": 32,
+            "id": "problem-4-choice-pool-label",
+            "initSizeScale": 1,
+            "isBluePrint": false,
+            "isCenterGravityPolygon": false,
+            "isColorInverted": false,
+            "isEyeOn": false,
+            "isFillChange": true,
+            "isGroup": false,
+            "isGroupElement": false,
+            "isGroupGridOn": false,
+            "isHorizontalFlip": false,
+            "isMerge": false,
+            "isMoveRotateHandler": false,
+            "isSplit": false,
+            "isStackUp": false,
+            "isStrokeChange": false,
+            "isSurroundRect": false,
+            "isTextEdit": true,
+            "isTextEditFontSize": true,
+            "isVerticalFlip": false,
+            "parent": {
+              "observer": null
+            },
+            "playgroundIndex": 2,
+            "rotate": 0,
+            "rx": 0,
+            "ry": 0,
+            "scale": 1,
+            "sizeScale": 1,
+            "stroke": "#000000",
+            "strokeDashArray": "",
+            "strokeOpacity": 1,
+            "strokeType": 1,
+            "strokeWidth": 4,
+            "svgId": "input-text",
+            "text": "비교 기호",
+            "width": 160,
+            "x": 1000,
+            "y": 3196
+          },
+          {
             "_x": 410,
-            "_y": 2558,
+            "_y": 2678,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -6778,11 +7673,11 @@
             "text": "4번",
             "width": 110,
             "x": 410,
-            "y": 2558
+            "y": 2678
           },
           {
             "_x": 1070,
-            "_y": 2552,
+            "_y": 2672,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -6829,11 +7724,11 @@
             "text": "\\frac{5}{8} \\; ? \\; \\frac{3}{7}",
             "width": 420,
             "x": 1070,
-            "y": 2552
+            "y": 2672
           },
           {
             "_x": 410,
-            "_y": 2632,
+            "_y": 2752,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -6879,10 +7774,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "먼저 예상",
+            "text": "예상한 기호",
             "width": 170,
             "x": 410,
-            "y": 2632
+            "y": 2752
           },
           {
             "_x": 0,
@@ -6891,19 +7786,19 @@
             "coordinates": [
               [
                 590,
-                2620
+                2740
               ],
               [
                 850,
-                2620
+                2740
               ],
               [
                 850,
-                2690
+                2810
               ],
               [
                 590,
-                2690
+                2810
               ]
             ],
             "curveOffset": 0,
@@ -6947,11 +7842,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              2620
+              2740
             ],
             "point2": [
               850,
-              2690
+              2810
             ],
             "radius": 12,
             "rotate": 0,
@@ -6977,19 +7872,19 @@
             "coordinates": [
               [
                 740,
-                2650
+                2830
               ],
               [
                 1380,
-                2650
+                2830
               ],
               [
                 1380,
-                2730
+                2910
               ],
               [
                 740,
-                2730
+                2910
               ]
             ],
             "curveOffset": 0,
@@ -7033,11 +7928,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              2650
+              2830
             ],
             "point2": [
               1380,
-              2730
+              2910
             ],
             "radius": 12,
             "rotate": 0,
@@ -7057,8 +7952,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 2660,
+            "_x": 600,
+            "_y": 2840,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -7066,7 +7961,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-4-left-lane-label",
@@ -7105,9 +8000,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "첫째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 2660
+            "width": 100,
+            "x": 600,
+            "y": 2840
           },
           {
             "_x": 0,
@@ -7116,19 +8011,19 @@
             "coordinates": [
               [
                 740,
-                2760
+                2940
               ],
               [
                 1380,
-                2760
+                2940
               ],
               [
                 1380,
-                2840
+                3020
               ],
               [
                 740,
-                2840
+                3020
               ]
             ],
             "curveOffset": 0,
@@ -7172,11 +8067,11 @@
             "playgroundIndex": 1,
             "point1": [
               740,
-              2760
+              2940
             ],
             "point2": [
               1380,
-              2840
+              3020
             ],
             "radius": 12,
             "rotate": 0,
@@ -7196,8 +8091,8 @@
             "y": 0
           },
           {
-            "_x": 510,
-            "_y": 2770,
+            "_x": 600,
+            "_y": 2950,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -7205,7 +8100,7 @@
             "elemSplice": false,
             "fill": "#000000",
             "fillOpacity": 1,
-            "fontSize": 24,
+            "fontSize": 20,
             "groupId": "",
             "height": 50,
             "id": "problem-4-right-lane-label",
@@ -7244,9 +8139,9 @@
             "strokeWidth": 4,
             "svgId": "input-text",
             "text": "둘째 띠",
-            "width": 70,
-            "x": 510,
-            "y": 2770
+            "width": 100,
+            "x": 600,
+            "y": 2950
           },
           {
             "_x": 0,
@@ -7255,19 +8150,19 @@
             "coordinates": [
               [
                 732,
-                2650
+                2830
               ],
               [
                 748,
-                2650
+                2830
               ],
               [
                 748,
-                2840
+                3020
               ],
               [
                 732,
-                2840
+                3020
               ]
             ],
             "curveOffset": 0,
@@ -7311,11 +8206,11 @@
             "playgroundIndex": 1,
             "point1": [
               732,
-              2650
+              2830
             ],
             "point2": [
               748,
-              2840
+              3020
             ],
             "radius": 12,
             "rotate": 0,
@@ -7341,19 +8236,19 @@
             "coordinates": [
               [
                 1460,
-                2690
-              ],
-              [
-                1580,
-                2690
+                2810
               ],
               [
                 1580,
                 2810
+              ],
+              [
+                1580,
+                2930
               ],
               [
                 1460,
-                2810
+                2930
               ]
             ],
             "curveOffset": 0,
@@ -7397,11 +8292,11 @@
             "playgroundIndex": 1,
             "point1": [
               1460,
-              2690
+              2810
             ],
             "point2": [
               1580,
-              2810
+              2930
             ],
             "radius": 12,
             "rotate": 0,
@@ -7422,7 +8317,7 @@
           },
           {
             "_x": 1595,
-            "_y": 2726,
+            "_y": 2846,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -7468,14 +8363,14 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "기호 놓는 곳",
+            "text": "기호 놓기",
             "width": 180,
             "x": 1595,
-            "y": 2726
+            "y": 2846
           },
           {
             "_x": 410,
-            "_y": 2894,
+            "_y": 3064,
             "clickCount": 0,
             "coordinates": [],
             "cx": 0,
@@ -7521,10 +8416,10 @@
             "strokeType": 1,
             "strokeWidth": 4,
             "svgId": "input-text",
-            "text": "근거와 수정",
+            "text": "비교한 까닭",
             "width": 170,
             "x": 410,
-            "y": 2894
+            "y": 3064
           },
           {
             "_x": 0,
@@ -7533,19 +8428,19 @@
             "coordinates": [
               [
                 590,
-                2878
+                3048
               ],
               [
                 1770,
-                2878
+                3048
               ],
               [
                 1770,
-                2968
+                3138
               ],
               [
                 590,
-                2968
+                3138
               ]
             ],
             "curveOffset": 0,
@@ -7589,11 +8484,11 @@
             "playgroundIndex": 1,
             "point1": [
               590,
-              2878
+              3048
             ],
             "point2": [
               1770,
-              2968
+              3138
             ],
             "radius": 12,
             "rotate": 0,
@@ -7613,8 +8508,8 @@
             "y": 0
           },
           {
-            "_x": 260,
-            "_y": 3040,
+            "_x": 300,
+            "_y": 3260,
             "clickCount": 1,
             "coordinates": [
               [
@@ -7686,12 +8581,12 @@
             "svgId": "NO03FM-03",
             "type": "rect",
             "width": 400,
-            "x": 260,
-            "y": 3040
+            "x": 300,
+            "y": 3260
           },
           {
-            "_x": 1500,
-            "_y": 3040,
+            "_x": 1545.7142857142858,
+            "_y": 3260,
             "clickCount": 1,
             "coordinates": [
               [
@@ -7763,12 +8658,12 @@
             "svgId": "NO03FM-04",
             "type": "rect",
             "width": 274,
-            "x": 1500,
-            "y": 3040
+            "x": 1545.7142857142858,
+            "y": 3260
           },
           {
-            "_x": 970,
-            "_y": 3030,
+            "_x": 1000,
+            "_y": 3244,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -7814,12 +8709,12 @@
             "svgId": "math-latex",
             "text": "<",
             "width": 100,
-            "x": 970,
-            "y": 3030
+            "x": 1000,
+            "y": 3244
           },
           {
-            "_x": 1270,
-            "_y": 3030,
+            "_x": 1300,
+            "_y": 3244,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -7865,12 +8760,12 @@
             "svgId": "math-latex",
             "text": ">",
             "width": 100,
-            "x": 1270,
-            "y": 3030
+            "x": 1300,
+            "y": 3244
           },
           {
-            "_x": 1120,
-            "_y": 3030,
+            "_x": 1150,
+            "_y": 3244,
             "clickCount": 1,
             "coordinates": [],
             "cx": 0,
@@ -7916,13 +8811,13 @@
             "svgId": "math-latex",
             "text": "=",
             "width": 100,
-            "x": 1120,
-            "y": 3030
+            "x": 1150,
+            "y": 3244
           }
         ],
         "isNoteworthy": false,
         "isShowMenuOnActivity": true,
-        "projectTitle": "분수 띠로 크기 비교하기 · 5학년 · 4문제 · 보통 [AI-F57D2A61D014]",
+        "projectTitle": "분수 띠로 크기 비교하기 · 5학년 · 4문제 · 보통 [AI-D2C4E4A4A185]",
         "studyLevel": "elementary",
         "tags": [
           "분수",
@@ -7930,12 +8825,12 @@
           "직접 조작"
         ]
       },
-      "payloadHash": "5ad348d561427d2a627d912f42674d95be6bae673f7dd02072cb2f22c330a9f9",
+      "payloadHash": "3eaf2cb877d900d2c63d737963fb74a23efe9bca6bb82e9dbd3caf1fffe668a7",
       "schemaVersion": "1.0.0",
       "sourceActivitySpecId": "p0-fraction-comparison-golden-v1",
       "sourceActivitySpecVersion": "1.0.0",
       "templateId": "fraction.compare.unlike-denominators.visual-v1",
-      "templateVersion": "1.0.0"
+      "templateVersion": "1.1.0"
     },
     "recommendation": {
       "blockingReasons": [],
@@ -8011,7 +8906,7 @@
       "activitySpecId": "p0-fraction-comparison-golden-v1",
       "canCreate": true,
       "checkedAt": "2026-07-29T00:02:00.000Z",
-      "compiledPayloadHash": "5ad348d561427d2a627d912f42674d95be6bae673f7dd02072cb2f22c330a9f9",
+      "compiledPayloadHash": "3eaf2cb877d900d2c63d737963fb74a23efe9bca6bb82e9dbd3caf1fffe668a7",
       "issues": [],
       "schemaVersion": "1.0.0"
     }

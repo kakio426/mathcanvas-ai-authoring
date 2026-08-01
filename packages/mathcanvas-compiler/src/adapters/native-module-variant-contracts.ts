@@ -30,6 +30,23 @@ export const RELEASED_NUMBER_CARD_VARIANT_IDS = Array.from(
   (_, index) => `NO04NT-${String(index + 1).padStart(2, "0")}`
 );
 
+export const RELEASED_PLACE_VALUE_VARIANT_IDS = [
+  "NO04PD-03",
+  "NO04PD-04",
+  "NO04PD-05"
+] as const;
+
+export const RELEASED_BALANCE_SCALE_VARIANT_IDS = [
+  "CR07BS-01"
+] as const;
+
+export const RELEASED_CLOCK_VARIANT_IDS = ["SM02AD-01"] as const;
+
+export const RELEASED_PATTERN_BLOCK_VARIANT_IDS = Array.from(
+  { length: 6 },
+  (_, index) => `SM02PB-${String(index + 1).padStart(2, "0")}`
+);
+
 export const NATIVE_MODULE_VARIANT_CONTRACTS:
   readonly NativeModuleVariantContract[] =
   MATHCANVAS_MODULE_MANIFEST
@@ -47,6 +64,18 @@ export const NATIVE_MODULE_VARIANT_CONTRACTS:
           : entry.moduleKey === "NO04NT" &&
               entry.supportState === "released"
             ? RELEASED_NUMBER_CARD_VARIANT_IDS
+            : entry.moduleKey === "NO04PD" &&
+                entry.supportState === "released"
+              ? RELEASED_PLACE_VALUE_VARIANT_IDS
+            : entry.moduleKey === "CR07BS" &&
+                entry.supportState === "released"
+              ? RELEASED_BALANCE_SCALE_VARIANT_IDS
+            : entry.moduleKey === "SM02AD" &&
+                entry.supportState === "released"
+              ? RELEASED_CLOCK_VARIANT_IDS
+            : entry.moduleKey === "SM02PB" &&
+                entry.supportState === "released"
+              ? RELEASED_PATTERN_BLOCK_VARIANT_IDS
             : []
     }));
 

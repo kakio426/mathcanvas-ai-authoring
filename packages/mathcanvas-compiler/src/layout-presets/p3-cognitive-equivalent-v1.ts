@@ -2,7 +2,7 @@ import type { LayoutPreset } from "@mathcanvas/contracts";
 
 export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
   itemOriginY: 360,
-  itemPitch: 820,
+  itemPitch: 860,
   canvasBaseHeight: 440,
   minGap: 24,
   tokens: {
@@ -42,6 +42,20 @@ export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
       y: 20,
       width: 1640,
       height: 470
+    },
+    "item.candidate-pool": {
+      scope: "item",
+      x: 120,
+      y: 514,
+      width: 2160,
+      height: 300
+    },
+    "item.candidate-pool-label": {
+      scope: "item",
+      x: 160,
+      y: 526,
+      width: 180,
+      height: 32
     },
     "item.number": {
       scope: "item",
@@ -138,42 +152,42 @@ export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
     "item.candidate-1": {
       scope: "item",
       x: 160,
-      y: 520,
+      y: 574,
       width: 640,
       height: 80
     },
     "item.candidate-2": {
       scope: "item",
       x: 880,
-      y: 520,
+      y: 574,
       width: 640,
       height: 80
     },
     "item.candidate-3": {
       scope: "item",
       x: 1600,
-      y: 520,
+      y: 574,
       width: 640,
       height: 80
     },
     "item.candidate-4": {
       scope: "item",
       x: 160,
-      y: 640,
+      y: 694,
       width: 640,
       height: 80
     },
     "item.candidate-5": {
       scope: "item",
       x: 880,
-      y: 640,
+      y: 694,
       width: 640,
       height: 80
     },
     "item.candidate-6": {
       scope: "item",
       x: 1600,
-      y: 640,
+      y: 694,
       width: 640,
       height: 80
     }

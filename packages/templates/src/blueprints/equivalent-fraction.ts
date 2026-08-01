@@ -29,7 +29,7 @@ const candidatePaths = candidateNumbers.map(
 export const equivalentFractionBlueprint = defineActivityBlueprint({
   schemaVersion: "1.0.0",
   id: "fraction.equivalent.same-whole.visual-v1",
-  version: "2.0.0",
+  version: "2.1.0",
   title: "같은 크기의 분수 찾기",
   learningObjective:
     "같은 전체에서 크기가 같은 분수를 선택하고 분자와 분모의 변화를 설명할 수 있다.",
@@ -56,8 +56,8 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "기준 분수와 같은 크기일 후보를 먼저 예상하게 합니다.",
       properties: {
-        text: "기준 띠와 같은 크기일 후보를 먼저 예상해 쓰세요.",
-        fontSize: 48
+        text: "① 분수 띠를 옮기기 전에, 기준 분수와 같은 크기인 분수를 예상해 써 보세요.",
+        fontSize: 42
       },
       bindings: {}
     },
@@ -72,8 +72,8 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "후보 띠를 같은 출발선에 놓아 검증하게 합니다.",
       properties: {
-        text: "후보 하나를 골라 같은 출발선에 놓고 끝점을 확인하세요.",
-        fontSize: 38
+        text: "② 분수 띠 하나를 골라 기준 띠와 같은 출발선에 놓고 끝점을 비교해 보세요.",
+        fontSize: 36
       },
       bindings: {}
     },
@@ -88,8 +88,8 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       movable: false,
       instructionalIntent: "분자와 분모의 같은 배율 변화를 근거로 설명하게 합니다.",
       properties: {
-        text: "예상을 고친 뒤 분자와 분모가 어떻게 함께 변했는지 설명하세요.",
-        fontSize: 38
+        text: "③ 같은 크기가 되는 까닭을 쓰고, 처음 생각과 달랐다면 고쳐 보세요.",
+        fontSize: 36
       },
       bindings: {}
     },
@@ -105,6 +105,33 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       instructionalIntent: "문항 조작 영역의 경계를 제공합니다.",
       properties: { fill: "#F7FAFF", stroke: "#65758B" },
       bindings: {}
+    },
+    {
+      role: "candidate-pool",
+      scope: "each-item",
+      layoutRole: "candidate-pool",
+      idRole: "candidate-pool",
+      toolKey: "common.rectangle",
+      intentKind: "draw-rectangle",
+      locked: true,
+      movable: false,
+      instructionalIntent: "고를 수 있는 분수 띠를 하나의 묶음으로 구분합니다.",
+      properties: { fill: "#F7FAFF", stroke: "#65758B" },
+      bindings: {}
+    },
+    {
+      role: "candidate-pool-label",
+      scope: "each-item",
+      layoutRole: "candidate-pool-label",
+      idRole: "candidate-pool-label",
+      toolKey: "common.text",
+      intentKind: "text",
+      locked: true,
+      movable: false,
+      instructionalIntent: "학생이 고를 분수 띠 묶음을 안내합니다.",
+      properties: { text: "분수 띠", fontSize: 22 },
+      bindings: {},
+      containerRole: "candidate-pool"
     },
     {
       role: "number",
@@ -144,7 +171,7 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "조작 전 예상을 안내합니다.",
-      properties: { text: "먼저 예상", fontSize: 24 },
+      properties: { text: "예상한 분수", fontSize: 24 },
       bindings: {},
       containerRole: "mat"
     },
@@ -188,7 +215,7 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "기준 띠를 표시합니다.",
-      properties: { text: "기준", fontSize: 24 },
+      properties: { text: "기준 띠", fontSize: 24 },
       bindings: {},
       containerRole: "mat"
     },
@@ -232,7 +259,7 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "선택 띠의 목표 위치를 표시합니다.",
-      properties: { text: "선택", fontSize: 24 },
+      properties: { text: "고른 띠", fontSize: 24 },
       bindings: {},
       containerRole: "mat"
     },
@@ -259,7 +286,7 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       locked: true,
       movable: false,
       instructionalIntent: "근거와 수정 영역을 안내합니다.",
-      properties: { text: "근거와 수정", fontSize: 24 },
+      properties: { text: "같은 크기인 까닭", fontSize: 20 },
       bindings: {},
       containerRole: "mat"
     },
@@ -312,7 +339,22 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
         block("instruction-explain", "row", "header.tertiary", "once", {
           flowGroup: "instructions"
         }),
-        block("mat", "band", "item.panel", "each-item"),
+        block("mat", "band", "item.panel", "each-item", {
+          flowGroup: "item-primary-flow"
+        }),
+        block(
+          "candidate-pool",
+          "band",
+          "item.candidate-pool",
+          "each-item",
+          { flowGroup: "item-primary-flow" }
+        ),
+        block(
+          "candidate-pool-label",
+          "slot",
+          "item.candidate-pool-label",
+          "each-item"
+        ),
         block("number", "slot", "item.number", "each-item"),
         block("prompt", "slot", "item.prompt", "each-item"),
         block(
@@ -471,6 +513,55 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
       }
     },
     {
+      kind: "language.classroom-korean",
+      parameters: {
+        instructionRoles: [
+          "instruction-main",
+          "instruction-symbol",
+          "instruction-explain"
+        ],
+        labelRoles: [
+          "prediction-label",
+          "reference-lane-label",
+          "target-lane-label",
+          "explanation-label",
+          "candidate-pool-label"
+        ],
+        maximumInstructionLength: 90,
+        maximumLabelLength: 12
+      }
+    },
+    {
+      kind: "visual.text-fit",
+      parameters: {
+        roles: [
+          "instruction-main",
+          "instruction-symbol",
+          "instruction-explain",
+          "prediction-label",
+          "reference-lane-label",
+          "target-lane-label",
+          "explanation-label",
+          "candidate-pool-label"
+        ],
+        maximumFillRatio: 0.96
+      }
+    },
+    {
+      kind: "visual.labeled-pool-row",
+      parameters: {
+        labelRole: "candidate-pool-label",
+        memberRoles: candidateRoles,
+        containerRole: "candidate-pool",
+        rowCenterTolerance: 2,
+        gapTolerance: 2,
+        groupCenterTolerance: 2,
+        labelAlignmentTolerance: 2,
+        minimumLabelGap: 12,
+        maximumLabelGap: 24
+      }
+    },
+    {
       kind: "visual.no-overlap",
       parameters: {
         roles: [
@@ -484,16 +575,16 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
           "target-lane-label",
           "explanation-label",
           "explanation-box",
+          "candidate-pool-label",
           ...candidateRoles
         ]
       }
     }
   ],
   instructions: [
-    "후보를 옮기기 전에 기준 띠와 같을 분수를 먼저 예상해 쓰세요.",
-    "후보 띠 하나를 골라 기준 띠와 같은 출발선에 놓으세요.",
-    "끝점이 같은지 확인하고 다르면 다른 후보로 바꾸세요.",
-    "분자와 분모에 같은 수를 곱하거나 나눈 관계를 근거로 설명하세요."
+    "분수 띠를 옮기기 전에, 기준 분수와 같은 크기인 분수를 예상해 써 보세요.",
+    "분수 띠 하나를 골라 기준 띠와 같은 출발선에 놓고 끝점을 비교해 보세요.",
+    "같은 크기가 되는 까닭을 쓰고, 처음 생각과 달랐다면 고쳐 보세요."
   ],
   payload: {
     categoryId:

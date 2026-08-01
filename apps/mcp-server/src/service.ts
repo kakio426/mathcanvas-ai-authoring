@@ -299,6 +299,9 @@ export class MathCanvasAuthoringService {
     detailCode?: string;
   }> {
     const connection = await this.browserRuntime.openWorkspace();
+    if (connection.state === "login-required") {
+      await this.browserRuntime.close();
+    }
     return this.#connectionSummary(connection);
   }
 
@@ -318,6 +321,9 @@ export class MathCanvasAuthoringService {
       forceContractCheck: true,
       bringToFront: false
     });
+    if (connection.state === "login-required") {
+      await this.browserRuntime.close();
+    }
     return this.#connectionSummary(connection);
   }
 
@@ -339,7 +345,7 @@ export class MathCanvasAuthoringService {
       "browser-launch-failed":
         "Chrome을 열지 못했습니다. Chrome 설치 상태와 다른 MathCanvas 전용 창이 실행 중인지 확인해 주세요.",
       "login-required":
-        "MathCanvas 전용 Chrome 창이 열렸습니다. 그 창에서 로그인한 뒤 ‘내 캔버스’ 화면까지 들어가 주세요.",
+        "프로젝트 폴더에서 `pnpm mathcanvas:login`을 실행하고 전용 Chrome에서 로그인한 뒤 ‘내 캔버스’까지 이동해 주세요.",
       "contract-mismatch":
         "MathCanvas 연결 방식이 현재 버전과 달라졌습니다. 생성하지 않고 안전하게 멈췄어요.",
       ready: "MathCanvas에 연결되었어요. 새 활동지를 만들 준비가 됐습니다."
@@ -636,7 +642,7 @@ export class MathCanvasAuthoringService {
       draft,
       validation,
       completed.status === "succeeded"
-        ? "새 활동지를 만들고 MathCanvas 편집 화면을 열었습니다."
+        ? "새 활동지를 만들고 편집 링크를 준비했습니다."
         : "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요."
     );
   }
@@ -735,7 +741,7 @@ export class MathCanvasAuthoringService {
     const messages: Record<typeof status.status, string> = {
       queued: "MathCanvas 전용 Chrome을 준비하고 있어요.",
       creating: "MathCanvas에 새 활동지를 만들고 있어요.",
-      succeeded: "새 활동지를 만들고 편집 화면을 열었어요.",
+      succeeded: "새 활동지를 만들고 편집 링크를 준비했어요.",
       failed: "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요.",
       expired: "생성 요청 시간이 지나 안전하게 중단했습니다."
     };

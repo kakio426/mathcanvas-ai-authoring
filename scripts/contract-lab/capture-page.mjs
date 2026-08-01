@@ -236,6 +236,10 @@ try {
       channel: "chrome",
       headless: options.headless === true,
       viewport: options.headless ? { width: 1440, height: 1000 } : null,
+      ignoreDefaultArgs:
+        process.platform === "darwin"
+          ? ["--password-store=basic", "--use-mock-keychain"]
+          : undefined,
       args: options.headless ? [] : ["--start-maximized"]
     }
   );

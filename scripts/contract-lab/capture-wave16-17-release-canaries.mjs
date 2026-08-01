@@ -1,0 +1,265 @@
+#!/usr/bin/env node
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { CONTRACT_SCHEMA_VERSION, recommendationSchema, sha256Hex } from "../../packages/contracts/dist/index.js";
+import { resolveCurriculum } from "../../packages/curriculum/dist/index.js";
+import { compileActivity, getLayoutPreset, resolveActivity } from "../../packages/mathcanvas-compiler/dist/index.js";
+import { ManagedChromeRuntime } from "../../packages/managed-browser/dist/index.js";
+import {
+  assertCognitiveManifestBound,
+  multiplicationArrayMeaningBlueprint,
+  prepareRegisteredActivityForEnvelopeValidation,
+  probabilityBagComparisonBlueprint,
+  repeatingPatternUnitBlueprint
+} from "../../packages/templates/dist/index.js";
+import { validateForCreation } from "../../packages/validator/dist/index.js";
+import { acquireManagedProfileLock, defaultRawRoot, defaultResearchRoot, repositoryRoot, resolveStateDirectory } from "./lib/paths.mjs";
+import { stableJson } from "./lib/normalize.mjs";
+import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
+
+const generatedAt = "2026-08-01T03:00:00.000Z";
+const cases = [
+  {
+    probeId: "wave16-pattern-release-canary-v1",
+    seed: "wave16-pattern-release-v1",
+    blueprint: repeatingPatternUnitBlueprint,
+    standardCode: "[2수02-01]",
+    grade: 2,
+    manipulation: "pattern-block-repeat-unit-drag",
+    categoryUnit: "Unit02",
+    releasedTools: ["SM02PB"],
+    sourceRole: "completion-block-1",
+    targetRole: "next-slot-1",
+    action: "choose-repeat-unit-and-extend-pattern",
+    evidenceName: "wave16-pattern-release-canary.json",
+    previewName: "wave16/repeating-pattern.png"
+  },
+  {
+    probeId: "wave17-multiplication-release-canary-v1",
+    seed: "wave17-multiplication-release-v1",
+    blueprint: multiplicationArrayMeaningBlueprint,
+    standardCode: "[2수01-10]",
+    grade: 2,
+    manipulation: "multiplication-array-choice-drag",
+    categoryUnit: "Unit01",
+    releasedTools: [],
+    sourceRole: "position-card-1",
+    targetRole: "prediction-box",
+    action: "choose-expression-and-check-grouped-array",
+    evidenceName: "wave17-multiplication-release-canary.json",
+    previewName: "wave17/multiplication-array.png"
+  },
+  {
+    probeId: "wave17-probability-release-canary-v1",
+    seed: "wave17-probability-release-v1",
+    blueprint: probabilityBagComparisonBlueprint,
+    standardCode: "[6수04-04]",
+    grade: 6,
+    manipulation: "probability-fraction-strip-drag",
+    categoryUnit: "Unit04",
+    releasedTools: ["NO03FM"],
+    sourceRole: "left-strip",
+    targetRole: "left-lane-surface",
+    action: "choose-relation-and-align-probability-strips",
+    evidenceName: "wave17-probability-release-canary.json",
+    previewName: "wave17/probability-bag-comparison.png"
+  }
+];
+
+function prepareCase(entry) {
+  const curriculum = resolveCurriculum(entry.standardCode);
+  const recommendation = recommendationSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: entry.probeId,
+    supported: true,
+    templateId: entry.blueprint.id,
+    gradeBand: curriculum.record.gradeBand,
+    recommendedGrade: entry.grade,
+    standardCode: curriculum.record.code,
+    learningGoal: entry.blueprint.learningObjective,
+    prerequisites: curriculum.record.prerequisites,
+    problemCount: 2,
+    difficulty: "normal",
+    ...(entry.blueprint.id === probabilityBagComparisonBlueprint.id ? { denominatorRelation: "mixed" } : {}),
+    manipulation: entry.manipulation,
+    rationale: ["실제 MathCanvas 저장·재열기·일회성 조작 canary입니다."],
+    confidence: 0.98,
+    caveats: curriculum.warnings,
+    blockingReasons: [],
+    curriculum: curriculum.record
+  });
+  const plan = prepareRegisteredActivityForEnvelopeValidation(recommendation, {
+    seed: entry.seed,
+    generatedAt,
+    activityId: entry.seed
+  });
+  assertCognitiveManifestBound(plan.blueprint);
+  const resolved = resolveActivity(plan);
+  const compiled = compileActivity(resolved);
+  const validation = validateForCreation(resolved, compiled, new Date(generatedAt));
+  if (!validation.canCreate) throw new Error(`${entry.probeId}-local-validation-failed`);
+  return { plan, resolved, compiled, validation };
+}
+
+async function dragCenter(page, source, target) {
+  await page.mouse.move(source.x + source.width / 2, source.y + source.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 18 });
+  await page.mouse.up();
+  await page.waitForTimeout(250);
+}
+
+const stateDirectory = resolveStateDirectory();
+let releaseLock;
+let authSession;
+try {
+  releaseLock = acquireManagedProfileLock(stateDirectory);
+  authSession = await createLiveAuthHeadlessSession(stateDirectory);
+  for (const entry of cases) {
+    const prepared = prepareCase(entry);
+    const rawOutput = join(defaultRawRoot, entry.evidenceName.replace(".json", ".raw.json"));
+    let creation;
+    let reusedExisting = false;
+    if (existsSync(rawOutput)) {
+      const previous = JSON.parse(readFileSync(rawOutput, "utf8"));
+      if (previous.payloadHash === prepared.compiled.payloadHash && previous.creation?.ok === true) {
+        creation = previous.creation;
+        reusedExisting = true;
+      }
+    }
+    if (!creation) {
+      const runtime = new ManagedChromeRuntime({ userDataDirectory: join(stateDirectory, "chrome-profile"), launcher: authSession.launcher, headless: true });
+      try {
+        creation = await runtime.createProject(prepared.compiled.payload, prepared.compiled.payloadHash);
+      } finally {
+        await runtime.close();
+      }
+      if (!creation.ok) throw new Error(`${entry.probeId}-create-failed:${creation.errorCode}`);
+    }
+
+    let blockedProjectWriteRequestCount = 0;
+    const context = await authSession.newContext({ viewport: { width: 1700, height: 2100 } });
+    try {
+      await context.route("**/*", async (route) => {
+        const method = route.request().method().toUpperCase();
+        if (["GET", "HEAD", "OPTIONS"].includes(method)) return route.continue();
+        if (new URL(route.request().url()).pathname.startsWith("/api/project")) blockedProjectWriteRequestCount += 1;
+        return route.abort();
+      });
+      const page = await context.newPage();
+      await page.goto(creation.editorUrl, { waitUntil: "domcontentloaded", timeout: 30_000 });
+      await page.waitForFunction(() => document.querySelectorAll("[id]").length > 20, undefined, { timeout: 30_000 });
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(1000);
+
+      const persistedShape = await page.evaluate(async (projectId) => {
+        const response = await fetch(`/api/project/${encodeURIComponent(projectId)}`, { credentials: "include", cache: "no-store" });
+        if (!response.ok) throw new Error(`project-reopen-failed:${response.status}`);
+        const body = await response.json();
+        const contents = body?.contentsJson ?? [];
+        return {
+          objectCount: contents.length,
+          candidateCount: contents.filter((object) => /^.*-position-card-\d+$/.test(String(object?.id ?? ""))).length,
+          patternBlockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02PB-")).length,
+          arrayTextCount: contents.filter((object) => String(object?.id ?? "").endsWith("-array-text")).length,
+          fractionStripCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("NO03FM-")).length,
+          patternModuleActive: body?.canvasOption?.moduleArr?.Unit03?.SM02PB === true,
+          fractionModuleActive: body?.canvasOption?.moduleArr?.Unit01?.NO03FM === true
+        };
+      }, creation.projectId);
+
+      const firstItem = prepared.resolved.items[0];
+      const itemEmissions = prepared.resolved.emissions.filter((candidate) => candidate.itemId === firstItem.id);
+      const byRole = (role) => itemEmissions.find((candidate) => candidate.role === role);
+      const choiceWithText = (text) => itemEmissions.find(
+        (candidate) => /^position-card-\d+$/.test(candidate.role) && candidate.toolIntent.properties.text === text
+      );
+      let interactionSteps;
+      if (entry.blueprint.id === repeatingPatternUnitBlueprint.id) {
+        const pieceWithVariant = (variant) => itemEmissions.find(
+          (candidate) => candidate.role.startsWith("completion-block-") && candidate.toolIntent.properties.variant === variant
+        );
+        interactionSteps = [
+          { source: choiceWithText(firstItem.values.correctValueText), target: byRole("prediction-box") },
+          { source: pieceWithVariant(firstItem.values.sequenceVariant1), target: byRole("next-slot-1") },
+          { source: pieceWithVariant(firstItem.values.sequenceVariant2), target: byRole("next-slot-2") }
+        ];
+      } else if (entry.blueprint.id === multiplicationArrayMeaningBlueprint.id) {
+        interactionSteps = [
+          { source: choiceWithText(firstItem.values.correctValueText), target: byRole("prediction-box") }
+        ];
+      } else {
+        const relation = itemEmissions.find(
+          (candidate) => ["less-symbol", "equal-symbol", "greater-symbol"].includes(candidate.role) &&
+            candidate.toolIntent.properties.text === firstItem.values.correctRelation
+        );
+        interactionSteps = [
+          { source: relation, target: byRole("relation-slot-surface") },
+          { source: byRole("left-strip"), target: byRole("left-lane-surface") },
+          { source: byRole("right-strip"), target: byRole("right-lane-surface") }
+        ];
+      }
+      if (interactionSteps.some((step) => !step.source || !step.target)) {
+        throw new Error(`${entry.probeId}-interaction-role-missing`);
+      }
+      const moveDistances = [];
+      for (const step of interactionSteps) {
+        const source = await page.locator(`[id="${step.source.id}"]`).boundingBox();
+        const target = await page.locator(`[id="${step.target.id}"]`).boundingBox();
+        if (!source || !target) throw new Error(`${entry.probeId}-interaction-box-missing`);
+        await dragCenter(page, source, target);
+        const moved = await page.locator(`[id="${step.source.id}"]`).boundingBox();
+        if (!moved) throw new Error(`${entry.probeId}-moved-box-missing`);
+        moveDistances.push(Math.hypot(moved.x - source.x, moved.y - source.y));
+      }
+      const moveDistance = Math.min(...moveDistances);
+      if (moveDistance < 20) throw new Error(`${entry.probeId}-interaction-did-not-move:${moveDistance}`);
+
+      const previewOutput = join(repositoryRoot, ".mathcanvas-contract-lab", "previews", entry.previewName);
+      mkdirSync(dirname(previewOutput), { recursive: true, mode: 0o700 });
+      await page.screenshot({ path: previewOutput, fullPage: true });
+      const roleCount = (role) => prepared.resolved.emissions.filter((candidate) => candidate.role === role).length;
+      const reopenShape = {
+        idCount: await page.locator("[id]").count(),
+        sourceRoleCount: roleCount(entry.sourceRole),
+        targetRoleCount: roleCount(entry.targetRole),
+        predictionBoxCount: roleCount("prediction-box"),
+        explanationBoxCount: roleCount("explanation-box")
+      };
+      const evidence = {
+        schemaVersion: "1.0.0",
+        probeId: entry.probeId,
+        observedAt: new Date().toISOString(),
+        status: "pass",
+        blueprintId: prepared.plan.blueprint.id,
+        blueprintVersion: prepared.plan.blueprint.version,
+        blueprintContentHash: prepared.plan.blueprint.contentHash,
+        layoutPresetContentHash: sha256Hex(getLayoutPreset(prepared.plan.blueprint.layout.tokenSet)),
+        payloadHash: prepared.compiled.payloadHash,
+        projectReferenceHash: sha256Hex(creation.projectId),
+        createRequestCount: 1,
+        existingProjectWriteCount: blockedProjectWriteRequestCount,
+        localValidationIssueCount: prepared.validation.issues.length,
+        editorPath: "/ko/view/<redacted-project>",
+        categoryUnit: entry.categoryUnit,
+        releasedTools: entry.releasedTools,
+        problemCount: prepared.resolved.items.length,
+        persistedShape,
+        reopenShape,
+        interactionShape: { action: entry.action, moveDistance, movedRoleCount: interactionSteps.length, correctDecisionPlaced: true, transientOnly: true, existingProjectWriteCount: blockedProjectWriteRequestCount },
+        previewPath: `.mathcanvas-contract-lab/previews/${entry.previewName}`,
+        reusedExisting
+      };
+      const evidenceOutput = join(defaultResearchRoot, entry.evidenceName);
+      mkdirSync(dirname(evidenceOutput), { recursive: true, mode: 0o700 });
+      writeFileSync(evidenceOutput, stableJson(evidence), { encoding: "utf8", mode: 0o600 });
+      writeFileSync(rawOutput, stableJson({ schemaVersion: "1.0.0", observedAt: evidence.observedAt, payloadHash: prepared.compiled.payloadHash, creation }), { encoding: "utf8", mode: 0o600 });
+      process.stdout.write(`PASS ${entry.probeId} ${creation.editorUrl}\nPREVIEW ${previewOutput}\n`);
+    } finally {
+      await context.close();
+    }
+  }
+} finally {
+  await authSession?.close().catch(() => undefined);
+  releaseLock?.();
+}

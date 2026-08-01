@@ -7,21 +7,24 @@ import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import {
   CONTRACT_SCHEMA_VERSION,
-  recommendationSchema
+  recommendationSchema,
+  sha256Hex
 } from "../../packages/contracts/dist/index.js";
 import {
   resolveCurriculum
 } from "../../packages/curriculum/dist/index.js";
 import {
   compileActivity,
+  getLayoutPreset,
   resolveActivity
 } from "../../packages/mathcanvas-compiler/dist/index.js";
 import {
   ManagedChromeRuntime
 } from "../../packages/managed-browser/dist/index.js";
 import {
+  listRegisteredBlueprints,
   prepareRegisteredActivityForEnvelopeValidation
-} from "../../packages/templates/dist/index.js";
+} from "../../packages/templates/dist/registry.js";
 import {
   validateForCreation
 } from "../../packages/validator/dist/index.js";
@@ -43,8 +46,6 @@ const cases = [
     blueprintId:
       "fraction.compare.unlike-denominators.visual-v1",
     standardCode: "[6수01-07]",
-    learningGoal:
-      "분모가 다른 분수의 크기를 비교하고 그 방법을 설명할 수 있다.",
     grade: 5,
     difficulty: "normal",
     denominatorRelation: "mixed",
@@ -53,8 +54,6 @@ const cases = [
   {
     blueprintId: "fraction.equivalent.same-whole.visual-v1",
     standardCode: "[6수01-06]",
-    learningGoal:
-      "같은 전체에서 크기가 같은 두 분수를 분수 띠로 확인할 수 있다.",
     grade: 5,
     difficulty: "normal",
     manipulation: "equivalent-fraction-strip-match"
@@ -62,8 +61,6 @@ const cases = [
   {
     blueprintId: "number.make-10.cards-v1",
     standardCode: "[2수01-04]",
-    learningGoal:
-      "여러 수 중에서 합이 10인 두 수를 찾고, 열 칸 모형을 근거로 다른 방법과 비교하여 설명할 수 있다.",
     grade: 2,
     difficulty: "normal",
     manipulation: "number-card-make-ten-drag"
@@ -94,7 +91,7 @@ async function waitForLogin(runtime, timeoutMs) {
   throw new Error("p3-canary-login-timeout");
 }
 
-function buildRecommendation(entry) {
+function buildRecommendation(entry, learningGoal) {
   const curriculum = resolveCurriculum(entry.standardCode);
   return recommendationSchema.parse({
     schemaVersion: CONTRACT_SCHEMA_VERSION,
@@ -104,7 +101,7 @@ function buildRecommendation(entry) {
     gradeBand: curriculum.record.gradeBand,
     recommendedGrade: entry.grade,
     standardCode: curriculum.record.code,
-    learningGoal: entry.learningGoal,
+    learningGoal,
     prerequisites: curriculum.record.prerequisites,
     problemCount: 4,
     difficulty: entry.difficulty,
@@ -155,7 +152,18 @@ try {
     await waitForLogin(runtime, 10 * 60 * 1000);
   }
   const preparedCases = cases.map((entry, index) => {
-    const recommendation = buildRecommendation(entry);
+    const blueprint = listRegisteredBlueprints().find(
+      (candidate) => candidate.id === entry.blueprintId
+    );
+    if (!blueprint) {
+      throw new Error(
+        `p3-canary-blueprint-unregistered:${entry.blueprintId}`
+      );
+    }
+    const recommendation = buildRecommendation(
+      entry,
+      blueprint.learningObjective
+    );
     const plan = prepareRegisteredActivityForEnvelopeValidation(
       recommendation,
       {
@@ -183,6 +191,10 @@ try {
       entry,
       plan,
       title,
+      blueprintContentHash: plan.blueprint.contentHash,
+      layoutPresetContentHash: sha256Hex(
+        getLayoutPreset(plan.blueprint.layout.tokenSet)
+      ),
       payload: compiled.payload,
       payloadHash: compiled.payloadHash
     };
@@ -190,7 +202,15 @@ try {
   const rawResults = [];
   const results = [];
   for (const prepared of preparedCases) {
-    const { entry, plan, title, payload, payloadHash } =
+    const {
+      entry,
+      plan,
+      title,
+      blueprintContentHash,
+      layoutPresetContentHash,
+      payload,
+      payloadHash
+    } =
       prepared;
     const creation = await runtime.createProject(
       payload,
@@ -199,6 +219,8 @@ try {
     const status = classifyP3CanaryResult(creation);
     rawResults.push({
       blueprintId: entry.blueprintId,
+      blueprintContentHash,
+      layoutPresetContentHash,
       title,
       payloadHash,
       status,
@@ -206,6 +228,8 @@ try {
     });
     results.push({
       blueprintId: entry.blueprintId,
+      blueprintContentHash,
+      layoutPresetContentHash,
       variation: plan.options.variation,
       payloadHash,
       status,
@@ -226,6 +250,12 @@ try {
     const entry = cases[results.length];
     results.push({
       blueprintId: entry.blueprintId,
+      blueprintContentHash:
+        preparedCases[results.length]?.blueprintContentHash ??
+        "0".repeat(64),
+      layoutPresetContentHash:
+        preparedCases[results.length]?.layoutPresetContentHash ??
+        "0".repeat(64),
       variation: {},
       payloadHash: "0".repeat(64),
       status: results.at(-1)?.status ?? "delivery-failed",

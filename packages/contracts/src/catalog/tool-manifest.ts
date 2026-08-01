@@ -133,6 +133,22 @@ function capturedSupportHistory(
   return [{ state: "captured", evidenceIds }];
 }
 
+function contractedSupportHistory(
+  capturedEvidenceIds: readonly string[],
+  contractedEvidenceIds: readonly string[]
+): readonly ToolSupportHistoryEntry[] {
+  return [
+    {
+      state: "captured",
+      evidenceIds: capturedEvidenceIds
+    },
+    {
+      state: "contracted",
+      evidenceIds: contractedEvidenceIds
+    }
+  ];
+}
+
 interface ReleasedToolEvidence {
   readonly captured: readonly string[];
   readonly contracted: readonly string[];
@@ -198,6 +214,79 @@ const releasedToolEvidence = {
     ],
     lifecycle: [
       "research/mathcanvas/wave4-number-card-canary.roundtrip.json#claim=lifecycle:NO04NT"
+    ]
+  },
+  CR07BS: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=CR07BS",
+      "research/mathcanvas/bundle-contract.snapshot.json#tool=CR07BS"
+    ],
+    contracted: [
+      "research/mathcanvas/wave5-balance-scale-canary.roundtrip.json#key=variants"
+    ],
+    verified: [
+      "research/mathcanvas/wave5-balance-scale-canary.roundtrip.json#key=lifecycle"
+    ],
+    released: [
+      "research/mathcanvas/wave5-balance-scale-canary.roundtrip.json#key=canvasState"
+    ],
+    lifecycle: [
+      "research/mathcanvas/wave5-balance-scale-canary.roundtrip.json#key=writeBoundary"
+    ]
+  },
+  SM02AD: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=SM02AD",
+      "research/mathcanvas/bundle-contract.snapshot.json#tool=SM02AD"
+    ],
+    contracted: [
+      "research/mathcanvas/module-variant-contract.static.json#tool=SM02AD"
+    ],
+    verified: [
+      "research/mathcanvas/wave6-clock-canary.roundtrip.json#key=lifecycle",
+      "research/mathcanvas/wave6-clock-canary.roundtrip.json#key=variants"
+    ],
+    released: [
+      "research/mathcanvas/wave6-clock-canary.roundtrip.json#key=interaction"
+    ],
+    lifecycle: [
+      "research/mathcanvas/wave6-clock-canary.roundtrip.json#key=writeBoundary"
+    ]
+  },
+  NO04PD: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD",
+      "research/mathcanvas/bundle-contract.snapshot.json#tool=NO04PD"
+    ],
+    contracted: [
+      "research/mathcanvas/module-variant-contract.static.json#tool=NO04PD"
+    ],
+    verified: [
+      "research/mathcanvas/wave14-place-value-model-canary.roundtrip.json#key=lifecycle"
+    ],
+    released: [
+      "research/mathcanvas/wave14-place-value-model-canary.roundtrip.json#key=interaction"
+    ],
+    lifecycle: [
+      "research/mathcanvas/wave14-place-value-model-canary.roundtrip.json#key=savedWireExamples"
+    ]
+  },
+  SM02PB: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=SM02PB",
+      "research/mathcanvas/bundle-contract.snapshot.json#tool=SM02PB"
+    ],
+    contracted: [
+      "research/mathcanvas/module-variant-contract.static.json#tool=SM02PB"
+    ],
+    verified: [
+      "research/mathcanvas/wave16-pattern-release-canary.json#key=persistedShape"
+    ],
+    released: [
+      "research/mathcanvas/wave16-pattern-release-canary.json#key=interactionShape"
+    ],
+    lifecycle: [
+      "research/mathcanvas/wave16-pattern-release-canary.json#key=reopenShape"
     ]
   },
   "common.rectangle": {
@@ -344,18 +433,37 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
     moduleDefinitions[categoryId].map(
       ([moduleKey, observedName]): ToolManifestEntry => {
         const released =
-          moduleKey === "NO03FM" || moduleKey === "NO04NT";
+          moduleKey === "NO03FM" ||
+          moduleKey === "NO04NT" ||
+          moduleKey === "NO04PD" ||
+          moduleKey === "CR07BS" ||
+          moduleKey === "SM02AD" ||
+          moduleKey === "SM02PB";
+        const contracted = moduleKey === "CR07AT";
+        const contractedEvidenceIds =
+          moduleKey === "CR07AT"
+            ? [
+                "research/mathcanvas/wave5-algebra-rod-canary.roundtrip.json#key=lifecycle"
+              ]
+            : [];
         const evidenceIds = released
           ? flattenReleasedToolEvidence(
               getReleasedToolEvidence(moduleKey)
             )
-          : moduleEvidence(moduleKey);
+          : [
+              ...moduleEvidence(moduleKey),
+              ...contractedEvidenceIds
+            ];
         return defineToolManifestEntry({
           stableKey: moduleKey,
           observedName,
           surface: "math-palette",
           integrationTarget: "tool-adapter",
-          supportState: released ? "released" : "captured",
+          supportState: released
+            ? "released"
+            : contracted
+              ? "contracted"
+              : "captured",
           categoryId,
           moduleKey,
           nativeToolId: moduleKey,
@@ -364,13 +472,26 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
                 adapterKey:
                   moduleKey === "NO03FM"
                     ? "fraction-model"
-                    : "number-card"
+                    : moduleKey === "NO04NT"
+                      ? "number-card"
+                      : moduleKey === "NO04PD"
+                        ? "place-value-model"
+                      : moduleKey === "CR07BS"
+                        ? "balance-scale"
+                      : moduleKey === "SM02AD"
+                        ? "analog-clock"
+                        : "pattern-block"
               }
             : {}),
           evidenceIds,
           supportHistory: released
             ? releasedSupportHistory(getReleasedToolEvidence(moduleKey))
-            : capturedSupportHistory(evidenceIds),
+            : contracted
+              ? contractedSupportHistory(
+                  moduleEvidence(moduleKey),
+                  contractedEvidenceIds
+                )
+              : capturedSupportHistory(evidenceIds),
           ...(released
             ? {
                 lifecycleEvidenceIds:

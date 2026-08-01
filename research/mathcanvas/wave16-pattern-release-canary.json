@@ -1,0 +1,47 @@
+{
+  "blueprintContentHash": "11abb1f9e487203867a0f65934946596dae74518a56211c1520397ad6cb679d3",
+  "blueprintId": "pattern.repeat-unit.pattern-blocks-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit02",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-repeat-unit-and-extend-pattern",
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "moveDistance": 173.58506620231486,
+    "movedRoleCount": 3,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "8c0468d41e8a2e3dbeb246f9cd690524b60f15dede5bd6caa36bfd0ccc57f056",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-01T01:58:23.177Z",
+  "payloadHash": "e39bbd7fb37c5c6b71afb7ee09e5fc4afaee3d563f7b9cddcb27f7a7073480a9",
+  "persistedShape": {
+    "arrayTextCount": 0,
+    "candidateCount": 10,
+    "fractionModuleActive": false,
+    "fractionStripCount": 0,
+    "objectCount": 75,
+    "patternBlockCount": 22,
+    "patternModuleActive": true
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave16/repeating-pattern.png",
+  "probeId": "wave16-pattern-release-canary-v1",
+  "problemCount": 2,
+  "projectReferenceHash": "04f0d73961a9bcf1d48af32b6ade068ca921e46edd25d659d454288a2d351b64",
+  "releasedTools": [
+    "SM02PB"
+  ],
+  "reopenShape": {
+    "explanationBoxCount": 2,
+    "idCount": 114,
+    "predictionBoxCount": 2,
+    "sourceRoleCount": 2,
+    "targetRoleCount": 2
+  },
+  "reusedExisting": true,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

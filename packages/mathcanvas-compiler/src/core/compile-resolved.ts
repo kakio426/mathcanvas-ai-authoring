@@ -22,6 +22,10 @@ export function compileActivity(
 ): CompiledProject {
   const activity = resolvedActivitySchema.parse(input);
   const contentsJson: Array<Record<string, unknown>> = [];
+  const nativeByEmissionId = new Map<
+    string,
+    Record<string, unknown>
+  >();
   const lockedIds: string[] = [];
   const requiredModuleKeys = new Set<string>();
   for (const emission of activity.emissions) {
@@ -34,10 +38,41 @@ export function compileActivity(
       { id: emission.id, ...emission.bounds }
     );
     contentsJson.push(fragment.object);
+    nativeByEmissionId.set(emission.id, fragment.object);
     if (emission.locked) lockedIds.push(emission.id);
     fragment.requiredModuleKeys.forEach((key) =>
       requiredModuleKeys.add(key)
     );
+  }
+  for (const item of activity.items) {
+    const itemEmissions = activity.emissions.filter(
+      (emission) => emission.itemId === item.id
+    );
+    const scales = itemEmissions.filter(
+      (emission) =>
+        emission.toolIntent.kind === "balance-scale"
+    );
+    const plateMembers = itemEmissions.filter(
+      (emission) =>
+        emission.toolIntent.properties.balanceSide === "left" ||
+        emission.toolIntent.properties.balanceSide === "right"
+    );
+    if (plateMembers.length === 0) continue;
+    if (scales.length !== 1) {
+      throw new Error(
+        `balance-scale-item-cardinality:${item.id}:${scales.length}`
+      );
+    }
+    const scaleId = scales[0]!.id;
+    for (const emission of plateMembers) {
+      const native = nativeByEmissionId.get(emission.id);
+      if (!native) {
+        throw new Error(
+          `balance-scale-native-member-missing:${emission.id}`
+        );
+      }
+      native.plate = scaleId;
+    }
   }
   const difficultyLabel = {
     easy: "쉬움",
