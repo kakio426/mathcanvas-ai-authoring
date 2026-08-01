@@ -1127,6 +1127,7 @@ export function validateActivityReleaseCanaryEvidence(
       categoryUnit: "Unit04",
       action: "choose-relation-and-align-probability-strips",
       releasedTools: ["NO03FM"],
+      requiresCommonStart: true,
       persisted: (value) =>
         value?.fractionStripCount === itemCount * 2 &&
         value?.fractionModuleActive === true
@@ -1151,7 +1152,24 @@ export function validateActivityReleaseCanaryEvidence(
       interaction?.existingProjectWriteCount !== 0 ||
       typeof interaction?.moveDistance !== "number" ||
       !Number.isFinite(interaction.moveDistance) ||
-      interaction.moveDistance < 20
+      interaction.moveDistance < 20 ||
+      interaction?.allMovedInsideTargets !== true ||
+      typeof interaction?.maximumTargetOverflowPx !== "number" ||
+      !Number.isFinite(interaction.maximumTargetOverflowPx) ||
+      interaction.maximumTargetOverflowPx > 5 ||
+      interaction?.movedPairOverlapCount !== 0 ||
+      (interaction.movedRoleCount > 1 &&
+        (typeof interaction?.minimumMovedGap !== "number" ||
+          !Number.isFinite(interaction.minimumMovedGap) ||
+          interaction.minimumMovedGap < 3)) ||
+      (interaction.movedRoleCount === 1 &&
+        interaction?.minimumMovedGap !== null) ||
+      (wave16And17.requiresCommonStart === true &&
+        (typeof interaction?.commonStartResidualPx !== "number" ||
+          !Number.isFinite(interaction.commonStartResidualPx) ||
+          interaction.commonStartResidualPx > 5)) ||
+      (wave16And17.requiresCommonStart !== true &&
+        interaction?.commonStartResidualPx !== null)
     ) {
       throw new Error("activity-release-canary-evidence-shape-invalid");
     }

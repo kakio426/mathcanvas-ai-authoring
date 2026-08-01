@@ -43,7 +43,7 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
-      "sha256": "cf462466bfcc1a841a9688d4bf35d18aca6c8aa860af5e9ccdcbdb2ec857c74b"
+      "sha256": "7d23de8fba3f2c93ff9dabcca2f884ab362c33ddc70e193ce93942a65010a3e9"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/layout-resolver.ts",
@@ -78,5 +78,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "3293cafcb0173d28315f65a88f0d2f6472aa8e0454e5c982e0874d42453847ed"
+  "manifestHash": "2548778313d1be37b8577aa5867f14cb96f6346b1ed629179e6879efcf00a4db"
 }

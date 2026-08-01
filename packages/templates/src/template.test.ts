@@ -12,6 +12,7 @@ import {
   equivalentFractionBlueprint,
   fractionComparisonBlueprint,
   generateFractionComparisonActivity,
+  generateMultiplicationArrayMeaningItems,
   makeTenNumberCardsBlueprint,
   resolveRegisteredVariation
 } from "./index.js";
@@ -133,6 +134,19 @@ describe("분수 비교 템플릿", () => {
         )
       ).size
     ).toBe(1);
+    const multiplicationItems = generateMultiplicationArrayMeaningItems(
+      { difficulty: "normal", problemCount: 3 },
+      "classroom-korean-particles"
+    );
+    expect(
+      multiplicationItems.map((item) => item.values.questionText)
+    ).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("구슬이"),
+        expect.stringContaining("도토리가"),
+        expect.stringContaining("단추가")
+      ])
+    );
   });
 
   it.each(["easy", "normal", "hard"] as const)(

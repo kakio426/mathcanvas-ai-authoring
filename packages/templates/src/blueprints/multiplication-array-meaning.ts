@@ -19,7 +19,7 @@ const scaffold = makeChoiceExplanationScaffoldRoles({
 export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint({
   schemaVersion: "1.0.0",
   id: "number.multiplication.group-array-meaning-v1",
-  version: "1.0.0",
+  version: "1.1.0",
   title: "같은 수씩 묶은 배열과 곱셈식 연결하기",
   learningObjective: "같은 수씩 묶인 상황을 곱셈식과 배열로 연결하고, 두 수가 나타내는 뜻을 설명할 수 있다.",
   curriculumBinding: { standardCode: "[2수01-10]", domain: "수와 연산", officialGoal: "곱셈이 이루어지는 실생활 상황과 연결하여 곱셈의 의미를 이해한다." },

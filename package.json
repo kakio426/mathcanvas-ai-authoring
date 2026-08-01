@@ -58,9 +58,11 @@
     "release:preview": "node scripts/capture-release-previews.mjs",
     "smoke:browser": "node scripts/smoke-managed-browser.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "visual:audit": "node scripts/visual-audit/run.mjs",
+    "visual:audit:report": "node scripts/visual-audit/run.mjs --allow-issues",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm cognitive:verify"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm cognitive:verify && pnpm visual:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

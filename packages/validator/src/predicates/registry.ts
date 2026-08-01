@@ -2760,6 +2760,20 @@ const handlers: Record<string, Handler> = {
     ];
     const actionPattern =
       /(고르|골라|놓|나타내|확인|찾|비교|쓰|써|고치|옮기|바꾸)/;
+    const hasSubjectParticleMismatch = (text: string): boolean =>
+      Array.from(text.matchAll(/([가-힣]+)(이|가)(?=\s+\d)/g)).some(
+        (match) => {
+          const noun = match[1] ?? "";
+          const particle = match[2] ?? "";
+          if (!noun) return false;
+          const last = noun.codePointAt(noun.length - 1);
+          if (last === undefined || last < 0xac00 || last > 0xd7a3) {
+            return false;
+          }
+          const expected = (last - 0xac00) % 28 === 0 ? "가" : "이";
+          return particle !== expected;
+        }
+      );
     const textOf = (
       emission: ResolvedEmission | undefined
     ): string | undefined => {
@@ -2796,6 +2810,7 @@ const handlers: Record<string, Handler> = {
           Array.from(text).length > maximumInstructionLength ||
           !/[.?]$/.test(text) ||
           !/(몇|어느|무엇|어떻게|왜)/.test(text) ||
+          hasSubjectParticleMismatch(text) ||
           systemPhrases.some((phrase) => text.includes(phrase))
         ) {
           issue(

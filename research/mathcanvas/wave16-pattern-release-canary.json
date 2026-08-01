@@ -8,16 +8,21 @@
   "existingProjectWriteCount": 0,
   "interactionShape": {
     "action": "choose-repeat-unit-and-extend-pattern",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": null,
     "correctDecisionPlaced": true,
     "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 3.47222900390625,
+    "minimumMovedGap": 46.87493896484375,
     "moveDistance": 173.58506620231486,
+    "movedPairOverlapCount": 0,
     "movedRoleCount": 3,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "8c0468d41e8a2e3dbeb246f9cd690524b60f15dede5bd6caa36bfd0ccc57f056",
+  "layoutPresetContentHash": "35bd66940ee68fcb2b0efa750e92f43d4cbf56ec3506a6dceed96cf796e442f5",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T01:58:23.177Z",
-  "payloadHash": "e39bbd7fb37c5c6b71afb7ee09e5fc4afaee3d563f7b9cddcb27f7a7073480a9",
+  "observedAt": "2026-08-01T06:48:23.210Z",
+  "payloadHash": "55a9c6b6b4329f3072016ec8b0eada6995c1d011b9cc36f6cc6122d861f309ff",
   "persistedShape": {
     "arrayTextCount": 0,
     "candidateCount": 10,
@@ -36,7 +41,7 @@
   ],
   "reopenShape": {
     "explanationBoxCount": 2,
-    "idCount": 114,
+    "idCount": 112,
     "predictionBoxCount": 2,
     "sourceRoleCount": 2,
     "targetRoleCount": 2

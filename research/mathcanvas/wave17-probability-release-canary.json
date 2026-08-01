@@ -8,15 +8,20 @@
   "existingProjectWriteCount": 0,
   "interactionShape": {
     "action": "choose-relation-and-align-probability-strips",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": 1.15740966796875,
     "correctDecisionPlaced": true,
     "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 0.5787353515625,
+    "minimumMovedGap": 15.04632568359375,
     "moveDistance": 366.3135233400538,
+    "movedPairOverlapCount": 0,
     "movedRoleCount": 3,
     "transientOnly": true
   },
   "layoutPresetContentHash": "5c8ab56976a4cd2c9e3b9c2fdeda0c8eadeb19bb8f5887d5d097c88e136cb5d7",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T01:58:29.183Z",
+  "observedAt": "2026-08-01T06:51:11.252Z",
   "payloadHash": "bdb1ce7b95a4b78653d79cc4bf0c25a4ccd39cefde62ed3625165cf3df325310",
   "persistedShape": {
     "arrayTextCount": 0,
@@ -36,7 +41,7 @@
   ],
   "reopenShape": {
     "explanationBoxCount": 2,
-    "idCount": 104,
+    "idCount": 102,
     "predictionBoxCount": 2,
     "sourceRoleCount": 2,
     "targetRoleCount": 2

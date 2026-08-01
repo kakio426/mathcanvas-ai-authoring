@@ -1,23 +1,28 @@
 {
-  "blueprintContentHash": "80cf04ea422c3fc5373a0ca0c5de22c7fa569497cd00bd530cf07e144aec03a5",
+  "blueprintContentHash": "63aab6beb3d7a409f3ab817a36f17b016f911569267a48730924d5f9a5f15b6c",
   "blueprintId": "number.multiplication.group-array-meaning-v1",
-  "blueprintVersion": "1.0.0",
+  "blueprintVersion": "1.1.0",
   "categoryUnit": "Unit01",
   "createRequestCount": 1,
   "editorPath": "/ko/view/<redacted-project>",
   "existingProjectWriteCount": 0,
   "interactionShape": {
     "action": "choose-expression-and-check-grouped-array",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": null,
     "correctDecisionPlaced": true,
     "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 3.47222900390625,
+    "minimumMovedGap": null,
     "moveDistance": 93.14974513622194,
+    "movedPairOverlapCount": 0,
     "movedRoleCount": 1,
     "transientOnly": true
   },
   "layoutPresetContentHash": "df0b51e8ca3d21acd068e156194aab0611abd48c14e6da1d778cf485d82657db",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T01:58:25.639Z",
-  "payloadHash": "c2c9d85a740af5bc777cfb753d2e75fcd1155d25935770c85b2c12228049ddc6",
+  "observedAt": "2026-08-01T06:50:07.995Z",
+  "payloadHash": "65075cdb440029d514e42fd7d0085b3b1ed4df1606a0fe4943b3443ed6324cad",
   "persistedShape": {
     "arrayTextCount": 2,
     "candidateCount": 10,
@@ -30,16 +35,16 @@
   "previewPath": ".mathcanvas-contract-lab/previews/wave17/multiplication-array.png",
   "probeId": "wave17-multiplication-release-canary-v1",
   "problemCount": 2,
-  "projectReferenceHash": "f3d8faa9f304c681192420c6eae126c22cb6f7cb90128601f535bda7cdb971ba",
+  "projectReferenceHash": "2c36572bdf719cd6e55d36f0e53a16a909677e4caa37335edce546b76c1f091c",
   "releasedTools": [],
   "reopenShape": {
     "explanationBoxCount": 2,
-    "idCount": 76,
+    "idCount": 75,
     "predictionBoxCount": 2,
     "sourceRoleCount": 2,
     "targetRoleCount": 2
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }
