@@ -12,6 +12,7 @@
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.test.ts"],
   "references": [
+    { "path": "../../packages/authoring-runtime/tsconfig.build.json" },
     { "path": "../../packages/contracts/tsconfig.build.json" },
     { "path": "../../packages/curriculum/tsconfig.build.json" },
     { "path": "../../packages/planner/tsconfig.build.json" },

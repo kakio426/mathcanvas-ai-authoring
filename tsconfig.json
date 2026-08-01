@@ -24,7 +24,8 @@
       "@mathcanvas/templates": ["packages/templates/src/index.ts"],
       "@mathcanvas/compiler": ["packages/mathcanvas-compiler/src/index.ts"],
       "@mathcanvas/validator": ["packages/validator/src/index.ts"],
-      "@mathcanvas/managed-browser": ["packages/managed-browser/src/index.ts"]
+      "@mathcanvas/managed-browser": ["packages/managed-browser/src/index.ts"],
+      "@mathcanvas/authoring-runtime": ["packages/authoring-runtime/src/index.ts"]
     }
   },
   "include": [

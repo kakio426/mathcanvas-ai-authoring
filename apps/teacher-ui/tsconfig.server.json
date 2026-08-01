@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false,
+    "sourceMap": true
+  },
+  "include": ["src/server/**/*.ts", "src/shared/**/*.ts"],
+  "references": [
+    { "path": "../../packages/authoring-runtime/tsconfig.build.json" }
+  ]
+}

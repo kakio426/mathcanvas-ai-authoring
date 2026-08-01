@@ -1,42 +1,7 @@
 #!/usr/bin/env node
-import { join } from "node:path";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CreationJobStore,
-  ManagedChromeRuntime
-} from "@mathcanvas/managed-browser";
-import { MathCanvasAuthoringService } from "./service.js";
+import { createAuthoringRuntime } from "@mathcanvas/authoring-runtime";
 import { createMcpServer } from "./server.js";
-import { quarantineCorruptStateFile } from "./state-recovery.js";
-import { InstanceLock } from "./instance-lock.js";
-import { resolveStateDirectory } from "./state-directory.js";
-
-const stateDirectory = resolveStateDirectory();
-const instanceLock = new InstanceLock(join(stateDirectory, "server.lock"));
-instanceLock.acquire();
-const browserRuntime = new ManagedChromeRuntime({
-  userDataDirectory: join(stateDirectory, "chrome-profile"),
-  headless: true
-});
-const jobSnapshotPath = join(stateDirectory, "creation-jobs.json");
-const draftSnapshotPath = join(stateDirectory, "drafts.json");
-
-function recoverStateFile(path: string, kind: string): void {
-  const backupPath = quarantineCorruptStateFile(path);
-  if (backupPath) {
-    process.stderr.write(
-      `${kind} 상태 파일이 손상되어 보존용 백업으로 옮겼습니다: ${backupPath}\n`
-    );
-  }
-}
-
-let jobStore: CreationJobStore;
-try {
-  jobStore = new CreationJobStore({ snapshotPath: jobSnapshotPath });
-} catch {
-  recoverStateFile(jobSnapshotPath, "생성 작업");
-  jobStore = new CreationJobStore({ snapshotPath: jobSnapshotPath });
-}
 
 process.stderr.write(
   [
@@ -47,32 +12,14 @@ process.stderr.write(
   ].join("\n")
 );
 
-let service: MathCanvasAuthoringService;
-try {
-  service = new MathCanvasAuthoringService(
-    browserRuntime,
-    jobStore,
-    undefined,
-    { draftSnapshotPath }
-  );
-} catch {
-  recoverStateFile(draftSnapshotPath, "추천안");
-  service = new MathCanvasAuthoringService(
-    browserRuntime,
-    jobStore,
-    undefined,
-    { draftSnapshotPath }
-  );
-}
-const server = createMcpServer(service);
+const runtime = createAuthoringRuntime();
+const server = createMcpServer(runtime.service);
 const transport = new StdioServerTransport();
 
 const shutdown = async () => {
   await server.close();
-  await browserRuntime.close();
-  instanceLock.release();
+  await runtime.dispose();
 };
-process.once("exit", () => instanceLock.release());
 process.once("SIGINT", () => void shutdown().finally(() => process.exit(0)));
 process.once("SIGTERM", () => void shutdown().finally(() => process.exit(0)));
 

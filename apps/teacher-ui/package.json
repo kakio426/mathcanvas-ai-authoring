@@ -1,0 +1,20 @@
+{
+  "name": "@mathcanvas/teacher-ui",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.server.json && tsc -p tsconfig.web.json && vite build",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "start": "node dist/server/main.js"
+  },
+  "dependencies": {
+    "@mathcanvas/authoring-runtime": "workspace:*",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7"
+  }
+}

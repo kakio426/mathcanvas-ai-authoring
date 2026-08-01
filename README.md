@@ -64,9 +64,21 @@ pnpm run smoke:browser
 
 자세한 첫 연결 안내는 [ONBOARDING_KO.md](./ONBOARDING_KO.md)를 봅니다.
 
+## 교사용 수업 준비 화면
+
+AI 대화나 MCP 용어 없이 화면에서 활동을 준비하려면 다음 명령을 한 번 실행합니다.
+
+```bash
+pnpm mathcanvas:ui
+```
+
+브라우저에 `수업 준비 책상`이 열립니다. 가르칠 내용과 학생이 어려워하는 점을 적고 학년·문항 수·생각의 깊이를 고르면, 검증된 활동의 학습 흐름을 먼저 보여줍니다. 교사가 내용을 확인하고 `네, 만들게요`를 누른 뒤에만 새 MathCanvas 활동을 만듭니다. 내부 추천안 번호나 해시 같은 기술 정보는 화면에 표시하거나 브라우저에 저장하지 않습니다.
+
 ## 구성
 
 - `apps/mcp-server`: Codex·Claude Code 공용 stdio MCP 서버
+- `apps/teacher-ui`: 교사가 자연어와 세 가지 선택으로 활동을 준비하는 로컬 화면
+- `packages/authoring-runtime`: MCP와 교사용 화면이 함께 사용하는 생성 서비스와 로컬 상태 경계
 - `packages/managed-browser`: 별도 영구 프로필로 Google Chrome을 실행하는 제한형 런타임
 - `packages/curriculum`: 공식 성취기준 우선 교육과정 해석
 - `packages/templates`: 등록된 blueprint와 유한 variation envelope
