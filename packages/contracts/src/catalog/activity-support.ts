@@ -48,7 +48,11 @@ export const ACTIVITY_IDS = {
   graphPurposeClaim:
     "data.graph.purpose.claim-evidence-v1",
   factorPairArray:
-    "number.factor-pairs.array-construction-v1"
+    "number.factor-pairs.array-construction-v1",
+  partialProductDecomposition:
+    "number.multiplication.partial-products.construction-v1",
+  partialQuotientDecomposition:
+    "number.division.partial-quotients.construction-v1"
 } as const;
 
 export type ActivitySupportState = "verified" | "released";
@@ -110,7 +114,11 @@ export const ACTIVITY_LEARNING_GOALS: Readonly<
   [ACTIVITY_IDS.graphPurposeClaim]:
     "자료의 특징과 알고 싶은 내용에 맞는 그래프를 선택하고 그 까닭을 설명할 수 있다.",
   [ACTIVITY_IDS.factorPairArray]:
-    "자연수를 두 수의 곱으로 여러 방법으로 나타내고, 각 수가 약수인 까닭을 배열로 설명할 수 있다."
+    "자연수를 두 수의 곱으로 여러 방법으로 나타내고, 각 수가 약수인 까닭을 배열로 설명할 수 있다.",
+  [ACTIVITY_IDS.partialProductDecomposition]:
+    "두 자리 수를 여러 방법으로 나누어 곱하고, 부분곱의 합이 같은 까닭을 배열 모형으로 설명할 수 있다.",
+  [ACTIVITY_IDS.partialQuotientDecomposition]:
+    "나누어지는 수를 여러 방법으로 나누고, 부분몫의 합이 전체 몫과 같은 까닭을 설명할 수 있다."
 };
 
 export const ACTIVITY_SUPPORT: Readonly<
@@ -141,7 +149,9 @@ export const ACTIVITY_SUPPORT: Readonly<
   [ACTIVITY_IDS.triangleClassificationClaim]: "verified",
   [ACTIVITY_IDS.lineSymmetryClaim]: "verified",
   [ACTIVITY_IDS.graphPurposeClaim]: "verified",
-  [ACTIVITY_IDS.factorPairArray]: "verified"
+  [ACTIVITY_IDS.factorPairArray]: "verified",
+  [ACTIVITY_IDS.partialProductDecomposition]: "verified",
+  [ACTIVITY_IDS.partialQuotientDecomposition]: "verified"
 };
 
 export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
@@ -227,6 +237,12 @@ export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
   ],
   [ACTIVITY_IDS.factorPairArray]: [
     "research/mathcanvas/wave19-factor-pair-release-canary.json"
+  ],
+  [ACTIVITY_IDS.partialProductDecomposition]: [
+    "research/mathcanvas/wave20-partial-product-release-canary.json"
+  ],
+  [ACTIVITY_IDS.partialQuotientDecomposition]: [
+    "research/mathcanvas/wave20-partial-quotient-release-canary.json"
   ]
 };
 

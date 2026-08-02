@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "validatedAt": "2026-08-02T04:01:00.000Z",
+  "status": "verified-local",
+  "learningMapFixtureHash": "4c4d0514b6c273e83eb87cd6ff85815da067bea09ef16f4d6d2d54e6efd322fe",
+  "layoutPreset": "wave20-partial-operation-v1",
+  "layoutPresetHash": "43ca12504a1f25acf5d4a6ab15afbabcf049bf353b27d60a460c5211053e8c34",
+  "activities": [
+    {
+      "activityId": "number.multiplication.partial-products.construction-v1",
+      "standardCode": "[4수01-04]",
+      "blueprintVersion": "1.0.0",
+      "blueprintContentHash": "3aff9c185783aed68172469550939204df43c66a183a69fd10af555d7e134a15",
+      "payloadHash": "d23465dae7d864c84a75d431744d49f1b93c27df22cfc53c3916e9b408d6dd03",
+      "itemCount": 2,
+      "emissionCount": 55,
+      "constraintCount": 4,
+      "validation": { "canCreate": true, "issues": [] },
+      "mathematicalDecision": "여덟 식 카드 중 두 장을 골라 전체 곱을 만드는 부분곱의 합을 구성하고 다른 분해 방법도 찾는다.",
+      "selfVerification": "빈 배열을 두 부분으로 나누어 두 부분곱의 칸 수와 전체 칸 수가 같은지 확인한다."
+    },
+    {
+      "activityId": "number.division.partial-quotients.construction-v1",
+      "standardCode": "[4수01-06]",
+      "blueprintVersion": "1.0.0",
+      "blueprintContentHash": "8e1a238250a8dd5625b183edb572185668972dcfb465078c6b669b6a6bf272e8",
+      "payloadHash": "dbdb00d3ed00a3fd836d901294d8bce3fc474b6f5d3b9e9dffe9bb17f24e2a78",
+      "itemCount": 2,
+      "emissionCount": 55,
+      "constraintCount": 4,
+      "validation": { "canCreate": true, "issues": [] },
+      "mathematicalDecision": "여덟 식 카드 중 두 장을 골라 전체 몫을 만드는 부분몫의 합을 구성하고 다른 분해 방법도 찾는다.",
+      "selfVerification": "나누어지는 두 부분의 합과 각 부분을 같은 수로 나눈 몫의 합을 함께 확인한다."
+    }
+  ],
+  "releaseLimitation": "실제 MathCanvas 저장·재열기 canary 전이므로 두 활동은 released가 아니라 verified 상태를 유지한다."
+}

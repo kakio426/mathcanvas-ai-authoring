@@ -17,6 +17,7 @@ export {
   probabilityBagComparisonTemplateDefinition,
   claimEvidenceTemplateDefinitions,
   factorPairArrayTemplateDefinition,
+  partialOperationDecompositionTemplateDefinitions,
   equivalentFractionTemplateDefinition,
   fractionComparisonTemplateDefinition,
   generateEquivalentFractionActivity,
@@ -38,6 +39,7 @@ export {
   generateProbabilityBagComparisonActivity,
   generateClaimEvidenceActivity,
   generateFactorPairArrayActivity,
+  generatePartialOperationDecompositionActivity,
   getRegisteredBlueprintContentHash,
   getRegisteredActivitySupportState,
   makeTenNumberCardsTemplateDefinition,
@@ -90,6 +92,10 @@ export {
   findClaimEvidenceBlueprint
 } from "./blueprints/claim-evidence.js";
 export { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
+export {
+  findPartialOperationDecompositionBlueprint,
+  partialOperationDecompositionBlueprints
+} from "./blueprints/partial-operation-decomposition.js";
 export {
   BALANCE_SCALE_SUM_GENERATOR_ID,
   BALANCE_SCALE_SUM_GENERATOR_VERSION,
@@ -170,6 +176,11 @@ export {
   FACTOR_PAIR_ARRAY_GENERATOR_VERSION,
   generateFactorPairArrayItems
 } from "./item-generators/factor-pair-array.js";
+export {
+  PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_ID,
+  PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_VERSION,
+  generatePartialOperationDecompositionItems
+} from "./item-generators/partial-operation-decomposition.js";
 export {
   equivalentFractionBlueprint
 } from "./blueprints/equivalent-fraction.js";

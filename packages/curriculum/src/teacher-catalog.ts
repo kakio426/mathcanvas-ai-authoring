@@ -28,6 +28,10 @@ import {
   FACTOR_PAIR_MANIPULATION,
   factorPairActivityProfile
 } from "./factor-pair-profile.js";
+import {
+  PARTIAL_OPERATION_MANIPULATION,
+  partialOperationActivityProfiles
+} from "./partial-operation-profile.js";
 
 export interface TeacherLearningNeed {
   id: string;
@@ -497,6 +501,10 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
         factorPairActivityProfile.standardCode === reference.standardCode
           ? factorPairActivityProfile
           : undefined;
+      const partialOperationProfile =
+        partialOperationActivityProfiles.find(
+          (candidate) => candidate.standardCode === reference.standardCode
+        );
       const profileActivities: readonly TeacherActivityOption[] = [
         ...(claimEvidenceProfile
           ? [
@@ -531,10 +539,29 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
                   "verified"
               }
             ]
+          : []),
+        ...(partialOperationProfile
+          ? [
+              {
+                id: partialOperationProfile.profileId,
+                label: partialOperationProfile.activityLabel,
+                description: partialOperationProfile.activityDescription,
+                manipulation: PARTIAL_OPERATION_MANIPULATION,
+                promptSeed: partialOperationProfile.promptSeed,
+                defaultProblemCount: 2 as const,
+                availableProblemCounts: [2] as const,
+                learningNeeds: partialOperationProfile.learningNeeds,
+                availability:
+                  getActivitySupportState(partialOperationProfile.activityId) ??
+                  "verified"
+              }
+            ]
           : [])
       ];
       const profileOfficialGoal =
-        claimEvidenceProfile?.officialGoal ?? factorPairProfile?.officialGoal;
+        claimEvidenceProfile?.officialGoal ??
+        factorPairProfile?.officialGoal ??
+        partialOperationProfile?.officialGoal;
       return supported
         ? {
             ...reference,
@@ -630,7 +657,7 @@ export const teacherTextbookUnits: readonly TeacherTextbookUnit[] = [
   textbookUnit(3, 1, 1, "덧셈과 뺄셈", standardRange(4, 1, 3, 3)),
   textbookUnit(3, 1, 2, "평면도형", standardRange(4, 3, 1, 3)),
   textbookUnit(3, 1, 3, "나눗셈", standardRange(4, 1, 5, 5)),
-  textbookUnit(3, 1, 4, "곱셈", standardRange(4, 1, 4, 4)),
+  textbookUnit(3, 1, 4, "곱셈", standardRange(4, 1, 4, 4), ["partial-product"]),
   textbookUnit(3, 1, 5, "길이와 시간", [
     ...standardRange(4, 3, 13, 16)
   ]),
@@ -638,8 +665,8 @@ export const teacherTextbookUnits: readonly TeacherTextbookUnit[] = [
     ...standardRange(4, 1, 9, 10),
     ...standardRange(4, 1, 12, 13)
   ]),
-  textbookUnit(3, 2, 1, "곱셈", standardRange(4, 1, 4, 4)),
-  textbookUnit(3, 2, 2, "나눗셈", standardRange(4, 1, 5, 7), ["division-remainder"]),
+  textbookUnit(3, 2, 1, "곱셈", standardRange(4, 1, 4, 4), ["partial-product"]),
+  textbookUnit(3, 2, 2, "나눗셈", standardRange(4, 1, 5, 7), ["division-remainder", "partial-quotient"]),
   textbookUnit(3, 2, 3, "원", standardRange(4, 3, 6, 7)),
   textbookUnit(3, 2, 4, "분수", standardRange(4, 1, 9, 11)),
   textbookUnit(3, 2, 5, "들이와 무게", standardRange(4, 3, 17, 23)),
@@ -650,7 +677,7 @@ export const teacherTextbookUnits: readonly TeacherTextbookUnit[] = [
     ...standardRange(4, 1, 8, 8)
   ]),
   textbookUnit(4, 1, 2, "각도", standardRange(4, 3, 24, 25), ["angle-turn"]),
-  textbookUnit(4, 1, 3, "곱셈과 나눗셈", standardRange(4, 1, 4, 7)),
+  textbookUnit(4, 1, 3, "곱셈과 나눗셈", standardRange(4, 1, 4, 7), ["partial-product", "partial-quotient"]),
   textbookUnit(4, 1, 4, "평면도형의 이동", standardRange(4, 3, 4, 5)),
   textbookUnit(4, 1, 5, "막대그래프", standardRange(4, 4, 1, 2), ["bar-graph-scale"]),
   textbookUnit(4, 1, 6, "규칙 찾기", standardRange(4, 2, 1, 3), ["balanced-equation", "balance-scale-sum"]),

@@ -26,9 +26,11 @@ import { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication
 import { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
 import { claimEvidenceBlueprints } from "./blueprints/claim-evidence.js";
 import { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
+import { partialOperationDecompositionBlueprints } from "./blueprints/partial-operation-decomposition.js";
 import {
   CLAIM_EVIDENCE_MANIPULATION,
   FACTOR_PAIR_MANIPULATION,
+  PARTIAL_OPERATION_MANIPULATION,
   claimEvidenceActivityProfiles
 } from "@mathcanvas/curriculum";
 import { generateBlueprintItems } from "./item-generators/registry.js";
@@ -267,6 +269,18 @@ export const factorPairArrayTemplateDefinition =
     maximumProblemCount: 2,
     requiredModules: ["NO04NT", "input-text", "math-latex", "drawElem"]
   });
+
+export const partialOperationDecompositionTemplateDefinitions =
+  Object.fromEntries(
+    partialOperationDecompositionBlueprints.map((blueprint) => [
+      blueprint.id,
+      templateDefinition(blueprint, {
+        supportedGradeBands: ["3-4"],
+        maximumProblemCount: 2,
+        requiredModules: ["input-text", "math-latex", "drawElem"]
+      })
+    ])
+  ) as Readonly<Record<string, TemplateDefinition>>;
 
 export const claimEvidenceTemplateDefinitions = Object.fromEntries(
   claimEvidenceBlueprints.map((blueprint) => {
@@ -605,6 +619,32 @@ export function generateFactorPairArrayActivity(
   );
 }
 
+export function generatePartialOperationDecompositionActivity(
+  recommendation: Recommendation,
+  options: GenerateActivitySpecOptions
+): RegisteredActivityPlan {
+  const blueprint = recommendation.templateId
+    ? partialOperationDecompositionBlueprints.find(
+        (candidate) => candidate.id === recommendation.templateId
+      )
+    : undefined;
+  const definition = blueprint
+    ? partialOperationDecompositionTemplateDefinitions[blueprint.id]
+    : undefined;
+  if (!blueprint || !definition) {
+    throw new Error(
+      `partial-operation-activity-unregistered:${recommendation.templateId ?? "missing"}`
+    );
+  }
+  return prepare(
+    blueprint,
+    definition,
+    recommendation,
+    options,
+    PARTIAL_OPERATION_MANIPULATION
+  );
+}
+
 type RegistryEntry = {
   readonly blueprint: ActivityBlueprint;
   readonly prepare: (
@@ -930,6 +970,19 @@ function factorPairArrayAnswerKey(
   });
 }
 
+function partialOperationDecompositionAnswerKey(
+  resolved: ResolvedActivity
+): RegisteredTeacherAnswer[] {
+  return resolved.items.map((item) => {
+    const pairs = item.values.solutionPairs as readonly (readonly [number, number])[];
+    return {
+      problemNumber: item.order,
+      answer: pairs.map(([left, right]) => `${left}+${right}`).join(", "),
+      explanation: String(item.values.answerExplanation)
+    };
+  });
+}
+
 const claimEvidenceRegistry = Object.fromEntries(
   claimEvidenceBlueprints.map((blueprint) => [
     blueprint.id,
@@ -943,8 +996,22 @@ const claimEvidenceRegistry = Object.fromEntries(
   ])
 ) as Readonly<Record<string, RegistryEntry>>;
 
+const partialOperationRegistry = Object.fromEntries(
+  partialOperationDecompositionBlueprints.map((blueprint) => [
+    blueprint.id,
+    {
+      blueprint,
+      prepare: generatePartialOperationDecompositionActivity,
+      supportState:
+        getActivitySupportState(blueprint.id) ?? "verified",
+      answerKey: partialOperationDecompositionAnswerKey
+    } satisfies RegistryEntry
+  ])
+) as Readonly<Record<string, RegistryEntry>>;
+
 const registry: Readonly<Record<string, RegistryEntry>> = {
   ...claimEvidenceRegistry,
+  ...partialOperationRegistry,
   [factorPairArrayBlueprint.id]: {
     blueprint: factorPairArrayBlueprint,
     prepare: generateFactorPairArrayActivity,

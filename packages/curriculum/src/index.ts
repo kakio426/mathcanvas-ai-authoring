@@ -27,6 +27,9 @@ import {
   findClaimEvidenceActivityProfile
 } from "./activity-profiles.js";
 import { factorPairActivityProfile } from "./factor-pair-profile.js";
+import {
+  findPartialOperationActivityProfile
+} from "./partial-operation-profile.js";
 
 export class CurriculumResolutionError extends Error {
   public constructor(
@@ -68,6 +71,7 @@ export function resolveCurriculum(
   };
   const profile =
     findClaimEvidenceActivityProfile(standardCode) ??
+    findPartialOperationActivityProfile(standardCode) ??
     (factorPairActivityProfile.standardCode === standardCode
       ? factorPairActivityProfile
       : undefined);
@@ -196,3 +200,11 @@ export {
   type FactorPairActivityProfile,
   type FactorPairItemSeed
 } from "./factor-pair-profile.js";
+export {
+  PARTIAL_OPERATION_MANIPULATION,
+  findPartialOperationActivityProfile,
+  partialOperationActivityProfiles,
+  type PartialOperationActivityProfile,
+  type PartialOperationCardSeed,
+  type PartialOperationItemSeed
+} from "./partial-operation-profile.js";

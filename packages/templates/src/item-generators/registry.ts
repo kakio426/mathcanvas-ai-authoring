@@ -100,6 +100,11 @@ import {
   FACTOR_PAIR_ARRAY_GENERATOR_VERSION,
   generateFactorPairArrayItems
 } from "./factor-pair-array.js";
+import {
+  PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_ID,
+  PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_VERSION,
+  generatePartialOperationDecompositionItems
+} from "./partial-operation-decomposition.js";
 
 type Generator = (
   parameters: {
@@ -112,6 +117,8 @@ type Generator = (
 ) => ResolvedItem[];
 
 const generators: Readonly<Record<string, Generator>> = {
+  [`${PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_ID}:${PARTIAL_OPERATION_DECOMPOSITION_GENERATOR_VERSION}`]:
+    generatePartialOperationDecompositionItems,
   [`${FACTOR_PAIR_ARRAY_GENERATOR_ID}:${FACTOR_PAIR_ARRAY_GENERATOR_VERSION}`]:
     generateFactorPairArrayItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_VERSION}`]:

@@ -12,8 +12,11 @@ import {
 import {
   CLAIM_EVIDENCE_MANIPULATION,
   FACTOR_PAIR_MANIPULATION,
+  PARTIAL_OPERATION_MANIPULATION,
   factorPairActivityProfile,
   findClaimEvidenceActivityProfile,
+  findPartialOperationActivityProfile,
+  partialOperationActivityProfiles,
   resolveCurriculum
 } from "@mathcanvas/curriculum";
 
@@ -119,6 +122,16 @@ const factorPairPatterns = [
   /약수.*(배열|직사각형|곱셈식)/,
   /(factor|divisor).*(array|pair)/i
 ];
+const partialProductPatterns = [
+  /부분곱/,
+  /곱셈.*(나누어|분해|계산 원리)/,
+  /(partial product|distributive multiplication)/i
+];
+const partialQuotientPatterns = [
+  /부분몫/,
+  /나눗셈.*(나누어|분해|계산 원리|똑같이)/,
+  /(partial quotient|decompos.*division)/i
+];
 
 function verifiedCandidate(request: GenerationRequest):
   | {
@@ -133,9 +146,12 @@ function verifiedCandidate(request: GenerationRequest):
   if (
     request.manipulation === CLAIM_EVIDENCE_MANIPULATION ||
     request.manipulation === FACTOR_PAIR_MANIPULATION ||
+    request.manipulation === PARTIAL_OPERATION_MANIPULATION ||
     request.requestedStandardCode !== undefined
   ) {
-    const profile = request.requestedStandardCode
+    const profile =
+      request.requestedStandardCode &&
+      request.manipulation !== PARTIAL_OPERATION_MANIPULATION
       ? findClaimEvidenceActivityProfile(request.requestedStandardCode)
       : undefined;
     if (profile) {
@@ -146,6 +162,30 @@ function verifiedCandidate(request: GenerationRequest):
         grade: profile.recommendedGrade,
         gradeRange:
           profile.gradeBand === "3-4" ? [3, 4] : [5, 6],
+        maximumProblemCount: 2
+      };
+    }
+    const partialOperationProfile = request.requestedStandardCode
+      ? findPartialOperationActivityProfile(
+          request.requestedStandardCode
+        )
+      : request.manipulation === PARTIAL_OPERATION_MANIPULATION
+        ? partialOperationActivityProfiles.find((candidate) =>
+            candidate.operationKind ===
+            (partialQuotientPatterns.some((pattern) =>
+              pattern.test(request.prompt)
+            )
+              ? "divide"
+              : "multiply")
+          )
+        : undefined;
+    if (partialOperationProfile) {
+      return {
+        templateId: partialOperationProfile.activityId,
+        standardCode: partialOperationProfile.standardCode,
+        manipulation: PARTIAL_OPERATION_MANIPULATION,
+        grade: partialOperationProfile.recommendedGrade,
+        gradeRange: [3, 4],
         maximumProblemCount: 2
       };
     }
@@ -177,6 +217,26 @@ function verifiedCandidate(request: GenerationRequest):
       manipulation: FACTOR_PAIR_MANIPULATION,
       grade: factorPairActivityProfile.recommendedGrade,
       gradeRange: [5, 6],
+      maximumProblemCount: 2
+    };
+  }
+  const partialOperationProfile = partialOperationActivityProfiles.find(
+    (profile) =>
+      profile.operationKind === "multiply"
+        ? partialProductPatterns.some((pattern) =>
+            pattern.test(request.prompt)
+          )
+        : partialQuotientPatterns.some((pattern) =>
+            pattern.test(request.prompt)
+          )
+  );
+  if (partialOperationProfile) {
+    return {
+      templateId: partialOperationProfile.activityId,
+      standardCode: partialOperationProfile.standardCode,
+      manipulation: PARTIAL_OPERATION_MANIPULATION,
+      grade: partialOperationProfile.recommendedGrade,
+      gradeRange: [3, 4],
       maximumProblemCount: 2
     };
   }

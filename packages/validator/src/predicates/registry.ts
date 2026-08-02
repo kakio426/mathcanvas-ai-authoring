@@ -2156,6 +2156,151 @@ const handlers: Record<string, Handler> = {
       }
     }
   },
+  "values.partial-operation-card-set": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const cardsPath = stringParameter(predicate, "cardsPath");
+    const solutionSetPath = stringParameter(
+      predicate,
+      "solutionSetPath"
+    );
+    const operationKindPath = stringParameter(
+      predicate,
+      "operationKindPath"
+    );
+    const wholeOperandPath = stringParameter(
+      predicate,
+      "wholeOperandPath"
+    );
+    const fixedOperandPath = stringParameter(
+      predicate,
+      "fixedOperandPath"
+    );
+    const totalPath = stringParameter(predicate, "totalPath");
+
+    for (const item of resolved.items) {
+      const cards = item.values[cardsPath];
+      const operationKind = item.values[operationKindPath];
+      const wholeOperand = item.values[wholeOperandPath];
+      const fixedOperand = item.values[fixedOperandPath];
+      const total = item.values[totalPath];
+      const solutions = numericPairList(
+        item.values[solutionSetPath]
+      );
+      const typedCards = Array.isArray(cards)
+        ? cards.filter(
+            (card): card is Record<string, unknown> =>
+              card !== null &&
+              typeof card === "object" &&
+              !Array.isArray(card)
+          )
+        : [];
+      const basicValid =
+        (operationKind === "multiply" ||
+          operationKind === "divide") &&
+        typeof wholeOperand === "number" &&
+        Number.isInteger(wholeOperand) &&
+        typeof fixedOperand === "number" &&
+        Number.isInteger(fixedOperand) &&
+        fixedOperand > 0 &&
+        typeof total === "number" &&
+        Number.isInteger(total) &&
+        typedCards.length === 8 &&
+        solutions !== undefined;
+      const expectedTotal =
+        operationKind === "multiply"
+          ? Number(wholeOperand) * Number(fixedOperand)
+          : Number(wholeOperand) / Number(fixedOperand);
+      const values = typedCards.map((card) => card.value);
+      const validExpressionCards = typedCards.filter(
+        (card) => card.operationKind === operationKind
+      );
+      const expressionCardsValid = validExpressionCards.every(
+        (card) => {
+          const part = card.partOperand;
+          const value = card.value;
+          const text = card.text;
+          if (
+            typeof part !== "number" ||
+            !Number.isInteger(part) ||
+            typeof value !== "number" ||
+            !Number.isInteger(value) ||
+            typeof text !== "string"
+          ) {
+            return false;
+          }
+          const expectedValue =
+            operationKind === "multiply"
+              ? part * Number(fixedOperand)
+              : part / Number(fixedOperand);
+          const expectedText =
+            operationKind === "multiply"
+              ? `${part}\\times${String(fixedOperand)}`
+              : `${part}\\div${String(fixedOperand)}`;
+          return (
+            Number.isInteger(expectedValue) &&
+            value === expectedValue &&
+            text === expectedText
+          );
+        }
+      );
+      const misconceptionCardsValid = typedCards
+        .filter((card) => card.operationKind === "misconception")
+        .every(
+          (card) =>
+            typeof card.text === "string" &&
+            card.text.length > 0 &&
+            typeof card.value === "number" &&
+            Number.isInteger(card.value) &&
+            typeof card.misconception === "string" &&
+            card.misconception.length > 0
+        );
+      const actualPairs = values.every(
+        (value) => typeof value === "number" && Number.isInteger(value)
+      )
+        ? allPairs(values as number[]).filter(
+            ([left, right]) => left + right === total
+          )
+        : [];
+      const solutionPartsValid =
+        solutions?.every(([left, right]) => {
+          const leftCard = validExpressionCards.find(
+            (card) => card.value === left
+          );
+          const rightCard = validExpressionCards.find(
+            (card) => card.value === right
+          );
+          return (
+            typeof leftCard?.partOperand === "number" &&
+            typeof rightCard?.partOperand === "number" &&
+            leftCard.partOperand + rightCard.partOperand === wholeOperand
+          );
+        }) ?? false;
+      const valid =
+        basicValid &&
+        expectedTotal === total &&
+        new Set(values).size === values.length &&
+        validExpressionCards.length === 4 &&
+        typedCards.length - validExpressionCards.length === 4 &&
+        expressionCardsValid &&
+        misconceptionCardsValid &&
+        solutionPartsValid &&
+        sameStringSet(
+          (solutions ?? []).map(pairKey),
+          actualPairs.map(pairKey)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "partial-operation-card-set-invalid",
+          "mathematics",
+          `${item.id}의 식 카드, 부분 계산, 가능한 두 분해 방법이 서로 맞지 않습니다.`
+        );
+      }
+    }
+  },
   "values.surplus-piece-present": (
     resolved,
     predicate,
