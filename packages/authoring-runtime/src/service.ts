@@ -366,6 +366,7 @@ export class MathCanvasAuthoringService {
 
   public recommend(input: {
     prompt: string;
+    requestedStandardCode?: string;
     requestedGrade?: number;
     problemCount?: number;
     difficulty?: "easy" | "normal" | "hard";
@@ -405,6 +406,9 @@ export class MathCanvasAuthoringService {
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: `request-${randomUUID()}`,
       prompt: input.prompt,
+      ...(input.requestedStandardCode === undefined
+        ? {}
+        : { requestedStandardCode: input.requestedStandardCode }),
       ...(input.requestedGrade === undefined
         ? {}
         : { requestedGrade: input.requestedGrade }),

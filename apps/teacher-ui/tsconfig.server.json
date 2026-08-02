@@ -9,6 +9,7 @@
   },
   "include": ["src/server/**/*.ts", "src/shared/**/*.ts"],
   "references": [
-    { "path": "../../packages/authoring-runtime/tsconfig.build.json" }
+    { "path": "../../packages/authoring-runtime/tsconfig.build.json" },
+    { "path": "../../packages/curriculum/tsconfig.build.json" }
   ]
 }

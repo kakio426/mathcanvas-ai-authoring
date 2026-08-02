@@ -22,6 +22,7 @@ import { placeValueTenExchangeVariationEnvelope } from "./place-value-ten-exchan
 import { repeatingPatternUnitVariationEnvelope } from "./repeating-pattern-unit.js";
 import { multiplicationArrayMeaningVariationEnvelope } from "./multiplication-array-meaning.js";
 import { probabilityBagComparisonVariationEnvelope } from "./probability-bag-comparison.js";
+import { claimEvidenceVariationEnvelopes } from "./claim-evidence.js";
 
 export const REGISTERED_VARIATION_ENVELOPES = [
   fractionComparisonVariationEnvelope,
@@ -40,13 +41,14 @@ export const REGISTERED_VARIATION_ENVELOPES = [
   placeValueTenExchangeVariationEnvelope,
   repeatingPatternUnitVariationEnvelope,
   multiplicationArrayMeaningVariationEnvelope,
-  probabilityBagComparisonVariationEnvelope
+  probabilityBagComparisonVariationEnvelope,
+  ...claimEvidenceVariationEnvelopes
 ] as const;
 
 export const REGISTERED_VARIATION_COMBINATION_COUNT =
   assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
 
-if (REGISTERED_VARIATION_COMBINATION_COUNT !== 89) {
+if (REGISTERED_VARIATION_COMBINATION_COUNT !== 97) {
   throw new Error(
     `registered-variation-suite-drift:${REGISTERED_VARIATION_COMBINATION_COUNT}`
   );

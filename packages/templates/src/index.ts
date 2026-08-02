@@ -15,6 +15,7 @@ export {
   repeatingPatternUnitTemplateDefinition,
   multiplicationArrayMeaningTemplateDefinition,
   probabilityBagComparisonTemplateDefinition,
+  claimEvidenceTemplateDefinitions,
   equivalentFractionTemplateDefinition,
   fractionComparisonTemplateDefinition,
   generateEquivalentFractionActivity,
@@ -34,6 +35,7 @@ export {
   generateRepeatingPatternUnitActivity,
   generateMultiplicationArrayMeaningActivity,
   generateProbabilityBagComparisonActivity,
+  generateClaimEvidenceActivity,
   getRegisteredBlueprintContentHash,
   getRegisteredActivitySupportState,
   makeTenNumberCardsTemplateDefinition,
@@ -81,6 +83,10 @@ export {
 export { repeatingPatternUnitBlueprint } from "./blueprints/repeating-pattern-unit.js";
 export { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication-array-meaning.js";
 export { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
+export {
+  claimEvidenceBlueprints,
+  findClaimEvidenceBlueprint
+} from "./blueprints/claim-evidence.js";
 export {
   BALANCE_SCALE_SUM_GENERATOR_ID,
   BALANCE_SCALE_SUM_GENERATOR_VERSION,
@@ -151,6 +157,11 @@ export {
   PROBABILITY_BAG_PAIR_GENERATOR_VERSION,
   generateProbabilityBagPairItems
 } from "./item-generators/probability-bag-pair.js";
+export {
+  CLAIM_EVIDENCE_GENERATOR_ID,
+  CLAIM_EVIDENCE_GENERATOR_VERSION,
+  generateClaimEvidenceItems
+} from "./item-generators/claim-evidence.js";
 export {
   equivalentFractionBlueprint
 } from "./blueprints/equivalent-fraction.js";

@@ -2,19 +2,26 @@ import React, { useEffect, useRef, useState, type FormEvent } from "react";
 import type {
   ApiErrorBody,
   CreationStatus,
+  CurriculumActivityOption,
+  CurriculumCatalogResponse,
+  CurriculumStandardOption,
+  CurriculumUnitOption,
   PreviewResponse,
   PublicActivity,
   SessionResponse
 } from "../shared/contract";
 
 type View = "desk" | "compose" | "preview" | "creating" | "done" | "failed";
-type Difficulty = "easy" | "normal" | "hard";
 
 interface LessonForm {
-  prompt: string;
   requestedGrade: number;
-  problemCount: number;
-  difficulty: Difficulty;
+  semester: 1 | 2;
+  unitId: string;
+  standardCode: string;
+  activityId: string;
+  learningNeedId: string;
+  contextNote: string;
+  problemCount: 2 | 4 | 6;
 }
 
 class ApiClientError extends Error {
@@ -39,18 +46,41 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
   return body as T;
 }
 
-const difficultyOptions: Array<{ value: Difficulty; label: string; note: string }> = [
-  { value: "easy", label: "기초", note: "개념을 처음 익혀요" },
-  { value: "normal", label: "보통", note: "이유까지 설명해요" },
-  { value: "hard", label: "도전", note: "낯선 경우에도 적용해요" }
-];
-
 const progressMessages = [
   "활동을 만들 준비를 하고 있어요.",
   "문항과 조작 도구를 배치하고 있어요.",
   "학생이 확인할 수학적 기준을 연결하고 있어요.",
   "마지막으로 활동이 잘 작동하는지 확인하고 있어요."
 ];
+
+function formForStandard(
+  current: LessonForm,
+  standard: CurriculumStandardOption,
+  requestedActivity?: CurriculumActivityOption
+): LessonForm {
+  const activity =
+    requestedActivity?.availability === "released"
+      ? requestedActivity
+      : standard.activities.find(
+          (candidate) => candidate.availability === "released"
+        );
+  const learningNeed = activity?.learningNeeds[0];
+  if (!activity || !learningNeed) {
+    return {
+      ...current,
+      standardCode: standard.standardCode,
+      activityId: "",
+      learningNeedId: ""
+    };
+  }
+  return {
+    ...current,
+    standardCode: standard.standardCode,
+    activityId: activity.id,
+    learningNeedId: learningNeed.id,
+    problemCount: activity.defaultProblemCount
+  };
+}
 
 function StepDots({ step }: { step: number }) {
   const labels = ["준비", "수업 입력", "내용 확인", "만들기"];
@@ -159,11 +189,16 @@ export function App() {
   });
   const [checking, setChecking] = useState(true);
   const [form, setForm] = useState<LessonForm>({
-    prompt: "",
-    requestedGrade: 4,
+    requestedGrade: 3,
+    semester: 1,
+    unitId: "",
+    standardCode: "",
+    activityId: "",
+    learningNeedId: "",
+    contextNote: "",
     problemCount: 4,
-    difficulty: "normal"
   });
+  const [catalog, setCatalog] = useState<CurriculumCatalogResponse>();
   const [recommending, setRecommending] = useState(false);
   const [activity, setActivity] = useState<PublicActivity>();
   const [approvalToken, setApprovalToken] = useState("");
@@ -190,6 +225,42 @@ export function App() {
 
   useEffect(() => {
     void refreshConnection();
+    void api<CurriculumCatalogResponse>("/api/curriculum")
+      .then((next) => {
+        setCatalog(next);
+        setForm((current) => {
+          const unit = next.units.find(
+            (candidate) =>
+              candidate.grade === current.requestedGrade &&
+              candidate.semester === current.semester
+          );
+          if (!unit) return current;
+          const unitStandards = next.standards
+            .filter((candidate) =>
+              unit.standardCodes.includes(candidate.standardCode)
+            )
+            .map((candidate) => ({
+              ...candidate,
+              activities: candidate.activities.filter((activityOption) =>
+                unit.activityIds.includes(activityOption.id)
+              )
+            }));
+          const standard =
+            unitStandards.find((candidate) =>
+              candidate.activities.some(
+                (activityOption) => activityOption.availability === "released"
+              )
+            ) ??
+            unitStandards[0];
+          const nextForm = { ...current, unitId: unit.id };
+          return standard
+            ? formForStandard(nextForm, standard)
+            : { ...nextForm, standardCode: "", activityId: "", learningNeedId: "" };
+        });
+      })
+      .catch(() => {
+        setMessage("교육과정 목록을 불러오지 못했어요. 화면을 다시 열어 주세요.");
+      });
   }, []);
 
   useEffect(() => {
@@ -243,8 +314,8 @@ export function App() {
     event.preventDefault();
     setMessage("");
     setHints([]);
-    if (form.prompt.trim().length < 5) {
-      setMessage("가르칠 개념과 학생이 어려워하는 지점을 한 문장 이상 적어 주세요.");
+    if (!form.standardCode || !form.activityId || !form.learningNeedId) {
+      setMessage("학년, 단원, 성취기준과 학생이 어려워하는 지점을 골라 주세요.");
       return;
     }
     setRecommending(true);
@@ -288,12 +359,106 @@ export function App() {
   };
 
   const startAnother = () => {
-    setForm((current) => ({ ...current, prompt: "" }));
+    setForm((current) => ({ ...current, contextNote: "" }));
     setActivity(undefined);
     setApprovalToken("");
     setCreation(undefined);
     setMessage("");
     setView("compose");
+  };
+
+  const gradeUnits = (catalog?.units ?? []).filter(
+    (unit) =>
+      unit.grade === form.requestedGrade && unit.semester === form.semester
+  );
+  const selectedUnit = gradeUnits.find((unit) => unit.id === form.unitId);
+  const unitStandards = (catalog?.standards ?? [])
+    .filter((standard) =>
+      selectedUnit?.standardCodes.includes(standard.standardCode)
+    )
+    .map((standard) => ({
+      ...standard,
+      activities: standard.activities.filter((activityOption) =>
+        selectedUnit?.activityIds.includes(activityOption.id)
+      )
+    }));
+  const selectedStandard = unitStandards.find(
+    (standard) => standard.standardCode === form.standardCode
+  );
+  const selectedActivity = selectedStandard?.activities.find(
+    (activityOption) => activityOption.id === form.activityId
+  );
+  const selectedLearningNeed = selectedActivity?.learningNeeds.find(
+    (need) => need.id === form.learningNeedId
+  );
+
+  const selectUnit = (current: LessonForm, unit: CurriculumUnitOption): LessonForm => {
+    const standards = (catalog?.standards ?? [])
+      .filter((candidate) =>
+        unit.standardCodes.includes(candidate.standardCode)
+      )
+      .map((candidate) => ({
+        ...candidate,
+        activities: candidate.activities.filter((activityOption) =>
+          unit.activityIds.includes(activityOption.id)
+        )
+      }));
+    const standard =
+      standards.find((candidate) =>
+        candidate.activities.some(
+          (activityOption) => activityOption.availability === "released"
+        )
+      ) ??
+      standards[0];
+    const next = { ...current, unitId: unit.id };
+    return standard
+      ? formForStandard(next, standard)
+      : { ...next, standardCode: "", activityId: "", learningNeedId: "" };
+  };
+
+  const changeGrade = (requestedGrade: number) => {
+    setForm((current) => {
+      const unit = catalog?.units.find(
+        (candidate) =>
+          candidate.grade === requestedGrade && candidate.semester === current.semester
+      );
+      const next = { ...current, requestedGrade };
+      return unit ? selectUnit(next, unit) : next;
+    });
+  };
+
+  const changeSemester = (semester: 1 | 2) => {
+    setForm((current) => {
+      const unit = catalog?.units.find(
+        (candidate) =>
+          candidate.grade === current.requestedGrade && candidate.semester === semester
+      );
+      const next = { ...current, semester };
+      return unit ? selectUnit(next, unit) : next;
+    });
+  };
+
+  const changeUnit = (unitId: string) => {
+    const unit = gradeUnits.find((candidate) => candidate.id === unitId);
+    if (unit) setForm((current) => selectUnit(current, unit));
+  };
+
+  const changeStandard = (standardCode: string) => {
+    const standard = unitStandards.find(
+      (candidate) => candidate.standardCode === standardCode
+    );
+    if (standard) setForm((current) => formForStandard(current, standard));
+  };
+
+  const changeActivity = (activityId: string) => {
+    const activityOption = selectedStandard?.activities.find(
+      (candidate) => candidate.id === activityId
+    );
+    if (selectedStandard && activityOption) {
+      setForm((current) =>
+        formForStandard(current, selectedStandard, activityOption)
+      );
+    }
   };
 
   const step = view === "desk" ? 1 : view === "compose" ? 2 : view === "preview" ? 3 : 4;
@@ -335,41 +500,130 @@ export function App() {
         {view === "compose" ? (
           <section className="paper compose-paper" aria-labelledby="compose-title">
             <button className="back-button" type="button" onClick={() => setView("desk")}>← 처음으로</button>
-            <p className="eyebrow">수업 한 장으로 정리하기</p>
-            <h1 id="compose-title" data-page-title tabIndex={-1}>어떤 수업을 준비하시나요?</h1>
-            <p className="section-intro">정답만 맞히는 활동보다, 학생이 무엇을 오해하는지 알려주면 더 좋은 활동을 만들 수 있어요.</p>
+            <p className="eyebrow">교육과정에서 수업으로</p>
+            <h1 id="compose-title" data-page-title tabIndex={-1}>학년과 단원에서 시작해 보세요.</h1>
+            <p className="section-intro">실제 교과서 단원을 고르면, 연결된 성취기준과 학생들이 어려워하는 지점까지 차례로 좁혀 드립니다.</p>
             <form onSubmit={recommend}>
-              <label className="prompt-field">
-                <span>가르칠 내용과 학생이 어려워하는 점</span>
-                <textarea
-                  value={form.prompt}
-                  maxLength={1000}
-                  onChange={(event) => setForm({ ...form, prompt: event.target.value })}
-                  placeholder="예) 4학년 학생들이 분모가 다르면 분자끼리 바로 더해도 된다고 생각해요. 같은 크기의 단위로 바꿔야 한다는 것을 스스로 발견하게 하고 싶어요."
-                  aria-describedby="prompt-help"
-                />
-                <small id="prompt-help">수학 개념 + 학생이 자주 하는 생각 + 수업에서 바라는 변화를 적어 주세요. <span>{form.prompt.length}/1000</span></small>
-              </label>
-              <div className="choice-columns">
+              <section className="builder-step" aria-labelledby="curriculum-step-title">
+                <div className="builder-step-heading">
+                  <span aria-hidden="true">1</span>
+                  <div><h2 id="curriculum-step-title">학년·학기·단원을 골라 주세요.</h2><p>성취기준 문장을 외우거나 직접 입력하지 않아도 됩니다.</p></div>
+                </div>
                 <ChoiceGroup
                   label="학년"
                   value={form.requestedGrade}
                   options={[1, 2, 3, 4, 5, 6].map((value) => ({ value, label: `${value}학년` }))}
-                  onChange={(requestedGrade) => setForm({ ...form, requestedGrade })}
+                  onChange={changeGrade}
                 />
                 <ChoiceGroup
-                  label="문항 수"
-                  value={form.problemCount}
-                  options={[2, 4, 6].map((value) => ({ value, label: `${value}문항` }))}
-                  onChange={(problemCount) => setForm({ ...form, problemCount })}
+                  label="학기"
+                  value={form.semester}
+                  options={[
+                    { value: 1 as const, label: "1학기" },
+                    { value: 2 as const, label: "2학기" }
+                  ]}
+                  onChange={changeSemester}
                 />
-              </div>
-              <ChoiceGroup
-                label="생각의 깊이"
-                value={form.difficulty}
-                options={difficultyOptions}
-                onChange={(difficulty) => setForm({ ...form, difficulty })}
-              />
+                <div className="curriculum-select-grid">
+                  <label className="select-field">
+                    <span>단원</span>
+                    <select value={form.unitId} onChange={(event) => changeUnit(event.target.value)} disabled={!catalog}>
+                      {gradeUnits.map((unit) => <option key={unit.id} value={unit.id}>{unit.unitNumber}. {unit.title}</option>)}
+                    </select>
+                  </label>
+                  <label className="select-field">
+                    <span>성취기준</span>
+                    <select value={form.standardCode} onChange={(event) => changeStandard(event.target.value)} disabled={!catalog || unitStandards.length === 0}>
+                      {unitStandards.length ? unitStandards.map((standard) => {
+                        const released = standard.activities.some((activityOption) => activityOption.availability === "released");
+                        const verified = standard.activities.some((activityOption) => activityOption.availability === "verified");
+                        return <option key={standard.standardCode} value={standard.standardCode}>{standard.standardCode} {standard.focusLabel}{released ? " · 활동 있음" : verified ? " · 저장 검증 대기" : ""}</option>;
+                      }) : <option value="">연결된 성취기준 확인 중</option>}
+                    </select>
+                  </label>
+                </div>
+                {selectedStandard ? (
+                  <div className="standard-card">
+                    <div><span>{selectedStandard.domain}</span><strong>{form.requestedGrade}학년 {form.semester}학기 {selectedUnit?.unitNumber}. {selectedUnit?.title}</strong></div>
+                    <p>{selectedStandard.standardSummary}</p>
+                    <code>{selectedStandard.standardCode}</code>
+                  </div>
+                ) : selectedUnit ? (
+                  <div className="unsupported-unit">
+                    <strong>{form.requestedGrade}학년 {form.semester}학기 {selectedUnit.unitNumber}. {selectedUnit.title}</strong>
+                    <p>단원 목차는 확인됐지만, 이 단원에 정확히 연결된 MathCanvas 활동은 아직 준비 중입니다.</p>
+                  </div>
+                ) : <div className="catalog-loading">교과서 단원 목록을 불러오고 있어요.</div>}
+                {selectedUnit ? <p className="curriculum-source">비상교육 2022 개정 교재 목차 기준 · 학년군 성취기준과 교과서 단원을 분리해 연결합니다.</p> : null}
+              </section>
+
+              {selectedStandard ? (
+                <section className="builder-step" aria-labelledby="focus-step-title">
+                  <div className="builder-step-heading">
+                    <span aria-hidden="true">2</span>
+                    <div><h2 id="focus-step-title">이번 활동에서 다룰 내용을 골라 주세요.</h2><p>같은 성취기준 안에서도 수업의 초점을 한 가지로 정합니다.</p></div>
+                  </div>
+                  {selectedStandard.activities.some((activityOption) => activityOption.availability === "released") ? (
+                    <fieldset className="card-choice-group">
+                      <legend className="sr-only">활동 초점</legend>
+                      <div className="activity-option-grid">
+                        {selectedStandard.activities.filter((activityOption) => activityOption.availability === "released").map((activityOption) => (
+                          <label key={activityOption.id} className={form.activityId === activityOption.id ? "activity-option is-selected" : "activity-option"}>
+                            <input type="radio" name="활동 초점" value={activityOption.id} checked={form.activityId === activityOption.id} onChange={() => changeActivity(activityOption.id)} />
+                            <span className="option-check" aria-hidden="true">✓</span>
+                            <strong>{activityOption.label}</strong>
+                            <small>{activityOption.description}</small>
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  ) : (
+                    <div className="unsupported-activity">
+                      <strong>{selectedStandard.focusLabel} 활동의 마지막 저장 검증이 남았습니다.</strong>
+                      <p>수학적 판단·검증 구조와 로컬 생성 검사는 통과했습니다. 실제 MathCanvas 저장·재열기 확인 뒤 사용할 수 있습니다.</p>
+                    </div>
+                  )}
+                </section>
+              ) : null}
+
+              {selectedActivity ? (
+                <section className="builder-step" aria-labelledby="need-step-title">
+                  <div className="builder-step-heading">
+                    <span aria-hidden="true">3</span>
+                    <div><h2 id="need-step-title">학생들이 어디에서 막히나요?</h2><p>우리 반 학생에게 가장 가까운 모습을 하나 골라 주세요.</p></div>
+                  </div>
+                  <fieldset className="card-choice-group">
+                    <legend className="sr-only">학생이 어려워하는 지점</legend>
+                    <div className="need-option-grid">
+                      {selectedActivity.learningNeeds.map((need) => (
+                        <label key={need.id} className={form.learningNeedId === need.id ? "need-option is-selected" : "need-option"}>
+                          <input type="radio" name="학생이 어려워하는 지점" value={need.id} checked={form.learningNeedId === need.id} onChange={() => setForm({ ...form, learningNeedId: need.id })} />
+                          <span className="option-check" aria-hidden="true">✓</span>
+                          <strong>{need.label}</strong>
+                          <small>{need.description}</small>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <label className="context-field">
+                    <span>우리 반 상황 더하기 <em>선택</em></span>
+                    <textarea value={form.contextNote} maxLength={500} onChange={(event) => setForm({ ...form, contextNote: event.target.value })} placeholder="예) 계산은 할 수 있지만 친구에게 왜 그런지 설명하는 것을 어려워해요." aria-describedby="context-help" />
+                    <small id="context-help"><span>선택한 내용에 덧붙일 말이 있을 때만 적어 주세요.</span><span>{form.contextNote.length}/500</span></small>
+                  </label>
+                </section>
+              ) : null}
+
+              {selectedActivity ? (
+                <details className="detail-settings">
+                  <summary>세부 설정 <span>필요할 때만 바꾸세요</span></summary>
+                  <ChoiceGroup
+                    label="활동 문항 수"
+                    value={form.problemCount}
+                    options={selectedActivity.availableProblemCounts.map((value) => ({ value, label: `${value}문항` }))}
+                    onChange={(problemCount) => setForm({ ...form, problemCount })}
+                  />
+                </details>
+              ) : null}
               {message ? (
                 <div className="error-panel" role="alert">
                   <strong>{message}</strong>
@@ -383,7 +637,7 @@ export function App() {
                     <span><strong>수업에 맞는 활동을 찾고 있어요.</strong> 학생이 고민할 지점과 확인 방법을 함께 살펴보고 있습니다.</span>
                   </div>
                 ) : null}
-                <button className="button primary" type="submit" disabled={recommending}>{recommending ? "구성하는 중…" : "활동 추천받기"}</button>
+                <button className="button primary" type="submit" disabled={recommending || !selectedLearningNeed}>{recommending ? "구성하는 중…" : "이 내용으로 활동 추천받기"}</button>
               </div>
             </form>
           </section>
@@ -398,11 +652,11 @@ export function App() {
                 <h1 id="preview-title" data-page-title tabIndex={-1}>{activity.title}</h1>
               </div>
               <div className="meta-stamps" aria-label="활동 조건">
-                <span>{activity.gradeLabel}</span><span>{activity.problemCount}문항</span><span>{activity.difficultyLabel}</span>
+                <span>{activity.gradeLabel}</span><span>{activity.unitTitle}</span><span>{activity.standardCode}</span><span>{activity.problemCount}문항</span>
               </div>
             </div>
             <div className="goal-note">
-              <span>학습 목표</span>
+              <span>{activity.activityLabel} · 학생이 어려워하는 지점: {activity.learningNeedLabel}</span>
               <strong>{activity.learningGoal}</strong>
               <p>{activity.summary}</p>
             </div>

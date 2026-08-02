@@ -30,7 +30,23 @@ export const ACTIVITY_IDS = {
   multiplicationArrayMeaning:
     "number.multiplication.group-array-meaning-v1",
   probabilityBagComparison:
-    "probability.compare.bag-ratios-v1"
+    "probability.compare.bag-ratios-v1",
+  divisionRemainderClaim:
+    "number.division.quotient-remainder.claim-evidence-v1",
+  angleMeasureClaim:
+    "measure.angle.turn-size.claim-evidence-v1",
+  mixedCalculationClaim:
+    "number.mixed-calculation.order.claim-evidence-v1",
+  ratioMeaningClaim:
+    "relation.ratio.same-unit.claim-evidence-v1",
+  pictureGraphKeyClaim:
+    "data.picture-graph.key.claim-evidence-v1",
+  triangleClassificationClaim:
+    "geometry.triangle.classification.claim-evidence-v1",
+  lineSymmetryClaim:
+    "geometry.symmetry.equal-distance.claim-evidence-v1",
+  graphPurposeClaim:
+    "data.graph.purpose.claim-evidence-v1"
 } as const;
 
 export type ActivitySupportState = "verified" | "released";
@@ -74,7 +90,23 @@ export const ACTIVITY_LEARNING_GOALS: Readonly<
   [ACTIVITY_IDS.multiplicationArrayMeaning]:
     "같은 수씩 묶인 상황을 곱셈식과 배열로 연결하고, 두 수가 나타내는 뜻을 설명할 수 있다.",
   [ACTIVITY_IDS.probabilityBagComparison]:
-    "두 주머니에서 원하는 색이 나올 가능성을 전체 수에 대한 원하는 색의 수로 나타내어 비교하고 설명할 수 있다."
+    "두 주머니에서 원하는 색이 나올 가능성을 전체 수에 대한 원하는 색의 수로 나타내어 비교하고 설명할 수 있다.",
+  [ACTIVITY_IDS.divisionRemainderClaim]:
+    "나눗셈 상황에서 몫과 나머지가 뜻하는 양을 묶음으로 확인하고 설명할 수 있다.",
+  [ACTIVITY_IDS.angleMeasureClaim]:
+    "각의 크기를 변의 길이가 아니라 한 변이 회전한 양으로 판단하고 설명할 수 있다.",
+  [ACTIVITY_IDS.mixedCalculationClaim]:
+    "자연수의 혼합 계산에서 계산 순서를 판단하고 중간 계산을 근거로 설명할 수 있다.",
+  [ACTIVITY_IDS.ratioMeaningClaim]:
+    "두 양을 같은 단위로 바꾸어 비로 나타내고 같은 비가 되는 관계를 설명할 수 있다.",
+  [ACTIVITY_IDS.pictureGraphKeyClaim]:
+    "그림그래프의 그림 한 개와 일부가 나타내는 값을 사용하여 자료를 해석하고 설명할 수 있다.",
+  [ACTIVITY_IDS.triangleClassificationClaim]:
+    "삼각형의 각의 크기를 근거로 직각삼각형, 예각삼각형, 둔각삼각형을 분류하고 설명할 수 있다.",
+  [ACTIVITY_IDS.lineSymmetryClaim]:
+    "선대칭도형에서 대응점과 대칭축 사이의 거리가 같다는 성질로 위치를 판단하고 설명할 수 있다.",
+  [ACTIVITY_IDS.graphPurposeClaim]:
+    "자료의 특징과 알고 싶은 내용에 맞는 그래프를 선택하고 그 까닭을 설명할 수 있다."
 };
 
 export const ACTIVITY_SUPPORT: Readonly<
@@ -96,7 +128,15 @@ export const ACTIVITY_SUPPORT: Readonly<
   [ACTIVITY_IDS.placeValueTenExchange]: "released",
   [ACTIVITY_IDS.repeatingPatternUnit]: "released",
   [ACTIVITY_IDS.multiplicationArrayMeaning]: "released",
-  [ACTIVITY_IDS.probabilityBagComparison]: "released"
+  [ACTIVITY_IDS.probabilityBagComparison]: "released",
+  [ACTIVITY_IDS.divisionRemainderClaim]: "verified",
+  [ACTIVITY_IDS.angleMeasureClaim]: "verified",
+  [ACTIVITY_IDS.mixedCalculationClaim]: "verified",
+  [ACTIVITY_IDS.ratioMeaningClaim]: "verified",
+  [ACTIVITY_IDS.pictureGraphKeyClaim]: "verified",
+  [ACTIVITY_IDS.triangleClassificationClaim]: "verified",
+  [ACTIVITY_IDS.lineSymmetryClaim]: "verified",
+  [ACTIVITY_IDS.graphPurposeClaim]: "verified"
 };
 
 export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
@@ -155,6 +195,30 @@ export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
   ],
   [ACTIVITY_IDS.probabilityBagComparison]: [
     "research/mathcanvas/wave17-probability-release-canary.json"
+  ],
+  [ACTIVITY_IDS.divisionRemainderClaim]: [
+    "research/mathcanvas/wave18-division-remainder-release-canary.json"
+  ],
+  [ACTIVITY_IDS.angleMeasureClaim]: [
+    "research/mathcanvas/wave18-angle-turn-release-canary.json"
+  ],
+  [ACTIVITY_IDS.mixedCalculationClaim]: [
+    "research/mathcanvas/wave18-mixed-calculation-order-release-canary.json"
+  ],
+  [ACTIVITY_IDS.ratioMeaningClaim]: [
+    "research/mathcanvas/wave18-ratio-same-unit-release-canary.json"
+  ],
+  [ACTIVITY_IDS.pictureGraphKeyClaim]: [
+    "research/mathcanvas/wave18-picture-graph-key-release-canary.json"
+  ],
+  [ACTIVITY_IDS.triangleClassificationClaim]: [
+    "research/mathcanvas/wave18-triangle-classification-release-canary.json"
+  ],
+  [ACTIVITY_IDS.lineSymmetryClaim]: [
+    "research/mathcanvas/wave18-line-symmetry-distance-release-canary.json"
+  ],
+  [ACTIVITY_IDS.graphPurposeClaim]: [
+    "research/mathcanvas/wave18-graph-purpose-release-canary.json"
   ]
 };
 

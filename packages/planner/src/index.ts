@@ -9,7 +9,11 @@ import {
   type GenerationRequest,
   type Recommendation
 } from "@mathcanvas/contracts";
-import { resolveCurriculum } from "@mathcanvas/curriculum";
+import {
+  CLAIM_EVIDENCE_MANIPULATION,
+  findClaimEvidenceActivityProfile,
+  resolveCurriculum
+} from "@mathcanvas/curriculum";
 
 const supportedIntentPatterns = [
   /분모가\s*다른/,
@@ -119,6 +123,26 @@ function verifiedCandidate(request: GenerationRequest):
       maximumProblemCount: number;
     }
   | undefined {
+  if (
+    request.manipulation === CLAIM_EVIDENCE_MANIPULATION ||
+    request.requestedStandardCode !== undefined
+  ) {
+    const profile = request.requestedStandardCode
+      ? findClaimEvidenceActivityProfile(request.requestedStandardCode)
+      : undefined;
+    if (profile) {
+      return {
+        templateId: profile.activityId,
+        standardCode: profile.standardCode,
+        manipulation: CLAIM_EVIDENCE_MANIPULATION,
+        grade: profile.recommendedGrade,
+        gradeRange:
+          profile.gradeBand === "3-4" ? [3, 4] : [5, 6],
+        maximumProblemCount: 2
+      };
+    }
+    return undefined;
+  }
   if (request.manipulation === "fraction-strip-common-start-drag") {
     return undefined;
   }

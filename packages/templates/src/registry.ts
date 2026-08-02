@@ -24,6 +24,11 @@ import { placeValueTenExchangeBlueprint } from "./blueprints/place-value-ten-exc
 import { repeatingPatternUnitBlueprint } from "./blueprints/repeating-pattern-unit.js";
 import { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication-array-meaning.js";
 import { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
+import { claimEvidenceBlueprints } from "./blueprints/claim-evidence.js";
+import {
+  CLAIM_EVIDENCE_MANIPULATION,
+  claimEvidenceActivityProfiles
+} from "@mathcanvas/curriculum";
 import { generateBlueprintItems } from "./item-generators/registry.js";
 import { resolveRegisteredVariation } from "./variations/registry.js";
 import { assertCognitiveManifestBound } from "./cognitive/registry.js";
@@ -253,6 +258,25 @@ export const probabilityBagComparisonTemplateDefinition =
     maximumProblemCount: 4,
     requiredModules: ["NO03FM", "input-text", "math-latex", "drawElem"]
   });
+
+export const claimEvidenceTemplateDefinitions = Object.fromEntries(
+  claimEvidenceBlueprints.map((blueprint) => {
+    const profile = claimEvidenceActivityProfiles.find(
+      (candidate) => candidate.activityId === blueprint.id
+    );
+    if (!profile) {
+      throw new Error(`claim-evidence-profile-missing:${blueprint.id}`);
+    }
+    return [
+      blueprint.id,
+      templateDefinition(blueprint, {
+        supportedGradeBands: [profile.gradeBand],
+        maximumProblemCount: 2,
+        requiredModules: ["input-text", "drawElem"]
+      })
+    ];
+  })
+) as Readonly<Record<string, TemplateDefinition>>;
 
 export interface GenerateActivitySpecOptions {
   readonly seed: string;
@@ -531,6 +555,32 @@ export function generateProbabilityBagComparisonActivity(
   options: GenerateActivitySpecOptions
 ): RegisteredActivityPlan {
   return prepare(probabilityBagComparisonBlueprint, probabilityBagComparisonTemplateDefinition, recommendation, options, "probability-fraction-strip-drag");
+}
+
+export function generateClaimEvidenceActivity(
+  recommendation: Recommendation,
+  options: GenerateActivitySpecOptions
+): RegisteredActivityPlan {
+  const blueprint = recommendation.templateId
+    ? claimEvidenceBlueprints.find(
+        (candidate) => candidate.id === recommendation.templateId
+      )
+    : undefined;
+  const definition = blueprint
+    ? claimEvidenceTemplateDefinitions[blueprint.id]
+    : undefined;
+  if (!blueprint || !definition) {
+    throw new Error(
+      `claim-evidence-activity-unregistered:${recommendation.templateId ?? "missing"}`
+    );
+  }
+  return prepare(
+    blueprint,
+    definition,
+    recommendation,
+    options,
+    CLAIM_EVIDENCE_MANIPULATION
+  );
 }
 
 type RegistryEntry = {
@@ -835,7 +885,31 @@ function probabilityBagComparisonAnswerKey(resolved: ResolvedActivity): Register
   });
 }
 
+function claimEvidenceAnswerKey(
+  resolved: ResolvedActivity
+): RegisteredTeacherAnswer[] {
+  return resolved.items.map((item) => ({
+    problemNumber: item.order,
+    answer: String(item.values.correctValueText),
+    explanation: String(item.values.answerExplanation)
+  }));
+}
+
+const claimEvidenceRegistry = Object.fromEntries(
+  claimEvidenceBlueprints.map((blueprint) => [
+    blueprint.id,
+    {
+      blueprint,
+      prepare: generateClaimEvidenceActivity,
+      supportState:
+        getActivitySupportState(blueprint.id) ?? "verified",
+      answerKey: claimEvidenceAnswerKey
+    } satisfies RegistryEntry
+  ])
+) as Readonly<Record<string, RegistryEntry>>;
+
 const registry: Readonly<Record<string, RegistryEntry>> = {
+  ...claimEvidenceRegistry,
   [fractionComparisonBlueprint.id]: {
     blueprint: fractionComparisonBlueprint,
     prepare: generateFractionComparisonActivity,

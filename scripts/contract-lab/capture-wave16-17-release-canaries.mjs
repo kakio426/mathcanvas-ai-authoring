@@ -2,11 +2,15 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { CONTRACT_SCHEMA_VERSION, recommendationSchema, sha256Hex } from "../../packages/contracts/dist/index.js";
-import { resolveCurriculum } from "../../packages/curriculum/dist/index.js";
+import {
+  claimEvidenceActivityProfiles,
+  resolveCurriculum
+} from "../../packages/curriculum/dist/index.js";
 import { compileActivity, getLayoutPreset, resolveActivity } from "../../packages/mathcanvas-compiler/dist/index.js";
 import { ManagedChromeRuntime } from "../../packages/managed-browser/dist/index.js";
 import {
   assertCognitiveManifestBound,
+  claimEvidenceBlueprints,
   multiplicationArrayMeaningBlueprint,
   prepareRegisteredActivityForEnvelopeValidation,
   probabilityBagComparisonBlueprint,
@@ -19,7 +23,7 @@ import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 import { minimumPairGap, occlusionCount } from "./lib/post-interaction-visual.mjs";
 
 const generatedAt = "2026-08-01T03:00:00.000Z";
-const cases = [
+const legacyCases = [
   {
     probeId: "wave16-pattern-release-canary-v1",
     seed: "wave16-pattern-release-v1",
@@ -66,12 +70,45 @@ const cases = [
     previewName: "wave17/probability-bag-comparison.png"
   }
 ];
+const categoryUnitByDomain = {
+  "수와 연산": "Unit01",
+  "변화와 관계": "Unit02",
+  "도형과 측정": "Unit03",
+  "자료와 가능성": "Unit04"
+};
+const claimEvidenceCases = claimEvidenceActivityProfiles.map((profile) => {
+  const blueprint = claimEvidenceBlueprints.find(
+    (candidate) => candidate.id === profile.activityId
+  );
+  if (!blueprint) {
+    throw new Error(`wave18-blueprint-missing:${profile.activityId}`);
+  }
+  return {
+    probeId: `wave18-${profile.profileId}-release-canary-v1`,
+    seed: `wave18-${profile.profileId}-release-v1`,
+    blueprint,
+    standardCode: profile.standardCode,
+    grade: profile.recommendedGrade,
+    manipulation: "claim-evidence-revision-drag",
+    categoryUnit: categoryUnitByDomain[profile.domain],
+    releasedTools: [],
+    sourceRole: "position-card-1",
+    targetRole: "prediction-box",
+    action: "choose-claim-and-check-evidence",
+    evidenceName: `wave18-${profile.profileId}-release-canary.json`,
+    previewName: `wave18/${profile.profileId}.png`
+  };
+});
+const cases = [...legacyCases, ...claimEvidenceCases];
 const onlyBlueprintId = process.argv
   .find((argument) => argument.startsWith("--only="))
   ?.slice("--only=".length);
+const wave18Only = process.argv.includes("--wave18");
 const selectedCases = onlyBlueprintId
   ? cases.filter((entry) => entry.blueprint.id === onlyBlueprintId)
-  : cases;
+  : wave18Only
+    ? claimEvidenceCases
+    : cases;
 if (onlyBlueprintId && selectedCases.length === 0) {
   throw new Error(`wave16-17-canary-activity-unknown:${onlyBlueprintId}`);
 }
@@ -243,7 +280,12 @@ try {
           { source: pieceWithVariant(firstItem.values.sequenceVariant1), target: byRole("next-slot-1") },
           { source: pieceWithVariant(firstItem.values.sequenceVariant2), target: byRole("next-slot-2") }
         ];
-      } else if (entry.blueprint.id === multiplicationArrayMeaningBlueprint.id) {
+      } else if (
+        entry.blueprint.id === multiplicationArrayMeaningBlueprint.id ||
+        claimEvidenceBlueprints.some(
+          (blueprint) => blueprint.id === entry.blueprint.id
+        )
+      ) {
         interactionSteps = [
           { source: choiceWithText(firstItem.values.correctValueText), target: byRole("prediction-box") }
         ];

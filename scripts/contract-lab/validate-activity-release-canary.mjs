@@ -1133,6 +1133,74 @@ export function validateActivityReleaseCanaryEvidence(
         value?.fractionModuleActive === true
     }
   };
+  const wave18ClaimEvidenceContracts = {
+    "number.division.quotient-remainder.claim-evidence-v1": {
+      probeId: "wave18-division-remainder-release-canary-v1",
+      categoryUnit: "Unit01"
+    },
+    "measure.angle.turn-size.claim-evidence-v1": {
+      probeId: "wave18-angle-turn-release-canary-v1",
+      categoryUnit: "Unit03"
+    },
+    "number.mixed-calculation.order.claim-evidence-v1": {
+      probeId: "wave18-mixed-calculation-order-release-canary-v1",
+      categoryUnit: "Unit01"
+    },
+    "relation.ratio.same-unit.claim-evidence-v1": {
+      probeId: "wave18-ratio-same-unit-release-canary-v1",
+      categoryUnit: "Unit02"
+    },
+    "data.picture-graph.key.claim-evidence-v1": {
+      probeId: "wave18-picture-graph-key-release-canary-v1",
+      categoryUnit: "Unit04"
+    },
+    "geometry.triangle.classification.claim-evidence-v1": {
+      probeId: "wave18-triangle-classification-release-canary-v1",
+      categoryUnit: "Unit03"
+    },
+    "geometry.symmetry.equal-distance.claim-evidence-v1": {
+      probeId: "wave18-line-symmetry-distance-release-canary-v1",
+      categoryUnit: "Unit03"
+    },
+    "data.graph.purpose.claim-evidence-v1": {
+      probeId: "wave18-graph-purpose-release-canary-v1",
+      categoryUnit: "Unit04"
+    }
+  };
+  const wave18ClaimEvidence =
+    wave18ClaimEvidenceContracts[evidence.blueprintId];
+  if (wave18ClaimEvidence) {
+    const interaction = evidence.interactionShape;
+    if (
+      evidence.probeId !== wave18ClaimEvidence.probeId ||
+      evidence.categoryUnit !== wave18ClaimEvidence.categoryUnit ||
+      itemCount !== 2 ||
+      JSON.stringify(evidence.releasedTools) !== "[]" ||
+      persisted?.arrayTextCount !== itemCount ||
+      persisted?.candidateCount !== itemCount * 5 ||
+      shape?.sourceRoleCount !== itemCount ||
+      shape?.targetRoleCount !== itemCount ||
+      shape?.predictionBoxCount !== itemCount ||
+      shape?.explanationBoxCount !== itemCount ||
+      interaction?.action !== "choose-claim-and-check-evidence" ||
+      interaction?.transientOnly !== true ||
+      interaction?.existingProjectWriteCount !== 0 ||
+      interaction?.movedRoleCount !== 1 ||
+      typeof interaction?.moveDistance !== "number" ||
+      !Number.isFinite(interaction.moveDistance) ||
+      interaction.moveDistance < 20 ||
+      interaction?.allMovedInsideTargets !== true ||
+      typeof interaction?.maximumTargetOverflowPx !== "number" ||
+      !Number.isFinite(interaction.maximumTargetOverflowPx) ||
+      interaction.maximumTargetOverflowPx > 5 ||
+      interaction?.movedPairOverlapCount !== 0 ||
+      interaction?.minimumMovedGap !== null ||
+      interaction?.commonStartResidualPx !== null
+    ) {
+      throw new Error("activity-release-canary-evidence-shape-invalid");
+    }
+    return evidence;
+  }
   const wave16And17 = wave16And17Contracts[evidence.blueprintId];
   if (wave16And17) {
     const interaction = evidence.interactionShape;

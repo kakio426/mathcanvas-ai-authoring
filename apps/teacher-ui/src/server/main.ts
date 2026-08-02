@@ -11,9 +11,16 @@ import {
   type AuthoringRuntime,
   type MathCanvasAuthoringService
 } from "@mathcanvas/authoring-runtime";
+import {
+  findTeacherCurriculumStandard,
+  findTeacherTextbookUnit,
+  teacherCurriculumCatalog,
+  teacherTextbookUnits
+} from "@mathcanvas/curriculum";
 import type {
   ApiErrorBody,
   CreationStatus,
+  CurriculumCatalogResponse,
   PublicActivity,
   SessionResponse
 } from "../shared/contract.js";
@@ -35,12 +42,6 @@ let port = 0;
 let runtime: AuthoringRuntime | undefined;
 let loginProcess: ChildProcess | undefined;
 let loginStarting = false;
-
-const difficultyLabels = {
-  easy: "기초",
-  normal: "보통",
-  hard: "도전"
-} as const;
 
 function json(
   response: ServerResponse,
@@ -142,7 +143,14 @@ function mapConnection(
 
 function toPublicActivity(
   result: ReturnType<MathCanvasAuthoringService["recommend"]>,
-  fallback: { grade: number; problemCount: number; difficulty: "easy" | "normal" | "hard" }
+  fallback: {
+    grade: number;
+    problemCount: number;
+    unitTitle: string;
+    standardCode: string;
+    activityLabel: string;
+    learningNeedLabel: string;
+  }
 ): PublicActivity {
   const recommendation = result.recommendation;
   const learningGoal =
@@ -152,14 +160,16 @@ function toPublicActivity(
     title: result.activitySummary?.title ?? "MathCanvas 탐구 활동",
     gradeLabel: `${recommendation.recommendedGrade ?? fallback.grade}학년`,
     problemCount: recommendation.problemCount ?? fallback.problemCount,
-    difficultyLabel:
-      difficultyLabels[recommendation.difficulty ?? fallback.difficulty],
+    unitTitle: fallback.unitTitle,
+    standardCode: recommendation.standardCode ?? fallback.standardCode,
+    activityLabel: fallback.activityLabel,
+    learningNeedLabel: fallback.learningNeedLabel,
     learningGoal,
     summary:
-      "학생이 답을 고르는 데서 끝나지 않고, 직접 조작한 결과로 처음 생각을 확인하고 그 이유를 설명하도록 구성했습니다.",
+      `${fallback.learningNeedLabel}라는 어려움을 드러내고, 직접 조작한 결과로 생각을 확인한 뒤 수학적 까닭을 설명하도록 구성했습니다.`,
     studentInstructions: result.activitySummary?.studentInstructions ?? [],
     teacherChecks: [
-      "학생이 조작하기 전에 자신의 판단과 그 까닭을 먼저 나타내는지 살펴보세요.",
+      `학생이 ‘${fallback.learningNeedLabel}’와 관련된 생각을 조작 전에 드러내는지 살펴보세요.`,
       "조작 결과가 처음 생각과 다를 때, 수나 식 또는 길이의 관계를 근거로 설명하는지 살펴보세요.",
       "마지막 문항에서 확인한 방법을 새로운 수학적 상황에도 적용하는지 살펴보세요."
     ],
@@ -246,6 +256,46 @@ async function handleApi(
     return;
   }
 
+  if (request.method === "GET" && url.pathname === "/api/curriculum") {
+    const body: CurriculumCatalogResponse = {
+      units: teacherTextbookUnits.map((unit) => ({
+        id: unit.id,
+        curriculumVersion: unit.curriculumVersion,
+        publisher: unit.publisher,
+        grade: unit.grade,
+        semester: unit.semester,
+        unitNumber: unit.unitNumber,
+        title: unit.title,
+        sourceUrl: unit.sourceUrl,
+        standardCodes: [...unit.standardCodes],
+        activityIds: [...unit.activityIds]
+      })),
+      standards: teacherCurriculumCatalog.map((standard) => ({
+        standardCode: standard.standardCode,
+        gradeBand: standard.gradeBand,
+        domain: standard.domain,
+        focusLabel: standard.focusLabel,
+        standardSummary: standard.standardSummary,
+        summaryKind: standard.summaryKind,
+        activities: standard.activities.map((activity) => ({
+          id: activity.id,
+          label: activity.label,
+          description: activity.description,
+          defaultProblemCount: activity.defaultProblemCount,
+          availableProblemCounts: [...activity.availableProblemCounts],
+          availability: activity.availability,
+          learningNeeds: activity.learningNeeds.map((need) => ({
+            id: need.id,
+            label: need.label,
+            description: need.description
+          }))
+        }))
+      }))
+    };
+    json(response, 200, body as unknown as Record<string, unknown>);
+    return;
+  }
+
   if (request.method !== "GET" && !requireMutationGuards(request, response)) return;
 
   if (request.method === "POST" && url.pathname === "/api/session/open-login") {
@@ -278,48 +328,71 @@ async function handleApi(
 
   if (request.method === "POST" && url.pathname === "/api/recommendations") {
     const body = await readJsonBody(request);
-    const prompt = typeof body.prompt === "string" ? body.prompt.trim() : "";
+    const unitId = typeof body.unitId === "string" ? body.unitId : "";
+    const standardCode = typeof body.standardCode === "string" ? body.standardCode : "";
+    const activityId = typeof body.activityId === "string" ? body.activityId : "";
+    const learningNeedId = typeof body.learningNeedId === "string" ? body.learningNeedId : "";
+    const contextNote = typeof body.contextNote === "string" ? body.contextNote.trim() : "";
     const requestedGrade = Number(body.requestedGrade);
     const problemCount = Number(body.problemCount);
-    const difficulty = body.difficulty;
+    const unit = findTeacherTextbookUnit(unitId);
+    const standard = findTeacherCurriculumStandard(standardCode);
+    const activityOption = standard?.activities.find((candidate) => candidate.id === activityId);
+    const learningNeed = activityOption?.learningNeeds.find((candidate) => candidate.id === learningNeedId);
     if (
-      prompt.length < 5 ||
-      prompt.length > 1000 ||
+      !unit ||
+      !standard ||
+      !activityOption ||
+      !learningNeed ||
+      contextNote.length > 500 ||
       !Number.isInteger(requestedGrade) ||
-      requestedGrade < 1 ||
-      requestedGrade > 6 ||
-      ![2, 4, 6].includes(problemCount) ||
-      !["easy", "normal", "hard"].includes(String(difficulty))
+      requestedGrade !== unit.grade ||
+      !unit.standardCodes.includes(standard.standardCode) ||
+      !unit.activityIds.includes(activityOption.id) ||
+      !activityOption.availableProblemCounts.includes(problemCount as 2 | 4 | 6)
     ) {
-      error(response, 400, "invalid_lesson", "수업 내용과 세 가지 선택을 다시 확인해 주세요.");
+      error(response, 400, "invalid_lesson", "학년, 단원, 성취기준과 학생의 어려움을 다시 확인해 주세요.");
       return;
     }
+    const prompt = [
+      activityOption.promptSeed,
+      learningNeed.promptDetail,
+      ...(contextNote ? [`우리 반 상황: ${contextNote}`] : [])
+    ].join(". ");
     const currentRuntime = getRuntime();
     if (!currentRuntime) {
       error(response, 409, "busy", "다른 MathCanvas 작업이 끝난 뒤 다시 추천받아 주세요.");
       return;
     }
-    const typedDifficulty = difficulty as "easy" | "normal" | "hard";
     const result = currentRuntime.service.recommend({
       prompt,
+      requestedStandardCode: standard.standardCode,
       requestedGrade,
       problemCount,
-      difficulty: typedDifficulty
+      manipulation: activityOption.manipulation
     });
-    if (!result.supported || !result.draftId || !result.activitySpecHash) {
+    if (
+      !result.supported ||
+      !result.draftId ||
+      !result.activitySpecHash ||
+      result.recommendation.standardCode !== standard.standardCode
+    ) {
       error(
         response,
         422,
         "recommendation_unavailable",
         result.recommendation.blockingReasons[0] ?? "지금 조건에 맞는 활동을 찾지 못했어요.",
-        ["가르칠 수학 개념을 적어 주세요.", "학생이 자주 틀리는 생각을 함께 적어 주세요.", "한 번에 한 가지 학습 목표만 적어 주세요."]
+        ["다른 활동 초점을 골라 보세요.", "학생이 실제로 보이는 어려움과 가장 가까운 항목을 골라 보세요."]
       );
       return;
     }
     const activity = toPublicActivity(result, {
       grade: requestedGrade,
       problemCount,
-      difficulty: typedDifficulty
+      unitTitle: `${unit.semester}학기 ${unit.unitNumber}. ${unit.title}`,
+      standardCode: standard.standardCode,
+      activityLabel: activityOption.label,
+      learningNeedLabel: learningNeed.label
     });
     sessions.addCard(session, {
       activity,
@@ -333,7 +406,10 @@ async function handleApi(
         title: activity.title,
         gradeLabel: activity.gradeLabel,
         problemCount: activity.problemCount,
-        difficultyLabel: activity.difficultyLabel,
+        unitTitle: activity.unitTitle,
+        standardCode: activity.standardCode,
+        activityLabel: activity.activityLabel,
+        learningNeedLabel: activity.learningNeedLabel,
         learningGoal: activity.learningGoal,
         summary: activity.summary
       }

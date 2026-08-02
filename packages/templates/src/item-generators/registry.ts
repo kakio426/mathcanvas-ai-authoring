@@ -90,17 +90,25 @@ import {
   PROBABILITY_BAG_PAIR_GENERATOR_VERSION,
   generateProbabilityBagPairItems
 } from "./probability-bag-pair.js";
+import {
+  CLAIM_EVIDENCE_GENERATOR_ID,
+  CLAIM_EVIDENCE_GENERATOR_VERSION,
+  generateClaimEvidenceItems
+} from "./claim-evidence.js";
 
 type Generator = (
   parameters: {
     readonly difficulty: Difficulty;
     readonly problemCount: number;
     readonly denominatorRelation?: DenominatorRelation;
+    readonly profileId?: string;
   },
   seed: string
 ) => ResolvedItem[];
 
 const generators: Readonly<Record<string, Generator>> = {
+  [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_VERSION}`]:
+    generateClaimEvidenceItems,
   [`${REPEATING_PATTERN_UNIT_GENERATOR_ID}:${REPEATING_PATTERN_UNIT_GENERATOR_VERSION}`]:
     generateRepeatingPatternUnitItems,
   [`${MULTIPLICATION_ARRAY_MEANING_GENERATOR_ID}:${MULTIPLICATION_ARRAY_MEANING_GENERATOR_VERSION}`]:
@@ -157,6 +165,7 @@ export function generateBlueprintItems(
   );
   return generator(
     {
+      ...blueprint.generator.parameters,
       problemCount: resolved.problemCount as number,
       difficulty: resolved.difficulty as Difficulty,
       ...(resolved.denominatorRelation

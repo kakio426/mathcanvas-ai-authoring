@@ -21,12 +21,59 @@ export interface PublicActivity {
   title: string;
   gradeLabel: string;
   problemCount: number;
-  difficultyLabel: string;
+  unitTitle: string;
+  standardCode: string;
+  activityLabel: string;
+  learningNeedLabel: string;
   learningGoal: string;
   summary: string;
   studentInstructions: string[];
   teacherChecks: string[];
   flow: LearningFlowStep[];
+}
+
+export interface CurriculumLearningNeedOption {
+  id: string;
+  label: string;
+  description: string;
+}
+
+export interface CurriculumActivityOption {
+  id: string;
+  label: string;
+  description: string;
+  defaultProblemCount: 2 | 4;
+  availableProblemCounts: Array<2 | 4 | 6>;
+  learningNeeds: CurriculumLearningNeedOption[];
+  availability: "verified" | "released";
+}
+
+export interface CurriculumStandardOption {
+  standardCode: string;
+  gradeBand: "1-2" | "3-4" | "5-6";
+  domain: "수와 연산" | "변화와 관계" | "도형과 측정" | "자료와 가능성";
+  focusLabel: string;
+  standardSummary: string;
+  summaryKind: "official-goal" | "source-position";
+  activities: CurriculumActivityOption[];
+}
+
+export interface CurriculumUnitOption {
+  id: string;
+  curriculumVersion: "2022 개정";
+  publisher: "비상교육";
+  grade: 1 | 2 | 3 | 4 | 5 | 6;
+  semester: 1 | 2;
+  unitNumber: number;
+  title: string;
+  sourceUrl: string;
+  standardCodes: string[];
+  activityIds: string[];
+}
+
+export interface CurriculumCatalogResponse {
+  units: CurriculumUnitOption[];
+  standards: CurriculumStandardOption[];
 }
 
 export interface PreviewResponse {

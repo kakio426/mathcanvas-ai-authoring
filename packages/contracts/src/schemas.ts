@@ -35,7 +35,8 @@ export const manipulationSchema = z.enum([
   "place-value-ten-exchange-drag",
   "pattern-block-repeat-unit-drag",
   "multiplication-array-choice-drag",
-  "probability-fraction-strip-drag"
+  "probability-fraction-strip-drag",
+  "claim-evidence-revision-drag"
 ]);
 export const gradeBandSchema = z.enum(["1-2", "3-4", "5-6"]);
 
@@ -109,6 +110,10 @@ export const generationRequestSchema = z
     schemaVersion: z.literal(CONTRACT_SCHEMA_VERSION),
     requestId: identifier,
     prompt: z.string().trim().min(5).max(2000),
+    requestedStandardCode: z
+      .string()
+      .regex(/^\[[246]수\d{2}-\d{2}\]$/)
+      .optional(),
     requestedGrade: z.number().int().min(1).max(6).optional(),
     problemCount: z.number().int().min(2).max(6).optional(),
     difficulty: difficultySchema.optional(),

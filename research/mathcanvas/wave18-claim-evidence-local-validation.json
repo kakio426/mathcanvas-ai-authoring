@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "checkedAt": "2026-08-02T00:00:00.000Z",
+  "validationLevel": "local-compiler-and-validator",
+  "liveMathCanvasSaveExecuted": false,
+  "note": "교사 화면을 가로채지 않고 추천, 문항 생성, 배치 해석, MathCanvas payload 컴파일, 생성 전 검증까지만 수행했다.",
+  "activities": [
+    {
+      "grade": 3,
+      "standardCode": "[4수01-06]",
+      "blueprintId": "number.division.quotient-remainder.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "8c25fad4ceda1186ab33f3848be0599b54b84971030a75b953b661c36cf4e10b",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 4,
+      "standardCode": "[4수03-24]",
+      "blueprintId": "measure.angle.turn-size.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "824c492c9ce62093266a02da91935f05fd6eaa3b609aa6c4787a90c0270ddb91",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 5,
+      "standardCode": "[6수01-01]",
+      "blueprintId": "number.mixed-calculation.order.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "845ddfc1d5013965df5609138516f68a0c738376426d8a0d16df6e2b1a6bf10b",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 6,
+      "standardCode": "[6수02-02]",
+      "blueprintId": "relation.ratio.same-unit.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "52daab3b900c93e46c190f7e18fdc325376f10982ea9f93b0ce47e253c032baf",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 3,
+      "standardCode": "[4수04-01]",
+      "blueprintId": "data.picture-graph.key.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "86fdbfb76f1607ed4ada57c47ac9e9e3012ca72063d0098caa4d65b3628925b5",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 4,
+      "standardCode": "[4수03-09]",
+      "blueprintId": "geometry.triangle.classification.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "a572e9df35fe518aaa630bf67a8e34cd9eac75e36582bc5148a9ad875608c30d",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 5,
+      "standardCode": "[6수03-02]",
+      "blueprintId": "geometry.symmetry.equal-distance.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "34f158d1c442ed58604175b1d751a3186032f9a961bdc26d9d6169570596da07",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    },
+    {
+      "grade": 6,
+      "standardCode": "[6수04-03]",
+      "blueprintId": "data.graph.purpose.claim-evidence-v1",
+      "blueprintVersion": "1.0.0",
+      "contentHash": "482fb40e5f5df66dea0d680f7127e9150d658c648c7317629960d9139f17cb8e",
+      "problemCount": 2,
+      "compiledObjectCount": 47,
+      "canCreate": true,
+      "errors": []
+    }
+  ]
+}
