@@ -169,6 +169,7 @@ export {
 export {
   CLAIM_EVIDENCE_GENERATOR_ID,
   CLAIM_EVIDENCE_GENERATOR_VERSION,
+  CLAIM_EVIDENCE_GENERATOR_V2_VERSION,
   generateClaimEvidenceItems
 } from "./item-generators/claim-evidence.js";
 export {

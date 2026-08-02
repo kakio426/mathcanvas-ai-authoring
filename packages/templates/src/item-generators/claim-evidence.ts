@@ -11,6 +11,7 @@ import { shuffled } from "./common-unit-pool.js";
 export const CLAIM_EVIDENCE_GENERATOR_ID =
   "curriculum.claim-evidence-items" as const;
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
+export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
 
 export function generateClaimEvidenceItems(
   parameters: {
@@ -20,20 +21,23 @@ export function generateClaimEvidenceItems(
   },
   seed: string
 ): ResolvedItem[] {
-  if (
-    parameters.difficulty !== "normal" ||
-    parameters.problemCount !== 2 ||
-    !parameters.profileId
-  ) {
-    throw new RangeError(
-      "주장-검증 활동은 지정된 프로필의 기본 난이도 2문항을 지원합니다."
-    );
+  if (!parameters.profileId) {
+    throw new RangeError("주장-검증 활동 프로필이 필요합니다.");
   }
   const profile = claimEvidenceActivityProfiles.find(
     (candidate) => candidate.profileId === parameters.profileId
   );
   if (!profile) {
     throw new Error(`claim-evidence-profile-missing:${parameters.profileId}`);
+  }
+  const expectedProblemCount = profile.presentation?.problemCount ?? 2;
+  if (
+    parameters.difficulty !== "normal" ||
+    parameters.problemCount !== expectedProblemCount
+  ) {
+    throw new RangeError(
+      `주장-검증 활동은 ${profile.profileId} 프로필의 기본 난이도 ${expectedProblemCount}문항을 지원합니다.`
+    );
   }
   const random = createSeededRandom(
     `${seed}:claim-evidence:${parameters.profileId}`
@@ -63,7 +67,9 @@ export function generateClaimEvidenceItems(
         },
         provenance: {
           generatorId: CLAIM_EVIDENCE_GENERATOR_ID,
-          generatorVersion: CLAIM_EVIDENCE_GENERATOR_VERSION,
+          generatorVersion: profile.presentation
+            ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
+            : CLAIM_EVIDENCE_GENERATOR_VERSION,
           seed
         }
       };

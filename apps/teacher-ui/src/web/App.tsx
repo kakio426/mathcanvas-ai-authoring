@@ -21,7 +21,7 @@ interface LessonForm {
   activityId: string;
   learningNeedId: string;
   contextNote: string;
-  problemCount: 2 | 4 | 6;
+  problemCount: 1 | 2 | 4 | 6;
 }
 
 class ApiClientError extends Error {

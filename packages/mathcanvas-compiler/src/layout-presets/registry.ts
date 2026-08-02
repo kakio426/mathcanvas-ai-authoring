@@ -19,6 +19,7 @@ import { wave17MultiplicationArrayLayoutPreset } from "./wave17-multiplication-a
 import { wave17ProbabilityBagLayoutPreset } from "./wave17-probability-bag-v1.js";
 import { wave19FactorPairArrayLayoutPreset } from "./wave19-factor-pair-array-v1.js";
 import { wave20PartialOperationLayoutPreset } from "./wave20-partial-operation-v1.js";
+import { wave21ClaimEvidenceV2LayoutPreset } from "./wave21-claim-evidence-v2.js";
 
 const presets: Readonly<Record<string, LayoutPreset>> = {
   "p1-frozen-v1": p1FrozenLayoutPreset,
@@ -45,7 +46,8 @@ const presets: Readonly<Record<string, LayoutPreset>> = {
   "wave17-multiplication-array-v1": wave17MultiplicationArrayLayoutPreset,
   "wave17-probability-bag-v1": wave17ProbabilityBagLayoutPreset,
   "wave19-factor-pair-array-v1": wave19FactorPairArrayLayoutPreset,
-  "wave20-partial-operation-v1": wave20PartialOperationLayoutPreset
+  "wave20-partial-operation-v1": wave20PartialOperationLayoutPreset,
+  "wave21-claim-evidence-v2": wave21ClaimEvidenceV2LayoutPreset
 };
 
 export function getLayoutPreset(id: string): LayoutPreset {

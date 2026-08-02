@@ -9,7 +9,8 @@ import {
 } from "@mathcanvas/curriculum";
 import {
   CLAIM_EVIDENCE_GENERATOR_ID,
-  CLAIM_EVIDENCE_GENERATOR_VERSION
+  CLAIM_EVIDENCE_GENERATOR_VERSION,
+  CLAIM_EVIDENCE_GENERATOR_V2_VERSION
 } from "../item-generators/claim-evidence.js";
 import {
   CHOICE_CARD_ROLES,
@@ -21,11 +22,17 @@ import {
 function makeClaimEvidenceBlueprint(
   profile: ClaimEvidenceActivityProfile
 ): ActivityBlueprint {
-  const instructions = [
-    "① 다른 사람의 생각 중 하나를 먼저 골라 놓으세요.",
-    `② ${profile.evidenceHeading}에서 수학적 관계가 맞는지 직접 확인하세요.`,
-    "③ 확인 결과가 다르면 선택을 고치고, 달라진 생각을 근거와 함께 쓰세요."
-  ] as const;
+  const presentation = profile.presentation;
+  const problemCount = presentation?.problemCount ?? 2;
+  const candidateRoles = CHOICE_CARD_ROLES.slice(
+    0,
+    presentation?.candidateCount ?? CHOICE_CARD_ROLES.length
+  );
+  const instructions = presentation?.instructions ?? [
+    "① 답 카드를 하나 골라 빈칸에 놓으세요.",
+    `② ${profile.evidenceHeading}의 자료로 답이 맞는지 확인하세요.`,
+    "③ 답을 바꿨다면, 무엇을 확인했는지 쓰세요."
+  ];
   const scaffold = makeChoiceExplanationScaffoldRoles({
     instructions,
     instructionalIntents: [
@@ -35,17 +42,34 @@ function makeClaimEvidenceBlueprint(
     ],
     questionIntent: "단원 핵심 개념에서 자주 갈리는 판단을 묻습니다.",
     predictionLabel: profile.predictionLabel,
-    poolLabel: "서로 다른 생각",
-    explanationLabel: profile.explanationLabel
+    poolLabel: presentation?.poolLabel ?? "답 카드",
+    explanationLabel: profile.explanationLabel,
+    ...(presentation
+      ? { candidateCount: presentation.candidateCount }
+      : {}),
+    centerCandidates: presentation?.candidateAlignment === "center",
+    ...(presentation
+      ? {
+          fontSizes: {
+            instruction: presentation.fontSizes.instruction,
+            question: presentation.fontSizes.question,
+            label: presentation.fontSizes.label,
+            candidate: presentation.fontSizes.candidate
+          }
+        }
+      : {})
   }).map((role) =>
     CHOICE_CARD_ROLES.includes(
       role.role as (typeof CHOICE_CARD_ROLES)[number]
-    )
+    ) && presentation?.candidateRenderer !== "formula"
       ? {
           ...role,
           toolKey: "common.text",
           intentKind: "text",
-          properties: { text: "", fontSize: 16 }
+          properties: {
+            text: "",
+            fontSize: presentation?.fontSizes.candidate ?? 16
+          }
         }
       : role
   );
@@ -53,7 +77,7 @@ function makeClaimEvidenceBlueprint(
   return defineActivityBlueprint({
     schemaVersion: "1.0.0",
     id: profile.activityId,
-    version: "1.0.0",
+    version: presentation ? "2.0.0" : "1.0.0",
     title: profile.title,
     learningObjective: profile.learningObjective,
     curriculumBinding: {
@@ -63,10 +87,12 @@ function makeClaimEvidenceBlueprint(
     },
     generator: {
       id: CLAIM_EVIDENCE_GENERATOR_ID,
-      version: CLAIM_EVIDENCE_GENERATOR_VERSION,
+      version: presentation
+        ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
+        : CLAIM_EVIDENCE_GENERATOR_VERSION,
       parameters: {
         profileId: profile.profileId,
-        problemCount: 2,
+        problemCount,
         difficulty: "normal"
       }
     },
@@ -97,7 +123,10 @@ function makeClaimEvidenceBlueprint(
         locked: true,
         movable: false,
         instructionalIntent: "무엇을 기준으로 검증할지 알려 줍니다.",
-        properties: { text: "", fontSize: 25 },
+        properties: {
+          text: "",
+          fontSize: presentation?.fontSizes.evidenceLabel ?? 25
+        },
         bindings: { text: "item.evidenceLabelText" },
         containerRole: "array-panel"
       },
@@ -112,20 +141,27 @@ function makeClaimEvidenceBlueprint(
         movable: false,
         instructionalIntent:
           "묶음, 같은 간격, 중간 계산 또는 같은 단위로 판단을 검증합니다.",
-        properties: { text: "", fontSize: 25 },
+        properties: {
+          text: "",
+          fontSize: presentation?.fontSizes.evidenceText ?? 25
+        },
         bindings: { text: "item.evidenceText" },
         containerRole: "array-panel"
       }
     ],
     layout: {
-      tokenSet: "wave17-multiplication-array-v1",
+      tokenSet:
+        presentation?.layoutTokenSet ??
+        "wave17-multiplication-array-v1",
       root: {
         id: "canvas",
         kind: "canvas",
         preset: "canvas.root",
         repeat: "once",
         children: [
-          ...makeChoiceExplanationScaffoldLayoutChildren(),
+          ...makeChoiceExplanationScaffoldLayoutChildren(
+            presentation?.candidateCount
+          ),
           layoutBlock("array-panel", "slot", "item.array-panel", "each-item"),
           layoutBlock("group-label", "slot", "item.group-label", "each-item"),
           layoutBlock("array-text", "slot", "item.array-text", "each-item")
@@ -136,7 +172,7 @@ function makeClaimEvidenceBlueprint(
       {
         id: "select-mathematical-claim",
         kind: "select-one-of",
-        sources: CHOICE_CARD_ROLES.map((role) => ({
+        sources: candidateRoles.map((role) => ({
           scope: "each-item" as const,
           role
         })),
@@ -151,7 +187,7 @@ function makeClaimEvidenceBlueprint(
         parameters: {
           mode: "select-one",
           decisionConstraintId: "select-mathematical-claim",
-          candidateRoles: CHOICE_CARD_ROLES,
+          candidateRoles,
           candidateProperty: "text",
           correctValuePath: "correctValueText",
           predictionRole: "prediction-box",
@@ -191,7 +227,7 @@ function makeClaimEvidenceBlueprint(
             "explanation-label",
             "group-label",
             "array-text",
-            ...CHOICE_CARD_ROLES
+            ...candidateRoles
           ],
           maximumFillRatio: 0.96
         }
@@ -200,7 +236,7 @@ function makeClaimEvidenceBlueprint(
         kind: "visual.labeled-pool-row",
         parameters: {
           labelRole: "pool-label",
-          memberRoles: CHOICE_CARD_ROLES,
+          memberRoles: candidateRoles,
           containerRole: "choice-panel",
           rowCenterTolerance: 2,
           gapTolerance: 2,
@@ -221,7 +257,7 @@ function makeClaimEvidenceBlueprint(
             "prediction-label",
             "prediction-box",
             "pool-label",
-            ...CHOICE_CARD_ROLES,
+            ...candidateRoles,
             "explanation-label",
             "explanation-box"
           ]
@@ -240,7 +276,7 @@ function makeClaimEvidenceBlueprint(
       studyLevel: "elementary",
       isShowMenuOnActivity: true
     },
-    variationDefaults: { problemCount: 2, difficulty: "normal" }
+    variationDefaults: { problemCount, difficulty: "normal" }
   });
 }
 

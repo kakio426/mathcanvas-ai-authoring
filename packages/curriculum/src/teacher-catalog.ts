@@ -46,8 +46,8 @@ export interface TeacherActivityOption {
   description: string;
   manipulation: NonNullable<GenerationRequest["manipulation"]>;
   promptSeed: string;
-  defaultProblemCount: 2 | 4;
-  availableProblemCounts: readonly (2 | 4 | 6)[];
+  defaultProblemCount: 1 | 2 | 4;
+  availableProblemCounts: readonly (1 | 2 | 4 | 6)[];
   learningNeeds: readonly TeacherLearningNeed[];
   availability: ActivitySupportState;
 }
@@ -514,8 +514,11 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
                 description: claimEvidenceProfile.activityDescription,
                 manipulation: CLAIM_EVIDENCE_MANIPULATION,
                 promptSeed: claimEvidenceProfile.promptSeed,
-                defaultProblemCount: 2 as const,
-                availableProblemCounts: [2] as const,
+                defaultProblemCount:
+                  claimEvidenceProfile.presentation?.problemCount ?? 2,
+                availableProblemCounts: [
+                  claimEvidenceProfile.presentation?.problemCount ?? 2
+                ],
                 learningNeeds: claimEvidenceProfile.learningNeeds,
                 availability:
                   getActivitySupportState(claimEvidenceProfile.activityId) ??

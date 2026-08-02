@@ -8,7 +8,9 @@ export interface ClaimEvidenceItemSeed {
   readonly evidenceLabelText: string;
   readonly evidenceText: string;
   readonly correctValueText: string;
-  readonly candidates: readonly [string, string, string, string, string];
+  readonly candidates:
+    | readonly [string, string, string, string]
+    | readonly [string, string, string, string, string];
   readonly answerExplanation: string;
 }
 
@@ -42,6 +44,23 @@ export interface ClaimEvidenceActivityProfile {
     description: string;
     promptDetail: string;
   }[];
+  readonly presentation?: {
+    readonly problemCount: 1 | 2;
+    readonly candidateCount: 4 | 5;
+    readonly layoutTokenSet: string;
+    readonly poolLabel: string;
+    readonly candidateRenderer: "text" | "formula";
+    readonly candidateAlignment: "start" | "center";
+    readonly fontSizes: {
+      readonly instruction: number;
+      readonly question: number;
+      readonly label: number;
+      readonly candidate: number;
+      readonly evidenceLabel: number;
+      readonly evidenceText: number;
+    };
+    readonly instructions: readonly [string, string, string];
+  };
   readonly items: readonly ClaimEvidenceItemSeed[];
 }
 
@@ -190,17 +209,17 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     gradeBand: "5-6",
     recommendedGrade: 5,
     domain: "수와 연산",
-    title: "계산 순서를 선택하고 중간 값으로 검증하기",
+    title: "혼합 계산 순서를 정하고 답 확인하기",
     learningObjective:
       "자연수의 혼합 계산에서 계산 순서를 판단하고 중간 계산을 근거로 설명할 수 있다.",
     officialGoal: "덧셈, 뺄셈, 곱셈, 나눗셈의 혼합 계산에서 계산하는 순서를 알고, 혼합 계산을 할 수 있다.",
     activityLabel: "혼합 계산의 계산 순서",
     activityDescription:
-      "왼쪽부터 무조건 계산하지 않고 식의 구조를 보고 순서를 정한 뒤 중간 값으로 확인해요.",
+      "계산 결과를 먼저 고른 뒤, 중간 계산을 직접 써 보며 계산 순서를 확인해요.",
     promptSeed: "자연수의 혼합 계산에서 계산 순서를 판단하고 중간 계산으로 검증하는 활동",
-    predictionLabel: "처음 계산 결과",
-    evidenceHeading: "중간 계산으로 확인하기",
-    explanationLabel: "계산 순서 쓰기",
+    predictionLabel: "내가 고른 답",
+    evidenceHeading: "중간 계산",
+    explanationLabel: "계산 순서와 까닭",
     misconceptionConflict:
       "모든 연산을 왼쪽부터 하거나 덧셈을 곱셈보다 먼저 하는 생각을 단계별 중간 계산과 충돌시킨다.",
     verificationInvariant:
@@ -222,29 +241,50 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
         promptDetail: "곱셈과 나눗셈이 함께 있을 때 왼쪽 연산부터 단계별로 확인하게 한다."
       }
     ],
+    presentation: {
+      problemCount: 1,
+      candidateCount: 4,
+      layoutTokenSet: "wave21-claim-evidence-v2",
+      poolLabel: "계산 결과 카드",
+      candidateRenderer: "formula",
+      candidateAlignment: "center",
+      fontSizes: {
+        instruction: 40,
+        question: 52,
+        label: 38,
+        candidate: 70,
+        evidenceLabel: 38,
+        evidenceText: 42
+      },
+      instructions: [
+        "① 식을 보고 계산 결과 카드를 하나 골라 ‘내가 고른 답’에 놓으세요.",
+        "② ‘중간 계산’의 빈칸을 계산 순서대로 채워 답을 확인하세요.",
+        "③ 답을 바꿨다면, 바꾼 까닭을 계산 순서와 함께 쓰세요."
+      ]
+    },
     items: [
       {
-        questionText: "48 ÷ 6 × 3 + 5의 계산 결과는 몇인가요?",
-        evidenceLabelText: "같은 순위는 왼쪽부터",
-        evidenceText: "나눗셈과 곱셈은 같은 순위입니다.\n같은 순위는 왼쪽부터 계산합니다.",
+        questionText: "48 ÷ 6 × 3 + 5의 계산 결과는 무엇일까요?",
+        evidenceLabelText: "중간 계산",
+        evidenceText: "48 ÷ 6 = □\n□ × 3 = □\n□ + 5 = □",
         correctValueText: "29",
-        candidates: ["29", "13", "8", "24", "53"],
+        candidates: ["29", "13", "24", "53"],
         answerExplanation: "나눗셈과 곱셈을 왼쪽부터 계산한 뒤 5를 더하면 29입니다."
       },
       {
-        questionText: "72 - 8 × 6 + 4의 계산 결과는 몇인가요?",
-        evidenceLabelText: "곱셈을 먼저",
-        evidenceText: "곱셈을 덧셈·뺄셈보다 먼저 계산합니다.\n남은 덧셈·뺄셈은 왼쪽부터 계산합니다.",
+        questionText: "72 - 8 × 6 + 4의 계산 결과는 무엇일까요?",
+        evidenceLabelText: "중간 계산",
+        evidenceText: "8 × 6 = □\n72 - □ + 4 = □",
         correctValueText: "28",
-        candidates: ["28", "388", "20", "68", "24"],
+        candidates: ["28", "388", "20", "24"],
         answerExplanation: "8×6을 먼저 계산하고 뺄셈과 덧셈을 왼쪽부터 계산하면 28입니다."
       },
       {
-        questionText: "(36 + 12) ÷ 6 × 2의 계산 결과는 몇인가요?",
-        evidenceLabelText: "괄호를 먼저",
-        evidenceText: "괄호 안을 먼저 계산합니다.\n나눗셈과 곱셈은 왼쪽부터 계산합니다.",
+        questionText: "(36 + 12) ÷ 6 × 2의 계산 결과는 무엇일까요?",
+        evidenceLabelText: "중간 계산",
+        evidenceText: "36 + 12 = □\n□ ÷ 6 = □\n□ × 2 = □",
         correctValueText: "16",
-        candidates: ["16", "38", "10", "4", "96"],
+        candidates: ["16", "38", "4", "96"],
         answerExplanation: "괄호 안을 먼저 계산하고 나눗셈과 곱셈을 왼쪽부터 계산하면 16입니다."
       }
     ]

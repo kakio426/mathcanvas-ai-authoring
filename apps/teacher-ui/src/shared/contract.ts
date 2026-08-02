@@ -42,8 +42,8 @@ export interface CurriculumActivityOption {
   id: string;
   label: string;
   description: string;
-  defaultProblemCount: 2 | 4;
-  availableProblemCounts: Array<2 | 4 | 6>;
+  defaultProblemCount: 1 | 2 | 4;
+  availableProblemCounts: Array<1 | 2 | 4 | 6>;
   learningNeeds: CurriculumLearningNeedOption[];
   availability: "verified" | "released";
 }

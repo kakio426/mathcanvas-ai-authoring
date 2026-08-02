@@ -21,10 +21,33 @@ export const PLACE_VALUE_MODEL_RENDERED_DIAMETER = 120;
 // with an oversized layout token, so collision checks must use the real card.
 export const NUMBER_CARD_RENDERED_SIZE = 80;
 
+function centeredLatexWidth(
+  intent: Extract<NativeToolIntent, { kind: "latex" }>,
+  maximumWidth: number
+): number {
+  const visibleText = intent.text
+    .replace(/\\[a-zA-Z]+/g, "")
+    .replace(/[{}]/g, "");
+  const fontSize = intent.fontSize ?? 52;
+  return Math.min(
+    maximumWidth,
+    Math.max(fontSize, visibleText.length * fontSize * 0.62)
+  );
+}
+
 export function resolveNativeRenderedBounds(
   intent: NativeToolIntent,
   placement: NativeToolPlacement
 ): NativeRenderedBounds {
+  if (intent.kind === "latex" && intent.centerInPlacement) {
+    const width = centeredLatexWidth(intent, placement.width);
+    return {
+      x: placement.x + (placement.width - width) / 2,
+      y: placement.y,
+      width,
+      height: placement.height
+    };
+  }
   if (intent.kind === "fraction-model") {
     const { numerator, denominator } = intent.fraction;
     if (

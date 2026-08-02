@@ -1,0 +1,50 @@
+{
+  "blueprintContentHash": "52bcd9814a31f8a75e49b3fc97a81719ec39826a662945e73be17c0d73893317",
+  "blueprintId": "number.mixed-calculation.order.claim-evidence-v1",
+  "blueprintVersion": "2.0.0",
+  "categoryUnit": "Unit01",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-claim-and-check-evidence",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": null,
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 0,
+    "minimumMovedGap": null,
+    "moveDistance": 201.967529296875,
+    "movedPairOverlapCount": 0,
+    "movedRoleCount": 1,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "1392495fc0fbcb7dbf414810ed7eed1370c3daad48252b18945269fd7d1c151b",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-02T14:43:09.683Z",
+  "payloadHash": "d4c0f7754764d73ea50f4528250562a7688e632ef0208d151c1362548c47c805",
+  "persistedShape": {
+    "arrayTextCount": 1,
+    "candidateCount": 4,
+    "fractionModuleActive": false,
+    "fractionStripCount": 0,
+    "objectCount": 23,
+    "patternBlockCount": 0,
+    "patternModuleActive": false
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave18/mixed-calculation-order.png",
+  "probeId": "wave18-mixed-calculation-order-release-canary-v1",
+  "problemCount": 1,
+  "projectReferenceHash": "2e9d0682f56fc2ac3f9ea24986dd9f4a7ea008c93bc3bbf514e5da28bd2e396f",
+  "releasedTools": [],
+  "reopenShape": {
+    "explanationBoxCount": 1,
+    "idCount": 51,
+    "predictionBoxCount": 1,
+    "sourceRoleCount": 1,
+    "targetRoleCount": 1
+  },
+  "reusedExisting": false,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

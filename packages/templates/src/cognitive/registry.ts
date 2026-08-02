@@ -21,6 +21,13 @@ const claimEvidenceManifests = Object.fromEntries(
     if (!profile) {
       throw new Error(`claim-evidence-profile-missing:${blueprint.id}`);
     }
+    const candidateRoles = [
+      "position-card-1",
+      "position-card-2",
+      "position-card-3",
+      "position-card-4",
+      "position-card-5"
+    ].slice(0, profile.presentation?.candidateCount ?? 5);
     return [
       blueprint.id,
       defineCognitiveDemandManifest({
@@ -29,7 +36,7 @@ const claimEvidenceManifests = Object.fromEntries(
         blueprintVersion: blueprint.version,
         blueprintContentHash: blueprint.contentHash,
         mathematicalDecision:
-          "학생은 단원 핵심 상황에 대한 서로 다른 다섯 주장 중 하나를 근거를 보기 전에 선택한다.",
+          `학생은 단원 핵심 상황에 대한 서로 다른 ${candidateRoles.length}개 주장 중 하나를 근거를 보기 전에 선택한다.`,
         misconceptionConflict: profile.misconceptionConflict,
         learningMap: {
           repository: "DECK6/korean-elementary-learning-map",
@@ -51,13 +58,7 @@ const claimEvidenceManifests = Object.fromEntries(
         decision: {
           mode: "select-one",
           constraintId: "select-mathematical-claim",
-          candidateRoles: [
-            "position-card-1",
-            "position-card-2",
-            "position-card-3",
-            "position-card-4",
-            "position-card-5"
-          ],
+          candidateRoles,
           candidateProperty: "text",
           correctValuePath: "correctValueText",
           distractors: [
@@ -78,7 +79,7 @@ const claimEvidenceManifests = Object.fromEntries(
         },
         explanation: { regionRole: "explanation-box" },
         revisionPath:
-          "다섯 생각 카드는 계속 움직일 수 있으며, 검증 근거와 맞지 않으면 처음 선택을 고치고 달라진 생각을 기록한다.",
+          `${candidateRoles.length}개 생각 카드는 계속 움직일 수 있으며, 검증 근거와 맞지 않으면 처음 선택을 고치고 달라진 생각을 기록한다.`,
         limitations: {
           autoGrading: "none-by-design",
           phaseOrder: "teacher-guided"

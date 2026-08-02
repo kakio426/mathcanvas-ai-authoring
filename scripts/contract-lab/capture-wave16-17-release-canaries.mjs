@@ -85,8 +85,11 @@ const claimEvidenceCases = claimEvidenceActivityProfiles.map((profile) => {
   }
   return {
     probeId: `wave18-${profile.profileId}-release-canary-v1`,
-    seed: `wave18-${profile.profileId}-release-v1`,
+    seed: profile.presentation
+      ? `wave21-${profile.profileId}-readable-release-v4`
+      : `wave18-${profile.profileId}-release-v1`,
     blueprint,
+    problemCount: profile.presentation?.problemCount ?? 2,
     standardCode: profile.standardCode,
     grade: profile.recommendedGrade,
     manipulation: "claim-evidence-revision-drag",
@@ -125,7 +128,7 @@ function prepareCase(entry) {
     standardCode: curriculum.record.code,
     learningGoal: entry.blueprint.learningObjective,
     prerequisites: curriculum.record.prerequisites,
-    problemCount: 2,
+    problemCount: entry.problemCount ?? 2,
     difficulty: "normal",
     ...(entry.blueprint.id === probabilityBagComparisonBlueprint.id ? { denominatorRelation: "mixed" } : {}),
     manipulation: entry.manipulation,
@@ -144,7 +147,17 @@ function prepareCase(entry) {
   const resolved = resolveActivity(plan);
   const compiled = compileActivity(resolved);
   const validation = validateForCreation(resolved, compiled, new Date(generatedAt));
-  if (!validation.canCreate) throw new Error(`${entry.probeId}-local-validation-failed`);
+  if (!validation.canCreate) {
+    throw new Error(
+      `${entry.probeId}-local-validation-failed:${JSON.stringify(
+        validation.issues.map(({ code, role, message }) => ({
+          code,
+          role,
+          message
+        }))
+      )}`
+    );
+  }
   return { plan, resolved, compiled, validation };
 }
 
@@ -209,7 +222,12 @@ try {
     );
 
     let blockedProjectWriteRequestCount = 0;
-    const context = await authSession.newContext({ viewport: { width: 1700, height: 2100 } });
+    const context = await authSession.newContext({
+      viewport: {
+        width: 1700,
+        height: (entry.problemCount ?? 2) === 1 ? 1300 : 2100
+      }
+    });
     try {
       await context.route("**/*", async (route) => {
         const method = route.request().method().toUpperCase();
@@ -247,6 +265,21 @@ try {
       }
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
+
+      const initialPreviewOutput = join(
+        repositoryRoot,
+        ".mathcanvas-contract-lab",
+        "previews",
+        entry.previewName.replace(/\.png$/, "-initial.png")
+      );
+      mkdirSync(dirname(initialPreviewOutput), {
+        recursive: true,
+        mode: 0o700
+      });
+      await page.screenshot({
+        path: initialPreviewOutput,
+        fullPage: true
+      });
 
       const persistedShape = await page.evaluate(async (projectId) => {
         const response = await fetch(`/api/project/${encodeURIComponent(projectId)}`, { credentials: "include", cache: "no-store" });
@@ -318,7 +351,11 @@ try {
         targetBoxes.push(target);
       }
       await page.keyboard.press("Escape");
-      await page.mouse.click(1500, 1800);
+      const viewport = page.viewportSize();
+      await page.mouse.click(
+        Math.max(50, (viewport?.width ?? 1700) - 120),
+        Math.max(50, (viewport?.height ?? 2100) - 120)
+      );
       await page.waitForTimeout(150);
       movedBoxes.length = 0;
       for (const step of interactionSteps) {
@@ -425,7 +462,9 @@ try {
       mkdirSync(dirname(evidenceOutput), { recursive: true, mode: 0o700 });
       writeFileSync(evidenceOutput, stableJson(evidence), { encoding: "utf8", mode: 0o600 });
       writeFileSync(rawOutput, stableJson({ schemaVersion: "1.0.0", observedAt: evidence.observedAt, payloadHash: prepared.compiled.payloadHash, creation }), { encoding: "utf8", mode: 0o600 });
-      process.stdout.write(`PASS ${entry.probeId} ${creation.editorUrl}\nPREVIEW ${previewOutput}\n`);
+      process.stdout.write(
+        `PASS ${entry.probeId} ${creation.editorUrl}\nINITIAL ${initialPreviewOutput}\nPREVIEW ${previewOutput}\n`
+      );
     } finally {
       await context.close();
     }

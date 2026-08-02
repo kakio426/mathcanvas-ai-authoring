@@ -349,7 +349,7 @@ async function handleApi(
       requestedGrade !== unit.grade ||
       !unit.standardCodes.includes(standard.standardCode) ||
       !unit.activityIds.includes(activityOption.id) ||
-      !activityOption.availableProblemCounts.includes(problemCount as 2 | 4 | 6)
+      !activityOption.availableProblemCounts.includes(problemCount as 1 | 2 | 4 | 6)
     ) {
       error(response, 400, "invalid_lesson", "학년, 단원, 성취기준과 학생의 어려움을 다시 확인해 주세요.");
       return;

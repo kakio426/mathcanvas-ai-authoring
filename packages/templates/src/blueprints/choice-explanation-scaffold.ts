@@ -47,7 +47,11 @@ const choiceBackdropRole = (index: number) => ({
   containerRole: "choice-panel"
 });
 
-const choiceCardRole = (index: number) => ({
+const choiceCardRole = (
+  index: number,
+  fontSize = 32,
+  candidateCount = 5
+) => ({
   role: `position-card-${index}`,
   scope: "each-item" as const,
   layoutRole: `position-card-${index}`,
@@ -57,8 +61,10 @@ const choiceCardRole = (index: number) => ({
   locked: false,
   movable: true,
   instructionalIntent:
-    "오개념을 포함한 다섯 생각 중 하나를 먼저 고르게 합니다.",
-  properties: { text: "", fontSize: 32 },
+    candidateCount === 5
+      ? "오개념을 포함한 다섯 생각 중 하나를 먼저 고르게 합니다."
+      : "오개념을 포함한 네 생각 중 하나를 먼저 고르게 합니다.",
+  properties: { text: "", fontSize },
   bindings: { text: `item.candidate${index}Latex` },
   containerRole: "choice-panel"
 });
@@ -70,7 +76,19 @@ export function makeChoiceExplanationScaffoldRoles(input: {
   readonly predictionLabel: string;
   readonly poolLabel: string;
   readonly explanationLabel: string;
+  readonly candidateCount?: 4 | 5;
+  readonly centerCandidates?: boolean;
+  readonly fontSizes?: {
+    readonly instruction?: number;
+    readonly question?: number;
+    readonly label?: number;
+    readonly candidate?: number;
+  };
 }) {
+  const candidateRoles = CHOICE_CARD_ROLES.slice(
+    0,
+    input.candidateCount ?? CHOICE_CARD_ROLES.length
+  );
   return [
     ...input.instructions.map((text, index) => ({
       role: [
@@ -94,7 +112,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       locked: true,
       movable: false,
       instructionalIntent: input.instructionalIntents[index]!,
-      properties: { text, fontSize: 31 },
+      properties: {
+        text,
+        fontSize: input.fontSizes?.instruction ?? 31
+      },
       bindings: {}
     })),
     {
@@ -135,7 +156,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       locked: true,
       movable: false,
       instructionalIntent: input.questionIntent,
-      properties: { text: "", fontSize: 27 },
+      properties: {
+        text: "",
+        fontSize: input.fontSizes?.question ?? 27
+      },
       bindings: { text: "item.questionText" },
       containerRole: "work-panel"
     },
@@ -149,7 +173,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       locked: true,
       movable: false,
       instructionalIntent: "조작 전에 고른 답을 놓을 곳을 알립니다.",
-      properties: { text: input.predictionLabel, fontSize: 23 },
+      properties: {
+        text: input.predictionLabel,
+        fontSize: input.fontSizes?.label ?? 23
+      },
       bindings: {},
       containerRole: "work-panel"
     },
@@ -180,7 +207,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       intentKind: "draw-rectangle" as const,
       locked: true,
       movable: false,
-      instructionalIntent: "서로 다른 다섯 생각을 한데 묶습니다.",
+      instructionalIntent:
+        candidateRoles.length === 5
+          ? "서로 다른 다섯 생각을 한데 묶습니다."
+          : "서로 다른 네 생각을 한데 묶습니다.",
       properties: { fill: "#FFFFFF", stroke: "#B2BFCE" },
       bindings: {},
       containerRole: "work-panel"
@@ -195,14 +225,32 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       locked: true,
       movable: false,
       instructionalIntent: "학생이 고를 수 있는 답을 안내합니다.",
-      properties: { text: input.poolLabel, fontSize: 23 },
+      properties: {
+        text: input.poolLabel,
+        fontSize: input.fontSizes?.label ?? 23
+      },
       bindings: {},
       containerRole: "choice-panel"
     },
-    ...CHOICE_CARD_ROLES.map((_, index) =>
+    ...candidateRoles.map((_, index) =>
       choiceBackdropRole(index + 1)
     ),
-    ...CHOICE_CARD_ROLES.map((_, index) => choiceCardRole(index + 1)),
+    ...candidateRoles.map((_, index) => {
+      const role = choiceCardRole(
+        index + 1,
+        input.fontSizes?.candidate,
+        candidateRoles.length
+      );
+      return input.centerCandidates
+        ? {
+            ...role,
+            properties: {
+              ...role.properties,
+              centerInPlacement: true
+            }
+          }
+        : role;
+    }),
     {
       role: "explanation-label",
       scope: "each-item" as const,
@@ -213,7 +261,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
       locked: true,
       movable: false,
       instructionalIntent: "조작으로 확인한 까닭을 쓰게 합니다.",
-      properties: { text: input.explanationLabel, fontSize: 23 },
+      properties: {
+        text: input.explanationLabel,
+        fontSize: input.fontSizes?.label ?? 23
+      },
       bindings: {},
       containerRole: "work-panel"
     },
@@ -239,7 +290,10 @@ export function makeChoiceExplanationScaffoldRoles(input: {
   ];
 }
 
-export function makeChoiceExplanationScaffoldLayoutChildren() {
+export function makeChoiceExplanationScaffoldLayoutChildren(
+  candidateCount: number = CHOICE_CARD_ROLES.length
+) {
+  const candidateRoles = CHOICE_CARD_ROLES.slice(0, candidateCount);
   return [
     layoutBlock("instruction-predict", "row", "header.primary", "once"),
     layoutBlock("instruction-verify", "row", "header.secondary", "once"),
@@ -261,7 +315,7 @@ export function makeChoiceExplanationScaffoldLayoutChildren() {
     ),
     layoutBlock("choice-panel", "band", "item.choice-panel", "each-item"),
     layoutBlock("pool-label", "slot", "item.pool-label", "each-item"),
-    ...CHOICE_CARD_ROLES.map((role) =>
+    ...candidateRoles.map((role) =>
       layoutBlock(
         `${role}-backdrop`,
         "slot",
@@ -269,7 +323,7 @@ export function makeChoiceExplanationScaffoldLayoutChildren() {
         "each-item"
       )
     ),
-    ...CHOICE_CARD_ROLES.map((role) =>
+    ...candidateRoles.map((role) =>
       layoutBlock(
         role,
         "slot",

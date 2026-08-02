@@ -62,6 +62,7 @@ export type LatexIntent = {
   readonly toolKey: "common.formula";
   readonly text: string;
   readonly fontSize?: number;
+  readonly centerInPlacement?: boolean;
 };
 
 export type RectangleIntent = {

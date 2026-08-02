@@ -44,6 +44,7 @@ function templateDefinition(
   blueprint: ActivityBlueprint,
   options: {
     readonly supportedGradeBands: readonly ("1-2" | "3-4" | "5-6")[];
+    readonly minimumProblemCount?: number;
     readonly maximumProblemCount: number;
     readonly requiredModules: readonly string[];
   }
@@ -56,7 +57,7 @@ function templateDefinition(
       blueprint.curriculumBinding.standardCode
     ],
     supportedProblemCount: {
-      min: 2,
+      min: options.minimumProblemCount ?? 2,
       max: options.maximumProblemCount
     },
     requiredModules: options.requiredModules,
@@ -294,8 +295,13 @@ export const claimEvidenceTemplateDefinitions = Object.fromEntries(
       blueprint.id,
       templateDefinition(blueprint, {
         supportedGradeBands: [profile.gradeBand],
+        minimumProblemCount:
+          profile.presentation?.problemCount ?? 2,
         maximumProblemCount: 2,
-        requiredModules: ["input-text", "drawElem"]
+        requiredModules:
+          profile.presentation?.candidateRenderer === "formula"
+            ? ["input-text", "math-latex", "drawElem"]
+            : ["input-text", "drawElem"]
       })
     ];
   })

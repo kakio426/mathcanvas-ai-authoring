@@ -106,7 +106,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
         .object({
           prompt: z.string().min(5).max(2000),
           requestedGrade: z.number().int().min(1).max(6).optional(),
-          problemCount: z.number().int().min(2).max(6).optional(),
+          problemCount: z.number().int().min(1).max(6).optional(),
           difficulty: z.enum(["easy", "normal", "hard"]).optional(),
           denominatorRelation: z
             .enum(["mixed", "coprime", "multiple"])

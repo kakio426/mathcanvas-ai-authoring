@@ -7,7 +7,10 @@ export const claimEvidenceVariationEnvelopes =
       schemaVersion: "1.0.0",
       blueprintId: profile.activityId,
       knobs: [],
-      pinned: { problemCount: 2, difficulty: "normal" },
+      pinned: {
+        problemCount: profile.presentation?.problemCount ?? 2,
+        difficulty: "normal"
+      },
       expectedCombinationCount: 1
     })
   );

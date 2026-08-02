@@ -458,20 +458,21 @@ export function makeLatexObject(
   placement: NativeToolPlacement
 ): Record<string, unknown> {
   const fontSize = intent.fontSize ?? 52;
+  const rendered = resolveNativeRenderedBounds(intent, placement);
   return {
     ...objectCommon,
-    x: placement.x,
-    y: placement.y,
-    _x: placement.x,
-    _y: placement.y,
+    x: rendered.x,
+    y: rendered.y,
+    _x: rendered.x,
+    _y: rendered.y,
     cx: 0,
     cy: 0,
     id: placement.id,
     fill: "transparent",
     text: intent.text,
     svgId: "math-latex",
-    width: placement.width,
-    height: placement.height,
+    width: rendered.width,
+    height: rendered.height,
     parent: null,
     isEyeOn: false,
     fontSize,

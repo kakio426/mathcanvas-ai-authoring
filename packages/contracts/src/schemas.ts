@@ -117,7 +117,7 @@ export const generationRequestSchema = z
       .regex(/^\[[246]수\d{2}-\d{2}\]$/)
       .optional(),
     requestedGrade: z.number().int().min(1).max(6).optional(),
-    problemCount: z.number().int().min(2).max(6).optional(),
+    problemCount: z.number().int().min(1).max(6).optional(),
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
@@ -136,7 +136,7 @@ export const recommendationSchema = z
     standardCode: z.string().optional(),
     learningGoal: z.string().min(1).max(500).optional(),
     prerequisites: z.array(z.string().min(1).max(500)).max(12),
-    problemCount: z.number().int().min(2).max(6).optional(),
+    problemCount: z.number().int().min(1).max(6).optional(),
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
@@ -147,7 +147,7 @@ export const recommendationSchema = z
     unsupportedRequests: z.array(z.string().min(1).max(500)).max(8).optional(),
     t0Proposal: z
       .object({
-        problemCount: z.number().int().min(2).max(6),
+        problemCount: z.number().int().min(1).max(6),
         difficulty: difficultySchema,
         denominatorRelation: denominatorRelationSchema.optional()
       })

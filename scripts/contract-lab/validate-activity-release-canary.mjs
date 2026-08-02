@@ -52,7 +52,7 @@ export function validateActivityReleaseCanaryEvidence(
       evidence?.categoryUnit
     ) ||
     !Number.isInteger(itemCount) ||
-    itemCount < 2 ||
+    itemCount < 1 ||
     itemCount > 4 ||
     !Number.isInteger(persisted?.objectCount) ||
     persisted.objectCount < 1 ||
@@ -1144,7 +1144,9 @@ export function validateActivityReleaseCanaryEvidence(
     },
     "number.mixed-calculation.order.claim-evidence-v1": {
       probeId: "wave18-mixed-calculation-order-release-canary-v1",
-      categoryUnit: "Unit01"
+      categoryUnit: "Unit01",
+      problemCount: 1,
+      candidateCount: 4
     },
     "relation.ratio.same-unit.claim-evidence-v1": {
       probeId: "wave18-ratio-same-unit-release-canary-v1",
@@ -1174,10 +1176,11 @@ export function validateActivityReleaseCanaryEvidence(
     if (
       evidence.probeId !== wave18ClaimEvidence.probeId ||
       evidence.categoryUnit !== wave18ClaimEvidence.categoryUnit ||
-      itemCount !== 2 ||
+      itemCount !== (wave18ClaimEvidence.problemCount ?? 2) ||
       JSON.stringify(evidence.releasedTools) !== "[]" ||
       persisted?.arrayTextCount !== itemCount ||
-      persisted?.candidateCount !== itemCount * 5 ||
+      persisted?.candidateCount !==
+        itemCount * (wave18ClaimEvidence.candidateCount ?? 5) ||
       shape?.sourceRoleCount !== itemCount ||
       shape?.targetRoleCount !== itemCount ||
       shape?.predictionBoxCount !== itemCount ||
