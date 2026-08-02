@@ -11,6 +11,8 @@ import {
 } from "../../packages/curriculum/dist/index.js";
 import {
   assertCognitiveManifestBound,
+  enumerateRegisteredVariationEnvelope,
+  generateBlueprintItems,
   listCognitiveDemandManifests,
   listRegisteredBlueprints
 } from "../../packages/templates/dist/index.js";
@@ -54,6 +56,57 @@ const flattenLayoutBlocks = (block) => [
   block,
   ...block.children.flatMap(flattenLayoutBlocks)
 ];
+
+const sameValue = (left, right) =>
+  JSON.stringify(left) === JSON.stringify(right);
+
+const containsVisibleAnswer = (value, answer) => {
+  if (sameValue(value, answer)) return true;
+  if (
+    typeof value === "string" &&
+    (typeof answer === "string" || typeof answer === "number")
+  ) {
+    const visible = value.normalize("NFKC").toLowerCase().replace(/\s+/gu, "");
+    const expected = String(answer)
+      .normalize("NFKC")
+      .toLowerCase()
+      .replace(/\s+/gu, "");
+    if (expected.length > 0) {
+      if (/^[+-]?\d+(?:[.,]\d+)?$/u.test(expected)) {
+        const escaped = expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if (
+          new RegExp(
+            `(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`,
+            "u"
+          ).test(visible)
+        ) {
+          return true;
+        }
+      } else if (visible.includes(expected)) {
+        return true;
+      }
+    }
+  }
+  if (!value || typeof value !== "object") return false;
+  return Object.values(value).some((entry) =>
+    containsVisibleAnswer(entry, answer)
+  );
+};
+
+const itemBindingValue = (item, binding) => {
+  if (!binding.startsWith("item.")) return undefined;
+  return binding
+    .slice("item.".length)
+    .split(".")
+    .reduce(
+      (value, key) =>
+        value && typeof value === "object" ? value[key] : undefined,
+      item.values
+    );
+};
+
+const isLearnerTextProperty = (property) =>
+  /(?:text|latex|label|title|expression)$/iu.test(property);
 
 for (const gateId of COGNITIVE_GATE_IDS) {
   const docs = await readFile(
@@ -427,6 +480,36 @@ for (const manifest of manifests) {
       )
   );
   if (boundAnswer) {
+    failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
+  }
+  const decisionRoles = new Set(decisionMemberRoles);
+  const resolvedAnswerVisible =
+    enumerateRegisteredVariationEnvelope(blueprint.id).some(
+      (variation, variationIndex) =>
+        generateBlueprintItems(
+          blueprint,
+          `cognitive-answer-${blueprint.id}-${variationIndex + 1}`,
+          variation
+        ).some((item) => {
+          const answer = item.values[answerPath];
+          if (answer === undefined) return true;
+          return blueprint.toolRoles.some(
+            (role) =>
+              role.locked &&
+              !decisionRoles.has(role.role) &&
+              (sameValue(role.properties.text, answer) ||
+                Object.entries(role.bindings).some(
+                  ([property, binding]) =>
+                    isLearnerTextProperty(property) &&
+                    containsVisibleAnswer(
+                      itemBindingValue(item, binding),
+                      answer
+                    )
+                ))
+          );
+        })
+    );
+  if (resolvedAnswerVisible) {
     failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
   }
 

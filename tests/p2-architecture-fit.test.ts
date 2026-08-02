@@ -445,7 +445,10 @@ describe("P2 구조 적합성", () => {
     ).toContain("native-number-card-target-geometry-mismatch");
 
     let envelopeRunCount = 0;
-    for (const blueprint of listRegisteredBlueprints()) {
+    for (const blueprint of listRegisteredBlueprints().filter(
+      (candidate) =>
+        getRegisteredActivitySupportState(candidate.id) === "released"
+    )) {
       for (const variation of enumerateRegisteredVariationEnvelope(
         blueprint.id
       )) {

@@ -160,7 +160,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "한 변이 3시 방향이고 다른 변이 5시 방향일 때 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "3시 → 4시 → 5시\n같은 간격 2칸 × 30° = 60°",
+        evidenceText: "시계 한 칸 = 30°\n3시에서 5시까지 작은 쪽의 칸 수를 세어 보세요.",
         correctValueText: "60°",
         candidates: ["60°", "30°", "90°", "120°", "150°"],
         answerExplanation: "3시 방향에서 5시 방향까지 같은 간격 두 칸이므로 60°입니다."
@@ -168,7 +168,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "한 변이 12시 방향이고 다른 변이 4시 방향일 때 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "12시 → 1시 → 2시 → 3시 → 4시\n같은 간격 4칸 × 30° = 120°",
+        evidenceText: "시계 한 칸 = 30°\n12시에서 4시까지 작은 쪽의 칸 수를 세어 보세요.",
         correctValueText: "120°",
         candidates: ["120°", "90°", "60°", "150°", "180°"],
         answerExplanation: "12시 방향에서 4시 방향까지 같은 간격 네 칸이므로 120°입니다."
@@ -176,7 +176,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "한 변이 8시 방향이고 다른 변이 11시 방향일 때 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "8시 → 9시 → 10시 → 11시\n같은 간격 3칸 × 30° = 90°",
+        evidenceText: "시계 한 칸 = 30°\n8시에서 11시까지 작은 쪽의 칸 수를 세어 보세요.",
         correctValueText: "90°",
         candidates: ["90°", "60°", "120°", "30°", "150°"],
         answerExplanation: "8시 방향에서 11시 방향까지 같은 간격 세 칸이므로 90°입니다."
@@ -226,7 +226,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "48 ÷ 6 × 3 + 5의 계산 결과는 몇인가요?",
         evidenceLabelText: "같은 순위는 왼쪽부터",
-        evidenceText: "48 ÷ 6 × 3 + 5\n= 8 × 3 + 5\n= 24 + 5 = 29",
+        evidenceText: "나눗셈과 곱셈은 같은 순위입니다.\n같은 순위는 왼쪽부터 계산합니다.",
         correctValueText: "29",
         candidates: ["29", "13", "8", "24", "53"],
         answerExplanation: "나눗셈과 곱셈을 왼쪽부터 계산한 뒤 5를 더하면 29입니다."
@@ -234,7 +234,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "72 - 8 × 6 + 4의 계산 결과는 몇인가요?",
         evidenceLabelText: "곱셈을 먼저",
-        evidenceText: "72 - 8 × 6 + 4\n= 72 - 48 + 4\n= 24 + 4 = 28",
+        evidenceText: "곱셈을 덧셈·뺄셈보다 먼저 계산합니다.\n남은 덧셈·뺄셈은 왼쪽부터 계산합니다.",
         correctValueText: "28",
         candidates: ["28", "388", "20", "68", "24"],
         answerExplanation: "8×6을 먼저 계산하고 뺄셈과 덧셈을 왼쪽부터 계산하면 28입니다."
@@ -242,7 +242,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "(36 + 12) ÷ 6 × 2의 계산 결과는 몇인가요?",
         evidenceLabelText: "괄호를 먼저",
-        evidenceText: "(36 + 12) ÷ 6 × 2\n= 48 ÷ 6 × 2\n= 8 × 2 = 16",
+        evidenceText: "괄호 안을 먼저 계산합니다.\n나눗셈과 곱셈은 왼쪽부터 계산합니다.",
         correctValueText: "16",
         candidates: ["16", "38", "10", "4", "96"],
         answerExplanation: "괄호 안을 먼저 계산하고 나눗셈과 곱셈을 왼쪽부터 계산하면 16입니다."
@@ -300,7 +300,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "1 m와 40 cm를 cm 단위로 나타낸 가장 간단한 비는 무엇일까요?",
         evidenceLabelText: "먼저 같은 단위로",
-        evidenceText: "1 m = 100 cm\n100 cm : 40 cm = 5 : 2",
+        evidenceText: "1 m = 100 cm\n두 양을 cm로 바꾼 뒤 같은 수로 나누어 보세요.",
         correctValueText: "5 : 2",
         candidates: ["5 : 2", "1 : 40", "2 : 5", "10 : 4", "100 : 4"],
         answerExplanation: "1 m를 100 cm로 바꾸면 100:40이고, 두 수를 20으로 나누면 5:2입니다."
@@ -308,7 +308,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "주스 750 mL와 물 500 mL의 가장 간단한 비는 무엇일까요?",
         evidenceLabelText: "250 mL씩 같은 묶음",
-        evidenceText: "주스: 250 mL × 3\n물: 250 mL × 2\n주스 : 물 = 3 : 2",
+        evidenceText: "750 mL와 500 mL를 같은 크기의 묶음으로 나누세요.\n주스와 물의 순서를 지키세요.",
         correctValueText: "3 : 2",
         candidates: ["3 : 2", "2 : 3", "750 : 250", "5 : 2", "3 : 5"],
         answerExplanation: "두 양을 250 mL 묶음으로 나타내면 3묶음과 2묶음이므로 3:2입니다."
@@ -358,7 +358,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "별 한 개가 4명을 나타낼 때 별 3개는 몇 명일까요?",
         evidenceLabelText: "별 1개 = 4명",
-        evidenceText: "별 3개 × 4명\n= 12명",
+        evidenceText: "그림 수 × 그림 한 개의 값\n별 3개와 한 개의 값을 사용하세요.",
         correctValueText: "12명",
         candidates: ["12명", "3명", "7명", "16명", "8명"],
         answerExplanation: "별 한 개가 4명이므로 별 3개는 4×3=12명입니다."
@@ -366,7 +366,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "사과 한 개가 10상자를 나타낼 때 사과 2개와 반쪽은 몇 상자일까요?",
         evidenceLabelText: "사과 1개 = 10상자",
-        evidenceText: "사과 2개 = 20상자\n반쪽 = 5상자\n합계 25상자",
+        evidenceText: "그림 2개와 반쪽 그림\n반쪽 그림은 한 개 값의 절반입니다.",
         correctValueText: "25상자",
         candidates: ["25상자", "20상자", "30상자", "15상자", "2.5상자"],
         answerExplanation: "사과 두 개는 20상자이고 반쪽은 5상자이므로 모두 25상자입니다."
@@ -374,7 +374,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "자동차 한 대가 6대를 나타낼 때 자동차 4대는 몇 대일까요?",
         evidenceLabelText: "그림 1개 = 자동차 6대",
-        evidenceText: "그림 4개 × 자동차 6대\n= 자동차 24대",
+        evidenceText: "그림 수 × 그림 한 개의 값\n그림 4개와 한 개의 값을 사용하세요.",
         correctValueText: "24대",
         candidates: ["24대", "10대", "4대", "18대", "30대"],
         answerExplanation: "그림 한 개가 자동차 6대이므로 그림 네 개는 6×4=24대입니다."
@@ -506,7 +506,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "대칭축에서 왼쪽 4칸인 점과 대응하는 점까지의 전체 거리는 몇 칸일까요?",
         evidenceLabelText: "양쪽 거리를 더하기",
-        evidenceText: "왼쪽 4칸 + 오른쪽 4칸\n= 8칸",
+        evidenceText: "대응하는 두 점은 축에서 같은 거리입니다.\n왼쪽 거리와 오른쪽 거리를 더하세요.",
         correctValueText: "8칸",
         candidates: ["8칸", "4칸", "6칸", "2칸", "16칸"],
         answerExplanation: "두 점이 축에서 각각 4칸 떨어져 있으므로 전체 거리는 8칸입니다."

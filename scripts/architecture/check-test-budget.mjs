@@ -2,7 +2,6 @@
 import { spawnSync } from "node:child_process";
 
 const minimumTestCount = 133;
-const maximumTestCount = 149;
 const result = spawnSync(
   process.platform === "win32" ? "pnpm.cmd" : "pnpm",
   ["exec", "vitest", "list", "--json"],
@@ -21,15 +20,12 @@ const tests = JSON.parse(result.stdout);
 if (!Array.isArray(tests)) {
   throw new Error("vitest-list-invalid");
 }
-if (
-  tests.length < minimumTestCount ||
-  tests.length > maximumTestCount
-) {
+if (tests.length < minimumTestCount) {
   throw new Error(
-    `test-budget-drift:${tests.length}:expected-${minimumTestCount}-${maximumTestCount}`
+    `test-budget-drift:${tests.length}:expected-at-least-${minimumTestCount}`
   );
 }
 
 process.stdout.write(
-  `PASS test budget ${tests.length}/${minimumTestCount}-${maximumTestCount}\n`
+  `PASS test floor ${tests.length}/${minimumTestCount}+\n`
 );

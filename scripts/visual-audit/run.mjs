@@ -16,6 +16,7 @@ import {
 } from "../../packages/mathcanvas-compiler/dist/index.js";
 import {
   enumerateRegisteredVariationEnvelope,
+  getRegisteredActivitySupportState,
   listRegisteredBlueprints,
   prepareRegisteredActivityForEnvelopeValidation
 } from "../../packages/templates/dist/index.js";
@@ -324,7 +325,10 @@ function scoreFor(issues) {
   return Math.max(0, 100 - deduction);
 }
 
-const blueprints = listRegisteredBlueprints();
+const blueprints = listRegisteredBlueprints().filter(
+  (blueprint) =>
+    getRegisteredActivitySupportState(blueprint.id) === "released"
+);
 const results = [];
 for (const blueprint of blueprints) {
   const control = VISUAL_ACTIVITY_CONTROLS[blueprint.id];

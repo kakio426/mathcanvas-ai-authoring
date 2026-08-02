@@ -485,6 +485,17 @@ describe("생성 전 검증", () => {
 
     expect(
       issueCodes((resolved) => {
+        const first = resolved.items[0]!;
+        const instruction = resolved.emissions.find(
+          (emission) => emission.id === "instruction-main"
+        )!;
+        instruction.toolIntent.properties.text =
+          `비교 결과는 ${String(first.values.correctRelation)} 입니다.`;
+      })
+    ).toContain("cognitive-answer-visible");
+
+    expect(
+      issueCodes((resolved) => {
         const candidate = resolved.emissions.find(
           (emission) =>
             emission.itemId === resolved.items[0]!.id &&

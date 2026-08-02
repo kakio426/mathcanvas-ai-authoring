@@ -169,6 +169,48 @@ function containsValue(
   );
 }
 
+function containsTextFragment(
+  value: unknown,
+  needle: unknown
+): boolean {
+  if (
+    typeof value !== "string" ||
+    (typeof needle !== "string" && typeof needle !== "number")
+  ) {
+    return false;
+  }
+  const visible = value.normalize("NFKC").toLowerCase().replace(/\s+/gu, "");
+  const answer = String(needle)
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/\s+/gu, "");
+  if (answer.length === 0) return false;
+  if (/^[+-]?\d+(?:[.,]\d+)?$/u.test(answer)) {
+    const escaped = answer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(
+      `(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`,
+      "u"
+    ).test(visible);
+  }
+  return visible.includes(answer);
+}
+
+function containsVisibleTextValue(
+  properties: Record<string, unknown>,
+  needle: unknown
+): boolean {
+  return Object.entries(properties).some(([key, value]) => {
+    if (/(?:text|latex|label|title|expression)$/iu.test(key)) {
+      return containsTextFragment(value, needle);
+    }
+    if (!value || typeof value !== "object") return false;
+    return containsVisibleTextValue(
+      value as Record<string, unknown>,
+      needle
+    );
+  });
+}
+
 type NumericPair = readonly [number, number];
 
 function numericPairList(value: unknown): NumericPair[] | undefined {
@@ -2745,10 +2787,14 @@ const handlers: Record<string, Handler> = {
             (emission.itemId === item.id ||
               emission.itemId === undefined) &&
             !candidateRoles.includes(emission.role) &&
-            containsValue(
+            (containsValue(
               emission.toolIntent.properties,
               correctValue
-            )
+            ) ||
+              containsVisibleTextValue(
+                emission.toolIntent.properties,
+                correctValue
+              ))
         );
         if (correctValue === undefined || answerLeak) {
           issue(

@@ -26,9 +26,9 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     expect(installers).toContain("claude mcp add");
   });
 
-  it("MCP 서버는 HTTP listener 없이 관리형 Chrome을 직접 사용한다", () => {
+  it("MCP 서버는 HTTP listener 없이 authoring runtime을 사용한다", () => {
     const entry = read("apps/mcp-server/src/index.ts");
-    expect(entry).toContain("ManagedChromeRuntime");
+    expect(entry).toContain("createAuthoringRuntime");
     expect(entry).not.toMatch(
       /createServer|\.listen\(|pairing|bridgeServer|BRIDGE_PORT/
     );
