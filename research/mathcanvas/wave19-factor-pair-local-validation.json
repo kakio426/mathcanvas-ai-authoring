@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "validatedAt": "2026-08-02T00:01:00.000Z",
+  "status": "verified-local",
+  "activityId": "number.factor-pairs.array-construction-v1",
+  "standardCode": "[6수01-04]",
+  "blueprintVersion": "1.0.0",
+  "blueprintContentHash": "792731554efbd0205d5df4e6a39ed3d4cb8d100056b524f917360ee8ef1e8477",
+  "layoutPreset": "wave19-factor-pair-array-v1",
+  "layoutPresetHash": "1cb90eb9e88ac3527ad65f24498b0577c2fdbdcbe372d0b7b61e51ff62344e63",
+  "learningMapFixtureHash": "779a317e14603d45dbba548ed3dca3a2474d0322c0787418796faab98fbae18c",
+  "payloadHash": "d99847000ae5601c352e4b0f15591d2089e4479c371e69715ee36b958e04e2a0",
+  "itemCount": 2,
+  "emissionCount": 53,
+  "constraintCount": 4,
+  "validation": {
+    "canCreate": true,
+    "issues": []
+  },
+  "pedagogy": {
+    "mathematicalDecision": "여덟 수 카드 중 두 장을 골라 목표 수를 만드는 약수쌍을 구성하고 다른 약수쌍도 찾는다.",
+    "misconceptionConflict": "목표 수보다 작은 수는 모두 약수라는 생각을 남김없는 직사각형 배열과 충돌시킨다.",
+    "selfVerification": "6×8 빈 격자에 선택한 가로와 세로의 직사각형을 직접 표시하여 목표 칸 수와 남는 칸을 확인한다.",
+    "revisionPath": "격자에 칸이 남거나 부족하면 수 카드를 다시 고르고 다른 직사각형 배열을 만든다."
+  },
+  "releaseLimitation": "실제 MathCanvas 저장·재열기 canary 전이므로 released가 아니라 verified 상태를 유지한다."
+}

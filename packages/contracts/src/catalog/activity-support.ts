@@ -46,7 +46,9 @@ export const ACTIVITY_IDS = {
   lineSymmetryClaim:
     "geometry.symmetry.equal-distance.claim-evidence-v1",
   graphPurposeClaim:
-    "data.graph.purpose.claim-evidence-v1"
+    "data.graph.purpose.claim-evidence-v1",
+  factorPairArray:
+    "number.factor-pairs.array-construction-v1"
 } as const;
 
 export type ActivitySupportState = "verified" | "released";
@@ -106,7 +108,9 @@ export const ACTIVITY_LEARNING_GOALS: Readonly<
   [ACTIVITY_IDS.lineSymmetryClaim]:
     "선대칭도형에서 대응점과 대칭축 사이의 거리가 같다는 성질로 위치를 판단하고 설명할 수 있다.",
   [ACTIVITY_IDS.graphPurposeClaim]:
-    "자료의 특징과 알고 싶은 내용에 맞는 그래프를 선택하고 그 까닭을 설명할 수 있다."
+    "자료의 특징과 알고 싶은 내용에 맞는 그래프를 선택하고 그 까닭을 설명할 수 있다.",
+  [ACTIVITY_IDS.factorPairArray]:
+    "자연수를 두 수의 곱으로 여러 방법으로 나타내고, 각 수가 약수인 까닭을 배열로 설명할 수 있다."
 };
 
 export const ACTIVITY_SUPPORT: Readonly<
@@ -136,7 +140,8 @@ export const ACTIVITY_SUPPORT: Readonly<
   [ACTIVITY_IDS.pictureGraphKeyClaim]: "verified",
   [ACTIVITY_IDS.triangleClassificationClaim]: "verified",
   [ACTIVITY_IDS.lineSymmetryClaim]: "verified",
-  [ACTIVITY_IDS.graphPurposeClaim]: "verified"
+  [ACTIVITY_IDS.graphPurposeClaim]: "verified",
+  [ACTIVITY_IDS.factorPairArray]: "verified"
 };
 
 export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
@@ -219,6 +224,9 @@ export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
   ],
   [ACTIVITY_IDS.graphPurposeClaim]: [
     "research/mathcanvas/wave18-graph-purpose-release-canary.json"
+  ],
+  [ACTIVITY_IDS.factorPairArray]: [
+    "research/mathcanvas/wave19-factor-pair-release-canary.json"
   ]
 };
 

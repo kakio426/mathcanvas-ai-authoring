@@ -26,6 +26,7 @@ import {
 import {
   findClaimEvidenceActivityProfile
 } from "./activity-profiles.js";
+import { factorPairActivityProfile } from "./factor-pair-profile.js";
 
 export class CurriculumResolutionError extends Error {
   public constructor(
@@ -65,7 +66,11 @@ export function resolveCurriculum(
     "[6수01-08]": unlikeDenominatorFractionOperationsRecord,
     "[6수04-04]": probabilityComparisonRecord
   };
-  const profile = findClaimEvidenceActivityProfile(standardCode);
+  const profile =
+    findClaimEvidenceActivityProfile(standardCode) ??
+    (factorPairActivityProfile.standardCode === standardCode
+      ? factorPairActivityProfile
+      : undefined);
   const catalogStandard = findTeacherCurriculumStandard(standardCode);
   const referenceRecord =
     profile && catalogStandard
@@ -185,3 +190,9 @@ export {
   type ClaimEvidenceActivityProfile,
   type ClaimEvidenceItemSeed
 } from "./activity-profiles.js";
+export {
+  FACTOR_PAIR_MANIPULATION,
+  factorPairActivityProfile,
+  type FactorPairActivityProfile,
+  type FactorPairItemSeed
+} from "./factor-pair-profile.js";

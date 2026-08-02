@@ -24,6 +24,10 @@ import {
   CLAIM_EVIDENCE_MANIPULATION,
   claimEvidenceActivityProfiles
 } from "./activity-profiles.js";
+import {
+  FACTOR_PAIR_MANIPULATION,
+  factorPairActivityProfile
+} from "./factor-pair-profile.js";
 
 export interface TeacherLearningNeed {
   id: string;
@@ -489,8 +493,12 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
       const claimEvidenceProfile = claimEvidenceActivityProfiles.find(
         (candidate) => candidate.standardCode === reference.standardCode
       );
-      const profileActivities: readonly TeacherActivityOption[] =
-        claimEvidenceProfile
+      const factorPairProfile =
+        factorPairActivityProfile.standardCode === reference.standardCode
+          ? factorPairActivityProfile
+          : undefined;
+      const profileActivities: readonly TeacherActivityOption[] = [
+        ...(claimEvidenceProfile
           ? [
               {
                 id: claimEvidenceProfile.profileId,
@@ -498,24 +506,56 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
                 description: claimEvidenceProfile.activityDescription,
                 manipulation: CLAIM_EVIDENCE_MANIPULATION,
                 promptSeed: claimEvidenceProfile.promptSeed,
-                defaultProblemCount: 2,
-                availableProblemCounts: [2],
+                defaultProblemCount: 2 as const,
+                availableProblemCounts: [2] as const,
                 learningNeeds: claimEvidenceProfile.learningNeeds,
                 availability:
                   getActivitySupportState(claimEvidenceProfile.activityId) ??
                   "verified"
               }
             ]
-          : [];
+          : []),
+        ...(factorPairProfile
+          ? [
+              {
+                id: factorPairProfile.profileId,
+                label: factorPairProfile.activityLabel,
+                description: factorPairProfile.activityDescription,
+                manipulation: FACTOR_PAIR_MANIPULATION,
+                promptSeed: factorPairProfile.promptSeed,
+                defaultProblemCount: 2 as const,
+                availableProblemCounts: [2] as const,
+                learningNeeds: factorPairProfile.learningNeeds,
+                availability:
+                  getActivitySupportState(factorPairProfile.activityId) ??
+                  "verified"
+              }
+            ]
+          : [])
+      ];
+      const profileOfficialGoal =
+        claimEvidenceProfile?.officialGoal ?? factorPairProfile?.officialGoal;
       return supported
         ? {
             ...reference,
             ...supported,
             focusLabel: reference.focusLabel,
+            ...(profileOfficialGoal
+              ? {
+                  standardSummary: profileOfficialGoal,
+                  summaryKind: "official-goal" as const
+                }
+              : {}),
             activities: [...supported.activities, ...profileActivities]
           }
         : {
             ...reference,
+            ...(profileOfficialGoal
+              ? {
+                  standardSummary: profileOfficialGoal,
+                  summaryKind: "official-goal" as const
+                }
+              : {}),
             activities: profileActivities
           };
     })
@@ -625,7 +665,7 @@ export const teacherTextbookUnits: readonly TeacherTextbookUnit[] = [
   textbookUnit(4, 2, 6, "다각형", standardRange(4, 3, 11, 12)),
 
   textbookUnit(5, 1, 1, "자연수의 혼합 계산", standardRange(6, 1, 1, 1), ["mixed-calculation-order"]),
-  textbookUnit(5, 1, 2, "약수와 배수", standardRange(6, 1, 4, 5)),
+  textbookUnit(5, 1, 2, "약수와 배수", standardRange(6, 1, 4, 5), ["factor-pair-array"]),
   textbookUnit(5, 1, 3, "대응 관계", standardRange(6, 2, 1, 1)),
   textbookUnit(5, 1, 4, "약분과 통분", standardRange(6, 1, 6, 7), ["equivalent-fraction", "unlike-denominator-comparison"]),
   textbookUnit(5, 1, 5, "분수의 덧셈과 뺄셈", standardRange(6, 1, 8, 8), ["unlike-denominator-sum", "unlike-denominator-difference"]),

@@ -95,6 +95,11 @@ import {
   CLAIM_EVIDENCE_GENERATOR_VERSION,
   generateClaimEvidenceItems
 } from "./claim-evidence.js";
+import {
+  FACTOR_PAIR_ARRAY_GENERATOR_ID,
+  FACTOR_PAIR_ARRAY_GENERATOR_VERSION,
+  generateFactorPairArrayItems
+} from "./factor-pair-array.js";
 
 type Generator = (
   parameters: {
@@ -107,6 +112,8 @@ type Generator = (
 ) => ResolvedItem[];
 
 const generators: Readonly<Record<string, Generator>> = {
+  [`${FACTOR_PAIR_ARRAY_GENERATOR_ID}:${FACTOR_PAIR_ARRAY_GENERATOR_VERSION}`]:
+    generateFactorPairArrayItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_VERSION}`]:
     generateClaimEvidenceItems,
   [`${REPEATING_PATTERN_UNIT_GENERATOR_ID}:${REPEATING_PATTERN_UNIT_GENERATOR_VERSION}`]:

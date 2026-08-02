@@ -23,6 +23,7 @@ import { repeatingPatternUnitVariationEnvelope } from "./repeating-pattern-unit.
 import { multiplicationArrayMeaningVariationEnvelope } from "./multiplication-array-meaning.js";
 import { probabilityBagComparisonVariationEnvelope } from "./probability-bag-comparison.js";
 import { claimEvidenceVariationEnvelopes } from "./claim-evidence.js";
+import { factorPairArrayVariationEnvelope } from "./factor-pair-array.js";
 
 export const REGISTERED_VARIATION_ENVELOPES = [
   fractionComparisonVariationEnvelope,
@@ -42,13 +43,14 @@ export const REGISTERED_VARIATION_ENVELOPES = [
   repeatingPatternUnitVariationEnvelope,
   multiplicationArrayMeaningVariationEnvelope,
   probabilityBagComparisonVariationEnvelope,
+  factorPairArrayVariationEnvelope,
   ...claimEvidenceVariationEnvelopes
 ] as const;
 
 export const REGISTERED_VARIATION_COMBINATION_COUNT =
   assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
 
-if (REGISTERED_VARIATION_COMBINATION_COUNT !== 97) {
+if (REGISTERED_VARIATION_COMBINATION_COUNT !== 98) {
   throw new Error(
     `registered-variation-suite-drift:${REGISTERED_VARIATION_COMBINATION_COUNT}`
   );

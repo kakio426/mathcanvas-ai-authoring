@@ -36,7 +36,8 @@ export const manipulationSchema = z.enum([
   "pattern-block-repeat-unit-drag",
   "multiplication-array-choice-drag",
   "probability-fraction-strip-drag",
-  "claim-evidence-revision-drag"
+  "claim-evidence-revision-drag",
+  "factor-pair-array-construction-drag"
 ]);
 export const gradeBandSchema = z.enum(["1-2", "3-4", "5-6"]);
 

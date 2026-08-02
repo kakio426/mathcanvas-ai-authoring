@@ -35,6 +35,24 @@
       "assessmentPrompt": "'네 자리 이하의 수'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라."
     },
     {
+      "id": "kr.mt.math.number-operations.g5-6.s6-01-04.concept",
+      "titleKorean": "[6수01-04] 약수와 배수 - 개념 확인",
+      "evidence": [
+        "[6수01-04] 약수와 배수 - 개념 확인을 이루는 핵심 요소 두 가지 이상을 찾아 자신의 말로 설명한다.",
+        "수와 연산 사례에서 [6수01-04] 약수와 배수 - 개념 확인이 드러나는 장면을 선택하고 판단 근거를 제시한다."
+      ],
+      "assessmentPrompt": "'약수와 배수'에 관한 짧은 상황을 제시하고, 학생이 공식 성취기준 [6수01-04]의 핵심 개념을 자신의 말과 간단한 예로 설명하게 하라."
+    },
+    {
+      "id": "kr.mt.math.number-operations.g5-6.s6-01-04.representation",
+      "titleKorean": "[6수01-04] 약수와 배수 - 표현과 연결",
+      "evidence": [
+        "[6수01-04] 약수와 배수 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다.",
+        "자신의 표현물에서 수와 연산 내용과 근거가 드러나는 부분을 찾아 설명한다."
+      ],
+      "assessmentPrompt": "'약수와 배수'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
       "id": "kr.mt.math.number-operations.g5-6.s6-01-07.concept",
       "titleKorean": "[6수01-07] 분수의 덧셈과 뺄셈 - 개념 확인",
       "evidence": [
@@ -395,6 +413,12 @@
       "prerequisiteId": "kr.mt.math.number-operations.g1-2.s2-01-02.representation",
       "strength": "hard",
       "reason": "[2수01-02] '네 자리 이하의 수': 적용·설명 과제 전에 표현과 연결 활동이 필요하다."
+    },
+    {
+      "topicId": "kr.mt.math.number-operations.g5-6.s6-01-04.representation",
+      "prerequisiteId": "kr.mt.math.number-operations.g5-6.s6-01-04.concept",
+      "strength": "hard",
+      "reason": "[6수01-04] '약수와 배수': 표현 활동 전에 핵심 개념 확인이 필요하다."
     },
     {
       "topicId": "kr.mt.math.number-operations.g5-6.s6-01-07.representation",

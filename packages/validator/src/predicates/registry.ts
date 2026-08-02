@@ -2093,6 +2093,69 @@ const handlers: Record<string, Handler> = {
       }
     }
   },
+  "values.product-construction-solution-set": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const piecePaths = stringArrayParameter(
+      predicate,
+      "piecePaths",
+      3
+    );
+    const solutionSetPath = stringParameter(
+      predicate,
+      "solutionSetPath"
+    );
+    const totalPath = stringParameter(predicate, "totalPath");
+    const slotCount = parameter(predicate, "slotCount");
+    const minimumSolutions = parameter(
+      predicate,
+      "minimumSolutions"
+    );
+    if (
+      slotCount !== 2 ||
+      typeof minimumSolutions !== "number" ||
+      !Number.isInteger(minimumSolutions) ||
+      minimumSolutions < 2
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:product-construction`
+      );
+    }
+    for (const item of resolved.items) {
+      const pieces = numericValues(item.values, piecePaths);
+      const total = item.values[totalPath];
+      const solutions = numericPairList(
+        item.values[solutionSetPath]
+      );
+      const actual =
+        pieces && typeof total === "number"
+          ? allPairs(pieces).filter(
+              (pair) => pair[0] * pair[1] === total
+            )
+          : [];
+      const valid =
+        pieces &&
+        new Set(pieces).size === pieces.length &&
+        typeof total === "number" &&
+        Number.isInteger(total) &&
+        solutions &&
+        solutions.length >= minimumSolutions &&
+        sameStringSet(
+          solutions.map(pairKey),
+          actual.map(pairKey)
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "product-construction-solution-invalid",
+          "mathematics",
+          `${item.id}의 수 카드와 곱이 목표 수가 되는 약수쌍이 일치하지 않습니다.`
+        );
+      }
+    }
+  },
   "values.surplus-piece-present": (
     resolved,
     predicate,
@@ -2389,6 +2452,50 @@ const handlers: Record<string, Handler> = {
           "countable-unit-frame-invalid",
           "pedagogy",
           `${item.id}의 열 칸 모형이 셀 수 있는 2차원 단위 구조가 아닙니다.`
+        );
+      }
+    }
+  },
+  "geometry.factor-array-board": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const role = stringParameter(predicate, "role");
+    const textPath = stringParameter(predicate, "textPath");
+    const rowCountPath = stringParameter(
+      predicate,
+      "rowCountPath"
+    );
+    const columnCountPath = stringParameter(
+      predicate,
+      "columnCountPath"
+    );
+    for (const item of resolved.items) {
+      const board = byRole(resolved, item.id, role);
+      const text = item.values[textPath];
+      const rowCount = item.values[rowCountPath];
+      const columnCount = item.values[columnCountPath];
+      const rows = typeof text === "string" ? text.split("\n") : [];
+      const valid =
+        board?.locked === true &&
+        board.movable === false &&
+        board.toolIntent.toolKey === "common.text" &&
+        board.toolIntent.properties.text === text &&
+        typeof rowCount === "number" &&
+        typeof columnCount === "number" &&
+        Number.isInteger(rowCount) &&
+        Number.isInteger(columnCount) &&
+        rows.length === rowCount &&
+        rows.every(
+          (row) => [...row].filter((character) => character === "□").length === columnCount
+        );
+      if (!valid) {
+        issue(
+          issues,
+          "factor-array-board-invalid",
+          "pedagogy",
+          `${item.id}의 약수쌍 배열판이 빈 단위 격자로 구성되지 않았습니다.`
         );
       }
     }

@@ -25,8 +25,10 @@ import { repeatingPatternUnitBlueprint } from "./blueprints/repeating-pattern-un
 import { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication-array-meaning.js";
 import { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
 import { claimEvidenceBlueprints } from "./blueprints/claim-evidence.js";
+import { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
 import {
   CLAIM_EVIDENCE_MANIPULATION,
+  FACTOR_PAIR_MANIPULATION,
   claimEvidenceActivityProfiles
 } from "@mathcanvas/curriculum";
 import { generateBlueprintItems } from "./item-generators/registry.js";
@@ -257,6 +259,13 @@ export const probabilityBagComparisonTemplateDefinition =
     supportedGradeBands: ["5-6"],
     maximumProblemCount: 4,
     requiredModules: ["NO03FM", "input-text", "math-latex", "drawElem"]
+  });
+
+export const factorPairArrayTemplateDefinition =
+  templateDefinition(factorPairArrayBlueprint, {
+    supportedGradeBands: ["5-6"],
+    maximumProblemCount: 2,
+    requiredModules: ["NO04NT", "input-text", "math-latex", "drawElem"]
   });
 
 export const claimEvidenceTemplateDefinitions = Object.fromEntries(
@@ -583,6 +592,19 @@ export function generateClaimEvidenceActivity(
   );
 }
 
+export function generateFactorPairArrayActivity(
+  recommendation: Recommendation,
+  options: GenerateActivitySpecOptions
+): RegisteredActivityPlan {
+  return prepare(
+    factorPairArrayBlueprint,
+    factorPairArrayTemplateDefinition,
+    recommendation,
+    options,
+    FACTOR_PAIR_MANIPULATION
+  );
+}
+
 type RegistryEntry = {
   readonly blueprint: ActivityBlueprint;
   readonly prepare: (
@@ -895,6 +917,19 @@ function claimEvidenceAnswerKey(
   }));
 }
 
+function factorPairArrayAnswerKey(
+  resolved: ResolvedActivity
+): RegisteredTeacherAnswer[] {
+  return resolved.items.map((item) => {
+    const pairs = item.values.solutionPairs as readonly (readonly [number, number])[];
+    return {
+      problemNumber: item.order,
+      answer: pairs.map(([left, right]) => `${left}×${right}`).join(", "),
+      explanation: String(item.values.answerExplanation)
+    };
+  });
+}
+
 const claimEvidenceRegistry = Object.fromEntries(
   claimEvidenceBlueprints.map((blueprint) => [
     blueprint.id,
@@ -910,6 +945,13 @@ const claimEvidenceRegistry = Object.fromEntries(
 
 const registry: Readonly<Record<string, RegistryEntry>> = {
   ...claimEvidenceRegistry,
+  [factorPairArrayBlueprint.id]: {
+    blueprint: factorPairArrayBlueprint,
+    prepare: generateFactorPairArrayActivity,
+    supportState:
+      getActivitySupportState(factorPairArrayBlueprint.id) ?? "verified",
+    answerKey: factorPairArrayAnswerKey
+  },
   [fractionComparisonBlueprint.id]: {
     blueprint: fractionComparisonBlueprint,
     prepare: generateFractionComparisonActivity,

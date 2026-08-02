@@ -11,6 +11,8 @@ import {
 } from "@mathcanvas/contracts";
 import {
   CLAIM_EVIDENCE_MANIPULATION,
+  FACTOR_PAIR_MANIPULATION,
+  factorPairActivityProfile,
   findClaimEvidenceActivityProfile,
   resolveCurriculum
 } from "@mathcanvas/curriculum";
@@ -112,6 +114,11 @@ const placeValueTenExchangePatterns = [
 const repeatingPatternPatterns = [/규칙\s*찾기/, /반복\s*(무늬|단위)/, /패턴\s*블록/, /repeat(?:ing)?\s*pattern/i];
 const multiplicationMeaningPatterns = [/곱셈.*(묶|배열|의미)/, /같은\s*수씩\s*묶/, /multiplication.*(array|group)/i];
 const probabilityComparisonPatterns = [/가능성.*(비교|큰|작은)/, /(주머니|공).*(나올|뽑).*(가능성|확률)/, /probability.*compar/i];
+const factorPairPatterns = [
+  /약수쌍/,
+  /약수.*(배열|직사각형|곱셈식)/,
+  /(factor|divisor).*(array|pair)/i
+];
 
 function verifiedCandidate(request: GenerationRequest):
   | {
@@ -125,6 +132,7 @@ function verifiedCandidate(request: GenerationRequest):
   | undefined {
   if (
     request.manipulation === CLAIM_EVIDENCE_MANIPULATION ||
+    request.manipulation === FACTOR_PAIR_MANIPULATION ||
     request.requestedStandardCode !== undefined
   ) {
     const profile = request.requestedStandardCode
@@ -141,10 +149,36 @@ function verifiedCandidate(request: GenerationRequest):
         maximumProblemCount: 2
       };
     }
+    if (
+      request.manipulation === FACTOR_PAIR_MANIPULATION ||
+      request.requestedStandardCode ===
+        factorPairActivityProfile.standardCode
+    ) {
+      return {
+        templateId: factorPairActivityProfile.activityId,
+        standardCode: factorPairActivityProfile.standardCode,
+        manipulation: FACTOR_PAIR_MANIPULATION,
+        grade: factorPairActivityProfile.recommendedGrade,
+        gradeRange: [5, 6],
+        maximumProblemCount: 2
+      };
+    }
     return undefined;
   }
   if (request.manipulation === "fraction-strip-common-start-drag") {
     return undefined;
+  }
+  if (
+    factorPairPatterns.some((pattern) => pattern.test(request.prompt))
+  ) {
+    return {
+      templateId: factorPairActivityProfile.activityId,
+      standardCode: factorPairActivityProfile.standardCode,
+      manipulation: FACTOR_PAIR_MANIPULATION,
+      grade: factorPairActivityProfile.recommendedGrade,
+      gradeRange: [5, 6],
+      maximumProblemCount: 2
+    };
   }
   if (
     request.manipulation === "pattern-block-repeat-unit-drag" ||
