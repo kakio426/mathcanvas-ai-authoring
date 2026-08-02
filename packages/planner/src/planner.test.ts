@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { CONTRACT_SCHEMA_VERSION } from "@mathcanvas/contracts";
+import {
+  teacherCurriculumCatalog,
+  teacherTextbookUnits
+} from "@mathcanvas/curriculum";
 import { recommendActivity } from "./index.js";
 
 const baseRequest = {
@@ -10,6 +14,56 @@ const baseRequest = {
 } as const;
 
 describe("활동 추천", () => {
+  it("교사 화면이 고른 모든 활동을 출시 상태대로 라우팅한다", () => {
+    // 교사 화면은 항상 성취기준 코드와 조작 방식을 함께 보낸다.
+    // 이 조합에서 출시 활동은 전부 추천되어야 하고, 출시 전 활동은
+    // 그 이유와 함께 막혀야 한다. 성취기준을 여러 계열이 공유해도
+    // 요청한 조작 방식의 활동으로 라우팅해야 한다.
+    const mismatches: string[] = [];
+    for (const standard of teacherCurriculumCatalog) {
+      for (const activity of standard.activities) {
+        const unit = teacherTextbookUnits.find(
+          (candidate) =>
+            candidate.standardCodes.includes(standard.standardCode) &&
+            candidate.activityIds.includes(activity.id)
+        );
+        const result = recommendActivity({
+          schemaVersion: CONTRACT_SCHEMA_VERSION,
+          requestId: `request-${activity.id}`,
+          prompt: [
+            activity.promptSeed,
+            activity.learningNeeds[0]?.promptDetail ?? ""
+          ].join(". "),
+          requestedStandardCode: standard.standardCode,
+          ...(unit ? { requestedGrade: unit.grade } : {}),
+          problemCount: activity.defaultProblemCount,
+          manipulation: activity.manipulation,
+          createdAt: "2026-08-02T01:00:00.000Z"
+        });
+        const shouldSupport = activity.availability === "released";
+        if (result.supported !== shouldSupport) {
+          mismatches.push(
+            `${activity.id}(${activity.availability}) -> supported=${result.supported} ${result.blockingReasons[0] ?? ""}`
+          );
+          continue;
+        }
+        if (shouldSupport) {
+          if (result.standardCode !== standard.standardCode) {
+            mismatches.push(
+              `${activity.id} -> ${result.standardCode} (기대 ${standard.standardCode})`
+            );
+          }
+          if (result.manipulation !== activity.manipulation) {
+            mismatches.push(
+              `${activity.id} -> ${result.manipulation} (기대 ${activity.manipulation})`
+            );
+          }
+        }
+      }
+    }
+    expect(mismatches).toEqual([]);
+  });
+
   it("출시 활동의 안전한 기본값을 추천한다", () => {
     const result = recommendActivity(baseRequest);
     expect(result.supported).toBe(true);

@@ -149,11 +149,16 @@ function verifiedCandidate(request: GenerationRequest):
     request.manipulation === PARTIAL_OPERATION_MANIPULATION ||
     request.requestedStandardCode !== undefined
   ) {
+    // 한 성취기준을 여러 계열이 함께 주장할 수 있다(예: [4수04-01]은
+    // 막대그래프 활동과 그림그래프 주장-검증 활동이 함께 쓴다).
+    // 요청이 조작 방식을 지정했다면 그 계열에만 라우팅한다. 그러지 않으면
+    // 출시된 활동 요청이 아직 출시되지 않은 다른 계열로 끌려가 막힌다.
     const profile =
       request.requestedStandardCode &&
-      request.manipulation !== PARTIAL_OPERATION_MANIPULATION
-      ? findClaimEvidenceActivityProfile(request.requestedStandardCode)
-      : undefined;
+      (request.manipulation === undefined ||
+        request.manipulation === CLAIM_EVIDENCE_MANIPULATION)
+        ? findClaimEvidenceActivityProfile(request.requestedStandardCode)
+        : undefined;
     if (profile) {
       return {
         templateId: profile.activityId,
@@ -165,7 +170,10 @@ function verifiedCandidate(request: GenerationRequest):
         maximumProblemCount: 2
       };
     }
-    const partialOperationProfile = request.requestedStandardCode
+    const partialOperationProfile =
+      request.requestedStandardCode &&
+      (request.manipulation === undefined ||
+        request.manipulation === PARTIAL_OPERATION_MANIPULATION)
       ? findPartialOperationActivityProfile(
           request.requestedStandardCode
         )
@@ -191,8 +199,9 @@ function verifiedCandidate(request: GenerationRequest):
     }
     if (
       request.manipulation === FACTOR_PAIR_MANIPULATION ||
-      request.requestedStandardCode ===
-        factorPairActivityProfile.standardCode
+      (request.manipulation === undefined &&
+        request.requestedStandardCode ===
+          factorPairActivityProfile.standardCode)
     ) {
       return {
         templateId: factorPairActivityProfile.activityId,
@@ -203,7 +212,18 @@ function verifiedCandidate(request: GenerationRequest):
         maximumProblemCount: 2
       };
     }
-    return undefined;
+    // 위 세 계열(주장-검증, 약수쌍, 부분곱·부분몫)은 프로필로만 라우팅한다.
+    // 그 밖의 요청은 requestedStandardCode가 있더라도 여기서 끊지 않고
+    // 아래 등록 활동 라우팅을 그대로 이어간다. 여기서 undefined를 돌려주면
+    // 교사 화면이 항상 성취기준 코드를 보내므로 등록 활동 대부분이
+    // 기본 분수 비교로 잘못 라우팅되거나 지원하지 않음으로 막힌다.
+    if (
+      request.manipulation === CLAIM_EVIDENCE_MANIPULATION ||
+      request.manipulation === FACTOR_PAIR_MANIPULATION ||
+      request.manipulation === PARTIAL_OPERATION_MANIPULATION
+    ) {
+      return undefined;
+    }
   }
   if (request.manipulation === "fraction-strip-common-start-drag") {
     return undefined;
