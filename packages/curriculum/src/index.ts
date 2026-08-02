@@ -48,6 +48,12 @@ export interface CurriculumResolution {
   record: CurriculumRecord;
   warnings: string[];
   auxiliarySnapshotSha: typeof LEARNING_MAP_COMMIT;
+  /**
+   * `reviewed`는 사람이 공식 원문과 대조해 `data.ts`에 기록한 레코드다.
+   * `synthesized`는 활동 프로필과 카탈로그 위치만으로 코드가 조립한 레코드이며,
+   * 성취기준 문구를 공식 PDF와 대조한 기록이 없다. 출시 게이트는 이 값을 본다.
+   */
+  provenance: "reviewed" | "synthesized";
 }
 
 export function resolveCurriculum(
@@ -69,12 +75,14 @@ export function resolveCurriculum(
     "[6수01-08]": unlikeDenominatorFractionOperationsRecord,
     "[6수04-04]": probabilityComparisonRecord
   };
-  const profile =
-    findClaimEvidenceActivityProfile(standardCode) ??
-    findPartialOperationActivityProfile(standardCode) ??
-    (factorPairActivityProfile.standardCode === standardCode
+  const profileMatches = [
+    findClaimEvidenceActivityProfile(standardCode),
+    findPartialOperationActivityProfile(standardCode),
+    factorPairActivityProfile.standardCode === standardCode
       ? factorPairActivityProfile
-      : undefined);
+      : undefined
+  ].filter((candidate) => candidate !== undefined);
+  const profile = profileMatches[0];
   const catalogStandard = findTeacherCurriculumStandard(standardCode);
   const referenceRecord =
     profile && catalogStandard
@@ -99,10 +107,14 @@ export function resolveCurriculum(
             url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
             locator: catalogStandard.sourceLocator,
             version: "교육부 고시 제2022-33호",
-            verificationStatus: "official-text-verified",
+            // 이 레코드는 활동 프로필과 카탈로그 위치만으로 조립한 것이다.
+            // 성취기준 문구를 공식 PDF와 대조한 기록이 없으므로
+            // `official-text-verified`를 자칭하지 않는다. 출시하려면
+            // data.ts에 사람이 검토한 CurriculumRecord를 먼저 추가해야 한다.
+            verificationStatus: "official-source-checked",
             sourceTextIncluded: false,
             caveat:
-              "성취기준 문구는 교육부 고시 제2022-33호 [별책 8] 공식 PDF에서 대조했습니다."
+              "성취기준 코드와 소주제 위치만 카탈로그에서 확인했습니다. 목표 문구는 아직 교육부 고시 제2022-33호 [별책 8] 원문과 대조하지 않았습니다."
           },
           auxiliarySources: [
             {
@@ -119,7 +131,7 @@ export function resolveCurriculum(
             }
           ],
           reviewedAt: "2026-08-02T00:00:00.000Z",
-          reviewer: "MathCanvas AI authoring curriculum profile review"
+          reviewer: "자동 합성 (사람 검토 없음)"
         })
       : undefined;
   const record = records[standardCode] ?? referenceRecord;
@@ -142,9 +154,22 @@ export function resolveCurriculum(
     );
   }
 
+  const provenance =
+    records[standardCode] === undefined ? "synthesized" : "reviewed";
+
   const warnings: string[] = [];
   for (const source of record.auxiliarySources) {
     if (source.caveat) warnings.push(source.caveat);
+  }
+  if (provenance === "synthesized") {
+    warnings.push(
+      `${standardCode}의 교육과정 레코드는 활동 프로필에서 자동 합성한 것입니다. 출시 전에 공식 원문과 대조한 레코드를 curriculum/src/data.ts에 추가해야 합니다.`
+    );
+  }
+  if (profileMatches.length > 1) {
+    warnings.push(
+      `${standardCode}에 활동 프로필이 ${profileMatches.length}개 연결되어 있어 첫 번째(${profileMatches[0]?.activityId})만 사용합니다. 성취기준 배정을 분리해야 합니다.`
+    );
   }
   warnings.push(
     standardCode === "[6수01-07]"
@@ -155,7 +180,8 @@ export function resolveCurriculum(
   return {
     record,
     warnings,
-    auxiliarySnapshotSha: LEARNING_MAP_COMMIT
+    auxiliarySnapshotSha: LEARNING_MAP_COMMIT,
+    provenance
   };
 }
 

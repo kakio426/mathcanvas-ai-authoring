@@ -14,7 +14,14 @@
 3. 기존 프로젝트 수정·삭제 API와 일반 목적 브라우저 제어 도구를 제공하지 않습니다.
 4. 교사가 확인한 `ActivitySetSpec` 해시, 문제별 `CanvasActivitySpec` 해시와 실제 생성 payload 해시가 다르면 쓰지 않습니다.
 5. validator 오류 또는 최신 객체 계약 불일치가 있으면 프로젝트를 만들지 않습니다.
-6. 로컬 HTTP 서버와 수신 포트를 열지 않고 stdio MCP만 사용합니다.
+6. MCP 서버는 stdio만 사용하며 수신 포트를 열지 않습니다.
+7. 교사용 수업 준비 화면(`apps/teacher-ui`)만 예외적으로 로컬 HTTP 서버를 열며, 아래 조건을 모두 지킵니다.
+   - `127.0.0.1`에만 바인딩하고 OS가 배정한 임시 포트를 사용합니다. 외부 인터페이스에 노출하지 않습니다.
+   - `Host` 헤더가 `127.0.0.1:<port>` 또는 `localhost:<port>`가 아니면 403으로 거부합니다.
+   - 첫 세션은 프로세스 시작 시 생성한 1회용 boot key로만 발급하고, 이후에는 `HttpOnly`·`SameSite=Strict` 쿠키로 유지합니다.
+   - 상태를 바꾸는 요청은 전용 헤더(`x-mathcanvas-ui`)와 Origin 검사를 함께 통과해야 합니다.
+   - 응답에 `default-src 'self'` CSP와 `frame-ancestors 'none'`을 적용합니다.
+   - 편집 링크는 `https://mathcanvas.vivasam.com` 출처만 교사 화면으로 돌려줍니다.
 
 ## 전용 Chrome 프로필
 

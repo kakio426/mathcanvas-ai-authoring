@@ -30,4 +30,27 @@ describe("교육과정 해석", () => {
       CurriculumResolutionError
     );
   });
+
+  it("사람이 검토한 레코드와 자동 합성 레코드를 구분한다", () => {
+    const reviewed = resolveCurriculum("[6수01-07]");
+    expect(reviewed.provenance).toBe("reviewed");
+    expect(reviewed.record.officialSource.verificationStatus).toBe(
+      "official-text-verified"
+    );
+
+    // 활동 프로필에서 조립한 레코드는 원문 대조를 자칭하지 않는다.
+    const synthesized = resolveCurriculum("[4수03-24]");
+    expect(synthesized.provenance).toBe("synthesized");
+    expect(
+      synthesized.record.officialSource.verificationStatus
+    ).not.toBe("official-text-verified");
+    expect(synthesized.record.reviewer).toContain("사람 검토 없음");
+    expect(synthesized.warnings.join(" ")).toContain("자동 합성");
+  });
+
+  it("한 성취기준에 활동 프로필이 겹치면 경고로 드러낸다", () => {
+    // [4수01-06]은 나눗셈 몫·나머지와 부분몫 두 활동이 함께 주장한다.
+    const collided = resolveCurriculum("[4수01-06]");
+    expect(collided.warnings.join(" ")).toContain("성취기준 배정을 분리");
+  });
 });

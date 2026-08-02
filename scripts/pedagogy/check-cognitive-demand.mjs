@@ -27,6 +27,9 @@ import {
 } from "../contract-lab/validate-activity-release-canary.mjs";
 
 const failures = [];
+// 출시 전 활동 중 교육과정 레코드를 아직 사람이 검토하지 않은 목록.
+// 실패로 막지는 않지만, 출시 시점에 반드시 갚아야 할 부채로 보고한다.
+const curriculumReviewDebt = [];
 const blueprints = listRegisteredBlueprints();
 const manifests = listCognitiveDemandManifests();
 const blueprintById = new Map(
@@ -172,16 +175,30 @@ for (const manifest of manifests) {
       `learning-map-evidence-unbound:${blueprint.id}`
     );
   }
-  const curriculum = resolveCurriculum(
+  const resolution = resolveCurriculum(
     manifest.learningMap.standardCode
-  ).record;
-  if (
-    curriculum.code !== blueprint.curriculumBinding.standardCode ||
-    curriculum.officialSource.verificationStatus !==
-      "official-text-verified"
-  ) {
+  );
+  const curriculum = resolution.record;
+  if (curriculum.code !== blueprint.curriculumBinding.standardCode) {
     failures.push(
       `official-curriculum-unverified:${blueprint.id}`
+    );
+  } else if (ACTIVITY_SUPPORT[blueprint.id] === "released") {
+    // 출시 활동은 사람이 공식 원문과 대조한 레코드만 허용한다.
+    // 자동 합성 레코드(`official-source-checked`)로는 출시할 수 없다.
+    if (
+      resolution.provenance !== "reviewed" ||
+      curriculum.officialSource.verificationStatus !==
+        "official-text-verified"
+    ) {
+      failures.push(
+        `official-curriculum-unverified:${blueprint.id}`
+      );
+    }
+  } else if (resolution.provenance === "synthesized") {
+    // 출시 전 활동은 합성 레코드를 허용하되 남은 검토 부채로 집계한다.
+    curriculumReviewDebt.push(
+      `${blueprint.id} (${curriculum.code})`
     );
   }
 
@@ -641,3 +658,31 @@ const released = blueprints.filter(
 console.log(
   `cognitive-demand PASS: ${released.length} released / ${manifests.length} manifest / ${blueprints.length} registered`
 );
+
+// 출시 전 활동이 선언한 canary 증거 파일 중 아직 존재하지 않는 것을 보고한다.
+// 출시 시점에는 위의 release-evidence-* 검사가 실패로 막으므로 여기서는 남은 일감만 알린다.
+const pendingEvidence = [];
+for (const blueprint of blueprints) {
+  if (ACTIVITY_SUPPORT[blueprint.id] === "released") continue;
+  for (const evidencePath of ACTIVITY_RELEASE_EVIDENCE[blueprint.id] ??
+    []) {
+    try {
+      await readFile(
+        new URL(`../../${evidencePath}`, import.meta.url),
+        "utf8"
+      );
+    } catch {
+      pendingEvidence.push(`${blueprint.id} -> ${evidencePath}`);
+    }
+  }
+}
+if (curriculumReviewDebt.length > 0) {
+  console.log(
+    `  남은 교육과정 원문 검토 ${curriculumReviewDebt.length}건 (출시 차단 조건):\n    ${curriculumReviewDebt.join("\n    ")}`
+  );
+}
+if (pendingEvidence.length > 0) {
+  console.log(
+    `  아직 없는 출시 canary 증거 ${pendingEvidence.length}건:\n    ${pendingEvidence.join("\n    ")}`
+  );
+}

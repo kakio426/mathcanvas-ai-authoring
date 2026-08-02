@@ -43,6 +43,30 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     expect(server).not.toContain("chrome.scripting");
   });
 
+  it("교사 화면 로컬 서버는 loopback에만 바인딩하고 경계를 유지한다", () => {
+    const server = read("apps/teacher-ui/src/server/main.ts");
+    const security = read("docs/SECURITY.md");
+
+    // SECURITY.md 불변 조건 7번이 선언한 경계를 코드가 실제로 지키는지 확인한다.
+    expect(server).toMatch(/server\.listen\(\s*0\s*,\s*"127\.0\.0\.1"/);
+    expect(server).not.toMatch(
+      /\.listen\(\s*\d+\s*,\s*["'](?:0\.0\.0\.0|::)["']/
+    );
+    // Host 헤더 검사, 1회용 boot key, CSRF 헤더, CSP, 편집 링크 출처 제한
+    expect(server).toContain("127.0.0.1:${port}");
+    expect(server).toContain("bootKeyUsed");
+    expect(server).toContain("x-mathcanvas-ui");
+    expect(server).toMatch(/HttpOnly;\s*SameSite=Strict/);
+    expect(server).toContain("frame-ancestors 'none'");
+    expect(server).toContain("mathcanvas.vivasam.com");
+
+    // 문서가 이 예외를 명시하고 있어야 한다. 불변식과 구현이 어긋나면 실패한다.
+    expect(security).toContain("apps/teacher-ui");
+    expect(security).toMatch(
+      /MCP 서버는 stdio만 사용하며 수신 포트를 열지 않습니다/
+    );
+  });
+
   it("페이지 쓰기는 새 프로젝트 POST 한 종류뿐이다", () => {
     const operations = read(
       "packages/managed-browser/src/page-operations.ts"
