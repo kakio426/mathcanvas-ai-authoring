@@ -1,6 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { redactSensitiveText } from "@mathcanvas/contracts";
+import {
+  denominatorRelationSchema,
+  difficultySchema,
+  manipulationSchema,
+  redactSensitiveText
+} from "@mathcanvas/contracts";
 import { PlanningError } from "@mathcanvas/planner";
 import {
   AuthoringServiceError,
@@ -107,27 +112,11 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
           prompt: z.string().min(5).max(2000),
           requestedGrade: z.number().int().min(1).max(6).optional(),
           problemCount: z.number().int().min(1).max(6).optional(),
-          difficulty: z.enum(["easy", "normal", "hard"]).optional(),
-          denominatorRelation: z
-            .enum(["mixed", "coprime", "multiple"])
-            .optional(),
-          manipulation: z
-            .enum([
-              "fraction-strip-common-start-drag",
-              "equivalent-fraction-strip-match",
-              "number-card-make-ten-drag",
-              "number-card-balanced-equation-drag",
-              "balance-scale-sum-card-drag",
-              "clock-hour-hand-boundary-drag",
-              "elapsed-time-clock-pair-drag",
-              "same-denominator-fraction-sum-drag",
-              "same-denominator-improper-sum-drag",
-              "unlike-denominator-common-unit-drag",
-              "unlike-denominator-common-unit-difference-drag",
-              "bar-graph-scale-unit-drag",
-              "length-unit-iteration-drag"
-            ])
-            .optional()
+          difficulty: difficultySchema.optional(),
+          denominatorRelation: denominatorRelationSchema.optional(),
+          // 계약 스키마에서 직접 파생한다. 활동을 추가하면서 이 목록을
+          // 갱신하지 않아 MCP에서만 활동에 접근하지 못하는 드리프트를 막는다.
+          manipulation: manipulationSchema.optional()
         })
         .strict(),
       annotations: {

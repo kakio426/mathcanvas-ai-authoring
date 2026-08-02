@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   CurriculumResolutionError,
   LEARNING_MAP_COMMIT,
-  resolveCurriculum
+  UNVERIFIED_LOCATOR_PREFIX,
+  resolveCurriculum,
+  teacherCurriculumCatalog
 } from "./index.js";
 
 describe("교육과정 해석", () => {
@@ -46,6 +48,43 @@ describe("교육과정 해석", () => {
     ).not.toBe("official-text-verified");
     expect(synthesized.record.reviewer).toContain("사람 검토 없음");
     expect(synthesized.warnings.join(" ")).toContain("자동 합성");
+  });
+
+  it("파생한 출처 위치를 검증된 위치처럼 표시하지 않는다", () => {
+    // 소주제 묶음에서 코드 규칙으로 만든 참조 항목은 원문 미대조 표시를 달고,
+    // 사람이 원문을 확인한 항목은 실제 쪽수 위치를 그대로 쓴다.
+    const derived = teacherCurriculumCatalog.filter(
+      (standard) =>
+        standard.summaryKind === "source-position" ||
+        standard.summaryKind === "activity-profile-goal"
+    );
+    const reviewed = teacherCurriculumCatalog.filter(
+      (standard) => standard.summaryKind === "official-goal"
+    );
+    expect(derived.length).toBeGreaterThan(0);
+    expect(reviewed.length).toBeGreaterThan(0);
+    for (const standard of derived) {
+      expect(standard.sourceLocator.startsWith(UNVERIFIED_LOCATOR_PREFIX)).toBe(
+        true
+      );
+    }
+    for (const standard of reviewed) {
+      expect(standard.sourceLocator).not.toContain(UNVERIFIED_LOCATOR_PREFIX);
+    }
+  });
+
+  it("활동 프로필이 준 목표 문구를 검토된 목표로 승격하지 않는다", () => {
+    // 목표 문구가 있다는 사실이 원문 대조를 뜻하지는 않는다.
+    // 프로필에서 온 문구는 official-goal이 아니라 activity-profile-goal이다.
+    const profileGoals = teacherCurriculumCatalog.filter(
+      (standard) => standard.summaryKind === "activity-profile-goal"
+    );
+    expect(profileGoals.length).toBeGreaterThan(0);
+    for (const standard of profileGoals) {
+      expect(resolveCurriculum(standard.standardCode).provenance).toBe(
+        "synthesized"
+      );
+    }
   });
 
   it("한 성취기준에 활동 프로필이 겹치면 경고로 드러낸다", () => {

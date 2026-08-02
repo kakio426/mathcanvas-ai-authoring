@@ -324,7 +324,10 @@ export function App() {
         method: "POST",
         body: JSON.stringify(form)
       });
-      const preview = await api<PreviewResponse>(`/api/recommendations/${recommendation.card.cardId}`);
+      const preview = await api<PreviewResponse>(
+        `/api/recommendations/${recommendation.card.cardId}`,
+        { method: "POST" }
+      );
       setActivity(preview.activity);
       setApprovalToken(preview.approvalToken);
       setView("preview");
@@ -536,8 +539,8 @@ export function App() {
                     <select value={form.standardCode} onChange={(event) => changeStandard(event.target.value)} disabled={!catalog || unitStandards.length === 0}>
                       {unitStandards.length ? unitStandards.map((standard) => {
                         const released = standard.activities.some((activityOption) => activityOption.availability === "released");
-                        const verified = standard.activities.some((activityOption) => activityOption.availability === "verified");
-                        return <option key={standard.standardCode} value={standard.standardCode}>{standard.standardCode} {standard.focusLabel}{released ? " · 활동 있음" : verified ? " · 저장 검증 대기" : ""}</option>;
+                        // 교사에게는 지금 만들 수 있는지만 알리고, 내부 검증 단계는 노출하지 않는다.
+                        return <option key={standard.standardCode} value={standard.standardCode}>{standard.standardCode} {standard.focusLabel}{released ? " · 활동 있음" : " · 준비 중"}</option>;
                       }) : <option value="">연결된 성취기준 확인 중</option>}
                     </select>
                   </label>
@@ -579,8 +582,8 @@ export function App() {
                     </fieldset>
                   ) : (
                     <div className="unsupported-activity">
-                      <strong>{selectedStandard.focusLabel} 활동의 마지막 저장 검증이 남았습니다.</strong>
-                      <p>수학적 판단·검증 구조와 로컬 생성 검사는 통과했습니다. 실제 MathCanvas 저장·재열기 확인 뒤 사용할 수 있습니다.</p>
+                      <strong>{selectedStandard.focusLabel} 활동은 아직 준비 중입니다.</strong>
+                      <p>다른 활동 초점을 고르시거나, 같은 단원의 다른 성취기준을 살펴봐 주세요.</p>
                     </div>
                   )}
                 </section>

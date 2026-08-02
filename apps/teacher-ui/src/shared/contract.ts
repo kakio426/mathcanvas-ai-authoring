@@ -54,7 +54,7 @@ export interface CurriculumStandardOption {
   domain: "수와 연산" | "변화와 관계" | "도형과 측정" | "자료와 가능성";
   focusLabel: string;
   standardSummary: string;
-  summaryKind: "official-goal" | "source-position";
+  summaryKind: "official-goal" | "activity-profile-goal" | "source-position";
   activities: CurriculumActivityOption[];
 }
 

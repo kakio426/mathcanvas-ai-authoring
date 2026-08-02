@@ -54,13 +54,25 @@ export interface TeacherActivityOption {
 
 type TeacherActivityInput = Omit<TeacherActivityOption, "availability">;
 
+/**
+ * 공식 원문과 대조하지 않고 소주제 묶음에서 파생한 위치 문자열임을 나타낸다.
+ * `sourceLocator`가 이 접두어로 시작하면 검증된 출처 위치가 아니다.
+ */
+export const UNVERIFIED_LOCATOR_PREFIX = "[원문 미대조]" as const;
+
 export interface TeacherCurriculumStandard {
   standardCode: string;
   gradeBand: CurriculumRecord["gradeBand"];
   domain: CurriculumRecord["domain"];
   focusLabel: string;
   standardSummary: string;
-  summaryKind: "official-goal" | "source-position";
+  /**
+   * `official-goal`: 사람이 공식 원문과 대조해 data.ts에 기록한 목표 문구.
+   * `activity-profile-goal`: 활동 프로필이 제공한 목표 문구. 아직 원문 미대조.
+   * `source-position`: 목표 문구 없이 소주제 위치만 아는 상태.
+   * 뒤의 두 상태는 `sourceLocator`가 `UNVERIFIED_LOCATOR_PREFIX`로 시작한다.
+   */
+  summaryKind: "official-goal" | "activity-profile-goal" | "source-position";
   sourceLocator: string;
   learningMapTopicId: string;
   activities: readonly TeacherActivityOption[];
@@ -428,7 +440,12 @@ function referenceGroup(
     focusLabel,
     standardSummary: `교육과정에서 ‘${focusLabel}’ 소주제에 배치된 성취기준입니다.`,
     summaryKind: "source-position",
-    sourceLocator: `교육부 고시 제2022-33호 [별책 8] 수학과 교육과정 > 초등학교 ${gradeBand}학년군 > ${domain} > ${focusLabel} > ${standardCode}`,
+    // 이 위치 문자열은 소주제 묶음에서 코드 규칙으로 파생한 것이고,
+    // 공식 PDF의 실제 쪽·항목과 대조한 결과가 아니다. 검증된 위치처럼
+    // 읽히지 않도록 접두어로 상태를 함께 적는다.
+    // 사람이 원문과 대조하면 data.ts의 CurriculumRecord로 옮기고
+    // 그때부터 officialSource.locator(실제 쪽수)가 쓰인다.
+    sourceLocator: `${UNVERIFIED_LOCATOR_PREFIX} 교육부 고시 제2022-33호 [별책 8] 수학과 교육과정 > 초등학교 ${gradeBand}학년군 > ${domain} > ${focusLabel} > ${standardCode}`,
     learningMapTopicId: learningMapTopicId(
       standardCode,
       gradeBand,
@@ -570,12 +587,8 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
             ...reference,
             ...supported,
             focusLabel: reference.focusLabel,
-            ...(profileOfficialGoal
-              ? {
-                  standardSummary: profileOfficialGoal,
-                  summaryKind: "official-goal" as const
-                }
-              : {}),
+            // 사람이 원문과 대조해 data.ts에 기록한 목표 문구가 이미 있으면
+            // 활동 프로필의 미검증 문구로 덮어쓰지 않는다. 검토본이 우선이다.
             activities: [...supported.activities, ...profileActivities]
           }
         : {
@@ -583,7 +596,7 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
             ...(profileOfficialGoal
               ? {
                   standardSummary: profileOfficialGoal,
-                  summaryKind: "official-goal" as const
+                  summaryKind: "activity-profile-goal" as const
                 }
               : {}),
             activities: profileActivities

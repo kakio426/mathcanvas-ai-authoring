@@ -7,6 +7,7 @@ import { dirname, extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   createAuthoringRuntime,
+  describeCreationFailure,
   InstanceLockBusyError,
   type AuthoringRuntime,
   type MathCanvasAuthoringService
@@ -417,8 +418,10 @@ async function handleApi(
     return;
   }
 
+  // 승인 토큰을 발급하고 previewed 상태를 바꾸므로 GET이 아니라 POST다.
+  // POST여야 위쪽 requireMutationGuards(CSRF 헤더 + Origin 검사)를 함께 통과한다.
   const previewMatch = url.pathname.match(/^\/api\/recommendations\/([^/]+)$/);
-  if (request.method === "GET" && previewMatch) {
+  if (request.method === "POST" && previewMatch) {
     const cardId = previewMatch[1];
     const card = cardId ? session.cards.get(cardId) : undefined;
     if (!card) {
@@ -464,10 +467,12 @@ async function handleApi(
       })
       .then((result) => {
         creation.status = result.status === "succeeded" ? "succeeded" : "failed";
+        // 실패 원인별 안내를 하나로 뭉개지 않는다. 로그인이 풀린 것과
+        // 권한이 없는 것은 교사가 해야 할 일이 서로 다르다.
         creation.message =
           creation.status === "succeeded"
             ? "새 활동을 만들었습니다. MathCanvas에서 바로 확인해 보세요."
-            : "활동을 만들지 못했어요. 연결을 확인한 뒤 다시 시도해 주세요.";
+            : describeCreationFailure(result.errorCode);
         if (isAllowedEditorUrl(result.editorUrl)) creation.editorUrl = result.editorUrl;
       })
       .catch(() => {

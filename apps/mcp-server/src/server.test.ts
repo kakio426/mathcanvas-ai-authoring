@@ -1,6 +1,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, describe, expect, it } from "vitest";
+import { manipulationSchema } from "@mathcanvas/contracts";
 import {
   CreationJobStore,
   MANAGED_BROWSER_VERSION,
@@ -83,6 +84,32 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(tools)).not.toMatch(
       /rawPayload|contentsJson|absoluteCoordinates|nativeToolId|toolKey/
     );
+  });
+
+  it("추천 도구의 조작 방식 목록이 계약 스키마와 어긋나지 않는다", async () => {
+    const client = await connectedClient();
+    const tools = await client.listTools();
+    const recommendTool = tools.tools.find(
+      (tool) => tool.name === "mathcanvas_recommend_activity"
+    );
+    const exposed = new Set<string>(
+      (
+        (
+          recommendTool?.inputSchema as {
+            properties?: {
+              manipulation?: { enum?: unknown[] };
+            };
+          }
+        ).properties?.manipulation?.enum ?? []
+      ).map(String)
+    );
+
+    // 등록된 활동의 조작 방식은 전부 MCP로도 요청할 수 있어야 한다.
+    // 활동을 추가하고 이 목록을 갱신하지 않으면 MCP에서만 접근이 막힌다.
+    const contracted = new Set<string>(manipulationSchema.options);
+    expect([...contracted].filter((value) => !exposed.has(value))).toEqual([]);
+    expect([...exposed].filter((value) => !contracted.has(value))).toEqual([]);
+    expect(exposed.size).toBe(contracted.size);
   });
 
   it("전용 Chrome 열기 도구가 로그인 위치를 반환한다", async () => {

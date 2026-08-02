@@ -137,6 +137,45 @@ function summarizeRecommendation(
   };
 }
 
+/**
+ * 생성 실패 코드별 사용자 안내 문구의 단일 원본이다.
+ * MCP 응답과 교사용 화면이 같은 문구를 쓰도록 여기서만 관리한다.
+ * 새 실패 코드를 만들면 이 표에도 함께 추가한다.
+ */
+export const CREATION_FAILURE_MESSAGES: Readonly<Record<string, string>> = {
+  "login-required":
+    "MathCanvas 로그인이 풀렸어요. 전용 창에서 다시 로그인한 뒤 새로 추천받아 주세요.",
+  "auth-required":
+    "MathCanvas 로그인이 풀렸어요. 전용 창에서 다시 로그인한 뒤 새로 추천받아 주세요.",
+  "mathcanvas-tab-missing":
+    "MathCanvas 전용 창에서 ‘내 캔버스’를 연 뒤 새로 추천받아 주세요.",
+  "browser-launch-failed":
+    "Chrome을 열지 못했어요. Chrome 설치 상태와 다른 MathCanvas 전용 창이 열려 있는지 확인해 주세요.",
+  "contract-mismatch":
+    "MathCanvas 연결 방식이 바뀌어 안전하게 멈췄어요. 도구를 업데이트해 주세요.",
+  "contract-probe-unavailable":
+    "생성 전 확인 절차를 마치지 못해 안전하게 멈췄어요. 잠시 뒤 다시 시도해 주세요.",
+  "permission-denied":
+    "지금 로그인한 MathCanvas 계정에 새 활동을 만들 권한이 있는지 확인해 주세요.",
+  "mathcanvas-unavailable":
+    "MathCanvas에 연결할 수 없어요. 잠시 뒤 다시 시도해 주세요.",
+  "payload-hash-mismatch":
+    "확인하신 내용과 만들려던 활동이 달라 안전하게 멈췄어요. 내용을 다시 확인해 주세요.",
+  "project-create-failed":
+    "MathCanvas에서 새 활동을 만들지 못했어요. 연결 상태를 확인한 뒤 다시 시도해 주세요."
+};
+
+export function describeCreationFailure(
+  errorCode: string | undefined
+): string {
+  return (
+    (errorCode === undefined
+      ? undefined
+      : CREATION_FAILURE_MESSAGES[errorCode]) ??
+    "활동을 만들지 못했어요. 연결 상태를 확인한 뒤 다시 시도해 주세요."
+  );
+}
+
 const retryableCreationErrors = new Set([
   "login-required",
   "auth-required",
@@ -749,28 +788,6 @@ export class MathCanvasAuthoringService {
       failed: "새 활동지를 만들지 못했습니다. 오류 안내를 확인해 주세요.",
       expired: "생성 요청 시간이 지나 안전하게 중단했습니다."
     };
-    const failureMessages: Record<string, string> = {
-      "login-required":
-        "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
-      "auth-required":
-        "Chrome의 MathCanvas에서 다시 로그인한 뒤 새 추천을 받아 주세요.",
-      "mathcanvas-tab-missing":
-        "MathCanvas 전용 Chrome에서 ‘내 캔버스’를 연 뒤 새 추천을 받아 주세요.",
-      "browser-launch-failed":
-        "Chrome을 열지 못했습니다. 설치 상태를 확인해 주세요.",
-      "contract-mismatch":
-        "MathCanvas 연결 방식이 달라져 안전하게 멈췄어요. 도구를 업데이트해 주세요.",
-      "contract-probe-unavailable":
-        "생성에 필요한 도구 검사 프로젝트를 확인할 수 없어 안전하게 멈췄어요.",
-      "permission-denied":
-        "현재 MathCanvas 계정에 새 프로젝트를 만들 권한이 있는지 확인해 주세요.",
-      "mathcanvas-unavailable":
-        "MathCanvas에 연결할 수 없습니다. 잠시 뒤 다시 시도해 주세요.",
-      "payload-hash-mismatch":
-        "교사가 확인한 활동과 생성 데이터가 달라 안전하게 멈췄어요.",
-      "project-create-failed":
-        "MathCanvas에서 새 프로젝트를 만들지 못했습니다. 연결 상태를 다시 확인해 주세요."
-    };
     return {
       found: true,
       jobId,
@@ -785,9 +802,8 @@ export class MathCanvasAuthoringService {
         ? { errorCode: status.result.errorCode }
         : {}),
       message:
-        status.status === "failed" && status.result?.errorCode
-          ? (failureMessages[status.result.errorCode] ??
-            messages.failed)
+        status.status === "failed"
+          ? describeCreationFailure(status.result?.errorCode)
           : messages[status.status]
     };
   }

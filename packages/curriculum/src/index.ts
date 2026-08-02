@@ -204,6 +204,7 @@ export {
 } from "./data.js";
 
 export {
+  UNVERIFIED_LOCATOR_PREFIX,
   findTeacherCurriculumStandard,
   findTeacherTextbookUnit,
   teacherCurriculumCatalog,
