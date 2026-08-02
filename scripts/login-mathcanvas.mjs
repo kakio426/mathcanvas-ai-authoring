@@ -24,7 +24,6 @@ let context;
 let chromeProcess;
 let contextClosed = false;
 let authenticated = false;
-let confirmationClicked = false;
 
 async function waitForDevToolsEndpoint(timeoutMs = 30_000) {
   const startedAt = Date.now();
@@ -147,7 +146,18 @@ try {
   await page.bringToFront();
 
   while (!contextClosed) {
-    page = await ensureMathCanvasPage(context);
+    const livePages = context
+      .pages()
+      .filter((candidate) => !candidate.isClosed());
+    if (livePages.length === 0) break;
+    // 비바샘 통합 로그인처럼 다른 origin으로 이동한 동안에는 사용자의
+    // 로그인 화면을 그대로 둔다. MathCanvas로 강제 복귀시키지 않는다.
+    const mathCanvasPage = livePages.find(isMathCanvasPage);
+    if (!mathCanvasPage) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      continue;
+    }
+    page = mathCanvasPage;
     try {
       if (isMathCanvasPage(page)) {
         const authStatus = await page.evaluate(async () => {
@@ -180,16 +190,6 @@ try {
     }
     if (!page.isClosed() && isMathCanvasPage(page)) {
       try {
-        if (!confirmationClicked) {
-          const confirmation = page.getByRole("button", {
-            name: "확인",
-            exact: true
-          });
-          if (await confirmation.isVisible().catch(() => false)) {
-            await confirmation.click();
-            confirmationClicked = true;
-          }
-        }
         const inspection = await page.evaluate(
           inspectMathCanvasPage,
           { verifyStaticContract: false }
@@ -214,7 +214,7 @@ try {
     // Chrome이 전용 프로필의 Local Storage를 디스크에 반영할 시간을 둡니다.
     await new Promise((resolve) => setTimeout(resolve, 2000));
     process.stdout.write(
-      "PASS MathCanvas 로그인 확인 완료. 전용 창을 닫고 앱으로 돌아갑니다.\n"
+      "PASS MathCanvas 로그인 확인 완료. 실제 화면 검수가 끝날 때까지 전용 창을 유지합니다.\n"
     );
   }
 } catch (error) {
@@ -223,11 +223,18 @@ try {
   );
   process.exitCode = 1;
 } finally {
-  if (browser && browser.isConnected()) {
-    await browser.close().catch(() => undefined);
-  }
-  const exitedCleanly = await waitForChromeExit();
-  if (!exitedCleanly && chromeProcess?.exitCode === null) {
-    chromeProcess.kill("SIGTERM");
+  if (authenticated) {
+    // 후속 canary가 같은 전용 프로필의 인증 상태를 메모리에서 이어받도록
+    // Chrome은 유지하고 Playwright 연결만 끊는다.
+    browser?._connection?.close();
+    chromeProcess?.unref();
+  } else {
+    if (browser && browser.isConnected()) {
+      await browser.close().catch(() => undefined);
+    }
+    const exitedCleanly = await waitForChromeExit();
+    if (!exitedCleanly && chromeProcess?.exitCode === null) {
+      chromeProcess.kill("SIGTERM");
+    }
   }
 }
