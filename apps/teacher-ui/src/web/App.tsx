@@ -318,7 +318,7 @@ export function App() {
             </p>
             <div className={`connection-note note-${connection.connection}`} aria-live="polite">
               <strong>{checking ? "연결을 확인하고 있어요." : connection.message}</strong>
-              {connection.connection === "login_pending" ? <span>로그인한 뒤 전용 창을 닫으면 이 화면에서 자동으로 확인합니다.</span> : null}
+              {connection.connection === "login_pending" ? <span>로그인을 마치면 전용 창이 자동으로 닫히고 이 화면에 연결됩니다.</span> : null}
             </div>
             <div className="actions">
               {connection.connection === "ready" && !checking ? (

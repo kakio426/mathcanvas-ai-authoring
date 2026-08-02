@@ -72,10 +72,10 @@ async function ensureMathCanvasPage(browserContext) {
   const mathCanvasPage = livePages.find(isMathCanvasPage);
   if (mathCanvasPage) return mathCanvasPage;
 
-  // 로그인 팝업이 원래 창까지 닫으면 Playwright에는 표시되지 않는
-  // about:blank target만 남을 수 있다. 그 target을 재사용하지 말고 새
-  // 최상위 page를 만들어 실제 Chrome 창을 복구한다.
-  const recoveredPage = await browserContext.newPage();
+  // 시작할 때 이미 만들어진 빈 탭을 재사용해 같은 로그인 창을 두 번
+  // 만들지 않는다. 로그인 제공자가 원래 창까지 닫은 경우에만 새 page를
+  // 만들어 MathCanvas로 복구한다.
+  const recoveredPage = livePages[0] ?? (await browserContext.newPage());
   await recoveredPage.goto(MATHCANVAS_HOME_URL, {
     waitUntil: "domcontentloaded",
     timeout: 30_000
@@ -118,9 +118,10 @@ try {
       "--remote-debugging-port=0",
       "--no-first-run",
       "--no-default-browser-check",
+      "--disable-session-crashed-bubble",
       "--start-maximized",
       "--new-window",
-      MATHCANVAS_HOME_URL
+      "about:blank"
     ],
     { stdio: "ignore" }
   );
@@ -167,7 +168,11 @@ try {
               cookie.name === "MATHCANVAS_SESSION" &&
               cookie.expires > Date.now() / 1000 + 60
           );
-        authenticated = authStatus === 200 && persistentSession;
+        const accessToken = await page.evaluate(
+          () => Boolean(window.localStorage.getItem("accessToken"))
+        );
+        authenticated =
+          authStatus === 200 && (persistentSession || accessToken);
         if (authenticated) break;
       }
     } catch {
@@ -209,11 +214,8 @@ try {
     // Chrome이 전용 프로필의 Local Storage를 디스크에 반영할 시간을 둡니다.
     await new Promise((resolve) => setTimeout(resolve, 2000));
     process.stdout.write(
-      "PASS MathCanvas 로그인 확인 완료. 전용 창은 headless canary가 인증을 메모리로 넘겨받을 때까지 백그라운드에서 유지합니다.\n"
+      "PASS MathCanvas 로그인 확인 완료. 전용 창을 닫고 앱으로 돌아갑니다.\n"
     );
-    while (!contextClosed && chromeProcess?.exitCode === null) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
   }
 } catch (error) {
   process.stderr.write(

@@ -34,6 +34,7 @@ const csrfHeader = "x-mathcanvas-ui";
 let port = 0;
 let runtime: AuthoringRuntime | undefined;
 let loginProcess: ChildProcess | undefined;
+let loginStarting = false;
 
 const difficultyLabels = {
   easy: "기초",
@@ -248,19 +249,29 @@ async function handleApi(
   if (request.method !== "GET" && !requireMutationGuards(request, response)) return;
 
   if (request.method === "POST" && url.pathname === "/api/session/open-login") {
-    if (!loginProcess || loginProcess.exitCode !== null) {
-      if (runtime) await runtime.closeBrowser();
-      loginProcess = spawn("pnpm", ["mathcanvas:login"], {
-        cwd: repositoryRoot,
-        stdio: "ignore"
-      });
-      loginProcess.once("exit", () => {
-        loginProcess = undefined;
-      });
+    if ((!loginProcess || loginProcess.exitCode !== null) && !loginStarting) {
+      loginStarting = true;
+      try {
+        if (runtime) await runtime.closeBrowser();
+        const child = spawn(
+          process.execPath,
+          [join(repositoryRoot, "scripts", "login-mathcanvas.mjs")],
+          {
+            cwd: repositoryRoot,
+            stdio: "ignore"
+          }
+        );
+        loginProcess = child;
+        child.once("exit", () => {
+          if (loginProcess === child) loginProcess = undefined;
+        });
+      } finally {
+        loginStarting = false;
+      }
     }
     json(response, 202, {
       connection: "login_pending",
-      message: "로그인 창을 열었습니다. 로그인한 뒤 창을 닫아 주세요."
+      message: "로그인 창을 열었습니다. 로그인이 확인되면 창이 자동으로 닫힙니다."
     });
     return;
   }

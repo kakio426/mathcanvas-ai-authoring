@@ -55,6 +55,8 @@
     "golden:verify": "vitest run tests/p0-golden.test.ts",
     "golden:update": "node scripts/golden/update.mjs",
     "mathcanvas:login": "pnpm --filter @mathcanvas/managed-browser build && node scripts/login-mathcanvas.mjs",
+    "mathcanvas:app:macos": "zsh scripts/build-macos-app.sh",
+    "mathcanvas:app:macos:install": "zsh scripts/build-macos-app.sh --install",
     "mathcanvas:ui": "pnpm --filter @mathcanvas/teacher-ui... build && pnpm --filter @mathcanvas/teacher-ui start",
     "mathcanvas:ui:no-open": "MATHCANVAS_UI_NO_OPEN=1 pnpm mathcanvas:ui",
     "release:preview": "node scripts/capture-release-previews.mjs",
