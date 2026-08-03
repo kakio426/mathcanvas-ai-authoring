@@ -105,8 +105,11 @@ export const barGraphRepresentFromTableBlueprint = defineActivityBlueprint({
       bindings: {
         title: "item.contextText",
         categories: "item.categories",
+        values: "item.barValues",
         valuePerGridline: "item.peoplePerCell",
         gridlineCount: "item.gridlineCount",
+        valueAxisName: "item.valueAxisName",
+        valueAxisUnit: "item.valueAxisUnit",
         categoryAxisName: "item.categoryLabelText"
       },
       containerRole: "work-panel"

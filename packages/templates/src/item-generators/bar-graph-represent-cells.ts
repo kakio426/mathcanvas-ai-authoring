@@ -174,6 +174,10 @@ export function generateBarGraphRepresentCellsItems(
         peoplePerCell: configuration.peoplePerCell,
         gridlineCount: configuration.gridlineCount,
         scaleText: `눈금 한 칸 = ${configuration.peoplePerCell}명`,
+        valueAxisName: "학생 수",
+        valueAxisUnit: "명",
+        // 막대는 비워서 보낸다. 채우는 일이 학생의 몫이다.
+        barValues: configuration.categories.map(() => 0),
         targetLabel: target,
         targetValue: value,
         correctValueText: `${correctCells}칸`,

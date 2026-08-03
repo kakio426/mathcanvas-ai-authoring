@@ -87,10 +87,9 @@ export type BarChartIntent = {
   readonly kind: "bar-chart";
   readonly toolKey: "DP04BC";
   readonly title: string;
-  /** [세로축 이름, 가로축 이름] */
-  readonly axisNames: readonly [string, string];
-  /** [세로축 단위, 가로축 단위] */
-  readonly axisUnits: readonly [string, string];
+  readonly valueAxisName: string;
+  readonly categoryAxisName: string;
+  readonly valueAxisUnit: string;
   readonly categories: readonly string[];
   readonly valuePerGridline: number;
   readonly gridlineCount: number;
