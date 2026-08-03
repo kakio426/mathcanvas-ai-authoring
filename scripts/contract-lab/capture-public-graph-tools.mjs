@@ -196,6 +196,7 @@ const output = {
   tools: [...tools.values()]
     .sort((left, right) => (left.toolId < right.toolId ? -1 : 1))
     .map((entry) => ({
+      moduleKey: entry.toolId,
       toolId: entry.toolId,
       variants: [...entry.variants].sort(),
       sampleCount: entry.sampleCount,

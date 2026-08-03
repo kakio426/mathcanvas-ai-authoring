@@ -1,27 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "probeId": "graph-tool-canary-v1",
-  "observedAt": "2026-08-03T00:47:44.687Z",
+  "observedAt": "2026-08-03T03:30:55.222Z",
   "status": "pass",
   "issues": [],
   "createRequestCount": 1,
   "existingProjectWriteCount": 0,
   "submittedObjectCount": 2,
   "reopenedObjectCount": 2,
-  "tools": {
-    "DP04BC-01": {
+  "tools": [
+    {
+      "moduleKey": "DP04BC",
+      "variant": "DP04BC-01",
       "survivedReopen": true,
       "meaningDifferences": [],
       "droppedFieldCount": 0,
-      "droppedFields": []
+      "droppedFields": [],
+      "axisRule": "축 최대값 = (heightCount - 1) x Number(start[0])"
     },
-    "DP02TG-02": {
+    {
+      "moduleKey": "DP02TG",
+      "variant": "DP02TG-02",
       "survivedReopen": true,
       "meaningDifferences": [],
       "droppedFieldCount": 0,
       "droppedFields": []
     }
-  },
+  ],
   "moduleActivation": {
     "unitId": "Unit04",
     "DP04BC": true,

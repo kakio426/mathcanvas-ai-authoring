@@ -52,6 +52,7 @@ const MEANING_FIELDS = [
   "widthCount",
   "heightCount",
   "heightDeps",
+  "start",
   "firstGraphValue",
   "secondGraphValue",
   "isOnlyOneGraph",
@@ -99,9 +100,11 @@ function barChartObject(id, placement) {
     label: ["축구", "농구", "피구", "달리기"],
     labelCount: 4,
     widthCount: 4,
-    // 세로 눈금 6칸, 한 칸이 1명
-    heightCount: 6,
+    // 축 최대값 = (heightCount - 1) x start. 한 칸 1명, 눈금선 7개 -> 0~6명.
+    // start와 heightDeps는 반드시 같은 값이어야 한다. 다르면 start가 이긴다.
+    heightCount: 7,
     heightDeps: 1,
+    start: ["1"],
     // 학생이 채울 빈 막대. 공개 수업의 '그리기' 유형과 같은 모양이다.
     firstGraphValue: [0, 0, 0, 0],
     secondGraphValue: [0, 0, 0, 0],
@@ -273,20 +276,26 @@ try {
     // 프로젝트 식별자는 남기지 않는다. 열어 본 사실과 형태만 기록한다.
     submittedObjectCount: payload.contentsJson.length,
     reopenedObjectCount: reopenedObjects.length,
-    tools: {
-      "DP04BC-01": {
+    // 도구 증거는 저장소 규약대로 moduleKey를 가진 배열로 남긴다.
+    tools: [
+      {
+        moduleKey: "DP04BC",
+        variant: "DP04BC-01",
         survivedReopen: Boolean(findBySvg("DP04BC-01")),
         meaningDifferences: barComparison.differences,
         droppedFieldCount: barComparison.droppedFields.length,
-        droppedFields: barComparison.droppedFields
+        droppedFields: barComparison.droppedFields,
+        axisRule: "축 최대값 = (heightCount - 1) x Number(start[0])"
       },
-      "DP02TG-02": {
+      {
+        moduleKey: "DP02TG",
+        variant: "DP02TG-02",
         survivedReopen: Boolean(findBySvg("DP02TG-02")),
         meaningDifferences: tableComparison.differences,
         droppedFieldCount: tableComparison.droppedFields.length,
         droppedFields: tableComparison.droppedFields
       }
-    },
+    ],
     moduleActivation: {
       unitId: UNIT_ID,
       DP04BC: moduleState.DP04BC === true,
@@ -303,8 +312,8 @@ try {
 
   process.stdout.write(
     `graph-tool canary ${evidence.status}: ` +
-      `막대그래프 ${evidence.tools["DP04BC-01"].survivedReopen ? "유지" : "사라짐"} / ` +
-      `표 ${evidence.tools["DP02TG-02"].survivedReopen ? "유지" : "사라짐"} / ` +
+      `막대그래프 ${evidence.tools[0].survivedReopen ? "유지" : "사라짐"} / ` +
+      `표 ${evidence.tools[1].survivedReopen ? "유지" : "사라짐"} / ` +
       `의미 변경 ${barComparison.differences.length + tableComparison.differences.length}건 / ` +
       `누락 필드 ${barComparison.droppedFields.length + tableComparison.droppedFields.length}개\n`
   );

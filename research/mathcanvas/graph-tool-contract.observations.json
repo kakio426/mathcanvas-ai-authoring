@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "observedAt": "2026-08-03T00:15:36.909Z",
+  "observedAt": "2026-08-03T03:30:51.912Z",
   "source": {
     "origin": "https://mathcanvas.vivasam.com",
     "endpoints": [
@@ -274,6 +274,7 @@
   ],
   "tools": [
     {
+      "moduleKey": "DP02TG",
       "toolId": "DP02TG",
       "variants": [
         "DP02TG-01",
@@ -947,6 +948,7 @@
       ]
     },
     {
+      "moduleKey": "DP03PG",
       "toolId": "DP03PG",
       "variants": [
         "DP03PG-01",
@@ -1560,6 +1562,7 @@
       ]
     },
     {
+      "moduleKey": "DP04BC",
       "toolId": "DP04BC",
       "variants": [
         "DP04BC-01",
@@ -2222,6 +2225,7 @@
       ]
     },
     {
+      "moduleKey": "DP06RC",
       "toolId": "DP06RC",
       "variants": [
         "DP06RC-01",

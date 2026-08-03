@@ -181,6 +181,38 @@ function releasedSupportHistory(
 }
 
 const releasedToolEvidence = {
+  DP04BC: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=DP04BC",
+      "research/mathcanvas/graph-tool-contract.observations.json#tool=DP04BC"
+    ],
+    contracted: ["research/mathcanvas/graph-tool-object-template.json"],
+    verified: [
+      "research/mathcanvas/graph-tool-release-canary.json#tool=DP04BC"
+    ],
+    released: [
+      "research/mathcanvas/graph-tool-release-canary.json#key=moduleActivation"
+    ],
+    lifecycle: [
+      "research/mathcanvas/graph-tool-release-canary.json#key=reopenedObjectCount"
+    ]
+  },
+  DP02TG: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=DP02TG",
+      "research/mathcanvas/graph-tool-contract.observations.json#tool=DP02TG"
+    ],
+    contracted: ["research/mathcanvas/graph-tool-object-template.json#key=dataTable"],
+    verified: [
+      "research/mathcanvas/graph-tool-release-canary.json#tool=DP02TG"
+    ],
+    released: [
+      "research/mathcanvas/graph-tool-release-canary.json#key=status"
+    ],
+    lifecycle: [
+      "research/mathcanvas/graph-tool-release-canary.json#key=submittedObjectCount"
+    ]
+  },
   NO03FM: {
     captured: [
       "research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM",
@@ -438,7 +470,9 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
           moduleKey === "NO04PD" ||
           moduleKey === "CR07BS" ||
           moduleKey === "SM02AD" ||
-          moduleKey === "SM02PB";
+          moduleKey === "SM02PB" ||
+          moduleKey === "DP04BC" ||
+          moduleKey === "DP02TG";
         const contracted = moduleKey === "CR07AT";
         const contractedEvidenceIds =
           moduleKey === "CR07AT"

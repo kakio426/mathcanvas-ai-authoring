@@ -1,6 +1,8 @@
 import type {
   AnalogClockIntent,
   BalanceScaleIntent,
+  BarChartIntent,
+  DataTableIntent,
   FractionModelIntent,
   LatexIntent,
   NativeToolPlacement,
@@ -18,6 +20,13 @@ import {
   resolveNativeRenderedBounds
 } from "./native-rendered-bounds.js";
 import { PATTERN_BLOCK_VARIANTS } from "./native-pattern-block-contract.js";
+import {
+  BAR_CHART_STRUCTURAL_FIELDS,
+  BAR_CHART_SVG_ID,
+  DATA_TABLE_STRUCTURAL_FIELDS,
+  DATA_TABLE_SVG_ID,
+  barChartAxisMaximum
+} from "./native-graph-tool-contract.js";
 
 export {
   NUMBER_CARD_DIGIT_CONTRACT_EVIDENCE,
@@ -533,5 +542,83 @@ export function makeRectangleObject(
     strokeDashArray,
     isStrokeChange: true,
     isMoveRotateHandler: false
+  };
+}
+
+export function makeBarChartObject(
+  intent: BarChartIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  assertReleasedModuleVariant("DP04BC", BAR_CHART_SVG_ID);
+  if (
+    intent.categories.length < 3 ||
+    intent.categories.length > 6 ||
+    intent.values.length !== intent.categories.length
+  ) {
+    throw new Error(
+      `bar-chart-categories-invalid:${intent.categories.length}:${intent.values.length}`
+    );
+  }
+  if (intent.valuePerGridline < 1 || intent.gridlineCount < 2) {
+    throw new Error(
+      `bar-chart-scale-invalid:${intent.valuePerGridline}:${intent.gridlineCount}`
+    );
+  }
+  const maximum = barChartAxisMaximum(
+    intent.gridlineCount,
+    intent.valuePerGridline
+  );
+  // 자료가 축을 넘으면 학생이 막대를 끝까지 그릴 수 없다.
+  for (const value of intent.values) {
+    if (!Number.isFinite(value) || value < 0 || value > maximum) {
+      throw new Error(`bar-chart-value-out-of-axis:${value}:${maximum}`);
+    }
+  }
+  const empty = intent.categories.map(() => 0);
+  return {
+    ...BAR_CHART_STRUCTURAL_FIELDS,
+    id: placement.id,
+    x: placement.x,
+    y: placement.y,
+    _x: placement.x,
+    _y: placement.y,
+    svgId: BAR_CHART_SVG_ID,
+    title: [intent.title],
+    name: [intent.axisNames[0], intent.axisNames[1]],
+    unit: [intent.axisUnits[0], intent.axisUnits[1]],
+    label: [...intent.categories],
+    labelCount: intent.categories.length,
+    widthCount: intent.categories.length,
+    heightCount: intent.gridlineCount,
+    // start와 heightDeps가 다르면 MathCanvas는 start를 따른다. 항상 같게 둔다.
+    heightDeps: intent.valuePerGridline,
+    start: [String(intent.valuePerGridline)],
+    firstGraphValue: [...intent.values],
+    secondGraphValue: empty,
+    isOnlyOneGraph: true,
+    isWave: false
+  };
+}
+
+export function makeDataTableObject(
+  intent: DataTableIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  assertReleasedModuleVariant("DP02TG", DATA_TABLE_SVG_ID);
+  if (intent.categories.length < 3 || intent.categories.length > 6) {
+    throw new Error(
+      `data-table-categories-invalid:${intent.categories.length}`
+    );
+  }
+  return {
+    ...DATA_TABLE_STRUCTURAL_FIELDS,
+    id: placement.id,
+    x: placement.x,
+    y: placement.y,
+    _x: placement.x,
+    _y: placement.y,
+    svgId: DATA_TABLE_SVG_ID,
+    title: [intent.title],
+    name: [...intent.categories]
   };
 }

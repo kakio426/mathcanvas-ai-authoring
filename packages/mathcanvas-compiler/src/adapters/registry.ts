@@ -7,6 +7,8 @@ import {
   makeFractionObject,
   makeLatexObject,
   makeNumberCardObject,
+  makeBarChartObject,
+  makeDataTableObject,
   makePatternBlockObject,
   makePlaceValueModelObject,
   makeRectangleObject,
@@ -79,6 +81,16 @@ export const REGISTERED_TOOL_ADAPTERS = [
     contractFamily: "native-pattern-block"
   },
   {
+    adapterKey: "bar-chart",
+    toolKey: "DP04BC",
+    contractFamily: "native-module-variant"
+  },
+  {
+    adapterKey: "data-table",
+    toolKey: "DP02TG",
+    contractFamily: "native-module-variant"
+  },
+  {
     adapterKey: "text",
     toolKey: "common.text",
     contractFamily: "native-text-object"
@@ -135,6 +147,16 @@ export function compileNativeTool(
       return {
         object: makeBalanceScaleObject(request, placement),
         requiredModuleKeys: ["CR07BS"]
+      };
+    case "bar-chart":
+      return {
+        object: makeBarChartObject(request, placement),
+        requiredModuleKeys: ["DP04BC"]
+      };
+    case "data-table":
+      return {
+        object: makeDataTableObject(request, placement),
+        requiredModuleKeys: ["DP02TG"]
       };
     case "text":
       return {

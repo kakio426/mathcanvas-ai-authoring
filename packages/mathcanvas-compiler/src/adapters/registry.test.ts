@@ -19,7 +19,7 @@ import {
 } from "./native-rendered-bounds.js";
 
 describe("fail-closed tool adapter registry", () => {
-  it("현재 검증된 아홉 도구만 등록한다", () => {
+  it("현재 검증된 열한 도구만 등록한다", () => {
     expect(
       REGISTERED_TOOL_ADAPTERS.map((adapter) => adapter.toolKey)
     ).toEqual([
@@ -29,6 +29,8 @@ describe("fail-closed tool adapter registry", () => {
       "NO04NT",
       "NO04PD",
       "SM02PB",
+      "DP04BC",
+      "DP02TG",
       "common.text",
       "common.formula",
       "common.rectangle"
@@ -62,9 +64,11 @@ describe("fail-closed tool adapter registry", () => {
     );
   });
 
-  it("46개 module variant 중 검증된 분수·숫자 카드·자릿값 모형·접시저울·기어식 시계·패턴 블록만 허용한다", () => {
+  it("46개 module variant 중 검증된 분수·숫자 카드·자릿값 모형·접시저울·기어식 시계·패턴 블록·막대그래프·자료와 표만 허용한다", () => {
     expect(NATIVE_MODULE_VARIANT_CONTRACTS).toHaveLength(46);
-    expect(RELEASED_MODULE_VARIANT_IDS).toHaveLength(33);
+    // 분수 12 + 수 카드 10 + 자릿값 3 + 저울 1 + 시계 1 + 패턴블록 6
+    // + 막대그래프 1 + 자료와 표 1
+    expect(RELEASED_MODULE_VARIANT_IDS).toHaveLength(35);
     expect(RELEASED_NUMBER_CARD_VARIANT_IDS).toHaveLength(10);
     expect(() =>
       assertReleasedModuleVariant("NO03FM", "NO03FM-08")

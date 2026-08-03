@@ -42,6 +42,10 @@ export const RELEASED_BALANCE_SCALE_VARIANT_IDS = [
 
 export const RELEASED_CLOCK_VARIANT_IDS = ["SM02AD-01"] as const;
 
+export const RELEASED_BAR_CHART_VARIANT_IDS = ["DP04BC-01"] as const;
+
+export const RELEASED_DATA_TABLE_VARIANT_IDS = ["DP02TG-02"] as const;
+
 export const RELEASED_PATTERN_BLOCK_VARIANT_IDS = Array.from(
   { length: 6 },
   (_, index) => `SM02PB-${String(index + 1).padStart(2, "0")}`
@@ -76,6 +80,12 @@ export const NATIVE_MODULE_VARIANT_CONTRACTS:
             : entry.moduleKey === "SM02PB" &&
                 entry.supportState === "released"
               ? RELEASED_PATTERN_BLOCK_VARIANT_IDS
+            : entry.moduleKey === "DP04BC" &&
+                entry.supportState === "released"
+              ? RELEASED_BAR_CHART_VARIANT_IDS
+            : entry.moduleKey === "DP02TG" &&
+                entry.supportState === "released"
+              ? RELEASED_DATA_TABLE_VARIANT_IDS
             : []
     }));
 
