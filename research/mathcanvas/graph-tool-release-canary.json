@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "probeId": "graph-tool-canary-v1",
+  "observedAt": "2026-08-03T00:47:44.687Z",
+  "status": "pass",
+  "issues": [],
+  "createRequestCount": 1,
+  "existingProjectWriteCount": 0,
+  "submittedObjectCount": 2,
+  "reopenedObjectCount": 2,
+  "tools": {
+    "DP04BC-01": {
+      "survivedReopen": true,
+      "meaningDifferences": [],
+      "droppedFieldCount": 0,
+      "droppedFields": []
+    },
+    "DP02TG-02": {
+      "survivedReopen": true,
+      "meaningDifferences": [],
+      "droppedFieldCount": 0,
+      "droppedFields": []
+    }
+  },
+  "moduleActivation": {
+    "unitId": "Unit04",
+    "DP04BC": true,
+    "DP02TG": true
+  }
+}

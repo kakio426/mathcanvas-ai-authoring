@@ -14,6 +14,7 @@
     "test:budget": "node scripts/architecture/check-test-budget.mjs",
     "clean": "pnpm -r run clean",
     "contract:probe:graph-tools": "node scripts/contract-lab/capture-public-graph-tools.mjs",
+    "contract:canary:graph-tools": "node scripts/contract-lab/capture-graph-tool-canary.mjs",
     "contract:probe:wave1": "node scripts/contract-lab/capture-wave1-round-trip.mjs",
     "contract:probe:wave1:canary": "node scripts/contract-lab/capture-wave1-canary.mjs",
     "contract:recover:wave1:canary": "node scripts/contract-lab/recover-wave1-canary.mjs",

@@ -1,0 +1,294 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedFrom": "공개 수업의 DP04BC-01·DP02TG-02 객체 구조",
+  "note": "구조 템플릿이다. 제목·항목·값 등 내용 필드는 생성 시 채운다.",
+  "barChart": {
+    "x": 533.4000244140625,
+    "y": 489.800048828125,
+    "_x": 533.4000244140625,
+    "_y": 489.800048828125,
+    "cx": 0,
+    "cy": 0,
+    "id": "",
+    "rx": 0,
+    "ry": 0,
+    "deps": [
+      "10"
+    ],
+    "fill": "#FF5862",
+    "keys": [
+      "title",
+      "unit",
+      "name",
+      "start",
+      "deps",
+      "label",
+      "firstGraphValue",
+      "secondGraphValue"
+    ],
+    "name": [
+      "수량",
+      "항목"
+    ],
+    "type": 1,
+    "unit": [
+      "",
+      ""
+    ],
+    "label": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "scale": 1,
+    "start": [
+      "5"
+    ],
+    "svgId": "DP04BC-01",
+    "title": [
+      ""
+    ],
+    "width": 120,
+    "height": 64,
+    "isWave": false,
+    "parent": {
+      "moveX": 0,
+      "moveY": 0,
+      "reset": false,
+      "startX": 0,
+      "startY": 0,
+      "newData": null,
+      "addValue": null,
+      "flgCount": 0,
+      "gridLine": 0,
+      "observer": {},
+      "plusToggle": false,
+      "handlerType": null,
+      "minusToggle": false,
+      "totalToggle": false,
+      "aGraphToggle": false,
+      "bGraphToggle": false,
+      "graphHandler": false,
+      "handlerIndex": null,
+      "widthHandler": false,
+      "heightHandler": false,
+      "addGraphToggle": false,
+      "minusToggleIdx": null
+    },
+    "rotate": 0,
+    "stroke": "#000000",
+    "groupId": "",
+    "isEyeOn": false,
+    "isGroup": false,
+    "isMerge": false,
+    "isSplit": false,
+    "firstFill": "#FF5862",
+    "isStackUp": false,
+    "sizeScale": 1,
+    "waveCount": 0,
+    "clickCount": 0,
+    "elemSplice": true,
+    "heightDeps": 5,
+    "isShuffled": false,
+    "isTextEdit": false,
+    "labelCount": 6,
+    "secondFill": "#32CCFF",
+    "strokeType": 1,
+    "widthCount": 6,
+    "coordinates": [
+      [
+        0,
+        0
+      ]
+    ],
+    "fillOpacity": 1,
+    "heightCount": 5,
+    "isBluePrint": false,
+    "strokeWidth": 4,
+    "isFillChange": true,
+    "isFirstGraph": true,
+    "toolbarWidth": 120,
+    "initSizeScale": 1,
+    "isGroupGridOn": false,
+    "strokeOpacity": 1,
+    "toolbarHeight": 64,
+    "isGroupElement": false,
+    "isOnlyOneGraph": true,
+    "isStrokeChange": false,
+    "isSurroundRect": false,
+    "isVerticalFlip": false,
+    "firstGraphValue": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "isColorInverted": false,
+    "labelGroupCount": 1,
+    "playgroundIndex": 1,
+    "strokeDashArray": "",
+    "isHorizontalFlip": false,
+    "secondGraphValue": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "globalCentroidFlg": true,
+    "isTextEditFontSize": false,
+    "isMoveRotateHandler": false,
+    "isCenterGravityPolygon": false
+  },
+  "dataTable": {
+    "x": 506.7999877929687,
+    "y": 187.7999725341797,
+    "_x": 490,
+    "_y": 175.7999725341797,
+    "cx": 0,
+    "cy": 0,
+    "id": "",
+    "rx": 0,
+    "ry": 0,
+    "fill": "#ffffff",
+    "keys": [
+      "title",
+      "name",
+      "nameTag",
+      "countName",
+      "tableCell",
+      "percentCell"
+    ],
+    "name": [
+      "광주",
+      "대구",
+      "대전",
+      "부산",
+      "울산",
+      "인천"
+    ],
+    "isCol": false,
+    "isSum": true,
+    "scale": 1,
+    "svgId": "DP02TG-02",
+    "title": [
+      ""
+    ],
+    "length": 448,
+    "parent": {
+      "moveX": null,
+      "moveY": null,
+      "reset": false,
+      "startX": 0,
+      "startY": 0,
+      "flgCount": 0,
+      "handlerX": null,
+      "handlerY": null,
+      "observer": {},
+      "curTables": null,
+      "sortToggle": false,
+      "minusToggle": false,
+      "targetTable": null,
+      "heightHandler": false,
+      "isElementClick": false,
+      "minusToggleIdx": null,
+      "isBottomToolbar": false,
+      "isNumberToolbar": false,
+      "isPercentToolbar": false,
+      "isDataMovementHandle": false
+    },
+    "rotate": 0,
+    "stroke": "#000000",
+    "groupId": "",
+    "isEyeOn": false,
+    "isGroup": false,
+    "isMerge": false,
+    "isSplit": false,
+    "nameTag": [
+      "광역시"
+    ],
+    "perWidth": 156,
+    "totalSum": [
+      2559
+    ],
+    "cellCount": 6,
+    "countName": [
+      "공원 수(개소)"
+    ],
+    "isPercent": false,
+    "isStackUp": false,
+    "perHeight": 64,
+    "sizeScale": 1,
+    "tableCell": [
+      "396",
+      "478",
+      "315",
+      "430",
+      "328",
+      "612"
+    ],
+    "totalCell": [
+      2559
+    ],
+    "clickCount": 0,
+    "elemSplice": true,
+    "isTextEdit": false,
+    "strokeType": 1,
+    "coordinates": [
+      [
+        -2,
+        46
+      ],
+      [
+        154,
+        46
+      ],
+      [
+        -2,
+        496
+      ],
+      [
+        154,
+        496
+      ]
+    ],
+    "fillOpacity": 1,
+    "isBluePrint": false,
+    "percentCell": [
+      15.47,
+      18.68,
+      12.31,
+      16.8,
+      12.82,
+      23.92
+    ],
+    "strokeWidth": 4,
+    "isFillChange": false,
+    "totalPercent": [
+      100
+    ],
+    "initSizeScale": 1,
+    "isGroupGridOn": false,
+    "strokeOpacity": 1,
+    "isGroupElement": false,
+    "isStrokeChange": false,
+    "isSurroundRect": false,
+    "isVerticalFlip": false,
+    "isColorInverted": false,
+    "playgroundIndex": 1,
+    "strokeDashArray": "",
+    "isHorizontalFlip": false,
+    "defaultTransFromX": 736,
+    "defaultTransFromY": 249,
+    "globalCentroidFlg": true,
+    "isTextEditFontSize": false,
+    "isMoveRotateHandler": false,
+    "isCenterGravityPolygon": false
+  }
+}
