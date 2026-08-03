@@ -21,6 +21,8 @@ export const ACTIVITY_IDS = {
     "fraction.subtract.unlike-denominators.common-unit-v1",
   barGraphScaleUnit:
     "data.bar-graph.scale-unit.read-v1",
+  barGraphRepresentFromTable:
+    "data.bar-graph.represent-from-table-v1",
   brokenRulerLength:
     "measure.length.unit-iteration.ruler-v1",
   placeValueTenExchange:
@@ -87,6 +89,8 @@ export const ACTIVITY_LEARNING_GOALS: Readonly<
     "분모가 다른 두 진분수를 같은 크기의 단위로 바꾸어 빼고 그 방법을 설명할 수 있다.",
   [ACTIVITY_IDS.barGraphScaleUnit]:
     "기준 막대에서 눈금 한 칸의 크기를 정하고 다른 막대가 나타내는 값을 해석할 수 있다.",
+  [ACTIVITY_IDS.barGraphRepresentFromTable]:
+    "표의 자료를 막대그래프로 나타낼 때 눈금 한 칸의 값을 이용해 막대의 칸 수를 정하고 그 까닭을 설명할 수 있다.",
   [ACTIVITY_IDS.brokenRulerLength]:
     "길이 단위 1 cm를 알고, 같은 단위를 반복하여 물체의 길이를 측정하고 설명할 수 있다.",
   [ACTIVITY_IDS.placeValueTenExchange]:
@@ -136,6 +140,7 @@ export const ACTIVITY_SUPPORT: Readonly<
   [ACTIVITY_IDS.unlikeDenominatorCommonUnitSum]: "released",
   [ACTIVITY_IDS.unlikeDenominatorCommonUnitDifference]: "released",
   [ACTIVITY_IDS.barGraphScaleUnit]: "released",
+  [ACTIVITY_IDS.barGraphRepresentFromTable]: "verified",
   [ACTIVITY_IDS.brokenRulerLength]: "released",
   [ACTIVITY_IDS.placeValueTenExchange]: "released",
   [ACTIVITY_IDS.repeatingPatternUnit]: "released",
@@ -195,6 +200,9 @@ export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
   ],
   [ACTIVITY_IDS.barGraphScaleUnit]: [
     "research/mathcanvas/wave12-bar-graph-scale-release-canary.json"
+  ],
+  [ACTIVITY_IDS.barGraphRepresentFromTable]: [
+    "research/mathcanvas/wave22-bar-graph-represent-release-canary.json"
   ],
   [ACTIVITY_IDS.brokenRulerLength]: [
     "research/mathcanvas/wave13-broken-ruler-release-canary.json"

@@ -97,6 +97,11 @@ import {
   generateClaimEvidenceItems
 } from "./claim-evidence.js";
 import {
+  BAR_GRAPH_REPRESENT_CELLS_GENERATOR_ID,
+  BAR_GRAPH_REPRESENT_CELLS_GENERATOR_VERSION,
+  generateBarGraphRepresentCellsItems
+} from "./bar-graph-represent-cells.js";
+import {
   FACTOR_PAIR_ARRAY_GENERATOR_ID,
   FACTOR_PAIR_ARRAY_GENERATOR_VERSION,
   generateFactorPairArrayItems
@@ -122,6 +127,8 @@ const generators: Readonly<Record<string, Generator>> = {
     generatePartialOperationDecompositionItems,
   [`${FACTOR_PAIR_ARRAY_GENERATOR_ID}:${FACTOR_PAIR_ARRAY_GENERATOR_VERSION}`]:
     generateFactorPairArrayItems,
+  [`${BAR_GRAPH_REPRESENT_CELLS_GENERATOR_ID}:${BAR_GRAPH_REPRESENT_CELLS_GENERATOR_VERSION}`]:
+    generateBarGraphRepresentCellsItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_VERSION}`]:
     generateClaimEvidenceItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_V2_VERSION}`]:

@@ -38,7 +38,8 @@ export const manipulationSchema = z.enum([
   "probability-fraction-strip-drag",
   "claim-evidence-revision-drag",
   "factor-pair-array-construction-drag",
-  "partial-operation-expression-construction-drag"
+  "partial-operation-expression-construction-drag",
+  "bar-graph-represent-cells-drag"
 ]);
 export const gradeBandSchema = z.enum(["1-2", "3-4", "5-6"]);
 

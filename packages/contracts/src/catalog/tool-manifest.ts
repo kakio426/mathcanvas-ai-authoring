@@ -514,6 +514,10 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
                         ? "balance-scale"
                       : moduleKey === "SM02AD"
                         ? "analog-clock"
+                      : moduleKey === "DP04BC"
+                        ? "bar-chart"
+                      : moduleKey === "DP02TG"
+                        ? "data-table"
                         : "pattern-block"
               }
             : {}),

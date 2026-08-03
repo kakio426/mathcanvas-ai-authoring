@@ -92,6 +92,7 @@ export {
   findClaimEvidenceBlueprint
 } from "./blueprints/claim-evidence.js";
 export { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
+export { barGraphRepresentFromTableBlueprint } from "./blueprints/bar-graph-represent-from-table.js";
 export {
   findPartialOperationDecompositionBlueprint,
   partialOperationDecompositionBlueprints

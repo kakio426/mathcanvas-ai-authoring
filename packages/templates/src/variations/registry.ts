@@ -24,6 +24,7 @@ import { multiplicationArrayMeaningVariationEnvelope } from "./multiplication-ar
 import { probabilityBagComparisonVariationEnvelope } from "./probability-bag-comparison.js";
 import { claimEvidenceVariationEnvelopes } from "./claim-evidence.js";
 import { factorPairArrayVariationEnvelope } from "./factor-pair-array.js";
+import { barGraphRepresentFromTableVariationEnvelope } from "./bar-graph-represent-from-table.js";
 import { partialOperationDecompositionVariationEnvelopes } from "./partial-operation-decomposition.js";
 
 export const REGISTERED_VARIATION_ENVELOPES = [
@@ -45,6 +46,7 @@ export const REGISTERED_VARIATION_ENVELOPES = [
   multiplicationArrayMeaningVariationEnvelope,
   probabilityBagComparisonVariationEnvelope,
   factorPairArrayVariationEnvelope,
+  barGraphRepresentFromTableVariationEnvelope,
   ...partialOperationDecompositionVariationEnvelopes,
   ...claimEvidenceVariationEnvelopes
 ] as const;
@@ -52,7 +54,7 @@ export const REGISTERED_VARIATION_ENVELOPES = [
 export const REGISTERED_VARIATION_COMBINATION_COUNT =
   assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
 
-if (REGISTERED_VARIATION_COMBINATION_COUNT !== 100) {
+if (REGISTERED_VARIATION_COMBINATION_COUNT !== 102) {
   throw new Error(
     `registered-variation-suite-drift:${REGISTERED_VARIATION_COMBINATION_COUNT}`
   );

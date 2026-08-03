@@ -26,6 +26,7 @@ import { multiplicationArrayMeaningBlueprint } from "./blueprints/multiplication
 import { probabilityBagComparisonBlueprint } from "./blueprints/probability-bag-comparison.js";
 import { claimEvidenceBlueprints } from "./blueprints/claim-evidence.js";
 import { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
+import { barGraphRepresentFromTableBlueprint } from "./blueprints/bar-graph-represent-from-table.js";
 import { partialOperationDecompositionBlueprints } from "./blueprints/partial-operation-decomposition.js";
 import {
   CLAIM_EVIDENCE_MANIPULATION,
@@ -269,6 +270,19 @@ export const factorPairArrayTemplateDefinition =
     supportedGradeBands: ["5-6"],
     maximumProblemCount: 2,
     requiredModules: ["NO04NT", "input-text", "math-latex", "drawElem"]
+  });
+
+export const barGraphRepresentFromTableTemplateDefinition =
+  templateDefinition(barGraphRepresentFromTableBlueprint, {
+    supportedGradeBands: ["3-4"],
+    maximumProblemCount: 3,
+    requiredModules: [
+      "DP02TG",
+      "DP04BC",
+      "input-text",
+      "math-latex",
+      "drawElem"
+    ]
   });
 
 export const partialOperationDecompositionTemplateDefinitions =
@@ -609,6 +623,19 @@ export function generateClaimEvidenceActivity(
     recommendation,
     options,
     CLAIM_EVIDENCE_MANIPULATION
+  );
+}
+
+export function generateBarGraphRepresentFromTableActivity(
+  recommendation: Recommendation,
+  options: GenerateActivitySpecOptions
+): RegisteredActivityPlan {
+  return prepare(
+    barGraphRepresentFromTableBlueprint,
+    barGraphRepresentFromTableTemplateDefinition,
+    recommendation,
+    options,
+    "bar-graph-represent-cells-drag"
   );
 }
 
@@ -963,6 +990,16 @@ function claimEvidenceAnswerKey(
   }));
 }
 
+function barGraphRepresentFromTableAnswerKey(
+  resolved: ResolvedActivity
+): RegisteredTeacherAnswer[] {
+  return resolved.items.map((item) => ({
+    problemNumber: item.order,
+    answer: String(item.values.correctValueText),
+    explanation: String(item.values.answerExplanation)
+  }));
+}
+
 function factorPairArrayAnswerKey(
   resolved: ResolvedActivity
 ): RegisteredTeacherAnswer[] {
@@ -1018,6 +1055,14 @@ const partialOperationRegistry = Object.fromEntries(
 const registry: Readonly<Record<string, RegistryEntry>> = {
   ...claimEvidenceRegistry,
   ...partialOperationRegistry,
+  [barGraphRepresentFromTableBlueprint.id]: {
+    blueprint: barGraphRepresentFromTableBlueprint,
+    prepare: generateBarGraphRepresentFromTableActivity,
+    supportState:
+      getActivitySupportState(barGraphRepresentFromTableBlueprint.id) ??
+      "verified",
+    answerKey: barGraphRepresentFromTableAnswerKey
+  },
   [factorPairArrayBlueprint.id]: {
     blueprint: factorPairArrayBlueprint,
     prepare: generateFactorPairArrayActivity,
