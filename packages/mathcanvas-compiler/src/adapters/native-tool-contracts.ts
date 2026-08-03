@@ -102,7 +102,12 @@ export type DataTableIntent = {
   readonly kind: "data-table";
   readonly toolKey: "DP02TG";
   readonly title: string;
+  /** 항목 축의 머리글. 예: 운동, 동물 */
+  readonly categoryAxisName: string;
+  /** 값 열의 머리글. 예: 학생 수(명) */
+  readonly valueColumnName: string;
   readonly categories: readonly string[];
+  readonly values: readonly number[];
 };
 
 export type NativeToolIntent =

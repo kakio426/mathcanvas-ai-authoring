@@ -71,7 +71,10 @@ export const barGraphRepresentFromTableBlueprint = defineActivityBlueprint({
       properties: {},
       bindings: {
         title: "item.contextText",
-        categories: "item.categories"
+        categories: "item.categories",
+        values: "item.values",
+        categoryAxisName: "item.categoryLabelText",
+        valueColumnName: "item.valueColumnName"
       },
       containerRole: "work-panel"
     },

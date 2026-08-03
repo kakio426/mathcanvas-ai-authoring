@@ -605,11 +605,21 @@ export function makeDataTableObject(
   placement: NativeToolPlacement
 ): Record<string, unknown> {
   assertReleasedModuleVariant("DP02TG", DATA_TABLE_SVG_ID);
-  if (intent.categories.length < 3 || intent.categories.length > 6) {
+  if (
+    intent.categories.length < 3 ||
+    intent.categories.length > 6 ||
+    intent.values.length !== intent.categories.length
+  ) {
     throw new Error(
-      `data-table-categories-invalid:${intent.categories.length}`
+      `data-table-categories-invalid:${intent.categories.length}:${intent.values.length}`
     );
   }
+  const total = intent.values.reduce((sum, value) => sum + value, 0);
+  if (total <= 0) throw new Error("data-table-total-invalid");
+  // 관찰한 표는 값·합계·비율을 모두 문자열로 담는다.
+  const percents = intent.values.map((value) =>
+    ((value / total) * 100).toFixed(2)
+  );
   return {
     ...DATA_TABLE_STRUCTURAL_FIELDS,
     id: placement.id,
@@ -619,6 +629,13 @@ export function makeDataTableObject(
     _y: placement.y,
     svgId: DATA_TABLE_SVG_ID,
     title: [intent.title],
-    name: [...intent.categories]
+    name: [...intent.categories],
+    nameTag: [intent.categoryAxisName],
+    countName: [intent.valueColumnName],
+    tableCell: intent.values.map((value) => String(value)),
+    totalSum: [String(total)],
+    totalCell: [String(total)],
+    percentCell: percents,
+    totalPercent: ["100"]
   };
 }
