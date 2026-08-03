@@ -1,0 +1,2754 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-03T00:15:36.909Z",
+  "source": {
+    "origin": "https://mathcanvas.vivasam.com",
+    "endpoints": [
+      "/api/public-project?offset&limit&sortCondition&sortOrder",
+      "/api/public-project/{publicProjectId}"
+    ],
+    "authentication": "none",
+    "note": "공개 수업의 구조만 관찰한다. 문항 내용은 저장하지 않는다."
+  },
+  "scanned": {
+    "publicProjects": 455,
+    "graphCandidates": 44,
+    "inspectedWithGraphTools": 29
+  },
+  "inspected": [
+    {
+      "publicProjectId": "P_1R8-0d",
+      "objectCount": 7,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_3V0R3j",
+      "objectCount": 14,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_4oNUpgl3",
+      "objectCount": 6,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_75xiuB",
+      "objectCount": 9,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP04BC-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_7yKn3C",
+      "objectCount": 4,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP04BC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_8ZSiTw",
+      "objectCount": 6,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_FMEm9R13jC",
+      "objectCount": 8,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_FZq2EI",
+      "objectCount": 8,
+      "graphObjectCount": 4,
+      "variants": [
+        "DP03PG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_G7b0qb",
+      "objectCount": 4,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_HC29mF",
+      "objectCount": 8,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_HCMg2e4u",
+      "objectCount": 27,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP06RC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_JDDz5zQ5Nb",
+      "objectCount": 72,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_JRdT76",
+      "objectCount": 4,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP04BC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_S5LeES",
+      "objectCount": 11,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_Uz6GNM",
+      "objectCount": 8,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_VGek54",
+      "objectCount": 3,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_XJ0pps",
+      "objectCount": 18,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01",
+        "DP06RC-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_bLKBuG",
+      "objectCount": 2,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP04BC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_bem4va",
+      "objectCount": 2,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_daNVK8",
+      "objectCount": 2,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-01",
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_g1FXoMsBmyzJ",
+      "objectCount": 9,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_pDtEI-",
+      "objectCount": 4,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP02TG-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_qjwcb1",
+      "objectCount": 28,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-01",
+        "DP02TG-02",
+        "DP04BC-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_quw1Vf",
+      "objectCount": 10,
+      "graphObjectCount": 4,
+      "variants": [
+        "DP02TG-02",
+        "DP06RC-01",
+        "DP06RC-02"
+      ]
+    },
+    {
+      "publicProjectId": "P_rrU6vN",
+      "objectCount": 6,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_vyUAwu",
+      "objectCount": 7,
+      "graphObjectCount": 1,
+      "variants": [
+        "DP03PG-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_vyofqA",
+      "objectCount": 5,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP03PG-01"
+      ]
+    },
+    {
+      "publicProjectId": "P_wvGNW6K3",
+      "objectCount": 3,
+      "graphObjectCount": 2,
+      "variants": [
+        "DP02TG-02",
+        "DP04BC-03"
+      ]
+    },
+    {
+      "publicProjectId": "P_zz9V76",
+      "objectCount": 40,
+      "graphObjectCount": 3,
+      "variants": [
+        "DP02TG-01",
+        "DP02TG-02",
+        "DP04BC-01"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "toolId": "DP02TG",
+      "variants": [
+        "DP02TG-01",
+        "DP02TG-02"
+      ],
+      "sampleCount": 30,
+      "usage": {
+        "emptySeriesSamples": 0,
+        "prefilledSeriesSamples": 0
+      },
+      "seriesLengths": [],
+      "categoryLabelCounts": [],
+      "fields": [
+        {
+          "field": "_x",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "_y",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "cellCount",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "clickCount",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "coordinates",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            4
+          ]
+        },
+        {
+          "field": "countName",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "cx",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "cy",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "defaultTransFromX",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "defaultTransFromY",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "elemSplice",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "fill",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "fillOpacity",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "globalCentroidFlg",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "groupId",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "id",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "initSizeScale",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "isBluePrint",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCenterGravityPolygon",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCol",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isColorInverted",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isEyeOn",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFillChange",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroup",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupElement",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupGridOn",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isHorizontalFlip",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMerge",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMoveRotateHandler",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isPercent",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSorted",
+          "occurrences": 3,
+          "alwaysPresent": false,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSplit",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStackUp",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStrokeChange",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSum",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSurroundRect",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEdit",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEditFontSize",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isVerticalFlip",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "keys",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            6,
+            8
+          ]
+        },
+        {
+          "field": "length",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "name",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            1,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "field": "nameTag",
+          "occurrences": 27,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "parent",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "perHeight",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "perWidth",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "perWidthCount",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "percentCell",
+          "occurrences": 21,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "field": "percentCell1",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "field": "percentCell2",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0
+          ]
+        },
+        {
+          "field": "playgroundIndex",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rotate",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rx",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "ry",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "scale",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "showNumber",
+          "occurrences": 3,
+          "alwaysPresent": false,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "sizeScale",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "sortedTableCell",
+          "occurrences": 3,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            4
+          ]
+        },
+        {
+          "field": "stroke",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeDashArray",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeOpacity",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeType",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeWidth",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "svgId",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "tableCell",
+          "occurrences": 24,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            3,
+            4,
+            5,
+            6,
+            7,
+            10
+          ]
+        },
+        {
+          "field": "tableCell1",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "field": "tableCell2",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0
+          ]
+        },
+        {
+          "field": "title",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            1
+          ]
+        },
+        {
+          "field": "totalCell",
+          "occurrences": 9,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "totalPercent",
+          "occurrences": 29,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            1
+          ]
+        },
+        {
+          "field": "totalSum",
+          "occurrences": 29,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            1
+          ]
+        },
+        {
+          "field": "x",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "y",
+          "occurrences": 30,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        }
+      ]
+    },
+    {
+      "toolId": "DP03PG",
+      "variants": [
+        "DP03PG-01",
+        "DP03PG-02"
+      ],
+      "sampleCount": 13,
+      "usage": {
+        "emptySeriesSamples": 0,
+        "prefilledSeriesSamples": 0
+      },
+      "seriesLengths": [],
+      "categoryLabelCounts": [
+        3,
+        4,
+        5
+      ],
+      "fields": [
+        {
+          "field": "_x",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "_y",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "categoryBoxInfo",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "categoryCnt",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "categoryId",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "clickCount",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "coordinates",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "cx",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "cy",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "elemSplice",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "fill",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "fillOpacity",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "globalCentroidFlg",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "graphValue",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "field": "groupId",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "height",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "heightCount",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "heightDeps",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "heightLengthArr",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "field": "id",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "initSizeScale",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "isBluePrint",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCategoryOn",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCenterGravityPolygon",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isColorInverted",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isEyeOn",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFillChange",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroup",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupElement",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupGridOn",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isHorizontal",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isHorizontalFlip",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMerge",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMoveRotateHandler",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSplit",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStackUp",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStrokeChange",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSurroundRect",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEdit",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEditFontSize",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isVerticalFlip",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "item",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "keys",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            5
+          ]
+        },
+        {
+          "field": "label",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "field": "labelCount",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "name",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "parent",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "playgroundIndex",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rotate",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rx",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "ry",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "scale",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "selectedIndex",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "null"
+          ]
+        },
+        {
+          "field": "settingState",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "sizeScale",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "stroke",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeDashArray",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeOpacity",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeType",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeWidth",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "svgId",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "title",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "toolbarHeight",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "toolbarWidth",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "totalHeight",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "units",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3
+          ]
+        },
+        {
+          "field": "width",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "widthCount",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "x",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "y",
+          "occurrences": 13,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        }
+      ]
+    },
+    {
+      "toolId": "DP04BC",
+      "variants": [
+        "DP04BC-01",
+        "DP04BC-02",
+        "DP04BC-03"
+      ],
+      "sampleCount": 7,
+      "usage": {
+        "emptySeriesSamples": 4,
+        "prefilledSeriesSamples": 3
+      },
+      "seriesLengths": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "categoryLabelCounts": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "fields": [
+        {
+          "field": "_x",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "_y",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "clickCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "coordinates",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "cx",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "cy",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "deps",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "editTitle",
+          "occurrences": 1,
+          "alwaysPresent": false,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "elemSplice",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "fill",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "fillOpacity",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "firstFill",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "firstGraphValue",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "field": "globalCentroidFlg",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "graphName",
+          "occurrences": 3,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            2
+          ]
+        },
+        {
+          "field": "groupId",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "height",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "heightCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "heightDeps",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "id",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "initSizeScale",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "isBluePrint",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCenterGravityPolygon",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isColorInverted",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isEyeOn",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFillChange",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFirstGraph",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroup",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupElement",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupGridOn",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isHorizontalFlip",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMerge",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMoveRotateHandler",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isOnlyOneGraph",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isShuffled",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSplit",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStackUp",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStrokeChange",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSurroundRect",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEdit",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEditFontSize",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isVerticalFlip",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isWave",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "keys",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            8,
+            9
+          ]
+        },
+        {
+          "field": "label",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "field": "labelCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "labelGroupCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "name",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            2
+          ]
+        },
+        {
+          "field": "parent",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "playgroundIndex",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rotate",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rx",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "ry",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "scale",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "secondFill",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "secondGraphValue",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "field": "sizeScale",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "start",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "stroke",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeDashArray",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeOpacity",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeType",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeWidth",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "svgId",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "title",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "toolbarHeight",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "toolbarWidth",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "type",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "unit",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            2
+          ]
+        },
+        {
+          "field": "waveCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "width",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "widthCount",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "x",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "y",
+          "occurrences": 7,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        }
+      ]
+    },
+    {
+      "toolId": "DP06RC",
+      "variants": [
+        "DP06RC-01",
+        "DP06RC-02"
+      ],
+      "sampleCount": 11,
+      "usage": {
+        "emptySeriesSamples": 0,
+        "prefilledSeriesSamples": 0
+      },
+      "seriesLengths": [],
+      "categoryLabelCounts": [
+        8
+      ],
+      "fields": [
+        {
+          "field": "_x",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "_y",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "categoryBoxInfo",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "clickCount",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "coordinates",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            0,
+            4
+          ]
+        },
+        {
+          "field": "cx",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "cy",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "elemSplice",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "fill",
+          "occurrences": 8,
+          "alwaysPresent": false,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "fillOpacity",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "globalCentroidFlg",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "graduationNum",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "groupId",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "height",
+          "occurrences": 8,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "id",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "initSizeScale",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "isBluePrint",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCategoryOn",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isCenterGravityPolygon",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isColorInverted",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isEyeOn",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFillChange",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isFullGraduation",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroup",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupElement",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isGroupGridOn",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isHorizontalFlip",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMerge",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isMoveRotateHandler",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSplit",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStackUp",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isStrokeChange",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isSurroundRect",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEdit",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isTextEditFontSize",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "isVerticalFlip",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "boolean"
+          ]
+        },
+        {
+          "field": "label",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            8
+          ]
+        },
+        {
+          "field": "labelColor",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            8
+          ]
+        },
+        {
+          "field": "labelCount",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "labelValue",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "field": "name",
+          "occurrences": 8,
+          "alwaysPresent": false,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "narrowCount",
+          "occurrences": 8,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "parent",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "object"
+          ]
+        },
+        {
+          "field": "playgroundIndex",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "r",
+          "occurrences": 3,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rotate",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "rx",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "ry",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "scale",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "selectedIndex",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number",
+            "string"
+          ]
+        },
+        {
+          "field": "sizeScale",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "stroke",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeDashArray",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "strokeOpacity",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeType",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "strokeWidth",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "svgId",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "string"
+          ]
+        },
+        {
+          "field": "title",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "array"
+          ],
+          "arrayLengths": [
+            1
+          ]
+        },
+        {
+          "field": "width",
+          "occurrences": 8,
+          "alwaysPresent": false,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "x",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        },
+        {
+          "field": "y",
+          "occurrences": 11,
+          "alwaysPresent": true,
+          "kinds": [
+            "number"
+          ]
+        }
+      ]
+    }
+  ]
+}

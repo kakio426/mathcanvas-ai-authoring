@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-02T23:53:34.055Z",
+  "source": {
+    "toolbar": "/api/canvas/toolbar",
+    "list": "/api/public-project",
+    "detail": "/api/public-project/{id}",
+    "note": "로그인 없이 접근 가능한 공개 엔드포인트"
+  },
+  "corpus": {
+    "sampled": 39,
+    "publicProjectsAvailable": 480
+  },
+  "objectCount": {
+    "min": 3,
+    "median": 16,
+    "max": 107,
+    "generatorTypical": 59
+  },
+  "groupElementUsage": {
+    "activities": 24,
+    "of": 39
+  },
+  "catalog": {
+    "totalTools": 50,
+    "usedByGenerator": 6
+  },
+  "gaps": [
+    {
+      "toolId": "NO01SC",
+      "title": "수 세기 모형",
+      "area": "수와 연산",
+      "activitiesUsing": 23
+    },
+    {
+      "toolId": "NO07NL",
+      "title": "수직선",
+      "area": "수와 연산",
+      "activitiesUsing": 4
+    },
+    {
+      "toolId": "NO04PC",
+      "title": "자릿값 카드",
+      "area": "수와 연산",
+      "activitiesUsing": 3
+    },
+    {
+      "toolId": "NO02DM",
+      "title": "도미노",
+      "area": "수와 연산",
+      "activitiesUsing": 3
+    },
+    {
+      "toolId": "CR02AB",
+      "title": "속성블록",
+      "area": "변화와 관계",
+      "activitiesUsing": 3
+    },
+    {
+      "toolId": "SM03GB",
+      "title": "도형판",
+      "area": "도형과 측정",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "NO10VD",
+      "title": "벤 다이어그램",
+      "area": "수와 연산",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "NO04NG",
+      "title": "배열표",
+      "area": "수와 연산",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "NO03BT",
+      "title": "수 모형",
+      "area": "수와 연산",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "DP02TG",
+      "title": "자료와 표",
+      "area": "자료와 가능성",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "SM04PM",
+      "title": "펜토미노",
+      "area": "도형과 측정",
+      "activitiesUsing": 2
+    },
+    {
+      "toolId": "SM05RP",
+      "title": "정다각형",
+      "area": "도형과 측정",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "SM07PS",
+      "title": "정다면체(3D)",
+      "area": "도형과 측정",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "NO02CB",
+      "title": "색 막대",
+      "area": "수와 연산",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "SM05PG",
+      "title": "다각형",
+      "area": "도형과 측정",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "CR07CP",
+      "title": "좌표평면",
+      "area": "변화와 관계",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "SM02TG",
+      "title": "칠교판",
+      "area": "도형과 측정",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "DP07MC",
+      "title": "자료와 대푯값",
+      "area": "자료와 가능성",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "SM06UC",
+      "title": "쌓기나무(3D)",
+      "area": "도형과 측정",
+      "activitiesUsing": 1
+    },
+    {
+      "toolId": "DP06RC",
+      "title": "비율 그래프",
+      "area": "자료와 가능성",
+      "activitiesUsing": 1
+    }
+  ],
+  "generatorTools": [
+    {
+      "toolId": "CR07BS",
+      "title": "접시저울",
+      "area": "변화와 관계"
+    },
+    {
+      "toolId": "NO03FM",
+      "title": "분수 모형",
+      "area": "수와 연산"
+    },
+    {
+      "toolId": "NO04NT",
+      "title": "수 카드",
+      "area": "수와 연산"
+    },
+    {
+      "toolId": "NO04PD",
+      "title": "자릿값 모형",
+      "area": "수와 연산"
+    },
+    {
+      "toolId": "SM02AD",
+      "title": "시계",
+      "area": "도형과 측정"
+    },
+    {
+      "toolId": "SM02PB",
+      "title": "패턴블록",
+      "area": "도형과 측정"
+    }
+  ],
+  "findings": [
+    "자료와 가능성 영역 도구 12종 중 생성기가 쓰는 것은 0종이다. 막대그래프 활동은 common.rectangle 2개와 common.text 1개로 그려지고, 가능성 활동은 common.text만 쓴다.",
+    "실제 공개 수업에서 가장 많이 쓰인 수학 도구는 수 세기 모형(NO01SC)이며 표본 39개 중 23개에 등장한다. 생성기는 이 도구를 쓰지 않는다.",
+    "실제 공개 수업의 개체 수 중앙값은 16개다. 생성기 산출물은 59개 안팎으로 약 4배 밀도가 높다.",
+    "표본 39개 중 24개가 group-element로 개체를 묶는다. 생성기는 묶음 구조를 만들지 않는다."
+  ]
+}
