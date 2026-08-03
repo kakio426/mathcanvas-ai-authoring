@@ -290,5 +290,28 @@
     "isTextEditFontSize": false,
     "isMoveRotateHandler": false,
     "isCenterGravityPolygon": false
+  },
+  "semantics": {
+    "note": "실물 공개 수업 관찰과 라이브 렌더 실험으로 확정한 필드 의미다.",
+    "verifiedBy": "AI-CONTRACT-PROBE 눈금 규칙 확인 (한 칸 1·2·5 세 조건을 실제 편집기에서 렌더 확인)",
+    "barChart": {
+      "title[0]": "그래프 제목",
+      "name[0]": "세로축 이름",
+      "name[1]": "가로축 이름",
+      "unit[0]": "세로축 단위 (예: 명)",
+      "unit[1]": "가로축 단위 (보통 빈 문자열)",
+      "label": "가로축 항목 이름 배열. 관찰 범위 3~6개",
+      "labelCount": "label 길이와 같아야 한다",
+      "widthCount": "label 길이와 같아야 한다",
+      "start[0]": "세로 눈금 한 칸의 값. 문자열로 넣는다",
+      "heightDeps": "start[0]과 같은 값을 숫자로 넣는다. 다르게 넣으면 start가 이긴다",
+      "heightCount": "세로 눈금선 개수(0 포함). 축 최대값 = (heightCount - 1) x start",
+      "firstGraphValue": "첫째 계열 막대값 배열. label과 길이가 같아야 한다. 전부 0이면 학생이 채우는 빈 그래프",
+      "secondGraphValue": "둘째 계열 막대값 배열",
+      "isOnlyOneGraph": "계열이 하나면 true",
+      "isWave": "물결선 사용 여부"
+    },
+    "axisRule": "세로축 최대값 = (heightCount - 1) x Number(start[0])",
+    "authoringGuidance": "문항의 최대 자료값보다 축 최대값이 크거나 같아야 한다. 눈금 한 칸의 값을 학습 목표로 삼는 4학년 활동에서는 start를 1이 아닌 값으로 두어야 의미가 생긴다."
   }
 }
