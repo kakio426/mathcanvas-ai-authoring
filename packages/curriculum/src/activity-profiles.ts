@@ -147,7 +147,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     learningObjective:
       "각의 크기를 변의 길이가 아니라 한 변이 회전한 양으로 판단하고 설명할 수 있다.",
     officialGoal: "각의 크기의 단위인 1도(°)를 알고, 각도기를 이용하여 각의 크기를 측정하고 어림할 수 있다.",
-    activityLabel: "각의 크기를 정하는 기준",
+    activityLabel: "각의 크기",
     activityDescription:
       "변이 길어 보이는 정도가 아니라 두 방향 사이의 회전량으로 각도를 판단해요.",
     promptSeed: "각의 크기를 변의 길이가 아닌 회전량으로 판단하는 활동",
@@ -432,7 +432,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     learningObjective:
       "삼각형의 각의 크기를 근거로 직각삼각형, 예각삼각형, 둔각삼각형을 분류하고 설명할 수 있다.",
     officialGoal: "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 직각삼각형, 예각삼각형, 둔각삼각형을 이해한다.",
-    activityLabel: "삼각형을 분류하는 기준",
+    activityLabel: "삼각형 분류",
     activityDescription:
       "겉모양만 보고 이름을 붙이지 않고 변의 길이와 각의 크기를 근거로 판단해요.",
     promptSeed: "변의 길이와 각의 크기를 근거로 삼각형을 분류하는 활동",
@@ -498,7 +498,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     learningObjective:
       "선대칭도형에서 대응점과 대칭축 사이의 거리가 같다는 성질로 위치를 판단하고 설명할 수 있다.",
     officialGoal: "실생활과 연결하여 선대칭도형과 점대칭도형을 이해하고 그릴 수 있다.",
-    activityLabel: "선대칭도형의 대응점",
+    activityLabel: "선대칭 대응점",
     activityDescription:
       "좌우 모양이 비슷해 보이는지만 보지 않고 대칭축까지의 거리와 수직 관계를 확인해요.",
     promptSeed: "대칭축까지의 같은 거리와 수직 관계로 대응점의 위치를 판단하는 활동",
@@ -538,7 +538,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       {
         questionText: "가로 대칭축 위쪽 2칸에 있는 점의 대응점은 어느 위치일까요?",
         evidenceLabelText: "축과 수직으로 같은 거리",
-        evidenceText: "위쪽 점\n  2칸\n대칭축\n  2칸\n아래쪽 점",
+        evidenceText: "위쪽 점 — 2칸 — 대칭축 — 2칸 — 아래쪽 점",
         correctValueText: "아래쪽 2칸",
         candidates: ["아래쪽 2칸", "아래쪽 1칸", "위쪽 2칸", "오른쪽 2칸", "축 위"],
         answerExplanation: "가로 대칭축과 수직인 방향으로 반대쪽 같은 거리인 아래쪽 2칸입니다."

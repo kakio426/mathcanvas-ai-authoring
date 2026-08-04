@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-04T10:15:25.451Z",
+  "generatedAt": "2026-08-04T23:34:23.371Z",
   "renderScale": {
     "layoutPreset": "wave10-common-unit-v1",
     "token": "item.join-lane",
@@ -9,8 +9,8 @@
     "canaryPath": "research/mathcanvas/wave10-common-unit-release-canary.json",
     "viewport": "1280x800"
   },
-  "activityCount": 17,
-  "variationCount": 89,
+  "activityCount": 20,
+  "variationCount": 92,
   "status": "pass",
   "issueCounts": {
     "p0": 0,
@@ -61,6 +61,27 @@
     ]
   },
   "activities": [
+    {
+      "blueprintId": "measure.angle.turn-size.claim-evidence-v1",
+      "grade": 4,
+      "family": "claim-evidence",
+      "variationCount": 1,
+      "issues": []
+    },
+    {
+      "blueprintId": "geometry.triangle.classification.claim-evidence-v1",
+      "grade": 4,
+      "family": "claim-evidence",
+      "variationCount": 1,
+      "issues": []
+    },
+    {
+      "blueprintId": "geometry.symmetry.equal-distance.claim-evidence-v1",
+      "grade": 5,
+      "family": "claim-evidence",
+      "variationCount": 1,
+      "issues": []
+    },
     {
       "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
       "grade": 5,

@@ -110,11 +110,32 @@ export const VISUAL_ACTIVITY_CONTROLS = Object.freeze({
     },
     previewPath:
       ".mathcanvas-contract-lab/previews/wave17/probability-bag-comparison.png"
+  },
+  "measure.angle.turn-size.claim-evidence-v1": {
+    family: "claim-evidence",
+    manipulation: "claim-evidence-revision-drag",
+    grade: 4,
+    previewPath: ".mathcanvas-contract-lab/previews/wave18/angle-turn.png"
+  },
+  "geometry.triangle.classification.claim-evidence-v1": {
+    family: "claim-evidence",
+    manipulation: "claim-evidence-revision-drag",
+    grade: 4,
+    previewPath:
+      ".mathcanvas-contract-lab/previews/wave18/triangle-classification.png"
+  },
+  "geometry.symmetry.equal-distance.claim-evidence-v1": {
+    family: "claim-evidence",
+    manipulation: "claim-evidence-revision-drag",
+    grade: 5,
+    previewPath:
+      ".mathcanvas-contract-lab/previews/wave18/line-symmetry-distance.png"
   }
 });
 
 export const VISUAL_FAMILY_ORDER = Object.freeze([
   "equation-card",
   "strip-measurement",
-  "native-model"
+  "native-model",
+  "claim-evidence"
 ]);

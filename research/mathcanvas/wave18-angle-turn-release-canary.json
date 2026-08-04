@@ -1,0 +1,50 @@
+{
+  "blueprintContentHash": "7223e9f41cfba2f7023889409734bc119a15e52e39f97e254cd5ad758367a0c3",
+  "blueprintId": "measure.angle.turn-size.claim-evidence-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit03",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-claim-and-check-evidence",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": null,
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 0,
+    "minimumMovedGap": null,
+    "moveDistance": 320.9981279222255,
+    "movedPairOverlapCount": 0,
+    "movedRoleCount": 1,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "7e1f5cbf85490fe0646bd1b75cf889f2db1b06dcff67dc3832b1ad2f541a5f13",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-04T23:30:54.003Z",
+  "payloadHash": "396c3ca49db526923ef8363214a0b35afa7088fe7df98c49bcfec4b5ba3f38b3",
+  "persistedShape": {
+    "arrayTextCount": 2,
+    "candidateCount": 10,
+    "fractionModuleActive": false,
+    "fractionStripCount": 0,
+    "objectCount": 47,
+    "patternBlockCount": 0,
+    "patternModuleActive": false
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave18/angle-turn.png",
+  "probeId": "wave18-angle-turn-release-canary-v1",
+  "problemCount": 2,
+  "projectReferenceHash": "a041edfbcafeb13a257b609df7636f14e716ce8e7f81a7f3191ded9b6f2c878c",
+  "releasedTools": [],
+  "reopenShape": {
+    "explanationBoxCount": 2,
+    "idCount": 75,
+    "predictionBoxCount": 2,
+    "sourceRoleCount": 2,
+    "targetRoleCount": 2
+  },
+  "reusedExisting": false,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}

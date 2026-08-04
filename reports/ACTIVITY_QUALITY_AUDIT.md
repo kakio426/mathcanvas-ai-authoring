@@ -5,7 +5,7 @@
 
 - 환산비: 1 캔버스 단위 = 417.82 px / 720 단위 = **0.5803 px** (근거: `research/mathcanvas/wave10-common-unit-release-canary.json`, viewport 1280x800)
 - 상태: **pass**
-- 활동 17개 / variation 89개
+- 활동 20개 / variation 92개
 - P0 0건 / P1 0건
 
 ## 기준 축별 결과
@@ -34,6 +34,18 @@
   - 자동 검사: `outside-element-ambiguous-ownership`, `drop-slack-too-tight`, `interactive-target-too-small`, `cross-item-overlap`
 
 ## 활동별 상세
+
+### measure.angle.turn-size.claim-evidence-v1 (4학년)
+
+문제 없음
+
+### geometry.triangle.classification.claim-evidence-v1 (4학년)
+
+문제 없음
+
+### geometry.symmetry.equal-distance.claim-evidence-v1 (5학년)
+
+문제 없음
 
 ### fraction.compare.unlike-denominators.visual-v1 (5학년)
 

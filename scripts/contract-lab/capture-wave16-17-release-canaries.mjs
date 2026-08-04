@@ -222,13 +222,22 @@ try {
       }
     }
     if (!creation) {
-      const runtime = new ManagedChromeRuntime({ userDataDirectory: join(stateDirectory, "chrome-profile"), launcher: authSession.launcher, headless: true });
+      const runtime = new ManagedChromeRuntime({
+        userDataDirectory: join(stateDirectory, "chrome-profile"),
+        launcher: authSession.launcher,
+        headless: true
+      });
       try {
         creation = await runtime.createProject(prepared.compiled.payload, prepared.compiled.payloadHash);
       } finally {
         await runtime.close();
       }
-      if (!creation.ok) throw new Error(`${entry.probeId}-create-failed:${creation.errorCode}`);
+      if (!creation.ok) {
+        throw new Error(
+          `${entry.probeId}-create-failed:${creation.errorCode}` +
+            (creation.httpStatus ? `:http-${creation.httpStatus}` : "")
+        );
+      }
     }
     mkdirSync(dirname(rawOutput), { recursive: true, mode: 0o700 });
     writeFileSync(

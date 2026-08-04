@@ -1,12 +1,12 @@
 # MathCanvas 시각 품질 감사
 
 - 상태: **pass**
-- 활동: 17개
-- variation: 89개
+- 활동: 20개
+- variation: 92개
 - 시각 감사 점수: **100.0/100**
 - P0: 0건 / P1: 0건 / P2: 0건
-- 실제 preview: 17/17개
-- 실제 조작 후 canary: 13/17개 (나머지는 정적 조작 시뮬레이션)
+- 실제 preview: 20/20개
+- 실제 조작 후 canary: 16/20개 (나머지는 정적 조작 시뮬레이션)
 
 ## 계열별 결과
 
@@ -15,6 +15,7 @@
 | equation-card | 4 | 100.0 | 0 | 0 |
 | strip-measurement | 9 | 100.0 | 0 | 0 |
 | native-model | 4 | 100.0 | 0 | 0 |
+| claim-evidence | 3 | 100.0 | 0 | 0 |
 
 ## 남은 문제
 

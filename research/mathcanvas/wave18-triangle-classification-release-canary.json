@@ -1,0 +1,50 @@
+{
+  "blueprintContentHash": "123b00eae8ea4fca970e7d16950a60057de6fb72e3024edac11a073b4bf4bb98",
+  "blueprintId": "geometry.triangle.classification.claim-evidence-v1",
+  "blueprintVersion": "1.0.0",
+  "categoryUnit": "Unit03",
+  "createRequestCount": 1,
+  "editorPath": "/ko/view/<redacted-project>",
+  "existingProjectWriteCount": 0,
+  "interactionShape": {
+    "action": "choose-claim-and-check-evidence",
+    "allMovedInsideTargets": true,
+    "commonStartResidualPx": null,
+    "correctDecisionPlaced": true,
+    "existingProjectWriteCount": 0,
+    "maximumTargetOverflowPx": 0,
+    "minimumMovedGap": null,
+    "moveDistance": 323.8027663342046,
+    "movedPairOverlapCount": 0,
+    "movedRoleCount": 1,
+    "transientOnly": true
+  },
+  "layoutPresetContentHash": "7e1f5cbf85490fe0646bd1b75cf889f2db1b06dcff67dc3832b1ad2f541a5f13",
+  "localValidationIssueCount": 0,
+  "observedAt": "2026-08-04T23:30:58.074Z",
+  "payloadHash": "ec17e380f803e31ddabca05861495ed893c2f9f0888ef82e410deb03b29e9a35",
+  "persistedShape": {
+    "arrayTextCount": 2,
+    "candidateCount": 10,
+    "fractionModuleActive": false,
+    "fractionStripCount": 0,
+    "objectCount": 47,
+    "patternBlockCount": 0,
+    "patternModuleActive": false
+  },
+  "previewPath": ".mathcanvas-contract-lab/previews/wave18/triangle-classification.png",
+  "probeId": "wave18-triangle-classification-release-canary-v1",
+  "problemCount": 2,
+  "projectReferenceHash": "98e2eab1ce81db9b020484014b564118f9e456cdc5436fa5e1ed337477c576a7",
+  "releasedTools": [],
+  "reopenShape": {
+    "explanationBoxCount": 2,
+    "idCount": 75,
+    "predictionBoxCount": 2,
+    "sourceRoleCount": 2,
+    "targetRoleCount": 2
+  },
+  "reusedExisting": false,
+  "schemaVersion": "1.0.0",
+  "status": "pass"
+}
