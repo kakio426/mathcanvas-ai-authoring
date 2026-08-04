@@ -20,7 +20,11 @@ import { validateForCreation } from "../../packages/validator/dist/index.js";
 import { acquireManagedProfileLock, defaultRawRoot, defaultResearchRoot, repositoryRoot, resolveStateDirectory } from "./lib/paths.mjs";
 import { stableJson } from "./lib/normalize.mjs";
 import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
-import { minimumPairGap, occlusionCount } from "./lib/post-interaction-visual.mjs";
+import {
+  assertPostInteractionContract,
+  measurePostInteractionContract,
+  targetOverflow
+} from "./lib/post-interaction-visual.mjs";
 
 const generatedAt = "2026-08-01T03:00:00.000Z";
 const legacyCases = [
@@ -84,6 +88,7 @@ const claimEvidenceCases = claimEvidenceActivityProfiles.map((profile) => {
     throw new Error(`wave18-blueprint-missing:${profile.activityId}`);
   }
   return {
+    profileId: profile.profileId,
     probeId: `wave18-${profile.profileId}-release-canary-v1`,
     seed: profile.presentation
       ? `wave21-${profile.profileId}-readable-release-v4`
@@ -107,11 +112,27 @@ const onlyBlueprintId = process.argv
   .find((argument) => argument.startsWith("--only="))
   ?.slice("--only=".length);
 const wave18Only = process.argv.includes("--wave18");
+const offlineOnly = process.argv.includes("--offline");
+const releaseSet = process.argv
+  .find((argument) => argument.startsWith("--release-set="))
+  ?.slice("--release-set=".length);
+const geometryV1ProfileIds = new Set([
+  "angle-turn",
+  "triangle-classification",
+  "line-symmetry-distance"
+]);
 const selectedCases = onlyBlueprintId
   ? cases.filter((entry) => entry.blueprint.id === onlyBlueprintId)
+  : releaseSet === "geometry-v1"
+    ? claimEvidenceCases.filter((entry) =>
+        geometryV1ProfileIds.has(entry.profileId)
+      )
   : wave18Only
     ? claimEvidenceCases
     : legacyCases;
+if (releaseSet !== undefined && releaseSet !== "geometry-v1") {
+  throw new Error(`wave16-17-canary-release-set-unknown:${releaseSet}`);
+}
 if (onlyBlueprintId && selectedCases.length === 0) {
   throw new Error(`wave16-17-canary-activity-unknown:${onlyBlueprintId}`);
 }
@@ -172,14 +193,14 @@ async function dragCenter(page, source, target, placement = "center") {
   await page.waitForTimeout(250);
 }
 
-function targetOverflow(box, target) {
-  return Math.max(
-    0,
-    target.x - box.x,
-    target.y - box.y,
-    box.x + box.width - (target.x + target.width),
-    box.y + box.height - (target.y + target.height)
-  );
+if (offlineOnly) {
+  for (const entry of selectedCases) {
+    const prepared = prepareCase(entry);
+    process.stdout.write(
+      `PASS ${entry.probeId} offline ${prepared.resolved.items.length} items ${prepared.validation.issues.length} issues\n`
+    );
+  }
+  process.exit(0);
 }
 
 const stateDirectory = resolveStateDirectory();
@@ -363,13 +384,6 @@ try {
         if (!moved) throw new Error(`${entry.probeId}-settled-box-missing`);
         movedBoxes.push(moved);
       }
-      const moveDistance = Math.min(...moveDistances);
-      if (moveDistance < 20) throw new Error(`${entry.probeId}-interaction-did-not-move:${moveDistance}`);
-      const targetOverflows = movedBoxes.map((box, index) => targetOverflow(box, targetBoxes[index]));
-      const maximumTargetOverflowPx = Math.max(...targetOverflows);
-      const movedPairOverlapCount = movedBoxes.length > 1 ? occlusionCount(movedBoxes) : 0;
-      const minimumMovedGap = movedBoxes.length > 1 ? minimumPairGap(movedBoxes) : null;
-      const allMovedInsideTargets = maximumTargetOverflowPx <= 5;
       let commonStartResidualPx = null;
       if (entry.blueprint.id === probabilityBagComparisonBlueprint.id) {
         const startLineEmission = byRole("start-line");
@@ -385,11 +399,25 @@ try {
             .map(({ box }) => Math.abs(box.x - startAnchorX))
         );
       }
-      if (
-        !allMovedInsideTargets ||
-        movedPairOverlapCount !== 0 ||
-        (commonStartResidualPx !== null && commonStartResidualPx > 5)
-      ) {
+      const interactionShape = measurePostInteractionContract({
+        action: entry.action,
+        moveDistances,
+        movedBoxes,
+        targetBoxes,
+        correctDecisionPlaced: true,
+        commonStartResidualPx,
+        transientOnly: true,
+        existingProjectWriteCount: blockedProjectWriteRequestCount
+      });
+      try {
+        assertPostInteractionContract(interactionShape, {
+          expectedAction: entry.action,
+          expectedMovedRoleCount: interactionSteps.length,
+          requireCommonStart:
+            entry.blueprint.id === probabilityBagComparisonBlueprint.id,
+          errorCode: `${entry.probeId}-post-interaction-contract-invalid`
+        });
+      } catch (error) {
         const failurePreview = join(
           repositoryRoot,
           ".mathcanvas-contract-lab",
@@ -404,10 +432,11 @@ try {
           targetRole: step.target.role,
           movedBox: movedBoxes[index],
           targetBox: targetBoxes[index],
-          overflow: targetOverflows[index]
+          overflow: targetOverflow(movedBoxes[index], targetBoxes[index])
         }));
         throw new Error(
-          `${entry.probeId}-post-interaction-visual-invalid:${JSON.stringify({ maximumTargetOverflowPx, movedPairOverlapCount, minimumMovedGap, commonStartResidualPx, failurePreview, placements })}`
+          `${entry.probeId}-post-interaction-visual-invalid:${JSON.stringify({ interactionShape, failurePreview, placements })}`,
+          { cause: error }
         );
       }
 
@@ -442,19 +471,7 @@ try {
         problemCount: prepared.resolved.items.length,
         persistedShape,
         reopenShape,
-        interactionShape: {
-          action: entry.action,
-          moveDistance,
-          movedRoleCount: interactionSteps.length,
-          correctDecisionPlaced: true,
-          allMovedInsideTargets,
-          maximumTargetOverflowPx,
-          movedPairOverlapCount,
-          minimumMovedGap,
-          commonStartResidualPx,
-          transientOnly: true,
-          existingProjectWriteCount: blockedProjectWriteRequestCount
-        },
+        interactionShape,
         previewPath: `.mathcanvas-contract-lab/previews/${entry.previewName}`,
         reusedExisting
       };

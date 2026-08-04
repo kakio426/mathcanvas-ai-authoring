@@ -5,10 +5,13 @@ import {
 } from "@mathcanvas/contracts";
 import {
   LEARNING_MAP_COMMIT,
+  angleMeasurementRecord,
   barGraphInterpretationRecord,
   lengthMeasurementRecord,
+  lineSymmetryRecord,
   clockReadingRecord,
   timeDurationRecord,
+  triangleClassificationRecord,
   sameDenominatorFractionOperationsRecord,
   equalityRelationRecord,
   equivalentFractionRecord,
@@ -69,10 +72,13 @@ export function resolveCurriculum(
     "[2수03-10]": lengthMeasurementRecord,
     "[4수01-15]": sameDenominatorFractionOperationsRecord,
     "[4수02-03]": equalityRelationRecord,
+    "[4수03-09]": triangleClassificationRecord,
+    "[4수03-24]": angleMeasurementRecord,
     "[4수04-01]": barGraphInterpretationRecord,
     "[6수01-06]": equivalentFractionRecord,
     "[6수01-07]": unlikeDenominatorComparisonRecord,
     "[6수01-08]": unlikeDenominatorFractionOperationsRecord,
+    "[6수03-02]": lineSymmetryRecord,
     "[6수04-04]": probabilityComparisonRecord
   };
   const profileMatches = [
@@ -187,10 +193,13 @@ export function resolveCurriculum(
 
 export {
   LEARNING_MAP_COMMIT,
+  angleMeasurementRecord,
   barGraphInterpretationRecord,
   lengthMeasurementRecord,
+  lineSymmetryRecord,
   clockReadingRecord,
   timeDurationRecord,
+  triangleClassificationRecord,
   sameDenominatorFractionOperationsRecord,
   equalityRelationRecord,
   equivalentFractionRecord,

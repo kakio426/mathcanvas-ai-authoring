@@ -7,6 +7,7 @@ import {
   assertPathInside,
   defaultResearchRoot
 } from "./lib/paths.mjs";
+import { assertPostInteractionContract } from "./lib/post-interaction-visual.mjs";
 
 const hashPattern = /^[a-f0-9]{64}$/;
 const semverPattern = /^\d+\.\d+\.\d+$/;
@@ -1110,6 +1111,7 @@ export function validateActivityReleaseCanaryEvidence(
       probeId: "wave16-pattern-release-canary-v1",
       categoryUnit: "Unit02",
       action: "choose-repeat-unit-and-extend-pattern",
+      movedRoleCount: 3,
       releasedTools: ["SM02PB"],
       persisted: (value) =>
         value?.patternBlockCount === itemCount * 11 &&
@@ -1119,6 +1121,7 @@ export function validateActivityReleaseCanaryEvidence(
       probeId: "wave17-multiplication-release-canary-v1",
       categoryUnit: "Unit01",
       action: "choose-expression-and-check-grouped-array",
+      movedRoleCount: 1,
       releasedTools: [],
       persisted: (value) => value?.arrayTextCount === itemCount
     },
@@ -1126,6 +1129,7 @@ export function validateActivityReleaseCanaryEvidence(
       probeId: "wave17-probability-release-canary-v1",
       categoryUnit: "Unit04",
       action: "choose-relation-and-align-probability-strips",
+      movedRoleCount: 3,
       releasedTools: ["NO03FM"],
       requiresCommonStart: true,
       persisted: (value) =>
@@ -1173,6 +1177,11 @@ export function validateActivityReleaseCanaryEvidence(
     wave18ClaimEvidenceContracts[evidence.blueprintId];
   if (wave18ClaimEvidence) {
     const interaction = evidence.interactionShape;
+    assertPostInteractionContract(interaction, {
+      expectedAction: "choose-claim-and-check-evidence",
+      expectedMovedRoleCount: 1,
+      errorCode: "activity-release-canary-interaction-invalid"
+    });
     if (
       evidence.probeId !== wave18ClaimEvidence.probeId ||
       evidence.categoryUnit !== wave18ClaimEvidence.categoryUnit ||
@@ -1185,20 +1194,7 @@ export function validateActivityReleaseCanaryEvidence(
       shape?.targetRoleCount !== itemCount ||
       shape?.predictionBoxCount !== itemCount ||
       shape?.explanationBoxCount !== itemCount ||
-      interaction?.action !== "choose-claim-and-check-evidence" ||
-      interaction?.transientOnly !== true ||
-      interaction?.existingProjectWriteCount !== 0 ||
-      interaction?.movedRoleCount !== 1 ||
-      typeof interaction?.moveDistance !== "number" ||
-      !Number.isFinite(interaction.moveDistance) ||
-      interaction.moveDistance < 20 ||
-      interaction?.allMovedInsideTargets !== true ||
-      typeof interaction?.maximumTargetOverflowPx !== "number" ||
-      !Number.isFinite(interaction.maximumTargetOverflowPx) ||
-      interaction.maximumTargetOverflowPx > 5 ||
-      interaction?.movedPairOverlapCount !== 0 ||
-      interaction?.minimumMovedGap !== null ||
-      interaction?.commonStartResidualPx !== null
+      interaction?.correctDecisionPlaced !== true
     ) {
       throw new Error("activity-release-canary-evidence-shape-invalid");
     }
@@ -1207,6 +1203,12 @@ export function validateActivityReleaseCanaryEvidence(
   const wave16And17 = wave16And17Contracts[evidence.blueprintId];
   if (wave16And17) {
     const interaction = evidence.interactionShape;
+    assertPostInteractionContract(interaction, {
+      expectedAction: wave16And17.action,
+      expectedMovedRoleCount: wave16And17.movedRoleCount,
+      requireCommonStart: wave16And17.requiresCommonStart === true,
+      errorCode: "activity-release-canary-interaction-invalid"
+    });
     if (
       evidence.probeId !== wave16And17.probeId ||
       evidence.categoryUnit !== wave16And17.categoryUnit ||
@@ -1218,29 +1220,7 @@ export function validateActivityReleaseCanaryEvidence(
       shape?.targetRoleCount !== itemCount ||
       shape?.predictionBoxCount !== itemCount ||
       shape?.explanationBoxCount !== itemCount ||
-      interaction?.action !== wave16And17.action ||
-      interaction?.transientOnly !== true ||
-      interaction?.existingProjectWriteCount !== 0 ||
-      typeof interaction?.moveDistance !== "number" ||
-      !Number.isFinite(interaction.moveDistance) ||
-      interaction.moveDistance < 20 ||
-      interaction?.allMovedInsideTargets !== true ||
-      typeof interaction?.maximumTargetOverflowPx !== "number" ||
-      !Number.isFinite(interaction.maximumTargetOverflowPx) ||
-      interaction.maximumTargetOverflowPx > 5 ||
-      interaction?.movedPairOverlapCount !== 0 ||
-      (interaction.movedRoleCount > 1 &&
-        (typeof interaction?.minimumMovedGap !== "number" ||
-          !Number.isFinite(interaction.minimumMovedGap) ||
-          interaction.minimumMovedGap < 3)) ||
-      (interaction.movedRoleCount === 1 &&
-        interaction?.minimumMovedGap !== null) ||
-      (wave16And17.requiresCommonStart === true &&
-        (typeof interaction?.commonStartResidualPx !== "number" ||
-          !Number.isFinite(interaction.commonStartResidualPx) ||
-          interaction.commonStartResidualPx > 5)) ||
-      (wave16And17.requiresCommonStart !== true &&
-        interaction?.commonStartResidualPx !== null)
+      interaction?.correctDecisionPlaced !== true
     ) {
       throw new Error("activity-release-canary-evidence-shape-invalid");
     }

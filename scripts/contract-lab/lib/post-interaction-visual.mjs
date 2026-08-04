@@ -68,6 +68,118 @@ export function occlusionCount(boxes) {
   );
 }
 
+export function targetOverflow(box, target) {
+  assertBox(box, "target-overflow-box");
+  assertBox(target, "target-overflow-target");
+  return Math.max(
+    0,
+    target.x - box.x,
+    target.y - box.y,
+    box.x + box.width - (target.x + target.width),
+    box.y + box.height - (target.y + target.height)
+  );
+}
+
+/**
+ * 실제 조작 뒤 모든 활동이 같은 이름과 임계값으로 증거를 남기게 한다.
+ * 활동별 canary는 박스와 이동 거리만 제공하고, 판정 정책은 여기에서 공유한다.
+ */
+export function measurePostInteractionContract({
+  action,
+  moveDistances,
+  movedBoxes,
+  targetBoxes,
+  correctDecisionPlaced,
+  commonStartResidualPx = null,
+  transientOnly,
+  existingProjectWriteCount,
+  maximumTargetOverflowPx = 5
+}) {
+  if (
+    typeof action !== "string" ||
+    action.length === 0 ||
+    !Array.isArray(moveDistances) ||
+    !Array.isArray(movedBoxes) ||
+    !Array.isArray(targetBoxes) ||
+    moveDistances.length === 0 ||
+    moveDistances.length !== movedBoxes.length ||
+    movedBoxes.length !== targetBoxes.length
+  ) {
+    throw new Error("post-interaction-contract-input-invalid");
+  }
+  const targetOverflows = movedBoxes.map((box, index) =>
+    targetOverflow(box, targetBoxes[index])
+  );
+  const maximumOverflow = Math.max(...targetOverflows);
+  return {
+    action,
+    moveDistance: Math.min(...moveDistances),
+    movedRoleCount: movedBoxes.length,
+    correctDecisionPlaced,
+    allMovedInsideTargets: maximumOverflow <= maximumTargetOverflowPx,
+    maximumTargetOverflowPx: maximumOverflow,
+    movedPairOverlapCount:
+      movedBoxes.length > 1 ? occlusionCount(movedBoxes) : 0,
+    minimumMovedGap:
+      movedBoxes.length > 1 ? minimumPairGap(movedBoxes) : null,
+    commonStartResidualPx,
+    transientOnly,
+    existingProjectWriteCount
+  };
+}
+
+export function assertPostInteractionContract(
+  interaction,
+  {
+    expectedAction,
+    expectedMovedRoleCount,
+    minimumMoveDistance = 20,
+    maximumTargetOverflowPx = 5,
+    minimumMovedGap = 3,
+    requireCommonStart = false,
+    maximumCommonStartResidualPx = 5,
+    errorCode = "post-interaction-contract-invalid"
+  } = {}
+) {
+  const movedRoleCount = interaction?.movedRoleCount;
+  const singleRole = movedRoleCount === 1;
+  const commonStartValid = requireCommonStart
+    ? typeof interaction?.commonStartResidualPx === "number" &&
+      Number.isFinite(interaction.commonStartResidualPx) &&
+      interaction.commonStartResidualPx <= maximumCommonStartResidualPx
+    : interaction?.commonStartResidualPx === null;
+  const gapValid = singleRole
+    ? interaction?.minimumMovedGap === null
+    : typeof interaction?.minimumMovedGap === "number" &&
+      Number.isFinite(interaction.minimumMovedGap) &&
+      interaction.minimumMovedGap >= minimumMovedGap;
+  if (
+    typeof interaction?.action !== "string" ||
+    interaction.action.length === 0 ||
+    (expectedAction !== undefined && interaction.action !== expectedAction) ||
+    !Number.isInteger(movedRoleCount) ||
+    movedRoleCount < 1 ||
+    (expectedMovedRoleCount !== undefined &&
+      movedRoleCount !== expectedMovedRoleCount) ||
+    interaction?.correctDecisionPlaced !== true ||
+    typeof interaction?.moveDistance !== "number" ||
+    !Number.isFinite(interaction.moveDistance) ||
+    interaction.moveDistance < minimumMoveDistance ||
+    interaction?.allMovedInsideTargets !== true ||
+    typeof interaction?.maximumTargetOverflowPx !== "number" ||
+    !Number.isFinite(interaction.maximumTargetOverflowPx) ||
+    interaction.maximumTargetOverflowPx > maximumTargetOverflowPx ||
+    interaction?.movedPairOverlapCount !== 0 ||
+    !gapValid ||
+    !commonStartValid ||
+    interaction?.transientOnly !== true ||
+    interaction?.existingProjectWriteCount !== 0
+  ) {
+    throw new Error(`${errorCode}:${JSON.stringify(interaction)}`);
+  }
+  return interaction;
+}
+
 function coveredArea(reference, occluders) {
   assertBox(reference, "reference");
   const intersections = occluders

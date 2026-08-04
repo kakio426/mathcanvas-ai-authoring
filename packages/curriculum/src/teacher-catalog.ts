@@ -5,11 +5,13 @@ import {
   type GenerationRequest
 } from "@mathcanvas/contracts";
 import {
+  angleMeasurementRecord,
   barGraphInterpretationRecord,
   clockReadingRecord,
   equalityRelationRecord,
   equivalentFractionRecord,
   lengthMeasurementRecord,
+  lineSymmetryRecord,
   multiplicationMeaningRecord,
   numberCompositionRecord,
   placeValueRecord,
@@ -17,6 +19,7 @@ import {
   repeatingPatternRecord,
   sameDenominatorFractionOperationsRecord,
   timeDurationRecord,
+  triangleClassificationRecord,
   unlikeDenominatorComparisonRecord,
   unlikeDenominatorFractionOperationsRecord
 } from "./data.js";
@@ -411,7 +414,10 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("language-order", "가능성을 말로 순서 지어 표현하기 어려워요", "더 가능하다와 덜 가능하다를 수학적 근거 없이 사용해요.", "가능성의 크기를 비교한 뒤 전체 중 원하는 경우의 비율을 까닭으로 말하게 한다.")
       ]
     }
-  ])
+  ]),
+  standard(triangleClassificationRecord, []),
+  standard(angleMeasurementRecord, []),
+  standard(lineSymmetryRecord, [])
 ] as const;
 
 function standardRange(

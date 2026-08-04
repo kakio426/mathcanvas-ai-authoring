@@ -18,6 +18,7 @@ import {
   makeChoiceExplanationScaffoldLayoutChildren,
   makeChoiceExplanationScaffoldRoles
 } from "./choice-explanation-scaffold.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 function makeClaimEvidenceBlueprint(
   profile: ClaimEvidenceActivityProfile
@@ -74,7 +75,7 @@ function makeClaimEvidenceBlueprint(
       : role
   );
 
-  return defineActivityBlueprint({
+  return defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: profile.activityId,
     version: presentation ? "2.0.0" : "1.0.0",
@@ -152,7 +153,7 @@ function makeClaimEvidenceBlueprint(
     layout: {
       tokenSet:
         presentation?.layoutTokenSet ??
-        "wave17-multiplication-array-v1",
+        "wave23-claim-evidence-v1",
       root: {
         id: "canvas",
         kind: "canvas",
@@ -277,7 +278,7 @@ function makeClaimEvidenceBlueprint(
       isShowMenuOnActivity: true
     },
     variationDefaults: { problemCount, difficulty: "normal" }
-  });
+  }, { questionFontSize: 37 }));
 }
 
 export const claimEvidenceBlueprints: readonly ActivityBlueprint[] =

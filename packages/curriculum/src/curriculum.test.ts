@@ -41,13 +41,24 @@ describe("교육과정 해석", () => {
     );
 
     // 활동 프로필에서 조립한 레코드는 원문 대조를 자칭하지 않는다.
-    const synthesized = resolveCurriculum("[4수03-24]");
+    const synthesized = resolveCurriculum("[4수01-06]");
     expect(synthesized.provenance).toBe("synthesized");
     expect(
       synthesized.record.officialSource.verificationStatus
     ).not.toBe("official-text-verified");
     expect(synthesized.record.reviewer).toContain("사람 검토 없음");
     expect(synthesized.warnings.join(" ")).toContain("자동 합성");
+  });
+
+  it("출시할 기하 활동 3개의 공식 원문 위치를 검토본으로 고정한다", () => {
+    for (const code of ["[4수03-09]", "[4수03-24]", "[6수03-02]"]) {
+      const result = resolveCurriculum(code);
+      expect(result.provenance).toBe("reviewed");
+      expect(result.record.officialSource.verificationStatus).toBe(
+        "official-text-verified"
+      );
+      expect(result.record.officialSource.locator).toMatch(/^PDF \d+쪽/);
+    }
   });
 
   it("파생한 출처 위치를 검증된 위치처럼 표시하지 않는다", () => {

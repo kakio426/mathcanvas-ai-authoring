@@ -6,9 +6,14 @@ const WRITING_PAIRS = [
   ["answer-label", "answer-box"]
 ] as const;
 
+interface StudentScreenQualityOptions {
+  readonly questionFontSize?: number;
+}
+
 function normalizeWritingLayer(
   roles: ActivityBlueprintBody["toolRoles"],
-  gradeMinimumFontSize: number
+  gradeMinimumFontSize: number,
+  questionFontSize: number
 ): ActivityBlueprintBody["toolRoles"] {
   const ordered = roles.map((role) => {
     if (
@@ -34,7 +39,7 @@ function normalizeWritingLayer(
             : mathPrompt
               ? 66
             : problemText
-            ? 45
+            ? questionFontSize
             : writingHeader
               ? 32
               : gradeMinimumFontSize
@@ -74,7 +79,8 @@ function releaseWritingHeadersFromCollisionGroups(
  * frozen compiler/validator core.
  */
 export function withStudentScreenQuality(
-  input: ActivityBlueprintBody
+  input: ActivityBlueprintBody,
+  options: StudentScreenQualityOptions = {}
 ): ActivityBlueprintBody {
   const grade = Number(
     input.curriculumBinding.standardCode.match(/^\[(\d)/)?.[1] ?? 6
@@ -82,7 +88,8 @@ export function withStudentScreenQuality(
   const gradeMinimumFontSize = grade <= 2 ? 32 : grade <= 4 ? 30 : 28;
   const toolRoles = normalizeWritingLayer(
     input.toolRoles,
-    gradeMinimumFontSize
+    gradeMinimumFontSize,
+    options.questionFontSize ?? 45
   );
   const textRoles = toolRoles
     .filter((role) => role.intentKind === "text" || role.intentKind === "latex")

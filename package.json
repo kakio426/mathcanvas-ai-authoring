@@ -39,6 +39,8 @@
     "contract:canary:wave14:place-value": "node scripts/contract-lab/capture-wave14-place-value-release-canary.mjs",
     "contract:canary:wave16-17": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs",
     "contract:canary:wave18": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs --wave18",
+    "contract:canary:geometry-v1": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs --release-set=geometry-v1",
+    "contract:verify:geometry-v1:offline": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs --release-set=geometry-v1 --offline",
     "contract:probe:p3:canary": "node scripts/contract-lab/capture-p3-release-canary.mjs",
     "contract:probe:w3:optical": "node scripts/contract-lab/capture-w3-equation-rail-optical.mjs",
     "contract:verify:p3:canary": "node scripts/contract-lab/validate-p3-release-canary.mjs",

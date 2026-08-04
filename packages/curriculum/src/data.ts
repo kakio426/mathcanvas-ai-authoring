@@ -65,6 +65,94 @@ const sharedAuxiliarySource = {
     "고정 스냅샷은 성취기준 코드와 상위 단원 위치를 확인하는 보조 자료입니다. 공식 목표 문구는 교육부 원문을 기준으로 삼습니다."
 };
 
+function reviewedGeometryRecord(input: {
+  key: string;
+  code: string;
+  gradeBand: "3-4" | "5-6";
+  officialGoal: string;
+  prerequisites: readonly string[];
+  locator: string;
+  auxiliaryLocator: string;
+}): CurriculumRecord {
+  return curriculumRecordSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    key: input.key,
+    code: input.code,
+    gradeBand: input.gradeBand,
+    domain: "도형과 측정",
+    officialGoal: input.officialGoal,
+    prerequisites: input.prerequisites,
+    officialSource: {
+      sourceId: "kr-ncic-2022-elementary-math",
+      sourceKind: "official",
+      title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      locator: input.locator,
+      version: "교육부 고시 제2022-33호",
+      verificationStatus: "official-text-verified",
+      sourceTextIncluded: false,
+      caveat:
+        "저장소에는 교육과정 원문 전체를 재배포하지 않습니다. 성취기준 코드와 목표 문구는 위 공식 원문 위치에서 대조한 검토 메타데이터입니다."
+    },
+    auxiliarySources: [
+      {
+        ...sharedAuxiliarySource,
+        locator: input.auxiliaryLocator
+      }
+    ],
+    reviewedAt: "2026-08-04T00:00:00.000Z",
+    reviewer: "MathCanvas AI authoring curriculum review"
+  });
+}
+
+export const triangleClassificationRecord = reviewedGeometryRecord({
+  key: "kr-2022-elem-math:4su03-09",
+  code: "[4수03-09]",
+  gradeBand: "3-4",
+  officialGoal:
+    "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 직각삼각형, 예각삼각형, 둔각삼각형을 이해한다.",
+  prerequisites: [
+    "각과 직각을 이해하고 예각과 둔각을 구별할 수 있다.",
+    "삼각형을 변과 각의 성질에 따라 분류할 수 있다."
+  ],
+  locator:
+    "PDF 26쪽, 초등학교 3~4학년군 > 도형과 측정 > 여러 가지 삼각형 > [4수03-09]",
+  auxiliaryLocator:
+    "data/kr/curriculum-standards.json, topics.json, dependencies.json / [4수03-09]"
+});
+
+export const angleMeasurementRecord = reviewedGeometryRecord({
+  key: "kr-2022-elem-math:4su03-24",
+  code: "[4수03-24]",
+  gradeBand: "3-4",
+  officialGoal:
+    "각의 크기의 단위인 1도(°)를 알고, 각도기를 이용하여 각의 크기를 측정하고 어림할 수 있다.",
+  prerequisites: [
+    "각의 꼭짓점과 두 변을 찾을 수 있다.",
+    "직각과 비교하여 예각과 둔각을 구별할 수 있다."
+  ],
+  locator:
+    "PDF 27쪽, 초등학교 3~4학년군 > 도형과 측정 > 각도 > [4수03-24]",
+  auxiliaryLocator:
+    "data/kr/curriculum-standards.json, topics.json, dependencies.json / [4수03-24]"
+});
+
+export const lineSymmetryRecord = reviewedGeometryRecord({
+  key: "kr-2022-elem-math:6su03-02",
+  code: "[6수03-02]",
+  gradeBand: "5-6",
+  officialGoal:
+    "실생활과 연결하여 선대칭도형과 점대칭도형을 이해하고 그릴 수 있다.",
+  prerequisites: [
+    "합동인 도형의 대응점, 대응변, 대응각을 찾을 수 있다.",
+    "모눈에서 점의 위치와 두 점 사이의 거리를 비교할 수 있다."
+  ],
+  locator:
+    "PDF 34쪽, 초등학교 5~6학년군 > 도형과 측정 > 합동과 대칭 > [6수03-02]",
+  auxiliaryLocator:
+    "data/kr/curriculum-standards.json, topics.json, dependencies.json / [6수03-02]"
+});
+
 export const unlikeDenominatorFractionOperationsRecord: CurriculumRecord =
   curriculumRecordSchema.parse({
     schemaVersion: CONTRACT_SCHEMA_VERSION,

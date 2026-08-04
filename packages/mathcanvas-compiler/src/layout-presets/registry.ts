@@ -21,6 +21,7 @@ import { wave19FactorPairArrayLayoutPreset } from "./wave19-factor-pair-array-v1
 import { wave20PartialOperationLayoutPreset } from "./wave20-partial-operation-v1.js";
 import { wave22BarGraphRepresentLayoutPreset } from "./wave22-bar-graph-represent-v1.js";
 import { wave21ClaimEvidenceV2LayoutPreset } from "./wave21-claim-evidence-v2.js";
+import { wave23ClaimEvidenceLayoutPreset } from "./wave23-claim-evidence-v1.js";
 
 type WritingLayoutShift = {
   readonly fromY: number;
@@ -88,7 +89,11 @@ const WRITING_LAYOUT_QUALITY: Readonly<Record<string, WritingLayoutQuality>> = {
   },
   "wave17-probability-bag-v1": {
     predictionShift: { fromY: 180 }
-  }
+  },
+  "wave21-claim-evidence-v2": {
+    predictionShift: { fromY: 315 }
+  },
+  "wave23-claim-evidence-v1": {}
 };
 
 // The prediction area is also a drop target in most activities.  Its header
@@ -270,7 +275,8 @@ const rawPresets: Readonly<Record<string, LayoutPreset>> = {
   "wave19-factor-pair-array-v1": wave19FactorPairArrayLayoutPreset,
   "wave20-partial-operation-v1": wave20PartialOperationLayoutPreset,
   "wave22-bar-graph-represent-v1": wave22BarGraphRepresentLayoutPreset,
-  "wave21-claim-evidence-v2": wave21ClaimEvidenceV2LayoutPreset
+  "wave21-claim-evidence-v2": wave21ClaimEvidenceV2LayoutPreset,
+  "wave23-claim-evidence-v1": wave23ClaimEvidenceLayoutPreset
 };
 
 const presets: Readonly<Record<string, LayoutPreset>> =
