@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "74af4eb88a639f220c202b841b25d99ea372fc24d2f11bc3e4fb091ff56cf42e",
+  "blueprintContentHash": "bd1e4b55fad240d4147c5b6c04880b30eb65afe540a035a5d48611bc729e04fb",
   "blueprintId": "fraction.add.same-denominator.strips-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit01",
@@ -24,20 +24,25 @@
     "sumNumerator": 8,
     "transientOnly": true,
     "verticalContainmentResidual": 0.5787353515625,
-    "verticalRowResidual": 0
+    "verticalRowResidual": 0,
+    "wholeWidth": 348.3796081542969
   },
-  "layoutPresetContentHash": "088ac43f4159dc4c30e0e276fe18cc7eae33bd8c03c3eefe9959faf019d074e6",
+  "layoutPresetContentHash": "d7acf1c43947cb58b2fce34d458d6ff18bb0b795b59d3da1793f9cffb490c6e6",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T11:36:57.741Z",
-  "payloadHash": "0cdeca0f61f246be24498e3a354a7043f0a6f2c9e6360cdf89f2b339115202e6",
+  "observedAt": "2026-08-04T10:13:40.836Z",
+  "payloadHash": "aede0db477f69b0c95dc4aed621d54e47ae7b26d4b9d493ddb6db33df5772e86",
   "persistedShape": {
     "candidateFormulaCount": 10,
     "configuredFractionMatchCount": 4,
     "fractionModuleActive": true,
     "fractionStripCount": 4,
+    "labelHiddenStripCount": 0,
     "leftStripCount": 2,
     "objectCount": 55,
-    "rightStripCount": 2
+    "oneWholeBoundaryCount": 0,
+    "rightStripCount": 2,
+    "unitRulerCount": 0,
+    "unitRulerDividerMatchCount": 0
   },
   "previewPath": ".mathcanvas-contract-lab/previews/wave8/fraction-sum.png",
   "probeId": "wave8-fraction-sum-release-canary-v4",
@@ -51,7 +56,11 @@
     "explanationBoxCount": 2,
     "fractionStripCount": 4,
     "joinLaneCount": 2,
+    "oneWholeBoundaryCount": 0,
     "predictionBoxCount": 2,
+    "questionLaneCount": 0,
+    "referenceLaneCount": 0,
+    "unitRulerCount": 0,
     "visibleFractionStripCount": 4
   },
   "reusedExisting": false,

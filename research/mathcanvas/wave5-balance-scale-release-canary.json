@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "9934295024247fb6a2baf8c9814ff7c625a31eceda2cd1608bdf473494a3a7a0",
+  "blueprintContentHash": "b96bd4498a69677e0e2c8f3f97f7c4aaf1600991672e667e4fbdd3a6483f6ff0",
   "blueprintId": "relation.equal-sign.balance-scale.sum-card-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit02",
@@ -14,10 +14,10 @@
     "wrongCardOnRightPan": true,
     "wrongLine": "M143,-35 L143,37 L575,87 L575,15"
   },
-  "layoutPresetContentHash": "e13bf3465369373594acb2662281cbbaec82abf1938e7b8ff4441964fdb2d408",
+  "layoutPresetContentHash": "ba48c5ba6c2b80e1bff9f0d571e5e4411408d582f2f221af606083bfc89e5b6f",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T09:25:41.095Z",
-  "payloadHash": "e7d317831b6e4cb1cc78bfbb744da90f40a83c26b4ca164f4a6cdf3285c2574c",
+  "observedAt": "2026-08-04T10:13:23.241Z",
+  "payloadHash": "345554b749a74acb5ace8c7578716fb2075c49a50b5ade6dfc2e837b18b35254",
   "persistedShape": {
     "balanceModuleActive": true,
     "candidateCardCount": 10,
@@ -46,7 +46,7 @@
     "scaleCount": 2,
     "visibleScaleCount": 2
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

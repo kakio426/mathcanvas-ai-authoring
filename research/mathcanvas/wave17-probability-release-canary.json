@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "9ce3fd386a5449c4b10821bb93260fb4164dcd77ca85f3de8232e059d77b721d",
+  "blueprintContentHash": "e664b15c5123557259f782f56cfaf260686547f018dac81dabc1d2c82678ef0e",
   "blueprintId": "probability.compare.bag-ratios-v1",
   "blueprintVersion": "1.1.0",
   "categoryUnit": "Unit04",
@@ -19,10 +19,10 @@
     "movedRoleCount": 3,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "5c8ab56976a4cd2c9e3b9c2fdeda0c8eadeb19bb8f5887d5d097c88e136cb5d7",
+  "layoutPresetContentHash": "25cd534c69e270665376bc9b0023a4ba534b353438781d897c76ecb8de3376bf",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T06:51:11.252Z",
-  "payloadHash": "bdb1ce7b95a4b78653d79cc4bf0c25a4ccd39cefde62ed3625165cf3df325310",
+  "observedAt": "2026-08-04T10:14:39.566Z",
+  "payloadHash": "703f7cd57117c4621a6e29ac73f4af94fc4924ebc62bcd49deadf463d6694b11",
   "persistedShape": {
     "arrayTextCount": 0,
     "candidateCount": 0,
@@ -46,7 +46,7 @@
     "sourceRoleCount": 2,
     "targetRoleCount": 2
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

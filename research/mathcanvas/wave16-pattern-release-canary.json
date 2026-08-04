@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "11abb1f9e487203867a0f65934946596dae74518a56211c1520397ad6cb679d3",
+  "blueprintContentHash": "4143cea8a814cabbb474672c5836c4bfa664de287a53db22da4bbc15f82cc675",
   "blueprintId": "pattern.repeat-unit.pattern-blocks-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit02",
@@ -19,10 +19,10 @@
     "movedRoleCount": 3,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "35bd66940ee68fcb2b0efa750e92f43d4cbf56ec3506a6dceed96cf796e442f5",
+  "layoutPresetContentHash": "7d6d22943b917eee34347cd989ccf5fde5f1bd580b9621d6de3dd757329d796a",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T06:48:23.210Z",
-  "payloadHash": "55a9c6b6b4329f3072016ec8b0eada6995c1d011b9cc36f6cc6122d861f309ff",
+  "observedAt": "2026-08-04T10:14:31.004Z",
+  "payloadHash": "977b9113dc968a5de341f06e363c647014dcfcec2b151533e18e085b3815415d",
   "persistedShape": {
     "arrayTextCount": 0,
     "candidateCount": 10,
@@ -46,7 +46,7 @@
     "sourceRoleCount": 2,
     "targetRoleCount": 2
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

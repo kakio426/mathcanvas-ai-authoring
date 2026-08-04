@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "8092655154407d67f4a17360ef5924ff2e095a4746e09dc3f03fecd4bf691d1d",
+  "blueprintContentHash": "6833430a0a16ba7ec4e9d089020c3eb23ea2d731aa57aa92333d50f8646a8e9d",
   "blueprintId": "measure.time.elapsed.clock-pair-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit03",
@@ -29,10 +29,10 @@
     "startMinute": 50,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "7caf38640064572afbd8493440a425460a0309bbe712a7f2d9d36277236d1a63",
+  "layoutPresetContentHash": "da27ae4e80c85ec6d812e1b89aa84f5aa5af45e0201073f148682e81d26b5ee2",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T01:19:28.019Z",
-  "payloadHash": "a6e2291081b2691a498771ae0b78d3e9e4650597cdb8ceffca2f999f16a6475b",
+  "observedAt": "2026-08-04T10:13:35.094Z",
+  "payloadHash": "b590f7793d3f55a04df89762b2644b9097a1d7382f6c599c1d330f528d5ce47f",
   "persistedShape": {
     "candidateTextCount": 10,
     "clockCount": 4,
@@ -59,7 +59,7 @@
     "predictionBoxCount": 2,
     "visibleClockCount": 4
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

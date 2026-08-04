@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "b089f2ec4e0dfd7d9f65ad5149cd233f0626d0cea1ef875d5415be5dd5488815",
+  "blueprintContentHash": "eebf43825fa9503331d4cde53cd0fd789b78ce115f078b44cd89af0f278bbbb7",
   "blueprintId": "relation.equal-sign.balanced-equation.cards-v1",
   "blueprintVersion": "1.0.0",
   "categoryId": "4l_eHBivNq",
@@ -8,10 +8,10 @@
   "curriculumStandard": "[4수02-03]",
   "editorPath": "/ko/view/<redacted-project>",
   "existingProjectWriteCount": 0,
-  "layoutPresetContentHash": "e41b0263ea81596e2695219fef02c46f413cafffcac37174903693a855e848b0",
+  "layoutPresetContentHash": "cf19d068c891736f32fa8d697f1a5a0559f13884f2efcf7b428aebe0ebbd144f",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T07:53:55.110Z",
-  "payloadHash": "3eb3e5b49c37fdc7b29427fb2f644c772e2e0153dc602e682913bca09614ada4",
+  "observedAt": "2026-08-04T10:13:14.493Z",
+  "payloadHash": "ea2a46d050dc8675e3f9c4ceada1201aa79522d6de45a29d812e5315108fb493",
   "persistedShape": {
     "answerSlotCount": 3,
     "bottomCellCount": 54,

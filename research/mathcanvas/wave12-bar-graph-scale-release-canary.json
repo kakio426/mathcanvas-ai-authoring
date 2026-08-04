@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "55fd6930956ad10aa5580857120db449701665203e196975c040fa8213ee6546",
+  "blueprintContentHash": "9bcc0d94a1e2ac589e1b9fecb8dc375e48908572288c6b5e601f5f14323f06dd",
   "blueprintId": "data.bar-graph.scale-unit.read-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit04",
@@ -44,10 +44,10 @@
     "wholeWidth": 417.8240966796875,
     "withinOneWhole": true
   },
-  "layoutPresetContentHash": "3fd20913bc100070e4467b57bbbbe5eb5c2c81faa88a8151527d370a61830811",
+  "layoutPresetContentHash": "079d198645c4b0174761f8f750a120d8ff26e78ea84349841faa04d3cb184c0e",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T23:49:38.158Z",
-  "payloadHash": "5e3fb09b0f1d1b8c6582be5c3dae455ea8136551ccac6dbe6ec0d394837ceac1",
+  "observedAt": "2026-08-04T10:14:03.690Z",
+  "payloadHash": "7c6353a7eecfb2bf5edbaed55934145420beff5a6b490866981d4ef6f2dfb3d1",
   "persistedShape": {
     "candidateFormulaCount": 10,
     "configuredFractionMatchCount": 6,
@@ -80,7 +80,7 @@
     "unitRulerCount": 2,
     "visibleFractionStripCount": 4
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

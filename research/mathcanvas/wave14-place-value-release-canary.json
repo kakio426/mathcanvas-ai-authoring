@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "9166b0472803d8144abd6dccad137371364b9558b9753da3a8e5d42765ba7810",
+  "blueprintContentHash": "b7197bba084210107a5466f0656c1a4716f0ae9e3cb851348ce61e754aa88f83",
   "blueprintId": "number.place-value.regroup-ten-bundles-v1",
   "blueprintVersion": "1.1.0",
   "categoryUnit": "Unit01",
@@ -29,10 +29,10 @@
     "tenValueTotal": 100,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "f9ac8ba06893067c8d841431071969bf8860b629bc422a84c0ca940d52d37d7d",
+  "layoutPresetContentHash": "a008c277df8898120faa5814c5f5db33a36a135cd3d79202a6b93e8d835ebd86",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T00:56:30.869Z",
-  "payloadHash": "54c98a7ae2e40ef5cb0992d563df9ac4ae6501030c069f725cdcd68f75d49a56",
+  "observedAt": "2026-08-04T10:14:25.396Z",
+  "payloadHash": "d2da7c7a03185f70624972f7af7c356c68890812361bc43f6d0e3e782f910340",
   "persistedShape": {
     "candidateFormulaCount": 10,
     "configuredExchangeTenCount": 20,

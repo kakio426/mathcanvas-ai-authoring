@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "062ec8c0c146a1b7b14232f52579995c9cc22fc1bfd096d516f7405086e0e25b",
+  "blueprintContentHash": "e655d2d643d32a7eba0cd46d4e919876cc0017b705221b8241c2a6e5cec17de9",
   "blueprintId": "fraction.subtract.unlike-denominators.common-unit-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit01",
@@ -37,15 +37,16 @@
     "wholeWidth": 417.8240966796875,
     "withinOneWhole": true
   },
-  "layoutPresetContentHash": "60f836e53655cda7c8a8c1da77ae35394ea0cf34bc86cfde0e17a02969a21292",
+  "layoutPresetContentHash": "d94e0d0f7ef7accd78d943b5ef4b1927ff3628532dff3222e9d078f795f150ac",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T13:38:32.826Z",
-  "payloadHash": "8e5775aaa9dbe8d8f267314d876c47c9d7808e24f0c205c66664bc6ccfc5a7bb",
+  "observedAt": "2026-08-04T10:13:57.871Z",
+  "payloadHash": "4adbbc631cf97b8dbd7b51e254aa7e30ed5bf60f8be3d4954015f0675fcefe0d",
   "persistedShape": {
     "candidateFormulaCount": 10,
     "configuredFractionMatchCount": 6,
     "fractionModuleActive": true,
     "fractionStripCount": 6,
+    "labelHiddenStripCount": 0,
     "leftStripCount": 2,
     "objectCount": 59,
     "oneWholeBoundaryCount": 0,
@@ -67,10 +68,12 @@
     "joinLaneCount": 2,
     "oneWholeBoundaryCount": 0,
     "predictionBoxCount": 2,
+    "questionLaneCount": 0,
+    "referenceLaneCount": 0,
     "unitRulerCount": 2,
     "visibleFractionStripCount": 4
   },
-  "reusedExisting": true,
+  "reusedExisting": false,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

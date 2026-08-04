@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "63aab6beb3d7a409f3ab817a36f17b016f911569267a48730924d5f9a5f15b6c",
+  "blueprintContentHash": "d2b37527080376ae02d06f5888f9a06f4307a4a5568220806f95fd1edf9b8664",
   "blueprintId": "number.multiplication.group-array-meaning-v1",
   "blueprintVersion": "1.1.0",
   "categoryUnit": "Unit01",
@@ -19,10 +19,10 @@
     "movedRoleCount": 1,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "df0b51e8ca3d21acd068e156194aab0611abd48c14e6da1d778cf485d82657db",
+  "layoutPresetContentHash": "d7552d7228ab31d813ca9bcf6c6f3e244344b41b205263477146c2eb1e240d8d",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-01T06:50:07.995Z",
-  "payloadHash": "65075cdb440029d514e42fd7d0085b3b1ed4df1606a0fe4943b3443ed6324cad",
+  "observedAt": "2026-08-04T10:14:34.818Z",
+  "payloadHash": "515fa7329b4d0b1108d40b5821648ac198678610a05b52c9daf0475755ca7ade",
   "persistedShape": {
     "arrayTextCount": 2,
     "candidateCount": 10,

@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "80e1a9b4f22cfbb9d1df1484e49b9f3111098ad1d36d4864e358b677a91b616d",
+  "blueprintContentHash": "e9c07031546265bcc669b2852e895d4314b90c75292de9f114373ffd46569691",
   "blueprintId": "measure.time.clock.hour-hand-boundary-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit03",
@@ -17,10 +17,10 @@
     "targetMinute": 50,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "b408f84286a69a49772583c81f5be352959e5b3cf744eba7090de0774711aaa0",
+  "layoutPresetContentHash": "0303ca426defdd9c4b57fc07412d0582cd5d63cbc836d08f31a315205b0316d1",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T10:29:01.992Z",
-  "payloadHash": "5223caffadfcb75b12fdb7f53569becee5347e76bc134d76e068961111a2e177",
+  "observedAt": "2026-08-04T10:13:29.127Z",
+  "payloadHash": "2840f18a27308a39b39da18289adc43ecb02db19bdef0e8859c6e8e8b5280e05",
   "persistedShape": {
     "candidateTextCount": 10,
     "clockCount": 2,

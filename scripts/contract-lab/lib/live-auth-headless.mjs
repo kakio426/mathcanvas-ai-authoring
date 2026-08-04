@@ -71,12 +71,13 @@ export async function createLiveAuthHeadlessSession(
       close: async () => {
         await headlessBrowser.close().catch(() => undefined);
         // headless 작업이 모두 끝난 뒤에만 Playwright 연결을 끊는다.
-        // Browser.close()를 호출하지 않으므로 외부 로그인 Chrome은 유지된다.
-        liveBrowser._connection?.close();
+        // CDP로 연결한 Browser.close()는 연결 transport만 닫고 외부 로그인
+        // Chrome 프로세스에는 Browser.close 명령을 보내지 않는다.
+        await liveBrowser.close().catch(() => undefined);
       }
     };
   } catch (error) {
-    liveBrowser._connection?.close();
+    await liveBrowser.close().catch(() => undefined);
     throw error;
   }
 }

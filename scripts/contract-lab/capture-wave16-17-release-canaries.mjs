@@ -111,7 +111,7 @@ const selectedCases = onlyBlueprintId
   ? cases.filter((entry) => entry.blueprint.id === onlyBlueprintId)
   : wave18Only
     ? claimEvidenceCases
-    : cases;
+    : legacyCases;
 if (onlyBlueprintId && selectedCases.length === 0) {
   throw new Error(`wave16-17-canary-activity-unknown:${onlyBlueprintId}`);
 }

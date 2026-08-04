@@ -1,5 +1,5 @@
 {
-  "blueprintContentHash": "291f9af515679b0076f72159e26cdb29108ef519655fad79704668c15b251d98",
+  "blueprintContentHash": "e040f891032e2f438422c96e135e62faeddff07815501694764f3240e0805f9c",
   "blueprintId": "fraction.add.same-denominator.improper-sum-v1",
   "blueprintVersion": "1.0.0",
   "categoryUnit": "Unit01",
@@ -31,19 +31,22 @@
     "verticalRowResidual": 0,
     "wholeWidth": 278.3564910888672
   },
-  "layoutPresetContentHash": "4424c84b35ac3bdbbcabcbfb0fb64822f96e83370a7d4ff853b02993470760d9",
+  "layoutPresetContentHash": "251b38467046d49956fe0cd8288e38fdd567c9cf4d087fbd3977e0c0b1d3b2c2",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-07-31T12:13:44.522Z",
-  "payloadHash": "5675123fc83b64f99635eaccd334740f1048b784671b23198a3ea0fc10ea2878",
+  "observedAt": "2026-08-04T10:13:46.475Z",
+  "payloadHash": "99d01f37a8ea7bacee140ae2ed7fb3ee3d5164254405c2772a0e62d63368ac77",
   "persistedShape": {
     "candidateFormulaCount": 10,
     "configuredFractionMatchCount": 4,
     "fractionModuleActive": true,
     "fractionStripCount": 4,
+    "labelHiddenStripCount": 0,
     "leftStripCount": 2,
     "objectCount": 59,
     "oneWholeBoundaryCount": 2,
-    "rightStripCount": 2
+    "rightStripCount": 2,
+    "unitRulerCount": 0,
+    "unitRulerDividerMatchCount": 0
   },
   "previewPath": ".mathcanvas-contract-lab/previews/wave9/improper-sum.png",
   "probeId": "wave9-improper-sum-release-canary-v3",
@@ -59,6 +62,9 @@
     "joinLaneCount": 2,
     "oneWholeBoundaryCount": 2,
     "predictionBoxCount": 2,
+    "questionLaneCount": 0,
+    "referenceLaneCount": 0,
+    "unitRulerCount": 0,
     "visibleFractionStripCount": 4
   },
   "reusedExisting": false,
