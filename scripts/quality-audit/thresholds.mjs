@@ -75,11 +75,14 @@ export const INTER_ITEM_MINIMUM_GAP_CSS_PX = 24;
  * 목표 타입 스케일.
  *
  * 블루프린트마다 `fontSize`를 손으로 정하면서 20~64 사이 20종이 생겼다. 화면
- * 품질 수정을 실제로 적용할 때 크기는 이 스케일에서만 고른다. 값은 위의
- * 환산비로 목표 CSS px에서 역산했다. 하한 `label`은 저학년 권장 18 px이다.
+ * 품질 수정을 적용할 때 크기는 이 스케일에서만 고른다. 값은 위의 환산비로
+ * 목표 CSS px에서 역산했다. 하한 `label`은 저학년 권장 18 px이다.
  *
- * 아직 블루프린트에 적용하지 않았다. 적용은 라벨을 상자 안 머리말로 옮기는
- * 구조 변경과 함께 한 번에 해야 한다. `docs/STUDENT_SCREEN_QUALITY.md` 참고.
+ * 실제 적용은 `packages/templates/src/blueprints/student-screen-quality.ts`의
+ * `withStudentScreenQuality`가 한다. 그 정책은 `question`/`prompt`에
+ * `question`(45), latex `prompt`에 `display`(66), 글쓰기 머리말에 `label`(32)을
+ * 하한으로 주고, 나머지 문구에는 학년대별 권장치(위 `RECOMMENDED_TEXT_CSS_PX`)를
+ * 역산한 32/30/28을 하한으로 준다. 모두 올리기만 하고 내리지 않는다.
  */
 export const TYPE_SCALE = Object.freeze({
   label: Math.ceil(18 / CANVAS_UNIT_TO_CSS_PX), // 32, 화면 18.6 px
