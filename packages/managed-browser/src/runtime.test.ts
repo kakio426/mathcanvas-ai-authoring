@@ -144,7 +144,10 @@ describe("관리형 Chrome 런타임", () => {
       projectTitle: "새 수 카드 활동지",
       contentsJson: [{ svgId: "input-text" }],
       canvasOption: {
-        moduleArr: { Unit01: { NO04NT: true } }
+        moduleArr: {
+          Unit01: { NO04NT: true },
+          Unit03: { SM02AD: true }
+        }
       }
     };
     const result = await runtime.createProject(payload, sha256Hex(payload));
@@ -158,7 +161,7 @@ describe("관리형 Chrome 런타임", () => {
     expect(workspace.broughtToFront).toBe(0);
     expect(workspace.evaluationArguments[0]).toMatchObject({
       verifyStaticContract: true,
-      requiredModules: ["NO04NT", "input-text"]
+      requiredModules: ["NO04NT", "SM02AD", "input-text"]
     });
   });
 

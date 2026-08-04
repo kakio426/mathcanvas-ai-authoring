@@ -21,7 +21,10 @@ import { wave19FactorPairArrayLayoutPreset } from "./wave19-factor-pair-array-v1
 import { wave20PartialOperationLayoutPreset } from "./wave20-partial-operation-v1.js";
 import { wave22BarGraphRepresentLayoutPreset } from "./wave22-bar-graph-represent-v1.js";
 import { wave21ClaimEvidenceV2LayoutPreset } from "./wave21-claim-evidence-v2.js";
-import { wave23ClaimEvidenceLayoutPreset } from "./wave23-claim-evidence-v1.js";
+import {
+  wave23AngleClaimEvidenceLayoutPreset,
+  wave23ClaimEvidenceLayoutPreset
+} from "./wave23-claim-evidence-v1.js";
 
 type WritingLayoutShift = {
   readonly fromY: number;
@@ -276,7 +279,9 @@ const rawPresets: Readonly<Record<string, LayoutPreset>> = {
   "wave20-partial-operation-v1": wave20PartialOperationLayoutPreset,
   "wave22-bar-graph-represent-v1": wave22BarGraphRepresentLayoutPreset,
   "wave21-claim-evidence-v2": wave21ClaimEvidenceV2LayoutPreset,
-  "wave23-claim-evidence-v1": wave23ClaimEvidenceLayoutPreset
+  "wave23-claim-evidence-v1": wave23ClaimEvidenceLayoutPreset,
+  "wave23-angle-claim-evidence-v1":
+    wave23AngleClaimEvidenceLayoutPreset
 };
 
 const presets: Readonly<Record<string, LayoutPreset>> =

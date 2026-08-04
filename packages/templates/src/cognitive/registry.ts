@@ -74,7 +74,14 @@ const claimEvidenceManifests = Object.fromEntries(
             profile.domain === "도형과 측정"
               ? "coordinate-or-graph"
               : "countable-unit-model",
-          roles: ["array-panel", "group-label", "array-text"],
+          roles: [
+            "array-panel",
+            "group-label",
+            ...(profile.profileId === "angle-turn"
+              ? ["angle-clock"]
+              : []),
+            "array-text"
+          ],
           invariant: profile.verificationInvariant
         },
         explanation: { regionRole: "explanation-box" },

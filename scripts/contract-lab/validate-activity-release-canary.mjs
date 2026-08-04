@@ -1144,7 +1144,11 @@ export function validateActivityReleaseCanaryEvidence(
     },
     "measure.angle.turn-size.claim-evidence-v1": {
       probeId: "wave18-angle-turn-release-canary-v1",
-      categoryUnit: "Unit03"
+      categoryUnit: "Unit03",
+      releasedTools: ["SM02AD"],
+      persisted: (value) =>
+        value?.clockCount === itemCount &&
+        value?.clockModuleActive === true
     },
     "number.mixed-calculation.order.claim-evidence-v1": {
       probeId: "wave18-mixed-calculation-order-release-canary-v1",
@@ -1186,7 +1190,10 @@ export function validateActivityReleaseCanaryEvidence(
       evidence.probeId !== wave18ClaimEvidence.probeId ||
       evidence.categoryUnit !== wave18ClaimEvidence.categoryUnit ||
       itemCount !== (wave18ClaimEvidence.problemCount ?? 2) ||
-      JSON.stringify(evidence.releasedTools) !== "[]" ||
+      JSON.stringify(evidence.releasedTools) !==
+        JSON.stringify(wave18ClaimEvidence.releasedTools ?? []) ||
+      (wave18ClaimEvidence.persisted &&
+        !wave18ClaimEvidence.persisted(persisted)) ||
       persisted?.arrayTextCount !== itemCount ||
       persisted?.candidateCount !==
         itemCount * (wave18ClaimEvidence.candidateCount ?? 5) ||

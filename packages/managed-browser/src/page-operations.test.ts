@@ -273,7 +273,7 @@ describe("페이지 컨텍스트 작업", () => {
             list: [
               {
                 projectId: "P_owned_probe",
-                projectTitle: "AI-CONTRACT-PROBE-W4-NO04NT-DIGITS"
+                projectTitle: "수 카드로 만든 기존 활동"
               },
               {
                 projectId: "P_owned_common",
@@ -287,20 +287,26 @@ describe("페이지 컨텍스트 작업", () => {
       if (path === "/api/project/P_owned_probe") {
         return new Response(
           JSON.stringify({
-            contentsJson: Array.from({ length: 10 }, (_, index) => ({
-              svgId: `NO04NT-${String(index + 1).padStart(2, "0")}`,
-              fill: "#2194FF",
-              numberFrameSnap: true,
-              parent: { variation: 25 },
-              coordinates: [
-                [-40, -40],
-                [40, -40],
-                [40, 40],
-                [-40, 40]
-              ]
-            })),
+            contentsJson: [
+              ...Array.from({ length: 10 }, (_, index) => ({
+                svgId: `NO04NT-${String(index + 1).padStart(2, "0")}`,
+                fill: "#2194FF",
+                numberFrameSnap: true,
+                parent: { variation: 25 },
+                coordinates: [
+                  [-40, -40],
+                  [40, -40],
+                  [40, 40],
+                  [-40, 40]
+                ]
+              })),
+              { svgId: "SM02AD-01" }
+            ],
             canvasOption: {
-              moduleArr: { Unit01: { NO04NT: true } }
+              moduleArr: {
+                Unit01: { NO04NT: true },
+                Unit03: { SM02AD: true }
+              }
             }
           }),
           { status: 200 }
@@ -322,7 +328,7 @@ describe("페이지 컨텍스트 작업", () => {
     await expect(
       inspectMathCanvasPage({
         verifyStaticContract: true,
-        requiredModules: ["NO04NT", "input-text"]
+        requiredModules: ["NO04NT", "SM02AD", "input-text"]
       })
     ).resolves.toEqual({ state: "ready" });
     expect(visited.some((path) => path.startsWith("/api/public-project/")))

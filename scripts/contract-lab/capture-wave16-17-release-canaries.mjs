@@ -99,7 +99,7 @@ const claimEvidenceCases = claimEvidenceActivityProfiles.map((profile) => {
     grade: profile.recommendedGrade,
     manipulation: "claim-evidence-revision-drag",
     categoryUnit: categoryUnitByDomain[profile.domain],
-    releasedTools: [],
+    releasedTools: profile.profileId === "angle-turn" ? ["SM02AD"] : [],
     sourceRole: "position-card-1",
     targetRole: "prediction-box",
     action: "choose-claim-and-check-evidence",
@@ -322,8 +322,10 @@ try {
           patternBlockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02PB-")).length,
           arrayTextCount: contents.filter((object) => String(object?.id ?? "").endsWith("-array-text")).length,
           fractionStripCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("NO03FM-")).length,
+          clockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02AD-")).length,
           patternModuleActive: body?.canvasOption?.moduleArr?.Unit03?.SM02PB === true,
-          fractionModuleActive: body?.canvasOption?.moduleArr?.Unit01?.NO03FM === true
+          fractionModuleActive: body?.canvasOption?.moduleArr?.Unit01?.NO03FM === true,
+          clockModuleActive: body?.canvasOption?.moduleArr?.Unit03?.SM02AD === true
         };
       }, creation.projectId);
 

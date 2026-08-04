@@ -57,6 +57,12 @@ export function generateClaimEvidenceItems(
           evidenceText: item.evidenceText,
           correctValueText: item.correctValueText,
           answerExplanation: item.answerExplanation,
+          ...(item.clockHour !== undefined
+            ? { clockHour: item.clockHour }
+            : {}),
+          ...(item.clockMinute !== undefined
+            ? { clockMinute: item.clockMinute }
+            : {}),
           ...Object.fromEntries(
             candidates.flatMap((value, candidateIndex) => [
               [`candidate${candidateIndex + 1}`, value],

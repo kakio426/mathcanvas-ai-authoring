@@ -134,6 +134,20 @@ export const wave23ClaimEvidenceLayoutPreset: LayoutPreset = {
       width: 1320,
       height: 155
     },
+    "item.angle-clock": {
+      scope: "item",
+      x: 160,
+      y: 590,
+      width: 180,
+      height: 180
+    },
+    "item.angle-evidence-text": {
+      scope: "item",
+      x: 390,
+      y: 610,
+      width: 1050,
+      height: 110
+    },
     "item.explanation-label": {
       scope: "item",
       x: 125,
@@ -145,6 +159,57 @@ export const wave23ClaimEvidenceLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 105,
       y: 790,
+      width: 1395,
+      height: 180
+    }
+  }
+};
+
+/** 각도 활동은 시계 눈금을 펜으로 표시할 수 있도록 시각 모델을 크게 둔다. */
+export const wave23AngleClaimEvidenceLayoutPreset: LayoutPreset = {
+  ...wave23ClaimEvidenceLayoutPreset,
+  itemPitch: 1100,
+  tokens: {
+    ...wave23ClaimEvidenceLayoutPreset.tokens,
+    "item.panel": {
+      scope: "item",
+      x: 70,
+      y: 0,
+      width: 1460,
+      height: 1070
+    },
+    "item.array-panel": {
+      scope: "item",
+      x: 90,
+      y: 525,
+      width: 1420,
+      height: 320
+    },
+    "item.angle-clock": {
+      scope: "item",
+      x: 150,
+      y: 600,
+      width: 240,
+      height: 240
+    },
+    "item.angle-evidence-text": {
+      scope: "item",
+      x: 440,
+      y: 635,
+      width: 1000,
+      height: 110
+    },
+    "item.explanation-label": {
+      scope: "item",
+      x: 125,
+      y: 870,
+      width: 480,
+      height: 44
+    },
+    "item.explanation-box": {
+      scope: "item",
+      x: 105,
+      y: 860,
       width: 1395,
       height: 180
     }

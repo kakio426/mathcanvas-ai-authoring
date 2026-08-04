@@ -19,13 +19,15 @@
     "movedRoleCount": 1,
     "transientOnly": true
   },
-  "layoutPresetContentHash": "7e1f5cbf85490fe0646bd1b75cf889f2db1b06dcff67dc3832b1ad2f541a5f13",
+  "layoutPresetContentHash": "26d24eaf4f5a78da73e6cadf24f404554d3a523728da1a79b8abacb9422f6294",
   "localValidationIssueCount": 0,
-  "observedAt": "2026-08-04T23:30:58.074Z",
+  "observedAt": "2026-08-04T23:50:55.477Z",
   "payloadHash": "ec17e380f803e31ddabca05861495ed893c2f9f0888ef82e410deb03b29e9a35",
   "persistedShape": {
     "arrayTextCount": 2,
     "candidateCount": 10,
+    "clockCount": 0,
+    "clockModuleActive": false,
     "fractionModuleActive": false,
     "fractionStripCount": 0,
     "objectCount": 47,
@@ -44,7 +46,7 @@
     "sourceRoleCount": 2,
     "targetRoleCount": 2
   },
-  "reusedExisting": false,
+  "reusedExisting": true,
   "schemaVersion": "1.0.0",
   "status": "pass"
 }

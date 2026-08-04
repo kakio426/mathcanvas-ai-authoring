@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-04T23:34:21.982Z",
+  "generatedAt": "2026-08-04T23:58:14.174Z",
   "activityCount": 20,
   "variationCount": 92,
   "overallScore": 100,
@@ -52,7 +52,7 @@
       "score": 100,
       "canary": {
         "status": "pass",
-        "observedAt": "2026-08-04T23:30:54.003Z",
+        "observedAt": "2026-08-04T23:57:02.333Z",
         "evidencePath": "research/mathcanvas/wave18-angle-turn-release-canary.json",
         "previewPath": ".mathcanvas-contract-lab/previews/wave18/angle-turn.png",
         "hasInteractionEvidence": true
@@ -66,7 +66,7 @@
       "score": 100,
       "canary": {
         "status": "pass",
-        "observedAt": "2026-08-04T23:30:58.074Z",
+        "observedAt": "2026-08-04T23:50:55.477Z",
         "evidencePath": "research/mathcanvas/wave18-triangle-classification-release-canary.json",
         "previewPath": ".mathcanvas-contract-lab/previews/wave18/triangle-classification.png",
         "hasInteractionEvidence": true
@@ -80,7 +80,7 @@
       "score": 100,
       "canary": {
         "status": "pass",
-        "observedAt": "2026-08-04T23:32:14.453Z",
+        "observedAt": "2026-08-04T23:50:58.192Z",
         "evidencePath": "research/mathcanvas/wave18-line-symmetry-distance-release-canary.json",
         "previewPath": ".mathcanvas-contract-lab/previews/wave18/line-symmetry-distance.png",
         "hasInteractionEvidence": true

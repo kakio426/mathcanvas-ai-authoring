@@ -12,6 +12,8 @@ export interface ClaimEvidenceItemSeed {
     | readonly [string, string, string, string]
     | readonly [string, string, string, string, string];
   readonly answerExplanation: string;
+  readonly clockHour?: number;
+  readonly clockMinute?: number;
 }
 
 export interface ClaimEvidenceActivityProfile {
@@ -36,6 +38,7 @@ export interface ClaimEvidenceActivityProfile {
   readonly explanationLabel: string;
   readonly misconceptionConflict: string;
   readonly verificationInvariant: string;
+  readonly layoutTokenSet?: string;
   readonly learningMapTopicId: string;
   readonly learningMapModule: string;
   readonly learningNeeds: readonly {
@@ -145,19 +148,20 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     domain: "도형과 측정",
     title: "회전한 양으로 각의 크기 판단하기",
     learningObjective:
-      "각의 크기를 변의 길이가 아니라 한 변이 회전한 양으로 판단하고 설명할 수 있다.",
+      "각의 크기를 변의 길이가 아니라 한 변이 회전한 양으로 판단하고, 같은 간격의 수로 확인할 수 있다.",
     officialGoal: "각의 크기의 단위인 1도(°)를 알고, 각도기를 이용하여 각의 크기를 측정하고 어림할 수 있다.",
     activityLabel: "각의 크기",
     activityDescription:
       "변이 길어 보이는 정도가 아니라 두 방향 사이의 회전량으로 각도를 판단해요.",
     promptSeed: "각의 크기를 변의 길이가 아닌 회전량으로 판단하는 활동",
-    predictionLabel: "처음 판단",
-    evidenceHeading: "같은 간격으로 확인하기",
-    explanationLabel: "각의 기준 쓰기",
+    predictionLabel: "처음 고른 각도",
+    evidenceHeading: "시계 한 칸은 30°",
+    explanationLabel: "센 칸 수로 나타낸 식",
     misconceptionConflict:
       "변이 길거나 끝점 사이가 멀면 각이 더 크다는 생각을 같은 중심과 같은 회전 간격으로 충돌시킨다.",
     verificationInvariant:
       "각의 크기는 두 변 사이에서 회전한 양이며 변의 길이를 늘이거나 줄여도 변하지 않는다.",
+    layoutTokenSet: "wave23-angle-claim-evidence-v1",
     learningMapTopicId:
       "kr.mt.math.geometry-measurement.g3-4.s4-03-24.representation",
     learningMapModule: "각도",
@@ -177,28 +181,34 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     ],
     items: [
       {
-        questionText: "한 변이 3시 방향이고 다른 변이 5시 방향일 때 작은 각은 몇 도일까요?",
+        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "시계 한 칸 = 30°\n3시에서 5시까지 작은 쪽의 칸 수를 세어 보세요.",
-        correctValueText: "60°",
-        candidates: ["60°", "30°", "90°", "120°", "150°"],
-        answerExplanation: "3시 방향에서 5시 방향까지 같은 간격 두 칸이므로 60°입니다."
+        evidenceText: "작은 쪽 칸 수 × 30°",
+        correctValueText: "90°",
+        candidates: ["90°", "30°", "60°", "120°", "150°"],
+        answerExplanation: "12에서 3까지 같은 간격 세 칸이므로 90°입니다.",
+        clockHour: 3,
+        clockMinute: 0
       },
       {
-        questionText: "한 변이 12시 방향이고 다른 변이 4시 방향일 때 작은 각은 몇 도일까요?",
+        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "시계 한 칸 = 30°\n12시에서 4시까지 작은 쪽의 칸 수를 세어 보세요.",
+        evidenceText: "작은 쪽 칸 수 × 30°",
         correctValueText: "120°",
         candidates: ["120°", "90°", "60°", "150°", "180°"],
-        answerExplanation: "12시 방향에서 4시 방향까지 같은 간격 네 칸이므로 120°입니다."
+        answerExplanation: "12에서 4까지 같은 간격 네 칸이므로 120°입니다.",
+        clockHour: 4,
+        clockMinute: 0
       },
       {
-        questionText: "한 변이 8시 방향이고 다른 변이 11시 방향일 때 작은 각은 몇 도일까요?",
+        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
         evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "시계 한 칸 = 30°\n8시에서 11시까지 작은 쪽의 칸 수를 세어 보세요.",
-        correctValueText: "90°",
-        candidates: ["90°", "60°", "120°", "30°", "150°"],
-        answerExplanation: "8시 방향에서 11시 방향까지 같은 간격 세 칸이므로 90°입니다."
+        evidenceText: "작은 쪽 칸 수 × 30°",
+        correctValueText: "150°",
+        candidates: ["150°", "120°", "90°", "60°", "180°"],
+        answerExplanation: "12에서 5까지 같은 간격 다섯 칸이므로 150°입니다.",
+        clockHour: 5,
+        clockMinute: 0
       }
     ]
   },

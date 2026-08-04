@@ -26,13 +26,16 @@ export async function inspectMathCanvasPage(
     body: {
       contentsJson?: Array<Record<string, unknown>>;
       canvasOption?: {
-        moduleArr?: { Unit01?: Record<string, unknown> };
+        moduleArr?: Record<string, Record<string, unknown>>;
       };
     },
     modules: readonly string[]
   ): boolean => {
     const objects = body.contentsJson ?? [];
-    const enabled = body.canvasOption?.moduleArr?.Unit01 ?? {};
+    const enabled = Object.assign(
+      {},
+      ...Object.values(body.canvasOption?.moduleArr ?? {})
+    ) as Record<string, unknown>;
     const expectedFractionSvgByDenominator: Record<number, string> = {
       1: "NO03FM-10",
       2: "NO03FM-09",
@@ -117,7 +120,14 @@ export async function inspectMathCanvasPage(
           )
         );
       }
-      return objects.some((object) => object.svgId === module);
+      if (enabled[module] !== true && !["input-text", "math-latex", "drawElem"].includes(module)) {
+        return false;
+      }
+      return objects.some(
+        (object) =>
+          object.svgId === module ||
+          (typeof object.svgId === "string" && object.svgId.startsWith(`${module}-`))
+      );
     });
   };
 
@@ -171,7 +181,6 @@ export async function inspectMathCanvasPage(
       }
 
       const query = new URLSearchParams({
-        projectTitle: "AI-CONTRACT-PROBE",
         offset: "1",
         limit: "100",
         sortCondition: "createdAt",
@@ -191,10 +200,7 @@ export async function inspectMathCanvasPage(
         };
         const candidates =
           ownedBody.list?.filter(
-            (project) =>
-              typeof project.projectId === "string" &&
-              typeof project.projectTitle === "string" &&
-              project.projectTitle.startsWith("AI-CONTRACT-PROBE")
+            (project) => typeof project.projectId === "string"
           ) ?? [];
         const verifiedCreatorModules = new Set<string>();
         for (const candidate of candidates) {
@@ -210,7 +216,7 @@ export async function inspectMathCanvasPage(
           const detail = (await detailResponse.json()) as {
             contentsJson?: Array<Record<string, unknown>>;
             canvasOption?: {
-              moduleArr?: { Unit01?: Record<string, unknown> };
+              moduleArr?: Record<string, Record<string, unknown>>;
             };
           };
           for (const module of requiredModules) {

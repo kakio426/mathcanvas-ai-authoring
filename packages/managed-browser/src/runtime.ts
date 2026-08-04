@@ -238,16 +238,18 @@ export class ManagedChromeRuntime implements MathCanvasBrowserRuntime {
 
     const canvasOption = payload.canvasOption as
       | {
-          moduleArr?: { Unit01?: Record<string, unknown> };
+          moduleArr?: Record<string, Record<string, unknown>>;
         }
       | undefined;
     const contents = Array.isArray(payload.contentsJson)
       ? (payload.contentsJson as Array<Record<string, unknown>>)
       : [];
     const requiredModules = [
-      ...Object.entries(canvasOption?.moduleArr?.Unit01 ?? {})
-        .filter(([, enabled]) => enabled === true)
-        .map(([module]) => module),
+      ...Object.values(canvasOption?.moduleArr ?? {}).flatMap((unit) =>
+        Object.entries(unit)
+          .filter(([, enabled]) => enabled === true)
+          .map(([module]) => module)
+      ),
       ...contents.flatMap((object) =>
         ["input-text", "math-latex", "drawElem"].includes(
           String(object.svgId)

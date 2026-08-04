@@ -23,17 +23,25 @@ import { withStudentScreenQuality } from "./student-screen-quality.js";
 function makeClaimEvidenceBlueprint(
   profile: ClaimEvidenceActivityProfile
 ): ActivityBlueprint {
+  const isAngleTurn = profile.profileId === "angle-turn";
   const presentation = profile.presentation;
   const problemCount = presentation?.problemCount ?? 2;
   const candidateRoles = CHOICE_CARD_ROLES.slice(
     0,
     presentation?.candidateCount ?? CHOICE_CARD_ROLES.length
   );
-  const instructions = presentation?.instructions ?? [
-    "① 답 카드를 하나 골라 빈칸에 놓으세요.",
-    `② ${profile.evidenceHeading}의 자료로 답이 맞는지 확인하세요.`,
-    "③ 답을 바꿨다면, 무엇을 확인했는지 쓰세요."
-  ];
+  const instructions = presentation?.instructions ??
+    (isAngleTurn
+      ? [
+          "① 답 카드를 하나 골라 빈칸에 놓으세요.",
+          "② 작은 쪽 간격을 찾아 펜으로 점을 놓으며 세어 보세요.",
+          "③ 센 칸 수를 □×30° 식으로 나타내고 답을 다시 확인하세요."
+        ]
+      : [
+          "① 답 카드를 하나 골라 빈칸에 놓으세요.",
+          `② ${profile.evidenceHeading}의 자료로 답이 맞는지 확인하세요.`,
+          "③ 답을 바꿨다면, 무엇을 확인했는지 쓰세요."
+        ]);
   const scaffold = makeChoiceExplanationScaffoldRoles({
     instructions,
     instructionalIntents: [
@@ -78,7 +86,7 @@ function makeClaimEvidenceBlueprint(
   return defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: profile.activityId,
-    version: presentation ? "2.0.0" : "1.0.0",
+    version: isAngleTurn ? "2.1.0" : presentation ? "2.0.0" : "1.0.0",
     title: profile.title,
     learningObjective: profile.learningObjective,
     curriculumBinding: {
@@ -131,6 +139,29 @@ function makeClaimEvidenceBlueprint(
         bindings: { text: "item.evidenceLabelText" },
         containerRole: "array-panel"
       },
+      ...(isAngleTurn
+        ? [{
+            role: "angle-clock",
+            scope: "each-item" as const,
+            layoutRole: "angle-clock",
+            idRole: "angle-clock",
+            toolKey: "SM02AD",
+            intentKind: "analog-clock",
+            locked: true,
+            movable: false,
+            instructionalIntent:
+              "길이가 다른 두 바늘 사이의 같은 간격을 직접 표시하고 세게 합니다.",
+            properties: {
+              clockType: "geared",
+              isWorking: false
+            },
+            bindings: {
+              hours: "item.clockHour",
+              minutes: "item.clockMinute"
+            },
+            containerRole: "array-panel"
+          }]
+        : []),
       {
         role: "array-text",
         scope: "each-item",
@@ -153,6 +184,7 @@ function makeClaimEvidenceBlueprint(
     layout: {
       tokenSet:
         presentation?.layoutTokenSet ??
+        profile.layoutTokenSet ??
         "wave23-claim-evidence-v1",
       root: {
         id: "canvas",
@@ -165,7 +197,15 @@ function makeClaimEvidenceBlueprint(
           ),
           layoutBlock("array-panel", "slot", "item.array-panel", "each-item"),
           layoutBlock("group-label", "slot", "item.group-label", "each-item"),
-          layoutBlock("array-text", "slot", "item.array-text", "each-item")
+          ...(isAngleTurn
+            ? [layoutBlock("angle-clock", "slot", "item.angle-clock", "each-item")]
+            : []),
+          layoutBlock(
+            "array-text",
+            "slot",
+            isAngleTurn ? "item.angle-evidence-text" : "item.array-text",
+            "each-item"
+          )
         ]
       }
     },
@@ -193,7 +233,12 @@ function makeClaimEvidenceBlueprint(
           correctValuePath: "correctValueText",
           predictionRole: "prediction-box",
           explanationRole: "explanation-box",
-          verificationRoles: ["array-panel", "group-label", "array-text"]
+          verificationRoles: [
+            "array-panel",
+            "group-label",
+            ...(isAngleTurn ? ["angle-clock"] : []),
+            "array-text"
+          ]
         }
       },
       {
@@ -254,6 +299,7 @@ function makeClaimEvidenceBlueprint(
             "number",
             "question",
             "group-label",
+            ...(isAngleTurn ? ["angle-clock"] : []),
             "array-text",
             "prediction-label",
             "prediction-box",
