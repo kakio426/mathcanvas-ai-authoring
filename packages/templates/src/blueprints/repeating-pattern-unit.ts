@@ -1,6 +1,7 @@
 import { MATHCANVAS_PROJECT_CATEGORIES, defineActivityBlueprint } from "@mathcanvas/contracts";
 import { REPEATING_PATTERN_UNIT_GENERATOR_ID, REPEATING_PATTERN_UNIT_GENERATOR_VERSION } from "../item-generators/repeating-pattern-unit.js";
 import { CHOICE_CARD_ROLES, layoutBlock, makeChoiceExplanationScaffoldLayoutChildren, makeChoiceExplanationScaffoldRoles } from "./choice-explanation-scaffold.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const sequenceRoles = Array.from({ length: 6 }, (_, i) => `sequence-block-${i + 1}`);
 const slotRoles = ["next-slot-1", "next-slot-2"] as const;
@@ -20,7 +21,7 @@ const scaffold = makeChoiceExplanationScaffoldRoles({
   explanationLabel: "되풀이되는 까닭 쓰기"
 });
 
-export const repeatingPatternUnitBlueprint = defineActivityBlueprint({
+export const repeatingPatternUnitBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "pattern.repeat-unit.pattern-blocks-v1",
   version: "1.0.0",
@@ -62,4 +63,4 @@ export const repeatingPatternUnitBlueprint = defineActivityBlueprint({
   instructions: [...instructions],
   payload: { categoryId: MATHCANVAS_PROJECT_CATEGORIES["변화와 관계"].categoryId, tags: ["규칙 찾기", "반복 단위", "패턴 블록", "생각 고치기"], studyLevel: "elementary", isShowMenuOnActivity: true },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-});
+}));

@@ -8,6 +8,7 @@ import {
 import {
   sameDenominatorFractionSumBlueprint
 } from "./same-denominator-fraction-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -59,7 +60,7 @@ const toolRoles = wave8Base.toolRoles.map((role) => {
 });
 
 export const sameDenominatorImproperSumBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     ...wave8Base,
     id: "fraction.add.same-denominator.improper-sum-v1",
     version: "1.0.0",
@@ -292,4 +293,4 @@ export const sameDenominatorImproperSumBlueprint =
         "생각 고치기"
       ]
     }
-  });
+  }));

@@ -8,6 +8,7 @@ import {
 import {
   sameDenominatorFractionSumBlueprint
 } from "./same-denominator-fraction-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -59,7 +60,7 @@ const toolRoles = wave8Base.toolRoles.map((role) => {
 });
 
 export const unlikeDenominatorCommonUnitSumBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     ...wave8Base,
     id: "fraction.add.unlike-denominators.common-unit-v1",
     version: "1.0.0",
@@ -107,7 +108,7 @@ export const unlikeDenominatorCommonUnitSumBlueprint =
         instructionalIntent:
           "아래 띠가 공통 단위로 나눈 자임을 안내합니다.",
         properties: {
-          text: "같은 크기의 칸",
+          text: "같은 칸",
           fontSize: 23
         },
         bindings: {},
@@ -302,4 +303,4 @@ export const unlikeDenominatorCommonUnitSumBlueprint =
         "생각 고치기"
       ]
     }
-  });
+  }));

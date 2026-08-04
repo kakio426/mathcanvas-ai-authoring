@@ -3057,7 +3057,7 @@ const handlers: Record<string, Handler> = {
       "후보"
     ];
     const actionPattern =
-      /(고르|골라|놓|나타내|확인|찾|비교|쓰|써|고치|옮기|바꾸)/;
+      /(고르|골라|놓|나타내|확인|찾|비교|쓰|써|고치|옮기|바꾸|몇|무엇|어느|어디|입니까|인가요|까요)/;
     const hasSubjectParticleMismatch = (text: string): boolean =>
       Array.from(text.matchAll(/([가-힣]+)(이|가)(?=\s+\d)/g)).some(
         (match) => {
@@ -3107,7 +3107,7 @@ const handlers: Record<string, Handler> = {
           !text ||
           Array.from(text).length > maximumInstructionLength ||
           !/[.?]$/.test(text) ||
-          !/(몇|어느|무엇|어떻게|왜)/.test(text) ||
+          !/(몇|어느|무엇|어떻게|왜|어디)/.test(text) ||
           hasSubjectParticleMismatch(text) ||
           systemPhrases.some((phrase) => text.includes(phrase))
         ) {
@@ -3176,11 +3176,15 @@ const handlers: Record<string, Handler> = {
       const text = emission?.toolIntent.properties.text;
       const fontSize =
         emission?.toolIntent.properties.fontSize;
+      const measuredText =
+        emission?.toolIntent.kind === "latex" && typeof text === "string"
+          ? text.replace(/\\[A-Za-z]+/g, "X").replace(/[{}]/g, "")
+          : text;
       if (
         !emission ||
-        typeof text !== "string" ||
+        typeof measuredText !== "string" ||
         typeof fontSize !== "number" ||
-        estimatedWidth(text, fontSize) >
+        estimatedWidth(measuredText, fontSize) >
           emission.bounds.width * maximumFillRatio
       ) {
         issue(
@@ -3443,6 +3447,33 @@ const handlers: Record<string, Handler> = {
             regions[left]!.renderedBounds ?? regions[left]!.bounds;
           const rightBounds =
             regions[right]!.renderedBounds ?? regions[right]!.bounds;
+          const writingPair = [
+            ["prediction-label", "prediction-box"],
+            ["explanation-label", "explanation-box"],
+            ["answer-label", "answer-box"]
+          ].find(
+            ([labelRole, boxRole]) =>
+              (regions[left]!.role === labelRole &&
+                regions[right]!.role === boxRole) ||
+              (regions[right]!.role === labelRole &&
+                regions[left]!.role === boxRole)
+          );
+          if (writingPair) {
+            const label =
+              regions[left]!.role === writingPair[0]
+                ? leftBounds
+                : rightBounds;
+            const box =
+              regions[left]!.role === writingPair[1]
+                ? leftBounds
+                : rightBounds;
+            const contained =
+              label.x >= box.x &&
+              label.y >= box.y &&
+              label.x + label.width <= box.x + box.width &&
+              label.y + label.height <= box.y + box.height;
+            if (contained) continue;
+          }
           const overlaps =
             leftBounds.x < rightBounds.x + rightBounds.width &&
             leftBounds.x + leftBounds.width > rightBounds.x &&

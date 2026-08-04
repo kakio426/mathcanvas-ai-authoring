@@ -131,7 +131,7 @@ export const wave7ElapsedTimeLayoutPreset: LayoutPreset = {
           choiceColumnGap
         ) + choiceInsetX,
       y: 210,
-      width: 240,
+      width: 280,
       height: 32
     },
     ...centeredChoicePoolTokens({

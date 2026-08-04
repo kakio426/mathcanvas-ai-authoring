@@ -6,6 +6,7 @@ import {
   EQUIVALENT_FRACTION_GENERATOR_ID,
   EQUIVALENT_FRACTION_GENERATOR_VERSION
 } from "../item-generators/equivalent-fraction.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const block = (
   id: string,
@@ -26,7 +27,7 @@ const candidatePaths = candidateNumbers.map(
   (number) => `candidate${number}`
 );
 
-export const equivalentFractionBlueprint = defineActivityBlueprint({
+export const equivalentFractionBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "fraction.equivalent.same-whole.visual-v1",
   version: "2.1.0",
@@ -594,4 +595,4 @@ export const equivalentFractionBlueprint = defineActivityBlueprint({
     isShowMenuOnActivity: true
   },
   variationDefaults: { problemCount: 4, difficulty: "normal" }
-});
+}));

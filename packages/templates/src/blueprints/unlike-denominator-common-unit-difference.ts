@@ -8,6 +8,7 @@ import {
 import {
   unlikeDenominatorCommonUnitSumBlueprint
 } from "./unlike-denominator-common-unit-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidatePaths = [
   "candidate1",
@@ -138,7 +139,7 @@ const toolRoles = commonUnitBase.toolRoles.map((role) => {
 });
 
 export const unlikeDenominatorCommonUnitDifferenceBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     ...commonUnitBase,
     id: "fraction.subtract.unlike-denominators.common-unit-v1",
     version: "1.0.0",
@@ -242,4 +243,4 @@ export const unlikeDenominatorCommonUnitDifferenceBlueprint =
         "생각 고치기"
       ]
     }
-  });
+  }));

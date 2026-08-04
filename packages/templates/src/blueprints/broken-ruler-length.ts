@@ -7,6 +7,7 @@ import {
   BROKEN_RULER_LENGTH_GENERATOR_VERSION
 } from "../item-generators/broken-ruler-length.js";
 import { unlikeDenominatorCommonUnitSumBlueprint } from "./unlike-denominator-common-unit-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -144,7 +145,7 @@ const toolRoles = commonUnitBase.toolRoles.map((role) => {
       instructionalIntent: "1 cm 막대를 반복해 옮길 곳을 안내합니다.",
       properties: {
         ...role.properties,
-        text: "1 cm 막대 놓기"
+        text: "1 cm씩 놓기"
       }
     };
   }
@@ -173,7 +174,7 @@ const toolRoles = commonUnitBase.toolRoles.map((role) => {
       instructionalIntent: "각 칸이 1 cm인 자임을 안내합니다.",
       properties: {
         ...role.properties,
-        text: "1 cm씩 나눈 자"
+        text: "1 cm 눈금"
       }
     };
   }
@@ -273,7 +274,7 @@ for (const roleName of requiredWave13RoleOverrides) {
   }
 }
 
-export const brokenRulerLengthBlueprint = defineActivityBlueprint({
+export const brokenRulerLengthBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   ...commonUnitBase,
   id: "measure.length.unit-iteration.ruler-v1",
   version: "1.2.0",
@@ -462,4 +463,4 @@ export const brokenRulerLengthBlueprint = defineActivityBlueprint({
       "생각 고치기"
     ]
   }
-});
+}));

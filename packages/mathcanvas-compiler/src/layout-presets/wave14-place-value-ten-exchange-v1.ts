@@ -27,7 +27,7 @@ const gridRoles = Array.from(
 
 const choiceCenterX = 1650;
 const memberWidth = 210;
-const contentWidth = 70;
+const contentWidth = 100;
 const columnGap = 20;
 
 const tenTokens = Object.fromEntries(
@@ -48,10 +48,10 @@ const slotTokens = Object.fromEntries(
     `item.${role}`,
     {
       scope: "item" as const,
-      x: 165 + (index % 5) * 144,
-      y: 680 + Math.floor(index / 5) * 134,
-      width: 136,
-      height: 128
+      x: 165 + (index % 5) * 150,
+      y: 670 + Math.floor(index / 5) * 150,
+      width: 148,
+      height: 148
     }
   ])
 );
@@ -61,9 +61,9 @@ const gridTokens = Object.fromEntries(
     `item.${role}`,
     {
       scope: "item" as const,
-      x: 950,
+      x: 970,
       y: 680 + index * 24,
-      width: 240,
+      width: 262,
       height: 24
     }
   ])
@@ -121,8 +121,8 @@ export const wave14PlaceValueTenExchangeLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 270,
       y: 38,
-      width: 940,
-      height: 54
+      width: 1100,
+      height: 72
     },
     "item.initial-panel": {
       scope: "item",
@@ -170,28 +170,28 @@ export const wave14PlaceValueTenExchangeLayoutPreset: LayoutPreset = {
     "item.exchange-box": {
       scope: "item",
       x: 150,
-      y: 610,
-      width: 740,
-      height: 350
+      y: 600,
+      width: 780,
+      height: 390
     },
     "item.exchange-box-label": {
       scope: "item",
       x: 175,
-      y: 626,
+      y: 616,
       width: 300,
       height: 36
     },
     ...slotTokens,
     "item.hundred-grid-panel": {
       scope: "item",
-      x: 930,
+      x: 950,
       y: 610,
-      width: 280,
+      width: 300,
       height: 350
     },
     "item.hundred-grid-label": {
       scope: "item",
-      x: 950,
+      x: 970,
       y: 626,
       width: 240,
       height: 36
@@ -199,7 +199,7 @@ export const wave14PlaceValueTenExchangeLayoutPreset: LayoutPreset = {
     ...gridTokens,
     "item.hundred-grid-relation": {
       scope: "item",
-      x: 950,
+      x: 970,
       y: 925,
       width: 260,
       height: 34

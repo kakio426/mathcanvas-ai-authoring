@@ -250,7 +250,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "fraction.compare.unlike-denominators.visual-v1",
       blueprintVersion: "1.1.0",
       blueprintContentHash:
-        "ac847ba9fd23b713f39134a823b51c816e538d85182251467f03d4220876327c",
+        "6b73ee591d8b1e9b45292182e032c7e096741471df6aeb481b8b2c7d89a007d0",
       mathematicalDecision:
         "학생은 두 분수를 같은 전체에서 비교하여 <, =, > 중 어떤 관계인지 결정한다.",
       misconceptionConflict:
@@ -314,7 +314,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "fraction.equivalent.same-whole.visual-v1",
       blueprintVersion: "2.1.0",
       blueprintContentHash:
-        "cdad32cd29656d18549278089570b93ab05cc46fef651d3e0b2955e712ae670f",
+        "1223118b4590fb5a45153e87b7205d899a09149f078ebfcd4131e4fe2ba2bf1f",
       mathematicalDecision:
         "학생은 기준 분수와 값이 같은 후보 하나를 여섯 개의 분수 띠 중에서 선택한다.",
       misconceptionConflict:
@@ -393,7 +393,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "relation.equal-sign.balanced-equation.cards-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "b089f2ec4e0dfd7d9f65ad5149cd233f0626d0cea1ef875d5415be5dd5488815",
+        "eebf43825fa9503331d4cde53cd0fd789b78ce115f078b44cd89af0f278bbbb7",
       mathematicalDecision:
         "학생은 a+b=c+□에서 등호 양쪽의 값을 같게 하는 수 카드 한 장을 선택한다.",
       misconceptionConflict:
@@ -474,7 +474,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "relation.equal-sign.balance-scale.sum-card-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "9934295024247fb6a2baf8c9814ff7c625a31eceda2cd1608bdf473494a3a7a0",
+        "b96bd4498a69677e0e2c8f3f97f7c4aaf1600991672e667e4fbdd3a6483f6ff0",
       mathematicalDecision:
         "학생은 왼쪽 접시의 두 수를 더한 값과 같은 수 카드 한 장을 오른쪽 접시에 놓는다.",
       misconceptionConflict:
@@ -543,7 +543,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "measure.time.clock.hour-hand-boundary-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "80e1a9b4f22cfbb9d1df1484e49b9f3111098ad1d36d4864e358b677a91b616d",
+        "e9c07031546265bcc669b2852e895d4314b90c75292de9f114373ffd46569691",
       mathematicalDecision:
         "학생은 긴바늘이 50분이나 55분까지 움직일 때 짧은바늘이 두 숫자 사이 어디쯤 있는지 결정한다.",
       misconceptionConflict:
@@ -616,7 +616,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "measure.time.elapsed.clock-pair-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "8092655154407d67f4a17360ef5924ff2e095a4746e09dc3f03fecd4bf691d1d",
+        "6833430a0a16ba7ec4e9d089020c3eb23ea2d731aa57aa92333d50f8646a8e9d",
       mathematicalDecision:
         "학생은 시 경계를 지나는 시작 시각과 끝 시각 사이에 몇 분이 걸렸는지 결정한다.",
       misconceptionConflict:
@@ -689,7 +689,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "fraction.add.same-denominator.strips-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "74af4eb88a639f220c202b841b25d99ea372fc24d2f11bc3e4fb091ff56cf42e",
+        "bd1e4b55fad240d4147c5b6c04880b30eb65afe540a035a5d48611bc729e04fb",
       mathematicalDecision:
         "학생은 분모가 같은 두 진분수의 합을 먼저 결정하고, 분수 띠를 이어 붙인 결과와 비교한다.",
       misconceptionConflict:
@@ -770,7 +770,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "fraction.add.same-denominator.improper-sum-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "291f9af515679b0076f72159e26cdb29108ef519655fad79704668c15b251d98",
+        "e040f891032e2f438422c96e135e62faeddff07815501694764f3240e0805f9c",
       mathematicalDecision:
         "학생은 분모가 같은 두 진분수의 합이 1을 넘는 가분수가 되는지 결정하고, 두 띠의 이어진 길이와 비교한다.",
       misconceptionConflict:
@@ -850,7 +850,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "fraction.add.unlike-denominators.common-unit-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "ec01419ee209f640b26fd3a48c97c5cd9e6cefe9be3fb5bb1d99bf83bcb66c7f",
+        "55ce5573df8fa6fa63d5d1dd2541e3e37ff2844fc497dc62cb9c84063569f5d9",
       mathematicalDecision:
         "학생은 분모가 다른 두 진분수의 합을 같은 크기의 칸으로 바꾸어 몇 칸인지 먼저 결정한다.",
       misconceptionConflict:
@@ -932,7 +932,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         "fraction.subtract.unlike-denominators.common-unit-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "062ec8c0c146a1b7b14232f52579995c9cc22fc1bfd096d516f7405086e0e25b",
+        "e655d2d643d32a7eba0cd46d4e919876cc0017b705221b8241c2a6e5cec17de9",
       mathematicalDecision:
         "학생은 분모가 다른 두 진분수의 차를 같은 크기의 칸으로 바꾸어 몇 칸이 남는지 먼저 결정한다.",
       misconceptionConflict:
@@ -1013,7 +1013,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "data.bar-graph.scale-unit.read-v1",
       blueprintVersion: "1.0.0",
       blueprintContentHash:
-        "55fd6930956ad10aa5580857120db449701665203e196975c040fa8213ee6546",
+        "9bcc0d94a1e2ac589e1b9fecb8dc375e48908572288c6b5e601f5f14323f06dd",
       mathematicalDecision:
         "학생은 값이 알려진 기준 막대로 눈금 한 칸의 크기를 정하고, 파란 막대가 나타내는 값을 결정한다.",
       misconceptionConflict:
@@ -1097,7 +1097,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "measure.length.unit-iteration.ruler-v1",
       blueprintVersion: "1.2.0",
       blueprintContentHash:
-        "eca1a8462e2fddf7d81f8ee48399d5bcbd8888ea7d2378d0db6e0edbd9ed43ea",
+        "55d47ab35ba0f07787d13520d2ee0c8f0e2a3fcd6a11a05d38a6722b60aa5f94",
       mathematicalDecision:
         "학생은 자의 시작점과 어긋나 놓인 연필에 1 cm 단위가 몇 번 반복되는지 확인하여 실제 길이를 결정한다.",
       misconceptionConflict:
@@ -1179,7 +1179,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       blueprintId: "number.place-value.regroup-ten-bundles-v1",
       blueprintVersion: "1.1.0",
       blueprintContentHash:
-        "9166b0472803d8144abd6dccad137371364b9558b9753da3a8e5d42765ba7810",
+        "b7197bba084210107a5466f0656c1a4716f0ae9e3cb851348ce61e754aa88f83",
       mathematicalDecision:
         "학생은 처음 수에 십 모형 10개를 더했을 때 백의 자리가 어떻게 바뀌는지 결정한다.",
       misconceptionConflict:
@@ -1266,7 +1266,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
     blueprintId: "number.make-10.cards-v1",
     blueprintVersion: "2.1.0",
     blueprintContentHash:
-      "eb2a287e00fe4009a4e28e931520a91a5de4c472df8473fe74935dc1cfdb1da2",
+      "27082cd6541c915682e11d798ae96ba7a496354c1a6d1b890cc2e9357902b8b0",
     mathematicalDecision:
       "학생은 여섯 수 카드 중에서 합이 10인 두 장을 골라 구성하고, 가능한 다른 구성도 찾는다.",
     misconceptionConflict:
@@ -1352,7 +1352,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       schemaVersion: "1.0.0",
       blueprintId: "pattern.repeat-unit.pattern-blocks-v1",
       blueprintVersion: "1.0.0",
-      blueprintContentHash: "11abb1f9e487203867a0f65934946596dae74518a56211c1520397ad6cb679d3",
+      blueprintContentHash: "4143cea8a814cabbb474672c5836c4bfa664de287a53db22da4bbc15f82cc675",
       mathematicalDecision: "학생은 무늬에서 가장 짧게 되풀이되는 단위의 조각 수를 결정한다.",
       misconceptionConflict: "눈에 보이는 전체 조각 수나 같은 색의 개수를 반복 단위로 보는 생각을, 다음 두 조각을 이어 놓았을 때 순서가 끊기는 결과와 충돌시킨다.",
       learningMap: {
@@ -1389,7 +1389,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       schemaVersion: "1.0.0",
       blueprintId: "number.multiplication.group-array-meaning-v1",
       blueprintVersion: "1.1.0",
-      blueprintContentHash: "63aab6beb3d7a409f3ab817a36f17b016f911569267a48730924d5f9a5f15b6c",
+      blueprintContentHash: "d2b37527080376ae02d06f5888f9a06f4307a4a5568220806f95fd1edf9b8664",
       mathematicalDecision: "학생은 한 묶음의 수와 묶음 수를 곱셈식의 앞 수와 뒤 수에 연결한다.",
       misconceptionConflict: "두 수의 순서를 바꾸어도 상황을 똑같이 설명하거나 두 수를 더하면 된다는 생각을, 괄호로 나눈 묶음 배열과 충돌시킨다.",
       learningMap: {
@@ -1422,7 +1422,7 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       schemaVersion: "1.0.0",
       blueprintId: "probability.compare.bag-ratios-v1",
       blueprintVersion: "1.1.0",
-      blueprintContentHash: "9ce3fd386a5449c4b10821bb93260fb4164dcd77ca85f3de8232e059d77b721d",
+      blueprintContentHash: "e664b15c5123557259f782f56cfaf260686547f018dac81dabc1d2c82678ef0e",
       mathematicalDecision: "학생은 두 주머니에서 빨강 공이 나올 가능성을 전체 공 수에 대한 빨강 공 수로 나타내어 비교한다.",
       misconceptionConflict: "빨강 공 개수만 많으면 가능성이 크거나 전체 공이 많으면 가능성이 크다는 생각을, 같은 전체 길이의 분수 띠 끝점과 충돌시킨다.",
       learningMap: {

@@ -6,6 +6,7 @@ import {
   NUMBER_BOND_TEN_GENERATOR_ID,
   NUMBER_BOND_TEN_GENERATOR_VERSION
 } from "../item-generators/number-bond-ten.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const pieceRoles = Array.from(
   { length: 6 },
@@ -77,7 +78,7 @@ const poolSources = pieceRoles.map((role) => ({
   role
 }));
 
-export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
+export const makeTenNumberCardsBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "number.make-10.cards-v1",
   version: "2.1.0",
@@ -611,4 +612,4 @@ export const makeTenNumberCardsBlueprint = defineActivityBlueprint({
     isShowMenuOnActivity: true
   },
   variationDefaults: { problemCount: 4, difficulty: "normal" }
-});
+}));

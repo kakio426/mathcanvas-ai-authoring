@@ -25,8 +25,8 @@ export const wave13BrokenRulerLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 280,
       y: 38,
-      width: 1100,
-      height: 58
+      width: 1650,
+      height: 72
     },
     "item.left-strip-label": {
       scope: "item",
@@ -125,7 +125,7 @@ export const wave13BrokenRulerLayoutPreset: LayoutPreset = {
         ) +
         (memberWidth - contentWidth) / 2,
       y: 210,
-      width: 300,
+      width: 360,
       height: 32
     },
     ...centeredChoicePoolTokens({

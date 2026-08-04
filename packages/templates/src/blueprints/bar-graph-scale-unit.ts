@@ -9,6 +9,7 @@ import {
 import {
   unlikeDenominatorCommonUnitSumBlueprint
 } from "./unlike-denominator-common-unit-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -273,7 +274,7 @@ const toolRoles = [
 ];
 
 export const barGraphScaleUnitBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     ...commonUnitBase,
     id: "data.bar-graph.scale-unit.read-v1",
     version: "1.0.0",
@@ -512,4 +513,4 @@ export const barGraphScaleUnitBlueprint =
         "생각 고치기"
       ]
     }
-  });
+  }));

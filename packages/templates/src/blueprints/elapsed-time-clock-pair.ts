@@ -6,6 +6,7 @@ import {
   ELAPSED_TIME_CLOCK_PAIR_GENERATOR_ID,
   ELAPSED_TIME_CLOCK_PAIR_GENERATOR_VERSION
 } from "../item-generators/elapsed-time-clock-pair.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -75,7 +76,7 @@ const positionCardBackdropRole = (index: number) => ({
 });
 
 export const elapsedTimeClockPairBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: "measure.time.elapsed.clock-pair-v1",
     version: "1.0.0",
@@ -608,4 +609,4 @@ export const elapsedTimeClockPairBlueprint =
       isShowMenuOnActivity: true
     },
     variationDefaults: { problemCount: 2, difficulty: "normal" }
-  });
+  }));

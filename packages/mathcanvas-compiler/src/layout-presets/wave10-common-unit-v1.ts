@@ -14,7 +14,7 @@ const candidateRoles = [
 
 const choiceCenterX = 1570;
 const choiceMemberWidth = 240;
-const choiceContentWidth = 42;
+const choiceContentWidth = 140;
 const choiceColumnGap = 26;
 
 export const wave10CommonUnitLayoutPreset: LayoutPreset = {
@@ -112,14 +112,14 @@ export const wave10CommonUnitLayoutPreset: LayoutPreset = {
       x: 330,
       y: 318,
       width: 720,
-      height: 84
+      height: 98
     },
     "item.start-line": {
       scope: "item",
       x: 326,
       y: 318,
       width: 8,
-      height: 84
+      height: 98
     },
     "item.unit-ruler-label": {
       scope: "item",
@@ -167,7 +167,7 @@ export const wave10CommonUnitLayoutPreset: LayoutPreset = {
         ) +
         (choiceMemberWidth - choiceContentWidth) / 2,
       y: 210,
-      width: 220,
+      width: 260,
       height: 32
     },
     ...centeredChoicePoolTokens({

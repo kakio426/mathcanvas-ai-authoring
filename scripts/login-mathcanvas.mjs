@@ -24,6 +24,7 @@ let context;
 let chromeProcess;
 let contextClosed = false;
 let authenticated = false;
+let reusedExistingChrome = false;
 
 async function waitForDevToolsEndpoint(timeoutMs = 30_000) {
   const startedAt = Date.now();
@@ -109,27 +110,38 @@ try {
   if (!existsSync(chromeExecutable)) {
     throw new Error("chrome-executable-unavailable");
   }
-  if (existsSync(devToolsPortPath)) unlinkSync(devToolsPortPath);
-  chromeProcess = spawn(
-    chromeExecutable,
-    [
-      `--user-data-dir=${profileDirectory}`,
-      "--remote-debugging-port=0",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--disable-session-crashed-bubble",
-      "--start-maximized",
-      "--new-window",
-      "about:blank"
-    ],
-    { stdio: "ignore" }
-  );
-  chromeProcess.on("exit", () => {
-    contextClosed = true;
-  });
-  browser = await chromium.connectOverCDP(
-    await waitForDevToolsEndpoint()
-  );
+  if (existsSync(devToolsPortPath)) {
+    try {
+      browser = await chromium.connectOverCDP(
+        await waitForDevToolsEndpoint(2_000)
+      );
+      reusedExistingChrome = true;
+    } catch {
+      unlinkSync(devToolsPortPath);
+    }
+  }
+  if (!browser) {
+    chromeProcess = spawn(
+      chromeExecutable,
+      [
+        `--user-data-dir=${profileDirectory}`,
+        "--remote-debugging-port=0",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-session-crashed-bubble",
+        "--start-maximized",
+        "--new-window",
+        "about:blank"
+      ],
+      { stdio: "ignore" }
+    );
+    chromeProcess.on("exit", () => {
+      contextClosed = true;
+    });
+    browser = await chromium.connectOverCDP(
+      await waitForDevToolsEndpoint()
+    );
+  }
   context = browser.contexts()[0];
   if (!context) throw new Error("chrome-context-unavailable");
   context.on("close", () => {
@@ -143,6 +155,26 @@ try {
     context.pages()[0] ??
     (await context.newPage());
   page = await ensureMathCanvasPage(context);
+  if (isMathCanvasPage(page)) {
+    const initialAuthStatus = await page.evaluate(async () => {
+      try {
+        return (
+          await fetch("/api/auth/me", {
+            credentials: "include",
+            cache: "no-store"
+          })
+        ).status;
+      } catch {
+        return 0;
+      }
+    });
+    if (initialAuthStatus !== 200) {
+      await page.goto(`${MATHCANVAS_ORIGIN}/ko/login`, {
+        waitUntil: "domcontentloaded",
+        timeout: 30_000
+      });
+    }
+  }
   await page.bringToFront();
 
   while (!contextClosed) {
@@ -229,7 +261,9 @@ try {
     browser?._connection?.close();
     chromeProcess?.unref();
   } else {
-    if (browser && browser.isConnected()) {
+    if (reusedExistingChrome) {
+      browser?._connection?.close();
+    } else if (browser && browser.isConnected()) {
       await browser.close().catch(() => undefined);
     }
     const exitedCleanly = await waitForChromeExit();

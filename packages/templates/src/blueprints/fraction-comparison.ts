@@ -8,6 +8,7 @@ import {
   FRACTION_PAIR_GENERATOR_ID,
   FRACTION_PAIR_GENERATOR_VERSION
 } from "../item-generators/fraction-pair.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const block = (
   id: string,
@@ -20,7 +21,7 @@ const block = (
   } = {}
 ) => ({ id, kind, preset, repeat, ...groups, children: [] });
 
-export const fractionComparisonBlueprint = defineActivityBlueprint({
+export const fractionComparisonBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: VERIFIED_TEMPLATE_ID,
   version: "1.1.0",
@@ -733,4 +734,4 @@ export const fractionComparisonBlueprint = defineActivityBlueprint({
     problemCount: 4,
     difficulty: "normal"
   }
-});
+}));

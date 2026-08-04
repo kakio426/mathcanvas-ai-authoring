@@ -6,7 +6,6 @@ import {
   writeFileSync
 } from "node:fs";
 import { dirname, join } from "node:path";
-import { chromium } from "playwright-core";
 import {
   CONTRACT_SCHEMA_VERSION,
   recommendationSchema,
@@ -41,6 +40,7 @@ import {
   resolveStateDirectory
 } from "./lib/paths.mjs";
 import { stableJson } from "./lib/normalize.mjs";
+import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 
 const generatedAt = "2026-07-31T08:00:00.000Z";
 const rawOutput = join(
@@ -108,11 +108,13 @@ function buildPreparedCase() {
 
 let runtime;
 let previewContext;
+let authSession;
 let releaseLock;
 try {
   const prepared = buildPreparedCase();
   const stateDirectory = resolveStateDirectory();
   releaseLock = acquireManagedProfileLock(stateDirectory);
+  authSession = await createLiveAuthHeadlessSession(stateDirectory);
 
   let creation;
   let reusedExisting = false;
@@ -130,6 +132,7 @@ try {
   if (!creation) {
     runtime = new ManagedChromeRuntime({
       userDataDirectory: join(stateDirectory, "chrome-profile"),
+      launcher: authSession.launcher,
       headless: true
     });
     creation = await runtime.createProject(
@@ -159,14 +162,9 @@ try {
     );
   }
 
-  previewContext = await chromium.launchPersistentContext(
-    join(stateDirectory, "chrome-profile"),
-    {
-      channel: "chrome",
-      headless: true,
-      viewport: { width: 1630, height: 2200 }
-    }
-  );
+  previewContext = await authSession.newContext({
+    viewport: { width: 1630, height: 2200 }
+  });
   await previewContext.route("**/*", async (route) => {
     const method = route.request().method().toUpperCase();
     if (["GET", "HEAD", "OPTIONS"].includes(method)) {
@@ -309,5 +307,6 @@ try {
 } finally {
   if (runtime) await runtime.close();
   if (previewContext) await previewContext.close();
+  if (authSession) await authSession.close();
   if (releaseLock) releaseLock();
 }

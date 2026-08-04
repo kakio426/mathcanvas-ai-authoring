@@ -6,6 +6,7 @@ import {
   BALANCED_EQUATION_GENERATOR_ID,
   BALANCED_EQUATION_GENERATOR_VERSION
 } from "../item-generators/balanced-equation.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const pieceRoles = Array.from(
   { length: 6 },
@@ -105,7 +106,7 @@ const pieceRole = (number: number) => ({
   containerRole: "work-panel"
 });
 
-export const balancedEquationCardsBlueprint = defineActivityBlueprint({
+export const balancedEquationCardsBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "relation.equal-sign.balanced-equation.cards-v1",
   version: "1.0.0",
@@ -623,4 +624,4 @@ export const balancedEquationCardsBlueprint = defineActivityBlueprint({
     isShowMenuOnActivity: true
   },
   variationDefaults: { problemCount: 3, difficulty: "normal" }
-});
+}));

@@ -1,6 +1,7 @@
 import { MATHCANVAS_PROJECT_CATEGORIES, defineActivityBlueprint } from "@mathcanvas/contracts";
 import { fractionComparisonBlueprint } from "./fraction-comparison.js";
 import { PROBABILITY_BAG_PAIR_GENERATOR_ID, PROBABILITY_BAG_PAIR_GENERATOR_VERSION } from "../item-generators/probability-bag-pair.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const { contentHash: _fractionHash, ...fractionBody } = fractionComparisonBlueprint;
 const textByRole: Readonly<Record<string, string>> = {
@@ -15,7 +16,7 @@ const textByRole: Readonly<Record<string, string>> = {
   "explanation-label": "비교한 까닭"
 };
 
-export const probabilityBagComparisonBlueprint = defineActivityBlueprint({
+export const probabilityBagComparisonBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   ...fractionBody,
   id: "probability.compare.bag-ratios-v1",
   version: "1.1.0",
@@ -75,4 +76,4 @@ export const probabilityBagComparisonBlueprint = defineActivityBlueprint({
   ],
   payload: { categoryId: MATHCANVAS_PROJECT_CATEGORIES["자료와 가능성"].categoryId, tags: ["가능성", "전체와 부분", "분수 띠", "생각 고치기"], studyLevel: "elementary", isShowMenuOnActivity: true },
   variationDefaults: { problemCount: 2, difficulty: "normal", denominatorRelation: "mixed" }
-});
+}));

@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-01T06:52:21.836Z",
+  "generatedAt": "2026-08-04T09:58:04.988Z",
   "activityCount": 17,
   "variationCount": 89,
-  "overallScore": 100,
-  "status": "pass",
+  "overallScore": 75,
+  "status": "fail",
   "issueCounts": {
-    "p0": 0,
+    "p0": 17,
     "p1": 0,
     "p2": 0
   },
@@ -18,22 +18,22 @@
     {
       "family": "equation-card",
       "activityCount": 4,
-      "score": 100,
-      "p0": 0,
+      "score": 75,
+      "p0": 4,
       "p1": 0
     },
     {
       "family": "strip-measurement",
       "activityCount": 9,
-      "score": 100,
-      "p0": 0,
+      "score": 75,
+      "p0": 9,
       "p1": 0
     },
     {
       "family": "native-model",
       "activityCount": 4,
-      "score": 100,
-      "p0": 0,
+      "score": 75,
+      "p0": 4,
       "p1": 0
     }
   ],
@@ -42,7 +42,7 @@
       "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
       "family": "strip-measurement",
       "variationCount": 45,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T06:24:53.641Z",
@@ -50,13 +50,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/p3/fraction.compare.unlike-denominators.visual-v1.png",
         "hasInteractionEvidence": false
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.compare.unlike-denominators.visual-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "fraction.equivalent.same-whole.visual-v1",
       "family": "strip-measurement",
       "variationCount": 5,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T06:24:53.641Z",
@@ -64,13 +71,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/p3/fraction.equivalent.same-whole.visual-v1.png",
         "hasInteractionEvidence": false
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.equivalent.same-whole.visual-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "number.make-10.cards-v1",
       "family": "equation-card",
       "variationCount": 4,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T06:24:53.641Z",
@@ -78,13 +92,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/p3/number.make-10.cards-v1.png",
         "hasInteractionEvidence": false
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "number.make-10.cards-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "relation.equal-sign.balanced-equation.cards-v1",
       "family": "equation-card",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T07:53:55.110Z",
@@ -92,13 +113,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave5/equality.png",
         "hasInteractionEvidence": false
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "relation.equal-sign.balanced-equation.cards-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "relation.equal-sign.balance-scale.sum-card-v1",
       "family": "equation-card",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T09:25:41.095Z",
@@ -106,13 +134,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave5/balance-scale.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "relation.equal-sign.balance-scale.sum-card-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "measure.time.clock.hour-hand-boundary-v1",
       "family": "native-model",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T10:29:01.992Z",
@@ -120,13 +155,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave6/clock-boundary.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "measure.time.clock.hour-hand-boundary-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "measure.time.elapsed.clock-pair-v1",
       "family": "native-model",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-08-01T01:19:28.019Z",
@@ -134,13 +176,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave7/elapsed-time.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "measure.time.elapsed.clock-pair-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "fraction.add.same-denominator.strips-v1",
       "family": "strip-measurement",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T11:36:57.741Z",
@@ -148,13 +197,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave8/fraction-sum.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.add.same-denominator.strips-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "fraction.add.same-denominator.improper-sum-v1",
       "family": "strip-measurement",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T12:13:44.522Z",
@@ -162,13 +218,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave9/improper-sum.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.add.same-denominator.improper-sum-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "fraction.add.unlike-denominators.common-unit-v1",
       "family": "strip-measurement",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T12:57:25.744Z",
@@ -176,13 +239,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave10/common-unit-sum.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.add.unlike-denominators.common-unit-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "fraction.subtract.unlike-denominators.common-unit-v1",
       "family": "strip-measurement",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T13:38:32.826Z",
@@ -190,13 +260,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave11/common-unit-difference.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "fraction.subtract.unlike-denominators.common-unit-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "data.bar-graph.scale-unit.read-v1",
       "family": "strip-measurement",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T23:49:38.158Z",
@@ -204,13 +281,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave12/bar-graph-scale.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "data.bar-graph.scale-unit.read-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "measure.length.unit-iteration.ruler-v1",
       "family": "strip-measurement",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-07-31T23:49:51.605Z",
@@ -218,13 +302,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave13/broken-ruler-length.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "measure.length.unit-iteration.ruler-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "number.place-value.regroup-ten-bundles-v1",
       "family": "native-model",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-08-01T00:56:30.869Z",
@@ -232,13 +323,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave14/place-value-ten-exchange.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "number.place-value.regroup-ten-bundles-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "pattern.repeat-unit.pattern-blocks-v1",
       "family": "native-model",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-08-01T06:48:23.210Z",
@@ -246,13 +344,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave16/repeating-pattern.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "pattern.repeat-unit.pattern-blocks-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "number.multiplication.group-array-meaning-v1",
       "family": "equation-card",
       "variationCount": 2,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-08-01T06:50:07.995Z",
@@ -260,13 +365,20 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave17/multiplication-array.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "number.multiplication.group-array-meaning-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     },
     {
       "blueprintId": "probability.compare.bag-ratios-v1",
       "family": "strip-measurement",
       "variationCount": 3,
-      "score": 100,
+      "score": 75,
       "canary": {
         "status": "pass",
         "observedAt": "2026-08-01T06:51:11.252Z",
@@ -274,7 +386,14 @@
         "previewPath": ".mathcanvas-contract-lab/previews/wave17/probability-bag-comparison.png",
         "hasInteractionEvidence": true
       },
-      "issues": []
+      "issues": [
+        {
+          "severity": "P0",
+          "code": "release-canary-stale-or-failed",
+          "blueprintId": "probability.compare.bag-ratios-v1",
+          "detail": "출시 canary가 현재 blueprint hash와 결속된 PASS 증거가 아닙니다."
+        }
+      ]
     }
   ]
 }

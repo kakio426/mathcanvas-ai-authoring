@@ -16,7 +16,7 @@ const choiceCenterX = 1480;
 const choiceMemberWidth = 250;
 const choiceColumnGap = 30;
 const choiceInsetX = 8;
-const choiceContentWidth = 42;
+const choiceContentWidth = 140;
 
 export const wave8FractionSumLayoutPreset: LayoutPreset = {
   itemOriginY: 330,
@@ -113,14 +113,14 @@ export const wave8FractionSumLayoutPreset: LayoutPreset = {
       x: 310,
       y: 318,
       width: 600,
-      height: 90
+      height: 98
     },
     "item.start-line": {
       scope: "item",
       x: 306,
       y: 318,
       width: 8,
-      height: 90
+      height: 98
     },
     "item.prediction-label": {
       scope: "item",
@@ -154,7 +154,7 @@ export const wave8FractionSumLayoutPreset: LayoutPreset = {
         ) +
         (choiceMemberWidth - choiceContentWidth) / 2,
       y: 210,
-      width: 220,
+      width: 260,
       height: 32
     },
     ...centeredChoicePoolTokens({

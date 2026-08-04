@@ -70,7 +70,7 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       relativeTo: "item.panel",
       x: 690,
       y: 12,
-      width: 420,
+      width: 800,
       height: 66
     },
     "item.prediction-label": {
@@ -94,7 +94,7 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       x: 740,
       y: 190,
       width: 640,
-      height: 80
+      height: 108
     },
     "item.left-lane-label": {
       scope: "item",
@@ -109,7 +109,7 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       x: 740,
       y: 300,
       width: 640,
-      height: 80
+      height: 108
     },
     "item.right-lane-label": {
       scope: "item",
@@ -130,8 +130,8 @@ export const p3CognitiveFractionLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 1460,
       y: 170,
-      width: 120,
-      height: 120
+      width: 128,
+      height: 128
     },
     "item.relation-slot-label": {
       scope: "item",

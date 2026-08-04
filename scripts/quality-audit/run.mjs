@@ -70,6 +70,15 @@ function intersects(left, right) {
   );
 }
 
+function contains(container, child) {
+  return (
+    child.x >= container.x &&
+    child.y >= container.y &&
+    child.x + child.width <= container.x + container.width &&
+    child.y + child.height <= container.y + container.height
+  );
+}
+
 function makeRecommendation(blueprint, variation, control) {
   const curriculum = resolveCurriculum(
     blueprint.curriculumBinding.standardCode
@@ -116,6 +125,9 @@ function auditTypography({ blueprint, control, resolved, issues }) {
   const recommended = RECOMMENDED_TEXT_CSS_PX[band];
 
   for (const emission of resolved.emissions) {
+    // These are square glyphs that draw a 10×10 area model, not language a
+    // student must read. Cell geometry is guarded by its dedicated predicate.
+    if (/^hundred-grid-row-\d+$/.test(emission.role)) continue;
     const properties = emission.toolIntent?.properties ?? {};
     if (
       typeof properties.text !== "string" ||
@@ -345,7 +357,7 @@ function auditWritingRegions({ blueprint, resolved, issues }) {
       (candidate) =>
         candidate.role === labelRole && candidate.itemId === emission.itemId
     );
-    if (label && !intersects(visible(label), bounds)) {
+    if (label && !contains(bounds, visible(label))) {
       pushIssue(issues, {
         severity: "P1",
         axis: "답 입력",

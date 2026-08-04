@@ -14,7 +14,7 @@ const candidateRoles = [
 
 const choiceCenterX = 1685;
 const choiceMemberWidth = 220;
-const choiceContentWidth = 42;
+const choiceContentWidth = 140;
 const choiceColumnGap = 24;
 const choiceInsetX = 8;
 
@@ -113,14 +113,14 @@ export const wave9ImproperSumLayoutPreset: LayoutPreset = {
       x: 310,
       y: 318,
       width: 960,
-      height: 90
+      height: 98
     },
     "item.start-line": {
       scope: "item",
       x: 306,
       y: 318,
       width: 8,
-      height: 90
+      height: 98
     },
     "item.one-whole-boundary": {
       scope: "item",
@@ -133,7 +133,7 @@ export const wave9ImproperSumLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 700,
       y: 416,
-      width: 180,
+      width: 190,
       height: 36
     },
     "item.prediction-label": {
@@ -168,7 +168,7 @@ export const wave9ImproperSumLayoutPreset: LayoutPreset = {
         ) +
         (choiceMemberWidth - choiceContentWidth) / 2,
       y: 210,
-      width: 220,
+      width: 260,
       height: 32
     },
     ...centeredChoicePoolTokens({

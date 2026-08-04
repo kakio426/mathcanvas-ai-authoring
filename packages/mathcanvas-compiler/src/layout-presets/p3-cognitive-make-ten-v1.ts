@@ -155,10 +155,10 @@ export const p3CognitiveMakeTenLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 1260,
       y: 168,
-      width: 220,
+      width: 260,
       height: 48
     },
-    ...buildFrame(1480, 140),
+    ...buildFrame(1530, 140),
     "item.explanation-label": {
       scope: "item",
       relativeTo: "item.panel",

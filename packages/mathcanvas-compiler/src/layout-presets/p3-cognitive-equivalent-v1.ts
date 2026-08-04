@@ -70,7 +70,7 @@ export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
       relativeTo: "item.panel",
       x: 690,
       y: 12,
-      width: 420,
+      width: 800,
       height: 66
     },
     "item.prediction-label": {
@@ -99,9 +99,9 @@ export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
     "item.reference-lane-label": {
       scope: "item",
       relativeTo: "item.panel",
-      x: 520,
+      x: 490,
       y: 120,
-      width: 90,
+      width: 110,
       height: 50
     },
     "item.reference-strip": {
@@ -116,14 +116,14 @@ export const p3CognitiveEquivalentLayoutPreset: LayoutPreset = {
       x: 1000,
       y: 250,
       width: 640,
-      height: 80
+      height: 108
     },
     "item.target-lane-label": {
       scope: "item",
       relativeTo: "item.panel",
-      x: 520,
+      x: 490,
       y: 240,
-      width: 90,
+      width: 110,
       height: 50
     },
     "item.start-line": {

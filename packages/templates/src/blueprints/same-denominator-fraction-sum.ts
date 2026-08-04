@@ -6,6 +6,7 @@ import {
   SAME_DENOMINATOR_FRACTION_SUM_GENERATOR_ID,
   SAME_DENOMINATOR_FRACTION_SUM_GENERATOR_VERSION
 } from "../item-generators/same-denominator-fraction-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -75,7 +76,7 @@ const positionCardBackdropRole = (index: number) => ({
 });
 
 export const sameDenominatorFractionSumBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: "fraction.add.same-denominator.strips-v1",
     version: "1.0.0",
@@ -275,7 +276,7 @@ export const sameDenominatorFractionSumBlueprint =
         locked: true,
         movable: false,
         instructionalIntent: "두 띠를 이어 붙일 줄을 안내합니다.",
-        properties: { text: "띠 이어 붙이기", fontSize: 23 },
+        properties: { text: "이어 놓기", fontSize: 23 },
         bindings: {},
         containerRole: "work-panel"
       },
@@ -689,4 +690,4 @@ export const sameDenominatorFractionSumBlueprint =
       isShowMenuOnActivity: true
     },
     variationDefaults: { problemCount: 2, difficulty: "normal" }
-  });
+  }));

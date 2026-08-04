@@ -1,6 +1,7 @@
 import { MATHCANVAS_PROJECT_CATEGORIES, defineActivityBlueprint } from "@mathcanvas/contracts";
 import { MULTIPLICATION_ARRAY_MEANING_GENERATOR_ID, MULTIPLICATION_ARRAY_MEANING_GENERATOR_VERSION } from "../item-generators/multiplication-array-meaning.js";
 import { CHOICE_CARD_ROLES, layoutBlock, makeChoiceExplanationScaffoldLayoutChildren, makeChoiceExplanationScaffoldRoles } from "./choice-explanation-scaffold.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const instructions = [
   "① 문제에 맞는 곱셈식을 골라 놓으세요.",
@@ -16,7 +17,7 @@ const scaffold = makeChoiceExplanationScaffoldRoles({
   explanationLabel: "두 수의 뜻 쓰기"
 });
 
-export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint({
+export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "number.multiplication.group-array-meaning-v1",
   version: "1.1.0",
@@ -47,4 +48,4 @@ export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint({
   instructions: [...instructions],
   payload: { categoryId: MATHCANVAS_PROJECT_CATEGORIES["수와 연산"].categoryId, tags: ["곱셈", "같은 수씩 묶기", "배열", "생각 고치기"], studyLevel: "elementary", isShowMenuOnActivity: true },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-});
+}));

@@ -6,6 +6,7 @@ import {
   CLOCK_HOUR_HAND_BOUNDARY_GENERATOR_ID,
   CLOCK_HOUR_HAND_BOUNDARY_GENERATOR_VERSION
 } from "../item-generators/clock-hour-hand-boundary.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const candidateRoles = [
   "position-card-1",
@@ -75,7 +76,7 @@ const positionCardBackdropRole = (index: number) => ({
 });
 
 export const clockHourHandBoundaryBlueprint =
-  defineActivityBlueprint({
+  defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: "measure.time.clock.hour-hand-boundary-v1",
     version: "1.0.0",
@@ -523,4 +524,4 @@ export const clockHourHandBoundaryBlueprint =
       isShowMenuOnActivity: true
     },
     variationDefaults: { problemCount: 2, difficulty: "normal" }
-  });
+  }));

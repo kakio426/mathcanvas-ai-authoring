@@ -13,6 +13,7 @@ import {
   makeChoiceExplanationScaffoldLayoutChildren,
   makeChoiceExplanationScaffoldRoles
 } from "./choice-explanation-scaffold.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const instructions = [
   "① 옮기기 전에, 처음 수에 십 모형 10개를 더한 수를 골라 놓으세요.",
@@ -280,7 +281,7 @@ const layoutChildren = [
   )
 ];
 
-export const placeValueTenExchangeBlueprint = defineActivityBlueprint({
+export const placeValueTenExchangeBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "number.place-value.regroup-ten-bundles-v1",
   version: "1.1.0",
@@ -488,4 +489,4 @@ export const placeValueTenExchangeBlueprint = defineActivityBlueprint({
     isShowMenuOnActivity: true
   },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-});
+}));

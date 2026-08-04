@@ -6,6 +6,7 @@ import {
   BALANCE_SCALE_SUM_GENERATOR_ID,
   BALANCE_SCALE_SUM_GENERATOR_VERSION
 } from "../item-generators/balance-scale-sum.js";
+import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const pieceRoles = Array.from(
   { length: 5 },
@@ -95,7 +96,7 @@ const pieceRole = (number: number) => ({
   containerRole: "choice-panel"
 });
 
-export const balanceScaleSumBlueprint = defineActivityBlueprint({
+export const balanceScaleSumBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "relation.equal-sign.balance-scale.sum-card-v1",
   version: "1.0.0",
@@ -537,4 +538,4 @@ export const balanceScaleSumBlueprint = defineActivityBlueprint({
     isShowMenuOnActivity: true
   },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-});
+}));

@@ -36,6 +36,7 @@ import {
   resolveStateDirectory
 } from "./lib/paths.mjs";
 import { stableJson } from "./lib/normalize.mjs";
+import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 import {
   classifyP3CanaryResult,
   validateP3ReleaseCanaryEvidence
@@ -119,6 +120,7 @@ function buildRecommendation(entry, learningGoal) {
 
 let runtime;
 let releaseLock;
+let authSession;
 try {
   const options = parseArguments(process.argv.slice(2), {
     "approve-create-only": {
@@ -144,8 +146,10 @@ try {
   const id = runId(observedAt);
   const stateDirectory = resolveStateDirectory();
   releaseLock = acquireManagedProfileLock(stateDirectory);
+  authSession = await createLiveAuthHeadlessSession(stateDirectory);
   runtime = new ManagedChromeRuntime({
     userDataDirectory: join(stateDirectory, "chrome-profile"),
+    launcher: authSession.launcher,
     headless: true
   });
   if (options["wait-for-login"] === true) {
@@ -312,5 +316,6 @@ try {
   failCli(error);
 } finally {
   if (runtime) await runtime.close();
+  if (authSession) await authSession.close();
   if (releaseLock) releaseLock();
 }

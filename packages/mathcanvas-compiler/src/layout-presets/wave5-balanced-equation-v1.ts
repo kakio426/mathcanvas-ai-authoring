@@ -3,10 +3,10 @@ import type {
   LayoutToken
 } from "@mathcanvas/contracts";
 
-const RAIL_HEIGHT = 96;
+const RAIL_HEIGHT = 108;
 const RAIL_GAP = 24;
 const FORMULA_WIDTH = 88;
-const SLOT_SIZE = 96;
+const SLOT_SIZE = 108;
 const CELL_SIZE = 42;
 
 function buildRail(
@@ -140,9 +140,9 @@ export const wave5BalancedEquationLayoutPreset: LayoutPreset = {
     ...buildUnitRow("top", 822, 258),
     "item.bottom-row-label": {
       scope: "item",
-      x: 640,
+      x: 610,
       y: 336,
-      width: 150,
+      width: 180,
       height: 44
     },
     ...buildUnitRow("bottom", 822, 326),
@@ -150,7 +150,7 @@ export const wave5BalancedEquationLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 1600,
       y: 332,
-      width: 360,
+      width: 420,
       height: 46
     },
     "item.pool-label": {

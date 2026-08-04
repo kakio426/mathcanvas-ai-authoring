@@ -16,7 +16,7 @@ export const wave12BarGraphScaleLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 120,
       y: 126,
-      width: 130,
+      width: 140,
       height: 38
     },
     "item.left-strip": {
@@ -30,7 +30,7 @@ export const wave12BarGraphScaleLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 120,
       y: 221,
-      width: 130,
+      width: 140,
       height: 38
     },
     "item.right-strip": {
@@ -52,40 +52,40 @@ export const wave12BarGraphScaleLayoutPreset: LayoutPreset = {
       x: 330,
       y: 308,
       width: 720,
-      height: 180
+      height: 213
     },
     "item.reference-lane": {
       scope: "item",
       x: 330,
-      y: 318,
+      y: 315,
       width: 720,
-      height: 76
+      height: 98
     },
     "item.question-lane": {
       scope: "item",
       x: 330,
-      y: 407,
+      y: 423,
       width: 720,
-      height: 76
+      height: 98
     },
     "item.start-line": {
       scope: "item",
       x: 326,
-      y: 318,
+      y: 315,
       width: 8,
-      height: 165
+      height: 206
     },
     "item.unit-ruler-label": {
       scope: "item",
       x: 120,
-      y: 511,
+      y: 543,
       width: 190,
       height: 36
     },
     "item.unit-ruler": {
       scope: "item",
       x: 330,
-      y: 500,
+      y: 532,
       width: 720,
       height: 56
     }

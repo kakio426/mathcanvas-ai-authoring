@@ -12,8 +12,8 @@ const candidateRoles = [
   "position-card-5"
 ] as const;
 
-const choiceCenterX = 1285;
-const choiceMemberWidth = 280;
+const choiceCenterX = 1320;
+const choiceMemberWidth = 390;
 const choiceColumnGap = 35;
 const choiceInsetX = 8;
 
@@ -90,14 +90,14 @@ export const wave6ClockBoundaryLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 950,
       y: 110,
-      width: 310,
+      width: 430,
       height: 64
     },
     "item.choice-panel": {
       scope: "item",
-      x: 730,
+      x: 680,
       y: 190,
-      width: 1110,
+      width: 1280,
       height: 190
     },
     "item.pool-label": {
@@ -110,7 +110,7 @@ export const wave6ClockBoundaryLayoutPreset: LayoutPreset = {
           choiceColumnGap
         ) + choiceInsetX,
       y: 210,
-      width: 210,
+      width: 250,
       height: 32
     },
     ...centeredChoicePoolTokens({
