@@ -452,7 +452,7 @@ function pointLineHandler(
   );
   const vertex = [
     emission.bounds.x + emission.bounds.width / 2,
-    emission.bounds.y + emission.bounds.height / 2 + 20
+    emission.bounds.y + emission.bounds.height - 20
   ];
   const radians = (-angleDegrees * Math.PI) / 180;
   const base = [vertex[0]! + rayLength, vertex[1]!];
@@ -471,6 +471,26 @@ function pointLineHandler(
 
   const stroke = properties.stroke ??
     (geometry === "angle" ? "#1677D2" : "#5E6473");
+  const pointsInsideBounds = [vertex, base, turn].every((point) => {
+    const x = point[0];
+    const y = point[1];
+    return (
+      x !== undefined &&
+      y !== undefined &&
+      x >= emission.bounds.x + 10 &&
+      x <= emission.bounds.x + emission.bounds.width - 10 &&
+      y >= emission.bounds.y + 10 &&
+      y <= emission.bounds.y + emission.bounds.height - 10
+    );
+  });
+  if (!pointsInsideBounds) {
+    issue(
+      issues,
+      "native-point-line-out-of-bounds",
+      "layout",
+      `${emission.id}의 각 선이 제목 또는 상자 경계를 침범할 수 있습니다.`
+    );
+  }
   if (geometry === "line") {
     const ray = properties.ray;
     const endpoint = ray === "base" ? base : ray === "turn" ? turn : null;

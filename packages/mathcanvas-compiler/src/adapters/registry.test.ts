@@ -157,13 +157,13 @@ describe("fail-closed tool adapter registry", () => {
       id: "target-turn-ray",
       svgId: "drawElem",
       type: "line",
-      point1: [450, 355]
+      point1: [450, 450]
     });
     expect(measureAngle.requiredModuleKeys).toEqual([]);
     expect(measureAngle.object).toMatchObject({
       id: "measure-angle",
       svgId: "angleElem",
-      point2: [450, 355]
+      point2: [450, 450]
     });
     expect(measureAngle.object).toHaveProperty("point1");
     expect(measureAngle.object).toHaveProperty("point3");

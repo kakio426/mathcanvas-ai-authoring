@@ -346,6 +346,45 @@ try {
         fullPage: true
       });
 
+      let initialAngleLabelClearancePx = null;
+      if (entry.profileId === "angle-turn") {
+        const clearances = [];
+        for (const item of prepared.resolved.items) {
+          const emissions = prepared.resolved.emissions.filter(
+            (candidate) => candidate.itemId === item.id
+          );
+          const idFor = (role) => emissions.find(
+            (candidate) => candidate.role === role
+          )?.id;
+          const labelId = idFor("group-label");
+          const geometryIds = [
+            idFor("target-base-ray"),
+            idFor("target-turn-ray"),
+            idFor("measure-angle")
+          ];
+          if (!labelId || geometryIds.some((id) => !id)) {
+            throw new Error(`${entry.probeId}-angle-clearance-role-missing`);
+          }
+          const labelBox = await page.locator(`[id="${labelId}"]`).boundingBox();
+          const geometryBoxes = await Promise.all(
+            geometryIds.map((id) => page.locator(`[id="${id}"]`).boundingBox())
+          );
+          if (!labelBox || geometryBoxes.some((box) => !box)) {
+            throw new Error(`${entry.probeId}-angle-clearance-box-missing`);
+          }
+          clearances.push(
+            Math.min(...geometryBoxes.map((box) => box.y)) -
+              (labelBox.y + labelBox.height)
+          );
+        }
+        initialAngleLabelClearancePx = Math.min(...clearances);
+        if (initialAngleLabelClearancePx < 4) {
+          throw new Error(
+            `${entry.probeId}-angle-label-overlap:${initialAngleLabelClearancePx}`
+          );
+        }
+      }
+
       const persistedShape = await page.evaluate(async (projectId) => {
         const response = await fetch(`/api/project/${encodeURIComponent(projectId)}`, { credentials: "include", cache: "no-store" });
         if (!response.ok) throw new Error(`project-reopen-failed:${response.status}`);
@@ -519,7 +558,8 @@ try {
         predictionBoxCount: roleCount("prediction-box"),
         explanationBoxCount: roleCount("explanation-box"),
         angleMeasureElementCount: await page.locator('[id$="-measure-angle"]').count(),
-        targetRayElementCount: await page.locator('[id$="-target-base-ray"], [id$="-target-turn-ray"]').count()
+        targetRayElementCount: await page.locator('[id$="-target-base-ray"], [id$="-target-turn-ray"]').count(),
+        initialAngleLabelClearancePx
       };
       const evidence = {
         schemaVersion: "1.0.0",

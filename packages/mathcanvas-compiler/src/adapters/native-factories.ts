@@ -567,7 +567,7 @@ function anglePoints(
   );
   const vertex = [
     placement.x + placement.width / 2,
-    placement.y + placement.height / 2 + 20
+    placement.y + placement.height - 20
   ] as const;
   const radians = -intent.angleDegrees * Math.PI / 180;
   return {

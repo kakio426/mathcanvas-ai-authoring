@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-05T00:26:04.331Z",
+  "generatedAt": "2026-08-05T00:37:54.949Z",
   "activityCount": 20,
   "variationCount": 92,
   "overallScore": 100,
@@ -52,7 +52,7 @@
       "score": 100,
       "canary": {
         "status": "pass",
-        "observedAt": "2026-08-05T00:24:24.995Z",
+        "observedAt": "2026-08-05T00:37:26.076Z",
         "evidencePath": "research/mathcanvas/wave18-angle-turn-release-canary.json",
         "previewPath": ".mathcanvas-contract-lab/previews/wave18/angle-turn.png",
         "hasInteractionEvidence": true

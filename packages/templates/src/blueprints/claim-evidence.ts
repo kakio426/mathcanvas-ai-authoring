@@ -86,7 +86,7 @@ function makeClaimEvidenceBlueprint(
   return defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: profile.activityId,
-    version: isAngleTurn ? "3.3.0" : presentation ? "2.0.0" : "1.0.0",
+    version: isAngleTurn ? "3.4.0" : presentation ? "2.0.0" : "1.0.0",
     title: profile.title,
     learningObjective: profile.learningObjective,
     curriculumBinding: {

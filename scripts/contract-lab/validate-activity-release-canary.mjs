@@ -1162,7 +1162,9 @@ export function validateActivityReleaseCanaryEvidence(
         value.anglePointMoveDistance >= 10,
       reopen: (value) =>
         value?.angleMeasureElementCount === itemCount &&
-        value?.targetRayElementCount === itemCount * 2
+        value?.targetRayElementCount === itemCount * 2 &&
+        typeof value?.initialAngleLabelClearancePx === "number" &&
+        value.initialAngleLabelClearancePx >= 4
     },
     "number.mixed-calculation.order.claim-evidence-v1": {
       probeId: "wave18-mixed-calculation-order-release-canary-v1",
