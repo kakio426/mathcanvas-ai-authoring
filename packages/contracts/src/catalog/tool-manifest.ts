@@ -338,6 +338,24 @@ const releasedToolEvidence = {
       "research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=lifecycle:common.rectangle"
     ]
   },
+  "common.point-line": {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=common.point-line",
+      "research/mathcanvas/common-draw-contract.observations.json#key=drawObservation"
+    ],
+    contracted: [
+      "research/mathcanvas/angle-element-contract.static.json#key=nativeFactory"
+    ],
+    verified: [
+      "research/mathcanvas/wave18-angle-turn-release-canary.json#key=persistedShape"
+    ],
+    released: [
+      "research/mathcanvas/wave18-angle-turn-release-canary.json#key=interactionShape"
+    ],
+    lifecycle: [
+      "research/mathcanvas/wave18-angle-turn-release-canary.json#key=reopenShape"
+    ]
+  },
   "common.text": {
     captured: [
       "research/mathcanvas/tool-catalog.snapshot.json#tool=common.text"
@@ -603,9 +621,13 @@ const commonManifestDefinitions = [
     observedName: "점 / 선",
     surface: "common-authoring",
     integrationTarget: "tool-adapter",
-    supportState: "contracted",
+    supportState: "released",
     categoryId: "bottom-common-toolbar",
-    nativeToolId: "drawElem",
+    nativeToolId: "angleElem",
+    adapterKey: "point-line",
+    lifecycleEvidenceIds: [
+      "research/mathcanvas/wave18-angle-turn-release-canary.json#key=reopenShape"
+    ],
     evidenceIds: [
       "research/mathcanvas/tool-catalog.snapshot.json#tool=common.point-line",
       "research/mathcanvas/common-draw-contract.observations.json#key=drawObservation",

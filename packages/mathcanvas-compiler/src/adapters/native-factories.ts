@@ -9,6 +9,7 @@ import type {
   NumberCardIntent,
   PatternBlockIntent,
   PlaceValueModelIntent,
+  PointLineIntent,
   RectangleIntent,
   TextIntent
 } from "./native-tool-contracts.js";
@@ -542,6 +543,132 @@ export function makeRectangleObject(
     strokeDashArray,
     isStrokeChange: true,
     isMoveRotateHandler: false
+  };
+}
+
+function anglePoints(
+  intent: PointLineIntent,
+  placement: NativeToolPlacement
+): {
+  readonly base: readonly [number, number];
+  readonly vertex: readonly [number, number];
+  readonly turn: readonly [number, number];
+} {
+  if (
+    !Number.isFinite(intent.angleDegrees) ||
+    intent.angleDegrees <= 0 ||
+    intent.angleDegrees >= 180
+  ) {
+    throw new Error(`angle-degrees-out-of-range:${intent.angleDegrees}`);
+  }
+  const rayLength = Math.min(
+    placement.width * 0.35,
+    placement.height * 0.78
+  );
+  const vertex = [
+    placement.x + placement.width / 2,
+    placement.y + placement.height / 2 + 20
+  ] as const;
+  const radians = -intent.angleDegrees * Math.PI / 180;
+  return {
+    vertex,
+    base: [vertex[0] + rayLength, vertex[1]],
+    turn: [
+      vertex[0] + Math.cos(radians) * rayLength,
+      vertex[1] + Math.sin(radians) * rayLength
+    ]
+  };
+}
+
+export function makePointLineObject(
+  intent: PointLineIntent,
+  placement: NativeToolPlacement
+): Record<string, unknown> {
+  const points = anglePoints(intent, placement);
+  const stroke = intent.stroke ??
+    (intent.geometry === "angle" ? "#1677D2" : "#5E6473");
+  if (intent.geometry === "line") {
+    if (intent.ray !== "base" && intent.ray !== "turn") {
+      throw new Error("angle-ray-kind-required");
+    }
+    const endpoint = intent.ray === "base" ? points.base : points.turn;
+    return {
+      ...objectCommon,
+      x: 0,
+      y: 0,
+      _x: 0,
+      _y: 0,
+      cx: 0,
+      cy: 0,
+      id: placement.id,
+      fill: "transparent",
+      text: "",
+      type: "line",
+      svgId: "drawElem",
+      parent: {
+        r: null,
+        endX: null,
+        endY: null,
+        defaultX: null,
+        defaultY: null,
+        isCircle1: false,
+        isCircle2: false,
+        curveMaxOffset: 140,
+        isCurveHandler: false,
+        isRadiusHandler: false
+      },
+      point1: [...points.vertex],
+      point2: [...endpoint],
+      radius: 12,
+      stroke,
+      coordinates: [
+        [...points.vertex],
+        [...endpoint]
+      ],
+      curveOffset: 0,
+      strokeWidth: 8,
+      strokeType: 3,
+      strokeDashArray: "none",
+      isStrokeChange: true,
+      isMoveRotateHandler: false
+    };
+  }
+  return {
+    ...objectCommon,
+    x: 0,
+    y: 0,
+    _x: 0,
+    _y: 0,
+    cx: 0,
+    cy: 0,
+    id: placement.id,
+    fill: "transparent",
+    svgId: "angleElem",
+    parent: {
+      isPoint1: false,
+      isPoint2: false,
+      isPoint3: false,
+      endX: null,
+      endY: null,
+      prevState: null,
+      didMove: false
+    },
+    point1: [...points.base],
+    point2: [...points.vertex],
+    point3: [...points.turn],
+    coordinates: [
+      [...points.base],
+      [...points.vertex],
+      [...points.turn]
+    ],
+    stroke,
+    strokeWidth: 4,
+    strokeType: 2,
+    strokeDashArray: "",
+    isEyeOn: false,
+    isFillChange: false,
+    isStrokeChange: true,
+    isMoveRotateHandler: true
   };
 }
 

@@ -112,10 +112,10 @@ describe("MathCanvas tool manifest", () => {
     expect(() => assertReleasedTool("NO01NR")).toThrow(
       "tool-not-released:NO01NR:captured"
     );
-    for (const stableKey of [
-      "common.point-line",
-      "common.circle"
-    ]) {
+    expect(assertReleasedTool("common.point-line").adapterKey).toBe(
+      "point-line"
+    );
+    for (const stableKey of ["common.circle"]) {
       const contracted = MATHCANVAS_TOOL_MANIFEST.find(
         (entry) => entry.stableKey === stableKey
       );

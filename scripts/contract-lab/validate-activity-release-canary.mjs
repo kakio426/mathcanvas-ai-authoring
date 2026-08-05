@@ -1145,10 +1145,24 @@ export function validateActivityReleaseCanaryEvidence(
     "measure.angle.turn-size.claim-evidence-v1": {
       probeId: "wave18-angle-turn-release-canary-v1",
       categoryUnit: "Unit03",
-      releasedTools: ["SM02AD"],
+      releasedTools: [],
       persisted: (value) =>
-        value?.clockCount === itemCount &&
-        value?.clockModuleActive === true
+        value?.angleMeasureCount === itemCount &&
+        value?.targetRayCount === itemCount * 2 &&
+        value?.interactiveAngleCount === itemCount &&
+        value?.lockedTargetRayCount === itemCount * 2,
+      interaction: (value) =>
+        typeof value?.angleMeasuredDegrees === "number" &&
+        Number.isFinite(value.angleMeasuredDegrees) &&
+        typeof value?.angleTargetDegrees === "number" &&
+        Number.isFinite(value.angleTargetDegrees) &&
+        typeof value?.angleMeasureResidual === "number" &&
+        value.angleMeasureResidual <= 0.6 &&
+        typeof value?.anglePointMoveDistance === "number" &&
+        value.anglePointMoveDistance >= 10,
+      reopen: (value) =>
+        value?.angleMeasureElementCount === itemCount &&
+        value?.targetRayElementCount === itemCount * 2
     },
     "number.mixed-calculation.order.claim-evidence-v1": {
       probeId: "wave18-mixed-calculation-order-release-canary-v1",
@@ -1194,6 +1208,10 @@ export function validateActivityReleaseCanaryEvidence(
         JSON.stringify(wave18ClaimEvidence.releasedTools ?? []) ||
       (wave18ClaimEvidence.persisted &&
         !wave18ClaimEvidence.persisted(persisted)) ||
+      (wave18ClaimEvidence.interaction &&
+        !wave18ClaimEvidence.interaction(interaction)) ||
+      (wave18ClaimEvidence.reopen &&
+        !wave18ClaimEvidence.reopen(shape)) ||
       persisted?.arrayTextCount !== itemCount ||
       persisted?.candidateCount !==
         itemCount * (wave18ClaimEvidence.candidateCount ?? 5) ||

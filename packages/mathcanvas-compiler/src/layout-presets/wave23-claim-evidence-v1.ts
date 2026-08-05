@@ -165,7 +165,7 @@ export const wave23ClaimEvidenceLayoutPreset: LayoutPreset = {
   }
 };
 
-/** 각도 활동은 시계 눈금을 펜으로 표시할 수 있도록 시각 모델을 크게 둔다. */
+/** 각도 활동은 목표 각과 학생이 움직이는 측정 각을 같은 좌표계에 겹쳐 둔다. */
 export const wave23AngleClaimEvidenceLayoutPreset: LayoutPreset = {
   ...wave23ClaimEvidenceLayoutPreset,
   itemPitch: 1100,
@@ -185,18 +185,18 @@ export const wave23AngleClaimEvidenceLayoutPreset: LayoutPreset = {
       width: 1420,
       height: 320
     },
-    "item.angle-clock": {
+    "item.angle-model": {
       scope: "item",
-      x: 150,
-      y: 600,
-      width: 240,
-      height: 240
+      x: 110,
+      y: 565,
+      width: 700,
+      height: 270
     },
     "item.angle-evidence-text": {
       scope: "item",
-      x: 440,
-      y: 635,
-      width: 1000,
+      x: 820,
+      y: 650,
+      width: 620,
       height: 110
     },
     "item.explanation-label": {

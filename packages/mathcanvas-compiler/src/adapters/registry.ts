@@ -11,6 +11,7 @@ import {
   makeDataTableObject,
   makePatternBlockObject,
   makePlaceValueModelObject,
+  makePointLineObject,
   makeRectangleObject,
   makeTextObject
 } from "./native-factories.js";
@@ -34,6 +35,7 @@ export type {
   PatternBlockIntent,
   PlaceValueModelIntent,
   RectangleIntent,
+  PointLineIntent,
   TextIntent
 } from "./native-tool-contracts.js";
 export { PLACE_VALUE_SVG_BY_VALUE } from "./native-factories.js";
@@ -104,6 +106,11 @@ export const REGISTERED_TOOL_ADAPTERS = [
     adapterKey: "draw-rectangle",
     toolKey: "common.rectangle",
     contractFamily: "native-draw-object"
+  },
+  {
+    adapterKey: "point-line",
+    toolKey: "common.point-line",
+    contractFamily: "native-angle-object"
   }
 ] as const;
 
@@ -172,6 +179,11 @@ export function compileNativeTool(
       assertContractedNativeDrawShape(request.toolKey);
       return {
         object: makeRectangleObject(request, placement),
+        requiredModuleKeys: []
+      };
+    case "point-line":
+      return {
+        object: makePointLineObject(request, placement),
         requiredModuleKeys: []
       };
     default:

@@ -99,7 +99,7 @@ const claimEvidenceCases = claimEvidenceActivityProfiles.map((profile) => {
     grade: profile.recommendedGrade,
     manipulation: "claim-evidence-revision-drag",
     categoryUnit: categoryUnitByDomain[profile.domain],
-    releasedTools: profile.profileId === "angle-turn" ? ["SM02AD"] : [],
+    releasedTools: [],
     sourceRole: "position-card-1",
     targetRole: "prediction-box",
     action: "choose-claim-and-check-evidence",
@@ -191,6 +191,41 @@ async function dragCenter(page, source, target, placement = "center") {
   await page.mouse.move(destinationX, target.y + target.height / 2, { steps: 18 });
   await page.mouse.up();
   await page.waitForTimeout(250);
+}
+
+async function alignAngleMeasure(page, measureId, targetRayId, targetDegrees) {
+  const measure = page.locator(`[id="${measureId}"]`);
+  await measure.locator(".angle-line").first().click({ force: true });
+  const handle = measure.locator(".angle-point-3");
+  const source = await handle.boundingBox();
+  const target = await page.evaluate((id) => {
+    const group = document.getElementById(id);
+    const path = group?.querySelector("path");
+    if (!(path instanceof SVGPathElement)) return null;
+    const point = path.getPointAtLength(path.getTotalLength());
+    const matrix = path.getScreenCTM();
+    if (!matrix) return null;
+    const screen = new DOMPoint(point.x, point.y).matrixTransform(matrix);
+    return { x: screen.x, y: screen.y };
+  }, targetRayId);
+  if (!source || !target) throw new Error("angle-measure-handle-or-target-missing");
+  await page.mouse.move(source.x + source.width / 2, source.y + source.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(target.x, target.y, { steps: 18 });
+  await page.mouse.up();
+  await page.waitForTimeout(250);
+  const text = (await measure.locator("text").textContent())?.trim() ?? "";
+  const measuredDegrees = Number.parseFloat(text.replace("°", ""));
+  return {
+    angleMeasureText: text,
+    angleMeasuredDegrees: measuredDegrees,
+    angleTargetDegrees: targetDegrees,
+    angleMeasureResidual: Math.abs(measuredDegrees - targetDegrees),
+    anglePointMoveDistance: Math.hypot(
+      target.x - (source.x + source.width / 2),
+      target.y - (source.y + source.height / 2)
+    )
+  };
 }
 
 if (offlineOnly) {
@@ -323,6 +358,10 @@ try {
           arrayTextCount: contents.filter((object) => String(object?.id ?? "").endsWith("-array-text")).length,
           fractionStripCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("NO03FM-")).length,
           clockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02AD-")).length,
+          angleMeasureCount: contents.filter((object) => object?.svgId === "angleElem" && String(object?.id ?? "").endsWith("-measure-angle")).length,
+          targetRayCount: contents.filter((object) => object?.svgId === "drawElem" && object?.type === "line" && /-target-(?:base|turn)-ray$/.test(String(object?.id ?? ""))).length,
+          interactiveAngleCount: contents.filter((object) => object?.svgId === "angleElem" && !(body?.canvasOption?.lockIds ?? []).flat().includes(object?.id)).length,
+          lockedTargetRayCount: contents.filter((object) => object?.svgId === "drawElem" && object?.type === "line" && (body?.canvasOption?.lockIds ?? []).flat().includes(object?.id)).length,
           patternModuleActive: body?.canvasOption?.moduleArr?.Unit03?.SM02PB === true,
           fractionModuleActive: body?.canvasOption?.moduleArr?.Unit01?.NO03FM === true,
           clockModuleActive: body?.canvasOption?.moduleArr?.Unit03?.SM02AD === true
@@ -395,6 +434,21 @@ try {
         if (!moved) throw new Error(`${entry.probeId}-settled-box-missing`);
         movedBoxes.push(moved);
       }
+      let angleMeasurementShape = {};
+      if (entry.profileId === "angle-turn") {
+        const measure = byRole("measure-angle");
+        const targetRay = byRole("target-turn-ray");
+        const targetDegrees = firstItem.values.targetAngleDegrees;
+        if (!measure || !targetRay || typeof targetDegrees !== "number") {
+          throw new Error(`${entry.probeId}-angle-interaction-role-missing`);
+        }
+        angleMeasurementShape = await alignAngleMeasure(
+          page,
+          measure.id,
+          targetRay.id,
+          targetDegrees
+        );
+      }
       let commonStartResidualPx = null;
       if (entry.blueprint.id === probabilityBagComparisonBlueprint.id) {
         const startLineEmission = byRole("start-line");
@@ -410,16 +464,19 @@ try {
             .map(({ box }) => Math.abs(box.x - startAnchorX))
         );
       }
-      const interactionShape = measurePostInteractionContract({
-        action: entry.action,
-        moveDistances,
-        movedBoxes,
-        targetBoxes,
-        correctDecisionPlaced: true,
-        commonStartResidualPx,
-        transientOnly: true,
-        existingProjectWriteCount: blockedProjectWriteRequestCount
-      });
+      const interactionShape = {
+        ...measurePostInteractionContract({
+          action: entry.action,
+          moveDistances,
+          movedBoxes,
+          targetBoxes,
+          correctDecisionPlaced: true,
+          commonStartResidualPx,
+          transientOnly: true,
+          existingProjectWriteCount: blockedProjectWriteRequestCount
+        }),
+        ...angleMeasurementShape
+      };
       try {
         assertPostInteractionContract(interactionShape, {
           expectedAction: entry.action,
@@ -460,7 +517,9 @@ try {
         sourceRoleCount: roleCount(entry.sourceRole),
         targetRoleCount: roleCount(entry.targetRole),
         predictionBoxCount: roleCount("prediction-box"),
-        explanationBoxCount: roleCount("explanation-box")
+        explanationBoxCount: roleCount("explanation-box"),
+        angleMeasureElementCount: await page.locator('[id$="-measure-angle"]').count(),
+        targetRayElementCount: await page.locator('[id$="-target-base-ray"], [id$="-target-turn-ray"]').count()
       };
       const evidence = {
         schemaVersion: "1.0.0",

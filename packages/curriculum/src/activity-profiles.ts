@@ -12,8 +12,8 @@ export interface ClaimEvidenceItemSeed {
     | readonly [string, string, string, string]
     | readonly [string, string, string, string, string];
   readonly answerExplanation: string;
-  readonly clockHour?: number;
-  readonly clockMinute?: number;
+  readonly targetAngleDegrees?: number;
+  readonly initialMeasureDegrees?: number;
 }
 
 export interface ClaimEvidenceActivityProfile {
@@ -146,21 +146,21 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     gradeBand: "3-4",
     recommendedGrade: 4,
     domain: "도형과 측정",
-    title: "회전한 양으로 각의 크기 판단하기",
+    title: "두 변을 맞추어 각도 재기",
     learningObjective:
       "각의 크기를 변의 길이가 아니라 한 변이 회전한 양으로 판단하고, 같은 간격의 수로 확인할 수 있다.",
     officialGoal: "각의 크기의 단위인 1도(°)를 알고, 각도기를 이용하여 각의 크기를 측정하고 어림할 수 있다.",
     activityLabel: "각의 크기",
     activityDescription:
-      "변이 길어 보이는 정도가 아니라 두 방향 사이의 회전량으로 각도를 판단해요.",
-    promptSeed: "각의 크기를 변의 길이가 아닌 회전량으로 판단하는 활동",
+      "각도를 어림한 뒤 파란 선의 두 끝점을 회색 각에 맞추어 실제 각도를 확인해요.",
+    promptSeed: "각도를 어림하고 움직이는 파란 선으로 재어 고치는 활동",
     predictionLabel: "처음 고른 각도",
-    evidenceHeading: "시계 한 칸은 30°",
-    explanationLabel: "센 칸 수로 나타낸 식",
+    evidenceHeading: "파란 선을 회색 각에 맞추기",
+    explanationLabel: "측정한 각도와 고친 답",
     misconceptionConflict:
-      "변이 길거나 끝점 사이가 멀면 각이 더 크다는 생각을 같은 중심과 같은 회전 간격으로 충돌시킨다.",
+      "변의 길이나 각이 놓인 방향만 보고 크기를 판단한 생각을 실제 측정값과 충돌시킨다.",
     verificationInvariant:
-      "각의 크기는 두 변 사이에서 회전한 양이며 변의 길이를 늘이거나 줄여도 변하지 않는다.",
+      "각 측정선의 꼭짓점과 두 변을 회색 각에 맞추면 두 변 사이의 회전량이 도 단위로 나타난다.",
     layoutTokenSet: "wave23-angle-claim-evidence-v1",
     learningMapTopicId:
       "kr.mt.math.geometry-measurement.g3-4.s4-03-24.representation",
@@ -181,34 +181,34 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     ],
     items: [
       {
-        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
-        evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "작은 쪽 칸 수 × 30°",
-        correctValueText: "90°",
-        candidates: ["90°", "30°", "60°", "120°", "150°"],
-        answerExplanation: "12에서 3까지 같은 간격 세 칸이므로 90°입니다.",
-        clockHour: 3,
-        clockMinute: 0
+        questionText: "회색으로 그린 각은 몇 도일까요?",
+        evidenceLabelText: "파란 선을 회색 각에 맞추기",
+        evidenceText: "끝점을 옮기면 각도가 표시됩니다.",
+        correctValueText: "70°",
+        candidates: ["70°", "110°", "60°", "80°", "140°"],
+        answerExplanation: "파란 측정선을 두 변에 맞추면 70.0°가 나타납니다.",
+        targetAngleDegrees: 70,
+        initialMeasureDegrees: 45
       },
       {
-        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
-        evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "작은 쪽 칸 수 × 30°",
-        correctValueText: "120°",
-        candidates: ["120°", "90°", "60°", "150°", "180°"],
-        answerExplanation: "12에서 4까지 같은 간격 네 칸이므로 120°입니다.",
-        clockHour: 4,
-        clockMinute: 0
+        questionText: "회색으로 그린 각은 몇 도일까요?",
+        evidenceLabelText: "파란 선을 회색 각에 맞추기",
+        evidenceText: "끝점을 옮기면 각도가 표시됩니다.",
+        correctValueText: "115°",
+        candidates: ["115°", "65°", "105°", "125°", "75°"],
+        answerExplanation: "파란 측정선을 두 변에 맞추면 115.0°가 나타납니다.",
+        targetAngleDegrees: 115,
+        initialMeasureDegrees: 75
       },
       {
-        questionText: "두 바늘 사이의 작은 각은 몇 도일까요?",
-        evidenceLabelText: "시계 한 칸은 30°",
-        evidenceText: "작은 쪽 칸 수 × 30°",
-        correctValueText: "150°",
-        candidates: ["150°", "120°", "90°", "60°", "180°"],
-        answerExplanation: "12에서 5까지 같은 간격 다섯 칸이므로 150°입니다.",
-        clockHour: 5,
-        clockMinute: 0
+        questionText: "회색으로 그린 각은 몇 도일까요?",
+        evidenceLabelText: "파란 선을 회색 각에 맞추기",
+        evidenceText: "끝점을 옮기면 각도가 표시됩니다.",
+        correctValueText: "145°",
+        candidates: ["145°", "35°", "135°", "155°", "45°"],
+        answerExplanation: "파란 측정선을 두 변에 맞추면 145.0°가 나타납니다.",
+        targetAngleDegrees: 145,
+        initialMeasureDegrees: 95
       }
     ]
   },

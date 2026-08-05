@@ -422,6 +422,97 @@ function patternBlockHandler(
   }
 }
 
+function pointLineHandler(
+  _resolved: ResolvedActivity,
+  emission: ResolvedEmission,
+  native: NativeObject,
+  issues: ValidationIssue[]
+): void {
+  const properties = emission.toolIntent.properties;
+  const geometry = properties.geometry;
+  const angleDegrees = properties.angleDegrees;
+  if (
+    (geometry !== "line" && geometry !== "angle") ||
+    typeof angleDegrees !== "number" ||
+    !Number.isFinite(angleDegrees) ||
+    angleDegrees <= 0 ||
+    angleDegrees >= 180
+  ) {
+    issue(
+      issues,
+      "native-point-line-mismatch",
+      "api-contract",
+      `${emission.id}의 각도 입력이 올바르지 않습니다.`
+    );
+    return;
+  }
+  const rayLength = Math.min(
+    emission.bounds.width * 0.35,
+    emission.bounds.height * 0.78
+  );
+  const vertex = [
+    emission.bounds.x + emission.bounds.width / 2,
+    emission.bounds.y + emission.bounds.height / 2 + 20
+  ];
+  const radians = (-angleDegrees * Math.PI) / 180;
+  const base = [vertex[0]! + rayLength, vertex[1]!];
+  const turn = [
+    vertex[0]! + Math.cos(radians) * rayLength,
+    vertex[1]! + Math.sin(radians) * rayLength
+  ];
+  const samePoint = (actual: unknown, expected: number[]): boolean =>
+    Array.isArray(actual) &&
+    actual.length === 2 &&
+    actual.every(
+      (value, index) =>
+        typeof value === "number" &&
+        Math.abs(value - expected[index]!) < 0.001
+    );
+
+  const stroke = properties.stroke ??
+    (geometry === "angle" ? "#1677D2" : "#5E6473");
+  if (geometry === "line") {
+    const ray = properties.ray;
+    const endpoint = ray === "base" ? base : ray === "turn" ? turn : null;
+    if (
+      !endpoint ||
+      native.svgId !== "drawElem" ||
+      native.type !== "line" ||
+      native.stroke !== stroke ||
+      native.strokeWidth !== 8 ||
+      !samePoint(native.point1, vertex) ||
+      !samePoint(native.point2, endpoint)
+    ) {
+      issue(
+        issues,
+        "native-point-line-mismatch",
+        "api-contract",
+        `${emission.id}의 목표 각 변이 지정한 각도와 다릅니다.`
+      );
+    }
+    return;
+  }
+
+  if (
+    native.svgId !== "angleElem" ||
+    native.stroke !== stroke ||
+    native.strokeWidth !== 4 ||
+    native.isMoveRotateHandler !== true ||
+    !samePoint(native.point1, base) ||
+    !samePoint(native.point2, vertex) ||
+    !samePoint(native.point3, turn) ||
+    !Array.isArray(native.coordinates) ||
+    native.coordinates.length !== 3
+  ) {
+    issue(
+      issues,
+      "native-point-line-mismatch",
+      "api-contract",
+      `${emission.id}의 세 점 각 측정선 계약이 다릅니다.`
+    );
+  }
+}
+
 const handlers: Readonly<Record<string, Handler | undefined>> = {
   "analog-clock": analogClockHandler,
   "balance-scale": balanceScaleHandler,
@@ -430,6 +521,7 @@ const handlers: Readonly<Record<string, Handler | undefined>> = {
   "number-card": numberCardHandler,
   "place-value-model": placeValueModelHandler,
   "pattern-block": patternBlockHandler,
+  "point-line": pointLineHandler,
   text: undefined,
   "draw-rectangle": undefined
 };

@@ -59,7 +59,7 @@
     },
     {
       "path": "packages/validator/src/layers/native-safety.ts",
-      "sha256": "1864052e92c1690b0dd5fe83bf0a3fa36de9b06403d309856d4087f90fbd60df"
+      "sha256": "2bebbbe6ac7511f1da7290f842c3d2454fab2d8cb325e1ed5de783d482169271"
     },
     {
       "path": "packages/validator/src/layers/reference.ts",
@@ -78,5 +78,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "2548778313d1be37b8577aa5867f14cb96f6346b1ed629179e6879efcf00a4db"
+  "manifestHash": "0f448e4764cef71ca4a6d7766fa287f7833e4c24e1b507a7d9817fa293f09e73"
 }

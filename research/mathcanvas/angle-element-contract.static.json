@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "bundle": {
+    "path": "/assets/index-fb571b04.js",
+    "sha256": "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584"
+  },
+  "nativeFactory": {
+    "id": "angleElem",
+    "constructorParameters": [
+      "x",
+      "y",
+      "point1",
+      "point2",
+      "point3"
+    ],
+    "vertexField": "point2",
+    "coordinates": [
+      "point1",
+      "point2",
+      "point3"
+    ]
+  },
+  "rendering": {
+    "angleUnit": "degree",
+    "decimalPlaces": 1,
+    "showsTwoRays": true,
+    "showsArc": true,
+    "showsMeasurementText": true
+  },
+  "interaction": {
+    "draggablePoints": [
+      "point1",
+      "point2",
+      "point3"
+    ],
+    "measurementUpdatesDuringDrag": true
+  }
+}

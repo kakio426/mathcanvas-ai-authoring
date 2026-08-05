@@ -17,7 +17,8 @@ const supportedSvgIds = new Set([
   ...RELEASED_MODULE_VARIANT_IDS,
   "input-text",
   "math-latex",
-  "drawElem"
+  "drawElem",
+  "angleElem"
 ]);
 
 export function validateNativeSafety(
@@ -64,7 +65,11 @@ export function validateNativeSafety(
         `payload.contentsJson.${index}.text`
       );
     }
-    if (object.svgId === "drawElem" && object.type !== "rect") {
+    if (
+      object.svgId === "drawElem" &&
+      object.type !== "rect" &&
+      object.type !== "line"
+    ) {
       issue(
         issues,
         "unsupported-draw-type",

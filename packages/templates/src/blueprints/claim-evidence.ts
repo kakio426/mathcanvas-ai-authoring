@@ -34,8 +34,8 @@ function makeClaimEvidenceBlueprint(
     (isAngleTurn
       ? [
           "① 답 카드를 하나 골라 빈칸에 놓으세요.",
-          "② 작은 쪽 간격을 찾아 펜으로 점을 놓으며 세어 보세요.",
-          "③ 센 칸 수를 □×30° 식으로 나타내고 답을 다시 확인하세요."
+          "② 파란 각의 두 끝점을 회색 두 변 위에 놓고 각도를 확인하세요.",
+          "③ 측정값을 쓰고 처음 고른 답과 비교하세요."
         ]
       : [
           "① 답 카드를 하나 골라 빈칸에 놓으세요.",
@@ -86,7 +86,7 @@ function makeClaimEvidenceBlueprint(
   return defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: profile.activityId,
-    version: isAngleTurn ? "2.1.0" : presentation ? "2.0.0" : "1.0.0",
+    version: isAngleTurn ? "3.3.0" : presentation ? "2.0.0" : "1.0.0",
     title: profile.title,
     learningObjective: profile.learningObjective,
     curriculumBinding: {
@@ -140,27 +140,64 @@ function makeClaimEvidenceBlueprint(
         containerRole: "array-panel"
       },
       ...(isAngleTurn
-        ? [{
-            role: "angle-clock",
-            scope: "each-item" as const,
-            layoutRole: "angle-clock",
-            idRole: "angle-clock",
-            toolKey: "SM02AD",
-            intentKind: "analog-clock",
-            locked: true,
-            movable: false,
-            instructionalIntent:
-              "길이가 다른 두 바늘 사이의 같은 간격을 직접 표시하고 세게 합니다.",
-            properties: {
-              clockType: "geared",
-              isWorking: false
+        ? [
+            {
+              role: "target-base-ray",
+              scope: "each-item" as const,
+              layoutRole: "target-base-ray",
+              idRole: "target-base-ray",
+              toolKey: "common.point-line",
+              intentKind: "point-line",
+              locked: true,
+              movable: false,
+              instructionalIntent:
+                "학생이 재어야 할 회색 각의 기준 변입니다.",
+              properties: {
+                geometry: "line",
+                ray: "base",
+                stroke: "#5E6473"
+              },
+              bindings: { angleDegrees: "item.targetAngleDegrees" },
+              containerRole: "array-panel"
             },
-            bindings: {
-              hours: "item.clockHour",
-              minutes: "item.clockMinute"
+            {
+              role: "target-turn-ray",
+              scope: "each-item" as const,
+              layoutRole: "target-turn-ray",
+              idRole: "target-turn-ray",
+              toolKey: "common.point-line",
+              intentKind: "point-line",
+              locked: true,
+              movable: false,
+              instructionalIntent:
+                "학생이 재어야 할 회색 각의 회전한 변입니다.",
+              properties: {
+                geometry: "line",
+                ray: "turn",
+                stroke: "#5E6473"
+              },
+              bindings: { angleDegrees: "item.targetAngleDegrees" },
+              containerRole: "array-panel"
             },
-            containerRole: "array-panel"
-          }]
+            {
+              role: "measure-angle",
+              scope: "each-item" as const,
+              layoutRole: "measure-angle",
+              idRole: "measure-angle",
+              toolKey: "common.point-line",
+              intentKind: "point-line",
+              locked: false,
+              movable: true,
+              instructionalIntent:
+                "파란 끝점을 회색 변에 맞추면 측정값이 즉시 바뀌는 세 점 각 측정선입니다.",
+              properties: {
+                geometry: "angle",
+                stroke: "#1677D2"
+              },
+              bindings: { angleDegrees: "item.initialMeasureDegrees" },
+              containerRole: "array-panel"
+            }
+          ]
         : []),
       {
         role: "array-text",
@@ -198,7 +235,11 @@ function makeClaimEvidenceBlueprint(
           layoutBlock("array-panel", "slot", "item.array-panel", "each-item"),
           layoutBlock("group-label", "slot", "item.group-label", "each-item"),
           ...(isAngleTurn
-            ? [layoutBlock("angle-clock", "slot", "item.angle-clock", "each-item")]
+            ? [
+                layoutBlock("target-base-ray", "slot", "item.angle-model", "each-item"),
+                layoutBlock("target-turn-ray", "slot", "item.angle-model", "each-item"),
+                layoutBlock("measure-angle", "slot", "item.angle-model", "each-item")
+              ]
             : []),
           layoutBlock(
             "array-text",
@@ -236,7 +277,9 @@ function makeClaimEvidenceBlueprint(
           verificationRoles: [
             "array-panel",
             "group-label",
-            ...(isAngleTurn ? ["angle-clock"] : []),
+            ...(isAngleTurn
+              ? ["target-base-ray", "target-turn-ray", "measure-angle"]
+              : []),
             "array-text"
           ]
         }
@@ -299,7 +342,6 @@ function makeClaimEvidenceBlueprint(
             "number",
             "question",
             "group-label",
-            ...(isAngleTurn ? ["angle-clock"] : []),
             "array-text",
             "prediction-label",
             "prediction-box",

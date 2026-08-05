@@ -78,7 +78,7 @@ const claimEvidenceManifests = Object.fromEntries(
             "array-panel",
             "group-label",
             ...(profile.profileId === "angle-turn"
-              ? ["angle-clock"]
+              ? ["target-base-ray", "target-turn-ray", "measure-angle"]
               : []),
             "array-text"
           ],

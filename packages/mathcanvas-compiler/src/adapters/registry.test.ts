@@ -19,7 +19,7 @@ import {
 } from "./native-rendered-bounds.js";
 
 describe("fail-closed tool adapter registry", () => {
-  it("현재 검증된 열한 도구만 등록한다", () => {
+  it("현재 검증된 열두 도구만 등록한다", () => {
     expect(
       REGISTERED_TOOL_ADAPTERS.map((adapter) => adapter.toolKey)
     ).toEqual([
@@ -33,7 +33,8 @@ describe("fail-closed tool adapter registry", () => {
       "DP02TG",
       "common.text",
       "common.formula",
-      "common.rectangle"
+      "common.rectangle",
+      "common.point-line"
     ]);
     expect(
       MATHCANVAS_TOOL_MANIFEST.filter(
@@ -125,6 +126,47 @@ describe("fail-closed tool adapter registry", () => {
         text: "안내"
       }, placement)
     ).not.toThrow();
+  });
+
+  it("회색 목표 각과 움직이는 세 점 측정 각을 같은 좌표계로 만든다", () => {
+    const placement = {
+      id: "angle-model",
+      x: 100,
+      y: 200,
+      width: 700,
+      height: 270
+    };
+    const targetRay = compileNativeTool({
+      kind: "point-line",
+      toolKey: "common.point-line",
+      geometry: "line",
+      angleDegrees: 70,
+      ray: "turn",
+      stroke: "#5E6473"
+    }, { ...placement, id: "target-turn-ray" });
+    const measureAngle = compileNativeTool({
+      kind: "point-line",
+      toolKey: "common.point-line",
+      geometry: "angle",
+      angleDegrees: 45,
+      stroke: "#1677D2"
+    }, { ...placement, id: "measure-angle" });
+
+    expect(targetRay.requiredModuleKeys).toEqual([]);
+    expect(targetRay.object).toMatchObject({
+      id: "target-turn-ray",
+      svgId: "drawElem",
+      type: "line",
+      point1: [450, 355]
+    });
+    expect(measureAngle.requiredModuleKeys).toEqual([]);
+    expect(measureAngle.object).toMatchObject({
+      id: "measure-angle",
+      svgId: "angleElem",
+      point2: [450, 355]
+    });
+    expect(measureAngle.object).toHaveProperty("point1");
+    expect(measureAngle.object).toHaveProperty("point3");
   });
 
   it("도구 의미 계약과 절대 좌표 배치를 분리한다", () => {

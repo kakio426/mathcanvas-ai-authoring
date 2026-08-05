@@ -57,11 +57,11 @@ export function generateClaimEvidenceItems(
           evidenceText: item.evidenceText,
           correctValueText: item.correctValueText,
           answerExplanation: item.answerExplanation,
-          ...(item.clockHour !== undefined
-            ? { clockHour: item.clockHour }
+          ...(item.targetAngleDegrees !== undefined
+            ? { targetAngleDegrees: item.targetAngleDegrees }
             : {}),
-          ...(item.clockMinute !== undefined
-            ? { clockMinute: item.clockMinute }
+          ...(item.initialMeasureDegrees !== undefined
+            ? { initialMeasureDegrees: item.initialMeasureDegrees }
             : {}),
           ...Object.fromEntries(
             candidates.flatMap((value, candidateIndex) => [

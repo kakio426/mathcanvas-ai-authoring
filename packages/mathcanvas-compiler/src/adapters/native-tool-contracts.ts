@@ -78,6 +78,15 @@ export type RectangleIntent = {
   };
 };
 
+export type PointLineIntent = {
+  readonly kind: "point-line";
+  readonly toolKey: "common.point-line";
+  readonly geometry: "line" | "angle";
+  readonly angleDegrees: number;
+  readonly ray?: "base" | "turn";
+  readonly stroke?: string;
+};
+
 /**
  * MathCanvas 막대그래프. 축·눈금·항목 이름을 객체 하나가 모두 담는다.
  * 세로축 최대값은 `(gridlineCount - 1) x valuePerGridline`이며, 이 규칙은
@@ -121,4 +130,5 @@ export type NativeToolIntent =
   | DataTableIntent
   | TextIntent
   | LatexIntent
-  | RectangleIntent;
+  | RectangleIntent
+  | PointLineIntent;
