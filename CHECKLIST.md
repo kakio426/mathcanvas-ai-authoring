@@ -207,21 +207,23 @@
 ## R10 — 최종 검증, support state, commit·push
 
 - Depth: `core`
-- Status: `in_progress`
+- Status: `complete`
 - Depends on: R1–R9 또는 R5 NO-GO 종료 조건
 - Definition of done:
-  - [ ] `pnpm cognitive:verify` 통과
-  - [ ] `pnpm check` 통과
-  - [ ] sol xhigh가 최종 diff와 evidence를 검토하고 P0/P1이 없다.
-  - [ ] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다.
-  - [ ] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
-  - [ ] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
-  - [ ] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
-  - [ ] `main`과 `origin/main` 동기화가 확인된다.
-  - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
+  - [x] `pnpm cognitive:verify` 통과
+  - [x] `pnpm check` 통과
+  - [x] sol xhigh가 최종 diff와 evidence를 검토하고 P0/P1이 없다.
+  - [x] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다. (이번에는 fresh native canary 없음)
+  - [x] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
+  - [x] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
+  - [x] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
+  - [x] `main`과 `origin/main` 동기화가 확인된다.
+  - [x] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
   - `pnpm check`는 182개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
+  - sol xhigh 최종 verdict `OKAY`: P0/P1 0건. P2는 changed scope 수동 등록과 첫 native GO 시 확장할 fallback/flow/label gate 후속 부채로만 기록했다.
+  - 커밋/푸시: `1510410` foundation, `cabf240` lifecycle/fallback fail-closed, `ec5549b` reserve 교차검증·자동 issue harness. 현재 `main == origin/main == ec5549b`, working tree clean.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 
@@ -235,3 +237,4 @@
   - [ ] 실제 baseline/ratchet seam에 연결되어 있으며 별도 progress 문서를 만들지 않는다.
   - [ ] 이번 core release를 막지 않는 이유와 후속 owner/expiry가 이 파일의 notes에 기록된다.
 - Evidence/notes:
+  - 현재 core release를 막지 않는 이유: R5가 NO-GO이고 native workbench를 출시하지 않았다. 다음 native 후보 live probe 전에 `native-spatial-activity-scope.json`을 최신 blueprint hash로 갱신하고 contract catalog를 채운다.
