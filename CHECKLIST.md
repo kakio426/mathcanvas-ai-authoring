@@ -42,7 +42,8 @@
   - [x] 정상 fixture 1개와 stale/drift 실패 fixture
 - Evidence/notes:
   - `packages/contracts/src/vocabulary/native-spatial.ts`에 normative contract와 별도 observation evidence schema를 추가했다.
-  - `packages/contracts/src/vocabulary/native-spatial.test.ts` 4개 테스트 및 contracts build 통과.
+  - lifecycle assertion이 다섯 상태의 순서·중복·hash transition·reopen numeric drift·contract fingerprint·reserve/task envelope 포함을 직접 검사한다. unbounded envelope와 minInteractiveSize보다 작은 reserve를 fail-closed한다.
+  - `packages/contracts/src/vocabulary/native-spatial.test.ts` 8개 테스트 및 contracts build 통과.
 
 ## R3 — affordance·spatial gate와 baseline ratchet
 
@@ -65,8 +66,8 @@
   - [x] 초기 baseline ratchet 상태 검증과 신규 위반 차단 함수 테스트
 - Evidence/notes:
   - `packages/contracts/src/catalog/native-spatial-gates.ts`에 gate ID, baseline/waiver schema, changed-scope ratchet, hard 승격 조건을 추가했다.
-  - `research/mathcanvas/native-spatial-gate-state.json`은 초기 ratchet 상태이며 `pnpm native-spatial:verify` 통과.
-  - 관련 contracts tests 6개 통과.
+  - `research/mathcanvas/native-spatial-gate-state.json`은 `currentIssues`와 `changedActivityIds`를 포함한 초기 ratchet 상태이며 verifier가 `evaluateNativeSpatialRatchet`를 실제 호출한다. blocking issue와 expired waiver는 종료 코드 1로 막는다.
+  - 관련 contracts tests 3개 통과 및 `pnpm native-spatial:verify` 통과.
 
 ## R4 — 나눗셈 후보 rubric과 background deep probe
 
@@ -97,7 +98,7 @@
 - Status: `complete`
 - Depends on: R4
 - Definition of done:
-  - [x] 선정 후보와 탈락 후보의 교육·기술 근거가 기록된다.
+  - [x] 후보별 static evidence와 live 미검증 blocker가 기록된다. (인증 차단으로 교육·기술 우선순위는 아직 선정하지 않음)
   - [x] captured-only 후보를 probe 성공만으로 활동에 넣지 않는다.
   - [ ] 진행 시 `captured → contracted → verified → released` evidence가 모두 존재한다. (NO-GO 분기이므로 비적용)
   - [x] 새 package, 범용 solver, raw passthrough 없이 기존 seam에서 구현된다.
@@ -132,7 +133,7 @@
   - [ ] max reserveBox flow test
   - [ ] unsupported/unbounded/stale failure tests
 - Evidence/notes:
-  - `packages/mathcanvas-compiler/src/resolve/native-spatial-layout.ts`에 selected-tool과 분리된 bounded layout seam을 추가하고 variant selection, reserve placement, single-pass vertical flow를 단위 테스트했다.
+  - `packages/mathcanvas-compiler/src/resolve/native-spatial-layout.ts`에 selected-tool과 분리된 bounded layout seam을 추가하고 variant selection, reserve placement, single-pass vertical flow를 단위 테스트했다. variant는 primary+optional fallback 최대 2개이며 fallback required width의 엄격한 감소와 overflow를 검사한다.
   - selected native contract adapter 연결과 activity release는 R5의 live evidence가 생길 때까지 보류한다.
 
 ## R7 — 나눗셈 native workbench 활동 재설계
@@ -211,7 +212,7 @@
 - Definition of done:
   - [ ] `pnpm cognitive:verify` 통과
   - [ ] `pnpm check` 통과
-  - [ ] Claude Opus 5가 최종 diff와 evidence를 검토하고 P0/P1이 없다.
+  - [ ] sol xhigh가 최종 diff와 evidence를 검토하고 P0/P1이 없다.
   - [ ] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다.
   - [ ] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
   - [ ] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
@@ -219,7 +220,8 @@
   - [ ] `main`과 `origin/main` 동기화가 확인된다.
   - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
-  - 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다. 전체 `pnpm check`, ratchet/cognitive/visual/quality audit, 최종 diff review를 진행한다.
+  - `pnpm check`는 178개 테스트, build, native ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
+  - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 

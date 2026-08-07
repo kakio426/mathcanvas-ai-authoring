@@ -46,6 +46,8 @@ export const nativeSpatialGateStateSchema = z
     hardGateIds: z.array(nativeSpatialGateIdSchema),
     baselineIssues: z.array(nativeSpatialIssueSchema),
     waivers: z.array(nativeSpatialWaiverSchema),
+    currentIssues: z.array(nativeSpatialIssueSchema),
+    changedActivityIds: z.array(stableIdSchema),
     stableGreenRuns: z.number().int().min(0),
     falsePositiveSamples: z.number().int().min(0)
   })

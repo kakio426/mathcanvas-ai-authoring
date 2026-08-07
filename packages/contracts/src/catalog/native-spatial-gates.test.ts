@@ -20,6 +20,8 @@ const state: NativeSpatialGateState = {
     }
   ],
   waivers: [],
+  currentIssues: [],
+  changedActivityIds: [],
   stableGreenRuns: 0,
   falsePositiveSamples: 0
 };
@@ -71,5 +73,27 @@ describe("native spatial ratchet", () => {
         falsePositiveSamples: 0
       })
     ).toBe(false);
+  });
+
+  it("blocks a changed-scope issue when its waiver has expired", () => {
+    const result = evaluateNativeSpatialRatchet({
+      state: {
+        ...state,
+        waivers: [
+          {
+            activityId: "changed.activity",
+            gateId: "visual.native-flow-fit",
+            owner: "owner",
+            reason: "temporary probe waiver",
+            expiresAt: "2026-08-07T00:00:00.000Z"
+          }
+        ]
+      },
+      changedActivityIds: ["changed.activity"],
+      issues: [issue("expired-waiver")],
+      now: "2026-08-08T00:00:00.000Z"
+    });
+    expect(result.blockingIssues).toEqual([issue("expired-waiver")]);
+    expect(result.waivedIssues).toHaveLength(0);
   });
 });

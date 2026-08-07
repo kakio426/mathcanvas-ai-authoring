@@ -7,6 +7,8 @@ import { assertNativeSpatialContract } from "@mathcanvas/contracts";
 
 export interface LayoutVariantCandidate {
   readonly id: string;
+  /** Semantic width required by this explicit preset, before any layout growth. */
+  readonly requiredContentWidth: number;
   /** Maximum content width this variant can accept without scaling. */
   readonly maxContentWidth: number;
   /** Fixed pitch chosen for this variant; it must not change during growth. */
@@ -19,22 +21,23 @@ export interface SelectedLayoutVariant {
 }
 
 /**
- * Select from an author-declared ordered list using semantic content width only.
- * The list is the fallback policy; no measured growth result is fed back into it.
+ * Select from an author-declared primary + optional fallback pair using semantic
+ * content widths only. No measured growth result is fed back into selection.
  */
 export function selectLayoutVariant(
-  requiredContentWidth: number,
   candidates: readonly LayoutVariantCandidate[]
 ): SelectedLayoutVariant {
-  if (!Number.isFinite(requiredContentWidth) || requiredContentWidth <= 0) {
-    throw new Error("layout-variant-required-width-invalid");
-  }
   if (candidates.length === 0) {
     throw new Error("layout-variant-candidates-empty");
+  }
+  if (candidates.length > 2) {
+    throw new Error("layout-variant-fallback-limit");
   }
   for (let index = 0; index < candidates.length; index += 1) {
     const candidate = candidates[index]!;
     if (
+      !Number.isFinite(candidate.requiredContentWidth) ||
+      candidate.requiredContentWidth <= 0 ||
       !Number.isFinite(candidate.maxContentWidth) ||
       candidate.maxContentWidth <= 0 ||
       !Number.isFinite(candidate.itemPitch) ||
@@ -42,12 +45,18 @@ export function selectLayoutVariant(
     ) {
       throw new Error(`layout-variant-candidate-invalid:${candidate.id}`);
     }
-    if (requiredContentWidth <= candidate.maxContentWidth) {
+    if (
+      index === 1 &&
+      candidate.requiredContentWidth >= candidates[0]!.requiredContentWidth
+    ) {
+      throw new Error("layout-variant-fallback-not-monotone");
+    }
+    if (candidate.requiredContentWidth <= candidate.maxContentWidth) {
       return { variant: candidate, fallbackCount: index };
     }
   }
   throw new Error(
-    `layout-variant-content-width-overflow:${requiredContentWidth}`
+    `layout-variant-content-width-overflow:${candidates.at(-1)!.requiredContentWidth}`
   );
 }
 
@@ -63,6 +72,16 @@ export function resolveNativeReserveBounds(
   contract: NativeSpatialContract
 ): SpatialBounds {
   const parsed = assertNativeSpatialContract(contract);
+  if (
+    !Number.isFinite(placement.x) ||
+    !Number.isFinite(placement.y) ||
+    !Number.isFinite(placement.width) ||
+    !Number.isFinite(placement.height) ||
+    placement.width <= 0 ||
+    placement.height <= 0
+  ) {
+    throw new Error("native-spatial-placement-invalid");
+  }
   if (
     placement.width < parsed.minInteractiveSize.width ||
     placement.height < parsed.minInteractiveSize.height

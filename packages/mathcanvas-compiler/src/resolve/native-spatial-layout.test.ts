@@ -21,23 +21,64 @@ const contract = {
 describe("native spatial layout pipeline", () => {
   it("selects a variant from content width without growth feedback", () => {
     expect(
-      selectLayoutVariant(900, [
-        { id: "horizontal", maxContentWidth: 800, itemPitch: 500 },
-        { id: "stacked", maxContentWidth: 1200, itemPitch: 760 }
+      selectLayoutVariant([
+        {
+          id: "horizontal",
+          requiredContentWidth: 900,
+          maxContentWidth: 800,
+          itemPitch: 500
+        },
+        {
+          id: "stacked",
+          requiredContentWidth: 500,
+          maxContentWidth: 1200,
+          itemPitch: 760
+        }
       ])
     ).toEqual({
-      variant: { id: "stacked", maxContentWidth: 1200, itemPitch: 760 },
+      variant: {
+        id: "stacked",
+        requiredContentWidth: 500,
+        maxContentWidth: 1200,
+        itemPitch: 760
+      },
       fallbackCount: 1
     });
   });
 
   it("fails instead of endlessly retrying when every variant is too narrow", () => {
     expect(() =>
-      selectLayoutVariant(1300, [
-        { id: "horizontal", maxContentWidth: 800, itemPitch: 500 },
-        { id: "stacked", maxContentWidth: 1200, itemPitch: 760 }
+      selectLayoutVariant([
+        {
+          id: "horizontal",
+          requiredContentWidth: 1300,
+          maxContentWidth: 800,
+          itemPitch: 500
+        },
+        {
+          id: "stacked",
+          requiredContentWidth: 700,
+          maxContentWidth: 600,
+          itemPitch: 760
+        }
       ])
     ).toThrow("layout-variant-content-width-overflow");
+  });
+
+  it("rejects a third fallback and a non-monotone fallback", () => {
+    expect(() =>
+      selectLayoutVariant([
+        { id: "one", requiredContentWidth: 900, maxContentWidth: 800, itemPitch: 500 },
+        { id: "two", requiredContentWidth: 700, maxContentWidth: 600, itemPitch: 600 },
+        { id: "three", requiredContentWidth: 500, maxContentWidth: 500, itemPitch: 700 }
+      ])
+    ).toThrow("layout-variant-fallback-limit");
+    expect(() =>
+      selectLayoutVariant([
+        { id: "one", requiredContentWidth: 900, maxContentWidth: 800, itemPitch: 500 },
+        { id: "two", requiredContentWidth: 900, maxContentWidth: 1200, itemPitch: 600 }
+      ])
+    ).toThrow("layout-variant-fallback-not-monotone");
   });
 
   it("reserves selected chrome around a centered native placement", () => {

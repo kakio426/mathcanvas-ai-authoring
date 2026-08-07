@@ -52,12 +52,14 @@ export const nativeSpatialStateSchema = z.enum([
   "undo-reset",
   "reopened"
 ]);
+export type NativeSpatialState = z.infer<typeof nativeSpatialStateSchema>;
 
 export const nativeSpatialObservationSchema = z
   .object({
     state: nativeSpatialStateSchema,
     visualBox: spatialBoundsSchema,
     chromeBox: spatialBoundsSchema,
+    reserveBox: spatialBoundsSchema,
     taskEnvelope: z.union([
       spatialBoundsSchema,
       z.object({ mode: z.literal("unbounded") }).strict()
@@ -89,6 +91,13 @@ export const nativeSpatialEvidenceSchema = z
       .strict(),
     observations: z.array(nativeSpatialObservationSchema).min(1).max(5),
     persistedStateChanged: z.boolean(),
+    roundTripReferenceState: z.enum([
+      "initial",
+      "selected",
+      "manipulated",
+      "undo-reset"
+    ]),
+    roundTripDrift: z.number().nonnegative().finite(),
     roundTripDriftWithinTolerance: z.boolean(),
     nonPointerInteraction: z
       .enum(["available", "unavailable", "not-observed"])
@@ -116,19 +125,174 @@ export function assertNativeSpatialContract(
   ) {
     throw new Error("native-spatial-reserve-box-invalid");
   }
+  if (
+    parsed.reserveBox.width < parsed.minInteractiveSize.width ||
+    parsed.reserveBox.height < parsed.minInteractiveSize.height
+  ) {
+    throw new Error("native-spatial-reserve-box-below-min-interactive-size");
+  }
   return parsed;
+}
+
+function contains(outer: SpatialBounds, inner: SpatialBounds): boolean {
+  return (
+    inner.x >= outer.x &&
+    inner.y >= outer.y &&
+    inner.x + inner.width <= outer.x + outer.width &&
+    inner.y + inner.height <= outer.y + outer.height
+  );
+}
+
+function taskEnvelopeOf(
+  observation: NativeSpatialObservation
+): SpatialBounds {
+  if ("mode" in observation.taskEnvelope) {
+    throw new Error("native-spatial-unbounded-task-envelope");
+  }
+  return observation.taskEnvelope;
+}
+
+function observationByState(
+  observations: readonly NativeSpatialObservation[]
+): Map<NativeSpatialState, NativeSpatialObservation> {
+  if (observations.length !== 5) {
+    throw new Error("native-spatial-lifecycle-states-incomplete");
+  }
+  const byState = new Map<NativeSpatialState, NativeSpatialObservation>();
+  for (const observation of observations) {
+    if (byState.has(observation.state)) {
+      throw new Error(`native-spatial-lifecycle-state-duplicate:${observation.state}`);
+    }
+    byState.set(observation.state, observation);
+  }
+  for (const state of [
+    "initial",
+    "selected",
+    "manipulated",
+    "undo-reset",
+    "reopened"
+  ] as const) {
+    if (!byState.has(state)) {
+      throw new Error(`native-spatial-lifecycle-state-missing:${state}`);
+    }
+  }
+  const expectedOrder = [
+    "initial",
+    "selected",
+    "manipulated",
+    "undo-reset",
+    "reopened"
+  ];
+  if (
+    observations.map((observation) => observation.state).join(",") !==
+    expectedOrder.join(",")
+  ) {
+    throw new Error("native-spatial-lifecycle-state-order-invalid");
+  }
+  return byState;
+}
+
+function maxBoundsDrift(
+  left: SpatialBounds,
+  right: SpatialBounds
+): number {
+  return Math.max(
+    Math.abs(left.x - right.x),
+    Math.abs(left.y - right.y),
+    Math.abs(left.width - right.width),
+    Math.abs(left.height - right.height)
+  );
 }
 
 export function assertNativeSpatialEvidence(
   evidence: NativeSpatialEvidence
 ): NativeSpatialEvidence {
   const parsed = nativeSpatialEvidenceSchema.parse(evidence);
-  const states = new Set(parsed.observations.map((observation) => observation.state));
-  if (states.has("manipulated") && !parsed.persistedStateChanged) {
+  const byState = observationByState(parsed.observations);
+  const initial = byState.get("initial")!;
+  const manipulated = byState.get("manipulated")!;
+  const undoReset = byState.get("undo-reset")!;
+  const reopened = byState.get("reopened")!;
+  for (const observation of parsed.observations) {
+    const taskEnvelope = taskEnvelopeOf(observation);
+    if (
+      !contains(observation.reserveBox, observation.visualBox) ||
+      !contains(observation.reserveBox, observation.chromeBox) ||
+      !contains(taskEnvelope, observation.visualBox) ||
+      !contains(taskEnvelope, observation.chromeBox)
+    ) {
+      throw new Error(
+        `native-spatial-observation-outside-reserve-or-task-envelope:${observation.state}`
+      );
+    }
+  }
+  const mathematicalStateChanged =
+    initial.persistedMathematicalStateHash !==
+    manipulated.persistedMathematicalStateHash;
+  if (parsed.persistedStateChanged !== mathematicalStateChanged) {
+    throw new Error("native-spatial-state-change-hash-mismatch");
+  }
+  if (!mathematicalStateChanged) {
     throw new Error("native-spatial-manipulation-without-state-change");
   }
-  if (states.has("reopened") && !parsed.roundTripDriftWithinTolerance) {
-    throw new Error("native-spatial-reopen-drift-outside-tolerance");
+  if (
+    undoReset.persistedMathematicalStateHash !==
+    initial.persistedMathematicalStateHash
+  ) {
+    throw new Error("native-spatial-undo-reset-state-mismatch");
+  }
+  const reference = byState.get(parsed.roundTripReferenceState)!;
+  if (
+    reopened.persistedMathematicalStateHash !==
+    reference.persistedMathematicalStateHash
+  ) {
+    throw new Error("native-spatial-reopen-state-mismatch");
+  }
+  const measuredDrift = Math.max(
+    maxBoundsDrift(reopened.visualBox, reference.visualBox),
+    maxBoundsDrift(reopened.chromeBox, reference.chromeBox),
+    maxBoundsDrift(reopened.reserveBox, reference.reserveBox)
+  );
+  if (Math.abs(measuredDrift - parsed.roundTripDrift) > 1e-6) {
+    throw new Error("native-spatial-reopen-drift-measurement-mismatch");
   }
   return parsed;
+}
+
+export function assertNativeSpatialLifecycleEvidence(
+  contract: NativeSpatialContract,
+  evidence: NativeSpatialEvidence
+): { readonly contract: NativeSpatialContract; readonly evidence: NativeSpatialEvidence } {
+  const parsedContract = assertNativeSpatialContract(contract);
+  const parsedEvidence = assertNativeSpatialEvidence(evidence);
+  if (!parsedContract.roundTripStable) {
+    throw new Error("native-spatial-round-trip-unstable");
+  }
+  if (
+    parsedEvidence.toolKey !== parsedContract.toolKey ||
+    parsedEvidence.variantId !== parsedContract.variantId ||
+    parsedEvidence.toolVersionFingerprint !==
+      parsedContract.toolVersionFingerprint ||
+    !parsedContract.derivedFromEvidenceIds.includes(parsedEvidence.evidenceId)
+  ) {
+    throw new Error("native-spatial-contract-evidence-binding-mismatch");
+  }
+  for (const observation of parsedEvidence.observations) {
+    if (
+      observation.reserveBox.width < parsedContract.minInteractiveSize.width ||
+      observation.reserveBox.height < parsedContract.minInteractiveSize.height
+    ) {
+      throw new Error(
+        `native-spatial-observed-reserve-below-min-interactive-size:${observation.state}`
+      );
+    }
+  }
+  if (
+    parsedEvidence.roundTripDrift > parsedContract.roundTripTolerance ||
+    parsedEvidence.roundTripDriftWithinTolerance !==
+      (parsedEvidence.roundTripDrift <= parsedContract.roundTripTolerance)
+  ) {
+    throw new Error("native-spatial-reopen-drift-outside-tolerance");
+  }
+  return { contract: parsedContract, evidence: parsedEvidence };
 }
