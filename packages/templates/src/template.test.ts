@@ -170,11 +170,16 @@ describe("분수 비교 템플릿", () => {
       multiplicationItems.map((item) => item.values.questionText)
     ).toEqual(
       expect.arrayContaining([
-        expect.stringContaining("구슬이"),
-        expect.stringContaining("도토리가"),
-        expect.stringContaining("단추가")
+        expect.stringContaining("연필이 3개씩"),
+        expect.stringContaining("4봉지를"),
+        expect.stringContaining("바둑돌이 6개씩"),
+        expect.stringContaining("7줄을"),
+        expect.stringContaining("붙임 딱지가 5개씩")
       ])
     );
+    expect(
+      multiplicationItems.map((item) => item.provenance.generatorVersion)
+    ).toEqual(["1.2.0", "1.2.0", "1.2.0"]);
   });
 
   it.each(["easy", "normal", "hard"] as const)(

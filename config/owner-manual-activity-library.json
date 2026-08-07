@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-07T22:55:00.000Z",
+  "policy": {
+    "accountScope": "current-owner-my-canvas",
+    "loginRequired": true,
+    "visualInspectionRequired": true,
+    "manualOnly": true,
+    "prototypesAllowed": false,
+    "externalProjectsAllowed": false,
+    "exactLessonAllowlistRequired": true
+  },
+  "lessonReviews": [
+    {
+      "lessonId": "g3s1-multiplication-array-transfer",
+      "accountScope": "current-owner-my-canvas",
+      "accountDisplayName": "유병주 선생님",
+      "reviewedAt": "2026-08-07T22:55:00.000Z",
+      "inspectedProjectIds": [
+        "a9sw5l",
+        "I9a004"
+      ],
+      "decision": "no-usable-manual",
+      "searchNotes": [
+        "내 캔버스에서 곱셈 관련 수동 제작 후보를 직접 열어 화면을 확인했습니다.",
+        "두 후보 모두 같은 묶음의 의미를 선택·검증·설명하는 이번 차시 목표를 충족하지 못했습니다."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "projectId": "a9sw5l",
+      "title": "한 자릿수 곱셈 풀어보기",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/a9sw5l",
+      "origin": "owner-manual",
+      "prototype": false,
+      "reviewedAt": "2026-08-07T22:51:00.000Z",
+      "reviewStatus": "rejected",
+      "compatibleLessonIds": [],
+      "conceptTags": [
+        "한 자릿수 곱셈",
+        "곱셈표"
+      ],
+      "reasons": [
+        "빈 곱셈표 중심이라 한 묶음의 수와 묶음 수를 구분하는 판단이 드러나지 않습니다.",
+        "학생의 첫 선택, 확인 근거, 설명 또는 수정 기록이 없습니다."
+      ]
+    },
+    {
+      "projectId": "I9a004",
+      "title": "구구단 2단 익히기",
+      "editorUrl": "https://mathcanvas.vivasam.com/ko/view/I9a004",
+      "origin": "owner-manual",
+      "prototype": false,
+      "reviewedAt": "2026-08-07T22:53:00.000Z",
+      "reviewStatus": "rejected",
+      "compatibleLessonIds": [],
+      "conceptTags": [
+        "구구단",
+        "2단",
+        "숫자 카드"
+      ],
+      "reasons": [
+        "답 숫자를 옮기는 연습에 머물러 같은 수씩 묶는 상황과 곱셈식의 뜻을 연결하지 못합니다.",
+        "첫 답이 보이고 설명 공간이 없어 이번 활동지의 오개념을 확인하기 어렵습니다."
+      ]
+    }
+  ]
+}

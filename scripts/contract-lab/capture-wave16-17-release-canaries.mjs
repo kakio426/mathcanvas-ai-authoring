@@ -48,7 +48,7 @@ const legacyCases = [
     seed: "wave17-multiplication-release-v1",
     blueprint: multiplicationArrayMeaningBlueprint,
     standardCode: "[2수01-10]",
-    grade: 2,
+    grade: 3,
     manipulation: "multiplication-array-choice-drag",
     categoryUnit: "Unit01",
     releasedTools: [],

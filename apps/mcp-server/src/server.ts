@@ -11,6 +11,11 @@ import {
   AuthoringServiceError,
   MathCanvasAuthoringService
 } from "./service.js";
+import {
+  buildLessonBundleRecommendationInput,
+  lessonBundleWorksheetIntakeSchema,
+  projectLessonBundleRecommendation
+} from "./lesson-bundle.js";
 
 function toolResult(value: Record<string, unknown>) {
   return {
@@ -45,7 +50,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     { name: "mathcanvas-ai-authoring", version: "0.2.0" },
     {
       instructions:
-        "처음에는 mathcanvas_open_workspace로 로그인 상태를 확인하세요. 로그인이 필요하면 전용 로그인 절차를 안내하고, 완료 후 mathcanvas_check_connection으로 확인하세요. 활동 요청에는 mathcanvas_recommend_activity를 사용하고 추천안을 사용자에게 보여 주세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 기존 프로젝트 수정 도구는 제공하지 않습니다."
+        "처음에는 mathcanvas_open_workspace로 로그인 상태를 확인하세요. 로그인이 필요하면 전용 로그인 절차를 안내하고, 완료 후 mathcanvas_check_connection으로 확인하세요. 일반 활동 요청에는 mathcanvas_recommend_activity를 사용하세요. 수업 꾸러미는 먼저 선생님의 수동 제작본 허용 목록을 확인하고, 일치하는 항목이 없을 때만 mathcanvas_recommend_from_lesson_bundle을 사용하세요. 사용자가 명시적으로 승인한 뒤에만 mathcanvas_create_new_project를 호출하세요. 다른 사람의 프로젝트와 기존 AI 프로토타입 프로젝트는 재사용하지 않으며 기존 프로젝트 수정 도구는 제공하지 않습니다."
     }
   );
 
@@ -151,6 +156,35 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
               ? {}
               : { manipulation: input.manipulation })
           })
+        });
+      } catch (error) {
+        return toolError(error);
+      }
+    }
+  );
+
+  server.registerTool(
+    "mathcanvas_recommend_from_lesson_bundle",
+    {
+      title: "활동지에 맞는 새 MathCanvas 활동 준비",
+      description:
+        "검증된 통합 활동지 1장과 수업 근거를 받아 새 프로젝트용 활동을 추천합니다. 선생님 계정에서 화면 검수로 승인한 수동 제작본이 없는 경우에만 사용하며, 다른 사람 프로젝트나 이전 AI 프로토타입 프로젝트를 재사용하지 않습니다. 지원 활동이 없으면 자체 템플릿 제작 요청을 반환하고 프로젝트를 만들지 않습니다.",
+      inputSchema: lessonBundleWorksheetIntakeSchema,
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: false,
+        openWorldHint: false
+      }
+    },
+    async (input) => {
+      try {
+        const recommendation = service.recommend(
+          buildLessonBundleRecommendationInput(input)
+        );
+        return toolResult({
+          ok: true,
+          ...projectLessonBundleRecommendation(input, recommendation)
         });
       } catch (error) {
         return toolError(error);

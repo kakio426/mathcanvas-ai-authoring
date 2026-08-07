@@ -270,7 +270,10 @@ function verifiedCandidate(request: GenerationRequest):
     request.manipulation === "multiplication-array-choice-drag" ||
     multiplicationMeaningPatterns.some((pattern) => pattern.test(request.prompt))
   ) {
-    return { templateId: ACTIVITY_IDS.multiplicationArrayMeaning, standardCode: "[2수01-10]", manipulation: "multiplication-array-choice-drag", grade: 2, gradeRange: [1, 2], maximumProblemCount: 3 };
+    // 3학년 곱셈 단원에서 같은 묶음의 의미를 다시 확인하는 전이·보충
+    // 활동으로도 사용한다. 공식 성취기준은 선행 개념 [2수01-10]에
+    // 결속하되 실제 프로젝트의 학년 표시는 교사의 요청 학년을 따른다.
+    return { templateId: ACTIVITY_IDS.multiplicationArrayMeaning, standardCode: "[2수01-10]", manipulation: "multiplication-array-choice-drag", grade: 2, gradeRange: [1, 3], maximumProblemCount: 3 };
   }
   if (
     request.manipulation === "probability-fraction-strip-drag" ||

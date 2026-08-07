@@ -1395,8 +1395,8 @@ const manifests: Readonly<Record<string, CognitiveDemandManifest>> = {
     defineCognitiveDemandManifest({
       schemaVersion: "1.0.0",
       blueprintId: "number.multiplication.group-array-meaning-v1",
-      blueprintVersion: "1.1.0",
-      blueprintContentHash: "d2b37527080376ae02d06f5888f9a06f4307a4a5568220806f95fd1edf9b8664",
+      blueprintVersion: "1.2.0",
+      blueprintContentHash: "844dd2349fa73213fc9425073a1a799bd42c486c95c9b3c772ea9eb93ad6f900",
       mathematicalDecision: "학생은 한 묶음의 수와 묶음 수를 곱셈식의 앞 수와 뒤 수에 연결한다.",
       misconceptionConflict: "두 수의 순서를 바꾸어도 상황을 똑같이 설명하거나 두 수를 더하면 된다는 생각을, 괄호로 나눈 묶음 배열과 충돌시킨다.",
       learningMap: {

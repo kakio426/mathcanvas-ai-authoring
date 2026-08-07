@@ -20,7 +20,7 @@ const scaffold = makeChoiceExplanationScaffoldRoles({
 export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint(withStudentScreenQuality({
   schemaVersion: "1.0.0",
   id: "number.multiplication.group-array-meaning-v1",
-  version: "1.1.0",
+  version: "1.2.0",
   title: "같은 수씩 묶은 배열과 곱셈식 연결하기",
   learningObjective: "같은 수씩 묶인 상황을 곱셈식과 배열로 연결하고, 두 수가 나타내는 뜻을 설명할 수 있다.",
   curriculumBinding: { standardCode: "[2수01-10]", domain: "수와 연산", officialGoal: "곱셈이 이루어지는 실생활 상황과 연결하여 곱셈의 의미를 이해한다." },
@@ -29,7 +29,7 @@ export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint(withS
     ...scaffold,
     { role: "array-panel", scope: "each-item", layoutRole: "array-panel", idRole: "array-panel", toolKey: "common.rectangle", intentKind: "draw-rectangle", locked: true, movable: false, instructionalIntent: "같은 수씩 묶인 배열을 한 영역에 보여 줍니다.", properties: { fill: "#F5FBFF", stroke: "#4AA9D8" }, bindings: {}, containerRole: "work-panel" },
     { role: "group-label", scope: "each-item", layoutRole: "group-label", idRole: "group-label", toolKey: "common.text", intentKind: "text", locked: true, movable: false, instructionalIntent: "한 묶음의 수와 묶음 수를 말로 나타냅니다.", properties: { text: "", fontSize: 25 }, bindings: { text: "item.groupLabelText" }, containerRole: "array-panel" },
-    { role: "array-text", scope: "each-item", layoutRole: "array-text", idRole: "array-text", toolKey: "common.text", intentKind: "text", locked: true, movable: false, instructionalIntent: "각 괄호를 한 묶음으로 하여 전체를 직접 셀 수 있는 배열입니다.", properties: { text: "", fontSize: 24 }, bindings: { text: "item.arrayText" }, containerRole: "array-panel" }
+    { role: "array-text", scope: "each-item", layoutRole: "array-text", idRole: "array-text", toolKey: "common.text", intentKind: "text", locked: true, movable: false, instructionalIntent: "각 괄호를 한 묶음으로 하여 전체를 직접 셀 수 있는 배열입니다.", properties: { text: "", fontSize: 18 }, bindings: { text: "item.arrayText" }, containerRole: "array-panel" }
   ],
   layout: { tokenSet: "wave17-multiplication-array-v1", root: { id: "canvas", kind: "canvas", preset: "canvas.root", repeat: "once", children: [
     ...makeChoiceExplanationScaffoldLayoutChildren(),
@@ -48,4 +48,4 @@ export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint(withS
   instructions: [...instructions],
   payload: { categoryId: MATHCANVAS_PROJECT_CATEGORIES["수와 연산"].categoryId, tags: ["곱셈", "같은 수씩 묶기", "배열", "생각 고치기"], studyLevel: "elementary", isShowMenuOnActivity: true },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-}));
+}, { compactGlyphRoles: ["array-text"], compactGlyphMinimumFontSize: 22 }));

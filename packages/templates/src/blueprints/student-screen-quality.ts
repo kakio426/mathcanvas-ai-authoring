@@ -8,12 +8,16 @@ const WRITING_PAIRS = [
 
 interface StudentScreenQualityOptions {
   readonly questionFontSize?: number;
+  readonly compactGlyphRoles?: readonly string[];
+  readonly compactGlyphMinimumFontSize?: number;
 }
 
 function normalizeWritingLayer(
   roles: ActivityBlueprintBody["toolRoles"],
   gradeMinimumFontSize: number,
-  questionFontSize: number
+  questionFontSize: number,
+  compactGlyphRoles: readonly string[],
+  compactGlyphMinimumFontSize: number
 ): ActivityBlueprintBody["toolRoles"] {
   const ordered = roles.map((role) => {
     if (
@@ -27,7 +31,9 @@ function normalizeWritingLayer(
     );
     const problemText = role.role === "question" || role.role === "prompt";
     const mathPrompt = role.role === "prompt" && role.intentKind === "latex";
-    const compactGridGlyph = /^hundred-grid-row-\d+$/.test(role.role);
+    const compactGridGlyph =
+      /^hundred-grid-row-\d+$/.test(role.role) ||
+      compactGlyphRoles.includes(role.role);
     return {
       ...role,
       properties: {
@@ -35,7 +41,7 @@ function normalizeWritingLayer(
         fontSize: Math.max(
           role.properties.fontSize,
           compactGridGlyph
-            ? 25
+            ? compactGlyphMinimumFontSize
             : mathPrompt
               ? 66
             : problemText
@@ -89,7 +95,9 @@ export function withStudentScreenQuality(
   const toolRoles = normalizeWritingLayer(
     input.toolRoles,
     gradeMinimumFontSize,
-    options.questionFontSize ?? 45
+    options.questionFontSize ?? 45,
+    options.compactGlyphRoles ?? [],
+    options.compactGlyphMinimumFontSize ?? 25
   );
   const textRoles = toolRoles
     .filter((role) => role.intentKind === "text" || role.intentKind === "latex")

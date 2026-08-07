@@ -65,6 +65,8 @@
     "mathcanvas:app:macos:install": "zsh scripts/build-macos-app.sh --install",
     "mathcanvas:ui": "pnpm --filter @mathcanvas/teacher-ui... build && pnpm --filter @mathcanvas/teacher-ui start",
     "mathcanvas:ui:no-open": "MATHCANVAS_UI_NO_OPEN=1 pnpm mathcanvas:ui",
+    "lesson-bundle:run": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/run-lesson-bundle-activity.mjs",
+    "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
     "quality:audit": "node scripts/quality-audit/run.mjs",
     "native-spatial:verify": "node scripts/quality-audit/verify-native-spatial-ratchet.mjs",
     "quality:audit:report": "node scripts/quality-audit/run.mjs --allow-issues",

@@ -60,6 +60,7 @@ export interface TeacherAnswer {
 
 export interface RecommendationSummary {
   supported: boolean;
+  templateId?: string;
   recommendedGrade?: number;
   standardCode?: string;
   learningGoal?: string;
@@ -86,6 +87,9 @@ function summarizeRecommendation(
 ): RecommendationSummary {
   return {
     supported: recommendation.supported,
+    ...(recommendation.templateId === undefined
+      ? {}
+      : { templateId: recommendation.templateId }),
     ...(recommendation.recommendedGrade === undefined
       ? {}
       : { recommendedGrade: recommendation.recommendedGrade }),

@@ -64,7 +64,7 @@ async function connectedClient(runtimeOverride?: MathCanvasBrowserRuntime) {
 }
 
 describe("MCP 도구 seam", () => {
-  it("확장 프로그램 없는 다섯 도구를 등록한다", async () => {
+  it("확장 프로그램 없는 여섯 도구를 등록한다", async () => {
     const client = await connectedClient();
     const tools = await client.listTools();
     expect(tools.tools.map((tool) => tool.name).sort()).toEqual([
@@ -72,7 +72,8 @@ describe("MCP 도구 seam", () => {
       "mathcanvas_create_new_project",
       "mathcanvas_get_job_status",
       "mathcanvas_open_workspace",
-      "mathcanvas_recommend_activity"
+      "mathcanvas_recommend_activity",
+      "mathcanvas_recommend_from_lesson_bundle"
     ]);
     expect(JSON.stringify(tools)).not.toContain("확장 프로그램");
     const recommendTool = tools.tools.find(
@@ -84,6 +85,79 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(tools)).not.toMatch(
       /rawPayload|contentsJson|absoluteCoordinates|nativeToolId|toolKey/
     );
+  });
+
+  it("검증된 활동지 근거로는 외부 프로젝트를 재사용하지 않고 새 활동만 준비한다", async () => {
+    const client = await connectedClient();
+    const result = await client.callTool({
+      name: "mathcanvas_recommend_from_lesson_bundle",
+      arguments: {
+        schemaVersion: 1,
+        intakeId: "g3s1-multiplication-array-transfer-65be8eb9",
+        generatedAt: "2026-08-07T22:18:22.541Z",
+        sourcePolicy: {
+          reusableProjectSource: "owner-manual-curated",
+          generatedProjectSource: "owner-mathcanvas-ai",
+          prototypeProjectReuse: false,
+          externalProjectReuse: false
+        },
+        lesson: {
+          lessonId: "g3s1-multiplication-array-transfer",
+          title: "줄과 칸으로 전체 수 찾기",
+          gradeLabel: "초등 3학년 1학기",
+          unit: "1. 곱셈",
+          targetBehavior:
+            "같은 묶음을 곱셈으로 나타내고 식과 한 문장으로 근거를 설명한다.",
+          worksheetTitle: "줄과 칸으로 전체 수 찾기 통합 활동지",
+          curriculumAnchorIds: ["[4수01-04]"]
+        },
+        worksheet: {
+          filename:
+            "g3s1-multiplication-array-transfer-worksheet.png",
+          sha256:
+            "65be8eb9aeac51dab319f53c21993bb9d1a5a87f6852116213e99ec68be0d9c8",
+          width: 1024,
+          height: 1536,
+          inspectedAt: "2026-08-07T22:11:21.000Z",
+          visualQa: {
+            logoTitleSeparated: true,
+            allQuestionTextLegible: true,
+            choicesVisuallySeparated: true,
+            answerSpacesPresent: true,
+            noOverlapsOrClipping: true
+          }
+        },
+        mathEvidence: {
+          answerLabels: ["3×4=12자루", "6×7=42개"],
+          misconceptions: [
+            "한 묶음의 수와 묶음 수를 곱하지 않고 더한다."
+          ],
+          visualSummary: [
+            "한 봉지에 3자루씩 4봉지",
+            "한 줄에 6개씩 7줄"
+          ]
+        },
+        recommendation: { problemCount: 2, difficulty: "normal" }
+      }
+    });
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      route: "create-new-owner-project",
+      sourcePolicy: {
+        reusableProjectSource: "owner-manual-curated",
+        prototypeProjectReuse: false,
+        externalProjectReuse: false
+      }
+    });
+    expect(JSON.stringify(result.structuredContent)).toContain(
+      "number.multiplication.group-array-meaning-v1"
+    );
+    expect(result.structuredContent).toMatchObject({
+      recommendation: {
+        recommendation: { recommendedGrade: 3 }
+      }
+    });
   });
 
   it("추천 도구의 조작 방식 목록이 계약 스키마와 어긋나지 않는다", async () => {

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-07T23:23:51.813Z",
+  "policy": {
+    "previousPrototypeApprovalAllowed": false,
+    "freshCanaryRequired": true,
+    "exactLessonApprovalRequired": true,
+    "blueprintHashBindingRequired": true
+  },
+  "approvals": [
+    {
+      "lessonId": "g3s1-multiplication-array-transfer",
+      "templateId": "number.multiplication.group-array-meaning-v1",
+      "blueprintContentHash": "844dd2349fa73213fc9425073a1a799bd42c486c95c9b3c772ea9eb93ad6f900",
+      "approvedAt": "2026-08-07T23:23:51.813Z",
+      "evidencePaths": [
+        "research/mathcanvas/wave17-multiplication-release-canary.json",
+        ".mathcanvas-contract-lab/previews/wave17/multiplication-array.png"
+      ],
+      "reviewer": "owner-loop-visual-qa"
+    }
+  ]
+}
