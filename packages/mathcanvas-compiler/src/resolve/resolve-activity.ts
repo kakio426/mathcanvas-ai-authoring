@@ -69,7 +69,13 @@ function materializeIntent(
   return resolvedToolIntentSchema.parse({
     kind,
     toolKey,
-    properties: intentProperties
+    properties: intentProperties,
+    ...(role.spatialContractId
+      ? { spatialContractId: role.spatialContractId }
+      : {}),
+    ...(role.spatialContractVersion
+      ? { spatialContractVersion: role.spatialContractVersion }
+      : {})
   });
 }
 

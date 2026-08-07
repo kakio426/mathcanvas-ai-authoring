@@ -27,10 +27,11 @@ function observation(
 ) {
   return {
     state,
+    placement: { x: 100, y: 200, width: 80, height: 80 },
     visualBox: { x: 100, y: 200, width: 80, height: 80 },
     chromeBox: { x: 90, y: 190, width: 100, height: 100 },
     reserveBox: { x: 90, y: 190, width: 100, height: 100 },
-    taskEnvelope: { x: 80, y: 180, width: 120, height: 120 },
+    taskEnvelope: { x: 90, y: 190, width: 100, height: 100 },
     persistedMathematicalStateHash
   };
 }
@@ -141,6 +142,15 @@ describe("native spatial evidence", () => {
         roundTripDriftWithinTolerance: true
       })
     ).toThrow("native-spatial-reopen-drift-measurement-mismatch");
+    expect(() =>
+      assertNativeSpatialEvidence({
+        ...evidence,
+        observations: evidence.observations.map((item) => ({
+          ...item,
+          taskEnvelope: { x: 80, y: 180, width: 120, height: 120 }
+        }))
+      })
+    ).toThrow("native-spatial-observation-outside-reserve-or-task-envelope");
   });
 
   it("rejects stale contract and evidence bindings", () => {
@@ -165,5 +175,17 @@ describe("native spatial evidence", () => {
         roundTripDriftWithinTolerance: false
       })
     ).toThrow("native-spatial-reopen-drift-outside-tolerance");
+  });
+
+  it("rejects an observed reserve that is not the contract-resolved box", () => {
+    expect(() =>
+      assertNativeSpatialLifecycleEvidence(contract, {
+        ...evidence,
+        observations: evidence.observations.map((item) => ({
+          ...item,
+          reserveBox: { ...item.reserveBox, width: 101 }
+        }))
+      })
+    ).toThrow("native-spatial-observed-reserve-contract-mismatch");
   });
 });

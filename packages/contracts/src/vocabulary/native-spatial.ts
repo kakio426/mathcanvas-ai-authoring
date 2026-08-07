@@ -57,6 +57,7 @@ export type NativeSpatialState = z.infer<typeof nativeSpatialStateSchema>;
 export const nativeSpatialObservationSchema = z
   .object({
     state: nativeSpatialStateSchema,
+    placement: spatialBoundsSchema,
     visualBox: spatialBoundsSchema,
     chromeBox: spatialBoundsSchema,
     reserveBox: spatialBoundsSchema,
@@ -204,6 +205,26 @@ function maxBoundsDrift(
   );
 }
 
+function resolveContractReserveBox(
+  contract: NativeSpatialContract,
+  placement: SpatialBounds
+): SpatialBounds {
+  if (contract.reserveAnchor === "placement-center") {
+    return {
+      x: placement.x + placement.width / 2 + contract.reserveBox.x,
+      y: placement.y + placement.height / 2 + contract.reserveBox.y,
+      width: contract.reserveBox.width,
+      height: contract.reserveBox.height
+    };
+  }
+  return {
+    x: placement.x + contract.reserveBox.x,
+    y: placement.y + contract.reserveBox.y,
+    width: contract.reserveBox.width,
+    height: contract.reserveBox.height
+  };
+}
+
 export function assertNativeSpatialEvidence(
   evidence: NativeSpatialEvidence
 ): NativeSpatialEvidence {
@@ -218,6 +239,7 @@ export function assertNativeSpatialEvidence(
     if (
       !contains(observation.reserveBox, observation.visualBox) ||
       !contains(observation.reserveBox, observation.chromeBox) ||
+      !contains(observation.reserveBox, taskEnvelope) ||
       !contains(taskEnvelope, observation.visualBox) ||
       !contains(taskEnvelope, observation.chromeBox)
     ) {
@@ -278,6 +300,23 @@ export function assertNativeSpatialLifecycleEvidence(
     throw new Error("native-spatial-contract-evidence-binding-mismatch");
   }
   for (const observation of parsedEvidence.observations) {
+    if (
+      observation.placement.width < parsedContract.minInteractiveSize.width ||
+      observation.placement.height < parsedContract.minInteractiveSize.height
+    ) {
+      throw new Error(
+        `native-spatial-placement-below-min-interactive-size:${observation.state}`
+      );
+    }
+    const expectedReserve = resolveContractReserveBox(
+      parsedContract,
+      observation.placement
+    );
+    if (maxBoundsDrift(observation.reserveBox, expectedReserve) > 1e-6) {
+      throw new Error(
+        `native-spatial-observed-reserve-contract-mismatch:${observation.state}`
+      );
+    }
     if (
       observation.reserveBox.width < parsedContract.minInteractiveSize.width ||
       observation.reserveBox.height < parsedContract.minInteractiveSize.height

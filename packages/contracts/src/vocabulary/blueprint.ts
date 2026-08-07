@@ -22,6 +22,8 @@ export const toolRoleSchema = z
     idRole: stableIdSchema,
     toolKey: stableIdSchema,
     intentKind: stableIdSchema,
+    spatialContractId: stableIdSchema.optional(),
+    spatialContractVersion: z.string().min(1).max(240).optional(),
     locked: z.boolean(),
     movable: z.boolean(),
     instructionalIntent: z.string().min(1).max(300),

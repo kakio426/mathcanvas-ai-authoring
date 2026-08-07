@@ -43,7 +43,7 @@
 - Evidence/notes:
   - `packages/contracts/src/vocabulary/native-spatial.ts`에 normative contract와 별도 observation evidence schema를 추가했다.
   - lifecycle assertion이 다섯 상태의 순서·중복·hash transition·reopen numeric drift·contract fingerprint·reserve/task envelope 포함을 직접 검사한다. unbounded envelope와 minInteractiveSize보다 작은 reserve를 fail-closed한다.
-  - `packages/contracts/src/vocabulary/native-spatial.test.ts` 8개 테스트 및 contracts build 통과.
+  - `packages/contracts/src/vocabulary/native-spatial.test.ts` 9개 테스트 및 contracts build 통과.
 
 ## R3 — affordance·spatial gate와 baseline ratchet
 
@@ -66,8 +66,8 @@
   - [x] 초기 baseline ratchet 상태 검증과 신규 위반 차단 함수 테스트
 - Evidence/notes:
   - `packages/contracts/src/catalog/native-spatial-gates.ts`에 gate ID, baseline/waiver schema, changed-scope ratchet, hard 승격 조건을 추가했다.
-  - `research/mathcanvas/native-spatial-gate-state.json`은 `currentIssues`와 `changedActivityIds`를 포함한 초기 ratchet 상태이며 verifier가 `evaluateNativeSpatialRatchet`를 실제 호출한다. blocking issue와 expired waiver는 종료 코드 1로 막는다.
-  - 관련 contracts tests 3개 통과 및 `pnpm native-spatial:verify` 통과.
+  - `research/mathcanvas/native-spatial-activity-scope.json`의 blueprint hash-bound changed scope와 `native-spatial-contract-catalog.json`을 verifier가 읽어 semantic native role의 contract/lifecycle issue를 자동 생성하고 `evaluateNativeSpatialRatchet`에 전달한다. blocking issue와 expired waiver는 종료 코드 1로 막는다.
+  - `packages/contracts/src/catalog/native-spatial-harness.test.ts`의 missing-contract/stale-scope/state-change issue-generation fixture와 관련 contracts tests 6개 통과 및 `pnpm native-spatial:verify` 통과.
 
 ## R4 — 나눗셈 후보 rubric과 background deep probe
 
@@ -220,7 +220,7 @@
   - [ ] `main`과 `origin/main` 동기화가 확인된다.
   - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
-  - `pnpm check`는 178개 테스트, build, native ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
+  - `pnpm check`는 182개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목

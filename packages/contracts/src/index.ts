@@ -3,6 +3,7 @@ export * from "./catalog/activity-support.js";
 export * from "./catalog/cognitive-demand.js";
 export * from "./catalog/evidence-reference.js";
 export * from "./catalog/native-spatial-gates.js";
+export * from "./catalog/native-spatial-harness.js";
 export * from "./catalog/tool-manifest.js";
 export * from "./catalog/variation-envelope.js";
 export * from "./scaffolds.js";

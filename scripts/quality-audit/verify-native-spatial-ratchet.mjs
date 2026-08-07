@@ -5,18 +5,35 @@ import { resolve } from "node:path";
 import {
   nativeSpatialGateStateSchema,
   canPromoteNativeSpatialGate,
-  evaluateNativeSpatialRatchet
+  evaluateNativeSpatialRatchet,
+  nativeSpatialActivityScopeSchema,
+  nativeSpatialContractCatalogSchema,
+  collectNativeSpatialIssues
 } from "../../packages/contracts/dist/index.js";
+import { listRegisteredBlueprints } from "../../packages/templates/dist/index.js";
 
 const root = resolve(import.meta.dirname, "../..");
-const path = resolve(root, "research/mathcanvas/native-spatial-gate-state.json");
+const statePath = resolve(root, "research/mathcanvas/native-spatial-gate-state.json");
+const scopePath = resolve(root, "research/mathcanvas/native-spatial-activity-scope.json");
+const catalogPath = resolve(root, "research/mathcanvas/native-spatial-contract-catalog.json");
 const state = nativeSpatialGateStateSchema.parse(
-  JSON.parse(readFileSync(path, "utf8"))
+  JSON.parse(readFileSync(statePath, "utf8"))
 );
+const scope = nativeSpatialActivityScopeSchema.parse(
+  JSON.parse(readFileSync(scopePath, "utf8"))
+);
+const catalog = nativeSpatialContractCatalogSchema.parse(
+  JSON.parse(readFileSync(catalogPath, "utf8"))
+);
+const generated = collectNativeSpatialIssues({
+  scope,
+  catalog,
+  blueprints: listRegisteredBlueprints()
+});
 const ratchet = evaluateNativeSpatialRatchet({
   state,
-  issues: state.currentIssues,
-  changedActivityIds: state.changedActivityIds
+  issues: generated.issues,
+  changedActivityIds: generated.changedActivityIds
 });
 
 if (ratchet.blockingIssues.length > 0) {
@@ -38,5 +55,5 @@ if (state.mode === "hard" && !canPromoteNativeSpatialGate(state, {
 }
 
 process.stdout.write(
-  `native-spatial-ratchet PASS: mode=${state.mode} baseline=${state.baselineIssues.length} waivers=${state.waivers.length}\n`
+  `native-spatial-ratchet PASS: mode=${state.mode} changed=${generated.changedActivityIds.length} issues=${generated.issues.length} baseline=${state.baselineIssues.length} waivers=${state.waivers.length}\n`
 );

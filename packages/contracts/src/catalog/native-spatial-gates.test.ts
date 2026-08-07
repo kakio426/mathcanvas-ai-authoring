@@ -20,8 +20,6 @@ const state: NativeSpatialGateState = {
     }
   ],
   waivers: [],
-  currentIssues: [],
-  changedActivityIds: [],
   stableGreenRuns: 0,
   falsePositiveSamples: 0
 };
