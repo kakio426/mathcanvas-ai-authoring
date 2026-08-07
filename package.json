@@ -54,6 +54,7 @@
     "contract:verify:wave11:common-unit-difference": "node scripts/contract-lab/validate-activity-release-canary.mjs --input research/mathcanvas/wave11-common-unit-difference-release-canary.json",
     "contract:verify:wave12:bar-graph-scale": "node scripts/contract-lab/validate-activity-release-canary.mjs --input research/mathcanvas/wave12-bar-graph-scale-release-canary.json",
     "contract:verify:wave13:broken-ruler": "node scripts/contract-lab/validate-activity-release-canary.mjs --input research/mathcanvas/wave13-broken-ruler-release-canary.json",
+    "contract:verify:division-native-rubric": "node scripts/contract-lab/verify-division-native-rubric.mjs",
     "contract:verify": "node scripts/contract-lab/verify.mjs",
     "cognitive:verify": "node scripts/pedagogy/check-cognitive-demand.mjs",
     "doctor": "node scripts/doctor.mjs",
@@ -65,6 +66,7 @@
     "mathcanvas:ui": "pnpm --filter @mathcanvas/teacher-ui... build && pnpm --filter @mathcanvas/teacher-ui start",
     "mathcanvas:ui:no-open": "MATHCANVAS_UI_NO_OPEN=1 pnpm mathcanvas:ui",
     "quality:audit": "node scripts/quality-audit/run.mjs",
+    "native-spatial:verify": "node scripts/quality-audit/verify-native-spatial-ratchet.mjs",
     "quality:audit:report": "node scripts/quality-audit/run.mjs --allow-issues",
     "release:preview": "node scripts/capture-release-previews.mjs",
     "smoke:browser": "node scripts/smoke-managed-browser.mjs",
@@ -73,7 +75,7 @@
     "visual:audit:report": "node scripts/visual-audit/run.mjs --allow-issues",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

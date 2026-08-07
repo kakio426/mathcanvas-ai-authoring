@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "rubricId": "division-native-candidate-rubric-v1",
+  "observedAt": "2026-08-08T00:00:00.000Z",
+  "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+  "probeMode": "static-catalog-plus-headless-auth-check",
+  "liveProbe": {
+    "status": "blocked-auth-required",
+    "attempt": "node scripts/contract-lab/capture-page.mjs --headless --path /ko/myCanvas --login-timeout-ms 0",
+    "detail": "전용 Chrome 인증 세션이 없어 후보 생성·선택·조작·저장·재열기를 실행하지 않았다.",
+    "writeCount": 0,
+    "userChromeTouched": false
+  },
+  "rubric": [
+    "student-can-create-equal-size-groups",
+    "equal-group-size-is-observable",
+    "remainder-is-independent-and-countable",
+    "manipulation-changes-persisted-mathematical-state",
+    "selection-manipulation-undo-save-reopen-stable",
+    "min-max-variant-fits-classroom-viewport",
+    "non-pointer-path-observed"
+  ],
+  "candidates": [
+    {
+      "toolKey": "NO01SC",
+      "observedName": "수 세기 모형",
+      "staticSupportState": "captured",
+      "staticVariantCount": 40,
+      "staticOptions": ["changeSize"],
+      "staticShapeFamily": "shape:57068fc8c1a65c82",
+      "staticEvidence": [
+        "research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC",
+        "research/mathcanvas/module-variant-contract.static.json#tool=NO01SC",
+        "research/mathcanvas/common-draw-contract.observations.json#module=NO01SC"
+      ],
+      "rubricResult": "unverified-live",
+      "releaseBlockers": [
+        "savedSvgId",
+        "serverNormalization",
+        "wireFieldTypes",
+        "manipulation-state-change",
+        "save-reopen-roundtrip"
+      ]
+    },
+    {
+      "toolKey": "NO01NR",
+      "observedName": "수 구슬",
+      "staticSupportState": "captured",
+      "staticVariantCount": 2,
+      "staticOptions": ["invertColors"],
+      "staticShapeFamily": "shape:d550053e860632f5",
+      "staticEvidence": [
+        "research/mathcanvas/tool-catalog.snapshot.json#tool=NO01NR",
+        "research/mathcanvas/module-variant-contract.static.json#tool=NO01NR"
+      ],
+      "rubricResult": "unverified-live",
+      "releaseBlockers": [
+        "savedSvgId",
+        "serverNormalization",
+        "wireFieldTypes",
+        "manipulation-state-change",
+        "save-reopen-roundtrip"
+      ]
+    },
+    {
+      "toolKey": "NO07IC",
+      "observedName": "셈돌",
+      "staticSupportState": "captured",
+      "staticVariantCount": 3,
+      "staticOptions": [],
+      "staticShapeFamily": "shape:16a3a68a8deab4fa+shape:732a57f45de9b236",
+      "staticEvidence": [
+        "research/mathcanvas/tool-catalog.snapshot.json#tool=NO07IC",
+        "research/mathcanvas/module-variant-contract.static.json#tool=NO07IC"
+      ],
+      "rubricResult": "unverified-live",
+      "releaseBlockers": [
+        "savedSvgId",
+        "serverNormalization",
+        "wireFieldTypes",
+        "manipulation-state-change",
+        "save-reopen-roundtrip"
+      ]
+    },
+    {
+      "toolKey": "NO04NG",
+      "observedName": "배열표",
+      "staticSupportState": "captured",
+      "staticVariantCount": 6,
+      "staticOptions": ["뒤집기", "채우기"],
+      "staticShapeFamily": "shape:4ed271fa249cf16b+shape:9a1b0f83fd283f88+shape:e566b0d8451bd3a4",
+      "staticEvidence": [
+        "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NG",
+        "research/mathcanvas/module-variant-contract.static.json#tool=NO04NG"
+      ],
+      "rubricResult": "unverified-live",
+      "releaseBlockers": [
+        "savedSvgId",
+        "serverNormalization",
+        "wireFieldTypes",
+        "manipulation-state-change",
+        "save-reopen-roundtrip"
+      ]
+    }
+  ],
+  "releasedRecordOnlyTool": {
+    "toolKey": "NO04NT",
+    "observedName": "수 카드",
+    "supportState": "released",
+    "role": "answer-recording-affordance",
+    "primaryMathematicalStateChange": false,
+    "evidence": [
+      "research/mathcanvas/wave4-number-card-canary.roundtrip.json"
+    ],
+    "limitation": "수 카드는 몫·나머지를 기록할 수 있지만 같은 수씩 묶기와 잔여물 구성의 핵심 상태를 대신하지 않는다."
+  },
+  "decision": {
+    "status": "no-go-until-live-native-probe",
+    "reason": "captured-only 후보의 핵심 수학 조작과 lifecycle을 확인하지 못했으므로 활동에 native 도구를 추가하지 않는다.",
+    "safeFallback": "현행 점+펜 활동을 verified로 유지한다. 장식용 native를 추가하지 않는다."
+  }
+}

@@ -13,4 +13,5 @@ export * from "./adapters/registry.js";
 export * from "./native-objects.js";
 export * from "./layout-presets/registry.js";
 export * from "./resolve/layout-resolver.js";
+export * from "./resolve/native-spatial-layout.js";
 export * from "./resolve/resolve-activity.js";

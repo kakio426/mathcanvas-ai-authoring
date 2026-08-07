@@ -34,8 +34,12 @@
       "sha256": "59ba0ff2e73f8595284301d6598e04a3caabd2d8082114daec32ab1e41874fe2"
     },
     {
+      "path": "packages/contracts/src/vocabulary/native-spatial.ts",
+      "sha256": "097de827cccf1193918e1fad1c508604461f2e85657600dceb3f18d0eea3d675"
+    },
+    {
       "path": "packages/contracts/src/vocabulary/resolved.ts",
-      "sha256": "2f232e1d2fa4c2eb07774ffc2d319f210c51e8f2f45fa0d20bae645c7b6e2f20"
+      "sha256": "a6d7e7f15e0090c9bcd64dd7177872ed75de382b1c9bf107050ef403ac0e7556"
     },
     {
       "path": "packages/mathcanvas-compiler/src/core/compile-resolved.ts",
@@ -43,11 +47,15 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
-      "sha256": "7d23de8fba3f2c93ff9dabcca2f884ab362c33ddc70e193ce93942a65010a3e9"
+      "sha256": "d16d846eb21ab7c8a9f34800b0294a08fa09f42b461b167257f0e656a4de9ed4"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/layout-resolver.ts",
       "sha256": "3f380369fbe060b3d95e86c3b10c5bc8833fb9831b09dd5137c4b9c0bb20b552"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/native-spatial-layout.ts",
+      "sha256": "0d656d6e47b9a22cc018483c9e5786adb79d94c5ca76f8a36c3a56626dc76f2e"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts",
@@ -78,5 +86,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "0f448e4764cef71ca4a6d7766fa287f7833e4c24e1b507a7d9817fa293f09e73"
+  "manifestHash": "c3012bf8b741cc97a8292bede31ae9642085b9cd120a99191111b4a06667a9d5"
 }

@@ -33,7 +33,9 @@ export const resolvedToolIntentSchema = z
   .object({
     kind: stableIdSchema,
     toolKey: stableIdSchema,
-    properties: jsonRecordSchema
+    properties: jsonRecordSchema,
+    spatialContractId: stableIdSchema.optional(),
+    spatialContractVersion: z.string().min(1).max(240).optional()
   })
   .strict();
 

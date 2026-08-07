@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "ratchet",
+  "hardGateIds": [],
+  "baselineIssues": [],
+  "waivers": [],
+  "stableGreenRuns": 0,
+  "falsePositiveSamples": 0
+}
