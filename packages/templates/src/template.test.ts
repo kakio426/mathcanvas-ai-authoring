@@ -11,6 +11,8 @@ import {
   VISUAL_DIFFERENCE_BANDS,
   equivalentFractionBlueprint,
   fractionComparisonBlueprint,
+  findClaimEvidenceBlueprint,
+  generateClaimEvidenceItems,
   generateFractionComparisonActivity,
   generateMultiplicationArrayMeaningItems,
   makeTenNumberCardsBlueprint,
@@ -35,6 +37,32 @@ function recommendation(
 }
 
 describe("분수 비교 템플릿", () => {
+  it("몫과 나머지 활동은 정답식 대신 학생이 묶어 표시할 점 모형을 만든다", () => {
+    const blueprint = findClaimEvidenceBlueprint(
+      "number.division.quotient-remainder.claim-evidence-v1"
+    );
+    expect(blueprint?.version).toBe("1.1.0");
+    expect(blueprint?.instructions.join(" ")).toContain("펜으로 묶어 놓고");
+
+    const items = generateClaimEvidenceItems(
+      {
+        profileId: "division-remainder",
+        difficulty: "normal",
+        problemCount: 2
+      },
+      "division-unresolved-dot-field"
+    );
+    for (const item of items) {
+      const evidenceText = String(item.values.evidenceText);
+      const total = Number(item.values.countableTotal);
+      expect(evidenceText.match(/●/g)).toHaveLength(total);
+      expect(evidenceText).not.toMatch(/[0-9=×+]/);
+      expect(evidenceText).not.toContain(String(item.values.correctValueText));
+      expect(Number(item.values.countableGroupSize)).toBeGreaterThan(1);
+      expect(item.provenance.generatorVersion).toBe("1.1.0");
+    }
+  });
+
   it("blueprint의 절대 좌표, raw payload, 함수, 직접 정답을 거부한다", () => {
     const base = generateFractionComparisonActivity(
       recommendation(),

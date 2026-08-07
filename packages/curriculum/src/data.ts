@@ -153,6 +153,44 @@ export const lineSymmetryRecord = reviewedGeometryRecord({
     "data/kr/curriculum-standards.json, topics.json, dependencies.json / [6수03-02]"
 });
 
+export const oneDigitDivisorDivisionRecord: CurriculumRecord =
+  curriculumRecordSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    key: "kr-2022-elem-math:4su01-06",
+    code: "[4수01-06]",
+    gradeBand: "3-4",
+    domain: "수와 연산",
+    officialGoal:
+      "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
+    prerequisites: [
+      "나눗셈이 이루어지는 실생활 상황에서 나눗셈의 의미를 이해한다.",
+      "곱셈과 나눗셈의 관계를 이용해 몫을 구할 수 있다.",
+      "주어진 수를 같은 수씩 묶고 남는 수를 셀 수 있다."
+    ],
+    officialSource: {
+      sourceId: "kr-ncic-2022-elementary-math",
+      sourceKind: "official",
+      title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      locator:
+        "PDF 23쪽, 초등학교 3~4학년군 > 수와 연산 > 세 자리 수 범위의 나눗셈 > [4수01-06]",
+      version: "교육부 고시 제2022-33호",
+      verificationStatus: "official-text-verified",
+      sourceTextIncluded: false,
+      caveat:
+        "저장소에는 교육과정 원문 전체를 재배포하지 않습니다. 성취기준 코드와 목표 문구는 위 공식 원문 위치에서 대조한 검토 메타데이터입니다."
+    },
+    auxiliarySources: [
+      {
+        ...sharedAuxiliarySource,
+        locator:
+          "data/kr/curriculum-standards.json, topics.json, dependencies.json / [4수01-06]"
+      }
+    ],
+    reviewedAt: "2026-08-07T00:00:00.000Z",
+    reviewer: "MathCanvas AI authoring curriculum review"
+  });
+
 export const unlikeDenominatorFractionOperationsRecord: CurriculumRecord =
   curriculumRecordSchema.parse({
     schemaVersion: CONTRACT_SCHEMA_VERSION,

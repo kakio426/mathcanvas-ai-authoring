@@ -169,9 +169,11 @@ export {
 } from "./item-generators/probability-bag-pair.js";
 export {
   CLAIM_EVIDENCE_GENERATOR_ID,
+  CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_V2_VERSION,
-  generateClaimEvidenceItems
+  generateClaimEvidenceItems,
+  makeUnresolvedDotField
 } from "./item-generators/claim-evidence.js";
 export {
   FACTOR_PAIR_ARRAY_GENERATOR_ID,

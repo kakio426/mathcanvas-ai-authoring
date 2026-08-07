@@ -1140,7 +1140,15 @@ export function validateActivityReleaseCanaryEvidence(
   const wave18ClaimEvidenceContracts = {
     "number.division.quotient-remainder.claim-evidence-v1": {
       probeId: "wave18-division-remainder-release-canary-v1",
-      categoryUnit: "Unit01"
+      categoryUnit: "Unit01",
+      persisted: (value) =>
+        Array.isArray(value?.unresolvedDotCounts) &&
+        value.unresolvedDotCounts.length === itemCount &&
+        value.unresolvedDotCounts.every(
+          (count) => [23, 29, 31].includes(count)
+        ) &&
+        new Set(value.unresolvedDotCounts).size === itemCount &&
+        value?.answerLeakTextCount === 0
     },
     "measure.angle.turn-size.claim-evidence-v1": {
       probeId: "wave18-angle-turn-release-canary-v1",

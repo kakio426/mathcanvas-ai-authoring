@@ -8,6 +8,7 @@ import {
   type ClaimEvidenceActivityProfile
 } from "@mathcanvas/curriculum";
 import {
+  CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_ID,
   CLAIM_EVIDENCE_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_V2_VERSION
@@ -24,6 +25,7 @@ function makeClaimEvidenceBlueprint(
   profile: ClaimEvidenceActivityProfile
 ): ActivityBlueprint {
   const isAngleTurn = profile.profileId === "angle-turn";
+  const isDivisionRemainder = profile.profileId === "division-remainder";
   const presentation = profile.presentation;
   const problemCount = presentation?.problemCount ?? 2;
   const candidateRoles = CHOICE_CARD_ROLES.slice(
@@ -37,6 +39,12 @@ function makeClaimEvidenceBlueprint(
           "② 파란 각의 두 끝점을 회색 두 변 위에 놓고 각도를 확인하세요.",
           "③ 측정값을 쓰고 처음 고른 답과 비교하세요."
         ]
+      : isDivisionRemainder
+        ? [
+            "① 답 카드를 하나 골라 빈칸에 놓으세요.",
+            "② 점을 한 묶음의 수만큼 펜으로 묶어 놓고, 남은 점을 확인하세요.",
+            "③ 묶음 수와 남은 수를 쓰고, 처음 고른 답을 고치세요."
+          ]
       : [
           "① 답 카드를 하나 골라 빈칸에 놓으세요.",
           `② ${profile.evidenceHeading}의 자료로 답이 맞는지 확인하세요.`,
@@ -86,7 +94,13 @@ function makeClaimEvidenceBlueprint(
   return defineActivityBlueprint(withStudentScreenQuality({
     schemaVersion: "1.0.0",
     id: profile.activityId,
-    version: isAngleTurn ? "3.4.0" : presentation ? "2.0.0" : "1.0.0",
+    version: isAngleTurn
+      ? "3.4.0"
+      : isDivisionRemainder
+        ? "1.1.0"
+        : presentation
+          ? "2.0.0"
+          : "1.0.0",
     title: profile.title,
     learningObjective: profile.learningObjective,
     curriculumBinding: {
@@ -96,9 +110,11 @@ function makeClaimEvidenceBlueprint(
     },
     generator: {
       id: CLAIM_EVIDENCE_GENERATOR_ID,
-      version: presentation
-        ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
-        : CLAIM_EVIDENCE_GENERATOR_VERSION,
+      version: isDivisionRemainder
+        ? CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION
+        : presentation
+          ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
+          : CLAIM_EVIDENCE_GENERATOR_VERSION,
       parameters: {
         profileId: profile.profileId,
         problemCount,
@@ -318,7 +334,7 @@ function makeClaimEvidenceBlueprint(
             "array-text",
             ...candidateRoles
           ],
-          maximumFillRatio: 0.96
+          maximumFillRatio: isDivisionRemainder ? 0.98 : 0.96
         }
       },
       {

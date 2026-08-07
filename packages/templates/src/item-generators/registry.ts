@@ -91,6 +91,7 @@ import {
   generateProbabilityBagPairItems
 } from "./probability-bag-pair.js";
 import {
+  CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_ID,
   CLAIM_EVIDENCE_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_V2_VERSION,
@@ -130,6 +131,8 @@ const generators: Readonly<Record<string, Generator>> = {
   [`${BAR_GRAPH_REPRESENT_CELLS_GENERATOR_ID}:${BAR_GRAPH_REPRESENT_CELLS_GENERATOR_VERSION}`]:
     generateBarGraphRepresentCellsItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_VERSION}`]:
+    generateClaimEvidenceItems,
+  [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION}`]:
     generateClaimEvidenceItems,
   [`${CLAIM_EVIDENCE_GENERATOR_ID}:${CLAIM_EVIDENCE_GENERATOR_V2_VERSION}`]:
     generateClaimEvidenceItems,

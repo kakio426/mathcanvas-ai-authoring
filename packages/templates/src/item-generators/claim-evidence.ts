@@ -11,7 +11,24 @@ import { shuffled } from "./common-unit-pool.js";
 export const CLAIM_EVIDENCE_GENERATOR_ID =
   "curriculum.claim-evidence-items" as const;
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
+export const CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION = "1.1.0" as const;
 export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
+
+export function makeUnresolvedDotField(total: number): string {
+  if (!Number.isInteger(total) || total < 3 || total > 99) {
+    throw new RangeError("점 모형의 전체 수는 3 이상 99 이하의 자연수여야 합니다.");
+  }
+  const base = Math.floor(total / 3);
+  const remainder = total % 3;
+  const rowCounts = remainder === 0
+    ? [base, base, base]
+    : remainder === 1
+      ? [base, base + 1, base]
+      : [base + 1, base, base + 1];
+  return rowCounts
+    .map((count) => Array.from({ length: count }, () => "●").join(" "))
+    .join("\n");
+}
 
 export function generateClaimEvidenceItems(
   parameters: {
@@ -54,9 +71,18 @@ export function generateClaimEvidenceItems(
           orderLabel: `${index + 1}번`,
           questionText: item.questionText,
           evidenceLabelText: item.evidenceLabelText,
-          evidenceText: item.evidenceText,
+          evidenceText:
+            item.countableTotal === undefined
+              ? item.evidenceText
+              : makeUnresolvedDotField(item.countableTotal),
           correctValueText: item.correctValueText,
           answerExplanation: item.answerExplanation,
+          ...(item.countableTotal !== undefined
+            ? { countableTotal: item.countableTotal }
+            : {}),
+          ...(item.countableGroupSize !== undefined
+            ? { countableGroupSize: item.countableGroupSize }
+            : {}),
           ...(item.targetAngleDegrees !== undefined
             ? { targetAngleDegrees: item.targetAngleDegrees }
             : {}),
@@ -73,9 +99,12 @@ export function generateClaimEvidenceItems(
         },
         provenance: {
           generatorId: CLAIM_EVIDENCE_GENERATOR_ID,
-          generatorVersion: profile.presentation
-            ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
-            : CLAIM_EVIDENCE_GENERATOR_VERSION,
+          generatorVersion:
+            profile.profileId === "division-remainder"
+              ? CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION
+              : profile.presentation
+                ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
+                : CLAIM_EVIDENCE_GENERATOR_VERSION,
           seed
         }
       };

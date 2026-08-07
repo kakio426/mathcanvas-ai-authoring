@@ -12,6 +12,8 @@ export interface ClaimEvidenceItemSeed {
     | readonly [string, string, string, string]
     | readonly [string, string, string, string, string];
   readonly answerExplanation: string;
+  readonly countableTotal?: number;
+  readonly countableGroupSize?: number;
   readonly targetAngleDegrees?: number;
   readonly initialMeasureDegrees?: number;
 }
@@ -86,11 +88,11 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
     activityLabel: "몫과 나머지의 뜻",
     activityDescription:
-      "답만 계산하지 않고 실제 묶음에서 몫과 나머지가 무엇을 뜻하는지 확인해요.",
-    promptSeed: "나눗셈에서 몫과 나머지의 의미를 묶음으로 확인하는 활동",
-    predictionLabel: "처음 판단",
-    evidenceHeading: "묶음으로 확인하기",
-    explanationLabel: "몫과 나머지의 뜻 쓰기",
+      "답을 고른 뒤 점을 직접 묶어 보고 몫과 나머지가 무엇을 뜻하는지 확인해요.",
+    promptSeed: "나눗셈에서 점을 직접 묶어 몫과 나머지의 의미를 확인하는 활동",
+    predictionLabel: "처음 고른 답",
+    evidenceHeading: "점을 묶어 표시하기",
+    explanationLabel: "묶음 수와 남은 수 쓰기",
     misconceptionConflict:
       "나누는 수와 몫을 바꾸거나 남은 수를 몫에 포함하는 생각을 실제 묶음과 충돌시킨다.",
     verificationInvariant:
@@ -115,27 +117,33 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     items: [
       {
         questionText: "연필 23자루를 4자루씩 묶으면 몇 묶음이고 몇 자루가 남을까요?",
-        evidenceLabelText: "4자루씩 묶기",
-        evidenceText: "4개짜리 5묶음 + 3개\n23 = 4 × 5 + 3",
-        correctValueText: "5묶음, 3자루 남음",
-        candidates: ["5묶음, 3자루 남음", "4묶음, 3자루 남음", "5묶음, 4자루 남음", "6묶음, 1자루 남음", "3묶음, 5자루 남음"],
-        answerExplanation: "4자루씩 5묶음은 20자루이고 3자루가 남습니다."
+        evidenceLabelText: "점 23개를 4개씩 묶어 표시하기",
+        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        correctValueText: "5묶음, 3자루",
+        candidates: ["5묶음, 3자루", "4묶음, 3자루", "5묶음, 4자루", "6묶음, 1자루", "3묶음, 5자루"],
+        answerExplanation: "4자루씩 5묶음은 20자루이고 3자루가 남습니다.",
+        countableTotal: 23,
+        countableGroupSize: 4
       },
       {
         questionText: "구슬 31개를 6개씩 봉지에 담으면 몇 봉지이고 몇 개가 남을까요?",
-        evidenceLabelText: "6개씩 묶기",
-        evidenceText: "6개짜리 5묶음 + 1개\n31 = 6 × 5 + 1",
-        correctValueText: "5봉지, 1개 남음",
-        candidates: ["5봉지, 1개 남음", "6봉지, 1개 남음", "5봉지, 5개 남음", "4봉지, 7개 남음", "1봉지, 5개 남음"],
-        answerExplanation: "6개씩 5봉지는 30개이고 1개가 남습니다."
+        evidenceLabelText: "점 31개를 6개씩 묶어 표시하기",
+        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        correctValueText: "5봉지, 1개",
+        candidates: ["5봉지, 1개", "6봉지, 1개", "5봉지, 5개", "4봉지, 7개", "1봉지, 5개"],
+        answerExplanation: "6개씩 5봉지는 30개이고 1개가 남습니다.",
+        countableTotal: 31,
+        countableGroupSize: 6
       },
       {
         questionText: "색종이 29장을 7장씩 나누면 몇 묶음이고 몇 장이 남을까요?",
-        evidenceLabelText: "7장씩 묶기",
-        evidenceText: "7개짜리 4묶음 + 1개\n29 = 7 × 4 + 1",
-        correctValueText: "4묶음, 1장 남음",
-        candidates: ["4묶음, 1장 남음", "3묶음, 8장 남음", "4묶음, 7장 남음", "5묶음, 1장 남음", "1묶음, 4장 남음"],
-        answerExplanation: "7장씩 4묶음은 28장이고 1장이 남습니다."
+        evidenceLabelText: "점 29개를 7개씩 묶어 표시하기",
+        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        correctValueText: "4묶음, 1장",
+        candidates: ["4묶음, 1장", "3묶음, 8장", "4묶음, 7장", "5묶음, 1장", "1묶음, 4장"],
+        answerExplanation: "7장씩 4묶음은 28장이고 1장이 남습니다.",
+        countableTotal: 29,
+        countableGroupSize: 7
       }
     ]
   },

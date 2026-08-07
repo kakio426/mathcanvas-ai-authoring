@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "probeId": "wave24-division-remainder-transient-render-v1",
+  "observedAt": "2026-08-07T05:25:34.593Z",
+  "status": "pass",
+  "blueprintId": "number.division.quotient-remainder.claim-evidence-v1",
+  "blueprintVersion": "1.1.0",
+  "blueprintContentHash": "c4257907fcb06de95c0fe9737031e07883d8ca7132b15ed0a990cea0908e13ed",
+  "generatorVersion": "1.1.0",
+  "layoutPresetContentHash": "26d24eaf4f5a78da73e6cadf24f404554d3a523728da1a79b8abacb9422f6294",
+  "payloadHash": "e361cf6c5be2ca2fecd7f06ad2269ba8567a3f799a35e092a768eb8aa9fb7bec",
+  "renderMode": "actual-mathcanvas-client-transient-route-overlay",
+  "serverWriteCount": 0,
+  "existingProjectWriteCount": 0,
+  "blockedWriteCount": 0,
+  "routeReplacementCount": 3,
+  "localValidationIssueCount": 0,
+  "renderedShape": {
+    "problemCount": 2,
+    "unresolvedDotCounts": [
+      31,
+      23
+    ],
+    "answerLeakVisible": false,
+    "correctDecisionMoveDistancePx": 320.9981279222255
+  },
+  "initialPreviewPath": ".mathcanvas-contract-lab/previews/wave18/division-remainder-transient-initial.png",
+  "previewPath": ".mathcanvas-contract-lab/previews/wave18/division-remainder-transient.png",
+  "persistentLifecycleVerified": false,
+  "limitation": "관리형 MathCanvas 인증 세션이 만료되어 새 프로젝트 생성·저장·재열기는 실행하지 않았다. 인증 없이 읽을 수 있는 기존 canary 편집 경로에서 프로젝트 GET 응답만 현재 컴파일 payload로 메모리 치환해 실제 MathCanvas 클라이언트 렌더와 일회성 카드 이동을 확인했다. 이 증거는 release canary를 대신하지 않으며 활동 상태는 verified로 유지한다."
+}

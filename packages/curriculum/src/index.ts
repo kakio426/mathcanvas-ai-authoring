@@ -19,6 +19,7 @@ import {
   placeValueRecord,
   repeatingPatternRecord,
   multiplicationMeaningRecord,
+  oneDigitDivisorDivisionRecord,
   probabilityComparisonRecord,
   unlikeDenominatorComparisonRecord,
   unlikeDenominatorFractionOperationsRecord
@@ -66,6 +67,7 @@ export function resolveCurriculum(
     "[2수01-02]": placeValueRecord,
     "[2수01-04]": numberCompositionRecord,
     "[2수01-10]": multiplicationMeaningRecord,
+    "[4수01-06]": oneDigitDivisorDivisionRecord,
     "[2수02-01]": repeatingPatternRecord,
     "[2수03-07]": clockReadingRecord,
     "[2수03-08]": timeDurationRecord,
@@ -207,6 +209,7 @@ export {
   placeValueRecord,
   repeatingPatternRecord,
   multiplicationMeaningRecord,
+  oneDigitDivisorDivisionRecord,
   probabilityComparisonRecord,
   unlikeDenominatorComparisonRecord,
   unlikeDenominatorFractionOperationsRecord

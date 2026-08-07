@@ -395,6 +395,15 @@ try {
           candidateCount: contents.filter((object) => /^.*-position-card-\d+$/.test(String(object?.id ?? ""))).length,
           patternBlockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02PB-")).length,
           arrayTextCount: contents.filter((object) => String(object?.id ?? "").endsWith("-array-text")).length,
+          unresolvedDotCounts: contents
+            .filter((object) => String(object?.id ?? "").endsWith("-array-text"))
+            .map((object) => (String(object?.text ?? "").match(/●/g) ?? []).length)
+            .filter((count) => count > 0)
+            .sort((left, right) => left - right),
+          answerLeakTextCount: contents
+            .filter((object) => String(object?.id ?? "").endsWith("-array-text"))
+            .filter((object) => /[0-9=×+]/.test(String(object?.text ?? "")))
+            .length,
           fractionStripCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("NO03FM-")).length,
           clockCount: contents.filter((object) => String(object?.svgId ?? "").startsWith("SM02AD-")).length,
           angleMeasureCount: contents.filter((object) => object?.svgId === "angleElem" && String(object?.id ?? "").endsWith("-measure-angle")).length,

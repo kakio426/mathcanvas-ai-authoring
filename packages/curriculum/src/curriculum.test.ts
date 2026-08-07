@@ -40,8 +40,8 @@ describe("교육과정 해석", () => {
       "official-text-verified"
     );
 
-    // 활동 프로필에서 조립한 레코드는 원문 대조를 자칭하지 않는다.
-    const synthesized = resolveCurriculum("[4수01-06]");
+    // 아직 검토 레코드가 없는 활동 프로필은 원문 대조를 자칭하지 않는다.
+    const synthesized = resolveCurriculum("[6수01-01]");
     expect(synthesized.provenance).toBe("synthesized");
     expect(
       synthesized.record.officialSource.verificationStatus
@@ -50,8 +50,13 @@ describe("교육과정 해석", () => {
     expect(synthesized.warnings.join(" ")).toContain("자동 합성");
   });
 
-  it("출시할 기하 활동 3개의 공식 원문 위치를 검토본으로 고정한다", () => {
-    for (const code of ["[4수03-09]", "[4수03-24]", "[6수03-02]"]) {
+  it("출시할 기하 활동과 몫·나머지 활동의 공식 원문 위치를 검토본으로 고정한다", () => {
+    for (const code of [
+      "[4수01-06]",
+      "[4수03-09]",
+      "[4수03-24]",
+      "[6수03-02]"
+    ]) {
       const result = resolveCurriculum(code);
       expect(result.provenance).toBe("reviewed");
       expect(result.record.officialSource.verificationStatus).toBe(
@@ -91,7 +96,9 @@ describe("교육과정 해석", () => {
       (standard) => standard.summaryKind === "activity-profile-goal"
     );
     expect(profileGoals.length).toBeGreaterThan(0);
-    for (const standard of profileGoals) {
+    for (const standard of profileGoals.filter(
+      ({ standardCode }) => standardCode !== "[4수01-06]"
+    )) {
       expect(resolveCurriculum(standard.standardCode).provenance).toBe(
         "synthesized"
       );
