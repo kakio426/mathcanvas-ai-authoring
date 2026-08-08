@@ -273,3 +273,7 @@ export {
   findNativeAffordanceFamily,
   grade3PilotNativeAffordanceFamilyCatalog
 } from "./native-affordance-catalog-v2.js";
+export {
+  findNativeAffordanceCandidateRubric,
+  grade3PilotNativeAffordanceCandidateRubricCatalog
+} from "./native-affordance-rubric-v2.js";

@@ -9,6 +9,7 @@ export * from "./catalog/variation-envelope.js";
 export * from "./catalog/pilot-ledger.js";
 export * from "./catalog/worksheet-v2.js";
 export * from "./catalog/native-affordance-v2.js";
+export * from "./catalog/native-affordance-rubric-v2.js";
 export * from "./scaffolds.js";
 export * from "./schemas.js";
 export * from "./security.js";

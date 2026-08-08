@@ -181,22 +181,24 @@
   - [x] affordance requirement/support schema tests
   - [x] pure placement unchanged / semantic relation changed hash tests
   - [ ] stale fingerprint/roundtrip drift failure tests
-  - [ ] affordanceFamily별 candidate rubric과 GO/NO-GO
+  - [x] affordanceFamily별 candidate rubric과 현재 GO/NO-GO/pending 판정
   - [ ] DOM/SVG text-box availability probe와 fallback decision
   - [ ] editor chrome/content width/canvasUnitsToCssPx evidence
   - [ ] read-only/isolated semantic and spatial probe; actual lifecycle은 R5/R8에 위임
 - Cost gate:
   - [ ] 동일 `(affordanceFamily × layoutProfile)` 계약을 title 수만큼 반복 probe하지 않는다.
   - [ ] affordanceFamily별 최소·최대는 offline/isolated로 전수하고, 실제 위험 최대 entry 하나의 full lifecycle을 R5/R8 actual PUT 안에서 수집하도록 manifest에 계획한다.
-  - [ ] R3 measured-core 변경 뒤 interim rebaseline이 필요하면 이유·diff·manifest hash를 Evidence에 기록한다.
+  - [x] R3 measured-core 변경 뒤 candidate-rubric contract 추가 이유·diff·manifest hash를 Evidence에 기록하고 interim rebaseline했다.
 - Commit gate:
   - [ ] 독립 affordanceFamily가 contracted conditional GO 또는 명시적 NO-GO로 닫힐 때마다 관련 변경만 commit·push한다. verified/released commit은 R5/R8 actual lifecycle 뒤다.
 - Evidence/notes:
   - `packages/contracts/src/catalog/native-affordance-v2.ts`: affordanceFamily/support/evidence/spatial reference와 viewport·selection·전체 이동을 제외하는 semantic projection/hash 계약을 추가했다.
+  - `packages/contracts/src/catalog/native-affordance-rubric-v2.ts`: 7개 family 후보를 static triage 또는 isolated semantic probe로 구분하고 support/decision/evidence/candidate binding을 fail-closed한다. R3 rubric은 captured·contracted까지만 허용한다.
   - `packages/curriculum/src/native-affordance-catalog-v2.ts`: 30개 pilot을 7개 family로 dedupe하고 family별 preferred tool, candidate, evidence, blocker를 고정했다. canonical catalog는 재귀 freeze하고 finder는 clone을 반환한다. `native-counting-model-v1`은 기존 NO01SC-01 evidence를 사용해 `contracted·conditional-go`로만 남겼고 나머지는 captured/contracted·pending이다.
+  - `packages/curriculum/src/native-affordance-rubric-v2.ts`: 7개 family rubric을 생성한다. NO01SC만 기존 read-only semantic probe에 근거한 `isolated-semantic-probe·contracted·conditional-go`, 나머지는 `static-evidence-triage·pending`이며 각 blocker를 유지한다.
   - `packages/curriculum/src/native-affordance-catalog-v2.test.ts`: family dedupe drift, candidate/evidence 단계 결속, placement·selection·viewport 불변 hash, semantic 관계 변화 hash, 상·하위 projection 충돌, spatial source SHA와 canonical authority 오염 변조 rejection을 검증한다.
   - 기존 실제 evidence 재검증: `pnpm native-spatial:verify`, `pnpm contract:verify:division-native-rubric`, `pnpm contract:verify:division-counting-group` PASS. 1280×800 캡처 `division-counting-group-31-by-6/full-grouped.png`는 native affordance reference로만 확인했으며 학생 release 품질 캡처로 승격하지 않았다.
-  - architecture P1 baseline을 V2 native-affordance contract까지 확장했다. Sol 최종 검토 뒤 contract formatting을 반영해 interim rebaseline했으며, 현재 24-file manifest hash `be95f260c1b5a735b2e6d48a197115769b1eedff4b6ef09c2c8d4ccc796e545e`이다.
+  - architecture P1 baseline을 V2 native-affordance contract와 candidate-rubric contract까지 확장했다. Sol mutation 검토에 따른 candidate-state binding 보강을 반영해 interim rebaseline했으며, 현재 25-file manifest hash `e8b4d528715d4c559c0a7f17f355dab0ea1b425a1795bde955bd3871b90ca4a6`이다.
 
 ## R4 — native-first one-screen layout·typography resolver
 
