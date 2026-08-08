@@ -157,6 +157,29 @@ describe("Worksheet V2 catalog/request/plan", () => {
     );
   });
 
+  it("blueprint·variation preset·layout version 변조를 각각 거부한다", () => {
+    const plan = planWorksheetV2ForContractLab(request());
+    const mutations = [
+      ["blueprint", (candidate: typeof plan) => {
+        candidate.blueprintFamily.version = "9.9.9";
+      }],
+      ["variation", (candidate: typeof plan) => {
+        candidate.variationPreset.version = "9.9.9";
+      }],
+      ["layout", (candidate: typeof plan) => {
+        candidate.layoutProfile.version = "9.9.9";
+      }]
+    ] as const;
+    for (const [label, mutate] of mutations) {
+      const wrong = structuredClone(plan);
+      mutate(wrong);
+      expect(
+        worksheetPlanV2Schema.safeParse(wrong).success,
+        `${label} version mutation must fail closed`
+      ).toBe(false);
+    }
+  });
+
   it("cross-band binding은 primary와 다른 하위 학년군 하나만 허용한다", () => {
     const crossBandEntry = grade3PilotWorksheetCatalog.find(
       (candidate) => candidate.authorityBinding.crossBandReview !== undefined

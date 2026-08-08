@@ -54,7 +54,7 @@
   - [x] 각 entry가 핵심 수학적 결정, 대표 오개념, 확인할 불변량, 학생 설명 초점, 필요한 native affordance를 가진다.
   - [x] 각 entry가 원고 11단계 중 한 화면에 남긴 사건과 의도적으로 제외한 단계를 기록한다.
   - [x] 같은 수학적 결정·phase를 공유하는 항목은 blueprintFamily 후보로 묶고, native 상태는 affordanceFamily, 공간 문법은 layoutFamily 후보로 별도 기록한다.
-  - [x] 세 family 수는 30 또는 임의 quota로 고정하지 않는다.
+  - [x] 세 family와 variation preset의 수를 30 또는 임의 quota로 고정하지 않는다.
   - [x] PPT 원문 전체를 제품 payload나 source code에 복사하지 않는다.
   - [x] 30/30 table-driven ledger 검증이 통과한다.
 - Verification:
@@ -90,7 +90,7 @@
   - [x] `CurriculumSelection`이 학년·학기·단원·성취기준·학습 유형을 구조화해 검증한다.
   - [x] `CurriculumAuthorityBinding`이 standardAuthority, unitAuthority, primary/prerequisite/cross-band relation을 분리한다.
   - [x] `CurriculumActivityCatalogEntry`가 두 provenance, blueprintFamily/version, variation preset/version, affordanceFamily, layoutFamily, availability/blocking reason을 연결한다.
-  - [x] 30개 teacher-facing entry와 내부 세 family가 별도 모델이다.
+  - [x] 30개 teacher-facing entry와 내부 세 family(blueprint·affordance·layout) 및 variation preset이 별도 모델이다.
   - [x] 첫 wave learning type은 실제 `기본 연습` 하나만 released로 노출하며, 현재 R3/R4 미완료 30개는 blocked·교사 비노출이다.
   - [x] strict `WorksheetRequestV2`가 catalogEntryId, 구조화 selection, optional context/modifier, seed를 받으며 manipulation을 받지 않는다.
   - [x] strict `WorksheetPlanV2`가 request/catalogEntry, blueprintFamily/version, preset/version, affordanceFamily/version, layoutProfile/version, seed, authority binding, applied/rejected modifiers를 가진다.
@@ -104,7 +104,7 @@
   - [x] R4 종료 때 실제 layout profile·LearningPhaseContract fixture로 end-to-end를 통과한 뒤 R5를 시작하는 의존 규칙을 기록했다(실제 R4 gate는 R4에서 수행).
   - [x] V1은 기존 활동 V2 migration 전까지만 유지하는 명시적 만료 대상이다.
   - [x] optional prompt는 entry가 허용한 수 범위·난이도·맥락 modifier만 만든다.
-  - [x] prompt가 grade, semester, unit, standard, 세 family binding, tool support, raw payload, 좌표를 바꾸려 하면 fail-closed한다.
+  - [x] prompt가 grade, semester, unit, standard, 세 family와 variation preset binding, tool support, raw payload, 좌표를 바꾸려 하면 fail-closed한다.
   - [x] 적용된 modifier와 거부된 요청의 이유가 preview contract로 전달된다.
   - [x] `pilotCoverage`와 `curriculumCoverage`가 별도 계산된다.
   - [x] 완전한 공식 장기 분모가 없으면 `curriculumCoverage`를 추정 숫자로 표시하지 않는다.
@@ -115,7 +115,7 @@
 - Verification:
   - [x] request/catalog schema tests
   - [x] valid bounded modifier test
-  - [x] standard/세 family/raw-payload/coordinate override rejection tests
+  - [x] standard/세 family·variation preset/raw-payload/coordinate override rejection tests
   - [x] V2 exact route와 V1 compatibility isolation tests
   - [x] WorksheetPlanV2 schema/hash and applied/rejected modifier tests
   - [x] prepareWorksheetV2가 blocked·unsupported 및 family/preset/layout snapshot 변조를 manipulation fallback 없이 거부한다.
@@ -134,7 +134,7 @@
   - [x] schema·catalog·planner·templates·authoring-runtime authority가 하나의 migration 단위로 통과하면 commit·push한다.
 - Evidence/notes:
   - `packages/contracts/src/catalog/worksheet-v2.ts`: V2 selection/authority/catalog/request/plan/preparation/draft/approval/compile-gate strict schema. plan modifier와 cross-band 관계, family/native snapshot, blocked/released 공개 상태를 fail-closed한다.
-  - `packages/curriculum/src/worksheet-catalog-v2.ts`: PPT 30개를 teacher-facing catalog entry로 유지하면서 blueprint·variation·affordance·layout 세 family를 분리한다. R3/R4/R5–R8 미완료이므로 30/30 blocked·teacherVisible false, pilot 0/30, curriculum denominator unknown이다.
+  - `packages/curriculum/src/worksheet-catalog-v2.ts`: PPT 30개를 teacher-facing catalog entry로 유지하면서 blueprint·affordance·layout 세 family와 variation preset을 분리한다. R3/R4/R5–R8 미완료이므로 30/30 blocked·teacherVisible false, pilot 0/30, curriculum denominator unknown이다.
   - `packages/planner/src/v2.ts`: V2 exact selection resolve와 bounded context/problemCount/difficulty modifier를 담당하며 V1 manipulation/regex 경로를 건드리지 않는다.
   - `packages/templates/src/worksheet-v2.ts`: V2 preparation은 별도 envelope이고 manipulation을 합성하지 않는다. public released와 contract-lab surface를 구분한다.
   - `packages/authoring-runtime/src/worksheet-v2.ts`: request→plan→prepare→draft hash→explicit teacher approval→canonical re-resolve→resolve→blocked-only compile gate. current catalog drift, candidate teacher approval, hash/time/object mutation을 fail-closed한다. `service.worksheetV2`와 `AuthoringRuntime.worksheetV2`로 기존 V1 서비스와 분리해 노출한다.
