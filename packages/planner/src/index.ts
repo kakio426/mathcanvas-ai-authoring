@@ -20,6 +20,14 @@ import {
   resolveCurriculum
 } from "@mathcanvas/curriculum";
 
+export {
+  planWorksheetV2,
+  planWorksheetV2ForContractLab,
+  resolveWorksheetCatalogEntry,
+  WorksheetV2PlanningError,
+  type WorksheetV2Surface
+} from "./v2.js";
+
 const supportedIntentPatterns = [
   /분모가\s*다른/,
   /서로\s*다른\s*분모/,

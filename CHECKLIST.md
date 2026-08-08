@@ -77,7 +77,7 @@
 ## R2 — 구조화 catalog·request·coverage 계약
 
 - Depth: `core`
-- Status: `pending`
+- Status: `complete`
 - Depends on: R1
 - Scope:
   - `packages/contracts`
@@ -87,53 +87,61 @@
   - `packages/authoring-runtime`의 V2 draft/approval branch
   - `apps/teacher-ui/src/shared`
 - Definition of done:
-  - [ ] `CurriculumSelection`이 학년·학기·단원·성취기준·학습 유형을 구조화해 검증한다.
-  - [ ] `CurriculumAuthorityBinding`이 standardAuthority, unitAuthority, primary/prerequisite/cross-band relation을 분리한다.
-  - [ ] `CurriculumActivityCatalogEntry`가 두 provenance, blueprintFamily/version, variation preset/version, affordanceFamily, layoutFamily, availability/blocking reason을 연결한다.
-  - [ ] 30개 teacher-facing entry와 내부 세 family가 별도 모델이다.
-  - [ ] 첫 wave learning type은 실제 `기본 연습` 하나만 released로 노출한다.
-  - [ ] strict `WorksheetRequestV2`가 catalogEntryId, 구조화 selection, optional context/modifier, seed를 받으며 manipulation을 받지 않는다.
-  - [ ] strict `WorksheetPlanV2`가 request/catalogEntry, blueprintFamily/version, preset/version, affordanceFamily/version, layoutProfile/version, seed, authority binding, applied/rejected modifiers를 가진다.
-  - [ ] V2 구조화 selection과 catalog entry가 planner의 authority이고 V2를 legacy V1보다 먼저 exact-resolve한다.
-  - [ ] 기존 strict `GenerationRequest` V1과 regex chain은 현재 released 활동의 compatibility-only path이며 신규 30개 값으로 확장하지 않는다.
-  - [ ] `manipulationSchema`와 `ACTIVITY_IDS`에 30개용 신규 값을 추가하지 않는다.
-  - [ ] legacy `Recommendation.manipulation`과 `prepareRegisteredActivity`의 manipulation 대조는 V1 전용이다.
-  - [ ] templates에 `prepareWorksheetV2(plan)` 별도 진입점이 있고 manipulation을 합성하지 않는다.
-  - [ ] authoring-runtime이 V2 request→plan→prepare→draft/hash/approval→resolve/compile을 분기하며 기존 validator와 승인 경계를 재사용한다.
-  - [ ] R2에서 generic transport fixture로 V2 seam이 통과한다.
-  - [ ] R4 종료 때 실제 layout profile·LearningPhaseContract fixture로 end-to-end 통과한 뒤 R5를 시작한다.
-  - [ ] V1은 기존 활동 V2 migration 전까지만 유지하는 명시적 만료 대상이다.
-  - [ ] optional prompt는 entry가 허용한 수 범위·난이도·맥락 modifier만 만든다.
-  - [ ] prompt가 grade, semester, unit, standard, 세 family binding, tool support, raw payload, 좌표를 바꾸려 하면 fail-closed한다.
-  - [ ] 적용된 modifier와 거부된 요청의 이유가 preview contract로 전달된다.
-  - [ ] `pilotCoverage`와 `curriculumCoverage`가 별도 계산된다.
-  - [ ] 완전한 공식 장기 분모가 없으면 `curriculumCoverage`를 추정 숫자로 표시하지 않는다.
-  - [ ] verified/blocked/unsupported entry를 released처럼 노출하지 않는다.
-  - [ ] 기존 호출 경로의 migration/version 규칙이 명시적이며 묵시적 이중 source of truth가 없다.
-  - [ ] `assertTeacherTextbookCatalog`의 고정 `92`는 authority dataset에서 계산한 expected/unmapped set 검증으로 바뀐다.
-  - [ ] cross-band review는 unit primary `standardCodes`를 오염시키지 않는 별도 binding으로 검증된다.
+  - [x] `CurriculumSelection`이 학년·학기·단원·성취기준·학습 유형을 구조화해 검증한다.
+  - [x] `CurriculumAuthorityBinding`이 standardAuthority, unitAuthority, primary/prerequisite/cross-band relation을 분리한다.
+  - [x] `CurriculumActivityCatalogEntry`가 두 provenance, blueprintFamily/version, variation preset/version, affordanceFamily, layoutFamily, availability/blocking reason을 연결한다.
+  - [x] 30개 teacher-facing entry와 내부 세 family가 별도 모델이다.
+  - [x] 첫 wave learning type은 실제 `기본 연습` 하나만 released로 노출하며, 현재 R3/R4 미완료 30개는 blocked·교사 비노출이다.
+  - [x] strict `WorksheetRequestV2`가 catalogEntryId, 구조화 selection, optional context/modifier, seed를 받으며 manipulation을 받지 않는다.
+  - [x] strict `WorksheetPlanV2`가 request/catalogEntry, blueprintFamily/version, preset/version, affordanceFamily/version, layoutProfile/version, seed, authority binding, applied/rejected modifiers를 가진다.
+  - [x] V2 구조화 selection과 catalog entry가 planner의 authority이고 V2를 legacy V1보다 먼저 exact-resolve한다.
+  - [x] 기존 strict `GenerationRequest` V1과 regex chain은 현재 released 활동의 compatibility-only path이며 신규 30개 값으로 확장하지 않는다.
+  - [x] `manipulationSchema`와 `ACTIVITY_IDS`에 30개용 신규 값을 추가하지 않는다.
+  - [x] legacy `Recommendation.manipulation`과 `prepareRegisteredActivity`의 manipulation 대조는 V1 전용이다.
+  - [x] templates에 `prepareWorksheetV2(plan)` 별도 진입점이 있고 manipulation을 합성하지 않는다.
+  - [x] authoring-runtime이 V2 request→plan→prepare→draft/hash/approval→resolve/compile을 별도 분기하며 기존 approval receipt 검증 경계를 재사용한다. 실제 payload validator는 R4 layout/native 산출물이 생길 때까지 compile gate 앞에서 실행하지 않는다.
+  - [x] R2에서 released fixture 기반 generic transport fixture가 V2 seam을 통과하고, 실제 pilot blocked 상태는 preparation·compile에서 fail-closed한다.
+  - [x] R4 종료 때 실제 layout profile·LearningPhaseContract fixture로 end-to-end를 통과한 뒤 R5를 시작하는 의존 규칙을 기록했다(실제 R4 gate는 R4에서 수행).
+  - [x] V1은 기존 활동 V2 migration 전까지만 유지하는 명시적 만료 대상이다.
+  - [x] optional prompt는 entry가 허용한 수 범위·난이도·맥락 modifier만 만든다.
+  - [x] prompt가 grade, semester, unit, standard, 세 family binding, tool support, raw payload, 좌표를 바꾸려 하면 fail-closed한다.
+  - [x] 적용된 modifier와 거부된 요청의 이유가 preview contract로 전달된다.
+  - [x] `pilotCoverage`와 `curriculumCoverage`가 별도 계산된다.
+  - [x] 완전한 공식 장기 분모가 없으면 `curriculumCoverage`를 추정 숫자로 표시하지 않는다.
+  - [x] verified/blocked/unsupported entry를 released처럼 노출하지 않는다.
+  - [x] 기존 호출 경로의 migration/version 규칙이 명시적이며 묵시적 이중 source of truth가 없다.
+  - [x] `assertTeacherTextbookCatalog`의 고정 `92`를 제거하고 authority dataset의 expected/unmapped·mappedOutsideAuthority 집합을 양방향 검증한다.
+  - [x] cross-band review는 unit primary `standardCodes`를 오염시키지 않는 별도 binding으로 검증된다.
 - Verification:
-  - [ ] request/catalog schema tests
-  - [ ] valid bounded modifier test
-  - [ ] standard/세 family/raw-payload/coordinate override rejection tests
-  - [ ] V2 exact route와 V1 compatibility isolation tests
-  - [ ] WorksheetPlanV2 schema/hash and applied/rejected modifier tests
-  - [ ] prepareWorksheetV2 rejects missing/stale family/preset/layout versions without manipulation fallback
-  - [ ] authoring-runtime V2 draft/approval/resolve/compile fixture test
-  - [ ] 30 entry → blueprintFamily/preset/affordanceFamily/layoutFamily binding test
-  - [ ] data-driven catalog invariant and cross-band review tests
-  - [ ] pilot/long-term coverage separation test
+  - [x] request/catalog schema tests
+  - [x] valid bounded modifier test
+  - [x] standard/세 family/raw-payload/coordinate override rejection tests
+  - [x] V2 exact route와 V1 compatibility isolation tests
+  - [x] WorksheetPlanV2 schema/hash and applied/rejected modifier tests
+  - [x] prepareWorksheetV2가 blocked·unsupported 및 family/preset/layout snapshot 변조를 manipulation fallback 없이 거부한다.
+  - [x] authoring-runtime V2 draft/approval/resolve/compile fixture test
+  - [x] 30 entry → blueprintFamily/preset/affordanceFamily/layoutFamily binding test
+  - [x] data-driven catalog invariant and cross-band review tests
+  - [x] pilot/long-term coverage separation test
 - Structural gate:
-  - [ ] 새 30개 경로가 prompt regex만으로 template을 선택하지 않는다.
-  - [ ] planner/compiler/resolver/validator의 source ID·title 분기 수가 0이다.
-  - [ ] planner/curriculum의 V2 generic resolver를 catalog data와 분리된 core seam으로 두고 architecture checker 측정 대상에 넣는다.
-  - [ ] templates/authoring-runtime의 V2 preparation/draft seam도 measured generic core에 포함한다.
-  - [ ] source ID/title forbidden-literal 검사를 planner/curriculum 신규 경로에도 적용한다.
-  - [ ] R2 measured-core 변경 뒤 interim rebaseline이 필요하면 이유·diff·manifest hash를 Evidence에 기록한다.
+  - [x] 새 30개 경로가 prompt regex만으로 template을 선택하지 않는다.
+  - [x] planner/compiler/resolver/validator의 source ID·title 분기 수가 0이다.
+  - [x] planner/curriculum의 V2 generic resolver를 catalog data와 분리된 core seam으로 두고 architecture checker 측정 대상에 넣는다.
+  - [x] templates/authoring-runtime의 V2 preparation/draft seam도 measured generic core에 포함한다.
+  - [x] source ID/title forbidden-literal 검사를 generic planner/runtime core에 적용한다. curriculum catalog 데이터는 generic core와 분리한다.
+  - [x] R2 measured-core 변경 이유와 manifest hash를 architecture baseline에 기록했다.
 - Commit gate:
-  - [ ] schema·catalog·planner authority가 하나의 migration 단위로 통과하면 commit·push한다.
+  - [x] schema·catalog·planner·templates·authoring-runtime authority가 하나의 migration 단위로 통과하면 commit·push한다.
 - Evidence/notes:
-  - 미착수.
+  - `packages/contracts/src/catalog/worksheet-v2.ts`: V2 selection/authority/catalog/request/plan/preparation/draft/approval/compile-gate strict schema. plan modifier와 cross-band 관계, family/native snapshot, blocked/released 공개 상태를 fail-closed한다.
+  - `packages/curriculum/src/worksheet-catalog-v2.ts`: PPT 30개를 teacher-facing catalog entry로 유지하면서 blueprint·variation·affordance·layout 세 family를 분리한다. R3/R4/R5–R8 미완료이므로 30/30 blocked·teacherVisible false, pilot 0/30, curriculum denominator unknown이다.
+  - `packages/planner/src/v2.ts`: V2 exact selection resolve와 bounded context/problemCount/difficulty modifier를 담당하며 V1 manipulation/regex 경로를 건드리지 않는다.
+  - `packages/templates/src/worksheet-v2.ts`: V2 preparation은 별도 envelope이고 manipulation을 합성하지 않는다. public released와 contract-lab surface를 구분한다.
+  - `packages/authoring-runtime/src/worksheet-v2.ts`: request→plan→prepare→draft hash→explicit teacher approval→canonical re-resolve→resolve→blocked-only compile gate. current catalog drift, candidate teacher approval, hash/time/object mutation을 fail-closed한다. `service.worksheetV2`와 `AuthoringRuntime.worksheetV2`로 기존 V1 서비스와 분리해 노출한다.
+  - `packages/curriculum/src/teacher-catalog.ts`: 고정 `92` 대신 authority expected set과 mapped set의 누락·권한 밖 연결을 양방향 검증한다.
+  - `scripts/architecture/check-core-diff.mjs`, `fixtures/architecture/p1-core-baseline.json`: V2 generic contracts/planner/templates/runtime seam을 23-file P1 baseline에 추가했다. baseline hash `9ac16d69f952c2664f9244853010064611ac01bfde08339e79dc742302e61f5e`.
+  - Sol xhigh final review (2026-08-08): R2 catalog/planner P0 0/P1 0/P2 0; authoring-runtime canonical revalidation, clone/time/hash/candidate/compile gate mutation PASS; 고정 92 제거 및 양방향 authority mapping PASS.
+  - 검증: contracts/curriculum/planner/templates/authoring-runtime build, typecheck, architecture baseline verify, targeted curriculum/pilot/planner/templates/runtime tests, `git diff --check`; actual MathCanvas native probe/save/reopen/visual canary는 R3–R5/R8에서 수행하고 여기서는 release를 주장하지 않는다.
 
 ## R3 — native affordance 조사·공간 및 semantic 조건부 계약
 

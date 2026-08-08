@@ -38,6 +38,7 @@ import {
   projectRegisteredApprovalView
 } from "@mathcanvas/templates";
 import { validateForCreation } from "@mathcanvas/validator";
+import { WorksheetV2AuthoringRuntime } from "./worksheet-v2.js";
 
 interface Draft {
   draftSchemaVersion: 3;
@@ -220,6 +221,7 @@ export class AuthoringServiceError extends Error {
 export class MathCanvasAuthoringService {
   readonly #drafts = new Map<string, Draft>();
   readonly #draftSnapshotPath: string | undefined;
+  public readonly worksheetV2: WorksheetV2AuthoringRuntime;
 
   public constructor(
     public readonly browserRuntime: MathCanvasBrowserRuntime,
@@ -228,6 +230,9 @@ export class MathCanvasAuthoringService {
     options: AuthoringServiceOptions = {}
   ) {
     this.#draftSnapshotPath = options.draftSnapshotPath;
+    this.worksheetV2 = new WorksheetV2AuthoringRuntime({
+      now: () => this.clock.now()
+    });
     if (!this.#draftSnapshotPath || !existsSync(this.#draftSnapshotPath)) {
       return;
     }

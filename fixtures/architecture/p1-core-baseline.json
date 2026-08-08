@@ -6,9 +6,21 @@
     "packages/mathcanvas-compiler/src/resolve/**",
     "packages/validator/src/layers/**",
     "packages/mathcanvas-compiler/src/index.ts",
-    "packages/validator/src/index.ts"
+    "packages/validator/src/index.ts",
+    "packages/contracts/src/catalog/worksheet-v2.ts",
+    "packages/planner/src/v2.ts",
+    "packages/templates/src/worksheet-v2.ts",
+    "packages/authoring-runtime/src/worksheet-v2.ts"
   ],
   "files": [
+    {
+      "path": "packages/authoring-runtime/src/worksheet-v2.ts",
+      "sha256": "59e2b919c91258a6cfb88fd884e74a94b5c23ecf5c39fe493976d4ee1a494cf4"
+    },
+    {
+      "path": "packages/contracts/src/catalog/worksheet-v2.ts",
+      "sha256": "c6f84297513414a3bb722ee54481eb39e241b4591d4531e0b7bc7b8d407e4ebc"
+    },
     {
       "path": "packages/contracts/src/vocabulary/blueprint.ts",
       "sha256": "c8e6f2e8274ef9c95ffe88330c6e820e7192b2c8ac73bc26541a3786d0b3806d"
@@ -62,6 +74,14 @@
       "sha256": "34c0dbe0090814b8e8f470ff2a83284227a70498d28467073200cc6e7715c049"
     },
     {
+      "path": "packages/planner/src/v2.ts",
+      "sha256": "1803140bd3003378075ebde2b67c228b202759643672cc7389995033a7a7fbd3"
+    },
+    {
+      "path": "packages/templates/src/worksheet-v2.ts",
+      "sha256": "29bd68decf67f4d3b551a28a26900df6a37feba1cedb9b2dc0f7ad9cb8c767de"
+    },
+    {
       "path": "packages/validator/src/index.ts",
       "sha256": "a51c1f4c57bafe2ee025384a80a95440e5726dd5cd63a44f3958de68375b4798"
     },
@@ -86,5 +106,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "905cf46b6e4e6ad20c03e2f9e1832cf1b48cbea70285916bbdfe0c21b9ca38b3"
+  "manifestHash": "9ac16d69f952c2664f9244853010064611ac01bfde08339e79dc742302e61f5e"
 }

@@ -794,20 +794,28 @@ function assertTeacherTextbookCatalog(): void {
     }
   }
 
-  const upperGradeStandards = teacherCurriculumCatalog.filter(
-    (standard) => standard.gradeBand === "3-4" || standard.gradeBand === "5-6"
+  const expectedUpperGradeStandardCodes = new Set(
+    teacherCurriculumCatalog
+      .filter(
+        (standard) =>
+          standard.gradeBand === "3-4" || standard.gradeBand === "5-6"
+      )
+      .map((standard) => standard.standardCode)
   );
   const mappedStandardCodes = new Set(
     teacherTextbookUnits
       .filter((unit) => unit.grade >= 3)
       .flatMap((unit) => unit.standardCodes)
   );
-  const unmapped = upperGradeStandards.filter(
-    (standard) => !mappedStandardCodes.has(standard.standardCode)
+  const unmapped = [...expectedUpperGradeStandardCodes].filter(
+    (standardCode) => !mappedStandardCodes.has(standardCode)
   );
-  if (upperGradeStandards.length !== 92 || unmapped.length > 0) {
+  const mappedOutsideAuthority = [...mappedStandardCodes].filter(
+    (standardCode) => !expectedUpperGradeStandardCodes.has(standardCode)
+  );
+  if (unmapped.length > 0 || mappedOutsideAuthority.length > 0) {
     throw new Error(
-      `3~6학년 성취기준 연결을 확인해 주세요: ${unmapped.map((standard) => standard.standardCode).join(", ")}`
+      `3~6학년 성취기준 연결을 확인해 주세요: 누락 ${unmapped.join(", ")}; 권한 밖 연결 ${mappedOutsideAuthority.join(", ")}`
     );
   }
 }

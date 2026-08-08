@@ -25,7 +25,11 @@ const roots = [
 ];
 const fixedFiles = [
   "packages/mathcanvas-compiler/src/index.ts",
-  "packages/validator/src/index.ts"
+  "packages/validator/src/index.ts",
+  "packages/contracts/src/catalog/worksheet-v2.ts",
+  "packages/planner/src/v2.ts",
+  "packages/templates/src/worksheet-v2.ts",
+  "packages/authoring-runtime/src/worksheet-v2.ts"
 ];
 const forbidden = [
   {

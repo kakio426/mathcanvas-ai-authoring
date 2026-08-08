@@ -262,3 +262,10 @@ export {
   grade3PilotSourceManifest,
   grade3PilotStandardCodes
 } from "./pilot-ledger.js";
+export {
+  findWorksheetCatalogEntry,
+  getElementaryCurriculumCoverage,
+  getGrade3PilotWorksheetCoverage,
+  getWorksheetCatalogAuthoritySnapshot,
+  grade3PilotWorksheetCatalog
+} from "./worksheet-catalog-v2.js";

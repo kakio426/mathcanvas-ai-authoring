@@ -52,6 +52,11 @@ export {
   type RegisteredActivityPlan
 } from "./registry.js";
 export {
+  prepareWorksheetV2,
+  prepareWorksheetV2ForContractLab,
+  type PrepareWorksheetV2Options
+} from "./worksheet-v2.js";
+export {
   balancedEquationCardsBlueprint
 } from "./blueprints/balanced-equation-cards.js";
 export {

@@ -7,6 +7,7 @@ import { InstanceLock } from "./instance-lock.js";
 import { MathCanvasAuthoringService } from "./service.js";
 import { resolveStateDirectory } from "./state-directory.js";
 import { quarantineCorruptStateFile } from "./state-recovery.js";
+import type { WorksheetV2AuthoringRuntime } from "./worksheet-v2.js";
 
 export interface AuthoringRuntimeOptions {
   stateDirectory?: string;
@@ -16,6 +17,7 @@ export interface AuthoringRuntimeOptions {
 
 export interface AuthoringRuntime {
   service: MathCanvasAuthoringService;
+  worksheetV2: WorksheetV2AuthoringRuntime;
   browserRuntime: ManagedChromeRuntime;
   jobStore: CreationJobStore;
   closeBrowser(): Promise<void>;
@@ -77,6 +79,7 @@ export function createAuthoringRuntime(
   const closeBrowser = () => browserRuntime.close();
   return {
     service,
+    worksheetV2: service.worksheetV2,
     browserRuntime,
     jobStore,
     closeBrowser,
