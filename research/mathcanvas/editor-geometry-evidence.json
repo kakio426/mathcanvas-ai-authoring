@@ -1,0 +1,723 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "r3-editor-geometry-1280-v1",
+  "observedAt": "2026-08-08T22:57:52.052Z",
+  "provenance": {
+    "sourceKind": "dedicated-editor-geometry",
+    "rawSha256": "b398172e8ed822dd7f477d20d1f432cba483736f52445ec0506584a164af6854",
+    "initialScreenshotSha256": "c3bddd6ed3df57d76be92f293a72ee4644901c95fd09dab5e2996a24231bbb12",
+    "selectedScreenshotSha256": "fc24a785c562d6d97a8dd329a4a8d4c3c80e6a1374cf5106def51d4e926cd5ba",
+    "sanitizedPath": "/ko/view/<redacted-project>",
+    "rawCommitted": false,
+    "harnessVersion": "editor-geometry-probe:v1",
+    "browserFingerprint": "sha256:1029506f57f30973ffc7825e13e233e78087685b89a4964c00b8d7b97b00f9d3",
+    "assetFingerprint": {
+      "aggregateSha256": "089c987a4268f89b5a9ff712ff57ec306be4f8926a25c0b3fe0de10d697010b7",
+      "records": [
+        {
+          "bytes": 12317,
+          "path": "/assets/html-utils-9158ee52.js",
+          "sha256": "1567e3d038a56f0716b1d8c16cf03fecc6d9d739fb4cfedf48789288511be1a1"
+        },
+        {
+          "bytes": 129002,
+          "path": "/assets/index-e9902a0b.css",
+          "sha256": "e9902a0b9ea066d086219117114301ffaab9365209ce36446253634b6144bfa7"
+        },
+        {
+          "bytes": 3861645,
+          "path": "/assets/index-fb571b04.js",
+          "sha256": "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584"
+        },
+        {
+          "bytes": 765519,
+          "path": "/assets/mathlive-22342f63.js",
+          "sha256": "5360ae259dc36893ebb5e5fe5ab5fd811f6bcafb11cd812f59a88f3ef75d4e89"
+        },
+        {
+          "bytes": 85670,
+          "path": "/assets/matter-js-fb58b664.js",
+          "sha256": "ac04d1749c7ca3dff61fa92205801ed8ddcb53573518ad30e473d243e4ac9e1f"
+        },
+        {
+          "bytes": 507897,
+          "path": "/assets/three-js-2f9913ef.js",
+          "sha256": "141aeee87f4bbf11377d2d85dfd3656e43f0ad65540925a51e77e4b9cf6d36ce"
+        }
+      ]
+    }
+  },
+  "environment": {
+    "viewport": "1280x800",
+    "devicePixelRatio": 1,
+    "surfaceMode": "authoring-editor",
+    "sidebarState": "expanded",
+    "zoomObservation": "fit-compatible-geometry-observed",
+    "pan": {
+      "x": -499.455994,
+      "y": -129.584
+    },
+    "userChromeTouched": false,
+    "writePolicy": "GET-only-with-exact-aborted-telemetry"
+  },
+  "interactionReference": {
+    "coverage": "single-reference-diagnostic",
+    "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+    "affordanceFamilyId": "native-counting-model-v1",
+    "toolKey": "NO01SC",
+    "variantId": "NO01SC-01",
+    "targetSelector": "#division-remainder-1-counting-model-pool-unit-01",
+    "targetRole": "counting-model-source-unit",
+    "observedSelectedCount": 7,
+    "genericResolverInputAllowed": false
+  },
+  "networkAudit": {
+    "projectSource": {
+      "target": "/api/project/<redacted-project>",
+      "responseStatuses": [
+        200,
+        200,
+        200
+      ]
+    },
+    "blockedRequestCount": 0,
+    "suppressedTelemetry": {
+      "method": "POST",
+      "origin": "https://lc.getunicorn.org",
+      "target": "/l",
+      "count": 1,
+      "delivered": false
+    }
+  },
+  "stability": {
+    "initialFirst": {
+      "calibration": {
+        "canvasBox": {
+          "height": 178,
+          "width": 680,
+          "x": 70,
+          "y": 209
+        },
+        "deltaFromCoordinateScaleX": -1.3E-8,
+        "deltaFromCoordinateScaleY": 2.6E-8,
+        "effectiveScaleX": 0.578703668,
+        "effectiveScaleY": 0.578703719,
+        "inflationCssPx": {
+          "bottom": -0.000002,
+          "left": 0.000015,
+          "right": -0.000024,
+          "top": 0.000007
+        },
+        "projectedCssBox": {
+          "height": 103.009257,
+          "width": 393.518503,
+          "x": 329.54628,
+          "y": 195.939811
+        },
+        "referenceSelector": "#division-remainder-1-choice-panel",
+        "renderedBorderBox": {
+          "height": 103.009262,
+          "width": 393.518494,
+          "x": 329.546265,
+          "y": 195.939804
+        },
+        "usage": "diagnostic-only-not-coordinate-conversion"
+      },
+      "canvas": {
+        "cornerResidualCssPx": 0,
+        "ctm": {
+          "a": 0.578703681,
+          "b": 0,
+          "c": 0,
+          "d": 0.578703693,
+          "e": 289.037021878,
+          "f": 74.990739204
+        },
+        "determinant": 0.334897957,
+        "inverse": {
+          "a": 1.728000069,
+          "b": 0,
+          "c": 0,
+          "d": 1.728000031,
+          "e": -499.455993652,
+          "f": -129.583999634
+        },
+        "preserveAspectRatio": "none",
+        "scaleX": 0.578703681,
+        "scaleY": 0.578703693,
+        "screenBounds": {
+          "height": 800,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "selector": "svg#outermost",
+        "skewRotationResidual": 0,
+        "viewBox": {
+          "height": 1382.400024,
+          "width": 2211.840088,
+          "x": -499.455994,
+          "y": -129.584
+        }
+      },
+      "dynamicChrome": {
+        "boxes": [],
+        "chosenSignatureSha256": null,
+        "deduplicatedCandidateCount": 0,
+        "state": "initial"
+      },
+      "editorState": {
+        "fullScreen": false,
+        "leftToolbarFolded": false,
+        "selectedCount": 0,
+        "sidebarState": "expanded",
+        "storeScale": 5,
+        "storeViewBox": [
+          -499.456,
+          -129.584,
+          2211.84,
+          1382.4
+        ],
+        "surfaceMode": "authoring-editor",
+        "topToolbarVisible": true,
+        "zoomObservation": "fit-compatible-geometry-observed"
+      },
+      "fixedChrome": {
+        "bottom": {
+          "bounds": {
+            "height": 48,
+            "width": 480,
+            "x": 400,
+            "y": 744
+          },
+          "selector": "#bottom-common-toolbar"
+        },
+        "left": {
+          "bounds": {
+            "height": 728,
+            "width": 224,
+            "x": 8,
+            "y": 64
+          },
+          "selector": "#left-toolbar"
+        },
+        "right": {
+          "bounds": {
+            "height": 208,
+            "width": 48,
+            "x": 1224,
+            "y": 296
+          },
+          "selector": "#right-toolbar"
+        },
+        "top": {
+          "bounds": {
+            "height": 56,
+            "width": 1280,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "#top-toolbar"
+        }
+      },
+      "viewport": {
+        "devicePixelRatio": 1,
+        "height": 800,
+        "width": 1280
+      }
+    },
+    "initialMaxDrift": 0,
+    "initialSecond": {
+      "calibration": {
+        "canvasBox": {
+          "height": 178,
+          "width": 680,
+          "x": 70,
+          "y": 209
+        },
+        "deltaFromCoordinateScaleX": -1.3E-8,
+        "deltaFromCoordinateScaleY": 2.6E-8,
+        "effectiveScaleX": 0.578703668,
+        "effectiveScaleY": 0.578703719,
+        "inflationCssPx": {
+          "bottom": -0.000002,
+          "left": 0.000015,
+          "right": -0.000024,
+          "top": 0.000007
+        },
+        "projectedCssBox": {
+          "height": 103.009257,
+          "width": 393.518503,
+          "x": 329.54628,
+          "y": 195.939811
+        },
+        "referenceSelector": "#division-remainder-1-choice-panel",
+        "renderedBorderBox": {
+          "height": 103.009262,
+          "width": 393.518494,
+          "x": 329.546265,
+          "y": 195.939804
+        },
+        "usage": "diagnostic-only-not-coordinate-conversion"
+      },
+      "canvas": {
+        "cornerResidualCssPx": 0,
+        "ctm": {
+          "a": 0.578703681,
+          "b": 0,
+          "c": 0,
+          "d": 0.578703693,
+          "e": 289.037021878,
+          "f": 74.990739204
+        },
+        "determinant": 0.334897957,
+        "inverse": {
+          "a": 1.728000069,
+          "b": 0,
+          "c": 0,
+          "d": 1.728000031,
+          "e": -499.455993652,
+          "f": -129.583999634
+        },
+        "preserveAspectRatio": "none",
+        "scaleX": 0.578703681,
+        "scaleY": 0.578703693,
+        "screenBounds": {
+          "height": 800,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "selector": "svg#outermost",
+        "skewRotationResidual": 0,
+        "viewBox": {
+          "height": 1382.400024,
+          "width": 2211.840088,
+          "x": -499.455994,
+          "y": -129.584
+        }
+      },
+      "dynamicChrome": {
+        "boxes": [],
+        "chosenSignatureSha256": null,
+        "deduplicatedCandidateCount": 0,
+        "state": "initial"
+      },
+      "editorState": {
+        "fullScreen": false,
+        "leftToolbarFolded": false,
+        "selectedCount": 0,
+        "sidebarState": "expanded",
+        "storeScale": 5,
+        "storeViewBox": [
+          -499.456,
+          -129.584,
+          2211.84,
+          1382.4
+        ],
+        "surfaceMode": "authoring-editor",
+        "topToolbarVisible": true,
+        "zoomObservation": "fit-compatible-geometry-observed"
+      },
+      "fixedChrome": {
+        "bottom": {
+          "bounds": {
+            "height": 48,
+            "width": 480,
+            "x": 400,
+            "y": 744
+          },
+          "selector": "#bottom-common-toolbar"
+        },
+        "left": {
+          "bounds": {
+            "height": 728,
+            "width": 224,
+            "x": 8,
+            "y": 64
+          },
+          "selector": "#left-toolbar"
+        },
+        "right": {
+          "bounds": {
+            "height": 208,
+            "width": 48,
+            "x": 1224,
+            "y": 296
+          },
+          "selector": "#right-toolbar"
+        },
+        "top": {
+          "bounds": {
+            "height": 56,
+            "width": 1280,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "#top-toolbar"
+        }
+      },
+      "viewport": {
+        "devicePixelRatio": 1,
+        "height": 800,
+        "width": 1280
+      }
+    },
+    "sampleCountPerState": 2,
+    "selectedFirst": {
+      "calibration": {
+        "canvasBox": {
+          "height": 178,
+          "width": 680,
+          "x": 70,
+          "y": 209
+        },
+        "deltaFromCoordinateScaleX": -1.3E-8,
+        "deltaFromCoordinateScaleY": 2.6E-8,
+        "effectiveScaleX": 0.578703668,
+        "effectiveScaleY": 0.578703719,
+        "inflationCssPx": {
+          "bottom": -0.000002,
+          "left": 0.000015,
+          "right": -0.000024,
+          "top": 0.000007
+        },
+        "projectedCssBox": {
+          "height": 103.009257,
+          "width": 393.518503,
+          "x": 329.54628,
+          "y": 195.939811
+        },
+        "referenceSelector": "#division-remainder-1-choice-panel",
+        "renderedBorderBox": {
+          "height": 103.009262,
+          "width": 393.518494,
+          "x": 329.546265,
+          "y": 195.939804
+        },
+        "usage": "diagnostic-only-not-coordinate-conversion"
+      },
+      "canvas": {
+        "cornerResidualCssPx": 0,
+        "ctm": {
+          "a": 0.578703681,
+          "b": 0,
+          "c": 0,
+          "d": 0.578703693,
+          "e": 289.037021878,
+          "f": 74.990739204
+        },
+        "determinant": 0.334897957,
+        "inverse": {
+          "a": 1.728000069,
+          "b": 0,
+          "c": 0,
+          "d": 1.728000031,
+          "e": -499.455993652,
+          "f": -129.583999634
+        },
+        "preserveAspectRatio": "none",
+        "scaleX": 0.578703681,
+        "scaleY": 0.578703693,
+        "screenBounds": {
+          "height": 800,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "selector": "svg#outermost",
+        "skewRotationResidual": 0,
+        "viewBox": {
+          "height": 1382.400024,
+          "width": 2211.840088,
+          "x": -499.455994,
+          "y": -129.584
+        }
+      },
+      "dynamicChrome": {
+        "boxes": [
+          {
+            "bounds": {
+              "height": 48,
+              "width": 196,
+              "x": 542,
+              "y": 688
+            },
+            "role": "selection-context-toolbar",
+            "signature": {
+              "backgroundAlpha": 1,
+              "backgroundColor": "rgb(64, 70, 84)",
+              "controlCount": 4,
+              "perceivedLuminance": 69.7352,
+              "strategy": "visible-dark-toolbar-outside-fixed-chrome-v1",
+              "tag": "div"
+            }
+          }
+        ],
+        "chosenSignatureSha256": "69ec65c464544a107ffcd2c010f5abd96166e8811dcab6f0b4e74930734c1a66",
+        "deduplicatedCandidateCount": 1,
+        "state": "selected"
+      },
+      "editorState": {
+        "fullScreen": false,
+        "leftToolbarFolded": false,
+        "selectedCount": 7,
+        "sidebarState": "expanded",
+        "storeScale": 5,
+        "storeViewBox": [
+          -499.456,
+          -129.584,
+          2211.84,
+          1382.4
+        ],
+        "surfaceMode": "authoring-editor",
+        "topToolbarVisible": true,
+        "zoomObservation": "fit-compatible-geometry-observed"
+      },
+      "fixedChrome": {
+        "bottom": {
+          "bounds": {
+            "height": 48,
+            "width": 480,
+            "x": 400,
+            "y": 744
+          },
+          "selector": "#bottom-common-toolbar"
+        },
+        "left": {
+          "bounds": {
+            "height": 728,
+            "width": 224,
+            "x": 8,
+            "y": 64
+          },
+          "selector": "#left-toolbar"
+        },
+        "right": {
+          "bounds": {
+            "height": 208,
+            "width": 48,
+            "x": 1224,
+            "y": 296
+          },
+          "selector": "#right-toolbar"
+        },
+        "top": {
+          "bounds": {
+            "height": 56,
+            "width": 1280,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "#top-toolbar"
+        }
+      },
+      "viewport": {
+        "devicePixelRatio": 1,
+        "height": 800,
+        "width": 1280
+      }
+    },
+    "selectedMaxDrift": 0,
+    "selectedSecond": {
+      "calibration": {
+        "canvasBox": {
+          "height": 178,
+          "width": 680,
+          "x": 70,
+          "y": 209
+        },
+        "deltaFromCoordinateScaleX": -1.3E-8,
+        "deltaFromCoordinateScaleY": 2.6E-8,
+        "effectiveScaleX": 0.578703668,
+        "effectiveScaleY": 0.578703719,
+        "inflationCssPx": {
+          "bottom": -0.000002,
+          "left": 0.000015,
+          "right": -0.000024,
+          "top": 0.000007
+        },
+        "projectedCssBox": {
+          "height": 103.009257,
+          "width": 393.518503,
+          "x": 329.54628,
+          "y": 195.939811
+        },
+        "referenceSelector": "#division-remainder-1-choice-panel",
+        "renderedBorderBox": {
+          "height": 103.009262,
+          "width": 393.518494,
+          "x": 329.546265,
+          "y": 195.939804
+        },
+        "usage": "diagnostic-only-not-coordinate-conversion"
+      },
+      "canvas": {
+        "cornerResidualCssPx": 0,
+        "ctm": {
+          "a": 0.578703681,
+          "b": 0,
+          "c": 0,
+          "d": 0.578703693,
+          "e": 289.037021878,
+          "f": 74.990739204
+        },
+        "determinant": 0.334897957,
+        "inverse": {
+          "a": 1.728000069,
+          "b": 0,
+          "c": 0,
+          "d": 1.728000031,
+          "e": -499.455993652,
+          "f": -129.583999634
+        },
+        "preserveAspectRatio": "none",
+        "scaleX": 0.578703681,
+        "scaleY": 0.578703693,
+        "screenBounds": {
+          "height": 800,
+          "width": 1280,
+          "x": 0,
+          "y": 0
+        },
+        "selector": "svg#outermost",
+        "skewRotationResidual": 0,
+        "viewBox": {
+          "height": 1382.400024,
+          "width": 2211.840088,
+          "x": -499.455994,
+          "y": -129.584
+        }
+      },
+      "dynamicChrome": {
+        "boxes": [
+          {
+            "bounds": {
+              "height": 48,
+              "width": 196,
+              "x": 542,
+              "y": 688
+            },
+            "role": "selection-context-toolbar",
+            "signature": {
+              "backgroundAlpha": 1,
+              "backgroundColor": "rgb(64, 70, 84)",
+              "controlCount": 4,
+              "perceivedLuminance": 69.7352,
+              "strategy": "visible-dark-toolbar-outside-fixed-chrome-v1",
+              "tag": "div"
+            }
+          }
+        ],
+        "chosenSignatureSha256": "69ec65c464544a107ffcd2c010f5abd96166e8811dcab6f0b4e74930734c1a66",
+        "deduplicatedCandidateCount": 1,
+        "state": "selected"
+      },
+      "editorState": {
+        "fullScreen": false,
+        "leftToolbarFolded": false,
+        "selectedCount": 7,
+        "sidebarState": "expanded",
+        "storeScale": 5,
+        "storeViewBox": [
+          -499.456,
+          -129.584,
+          2211.84,
+          1382.4
+        ],
+        "surfaceMode": "authoring-editor",
+        "topToolbarVisible": true,
+        "zoomObservation": "fit-compatible-geometry-observed"
+      },
+      "fixedChrome": {
+        "bottom": {
+          "bounds": {
+            "height": 48,
+            "width": 480,
+            "x": 400,
+            "y": 744
+          },
+          "selector": "#bottom-common-toolbar"
+        },
+        "left": {
+          "bounds": {
+            "height": 728,
+            "width": 224,
+            "x": 8,
+            "y": 64
+          },
+          "selector": "#left-toolbar"
+        },
+        "right": {
+          "bounds": {
+            "height": 208,
+            "width": 48,
+            "x": 1224,
+            "y": 296
+          },
+          "selector": "#right-toolbar"
+        },
+        "top": {
+          "bounds": {
+            "height": 56,
+            "width": 1280,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "#top-toolbar"
+        }
+      },
+      "viewport": {
+        "devicePixelRatio": 1,
+        "height": 800,
+        "width": 1280
+      }
+    },
+    "toleranceCssPx": 0.01
+  },
+  "derived": {
+    "derivation": "fixed-edge-constraints-plus-single-reference-dynamic-diagnostic",
+    "fixedSafeCanvas": {
+      "height": 1161.216,
+      "width": 1686.528,
+      "x": -84.735993,
+      "y": -18.992
+    },
+    "fixedSafeCss": {
+      "height": 672,
+      "width": 976,
+      "x": 240,
+      "y": 64
+    },
+    "guardCssPx": 8,
+    "singleReferenceInteractionDiagnostic": {
+      "coverage": "single-reference-diagnostic",
+      "interactionSafeCanvas": {
+        "height": 1064.448,
+        "width": 1686.528,
+        "x": -84.735993,
+        "y": -18.992
+      },
+      "interactionSafeCss": {
+        "height": 616,
+        "width": 976,
+        "x": 240,
+        "y": 64
+      },
+      "usableAsGenericResolverInput": false
+    }
+  },
+  "eligibility": {
+    "blockers": [
+      "affordance-family-dynamic-chrome-coverage-pending"
+    ],
+    "fixedGeometryInputReady": true,
+    "interactionGeometryInputReady": false,
+    "note": "고정 chrome geometry만 R4 offline 입력 준비가 끝났고 interaction geometry는 단일 reference 진단이다."
+  },
+  "limitations": [
+    "single-reference dynamic chrome evidence는 7개 affordance family의 generic interaction geometry를 대표하지 않는다.",
+    "selected toolbar와 현재 activity workbench 하단선은 screenshot에서 0px clearance로 맞닿아 8px interaction clearance 근거가 아니다.",
+    "zoom은 UI mode assertion이 아니라 CTM-viewBox-screen corner relation과 호환되는 geometry observation이다."
+  ]
+}

@@ -11,6 +11,7 @@ export * from "./catalog/worksheet-v2.js";
 export * from "./catalog/native-affordance-v2.js";
 export * from "./catalog/native-affordance-rubric-v2.js";
 export * from "./catalog/text-box-availability-v2.js";
+export * from "./catalog/editor-geometry-v1.js";
 export * from "./scaffolds.js";
 export * from "./schemas.js";
 export * from "./security.js";

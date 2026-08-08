@@ -11,6 +11,7 @@
     "packages/contracts/src/catalog/native-affordance-v2.ts",
     "packages/contracts/src/catalog/native-affordance-rubric-v2.ts",
     "packages/contracts/src/catalog/text-box-availability-v2.ts",
+    "packages/contracts/src/catalog/editor-geometry-v1.ts",
     "packages/planner/src/v2.ts",
     "packages/templates/src/worksheet-v2.ts",
     "packages/authoring-runtime/src/worksheet-v2.ts"
@@ -19,6 +20,10 @@
     {
       "path": "packages/authoring-runtime/src/worksheet-v2.ts",
       "sha256": "59e2b919c91258a6cfb88fd884e74a94b5c23ecf5c39fe493976d4ee1a494cf4"
+    },
+    {
+      "path": "packages/contracts/src/catalog/editor-geometry-v1.ts",
+      "sha256": "0e6776991bed0502f3cad1a5dd448e8c4e99f47017ab9e822d4fc793ec35a5ac"
     },
     {
       "path": "packages/contracts/src/catalog/native-affordance-rubric-v2.ts",
@@ -121,5 +126,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "237fb0cda4683076aa4b446d5bef312969bff3d89f292575e8a04f31e3ddb6ff"
+  "manifestHash": "1df921fc8ebc60df50d3fe035790d85a4b10e3210df4bdd0d06f1860ad0f1d54"
 }

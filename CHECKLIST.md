@@ -172,8 +172,8 @@
   - [x] MathCanvas text가 DOM/SVG rendered box로 질의 가능한지 dedicated exact-selector/bounds read-only probe를 수행했다. 기존 editor diagnostics의 group-wrapper query는 이 조건을 충족하지 않는다.
   - [x] exact probe 결과에 따라 DOM/SVG box 또는 font fallback을 결정하고, fallback을 선택할 경우 font fingerprint·metrics table ID/version/SHA를 결속했다. 이번 관측은 direct DOM/SVG 경로를 선택했으며 live measurement는 resolver 입력으로 금지한다.
   - [x] live text measurement를 resolver 배치 입력으로 사용하지 않는다.
-  - [ ] 기존 current actual evidence에서 1280×800 editor chrome height, visible content width, zoom mode를 관측한다.
-  - [ ] layout profile별 `canvasUnitsToCssPx`를 evidence에서 유도해 source evidence ID와 함께 R4 입력으로 pin한다.
+  - [x] current actual evidence에서 1280×800 editor chrome bounds, fixed-safe content width와 `fit-compatible-geometry-observed` 상태를 관측했다. UI zoom mode를 관측했다고 과장하지 않는다.
+  - [x] `student-one-screen-fixed-geometry-v1`의 full CTM `scaleX/scaleY`와 inverse를 source evidence SHA에 결속해 R4의 fixed geometry offline 입력으로 pin했다. 7개 affordance family의 interaction geometry는 blocker로 남긴다.
   - [ ] R3 종료 때 affordanceFamily partition과 tool candidate 결정을 freeze한다.
   - [x] 사용자의 Chrome·화면·포커스·일반 프로필을 사용하지 않는다.
   - [x] 토큰·쿠키·계정 ID·비공개 원문이 evidence에 없다.
@@ -183,7 +183,7 @@
   - [ ] stale fingerprint/roundtrip drift failure tests
   - [x] affordanceFamily별 candidate rubric과 현재 GO/NO-GO/pending 판정
   - [x] DOM/SVG text-box availability probe와 fallback decision
-  - [ ] editor chrome/content width/canvasUnitsToCssPx evidence
+  - [x] editor chrome/fixed content width/full CTM coordinate evidence
   - [ ] read-only/isolated semantic and spatial probe; actual lifecycle은 R5/R8에 위임
 - Cost gate:
   - [ ] 동일 `(affordanceFamily × layoutProfile)` 계약을 title 수만큼 반복 probe하지 않는다.
@@ -197,11 +197,15 @@
   - `scripts/contract-lab/probe-text-box-availability.mjs`: 사용자 Chrome을 조작하지 않는 `--headless --live-auth --path /ko/view/<project>` read-only probe를 추가했다. `svg#outermost` 안의 `text`, `foreignObject`, `input`, `textarea`, `[contenteditable='true']`, `math-field`만 selector/count/visible bounds와 실제 text-bearing descendant font style로 수집한다. 정확한 editor origin·path와 project API 200을 요구하고, screenshot 이후 page close 뒤까지 MathCanvas 및 미등록 origin의 GET 이외 요청이 없어야 evidence를 쓴다. exact third-party telemetry `POST https://lc.getunicorn.org/l` 1건만 전송하지 않고 raw evidence에 기록한다.
   - `packages/contracts/src/catalog/text-box-availability-v2.ts`, `research/mathcanvas/text-box-availability-probe.json`: 인증된 `/ko/view/<redacted-project>` 1280×800 actual probe에서 visible `foreignObject` 15개와 group wrapper 60개를 관측해 `dom-svg-text-box·resolved`로 raw JSON·screenshot SHA에 결속했다. count·tag·bounds·queryability biconditional, descendant font sample→fingerprint 재계산, live=false, pixel fallback 금지, sanitized evidence exact binding을 계약화했다. 실제 descendant font는 30·32·45px이며 원시 프로젝트 ID·문자열은 커밋하지 않는다.
   - Sol xhigh actual visual·mutation 최종 감사: 정상 editor와 15개 bounds 일치, 겹침·잘림·빈 화면 없음, raw·screenshot·sanitized SHA 결속과 origin/path/project API/request race/font fingerprint 우회 차단을 재확인해 `PASS · P0 0 / P1 0 / P2 0`으로 판정했다. 30·32·45px는 local computed style이며 R4 typography/release 통과로 과장하지 않는다.
+  - `scripts/contract-lab/probe-editor-geometry.mjs`, `packages/contracts/src/catalog/editor-geometry-v1.ts`: 인증된 1280×800 actual editor의 고정 chrome과 단일 NO01SC 선택 상태를 사용자 Chrome·포커스 없이 GET-only로 두 번씩 관측했다. full CTM/inverse·viewBox→screen corner residual·X/Y scale·8 CSS px guard를 직접 재계산하며 initial↔selected static geometry, viewport containment, dark toolbar signature, selected count 7, asset/network provenance를 fail-closed한다.
+  - actual geometry evidence는 raw SHA `b398172e8ed822dd7f477d20d1f432cba483736f52445ec0506584a164af6854`, initial screenshot SHA `c3bddd6ed3df57d76be92f293a72ee4644901c95fd09dab5e2996a24231bbb12`, selected screenshot SHA `fc24a785c562d6d97a8dd329a4a8d4c3c80e6a1374cf5106def51d4e926cd5ba`, sanitized evidence SHA `6079f27e1d09072324e7edbfff55d164ef9e3b734cc88dc3c2d3d203e404bc35`에 결속된다. fixed-safe CSS는 `x240 y64 976×672`, fixed-safe canvas는 `x-84.735993 y-18.992 1686.528×1161.216`이다.
+  - `research/mathcanvas/student-one-screen-geometry-profile.json`: evidence SHA에 결속된 immutable offline fixed geometry input이다. `fixedGeometryInputReady=true`지만 `interactionGeometryInputReady=false`, `r4OverallComplete=false`, `releaseQualified=false`다. 단일 reference interaction 진단 `976×616`은 generic resolver 입력이 아니며 선택 toolbar와 현재 workbench 하단선의 0px 접촉을 limitation으로 유지한다.
+  - Sol xhigh geometry visual·mutation 최종 감사: initial/selected 캡처에서 고정 chrome·본문의 겹침/잘림 없음, 선택 toolbar `x542–738 y688–736`와 bottom toolbar `y744` 사이 8px를 확인했다. coherent CTM translation, selected fixed drift, white toolbar+rehash, inflation, reference/candidate/count drift, left/top/right offscreen coherent rederive와 profile offscreen을 모두 차단해 `PASS / OKAY · P0 0 / P1 0 / P2 0`으로 판정했다.
   - `packages/curriculum/src/native-affordance-catalog-v2.ts`: 30개 pilot을 7개 family로 dedupe하고 family별 preferred tool, candidate, evidence, blocker를 고정했다. canonical catalog는 재귀 freeze하고 finder는 clone을 반환한다. `native-counting-model-v1`은 기존 NO01SC-01 evidence를 사용해 `contracted·conditional-go`로만 남겼고 나머지는 captured/contracted·pending이다.
   - `packages/curriculum/src/native-affordance-rubric-v2.ts`: 7개 family rubric을 생성한다. NO01SC만 기존 read-only semantic probe에 근거한 `isolated-semantic-probe·contracted·conditional-go`, 나머지는 `static-evidence-triage·pending`이며 각 blocker를 유지한다.
   - `packages/curriculum/src/native-affordance-catalog-v2.test.ts`: family dedupe drift, candidate/evidence 단계 결속, placement·selection·viewport 불변 hash, semantic 관계 변화 hash, 상·하위 projection 충돌, spatial source SHA와 canonical authority 오염 변조 rejection을 검증한다.
   - 기존 실제 evidence 재검증: `pnpm native-spatial:verify`, `pnpm contract:verify:division-native-rubric`, `pnpm contract:verify:division-counting-group` PASS. 1280×800 캡처 `division-counting-group-31-by-6/full-grouped.png`는 native affordance reference로만 확인했으며 학생 release 품질 캡처로 승격하지 않았다.
-  - architecture P1 baseline을 V2 native-affordance contract, candidate-rubric contract와 text-box availability contract까지 확장했다. actual descendant font fingerprint와 screenshot SHA 결속, text-box fail-closed 보강을 반영해 interim rebaseline했으며, 현재 26-file manifest hash `237fb0cda4683076aa4b446d5bef312969bff3d89f292575e8a04f31e3ddb6ff`이다.
+  - architecture P1 baseline을 V2 native-affordance contract, candidate-rubric contract, text-box availability contract와 editor geometry contract까지 확장했다. 현재 27-file manifest hash는 `1df921fc8ebc60df50d3fe035790d85a4b10e3210df4bdd0d06f1860ad0f1d54`이며 `pnpm architecture:verify`가 통과한다.
 
 ## R4 — native-first one-screen layout·typography resolver
 

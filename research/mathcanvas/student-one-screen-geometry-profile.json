@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0.0",
+  "profileId": "student-one-screen-fixed-geometry-v1",
+  "profileVersion": "1.0.0",
+  "evidenceId": "r3-editor-geometry-1280-v1",
+  "evidenceFileSha256": "6079f27e1d09072324e7edbfff55d164ef9e3b734cc88dc3c2d3d203e404bc35",
+  "resolverInputPolicy": "pinned-offline-profile-only",
+  "liveMeasurementAllowed": false,
+  "viewport": "1280x800",
+  "surfaceMode": "authoring-editor",
+  "sidebarState": "expanded",
+  "zoomObservation": "fit-compatible-geometry-observed",
+  "guardCssPx": 8,
+  "transform": {
+    "source": "svg-getScreenCTM",
+    "screenBounds": {
+      "height": 800,
+      "width": 1280,
+      "x": 0,
+      "y": 0
+    },
+    "viewBox": {
+      "height": 1382.400024,
+      "width": 2211.840088,
+      "x": -499.455994,
+      "y": -129.584
+    },
+    "preserveAspectRatio": "none",
+    "ctm": {
+      "a": 0.578703681,
+      "b": 0,
+      "c": 0,
+      "d": 0.578703693,
+      "e": 289.037021878,
+      "f": 74.990739204
+    },
+    "inverse": {
+      "a": 1.728000069,
+      "b": 0,
+      "c": 0,
+      "d": 1.728000031,
+      "e": -499.455993652,
+      "f": -129.583999634
+    },
+    "scaleX": 0.578703681,
+    "scaleY": 0.578703693,
+    "cornerResidualCssPx": 0,
+    "effectiveRenderedScaleUsage": "diagnostic-only"
+  },
+  "fixedSafeCss": {
+    "height": 672,
+    "width": 976,
+    "x": 240,
+    "y": 64
+  },
+  "fixedSafeCanvas": {
+    "height": 1161.216,
+    "width": 1686.528,
+    "x": -84.735993,
+    "y": -18.992
+  },
+  "singleReferenceInteractionDiagnostic": {
+    "coverage": "single-reference-diagnostic",
+    "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+    "affordanceFamilyId": "native-counting-model-v1",
+    "usableAsGenericResolverInput": false,
+    "interactionSafeCss": {
+      "height": 616,
+      "width": 976,
+      "x": 240,
+      "y": 64
+    },
+    "interactionSafeCanvas": {
+      "height": 1064.448,
+      "width": 1686.528,
+      "x": -84.735993,
+      "y": -18.992
+    }
+  },
+  "tolerance": {
+    "geometryCssPx": 0.01,
+    "roundTripCssPx": 0.01
+  },
+  "eligibility": {
+    "fixedGeometryInputReady": true,
+    "interactionGeometryInputReady": false,
+    "blockers": [
+      "affordance-family-dynamic-chrome-coverage-pending"
+    ],
+    "r4OverallComplete": false,
+    "releaseQualified": false
+  },
+  "contentSha256": "5709aa3b23f66761436eeeea61e7805e3ea20290ef1a5b2a55f80be6a18eaff3"
+}

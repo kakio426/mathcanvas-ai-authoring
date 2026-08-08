@@ -37,6 +37,7 @@
     "contract:probe:wave14:place-value-model": "node scripts/contract-lab/capture-wave14-place-value-model-canary.mjs",
     "contract:probe:division-native-semantics": "pnpm --filter @mathcanvas/contracts... build && node scripts/contract-lab/probe-division-native-semantics.mjs",
     "contract:probe:text-box": "node scripts/contract-lab/probe-text-box-availability.mjs --headless --live-auth",
+    "contract:probe:editor-geometry": "node scripts/contract-lab/probe-editor-geometry.mjs --headless --live-auth",
     "contract:canary:division-counting-group": "pnpm --filter @mathcanvas/validator... build && node scripts/contract-lab/capture-division-counting-group-canary.mjs",
     "contract:verify:division-counting-group": "node scripts/contract-lab/validate-division-counting-group-canary.mjs",
     "contract:verify:wave14:place-value-model": "node scripts/contract-lab/validate-wave14-place-value-model-canary.mjs",

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "r3-editor-geometry-1280-v1",
+  "observedAt": "2026-08-08T22:57:52.052Z",
+  "rawSha256": "b398172e8ed822dd7f477d20d1f432cba483736f52445ec0506584a164af6854",
+  "initialScreenshotSha256": "c3bddd6ed3df57d76be92f293a72ee4644901c95fd09dab5e2996a24231bbb12",
+  "selectedScreenshotSha256": "fc24a785c562d6d97a8dd329a4a8d4c3c80e6a1374cf5106def51d4e926cd5ba",
+  "sanitizedEvidenceSha256": "6079f27e1d09072324e7edbfff55d164ef9e3b734cc88dc3c2d3d203e404bc35",
+  "profileId": "student-one-screen-fixed-geometry-v1",
+  "profileVersion": "1.0.0",
+  "profileFileSha256": "5af1498c3dd392eb7f2d771679b62eb435d37e1d636c3c9b74fbc34030b21732",
+  "profileContentSha256": "5709aa3b23f66761436eeeea61e7805e3ea20290ef1a5b2a55f80be6a18eaff3",
+  "assetAggregateSha256": "089c987a4268f89b5a9ff712ff57ec306be4f8926a25c0b3fe0de10d697010b7",
+  "harnessVersion": "editor-geometry-probe:v1",
+  "editorPath": "/ko/view/<redacted-project>",
+  "zoomObservation": "fit-compatible-geometry-observed",
+  "interactionReferenceCoverage": "single-reference-diagnostic",
+  "observedSelectedCount": 7,
+  "fixedGeometryInputReady": true,
+  "interactionGeometryInputReady": false,
+  "interactionBlocker": "affordance-family-dynamic-chrome-coverage-pending"
+}
