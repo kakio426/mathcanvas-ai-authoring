@@ -211,7 +211,7 @@
 ## R10 — 최종 검증, support state, commit·push
 
 - Depth: `core`
-- Status: `in_progress`
+- Status: `complete`
 - Depends on: R1–R9 또는 R5 NO-GO 종료 조건
 - Definition of done:
   - [x] `pnpm cognitive:verify` 통과
@@ -220,13 +220,14 @@
   - [x] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다.
   - [x] persistent evidence가 생기기 전에는 대상 활동이 `verified`를 유지한다.
   - [x] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
-  - [ ] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
-  - [ ] `main`과 `origin/main` 동기화가 확인된다.
-  - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
+  - [x] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
+  - [x] `main`과 `origin/main` 동기화가 확인된다.
+  - [x] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
   - `094b7df`는 실제 blueprint/compiler/persistent lifecycle의 재현 가능한 `verified` 기준점으로 main에 push했다. 이 checkpoint의 Sol P1 화면을 release로 오인하지 않으며, 정정된 layout과 current-hash evidence를 새 완결 단위로 검증한 뒤 commit·push한다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
   - 최종 blueprint hash `6d2756bb…`, layout hash `d8148031…`의 3개 release canary가 validator를 통과했다. `pnpm check`는 204/204 tests, 21 released/93 variations, visual 100점·P0/P1 0, quality P0/P1 0으로 완료됐다. Sol xhigh 최종 판정은 PASS(P0/P1/P2 0)다.
+  - 구현·release evidence는 `301ff07 feat: release native division grouping activity`로 main에 push했다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 
