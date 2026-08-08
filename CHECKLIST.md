@@ -139,7 +139,7 @@
   - `packages/templates/src/worksheet-v2.ts`: V2 preparation은 별도 envelope이고 manipulation을 합성하지 않는다. public released와 contract-lab surface를 구분한다.
   - `packages/authoring-runtime/src/worksheet-v2.ts`: request→plan→prepare→draft hash→explicit teacher approval→canonical re-resolve→resolve→blocked-only compile gate. current catalog drift, candidate teacher approval, hash/time/object mutation을 fail-closed한다. `service.worksheetV2`와 `AuthoringRuntime.worksheetV2`로 기존 V1 서비스와 분리해 노출한다.
   - `packages/curriculum/src/teacher-catalog.ts`: 고정 `92` 대신 authority expected set과 mapped set의 누락·권한 밖 연결을 양방향 검증한다.
-  - `scripts/architecture/check-core-diff.mjs`, `fixtures/architecture/p1-core-baseline.json`: V2 generic contracts/planner/templates/runtime seam을 23-file P1 baseline에 추가했다. baseline hash `9ac16d69f952c2664f9244853010064611ac01bfde08339e79dc742302e61f5e`.
+  - `scripts/architecture/check-core-diff.mjs`, `fixtures/architecture/p1-core-baseline.json`: R2 당시 V2 generic contracts/planner/templates/runtime seam을 23-file P1 baseline에 추가했다. 이후 R3에서 native/text-box contract를 포함해 rebaseline한다.
   - Sol xhigh final review (2026-08-08): R2 catalog/planner P0 0/P1 0/P2 0; authoring-runtime canonical revalidation, clone/time/hash/candidate/compile gate mutation PASS; 고정 92 제거 및 양방향 authority mapping PASS.
   - 검증: contracts/curriculum/planner/templates/authoring-runtime build, typecheck, architecture baseline verify, targeted curriculum/pilot/planner/templates/runtime tests, `git diff --check`; actual MathCanvas native probe/save/reopen/visual canary는 R3–R5/R8에서 수행하고 여기서는 release를 주장하지 않는다.
 
@@ -169,8 +169,8 @@
   - [ ] `captured → contracted → verified → released`를 건너뛰지 않는다.
   - [ ] NO-GO 도구는 그림·점·선으로 조용히 대체하지 않고 종속 entry만 `blocked`로 둔다.
   - [ ] native 요소가 장식이 아니라 학생 확인의 핵심 역할을 맡는다.
-  - [ ] MathCanvas text가 DOM/SVG rendered box로 질의 가능한지 read-only 선행 probe를 수행한다.
-  - [ ] 질의 가능하면 actual box를 R8 검증에만 사용하고, 불가능하면 pixel bounding box 또는 font fingerprint에 결속된 conservative metrics table을 선택한다.
+  - [ ] MathCanvas text가 DOM/SVG rendered box로 질의 가능한지 dedicated exact-selector/bounds read-only probe를 수행했다. 기존 editor diagnostics의 group-wrapper query는 이 조건을 충족하지 않는다.
+  - [ ] exact probe 결과에 따라 DOM/SVG box 또는 font fallback을 결정하고, fallback을 선택할 경우 font fingerprint·metrics table ID/version/SHA를 결속했다. live measurement는 resolver 입력으로 금지한다.
   - [ ] live text measurement를 resolver 배치 입력으로 사용하지 않는다.
   - [ ] 기존 current actual evidence에서 1280×800 editor chrome height, visible content width, zoom mode를 관측한다.
   - [ ] layout profile별 `canvasUnitsToCssPx`를 evidence에서 유도해 source evidence ID와 함께 R4 입력으로 pin한다.
@@ -182,7 +182,7 @@
   - [x] pure placement unchanged / semantic relation changed hash tests
   - [ ] stale fingerprint/roundtrip drift failure tests
   - [x] affordanceFamily별 candidate rubric과 현재 GO/NO-GO/pending 판정
-  - [ ] DOM/SVG text-box availability probe와 fallback decision
+  - [ ] DOM/SVG text-box availability probe와 fallback decision (전용 headless probe의 인증 세션 확보 후)
   - [ ] editor chrome/content width/canvasUnitsToCssPx evidence
   - [ ] read-only/isolated semantic and spatial probe; actual lifecycle은 R5/R8에 위임
 - Cost gate:
@@ -194,11 +194,13 @@
 - Evidence/notes:
   - `packages/contracts/src/catalog/native-affordance-v2.ts`: affordanceFamily/support/evidence/spatial reference와 viewport·selection·전체 이동을 제외하는 semantic projection/hash 계약을 추가했다.
   - `packages/contracts/src/catalog/native-affordance-rubric-v2.ts`: 7개 family 후보를 static triage 또는 isolated semantic probe로 구분하고 support/decision/evidence/candidate binding을 fail-closed한다. R3 rubric은 captured·contracted까지만 허용한다.
+  - `scripts/contract-lab/probe-text-box-availability.mjs`: 사용자 Chrome을 조작하지 않는 `--headless --live-auth --path /ko/view/<project>` read-only probe를 추가했다. `svg#outermost` 안의 `text`, `foreignObject`, `input`, `textarea`, `[contenteditable='true']`, `math-field`만 selector/count/visible bounds/font sample로 수집하고, GET 이외 요청이 하나라도 보이면 evidence 저장 전에 실패한다. 현재 세션에는 active DevTools 인증 endpoint가 없어 실행되지 않았다.
+  - `packages/contracts/src/catalog/text-box-availability-v2.ts`, `research/mathcanvas/text-box-availability-probe.json`: 기존 group-wrapper diagnostics를 availability 근거로 과장하지 않고 `pending-exact-selector-probe`로 SHA-bound 기록했다. count·tag·bounds·queryability biconditional, live=false, pixel fallback 금지, metrics table 전 observed-not-ready, sanitized evidence exact binding을 계약화했다.
   - `packages/curriculum/src/native-affordance-catalog-v2.ts`: 30개 pilot을 7개 family로 dedupe하고 family별 preferred tool, candidate, evidence, blocker를 고정했다. canonical catalog는 재귀 freeze하고 finder는 clone을 반환한다. `native-counting-model-v1`은 기존 NO01SC-01 evidence를 사용해 `contracted·conditional-go`로만 남겼고 나머지는 captured/contracted·pending이다.
   - `packages/curriculum/src/native-affordance-rubric-v2.ts`: 7개 family rubric을 생성한다. NO01SC만 기존 read-only semantic probe에 근거한 `isolated-semantic-probe·contracted·conditional-go`, 나머지는 `static-evidence-triage·pending`이며 각 blocker를 유지한다.
   - `packages/curriculum/src/native-affordance-catalog-v2.test.ts`: family dedupe drift, candidate/evidence 단계 결속, placement·selection·viewport 불변 hash, semantic 관계 변화 hash, 상·하위 projection 충돌, spatial source SHA와 canonical authority 오염 변조 rejection을 검증한다.
   - 기존 실제 evidence 재검증: `pnpm native-spatial:verify`, `pnpm contract:verify:division-native-rubric`, `pnpm contract:verify:division-counting-group` PASS. 1280×800 캡처 `division-counting-group-31-by-6/full-grouped.png`는 native affordance reference로만 확인했으며 학생 release 품질 캡처로 승격하지 않았다.
-  - architecture P1 baseline을 V2 native-affordance contract와 candidate-rubric contract까지 확장했다. Sol mutation 검토에 따른 candidate-state binding 보강을 반영해 interim rebaseline했으며, 현재 25-file manifest hash `e8b4d528715d4c559c0a7f17f355dab0ea1b425a1795bde955bd3871b90ca4a6`이다.
+  - architecture P1 baseline을 V2 native-affordance contract, candidate-rubric contract와 text-box availability contract까지 확장했다. Sol mutation 검토에 따른 candidate-state binding과 text-box fail-closed 보강을 반영해 interim rebaseline했으며, 현재 26-file manifest hash `32d7637533c6342b6d08c476532d957d167e835e2023196ffb2d96265bd60940`이다.
 
 ## R4 — native-first one-screen layout·typography resolver
 
@@ -419,7 +421,7 @@
   - [ ] 승격 뒤 public V2 planner와 teacher preview/approval 경로를 검증하며 public released-only gate는 유지된다.
   - [ ] stale tool/font/layout fingerprint, affordanceFamily repartition, missing canary, blocking support state는 종속 entry release를 차단한다.
   - [ ] 실제 1280×800 캡처에서 겹침·잘림·과도한 축소·선택 chrome 충돌이 0이다.
-  - [ ] R3의 text-box probe 결과에 따라 DOM/SVG box 또는 pixel bounding box로 actual glyph·line box·font size·centering을 검증하고, 불가능한 항목은 conservative metrics + Sol 육안의 결합 근거를 남긴다.
+  - [ ] R3의 text-box probe 결과에 따라 DOM/SVG box로 actual glyph·line box·font size·centering을 검증한다. pixel bounding box는 캡처 QA evidence로만 사용할 수 있고 resolver fallback이 아니며, direct 관측이 불가능한 항목은 R4의 pinned conservative metrics + Sol 육안 근거로 남긴다.
   - [ ] 실제 캡처에서 제목 크기, 최상단 네 문장 여백, 보기 1·2·3 중앙 정렬, `예상한 답 고르기`, `4개씩 묶기`, 설명/수정 공간을 다시 확인한다.
   - [ ] 실제 캡처의 모든 학생 문구가 정확한 교실 한국어이고 정답이 노출되지 않는다.
   - [ ] visual audit 100, quality audit 100, P0/P1 0이다.
