@@ -30,7 +30,7 @@
     },
     {
       "path": "packages/contracts/src/catalog/text-box-availability-v2.ts",
-      "sha256": "b44ddae336ba7e67daae9b567924570a5f4531d0db3eb042721ea3bd6ae8c61d"
+      "sha256": "50031f89ad8351d29de514e5f9b869a2b682f7a060c1c3eb95b4df939854cc43"
     },
     {
       "path": "packages/contracts/src/catalog/worksheet-v2.ts",
@@ -121,5 +121,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "32d7637533c6342b6d08c476532d957d167e835e2023196ffb2d96265bd60940"
+  "manifestHash": "237fb0cda4683076aa4b446d5bef312969bff3d89f292575e8a04f31e3ddb6ff"
 }

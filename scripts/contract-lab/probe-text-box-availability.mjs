@@ -17,6 +17,12 @@ import { stableJson } from "./lib/normalize.mjs";
 import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 
 const origin = "https://mathcanvas.vivasam.com";
+const suppressedTelemetryRequest = {
+  method: "POST",
+  origin: "https://lc.getunicorn.org",
+  target: "/l",
+  expectedCount: 1
+};
 const directSelectorEntries = [
   ["svg text", "svg#outermost text"],
   ["svg foreignObject", "svg#outermost foreignObject"],
@@ -29,7 +35,7 @@ const directSelectorEntries = [
 function safePath(value) {
   try {
     const parsed = new URL(value);
-    return `${parsed.pathname}${parsed.hash ? "<hash>" : ""}`;
+    return `${parsed.pathname}${parsed.search}${parsed.hash ? "<hash>" : ""}`;
   } catch {
     return "<invalid-url>";
   }
@@ -87,9 +93,27 @@ async function probeExactSelectors(page) {
       bounds.left < container.right &&
       bounds.bottom > container.top &&
       bounds.top < container.bottom;
-    const describe = (selectorName, element) => {
+    const describe = (selectorName, element, typographyElements) => {
       const bounds = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
+      const fontSamples = typographyElements
+        .map((typographyElement) => {
+          const style = getComputedStyle(typographyElement);
+          return {
+            family: String(style.fontFamily || "").slice(0, 160),
+            size: String(style.fontSize || "").slice(0, 40),
+            weight: String(style.fontWeight || "").slice(0, 40),
+            lineHeight: String(style.lineHeight || "").slice(0, 40)
+          };
+        })
+        .filter(
+          (sample, index, samples) =>
+            samples.findIndex(
+              (candidate) => JSON.stringify(candidate) === JSON.stringify(sample)
+            ) === index
+        )
+        .sort((left, right) =>
+          JSON.stringify(left).localeCompare(JSON.stringify(right))
+        );
       return {
         selector: selectorName,
         tag: element.tagName.toLowerCase(),
@@ -99,12 +123,7 @@ async function probeExactSelectors(page) {
           width: round(bounds.width),
           height: round(bounds.height)
         },
-        font: {
-          family: String(style.fontFamily || "").slice(0, 160),
-          size: String(style.fontSize || "").slice(0, 40),
-          weight: String(style.fontWeight || "").slice(0, 40),
-          lineHeight: String(style.lineHeight || "").slice(0, 40)
-        },
+        fontSamples,
         textLength: String(element.textContent || element.value || "").trim()
           .length
       };
@@ -129,6 +148,30 @@ async function probeExactSelectors(page) {
       return visible(element) && intersects(bounds, canvasBounds) &&
         intersects(bounds, viewportBounds);
     };
+    const hasDirectText = (element) =>
+      [...element.childNodes].some(
+        (node) =>
+          node.nodeType === Node.TEXT_NODE &&
+          String(node.textContent || "").trim().length > 0
+      );
+    const typographyElementsFor = (element) => {
+      if (element.tagName.toLowerCase() !== "foreignobject") return [element];
+      const typographyElements = [...element.querySelectorAll("*")].filter(
+        (candidate) =>
+          visibleInCanvas(candidate) &&
+          (hasDirectText(candidate) ||
+            ["input", "textarea", "math-field"].includes(
+              candidate.tagName.toLowerCase()
+            ))
+      );
+      if (typographyElements.length === 0) {
+        throw new Error("direct-candidate-typography-unavailable:foreignObject");
+      }
+      if (typographyElements.length > 32) {
+        throw new Error("direct-candidate-typography-overflow:foreignObject");
+      }
+      return typographyElements;
+    };
 
     const selectorCounts = {};
     const visibleSelectorCounts = {};
@@ -143,9 +186,13 @@ async function probeExactSelectors(page) {
       selectorCounts[selectorName] = elements.length;
       visibleSelectorCounts[selectorName] = visibleElements.length;
       visibleElements.forEach((element) => {
-        const description = describe(selectorName, element);
+        const description = describe(
+          selector,
+          element,
+          typographyElementsFor(element)
+        );
         directCandidates.push(description);
-        fontSamples.push(description.font);
+        fontSamples.push(...description.fontSamples);
       });
       if (directCandidates.length > 240) {
         throw new Error("direct-candidate-overflow:total");
@@ -245,6 +292,8 @@ try {
       "text-box-probe-requires-editor-path: --path=/ko/view/<project>만 허용합니다."
     );
   }
+  const projectId = sourcePath.slice("/ko/view/".length);
+  const projectApiPath = `/api/project/${projectId}`;
   const timeoutMs = Number(options["login-timeout-ms"]);
   const viewportWidth = Number(options["viewport-width"]);
   const viewportHeight = Number(options["viewport-height"]);
@@ -281,13 +330,45 @@ try {
     serviceWorkers: "block"
   });
   const blockedRequests = [];
+  const suppressedTelemetryRequests = [];
   const observedResponses = [];
   await context.route("**/*", async (route) => {
     const request = route.request();
     const method = request.method().toUpperCase();
+    const requestOrigin = new URL(request.url()).origin;
     const path = safePath(request.url());
     if (method !== "GET") {
-      blockedRequests.push({ method, path });
+      if (
+        method === suppressedTelemetryRequest.method &&
+        requestOrigin === suppressedTelemetryRequest.origin &&
+        path === suppressedTelemetryRequest.target
+      ) {
+        suppressedTelemetryRequests.push({
+          method,
+          origin: requestOrigin,
+          path,
+          delivered: false
+        });
+        if (
+          suppressedTelemetryRequests.length >
+          suppressedTelemetryRequest.expectedCount
+        ) {
+          blockedRequests.push({
+            method,
+            origin: requestOrigin,
+            path,
+            reason: "telemetry-cardinality-overflow"
+          });
+        }
+        await route.abort("blockedbyclient");
+        return;
+      }
+      blockedRequests.push({
+        method,
+        origin: requestOrigin,
+        path,
+        reason: "non-get-request"
+      });
       await route.abort("blockedbyclient");
       return;
     }
@@ -295,7 +376,13 @@ try {
   });
   context.on("response", (response) => {
     const request = response.request();
-    if (!request.url().startsWith(origin)) return;
+    let requestUrl;
+    try {
+      requestUrl = new URL(request.url());
+    } catch {
+      return;
+    }
+    if (requestUrl.origin !== origin) return;
     observedResponses.push({
       method: request.method(),
       path: safePath(request.url()),
@@ -311,19 +398,63 @@ try {
     throw new Error("auth-required: 현재 로그인 상태를 확인할 수 없습니다.");
   }
   await page.waitForTimeout(3000);
+  const currentUrl = new URL(page.url());
+  if (
+    currentUrl.origin !== origin ||
+    currentUrl.pathname !== sourcePath ||
+    currentUrl.search !== "" ||
+    currentUrl.hash !== ""
+  ) {
+    throw new Error(
+      `editor-path-mismatch: expected=${origin}${sourcePath} ` +
+        `actual=${currentUrl.origin}${currentUrl.pathname}`
+    );
+  }
+  const projectResponses = observedResponses.filter(
+    (response) =>
+      response.method === "GET" && response.path === projectApiPath
+  );
+  if (
+    projectResponses.length === 0 ||
+    projectResponses.some((response) => response.status !== 200)
+  ) {
+    const statuses = projectResponses.length > 0
+      ? projectResponses.map((response) => response.status).join(",")
+      : "missing";
+    throw new Error(
+      `project-source-unavailable: ${projectApiPath} statuses=${statuses}`
+    );
+  }
   const probe = await probeExactSelectors(page);
+  const capturePath = currentUrl.pathname;
+  await page.screenshot({ path: screenshotPath, fullPage: true });
+  await page.waitForTimeout(250);
+  await page.close({ runBeforeUnload: false });
   if (blockedRequests.length > 0) {
     throw new Error(
       `unsafe-request-observed: ${blockedRequests
-        .map((request) => `${request.method}:${request.path}`)
+        .map(
+          (request) =>
+            `${request.method}:${request.origin}${request.path}:${request.reason}`
+        )
         .join(",")}`
     );
   }
+  if (
+    suppressedTelemetryRequests.length !==
+    suppressedTelemetryRequest.expectedCount
+  ) {
+    throw new Error(
+      "suppressed-telemetry-cardinality-drift: " +
+        `expected=${suppressedTelemetryRequest.expectedCount} ` +
+        `actual=${suppressedTelemetryRequests.length}`
+    );
+  }
   const capture = {
-    captureVersion: "text-box-availability-1.0.0",
+    captureVersion: "text-box-availability-1.1.0",
     capturedAt: new Date().toISOString(),
     origin,
-    path: new URL(page.url()).pathname,
+    path: capturePath,
     viewport: { width: viewportWidth, height: viewportHeight },
     query: probe,
     fontFingerprint:
@@ -331,7 +462,15 @@ try {
         ? fingerprintFontSamples(probe.fontSamples)
         : null,
     blockedRequests: blockedRequests.sort((left, right) =>
-      `${left.method}:${left.path}`.localeCompare(`${right.method}:${right.path}`)
+      `${left.method}:${left.origin}:${left.path}`.localeCompare(
+        `${right.method}:${right.origin}:${right.path}`
+      )
+    ),
+    suppressedTelemetryRequests: suppressedTelemetryRequests.sort(
+      (left, right) =>
+        `${left.method}:${left.origin}:${left.path}`.localeCompare(
+          `${right.method}:${right.origin}:${right.path}`
+        )
     ),
     observedResponses: observedResponses.sort((left, right) =>
       `${left.method}:${left.path}:${left.status}`.localeCompare(
@@ -339,7 +478,6 @@ try {
       )
     )
   };
-  await page.screenshot({ path: screenshotPath, fullPage: true });
   writeFileSync(outputPath, stableJson(capture), {
     encoding: "utf8",
     mode: 0o600

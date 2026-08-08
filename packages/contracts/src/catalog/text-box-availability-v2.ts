@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sha256Hex } from "../hash.js";
 import { stableIdSchema } from "../vocabulary/ids.js";
 
 export const TEXT_BOX_AVAILABILITY_V2_SCHEMA_VERSION = "1.1.0" as const;
@@ -45,6 +46,42 @@ const exactSelector = TEXT_BOX_DIRECT_SELECTOR_ENTRIES.map(
   (entry) => entry.selector
 ).join(",");
 
+const fontSampleSchema = z
+  .object({
+    family: z.string().min(1).max(160),
+    size: z
+      .string()
+      .regex(/^\d+(?:\.\d+)?px$/)
+      .refine((size) => Number.parseFloat(size) > 0 && Number.parseFloat(size) <= 512),
+    weight: z.string().min(1).max(40),
+    lineHeight: z
+      .string()
+      .regex(/^(?:normal|\d+(?:\.\d+)?px)$/)
+      .refine(
+        (lineHeight) =>
+          lineHeight === "normal" ||
+          (Number.parseFloat(lineHeight) > 0 &&
+            Number.parseFloat(lineHeight) <= 1024)
+      )
+  })
+  .strict();
+
+type FontSample = z.infer<typeof fontSampleSchema>;
+
+export function textBoxFontFingerprint(fontSamples: FontSample[]): string {
+  const normalized = fontSamples
+    .map((sample) => ({
+      family: sample.family,
+      lineHeight: sample.lineHeight,
+      size: sample.size,
+      weight: sample.weight
+    }))
+    .sort((left, right) =>
+      JSON.stringify(left).localeCompare(JSON.stringify(right))
+    );
+  return `sha256:${sha256Hex(normalized)}`;
+}
+
 const boundSchema = z
   .object({
     selector: z.string().min(1).max(80),
@@ -57,14 +94,7 @@ const boundSchema = z
         height: z.number().finite().positive()
       })
       .strict(),
-    font: z
-      .object({
-        family: z.string().max(160),
-        size: z.string().max(40),
-        weight: z.string().max(40),
-        lineHeight: z.string().max(40)
-      })
-      .strict(),
+    fontSamples: z.array(fontSampleSchema).min(1).max(32),
     textLength: z.number().int().min(0).max(100_000)
   })
   .strict();
@@ -104,6 +134,7 @@ export const textBoxAvailabilityProbeSchema = z
           "dedicated-editor-diagnostics"
         ]),
         rawSha256: z.string().regex(/^[a-f0-9]{64}$/),
+        screenshotSha256: z.string().regex(/^[a-f0-9]{64}$/),
         redactedPath: z.literal("/ko/view/<redacted-project>"),
         rawCommitted: z.literal(false)
       })
@@ -350,6 +381,24 @@ export const textBoxAvailabilityProbeSchema = z
           message: `selector와 rendered tag가 맞지 않습니다: ${bound.selector}/${bound.tag}`
         });
       }
+      const fontSampleKeys = bound.fontSamples.map((sample) =>
+        JSON.stringify({
+          family: sample.family,
+          lineHeight: sample.lineHeight,
+          size: sample.size,
+          weight: sample.weight
+        })
+      );
+      if (
+        new Set(fontSampleKeys).size !== fontSampleKeys.length ||
+        fontSampleKeys.join("|") !== [...fontSampleKeys].sort().join("|")
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["query", "visibleBounds"],
+          message: "각 visible bound의 font sample은 중복 없는 canonical style set이어야 합니다."
+        });
+      }
       if (
         !rootBounds ||
         !intersects(bound.bounds, rootBounds) ||
@@ -441,6 +490,19 @@ export const textBoxAvailabilityProbeSchema = z
         code: z.ZodIssueCode.custom,
         path: ["fontFingerprint"],
         message: "direct candidate가 있으면 실제 font sample fingerprint가 필요합니다."
+      });
+    }
+    if (
+      queryable &&
+      value.fontFingerprint !==
+        textBoxFontFingerprint(
+          value.query.visibleBounds.flatMap((bound) => bound.fontSamples)
+        )
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["fontFingerprint"],
+        message: "font fingerprint는 실제 text-bearing descendant style set에서 파생되어야 합니다."
       });
     }
     if (queryable) {

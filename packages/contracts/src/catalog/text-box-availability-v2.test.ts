@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   assertTextBoxAvailabilityProbeBinding,
+  textBoxFontFingerprint,
   textBoxAvailabilityProbeSchema
 } from "./text-box-availability-v2.js";
 
@@ -60,12 +61,12 @@ function completedDirectFixture() {
       selector: "svg#outermost text",
       tag: "text",
       bounds: { x: 10, y: 10, width: 80, height: 32 },
-      font: {
+      fontSamples: [{
         family: "Pretendard",
         size: "28px",
         weight: "400",
         lineHeight: "normal"
-      },
+      }],
       textLength: 4
     }
   ];
@@ -82,13 +83,42 @@ function completedDirectFixture() {
   direct.decision.status = "resolved";
   direct.decision.directTextBoxQueryable = true;
   direct.decision.fallback = "dom-svg-text-box";
-  direct.fontFingerprint =
-    "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232";
+  direct.fontFingerprint = textBoxFontFingerprint(
+    direct.query.visibleBounds.flatMap(
+      (bound: { fontSamples: Array<{
+        family: string;
+        size: string;
+        weight: string;
+        lineHeight: string;
+      }> }) => bound.fontSamples
+    )
+  );
   return direct;
 }
 
+function pendingFixture() {
+  const pending = fixture();
+  pending.sourceEvidence.sourceKind = "editor-diagnostics-context";
+  pending.environment.viewport = null;
+  pending.query.status = "pending-exact-selector-probe";
+  pending.query.selectorCounts = null;
+  pending.query.visibleSelectorCounts = null;
+  pending.query.candidateTagCounts = {};
+  pending.query.directTextBoxTags = [];
+  pending.query.directTextBoxCount = null;
+  pending.query.visibleBounds = [];
+  pending.query.canvasRoot = null;
+  pending.query.groupWrapperCount = null;
+  pending.query.groupTextCount = null;
+  pending.decision.status = "pending-exact-selector-probe";
+  pending.decision.directTextBoxQueryable = null;
+  pending.decision.fallback = "pending-exact-selector-probe";
+  pending.fontFingerprint = null;
+  return pending;
+}
+
 describe("R3 text box availability contract", () => {
-  it("기존 diagnostics는 exact selector probe 전 pending으로만 기록한다", () => {
+  it("실제 editor probe를 exact manifest와 DOM/SVG 결정에 결속한다", () => {
     const result = textBoxAvailabilityProbeSchema.parse(fixture());
     const pinned = manifest();
     const fixtureSha = createHash("sha256")
@@ -99,30 +129,39 @@ describe("R3 text box availability contract", () => {
     expect(result.observedAt).toBe(pinned.observedAt);
     expect(result.sourceEvidence.sourceKind).toBe(pinned.sourceKind);
     expect(result.sourceEvidence.rawSha256).toBe(pinned.rawSha256);
+    expect(result.sourceEvidence.screenshotSha256).toBe(
+      pinned.rawScreenshotSha256
+    );
     expect(result.environment.editorPath).toBe(pinned.editorPath);
     expect(result.query.selector).toBe(pinned.selector);
     expect(result.decision.status).toBe(pinned.decisionStatus);
-    expect(result.query.status).toBe("pending-exact-selector-probe");
-    expect(result.query.directTextBoxCount).toBeNull();
-    expect(result.decision.fallback).toBe("pending-exact-selector-probe");
-    expect(result.decision.directTextBoxQueryable).toBeNull();
+    expect(result.sourceEvidence.sourceKind).toBe(
+      "dedicated-editor-diagnostics"
+    );
+    expect(result.environment.viewport).toBe("1280x800");
+    expect(result.query.status).toBe("completed");
+    expect(result.query.directTextBoxCount).toBe(15);
+    expect(result.query.directTextBoxTags).toEqual(["foreignobject"]);
+    expect(result.decision.status).toBe("resolved");
+    expect(result.decision.fallback).toBe("dom-svg-text-box");
+    expect(result.decision.directTextBoxQueryable).toBe(true);
     expect(result.decision.liveMeasurementAllowed).toBe(false);
   });
 
   it("pending probe에서 0/true·live measurement·임의 fallback을 차단한다", () => {
-    const queryable = fixture();
+    const queryable = pendingFixture();
     queryable.decision.directTextBoxQueryable = true;
     expect(textBoxAvailabilityProbeSchema.safeParse(queryable).success).toBe(
       false
     );
 
-    const liveMeasurement = fixture();
+    const liveMeasurement = pendingFixture();
     liveMeasurement.decision.liveMeasurementAllowed = true;
     expect(
       textBoxAvailabilityProbeSchema.safeParse(liveMeasurement).success
     ).toBe(false);
 
-    const fakeFallback = fixture();
+    const fakeFallback = pendingFixture();
     fakeFallback.decision.fallback = "font-fingerprint-conservative";
     expect(textBoxAvailabilityProbeSchema.safeParse(fakeFallback).success).toBe(
       false
@@ -135,6 +174,51 @@ describe("R3 text box availability contract", () => {
 
     direct.query.directTextBoxCount = 0;
     expect(textBoxAvailabilityProbeSchema.safeParse(direct).success).toBe(false);
+  });
+
+  it("font fingerprint는 foreignObject의 실제 text-bearing descendant style에서 파생된다", () => {
+    const actual = fixture();
+    expect(textBoxAvailabilityProbeSchema.safeParse(actual).success).toBe(true);
+    expect(actual.query.visibleBounds[3].fontSamples[0].size).toBe("45px");
+
+    actual.query.visibleBounds[3].fontSamples[0].size = "16px";
+    expect(textBoxAvailabilityProbeSchema.safeParse(actual).success).toBe(
+      false
+    );
+
+    const duplicateStyle = completedDirectFixture();
+    duplicateStyle.query.visibleBounds[0].fontSamples.push(
+      structuredClone(duplicateStyle.query.visibleBounds[0].fontSamples[0])
+    );
+    duplicateStyle.fontFingerprint = textBoxFontFingerprint(
+      duplicateStyle.query.visibleBounds.flatMap(
+        (bound: { fontSamples: Array<{
+          family: string;
+          size: string;
+          weight: string;
+          lineHeight: string;
+        }> }) => bound.fontSamples
+      )
+    );
+    expect(
+      textBoxAvailabilityProbeSchema.safeParse(duplicateStyle).success
+    ).toBe(false);
+
+    const emptySize = completedDirectFixture();
+    emptySize.query.visibleBounds[0].fontSamples[0].size = "";
+    emptySize.fontFingerprint = textBoxFontFingerprint(
+      emptySize.query.visibleBounds.flatMap(
+        (bound: { fontSamples: Array<{
+          family: string;
+          size: string;
+          weight: string;
+          lineHeight: string;
+        }> }) => bound.fontSamples
+      )
+    );
+    expect(textBoxAvailabilityProbeSchema.safeParse(emptySize).success).toBe(
+      false
+    );
   });
 
   it("completed evidence는 dedicated source·editor viewport·canvas root와 exact keys에 결속된다", () => {
@@ -274,6 +358,8 @@ describe("R3 text box availability contract", () => {
     pinnedExpected.observedAt = pinned.observedAt;
     pinnedExpected.sourceEvidence.sourceKind = pinned.sourceKind;
     pinnedExpected.sourceEvidence.rawSha256 = pinned.rawSha256;
+    pinnedExpected.sourceEvidence.screenshotSha256 =
+      pinned.rawScreenshotSha256;
     pinnedExpected.environment.editorPath = pinned.editorPath;
     pinnedExpected.query.selector = pinned.selector;
     pinnedExpected.decision.status = pinned.decisionStatus;
@@ -283,6 +369,9 @@ describe("R3 text box availability contract", () => {
     for (const mutate of [
       (value: typeof expected) => {
         value.sourceEvidence.rawSha256 = "b".repeat(64);
+      },
+      (value: typeof expected) => {
+        value.sourceEvidence.screenshotSha256 = "c".repeat(64);
       },
       (value: typeof expected) => {
         value.observedAt = "2026-07-29T07:05:27.933Z";

@@ -1,11 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "probeId": "r3-text-box-availability-v1",
-  "sourceKind": "editor-diagnostics-context",
-  "observedAt": "2026-07-29T07:05:26.933Z",
-  "rawSha256": "7aa05da30af1d67bb44f559f114d34a7fcdb5c17174feab29745c8769cb06c7c",
-  "sanitizedEvidenceSha256": "9831923f3245861d114e97749a240838473b2faca69507c092c98f95d7e555a2",
+  "sourceKind": "dedicated-editor-diagnostics",
+  "observedAt": "2026-08-08T22:06:59.664Z",
+  "rawSha256": "9c1e5b884b6a679e2743ef80ae742d7613b72c2b5d0bf40ffd5a42751d9531a7",
+  "rawScreenshotSha256": "c3bddd6ed3df57d76be92f293a72ee4644901c95fd09dab5e2996a24231bbb12",
+  "sanitizedEvidenceSha256": "c454a6aa2e25b4ecdab91b014d4ff73943042b48ab6267418f98b17e2117d283",
   "editorPath": "/ko/view/<redacted-project>",
   "selector": "svg#outermost text,svg#outermost foreignObject,svg#outermost input,svg#outermost textarea,svg#outermost [contenteditable='true'],svg#outermost math-field",
-  "decisionStatus": "pending-exact-selector-probe"
+  "decisionStatus": "resolved"
 }

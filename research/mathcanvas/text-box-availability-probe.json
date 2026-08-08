@@ -1,53 +1,388 @@
 {
   "schemaVersion": "1.1.0",
   "probeId": "r3-text-box-availability-v1",
-  "observedAt": "2026-07-29T07:05:26.933Z",
+  "observedAt": "2026-08-08T22:06:59.664Z",
   "sourceEvidence": {
-    "sourceKind": "editor-diagnostics-context",
-    "rawSha256": "7aa05da30af1d67bb44f559f114d34a7fcdb5c17174feab29745c8769cb06c7c",
+    "sourceKind": "dedicated-editor-diagnostics",
+    "rawSha256": "9c1e5b884b6a679e2743ef80ae742d7613b72c2b5d0bf40ffd5a42751d9531a7",
+    "screenshotSha256": "c3bddd6ed3df57d76be92f293a72ee4644901c95fd09dab5e2996a24231bbb12",
     "redactedPath": "/ko/view/<redacted-project>",
     "rawCommitted": false
   },
   "environment": {
     "surfaceMode": "authoring-editor",
-    "viewport": null,
+    "viewport": "1280x800",
     "editorPath": "/ko/view/<redacted-project>",
     "writePolicy": "read-only-observation",
     "userChromeTouched": false
   },
   "query": {
-    "status": "pending-exact-selector-probe",
-    "selector": "svg#outermost text,svg#outermost foreignObject,svg#outermost input,svg#outermost textarea,svg#outermost [contenteditable='true'],svg#outermost math-field",
-    "selectorEntries": [
-      { "name": "svg text", "selector": "svg#outermost text" },
-      { "name": "svg foreignObject", "selector": "svg#outermost foreignObject" },
-      { "name": "input", "selector": "svg#outermost input" },
-      { "name": "textarea", "selector": "svg#outermost textarea" },
-      { "name": "contenteditable", "selector": "svg#outermost [contenteditable='true']" },
-      { "name": "math-field", "selector": "svg#outermost math-field" }
+    "candidateTagCounts": {
+      "foreignobject": 15
+    },
+    "canvasRoot": {
+      "bounds": {
+        "height": 800,
+        "width": 1280,
+        "x": 0,
+        "y": 0
+      },
+      "id": "outermost",
+      "selector": "svg#outermost",
+      "tag": "svg"
+    },
+    "directTextBoxCount": 15,
+    "directTextBoxTags": [
+      "foreignobject"
     ],
-    "selectorCounts": null,
-    "visibleSelectorCounts": null,
-    "candidateTagCounts": {},
-    "directTextBoxTags": [],
-    "directTextBoxCount": null,
-    "visibleBounds": [],
-    "canvasRoot": null,
-    "groupWrapperCount": null,
-    "groupTextCount": null
+    "groupTextCount": 65,
+    "groupWrapperCount": 60,
+    "selector": "svg#outermost text,svg#outermost foreignObject,svg#outermost input,svg#outermost textarea,svg#outermost [contenteditable='true'],svg#outermost math-field",
+    "selectorCounts": {
+      "contenteditable": 0,
+      "input": 0,
+      "math-field": 0,
+      "svg foreignObject": 15,
+      "svg text": 0,
+      "textarea": 0
+    },
+    "selectorEntries": [
+      {
+        "name": "svg text",
+        "selector": "svg#outermost text"
+      },
+      {
+        "name": "svg foreignObject",
+        "selector": "svg#outermost foreignObject"
+      },
+      {
+        "name": "input",
+        "selector": "svg#outermost input"
+      },
+      {
+        "name": "textarea",
+        "selector": "svg#outermost textarea"
+      },
+      {
+        "name": "contenteditable",
+        "selector": "svg#outermost [contenteditable='true']"
+      },
+      {
+        "name": "math-field",
+        "selector": "svg#outermost math-field"
+      }
+    ],
+    "visibleBounds": [
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 833.33,
+          "x": 335.33,
+          "y": 74.99
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 30
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 833.33,
+          "x": 335.33,
+          "y": 130.55
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 47
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 833.33,
+          "x": 335.33,
+          "y": 102.77
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 39
+      },
+      {
+        "bounds": {
+          "height": 31.83,
+          "width": 833.33,
+          "x": 335.33,
+          "y": 158.32
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "67.5px",
+            "size": "45px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 37
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 121.53,
+          "x": 746.21,
+          "y": 202.88
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "48px",
+            "size": "32px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 18.52,
+          "width": 150.46,
+          "x": 339.96,
+          "y": 201.73
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 9
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 87.85,
+          "x": 352.75,
+          "y": 234.13
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 87.85,
+          "x": 482.38,
+          "y": 234.13
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 87.85,
+          "x": 612.01,
+          "y": 234.13
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 87.85,
+          "x": 417.57,
+          "y": 268.86
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 87.85,
+          "x": 547.2,
+          "y": 268.86
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 260.42,
+          "x": 902.46,
+          "y": 202.88
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "48px",
+            "size": "32px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 8
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 289.35,
+          "x": 344.01,
+          "y": 315.15
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 7
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 399.31,
+          "x": 665.19,
+          "y": 315.15
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 9
+      },
+      {
+        "bounds": {
+          "height": 19.68,
+          "width": 81.02,
+          "x": 1090.54,
+          "y": 315.15
+        },
+        "fontSamples": [
+          {
+            "family": "\"Pretendard Variable\", Pretendard",
+            "lineHeight": "45px",
+            "size": "30px",
+            "weight": "400"
+          }
+        ],
+        "selector": "svg#outermost foreignObject",
+        "tag": "foreignobject",
+        "textLength": 5
+      }
+    ],
+    "visibleSelectorCounts": {
+      "contenteditable": 0,
+      "input": 0,
+      "math-field": 0,
+      "svg foreignObject": 15,
+      "svg text": 0,
+      "textarea": 0
+    },
+    "status": "completed"
   },
   "decision": {
-    "status": "pending-exact-selector-probe",
-    "directTextBoxQueryable": null,
-    "fallback": "pending-exact-selector-probe",
+    "status": "resolved",
+    "directTextBoxQueryable": true,
+    "fallback": "dom-svg-text-box",
     "liveMeasurementAllowed": false,
     "resolverInputPolicy": "contract-only",
     "metricsTable": null
   },
-  "fontFingerprint": null,
+  "fontFingerprint": "sha256:d77e1591965fe81b0592b97c8bc4323719e80bb4581d9065dc2acf87b7a5fb9c",
   "limitations": [
-    "기존 editor diagnostics는 g.item.group wrapper만 수집했으며 direct text·foreignObject·input·textarea·contenteditable·math-field를 질의하지 않았다.",
-    "따라서 이 파일은 가용성 또는 fallback 판정이 아니라 dedicated exact-selector probe가 필요하다는 pending 근거다.",
-    "전용 probe 후에도 live DOM 측정값은 resolver 입력으로 사용하지 않으며, font fallback은 metrics table binding 전까지 release 준비가 아니다."
+    "인증된 편집 화면의 정확한 프로젝트 API가 모두 200인 상태에서 svg#outermost 내부 exact selector만 관측했다.",
+    "이 캡처에서는 visible foreignObject 15개가 직접 질의되어 DOM/SVG text-box 경로를 선택했지만, 모든 프로젝트의 요소 구성을 일반화하지 않는다.",
+    "font fingerprint는 foreignObject wrapper가 아니라 실제 text-bearing descendant style set에서 파생했다.",
+    "live DOM 측정값은 resolver 배치 입력으로 사용하지 않으며 deterministic layout은 R4의 pinned offline metrics 계약을 계속 사용한다.",
+    "원시 캡처는 커밋하지 않고 프로젝트 ID와 실제 문자열을 정제 증거에서 제거했다."
   ]
 }
