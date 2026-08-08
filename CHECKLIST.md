@@ -88,9 +88,9 @@
   - [x] 사용자의 Chrome·화면·포커스 미사용
   - [x] candidate comparison report 또는 bounded evidence 생성
 - Evidence/notes:
-  - `scripts/contract-lab/capture-page.mjs --headless --path /ko/myCanvas --login-timeout-ms 0`를 전용 background probe로 실행했으나 `auth-required`로 중단됐다.
-  - probe는 write 0회이며 사용자 Chrome·화면·포커스를 건드리지 않았다. 실제 저장·재열기·핵심 조작을 관측하지 못했으므로 후보를 live verified로 승격하지 않는다.
-  - `research/mathcanvas/division-native-candidate-rubric.json`에 `NO01SC`, `NO01NR`, `NO07IC`, `NO04NG`의 static catalog evidence, 미검증 live 상태, blocker와 다음 probe 조건을 sanitized 형태로 기록했다.
+  - 인증된 전용 프로필을 read-only CDP로 재사용하는 `capture-page.mjs --headless --live-auth --path /ko/myCanvas --login-timeout-ms 0` 경로를 추가하고 실제 `/ko/myCanvas`와 owned-project editor를 1440×1000 및 1280×800에서 캡처했다. live-auth에서는 GET/HEAD/OPTIONS 외 요청을 모두 차단한다.
+  - 실제 도구 설정 화면에서 `수 구슬`, `수 세기 모형`, `십 배열판`, `배열표`, `셈돌` 버튼과 bounds를 확인했다. `셈돌` 선택 시도는 설정 완료 단계에서 발생한 기존 프로젝트 `POST/PUT`을 차단했으며 write 0회로 끝났다.
+  - 사용자 Chrome·작업 화면은 건드리지 않았고 인증·관측은 별도 전용 profile/window에서만 수행했다. 생성·핵심 조작·저장·재열기를 관측하지 못했으므로 후보를 live verified로 승격하지 않는다. 1280×800 editor 캡처는 우측 선택지가 viewport 밖으로 잘려 학생 화면 품질 증거로 사용하지 않으며, sanitized summary는 `research/mathcanvas/division-native-live-affordance-observation.json`이다.
 
 ## R5 — 선정 도구 release GO/NO-GO
 
@@ -98,7 +98,7 @@
 - Status: `complete`
 - Depends on: R4
 - Definition of done:
-  - [x] 후보별 static evidence와 live 미검증 blocker가 기록된다. (인증 차단으로 교육·기술 우선순위는 아직 선정하지 않음)
+  - [x] 후보별 static evidence와 live blocker가 기록된다. (native affordance는 관측했지만 write 승인 차단으로 교육·기술 우선순위를 아직 선정하지 않음)
   - [x] captured-only 후보를 probe 성공만으로 활동에 넣지 않는다.
   - [ ] 진행 시 `captured → contracted → verified → released` evidence가 모두 존재한다. (NO-GO 분기이므로 비적용)
   - [x] 새 package, 범용 solver, raw passthrough 없이 기존 seam에서 구현된다.
@@ -109,7 +109,7 @@
   - [ ] GO — R6 이후 진행
   - [x] NO-GO — native 장식 없이 현행 유지, 결과 보고 후 종료
 - Evidence/notes:
-  - `research/mathcanvas/division-native-candidate-rubric.json`의 decision은 `no-go-until-live-native-probe`다.
+  - `research/mathcanvas/division-native-candidate-rubric.json`의 decision은 `no-go-until-approved-native-canary`다. native affordance는 확인됐지만 persistence boundary를 승인 없이 넘지 않는다.
   - 현재 나눗셈 활동은 검증된 점+펜 fallback을 유지한다. native 장식만 추가하거나 `NO04NT`를 primary state-change로 주장하지 않는다.
 
 ## R6 — selected tool spatial adapter와 deterministic layout pipeline
@@ -202,28 +202,29 @@
   - [ ] sanitized canary JSON
   - [ ] 실제 preview 경로
 - Evidence/notes:
-  - 인증이 확보되기 전에는 native activity canary를 만들지 않는다. R4의 auth-blocked probe 기록만 유지하며 사용자의 Chrome을 호출하지 않는다.
+  - 인증된 전용 프로필을 확보했지만, 기존 프로젝트를 보호하기 위해 live-auth 캡처는 GET/HEAD/OPTIONS만 통과시켰다. R4의 native affordance 관측은 남겼고, 승인된 disposable canary가 없으므로 native activity lifecycle canary는 만들지 않는다.
+  - 1280×800에서 canvas list는 품질 증거로 통과했지만 owned-project editor는 authoring chrome와 캔버스 폭으로 우측 선택지가 잘려 reference-only로 표시했다. 학생 preview fresh canary 없이는 native 화면 품질 GO를 주장하지 않는다.
 
 ## R10 — 최종 검증, support state, commit·push
 
 - Depth: `core`
-- Status: `complete`
+- Status: `in_progress`
 - Depends on: R1–R9 또는 R5 NO-GO 종료 조건
 - Definition of done:
   - [x] `pnpm cognitive:verify` 통과
-  - [x] `pnpm check` 통과
-  - [x] sol xhigh가 최종 diff와 evidence를 검토하고 P0/P1이 없다.
+  - [x] `pnpm check`가 수정된 최종 diff에서 통과
+  - [x] sol xhigh가 수정된 최종 diff와 evidence를 검토하고 P0/P1이 없다.
   - [x] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다. (이번에는 fresh native canary 없음)
   - [x] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
   - [x] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
   - [x] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
-  - [x] `main`과 `origin/main` 동기화가 확인된다.
-  - [x] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
+  - [ ] `main`과 `origin/main` 동기화가 확인된다.
+  - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
-  - `pnpm check`는 182개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
+  - `pnpm check`는 188개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
-  - sol xhigh 최종 verdict `OKAY`: P0/P1 0건. P2는 changed scope 수동 등록과 첫 native GO 시 확장할 fallback/flow/label gate 후속 부채로만 기록했다.
-  - 커밋/푸시: `1510410` foundation, `cabf240` lifecycle/fallback fail-closed, `ec5549b` reserve 교차검증·자동 issue harness, `2d5e5da` 최종 체크리스트 정리, 이후 문서 동기화 반영. `main`과 `origin/main`은 동기화되어 있고 working tree는 clean이다.
+  - sol xhigh 최종 verdict `OKAY`: P0/P1 0건. 모든 origin 비안전 method 차단, service worker 우회 차단, rubric↔observation activity ID, viewport/state별 qualityEvidence, placement/lifecycle false, NO-GO fail-closed를 확인했다. native lifecycle은 여전히 verified/released로 승격하지 않는다.
+  - 이번 단위의 commit/push와 `main`/`origin/main` 동기화 확인 뒤 R10을 `complete`로 닫는다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 

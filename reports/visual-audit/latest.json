@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-07T23:02:46.850Z",
+  "generatedAt": "2026-08-08T00:18:35.196Z",
   "activityCount": 20,
   "variationCount": 92,
   "overallScore": 100,
@@ -304,7 +304,7 @@
       "score": 100,
       "canary": {
         "status": "pass",
-        "observedAt": "2026-08-04T10:14:34.818Z",
+        "observedAt": "2026-08-07T23:23:51.813Z",
         "evidencePath": "research/mathcanvas/wave17-multiplication-release-canary.json",
         "previewPath": ".mathcanvas-contract-lab/previews/wave17/multiplication-array.png",
         "hasInteractionEvidence": true

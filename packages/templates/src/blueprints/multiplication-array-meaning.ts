@@ -48,4 +48,4 @@ export const multiplicationArrayMeaningBlueprint = defineActivityBlueprint(withS
   instructions: [...instructions],
   payload: { categoryId: MATHCANVAS_PROJECT_CATEGORIES["수와 연산"].categoryId, tags: ["곱셈", "같은 수씩 묶기", "배열", "생각 고치기"], studyLevel: "elementary", isShowMenuOnActivity: true },
   variationDefaults: { problemCount: 2, difficulty: "normal" }
-}, { compactGlyphRoles: ["array-text"], compactGlyphMinimumFontSize: 22 }));
+}, { compactGlyphRoles: ["array-text"], compactGlyphMinimumFontSize: 32 }));

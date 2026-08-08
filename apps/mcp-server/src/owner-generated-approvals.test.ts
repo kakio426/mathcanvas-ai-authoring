@@ -39,7 +39,7 @@ describe("새 자동 제작 템플릿 승인", () => {
         approvals,
         "g3s1-multiplication-array-transfer",
         "number.multiplication.group-array-meaning-v1",
-        "844dd2349fa73213fc9425073a1a799bd42c486c95c9b3c772ea9eb93ad6f900"
+        "4102e64b7b440b80b57c93fc2ab05697e12c36453e2081f11ceee9033735485e"
       )
     ).toMatchObject({ reviewer: "owner-loop-visual-qa" });
   });

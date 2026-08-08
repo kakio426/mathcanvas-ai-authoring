@@ -255,3 +255,24 @@ field/type, 점 수, 길이, bounding box와 hash만 기록한다.
 P0의 live 화면 capture는 `capture-page.mjs`이며 MathCanvas 제품 MCP와 같은
 profile lock을 공유한다. MCP 서버가 실행 중이면
 두 프로세스가 profile을 동시에 열지 않고 `contract-lab-profile-in-use`로 멈춘다.
+
+전용 로그인 창을 유지한 채 read-only headless 화면을 확인할 때는 인증 쿠키와
+localStorage를 메모리로만 전달하는 `--live-auth` 경로를 사용한다. 이 경로는
+프로필 lock을 열지 않으며 사용자 Chrome이나 전용 로그인 창을 조작·종료하지
+않는다.
+
+```sh
+node scripts/contract-lab/capture-page.mjs \
+  --headless \
+  --live-auth \
+  --path /ko/myCanvas \
+  --viewport-width 1280 \
+  --viewport-height 800 \
+  --login-timeout-ms 0 \
+  --output .mathcanvas-contract-lab/raw/live-page.raw.json \
+  --screenshot .mathcanvas-contract-lab/raw/live-page.raw.png
+```
+
+`--live-auth`에서는 GET/HEAD/OPTIONS 외 요청을 모두 차단한다. `--viewport-width`와
+`--viewport-height`를 생략하면 1440×1000 CSS px를 사용하며, release 전 시각
+검수는 1280×800 기준 캡처를 별도로 남긴다.

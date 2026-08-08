@@ -12,7 +12,8 @@ export default defineConfig({
       "@mathcanvas/templates": `${root}packages/templates/src/index.ts`,
       "@mathcanvas/compiler": `${root}packages/mathcanvas-compiler/src/index.ts`,
       "@mathcanvas/validator": `${root}packages/validator/src/index.ts`,
-      "@mathcanvas/managed-browser": `${root}packages/managed-browser/src/index.ts`
+      "@mathcanvas/managed-browser": `${root}packages/managed-browser/src/index.ts`,
+      "@mathcanvas/authoring-runtime": `${root}packages/authoring-runtime/src/index.ts`
     }
   },
   test: {

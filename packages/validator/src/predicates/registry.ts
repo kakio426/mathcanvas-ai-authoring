@@ -3155,7 +3155,7 @@ const handlers: Record<string, Handler> = {
       );
     }
 
-    const estimatedWidth = (
+    const estimatedLineWidth = (
       text: string,
       fontSize: number
     ): number =>
@@ -3168,6 +3168,17 @@ const handlers: Record<string, Handler> = {
         }
         return width + fontSize;
       }, 0);
+
+    const estimatedWidth = (
+      text: string,
+      fontSize: number
+    ): number =>
+      Math.max(
+        ...text.split(/\r?\n/u).map((line) =>
+          estimatedLineWidth(line, fontSize)
+        ),
+        0
+      );
 
     const check = (
       emission: ResolvedEmission | undefined,

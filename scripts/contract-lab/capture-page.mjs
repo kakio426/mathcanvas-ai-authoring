@@ -14,6 +14,7 @@ import {
   resolveStateDirectory
 } from "./lib/paths.mjs";
 import { stableJson } from "./lib/normalize.mjs";
+import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 
 const origin = "https://mathcanvas.vivasam.com";
 
@@ -36,6 +37,23 @@ function isMathCanvasUrl(value) {
 }
 
 async function waitForAuthenticatedPage(page, timeoutMs) {
+  if (timeoutMs === 0) {
+    if (!isMathCanvasUrl(page.url())) return false;
+    const authStatus = await page
+      .evaluate(async () => {
+        try {
+          const response = await fetch("/api/auth/me", {
+            method: "GET",
+            credentials: "include"
+          });
+          return response.status;
+        } catch {
+          return 0;
+        }
+      })
+      .catch(() => 0);
+    return authStatus === 200;
+  }
   const startedAt = Date.now();
   let confirmationClicked = false;
   while (Date.now() - startedAt < timeoutMs) {
@@ -157,6 +175,7 @@ async function captureVisibleStructure(page) {
 
 let context;
 let releaseLock;
+let liveAuthSession;
 try {
   const options = parseArguments(process.argv.slice(2), {
     output: {
@@ -177,6 +196,9 @@ try {
     "open-new-canvas-dialog": { type: "boolean" },
     "open-tool-settings": { type: "boolean" },
     headless: { type: "boolean" },
+    "live-auth": { type: "boolean" },
+    "viewport-width": { type: "string", default: "1440" },
+    "viewport-height": { type: "string", default: "1000" },
     "login-timeout-ms": { type: "string", default: "240000" }
   });
   const stateDirectory = resolveStateDirectory(options["state-dir"]);
@@ -213,6 +235,25 @@ try {
   ) {
     throw new Error("--login-timeout-ms는 0~600000 정수여야 합니다.");
   }
+  const viewportWidth = Number(options["viewport-width"]);
+  const viewportHeight = Number(options["viewport-height"]);
+  if (
+    !Number.isInteger(viewportWidth) ||
+    !Number.isInteger(viewportHeight) ||
+    viewportWidth < 320 ||
+    viewportWidth > 3840 ||
+    viewportHeight < 240 ||
+    viewportHeight > 2400
+  ) {
+    throw new Error(
+      "--viewport-width/--viewport-height는 유효한 CSS px 정수여야 합니다."
+    );
+  }
+  const viewport = { width: viewportWidth, height: viewportHeight };
+  const useLiveAuth = options["live-auth"] === true;
+  if (useLiveAuth && options.headless !== true) {
+    throw new Error("--live-auth는 --headless와 함께 사용해야 합니다.");
+  }
   const outputPath = assertPathInside(
     options.output,
     options["raw-root"],
@@ -225,24 +266,34 @@ try {
   );
   mkdirSync(stateDirectory, { recursive: true, mode: 0o700 });
   mkdirSync(dirname(outputPath), { recursive: true, mode: 0o700 });
-  releaseLock = acquireManagedProfileLock(stateDirectory);
+  if (!useLiveAuth) {
+    releaseLock = acquireManagedProfileLock(stateDirectory);
+  }
   const blockedRequests = [];
   const observedResponses = [];
   const consoleErrors = [];
   const pageErrors = [];
-  context = await chromium.launchPersistentContext(
-    join(stateDirectory, "chrome-profile"),
-    {
-      channel: "chrome",
-      headless: options.headless === true,
-      viewport: options.headless ? { width: 1440, height: 1000 } : null,
-      ignoreDefaultArgs:
-        process.platform === "darwin"
-          ? ["--password-store=basic", "--use-mock-keychain"]
-          : undefined,
-      args: options.headless ? [] : ["--start-maximized"]
-    }
-  );
+  if (useLiveAuth) {
+    liveAuthSession = await createLiveAuthHeadlessSession(stateDirectory);
+    context = await liveAuthSession.newContext({
+      viewport,
+      serviceWorkers: "block"
+    });
+  } else {
+    context = await chromium.launchPersistentContext(
+      join(stateDirectory, "chrome-profile"),
+      {
+        channel: "chrome",
+        headless: options.headless === true,
+        viewport: options.headless ? viewport : null,
+        ignoreDefaultArgs:
+          process.platform === "darwin"
+            ? ["--password-store=basic", "--use-mock-keychain"]
+            : undefined,
+        args: options.headless ? [] : ["--start-maximized"]
+      }
+    );
+  }
   const attachDiagnostics = (targetPage) => {
     targetPage.on("console", (message) => {
       if (message.type() === "error") {
@@ -256,10 +307,18 @@ try {
   context.pages().forEach(attachDiagnostics);
   context.on("page", attachDiagnostics);
   let page = context.pages()[0] ?? (await context.newPage());
-  await context.route(`${origin}/**`, async (route) => {
+  await context.route(useLiveAuth ? "**/*" : `${origin}/**`, async (route) => {
     const request = route.request();
     const method = request.method().toUpperCase();
     const path = safePath(request.url());
+    if (
+      useLiveAuth &&
+      !["GET", "HEAD", "OPTIONS"].includes(method)
+    ) {
+      blockedRequests.push({ method, path });
+      await route.abort("blockedbyclient");
+      return;
+    }
     if (
       ["PUT", "PATCH", "DELETE"].includes(method) ||
       (method === "POST" && path === "/api/project")
@@ -373,4 +432,5 @@ try {
 } finally {
   if (context) await context.close().catch(() => undefined);
   if (releaseLock) releaseLock();
+  if (liveAuthSession) await liveAuthSession.close().catch(() => undefined);
 }

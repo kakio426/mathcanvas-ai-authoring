@@ -1,15 +1,20 @@
 {
   "schemaVersion": "1.0.0",
   "rubricId": "division-native-candidate-rubric-v1",
-  "observedAt": "2026-08-08T00:00:00.000Z",
+  "observedAt": "2026-08-07T23:47:36Z",
   "activityId": "number.division.quotient-remainder.claim-evidence-v1",
-  "probeMode": "static-catalog-plus-headless-auth-check",
+  "probeMode": "static-catalog-plus-live-affordance-observation",
   "liveProbe": {
-    "status": "blocked-auth-required",
-    "attempt": "node scripts/contract-lab/capture-page.mjs --headless --path /ko/myCanvas --login-timeout-ms 0",
-    "detail": "전용 Chrome 인증 세션이 없어 후보 생성·선택·조작·저장·재열기를 실행하지 않았다.",
+    "status": "blocked-write-approval-required",
+    "attempt": "node scripts/contract-lab/capture-page.mjs --headless --live-auth --path /ko/view/<owned-project> --open-tool-settings --login-timeout-ms 0",
+    "detail": "전용 live-auth headless 캡처에서 native 후보와 도구 설정 선택 UI를 확인했다. 기존 프로젝트를 보호하기 위해 설정 완료 시 발생한 POST/PUT을 차단했으며, 생성·핵심 조작·저장·재열기는 실행하지 않았다.",
     "writeCount": 0,
-    "userChromeTouched": false
+    "userChromeTouched": false,
+    "persistedMathematicalStateChange": false,
+    "saveReopenObserved": false,
+    "evidence": [
+      "research/mathcanvas/division-native-live-affordance-observation.json"
+    ]
   },
   "rubric": [
     "student-can-create-equal-size-groups",
@@ -115,8 +120,8 @@
     "limitation": "수 카드는 몫·나머지를 기록할 수 있지만 같은 수씩 묶기와 잔여물 구성의 핵심 상태를 대신하지 않는다."
   },
   "decision": {
-    "status": "no-go-until-live-native-probe",
-    "reason": "captured-only 후보의 핵심 수학 조작과 lifecycle을 확인하지 못했으므로 활동에 native 도구를 추가하지 않는다.",
+    "status": "no-go-until-approved-native-canary",
+    "reason": "native 후보와 선택 UI는 live로 확인했지만, 설정 완료가 기존 프로젝트 저장을 시도하므로 승인된 disposable canary 없이는 핵심 수학 조작과 lifecycle을 확인할 수 없다. 활동에 native 도구를 추가하지 않는다.",
     "safeFallback": "현행 점+펜 활동을 verified로 유지한다. 장식용 native를 추가하지 않는다."
   }
 }

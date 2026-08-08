@@ -16,7 +16,9 @@ import {
   generateEquivalentFractionActivity,
   generateFractionComparisonActivity,
   generateMakeTenNumberCardsActivity,
-  makeTenNumberCardsBlueprint
+  makeTenNumberCardsBlueprint,
+  multiplicationArrayMeaningBlueprint,
+  generateMultiplicationArrayMeaningActivity
 } from "@mathcanvas/templates";
 import { validateForCreation } from "./index.js";
 
@@ -108,7 +110,45 @@ function makeTenFixture() {
   return { resolved, compiled: compileActivity(resolved) };
 }
 
+function multiplicationArrayFixture() {
+  const curriculum = resolveCurriculum("[2수01-10]");
+  const recommendation = recommendationSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: "validator-multiplication-array-request",
+    supported: true,
+    templateId: multiplicationArrayMeaningBlueprint.id,
+    gradeBand: curriculum.record.gradeBand,
+    recommendedGrade: 2,
+    standardCode: curriculum.record.code,
+    learningGoal: multiplicationArrayMeaningBlueprint.learningObjective,
+    prerequisites: curriculum.record.prerequisites,
+    problemCount: 2,
+    difficulty: "normal",
+    manipulation: "multiplication-array-choice-drag",
+    rationale: ["줄바꿈 배열 텍스트 검증용 활동입니다."],
+    confidence: 0.98,
+    caveats: curriculum.warnings,
+    blockingReasons: [],
+    curriculum: curriculum.record
+  });
+  const plan = generateMultiplicationArrayMeaningActivity(recommendation, {
+    seed: "validator-multiplication-array-seed",
+    generatedAt: "2026-07-30T00:01:00.000Z"
+  });
+  const resolved = resolveActivity(plan);
+  return { resolved, compiled: compileActivity(resolved) };
+}
+
 describe("생성 전 검증", () => {
+  it("visual.text-fit은 줄바꿈된 고정 문구를 가장 긴 줄 기준으로 검사한다", () => {
+    const { resolved, compiled } = multiplicationArrayFixture();
+    const report = validateForCreation(resolved, compiled);
+
+    expect(
+      report.issues.filter((issue) => issue.code === "text-region-overflow-risk")
+    ).toEqual([]);
+  });
+
   it("blueprint id와 제목이 달라도 같은 제약에는 같은 판정을 낸다", () => {
     const { resolved } = fixture();
     const variant = structuredClone(resolved);

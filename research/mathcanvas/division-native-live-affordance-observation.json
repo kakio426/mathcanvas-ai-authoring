@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "observationId": "division-native-live-affordance-20260807-v1",
+  "observedAt": "2026-08-07T23:47:36Z",
+  "probeMode": "dedicated-live-auth-read-only",
+  "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+  "environment": {
+    "viewportsObserved": [
+      { "width": 1440, "height": 1000 },
+      { "width": 1280, "height": 800 }
+    ],
+    "profileScope": "dedicated-mathcanvas-profile",
+    "userChromeTouched": false,
+    "writeCount": 0,
+    "writePolicy": "POST/PUT/PATCH/DELETE blocked in headless context"
+  },
+  "captures": [
+    {
+      "state": "owned-canvas-list",
+      "routeKind": "/ko/myCanvas",
+      "viewport": { "width": 1440, "height": 1000 },
+      "candidateCount": 194,
+      "responseCount": 16,
+      "rawArtifactSha256": {
+        "json": "2c870f0ab924cc7be7a7ce2b45afbcb388df560f9862a82b9e6ee74f2e32e2ab",
+        "screenshot": "4a22db265a4a52b0ebc9c0f9273111bb746faff0244a499b5e7198dc0e252139"
+      }
+    },
+    {
+      "state": "editor-initial",
+      "routeKind": "owned-project-editor",
+      "viewport": { "width": 1440, "height": 1000 },
+      "qualityEvidence": false,
+      "qualityEvidenceNote": "authoring editor chrome와 캔버스 폭이 포함되어 학생 preview 품질 증거가 아닌 native affordance reference로만 사용한다.",
+      "candidateCount": 84,
+      "responseCount": 18,
+      "rawArtifactSha256": {
+        "json": "cfd1193f2b84469d9162e4b15295ec6a01daa1de919b7e8fa7f3be6cc517fa9e",
+        "screenshot": "53611dd53bf1a340e716ed72a2be6c64157b51bf624bfb0336383ba3e26b2d3f"
+      }
+    },
+    {
+      "state": "tool-settings-open",
+      "routeKind": "owned-project-editor",
+      "viewport": { "width": 1440, "height": 1000 },
+      "qualityEvidence": false,
+      "qualityEvidenceNote": "도구 설정 modal은 중앙 정렬·교실 용어 affordance reference로 확인했으며 underlying editor는 학생 preview 품질 증거로 사용하지 않는다.",
+      "nativeToolButtons": [
+        { "label": "수 구슬", "x": 504, "y": 379, "width": 76, "height": 32 },
+        { "label": "수 세기 모형", "x": 588, "y": 379, "width": 104, "height": 32 },
+        { "label": "십 배열판", "x": 699, "y": 379, "width": 88, "height": 32 },
+        { "label": "배열표", "x": 804, "y": 459, "width": 72, "height": 32 },
+        { "label": "셈돌", "x": 504, "y": 499, "width": 60, "height": 32 }
+      ],
+      "candidateCount": 153,
+      "responseCount": 19,
+      "rawArtifactSha256": {
+        "json": "5e867b67f351d1beff16d5c01577027079367ba87eb629e6f3ee96064e585319",
+        "screenshot": "8ff88e9c1cd1d5a1609093f830699229f54a0f7fecbbfee7510a02d17b4b6c57"
+      }
+    },
+    {
+      "state": "owned-canvas-list-reference-1280",
+      "routeKind": "/ko/myCanvas",
+      "viewport": { "width": 1280, "height": 800 },
+      "qualityEvidence": true,
+      "candidateCount": 194,
+      "responseCount": 16,
+      "rawArtifactSha256": {
+        "json": "5710630d074d6574278c948a0cbdee819d74a9aaefa82b1af137e254632f2d62",
+        "screenshot": "d957861feb8eff2f8794352f024462ecb20b0434d548a79a2cc3a5d4f8b828dd"
+      }
+    },
+    {
+      "state": "editor-initial-reference-1280",
+      "routeKind": "owned-project-editor",
+      "viewport": { "width": 1280, "height": 800 },
+      "qualityEvidence": false,
+      "qualityEvidenceNote": "authoring editor chrome와 캔버스 폭 때문에 우측 선택지가 viewport 밖으로 잘린다. native affordance reference로만 사용한다.",
+      "candidateCount": 84,
+      "responseCount": 18,
+      "rawArtifactSha256": {
+        "json": "606e95642a14010e883c916a85781dcb07d9cbf73007e5dcf6e8514a4d4a880b",
+        "screenshot": "50164b89e9242fadf2a1e238d2aed69d56c64f83e0133f6b8c1e47b25fb233b7"
+      }
+    },
+    {
+      "state": "tool-settings-open-reference-1280",
+      "routeKind": "owned-project-editor",
+      "viewport": { "width": 1280, "height": 800 },
+      "qualityEvidence": false,
+      "qualityEvidenceNote": "도구 설정 modal 자체는 중앙 정렬이지만 underlying editor activity는 native affordance reference로만 사용한다.",
+      "candidateCount": 153,
+      "responseCount": 19,
+      "rawArtifactSha256": {
+        "json": "c5178741c7edac7f88a39bf622b61da9777c28e80023257c3d87ed3ab112a38a",
+        "screenshot": "d49e8f1c6e3bfc4013a1a67a4443e1defaf552ff1c2c0f4060698414c4bd52cf"
+      }
+    },
+    {
+      "state": "native-selection-attempt",
+      "toolKey": "NO07IC",
+      "toolLabel": "셈돌",
+      "selectionUiObserved": true,
+      "nativeObjectPlacementObserved": false,
+      "persistedMathematicalStateChange": false,
+      "saveReopenObserved": false,
+      "blockedRequests": [
+        { "method": "POST", "pathKind": "owned-project-upload-image" },
+        { "method": "PUT", "pathKind": "owned-project-save" }
+      ],
+      "rawArtifactSha256": {
+        "json": "32743ea0e680bd423c2c11a35739f579c2c80bf451b9ebf7860c0e41aa9f6bf8",
+        "screenshot": "fa7f12f889a5beaba6b65da1631a115dd18d905c333a299242b8fdef12c6d5e1"
+      }
+    }
+  ],
+  "conclusion": {
+    "status": "blocked-write-approval-required",
+    "nativeToolEntryConfirmed": true,
+    "nativeSelectionUiConfirmed": true,
+    "nativeObjectPlacementConfirmed": false,
+    "visualQualityEvidence": {
+      "ownedCanvasList1280": "pass",
+      "ownedProjectEditor1440": "not-qualified",
+      "ownedProjectEditor1280": "not-qualified",
+      "nativeSettingsModal1440": "affordance-reference",
+      "reason": "editor chrome와 캔버스 정렬을 학생 preview 품질 증거로 간주하지 않는다. 학생 화면의 1280×800 fresh canary는 별도 필요하다."
+    },
+    "nativeLifecycleVerified": false,
+    "releaseDecision": "no-go-until-approved-native-canary",
+    "reason": "MathCanvas exposes semantic native candidates and a real selection UI, but completing tool settings attempts project writes. No existing project was mutated; creation, manipulation, save, reopen, and round-trip evidence remain unobserved.",
+    "nextProbeRequires": [
+      "explicit approval for one bounded canary project or an explicitly disposable owned project",
+      "minimum/representative/maximum candidate variants",
+      "initial/selected/manipulated/undo-reset/save-reopen states",
+      "persisted mathematical state transition and normalized round-trip measurement"
+    ]
+  }
+}

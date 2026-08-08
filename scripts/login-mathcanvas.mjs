@@ -133,7 +133,9 @@ try {
         "--new-window",
         "about:blank"
       ],
-      { stdio: "ignore" }
+      // 로그인 확인 뒤에도 전용 Chrome을 live-auth headless probe가
+      // 재사용해야 하므로 부모 shell과 생명주기를 분리한다.
+      { detached: true, stdio: "ignore" }
     );
     chromeProcess.on("exit", () => {
       contextClosed = true;
