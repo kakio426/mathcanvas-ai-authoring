@@ -42,23 +42,23 @@ describe("분수 비교 템플릿", () => {
     const blueprint = findClaimEvidenceBlueprint(
       "number.division.quotient-remainder.claim-evidence-v1"
     );
-    expect(blueprint?.version).toBe("2.0.0");
+    expect(blueprint?.version).toBe("2.1.0");
     expect(blueprint?.generator.version).toBe(
       CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
     );
     expect(blueprint?.variationDefaults.problemCount).toBe(1);
     expect(blueprint?.instructions).toEqual([
-      expect.stringContaining("답 카드를 하나 골라"),
-      expect.stringContaining("‘그룹’을 누르고"),
-      expect.stringContaining("처음 생각과 다르면 고치세요")
+      expect.stringContaining("처음 고른 답 칸에 놓으세요"),
+      expect.stringContaining("옮겨 가까이 놓고"),
+      expect.stringContaining("까닭을 설명한 뒤")
     ]);
     expect(
       blueprint?.toolRoles.find((role) => role.role === "counting-model-pool")
     ).toMatchObject({
       toolKey: "NO01SC",
       intentKind: "counting-model",
-      spatialContractId: "division-grouping-no01sc-01-composition-v1",
-      spatialContractVersion: "1.0.0",
+      spatialContractId: "division-grouping-no01sc-01-composition-v2",
+      spatialContractVersion: "2.0.0",
       locked: false,
       movable: true,
       bindings: { count: "item.countableTotal" }
@@ -74,13 +74,19 @@ describe("분수 비교 템플릿", () => {
         (role) => role.intentKind.includes("pen") || role.toolKey.includes("pen")
       )
     ).toBe(false);
-    expect(blueprint?.toolRoles).toHaveLength(54);
-    expect(blueprint?.layout.root.children).toHaveLength(54);
+    expect(blueprint?.toolRoles).toHaveLength(30);
+    expect(blueprint?.layout.root.children).toHaveLength(30);
     expect(
       blueprint?.toolRoles.some((role) =>
-        /^group-slot-\d+-label$/.test(role.role)
+        /^group-slot-\d+-(label|border)/.test(role.role)
       )
     ).toBe(false);
+    expect(
+      blueprint?.toolRoles.find((role) => role.role === "instruction-verify")
+    ).toMatchObject({
+      scope: "each-item",
+      bindings: { text: "item.verifyInstructionText" }
+    });
 
     const scenarios = [
       ["division-scenario-7", 23, 4],
@@ -100,10 +106,13 @@ describe("분수 비교 템플릿", () => {
       expect(item!.values.countableTotal).toBe(expectedTotal);
       expect(item!.values.countableGroupSize).toBe(expectedGroupSize);
       expect(item!.values.groupLaneLabelText).toBe(
-        `${expectedGroupSize}개씩 묶은 곳`
+        `${expectedGroupSize}개씩 묶은 모형`
+      );
+      expect(item!.values.verifyInstructionText).toBe(
+        `② 모형을 ${expectedGroupSize}개씩 옮겨 가까이 놓고, ${expectedGroupSize}개를 골라 ‘그룹’을 누르세요.`
       );
       expect(String(item!.values.evidenceText)).not.toContain("●");
-      expect(item!.provenance.generatorVersion).toBe("1.2.0");
+      expect(item!.provenance.generatorVersion).toBe("1.3.0");
       const candidates = Array.from(
         { length: 5 },
         (_, index) => String(item!.values[`candidate${index + 1}`])

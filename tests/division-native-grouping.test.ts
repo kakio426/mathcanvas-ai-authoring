@@ -11,7 +11,11 @@ import {
   findClaimEvidenceBlueprint,
   generateClaimEvidenceActivity
 } from "@mathcanvas/templates";
-import { compileActivity, resolveActivity } from "@mathcanvas/compiler";
+import {
+  analyzeCountingModelStructure,
+  compileActivity,
+  resolveActivity
+} from "@mathcanvas/compiler";
 import { validateForCreation } from "@mathcanvas/validator";
 
 const generatedAt = "2026-08-08T00:00:00.000Z";
@@ -62,7 +66,7 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
     ["division-scenario-0", 29, 7],
     ["division-scenario-4", 31, 6]
   ] as const)(
-    "%s: %i개를 %i개씩 묶는 실제 compiler payload가 중립적인 5열 모형 풀을 만든다",
+    "%s: %i개를 %i개씩 묶는 실제 compiler payload가 중립적인 max-5 brick pool을 만든다",
     (seed, expectedTotal, expectedGroupSize) => {
       assertCognitiveManifestBound(blueprint);
       const first = compileScenario(seed);
@@ -80,8 +84,8 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
       expect(pool.toolIntent).toMatchObject({
         kind: "counting-model",
         toolKey: "NO01SC",
-        spatialContractId: "division-grouping-no01sc-01-composition-v1",
-        spatialContractVersion: "1.0.0"
+        spatialContractId: "division-grouping-no01sc-01-composition-v2",
+        spatialContractVersion: "2.0.0"
       });
       const units = first.compiled.payload.contentsJson.filter(
         (object) => object.svgId === "NO01SC-01"
@@ -104,10 +108,49 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
           .values()
       ];
       expect(Math.max(...rowCounts)).toBe(5);
-      expect(rowCounts.slice(0, -1).every((count) => count === 5)).toBe(
-        true
+      expect(rowCounts).toEqual(
+        [5, 4, 5, 4, 5, 4, 4].reduce<readonly number[]>(
+          (rows, capacity) => {
+            const used = rows.reduce((sum, value) => sum + value, 0);
+            return used >= expectedTotal
+              ? rows
+              : [...rows, Math.min(capacity, expectedTotal - used)];
+          },
+          []
+        )
       );
       expect(expectedGroupSize).not.toBe(5);
+      const positions = units.map((unit) => {
+        if (typeof unit.x !== "number" || typeof unit.y !== "number") {
+          throw new Error("counting-model-test-position-missing");
+        }
+        return { x: unit.x, y: unit.y };
+      });
+      const structure = analyzeCountingModelStructure(positions, {
+        groupSize: expectedGroupSize,
+        quotient: Math.floor(expectedTotal / expectedGroupSize),
+        supportedGroupSizes: [4, 6, 7]
+      });
+      expect(structure.maximumUnitsPerRow).toBe(5);
+      expect(structure.distinctColumnCount).toBeGreaterThan(rowCounts.length);
+      expect(
+        structure.completeRowOccupanciesMatchingSupportedGroupSize
+      ).toEqual([]);
+      expect(structure.answerStructureLeaked).toBe(false);
+      expect(structure.transposedRectangleMatchingDivision).toBe(false);
+      const xByRow = positions.reduce((rows, unit) => {
+        const xs = rows.get(unit.y) ?? [];
+        xs.push(unit.x);
+        rows.set(unit.y, xs);
+        return rows;
+      }, new Map<number, number[]>());
+      const xRows = [...xByRow.values()];
+      const firstRowX = xRows[0]?.[0];
+      const secondRowX = xRows[1]?.[0];
+      if (firstRowX === undefined || secondRowX === undefined) {
+        throw new Error("counting-model-test-row-missing");
+      }
+      expect(secondRowX - firstRowX).toBe(42);
       expect(
         units.every(
           (unit) =>
@@ -134,10 +177,134 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
         first.compiled,
         new Date(generatedAt)
       );
-      expect(report.canCreate).toBe(true);
       expect(report.issues).toEqual([]);
+      expect(report.canCreate).toBe(true);
+
+      const verifyInstruction = first.resolved.emissions.find(
+        (emission) => emission.role === "instruction-verify"
+      );
+      expect(verifyInstruction?.itemId).toBe("division-remainder-1");
+      expect(verifyInstruction?.toolIntent.properties.text).toBe(
+        `② 모형을 ${expectedGroupSize}개씩 옮겨 가까이 놓고, ${expectedGroupSize}개를 골라 ‘그룹’을 누르세요.`
+      );
+      const explanation = first.resolved.emissions.find(
+        (emission) => emission.role === "explanation-label"
+      );
+      expect(explanation?.toolIntent.properties.text).toBe("식과 까닭 쓰기");
+      expect(
+        first.resolved.emissions.find(
+          (emission) => emission.role === "pool-label"
+        )?.toolIntent.properties.text
+      ).toBe("예상한 답 고르기");
+      expect(
+        first.resolved.emissions.find(
+          (emission) => emission.role === "source-label"
+        )?.toolIntent.properties.text
+      ).toBe("묶기 전 모형");
+      expect(
+        first.resolved.emissions.find(
+          (emission) => emission.role === "group-lane-label"
+        )?.toolIntent.properties.text
+      ).toBe(`${expectedGroupSize}개씩 묶은 모형`);
+      expect(first.resolved.emissions).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ role: expect.stringMatching(/^group-slot-/) })
+        ])
+      );
     }
   );
+
+  it("라벨의 컨테이너 여백이나 네이티브 선택 여유를 줄이면 생성 전에 막는다", () => {
+    const { resolved } = compileScenario("division-scenario-7");
+    const broken = structuredClone(resolved);
+    const panel = broken.emissions.find(
+      (emission) => emission.role === "choice-panel"
+    )!;
+    const label = broken.emissions.find(
+      (emission) => emission.role === "pool-label"
+    )!;
+    label.bounds.y = panel.bounds.y + 2;
+    const report = validateForCreation(
+      broken,
+      compileActivity(broken),
+      new Date(generatedAt)
+    );
+    expect(report.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "text-clearance-insufficient" })
+      ])
+    );
+    expect(report.canCreate).toBe(false);
+
+    const sourceCollision = structuredClone(resolved);
+    const sourceLabel = sourceCollision.emissions.find(
+      (emission) => emission.role === "source-label"
+    )!;
+    const sourcePool = sourceCollision.emissions.find(
+      (emission) => emission.role === "counting-model-pool"
+    )!;
+    sourcePool.bounds.y =
+      sourceLabel.bounds.y + sourceLabel.bounds.height + 2;
+    const sourceReport = validateForCreation(
+      sourceCollision,
+      compileActivity(sourceCollision),
+      new Date(generatedAt)
+    );
+    expect(sourceReport.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "text-clearance-insufficient" })
+      ])
+    );
+    expect(sourceReport.canCreate).toBe(false);
+
+    const offCenterChoice = structuredClone(resolved);
+    const firstChoice = offCenterChoice.emissions.find(
+      (emission) => emission.role === "position-card-1"
+    )!;
+    firstChoice.bounds.x += 12;
+    firstChoice.bounds.y += 8;
+    const choiceReport = validateForCreation(
+      offCenterChoice,
+      compileActivity(offCenterChoice),
+      new Date(generatedAt)
+    );
+    expect(choiceReport.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "text-clearance-insufficient" })
+      ])
+    );
+    expect(choiceReport.canCreate).toBe(false);
+  });
+
+  it("의도적으로 제수 크기 행을 반복한 배치를 답 구조 유출로 판정한다", () => {
+    const leaking = Array.from({ length: 23 }, (_, index) => ({
+      x: (index % 4) * 84,
+      y: Math.floor(index / 4) * 84
+    }));
+    expect(
+      analyzeCountingModelStructure(leaking, {
+        groupSize: 4,
+        quotient: 5,
+        supportedGroupSizes: [4, 6, 7]
+      }).answerStructureLeaked
+    ).toBe(true);
+
+    const transposed = [5, 5, 5, 5, 3].flatMap((count, row) =>
+      Array.from({ length: count }, (_, column) => ({
+        x: column * 84 + (row % 2) * 28,
+        y: row * 84
+      }))
+    );
+    const transposedAnalysis = analyzeCountingModelStructure(transposed, {
+      groupSize: 4,
+      quotient: 5,
+      supportedGroupSizes: [4, 6, 7]
+    });
+    expect(transposedAnalysis.transposedRectangleMatchingDivision).toBe(
+      true
+    );
+    expect(transposedAnalysis.answerStructureLeaked).toBe(true);
+  });
 
   it("다중 네이티브 fragment의 누락·순서 변조·부분 잠금을 검증기가 차단한다", () => {
     const { resolved, compiled } = compileScenario("division-scenario-7");

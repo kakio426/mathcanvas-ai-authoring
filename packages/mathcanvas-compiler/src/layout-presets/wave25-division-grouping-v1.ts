@@ -1,4 +1,4 @@
-import type { LayoutPreset, LayoutToken } from "@mathcanvas/contracts";
+import type { LayoutPreset } from "@mathcanvas/contracts";
 import {
   centeredChoicePoolTokens,
   centeredRowLeft
@@ -8,78 +8,31 @@ const choices = Array.from(
   { length: 5 },
   (_, index) => `position-card-${index + 1}`
 );
-const choiceCenterX = 495;
-const choiceRowLeft = centeredRowLeft(choiceCenterX, 3, 250, 15);
-
-const groupSlotTokens = (): Readonly<Record<string, LayoutToken>> => {
-  const tokens: Record<string, LayoutToken> = {};
-  const lefts = [640, 1015];
-  const tops = [350, 536, 722];
-  const border = 3;
-  let slot = 1;
-  for (const top of tops) {
-    for (const left of lefts) {
-      tokens[`item.group-slot-${slot}`] = {
-        scope: "item",
-        x: left,
-        y: top,
-        width: 370,
-        height: 186
-      };
-      tokens[`item.group-slot-${slot}-label`] = {
-        scope: "item",
-        x: left + 12,
-        y: top + 5,
-        width: 346,
-        height: 28
-      };
-      tokens[`item.group-slot-${slot}-border-top`] = {
-        scope: "item",
-        x: left,
-        y: top,
-        width: 370,
-        height: border
-      };
-      tokens[`item.group-slot-${slot}-border-bottom`] = {
-        scope: "item",
-        x: left,
-        y: top + 186 - border,
-        width: 370,
-        height: border
-      };
-      tokens[`item.group-slot-${slot}-border-left`] = {
-        scope: "item",
-        x: left,
-        y: top,
-        width: border,
-        height: 186
-      };
-      tokens[`item.group-slot-${slot}-border-right`] = {
-        scope: "item",
-        x: left + 370 - border,
-        y: top,
-        width: border,
-        height: 186
-      };
-      slot += 1;
-    }
-  }
-  return tokens;
-};
+const choiceCenterX = 410;
+const choiceMemberWidth = 214;
+const choiceRowLeft = centeredRowLeft(
+  choiceCenterX,
+  3,
+  choiceMemberWidth,
+  10
+);
 
 /**
  * 나눗셈 한 문제 전용 1280×800 배치.
  *
- * 예상과 설명은 위쪽에 두어 MathCanvas의 고정 selection toolbar 전용 하단 band를
- * 비운다. source pool은 84×84 intrinsic reserve를 기준으로 항상 5열을 유지해
- * 23~31개를 588 높이 안에 담는다. 5는 지원하는 제수 4·6·7과 모두 달라 초기
- * 배열이 몫이나 나머지를 직접 드러내지 않는다. group lane은 가까운 낱개를
- * 묶은 chrome을 담는 370×186 자리 6개를
- * 제공한다. 큰 draw rectangle을 unit 뒤에 깔면 native 다중 선택을 가로채므로
- * 모든 영역은 내부가 빈 얇은 border line 네 개로 그린다.
+ * 예상과 설명 band를 압축하되 글쓰기 하한을 유지해 workbench를 35 canvas unit
+ * 위로 올린다. source pool은 84×84 intrinsic reserve와 max-5 brick stagger를
+ * 그대로 담고 canvasBaseHeight/itemPitch를 늘리지 않는다. group lane은 정답을
+ * 암시하는 고정 slot 없이 하나의 열린 공간이며, native cluster 자체가 묶음을
+ * 나타낸다. 큰 draw rectangle을 unit 뒤에 깔면 다중 선택을 가로채므로 모든
+ * 영역은 내부가 빈 얇은 border line으로만 그린다.
  */
 export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
-  itemOriginY: 145,
+  // The three directions use a full 14-unit leading gap and the question uses
+  // the same gap as a larger fourth line.  Response regions are paired left /
+  // right, so this added reading space does not move the native workbench or
+  // its measured editor-overlay boundary.
+  itemOriginY: 144,
   itemPitch: 1020,
   canvasBaseHeight: 200,
   minGap: 16,
@@ -94,23 +47,23 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
     "header.primary": {
       scope: "canvas",
       x: 80,
-      y: 40,
+      y: 0,
       width: 1440,
-      height: 30
+      height: 34
     },
     "header.secondary": {
       scope: "canvas",
       x: 80,
-      y: 72,
+      y: 48,
       width: 1440,
-      height: 30
+      height: 34
     },
     "header.tertiary": {
       scope: "canvas",
       x: 80,
-      y: 104,
+      y: 96,
       width: 1440,
-      height: 30
+      height: 34
     },
     "item.panel": {
       scope: "item",
@@ -128,22 +81,22 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
     },
     "item.question": {
       scope: "item",
-      x: 175,
+      x: 80,
       y: 0,
-      width: 1345,
+      width: 1440,
       height: 55
     },
     "item.choice-panel": {
       scope: "item",
       x: 70,
       y: 65,
-      width: 850,
-      height: 220
+      width: 680,
+      height: 178
     },
     "item.pool-label": {
       scope: "item",
-      x: choiceRowLeft + 15,
-      y: 69,
+      x: choiceRowLeft + 9,
+      y: 75,
       width: 260,
       height: 32
     },
@@ -151,141 +104,140 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
       roles: choices,
       rowCounts: [3, 2],
       centerX: choiceCenterX,
-      firstRowY: 105,
+      firstRowY: 123,
       rowGap: 10,
-      memberWidth: 250,
-      memberHeight: 70,
-      contentWidth: 220,
-      columnGap: 15,
-      insetX: 15,
+      memberWidth: choiceMemberWidth,
+      memberHeight: 50,
+      contentWidth: 200,
+      columnGap: 10,
+      insetX: 10,
       insetY: 8
     }),
     "item.prediction-label": {
       scope: "item",
-      x: 965,
-      y: 78,
-      width: 540,
+      x: 790,
+      y: 77,
+      width: 210,
       height: 34
     },
     "item.prediction-box": {
       scope: "item",
-      x: 940,
+      x: 770,
       y: 65,
-      width: 590,
-      height: 95
+      width: 250,
+      height: 178
     },
     "item.explanation-label": {
       scope: "item",
-      x: 965,
-      y: 188,
-      width: 540,
-      height: 74
+      x: 1060,
+      y: 77,
+      width: 450,
+      height: 34
     },
     "item.explanation-box": {
       scope: "item",
-      x: 940,
-      y: 175,
-      width: 590,
-      height: 110
+      x: 1040,
+      y: 65,
+      width: 490,
+      height: 178
     },
     "item.array-panel": {
       scope: "item",
       x: 50,
-      y: 300,
+      y: 248,
       width: 1500,
-      height: 650
+      height: 668
     },
     "item.array-border-top": {
       scope: "item",
       x: 50,
-      y: 300,
+      y: 248,
       width: 1500,
       height: 4
     },
     "item.array-border-bottom": {
       scope: "item",
       x: 50,
-      y: 946,
+      y: 912,
       width: 1500,
       height: 4
     },
     "item.array-border-left": {
       scope: "item",
       x: 50,
-      y: 300,
+      y: 248,
       width: 4,
-      height: 650
+      height: 668
     },
     "item.array-border-right": {
       scope: "item",
       x: 1546,
-      y: 300,
+      y: 248,
       width: 4,
-      height: 650
+      height: 668
     },
     "item.source-panel": {
       scope: "item",
       x: 70,
-      y: 310,
+      y: 258,
       width: 550,
-      height: 640
+      height: 658
     },
     "item.source-label": {
       scope: "item",
       x: 95,
-      y: 315,
+      y: 271,
       width: 500,
-      height: 38
+      height: 34
     },
     "item.counting-model-pool": {
       scope: "item",
       x: 110,
-      y: 350,
+      y: 319,
       width: 470,
       height: 588
     },
     "item.source-separator": {
       scope: "item",
       x: 625,
-      y: 310,
+      y: 258,
       width: 4,
-      height: 640
+      height: 658
     },
     "item.group-lane": {
       scope: "item",
       x: 630,
-      y: 310,
-      width: 760,
-      height: 640
+      y: 258,
+      width: 740,
+      height: 658
     },
     "item.group-lane-label": {
       scope: "item",
       x: 650,
-      y: 315,
-      width: 710,
-      height: 38
+      y: 271,
+      width: 690,
+      height: 34
     },
-    ...groupSlotTokens(),
     "item.remainder-lane": {
       scope: "item",
-      x: 1410,
-      y: 310,
-      width: 120,
-      height: 640
+      x: 1380,
+      y: 258,
+      width: 150,
+      height: 658
     },
     "item.remainder-separator": {
       scope: "item",
-      x: 1400,
-      y: 310,
+      x: 1370,
+      y: 258,
       width: 4,
-      height: 640
+      height: 658
     },
     "item.remainder-lane-label": {
       scope: "item",
-      x: 1415,
-      y: 315,
-      width: 110,
-      height: 38
+      x: 1385,
+      y: 271,
+      width: 140,
+      height: 34
     }
   }
 };

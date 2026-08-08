@@ -19,6 +19,9 @@ import {
   classifyP3CanaryResult,
   validateP3ReleaseCanaryEvidence
 } from "../scripts/contract-lab/validate-p3-release-canary.mjs";
+import {
+  validateActivityReleaseCanaryEvidence
+} from "../scripts/contract-lab/validate-activity-release-canary.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const sanitizeCli = join(
@@ -93,6 +96,34 @@ function rehashCommonDrawObservation(
 }
 
 describe("P0 contract-lab 격리와 정규화", () => {
+  it("나눗셈 schema 2 출시 증거를 공통 cognitive envelope로 정규화한다", () => {
+    const evidence = JSON.parse(
+      readFileSync(
+        join(
+          root,
+          "research",
+          "mathcanvas",
+          "division-counting-group-canary.json"
+        ),
+        "utf8"
+      )
+    );
+    expect(
+      validateActivityReleaseCanaryEvidence(evidence)
+    ).toMatchObject({
+      blueprintId:
+        "number.division.quotient-remainder.claim-evidence-v1",
+      status: "pass",
+      releaseQualified: true
+    });
+
+    const unreleased = structuredClone(evidence);
+    unreleased.releaseQualified = false;
+    expect(() =>
+      validateActivityReleaseCanaryEvidence(unreleased)
+    ).toThrow("activity-release-canary-evidence-shape-invalid");
+  });
+
   it("division native verifier는 후보를 겹친 의미 probe를 거부한다", () => {
     const temporary = mkdtempSync(
       join(root, ".mathcanvas-contract-lab", "division-native-rubric-")

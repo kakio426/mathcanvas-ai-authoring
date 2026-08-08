@@ -3081,22 +3081,42 @@ const handlers: Record<string, Handler> = {
 
     const sequenceMarkers = ["①", "②", "③", "④", "⑤", "⑥"];
     for (const [index, role] of instructionRoles.entries()) {
-      const text = textOf(activityRole(resolved, role));
-      if (
-        !text ||
-        Array.from(text).length > maximumInstructionLength ||
-        !text.endsWith("세요.") ||
-        !actionPattern.test(text) ||
-        (instructionRoles.length >= 3 &&
-          !text.startsWith(`${sequenceMarkers[index]} `)) ||
-        systemPhrases.some((phrase) => text.includes(phrase))
-      ) {
+      const activityInstruction = activityRole(resolved, role);
+      const emissions = activityInstruction
+        ? [activityInstruction]
+        : resolved.items
+            .map((item) => byRole(resolved, item.id, role))
+            .filter(
+              (emission): emission is ResolvedEmission =>
+                emission !== undefined
+            );
+      if (emissions.length === 0) {
         issue(
           issues,
           "classroom-language-unclear",
           "pedagogy",
           `${role} 지시문이 학생의 대상과 행동을 자연스러운 교실 문장으로 안내하지 않습니다.`
         );
+        continue;
+      }
+      for (const emission of emissions) {
+        const text = textOf(emission);
+        if (
+          !text ||
+          Array.from(text).length > maximumInstructionLength ||
+          !text.endsWith("세요.") ||
+          !actionPattern.test(text) ||
+          (instructionRoles.length >= 3 &&
+            !text.startsWith(`${sequenceMarkers[index]} `)) ||
+          systemPhrases.some((phrase) => text.includes(phrase))
+        ) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${role} 지시문이 학생의 대상과 행동을 자연스러운 교실 문장으로 안내하지 않습니다.`
+          );
+        }
       }
     }
 
@@ -3218,6 +3238,181 @@ const handlers: Record<string, Handler> = {
           byRole(resolved, item.id, role),
           `${item.id}의 ${role}`
         );
+      }
+    }
+  },
+  "visual.text-clearance": (resolved, predicate, issues) => {
+    const containerInsets = parameter(predicate, "containerInsets");
+    const verticalGaps = parameter(predicate, "verticalGaps");
+    const centerPairs = parameter(predicate, "centerPairs") ?? [];
+    if (
+      !Array.isArray(containerInsets) ||
+      !Array.isArray(verticalGaps) ||
+      !Array.isArray(centerPairs)
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:rules`
+      );
+    }
+    const record = (value: unknown): Record<string, unknown> | undefined =>
+      value !== null && typeof value === "object" && !Array.isArray(value)
+        ? (value as Record<string, unknown>)
+        : undefined;
+    const nonnegative = (
+      rule: Record<string, unknown>,
+      key: string
+    ): number | undefined => {
+      const value = rule[key] ?? 0;
+      return typeof value === "number" &&
+        Number.isFinite(value) &&
+        value >= 0
+        ? value
+        : undefined;
+    };
+    const scopedRole = (
+      itemId: string,
+      role: unknown
+    ): ResolvedEmission | undefined =>
+      typeof role === "string"
+        ? activityRole(resolved, role) ?? byRole(resolved, itemId, role)
+        : undefined;
+
+    for (const item of resolved.items) {
+      for (const rawRule of containerInsets) {
+        const rule = record(rawRule);
+        const role = rule?.role;
+        const containerRole = rule?.containerRole;
+        const minimumTop = rule ? nonnegative(rule, "minimumTop") : undefined;
+        const minimumRight = rule
+          ? nonnegative(rule, "minimumRight")
+          : undefined;
+        const minimumBottom = rule
+          ? nonnegative(rule, "minimumBottom")
+          : undefined;
+        const minimumLeft = rule
+          ? nonnegative(rule, "minimumLeft")
+          : undefined;
+        if (
+          typeof role !== "string" ||
+          typeof containerRole !== "string" ||
+          minimumTop === undefined ||
+          minimumRight === undefined ||
+          minimumBottom === undefined ||
+          minimumLeft === undefined
+        ) {
+          throw new Error(
+            `predicate-parameter-invalid:${predicate.kind}:containerInsets`
+          );
+        }
+        const child = scopedRole(item.id, role);
+        const container = scopedRole(item.id, containerRole);
+        const left = child && container
+          ? child.bounds.x - container.bounds.x
+          : Number.NEGATIVE_INFINITY;
+        const top = child && container
+          ? child.bounds.y - container.bounds.y
+          : Number.NEGATIVE_INFINITY;
+        const right = child && container
+          ? container.bounds.x + container.bounds.width -
+            (child.bounds.x + child.bounds.width)
+          : Number.NEGATIVE_INFINITY;
+        const bottom = child && container
+          ? container.bounds.y + container.bounds.height -
+            (child.bounds.y + child.bounds.height)
+          : Number.NEGATIVE_INFINITY;
+        if (
+          !child ||
+          !container ||
+          left < minimumLeft ||
+          top < minimumTop ||
+          right < minimumRight ||
+          bottom < minimumBottom
+        ) {
+          issue(
+            issues,
+            "text-clearance-insufficient",
+            "layout",
+            `${item.id}의 ${role} 글자 영역이 ${containerRole} 안쪽 여백을 확보하지 못했습니다.`
+          );
+        }
+      }
+
+      for (const rawRule of verticalGaps) {
+        const rule = record(rawRule);
+        const beforeRole = rule?.beforeRole;
+        const afterRole = rule?.afterRole;
+        const minimumGap = rule ? nonnegative(rule, "minimumGap") : undefined;
+        if (
+          typeof beforeRole !== "string" ||
+          typeof afterRole !== "string" ||
+          minimumGap === undefined
+        ) {
+          throw new Error(
+            `predicate-parameter-invalid:${predicate.kind}:verticalGaps`
+          );
+        }
+        const before = scopedRole(item.id, beforeRole);
+        const after = scopedRole(item.id, afterRole);
+        const gap = before && after
+          ? after.bounds.y - (before.bounds.y + before.bounds.height)
+          : Number.NEGATIVE_INFINITY;
+        if (!before || !after || gap < minimumGap) {
+          issue(
+            issues,
+            "text-clearance-insufficient",
+            "layout",
+            `${item.id}의 ${beforeRole}와 ${afterRole} 사이 글자 여백이 부족합니다.`
+          );
+        }
+      }
+
+      for (const rawRule of centerPairs) {
+        const rule = record(rawRule);
+        const role = rule?.role;
+        const containerRole = rule?.containerRole;
+        const maximumOffsetX = rule
+          ? nonnegative(rule, "maximumOffsetX")
+          : undefined;
+        const maximumOffsetY = rule
+          ? nonnegative(rule, "maximumOffsetY")
+          : undefined;
+        if (
+          typeof role !== "string" ||
+          typeof containerRole !== "string" ||
+          maximumOffsetX === undefined ||
+          maximumOffsetY === undefined
+        ) {
+          throw new Error(
+            `predicate-parameter-invalid:${predicate.kind}:centerPairs`
+          );
+        }
+        const child = scopedRole(item.id, role);
+        const container = scopedRole(item.id, containerRole);
+        const offsetX = child && container
+          ? Math.abs(
+              child.bounds.x + child.bounds.width / 2 -
+                (container.bounds.x + container.bounds.width / 2)
+            )
+          : Number.POSITIVE_INFINITY;
+        const offsetY = child && container
+          ? Math.abs(
+              child.bounds.y + child.bounds.height / 2 -
+                (container.bounds.y + container.bounds.height / 2)
+            )
+          : Number.POSITIVE_INFINITY;
+        if (
+          !child ||
+          !container ||
+          offsetX > maximumOffsetX ||
+          offsetY > maximumOffsetY
+        ) {
+          issue(
+            issues,
+            "text-clearance-insufficient",
+            "layout",
+            `${item.id}의 ${role} 글자 영역이 ${containerRole} 가운데에 놓이지 않았습니다.`
+          );
+        }
       }
     }
   },

@@ -72,6 +72,7 @@
     "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
     "quality:audit": "node scripts/quality-audit/run.mjs",
     "native-spatial:verify": "node scripts/quality-audit/verify-native-spatial-ratchet.mjs",
+    "native-spatial:update": "node scripts/quality-audit/update-native-spatial-catalog.mjs",
     "quality:audit:report": "node scripts/quality-audit/run.mjs --allow-issues",
     "release:preview": "node scripts/capture-release-previews.mjs",
     "smoke:browser": "node scripts/smoke-managed-browser.mjs",

@@ -1,231 +1,360 @@
 {
   "activityCompositionSpatialContractCandidate": {
     "contract": {
-      "contractId": "division-grouping-no01sc-01-composition-v1",
+      "composition": {
+        "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
+        "canvas": {
+          "canvasBaseHeight": 200,
+          "canvasUnitsToCssPx": 0.579956,
+          "height": 1220,
+          "itemCount": 1,
+          "itemPitch": 1020,
+          "width": 1600
+        },
+        "labelClearance": 12,
+        "layoutContentHash": "0ec1c3bafcfab59cd0c8bc081284abd9ddbc6948fd47619906158b664a047b7a",
+        "layoutPresetId": "wave25-division-grouping-v1",
+        "manipulatedStateEnvelopes": [
+          {
+            "bounds": {
+              "height": 658,
+              "width": 740,
+              "x": 630,
+              "y": 402
+            },
+            "id": "grouped-clusters"
+          },
+          {
+            "bounds": {
+              "height": 658,
+              "width": 150,
+              "x": 1380,
+              "y": 402
+            },
+            "id": "remainder-units"
+          }
+        ],
+        "minGap": 16,
+        "releaseViewport": {
+          "devicePixelRatio": 1,
+          "height": 800,
+          "pan": {
+            "x": -499.456,
+            "y": -129.584
+          },
+          "sidebarState": "expanded",
+          "surfaceMode": "authoring-editor",
+          "width": 1280,
+          "zoomMode": "fit"
+        },
+        "selectionOverlayExclusionZoneCssPx": {
+          "height": 104,
+          "width": 480,
+          "x": 400,
+          "y": 688
+        },
+        "semanticRegions": [
+          {
+            "bounds": {
+              "height": 178,
+              "width": 250,
+              "x": 770,
+              "y": 209
+            },
+            "id": "prediction-region"
+          },
+          {
+            "bounds": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 463
+            },
+            "id": "source-pool"
+          },
+          {
+            "bounds": {
+              "height": 658,
+              "width": 740,
+              "x": 630,
+              "y": 402
+            },
+            "id": "group-lane"
+          },
+          {
+            "bounds": {
+              "height": 658,
+              "width": 150,
+              "x": 1380,
+              "y": 402
+            },
+            "id": "remainder-lane"
+          },
+          {
+            "bounds": {
+              "height": 178,
+              "width": 490,
+              "x": 1040,
+              "y": 209
+            },
+            "id": "explanation-region"
+          }
+        ],
+        "zOrder": [
+          "locked-guides",
+          "native-counting-units",
+          "native-group-chrome",
+          "fixed-editor-toolbars"
+        ]
+      },
+      "contractId": "division-grouping-no01sc-01-composition-v2",
+      "contractKind": "activity-composition",
       "derivedFromEvidenceIds": [
-        "division-grouping-no01sc-01-composition-23-by-4-20260808-v1"
+        "division-grouping-no01sc-01-composition-23-by-4-20260808-v2"
       ],
+      "minInteractiveCssSize": {
+        "height": 44,
+        "width": 44
+      },
       "minInteractiveSize": {
         "height": 588,
         "width": 470
       },
       "reserveAnchor": "placement-top-left",
       "reserveBox": {
-        "height": 650,
+        "height": 668,
         "width": 1500,
         "x": -60,
-        "y": -50
+        "y": -71
       },
       "roundTripStable": true,
       "roundTripTolerance": 1,
       "toolKey": "NO01SC",
-      "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+      "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
       "variantId": "NO01SC-01"
     },
-    "contractVersion": "1.0.0",
+    "contractVersion": "2.0.0",
     "evidence": {
       "environment": {
-        "assetFingerprint": "sha256:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584",
+        "assetFingerprint": "sha256:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e",
         "devicePixelRatio": 1,
         "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
-        "harnessVersion": "division-counting-group-product-canary:23-by-4:v9",
+        "harnessVersion": "division-counting-group-product-canary:23-by-4:v10",
+        "interactionContext": {
+          "canvasUnitsToCssPx": 0.579956,
+          "pan": {
+            "x": -499.456,
+            "y": -129.584
+          },
+          "selectionOverlayCssPx": {
+            "height": 104,
+            "width": 480,
+            "x": 400,
+            "y": 688
+          },
+          "sidebarState": "expanded",
+          "surfaceMode": "authoring-editor",
+          "zoomMode": "fit"
+        },
         "viewport": "1280x800"
       },
-      "evidenceId": "division-grouping-no01sc-01-composition-23-by-4-20260808-v1",
+      "evidenceId": "division-grouping-no01sc-01-composition-23-by-4-20260808-v2",
       "nonPointerInteraction": "unavailable",
       "observations": [
         {
           "chromeBox": {
-            "height": 398.773,
+            "height": 398.806,
             "width": 399.467,
             "x": 145.872,
-            "y": 589.555
+            "y": 557.504
           },
           "persistedMathematicalStateHash": "15044a20a84ed42924dbcbec514791e0ecbe0887e021e3a0f30b820dc0d7bce6",
           "placement": {
             "height": 588,
             "width": 470,
             "x": 110,
-            "y": 495
+            "y": 463
           },
           "reserveBox": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/initial.png",
           "state": "initial",
           "taskEnvelope": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "visualBox": {
-            "height": 398.773,
+            "height": 398.806,
             "width": 399.467,
             "x": 145.872,
-            "y": 589.555
+            "y": 557.504
           }
         },
         {
           "chromeBox": {
-            "height": 164.773,
-            "width": 165.06,
-            "x": 137.244,
-            "y": 580.941
+            "height": 160.798,
+            "width": 161.065,
+            "x": 1107.96,
+            "y": 476.364
           },
           "persistedMathematicalStateHash": "15044a20a84ed42924dbcbec514791e0ecbe0887e021e3a0f30b820dc0d7bce6",
           "placement": {
             "height": 588,
             "width": 470,
             "x": 110,
-            "y": 495
+            "y": 463
           },
           "reserveBox": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/selected-first-four.png",
           "state": "selected",
           "taskEnvelope": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "visualBox": {
-            "height": 406.748,
-            "width": 407.457,
-            "x": 137.883,
-            "y": 581.58
+            "height": 479.309,
+            "width": 1122.514,
+            "x": 145.872,
+            "y": 477.002
           }
         },
         {
           "chromeBox": {
-            "height": 550.308,
-            "width": 773.969,
-            "x": 735.086,
-            "y": 498.834
+            "height": 580.959,
+            "width": 768.354,
+            "x": 725.721,
+            "y": 467.032
           },
-          "persistedMathematicalStateHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+          "persistedMathematicalStateHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
           "placement": {
             "height": 588,
             "width": 470,
             "x": 110,
-            "y": 495
+            "y": 463
           },
           "reserveBox": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/full-grouped.png",
           "state": "manipulated",
           "taskEnvelope": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "visualBox": {
-            "height": 514.417,
-            "width": 755.992,
-            "x": 753.062,
-            "y": 516.779
+            "height": 545.066,
+            "width": 750.378,
+            "x": 743.696,
+            "y": 484.978
           }
         },
         {
           "chromeBox": {
-            "height": 398.773,
+            "height": 398.806,
             "width": 399.467,
             "x": 145.872,
-            "y": 589.555
+            "y": 557.504
           },
           "persistedMathematicalStateHash": "15044a20a84ed42924dbcbec514791e0ecbe0887e021e3a0f30b820dc0d7bce6",
           "placement": {
             "height": 588,
             "width": 470,
             "x": 110,
-            "y": 495
+            "y": 463
           },
           "reserveBox": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reset.png",
           "state": "undo-reset",
           "taskEnvelope": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "visualBox": {
-            "height": 398.773,
+            "height": 398.806,
             "width": 399.467,
             "x": 145.872,
-            "y": 589.555
+            "y": 557.504
           }
         },
         {
           "chromeBox": {
-            "height": 550.308,
-            "width": 773.969,
-            "x": 735.086,
-            "y": 498.834
+            "height": 580.959,
+            "width": 768.354,
+            "x": 725.721,
+            "y": 467.032
           },
-          "persistedMathematicalStateHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+          "persistedMathematicalStateHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
           "placement": {
             "height": 588,
             "width": 470,
             "x": 110,
-            "y": 495
+            "y": 463
           },
           "reserveBox": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reopened.png",
           "state": "reopened",
           "taskEnvelope": {
-            "height": 650,
+            "height": 668,
             "width": 1500,
             "x": 50,
-            "y": 445
+            "y": 392
           },
           "visualBox": {
-            "height": 514.417,
-            "width": 755.992,
-            "x": 753.062,
-            "y": 516.779
+            "height": 545.066,
+            "width": 750.378,
+            "x": 743.696,
+            "y": 484.978
           }
         }
       ],
-      "observedAt": "2026-08-08T04:28:39.061Z",
+      "observedAt": "2026-08-08T07:22:26.968Z",
       "persistedStateChanged": true,
       "roundTripDrift": 0,
       "roundTripDriftWithinTolerance": true,
       "roundTripReferenceState": "manipulated",
       "toolKey": "NO01SC",
-      "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+      "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
       "variantId": "NO01SC-01"
     }
   },
   "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+  "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
   "claims": {
     "NO01SC": {
       "contracted": {
+        "activityCompositionSpatialContractId": "division-grouping-no01sc-01-composition-v2",
         "adapterKey": "counting-model",
-        "intrinsicSpatialContractId": "native-element-no01sc-01-v1",
+        "intrinsicSpatialContractId": "native-element-no01sc-01-v2",
         "variantId": "NO01SC-01"
       },
       "lifecycle": {
@@ -235,22 +364,25 @@
         "secondGetBodyAsserted": true
       },
       "released": {
-        "activityReleaseQualified": false,
+        "activityReleaseQualified": true,
         "releasedVariantIds": [
           "NO01SC-01"
         ],
         "toolAdapterReleased": true
       },
       "verified": {
-        "answerStructureLeakedByInitialColumns": false,
+        "answerStructureLeakedByInitialPlacement": false,
         "compilerPayloadUsedByCanary": true,
         "emittedObjectCount": 23,
         "exactNativeVariantOnly": true,
-        "neutralColumnCount": 5
+        "groupsFormedFromEmittedPlacements": true,
+        "maximumUnitsPerRow": 5,
+        "selectionOverlayAvoided": true
       }
     }
   },
   "compilerContract": {
+    "answerStructureLeaked": false,
     "compilerPayloadUsedByCanary": true,
     "deterministicUnitIds": [
       "division-remainder-1-counting-model-pool-unit-01",
@@ -279,10 +411,66 @@
     ],
     "emittedObjectCount": 23,
     "fragmentKind": "multi",
+    "groupingIndexesDerivedFromEmittedPlacements": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        10,
+        11
+      ],
+      [
+        12,
+        13,
+        14,
+        15
+      ],
+      [
+        16,
+        17,
+        18,
+        19
+      ]
+    ],
     "hasAmbiguousPrimaryObject": false,
     "initialColumnsMatchSupportedGroupSize": false,
     "initialPlacementReadsGroupSize": false,
-    "neutralColumnCount": 5,
+    "initialStructureAnalysis": {
+      "answerStructureLeaked": false,
+      "columnOccupancies": [
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3
+      ],
+      "completeRowOccupanciesMatchingSupportedGroupSize": [],
+      "distinctColumnCount": 9,
+      "maximumUnitsPerRow": 5,
+      "rowOccupancies": [
+        5,
+        4,
+        5,
+        4,
+        5
+      ],
+      "transposedRectangleMatchingDivision": false
+    },
     "requiredModuleKeys": [
       "NO01SC"
     ],
@@ -291,13 +479,198 @@
       6,
       7
     ],
+    "targetSizeProfilesCanvas": [
+      {
+        "height": 186.33333333333334,
+        "width": 354
+      },
+      {
+        "height": 285.5,
+        "width": 354
+      },
+      {
+        "height": 186.33333333333334,
+        "width": 354
+      },
+      {
+        "height": 285.5,
+        "width": 354
+      },
+      {
+        "height": 186.33333333333334,
+        "width": 354
+      }
+    ],
     "unitIdOrderHash": "3e373965f0db65efa19c9a5eb0d3b1aba97e245a607cd298835a2317771c6f0d"
   },
   "environment": {
+    "classroomTextClearance": {
+      "checks": {
+        "choiceTextsCentered": true,
+        "instructionRowsSeparated": true,
+        "poolLabelPadded": true,
+        "selectedSourceGroupClearsLabel": true,
+        "sourceNativeUnitsClearLabel": true,
+        "workbenchLabelsPadded": true,
+        "writingLabelsPadded": true
+      },
+      "metrics": {
+        "choiceTextCenterOffsetsCssPx": [
+          {
+            "choice": 1,
+            "x": -0.001,
+            "y": 0
+          },
+          {
+            "choice": 2,
+            "x": -0.001,
+            "y": 0
+          },
+          {
+            "choice": 3,
+            "x": -0.001,
+            "y": 0
+          },
+          {
+            "choice": 4,
+            "x": -0.001,
+            "y": 0
+          },
+          {
+            "choice": 5,
+            "x": -0.001,
+            "y": 0
+          }
+        ],
+        "choiceTextInsetsCssPx": [
+          {
+            "bottom": 5.208,
+            "choice": 1,
+            "left": 9.896,
+            "right": 9.898,
+            "top": 5.208
+          },
+          {
+            "bottom": 5.208,
+            "choice": 2,
+            "left": 9.896,
+            "right": 9.898,
+            "top": 5.208
+          },
+          {
+            "bottom": 5.208,
+            "choice": 3,
+            "left": 9.896,
+            "right": 9.898,
+            "top": 5.208
+          },
+          {
+            "bottom": 5.208,
+            "choice": 4,
+            "left": 9.896,
+            "right": 9.898,
+            "top": 5.208
+          },
+          {
+            "bottom": 5.208,
+            "choice": 5,
+            "left": 9.896,
+            "right": 9.898,
+            "top": 5.208
+          }
+        ],
+        "explanationLabelInsetsCssPx": {
+          "bottom": 76.968,
+          "left": 12.153,
+          "right": 12.153,
+          "top": 7.523
+        },
+        "groupLabelTopFromWorkbenchCssPx": 13.889,
+        "instructionExplainToQuestionCssPx": 8.102,
+        "instructionPredictToVerifyCssPx": 8.102,
+        "instructionVerifyToExplainCssPx": 8.102,
+        "poolLabelInsetsCssPx": {
+          "bottom": 79.282,
+          "left": 10.995,
+          "right": 233.218,
+          "top": 6.366
+        },
+        "poolLabelToFirstCardCssPx": 8.681,
+        "predictionLabelInsetsCssPx": {
+          "bottom": 76.968,
+          "left": 12.153,
+          "right": 12.153,
+          "top": 7.523
+        },
+        "remainderLabelTopFromWorkbenchCssPx": 13.889,
+        "selectedSourceLabelGapCssPx": 15.403,
+        "sourceLabelToNearestNativeUnitCssPx": 62.5,
+        "sourceLabelTopFromWorkbenchCssPx": 13.889
+      }
+    },
     "injectedProjectReadCount": 9,
+    "nativeOverlayIntersectionCount": 0,
     "profileScope": "dedicated-mathcanvas-profile",
+    "releaseInteractionContext": {
+      "canvasUnitsToCssPx": 0.579956,
+      "devicePixelRatio": 1,
+      "overlayToolbarBoxesCssPx": [
+        {
+          "height": 48,
+          "width": 480,
+          "x": 400,
+          "y": 744
+        },
+        {
+          "height": 48,
+          "width": 390,
+          "x": 445,
+          "y": 688
+        },
+        {
+          "height": 48,
+          "width": 196,
+          "x": 542,
+          "y": 688
+        }
+      ],
+      "pan": {
+        "x": -499.456,
+        "y": -129.584
+      },
+      "selectionOverlayCssPx": {
+        "height": 104,
+        "width": 480,
+        "x": 400,
+        "y": 688
+      },
+      "sidebarState": "expanded",
+      "surfaceMode": "authoring-editor",
+      "viewBox": [
+        -499.456,
+        -129.584,
+        2211.84,
+        1382.4
+      ],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      },
+      "zoomMode": "fit"
+    },
     "reopenedInFreshBrowserContext": true,
     "reopenProjectReadCount": 4,
+    "servedAssetEvidence": {
+      "resourceCount": 5,
+      "resourcePaths": [
+        "/assets/html-utils-9158ee52.js",
+        "/assets/index-fb571b04.js",
+        "/assets/mathlive-22342f63.js",
+        "/assets/matter-js-fb58b664.js",
+        "/assets/three-js-2f9913ef.js"
+      ],
+      "sha256": "bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e"
+    },
     "serviceWorkersBlocked": true,
     "userChromeTouched": false,
     "viewport": {
@@ -305,7 +678,7 @@
       "width": 1280
     }
   },
-  "evidenceId": "division-counting-group-product-canary-23-by-4-20260808-v1",
+  "evidenceId": "division-counting-group-product-canary-23-by-4-20260808-v2",
   "initialState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 0,
@@ -345,12 +718,24 @@
     "wrapperCount": 0,
     "wrapperMemberCounts": []
   },
+  "interactionShape": {
+    "initial": true,
+    "manipulated": true,
+    "reopened": true,
+    "selected": true,
+    "undoReset": true
+  },
   "intrinsicSpatialContractCandidate": {
     "contract": {
-      "contractId": "native-element-no01sc-01-v1",
+      "contractId": "native-element-no01sc-01-v2",
+      "contractKind": "intrinsic-element",
       "derivedFromEvidenceIds": [
-        "no01sc-01-intrinsic-spatial-canary-20260808-v1"
+        "no01sc-01-intrinsic-spatial-canary-20260808-v2"
       ],
+      "minInteractiveCssSize": {
+        "height": 44,
+        "width": 44
+      },
       "minInteractiveSize": {
         "height": 80,
         "width": 80
@@ -365,222 +750,223 @@
       "roundTripStable": true,
       "roundTripTolerance": 1,
       "toolKey": "NO01SC",
-      "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+      "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
       "variantId": "NO01SC-01"
     },
-    "contractVersion": "1.0.0",
+    "contractVersion": "2.0.0",
     "evidence": {
       "environment": {
-        "assetFingerprint": "sha256:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584",
+        "assetFingerprint": "sha256:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e",
         "devicePixelRatio": 1,
         "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
-        "harnessVersion": "division-counting-group-canary:v8",
+        "harnessVersion": "division-counting-group-canary:v10",
         "viewport": "1280x800"
       },
-      "evidenceId": "no01sc-01-intrinsic-spatial-canary-20260808-v1",
+      "evidenceId": "no01sc-01-intrinsic-spatial-canary-20260808-v2",
       "nonPointerInteraction": "unavailable",
       "observations": [
         {
           "chromeBox": {
-            "height": 79.755,
+            "height": 79.761,
             "width": 79.893,
-            "x": 221.771,
-            "y": 916.549
+            "x": 305.659,
+            "y": 884.525
           },
-          "persistedMathematicalStateHash": "eacfe2b872c0fb4eecb0c95f5771427b21cd5877945cc6a03b496d89b12ee1ef",
+          "persistedMathematicalStateHash": "484747d6a3a4ed6d683e979cd3eeeb2fb2a4bbb33729e7a0ab049f0a62e28168",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 221.717,
-            "y": 916.427
+            "x": 305.606,
+            "y": 884.405
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/initial.png",
           "state": "initial",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "visualBox": {
-            "height": 63.804,
+            "height": 63.809,
             "width": 63.915,
-            "x": 229.76,
-            "y": 924.524
+            "x": 313.648,
+            "y": 892.501
           }
         },
         {
           "chromeBox": {
-            "height": 79.755,
+            "height": 79.761,
             "width": 79.893,
-            "x": 221.771,
-            "y": 916.549
+            "x": 305.659,
+            "y": 884.525
           },
-          "persistedMathematicalStateHash": "eacfe2b872c0fb4eecb0c95f5771427b21cd5877945cc6a03b496d89b12ee1ef",
+          "persistedMathematicalStateHash": "484747d6a3a4ed6d683e979cd3eeeb2fb2a4bbb33729e7a0ab049f0a62e28168",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 221.717,
-            "y": 916.427
+            "x": 305.606,
+            "y": 884.405
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/selected-single-unit.png",
           "state": "selected",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "visualBox": {
-            "height": 63.804,
+            "height": 63.809,
             "width": 63.915,
-            "x": 229.76,
-            "y": 924.524
+            "x": 313.648,
+            "y": 892.501
           }
         },
         {
           "chromeBox": {
-            "height": 79.755,
+            "height": 79.761,
             "width": 79.893,
-            "x": 1437.15,
-            "y": 639.123
+            "x": 1422.17,
+            "y": 592.599
           },
-          "persistedMathematicalStateHash": "ff6ec1e7ceed0946e9323bda33b86d98a5fce578fdbcb57d1662bf92b28db8bc",
+          "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 1437.097,
-            "y": 639.001
+            "x": 1422.117,
+            "y": 592.48
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 1435.097,
-            "y": 637.001
+            "x": 1420.117,
+            "y": 590.48
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/full-grouped.png",
           "state": "manipulated",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 1435.097,
-            "y": 637.001
+            "x": 1420.117,
+            "y": 590.48
           },
           "visualBox": {
-            "height": 63.804,
+            "height": 63.809,
             "width": 63.915,
-            "x": 1445.14,
-            "y": 647.098
+            "x": 1430.16,
+            "y": 600.576
           }
         },
         {
           "chromeBox": {
-            "height": 79.755,
+            "height": 79.761,
             "width": 79.893,
-            "x": 221.771,
-            "y": 916.549
+            "x": 305.659,
+            "y": 884.525
           },
-          "persistedMathematicalStateHash": "eacfe2b872c0fb4eecb0c95f5771427b21cd5877945cc6a03b496d89b12ee1ef",
+          "persistedMathematicalStateHash": "484747d6a3a4ed6d683e979cd3eeeb2fb2a4bbb33729e7a0ab049f0a62e28168",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 221.717,
-            "y": 916.427
+            "x": 305.606,
+            "y": 884.405
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reset.png",
           "state": "undo-reset",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 219.717,
-            "y": 914.427
+            "x": 303.606,
+            "y": 882.405
           },
           "visualBox": {
-            "height": 63.804,
+            "height": 63.809,
             "width": 63.915,
-            "x": 229.76,
-            "y": 924.524
+            "x": 313.648,
+            "y": 892.501
           }
         },
         {
           "chromeBox": {
-            "height": 79.755,
+            "height": 79.761,
             "width": 79.893,
-            "x": 1437.15,
-            "y": 639.123
+            "x": 1422.17,
+            "y": 592.599
           },
-          "persistedMathematicalStateHash": "ff6ec1e7ceed0946e9323bda33b86d98a5fce578fdbcb57d1662bf92b28db8bc",
+          "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 1437.097,
-            "y": 639.001
+            "x": 1422.117,
+            "y": 592.48
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 1435.097,
-            "y": 637.001
+            "x": 1420.117,
+            "y": 590.48
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reopened.png",
           "state": "reopened",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 1435.097,
-            "y": 637.001
+            "x": 1420.117,
+            "y": 590.48
           },
           "visualBox": {
-            "height": 63.804,
+            "height": 63.809,
             "width": 63.915,
-            "x": 1445.14,
-            "y": 647.098
+            "x": 1430.16,
+            "y": 600.576
           }
         }
       ],
-      "observedAt": "2026-08-08T04:28:39.061Z",
+      "observedAt": "2026-08-08T07:22:26.968Z",
       "persistedStateChanged": true,
       "roundTripDrift": 0,
       "roundTripDriftWithinTolerance": true,
       "roundTripReferenceState": "manipulated",
       "toolKey": "NO01SC",
-      "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+      "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
       "variantId": "NO01SC-01"
     }
   },
   "layoutId": "wave25-division-grouping-v1",
-  "layoutRevision": "layout-v10-actual-blueprint-no-slot-label-overlap",
+  "layoutPresetContentHash": "d8148031ec414e293ad2bf44e997e41e2cc29b8d6082c7001ddf2869502e066d",
+  "layoutRevision": "layout-0ec1c3bafcfab59c",
   "manipulatedState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 20,
     "groupedMemberSets": [
-      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07",
-      "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04",
+      "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
       "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
       "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
       "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
     ],
     "membershipValid": true,
     "nestedGroupCount": 0,
-    "semanticHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+    "semanticHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
     "staleGroupReferenceCount": 0,
     "totalUnitCount": 23,
     "ungroupedUnitCount": 3,
@@ -614,15 +1000,15 @@
       "duplicateMembershipCount": 0,
       "groupedMemberCount": 20,
       "groupedMemberSets": [
-        "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07",
-        "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+        "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04",
+        "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
         "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
         "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
         "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
       ],
       "membershipValid": true,
       "nestedGroupCount": 0,
-      "semanticHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+      "semanticHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
       "staleGroupReferenceCount": 0,
       "totalUnitCount": 23,
       "ungroupedUnitCount": 3,
@@ -645,22 +1031,22 @@
       "duplicateMembershipCount": 0,
       "groupedMemberCount": 16,
       "groupedMemberSets": [
-        "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+        "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
         "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
         "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
         "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
       ],
       "membershipValid": true,
       "nestedGroupCount": 0,
-      "semanticHash": "82064767975f83b445e9e533b90f3c8ffb5ea983384c7a4866ad094300e7dc31",
+      "semanticHash": "bb81ee492050889638b9c212b67b87f8066168b7c775de36b0d805c50efc9f34",
       "staleGroupReferenceCount": 0,
       "totalUnitCount": 23,
       "ungroupedUnitCount": 7,
       "ungroupedUnitIds": [
         "division-remainder-1-counting-model-pool-unit-01",
         "division-remainder-1-counting-model-pool-unit-02",
-        "division-remainder-1-counting-model-pool-unit-06",
-        "division-remainder-1-counting-model-pool-unit-07",
+        "division-remainder-1-counting-model-pool-unit-03",
+        "division-remainder-1-counting-model-pool-unit-04",
         "division-remainder-1-counting-model-pool-unit-21",
         "division-remainder-1-counting-model-pool-unit-22",
         "division-remainder-1-counting-model-pool-unit-23"
@@ -675,33 +1061,33 @@
       ]
     },
     "visualTransition": {
-      "emptyGroupSlotCountAfterUngroup": 2,
-      "occupiedGroupSlotCountAfterUngroup": 4,
-      "occupiedGroupSlotIndexesAfterUngroup": [
+      "emptyTargetEnvelopeCountAfterUngroup": 1,
+      "occupiedTargetEnvelopeCountAfterUngroup": 4,
+      "occupiedTargetEnvelopeIndexesAfterUngroup": [
         1,
         2,
         3,
         4
       ],
       "releasedMembersReturnedToSource": true,
-      "vacatedFirstGroupSlot": true
+      "vacatedFirstGroupTarget": true
     }
   },
-  "nextGate": "compiler adapter와 전체 학생 활동을 같은 공간 계약에 결속한 뒤 background product canary와 sol xhigh 시각 감사를 통과합니다.",
-  "observedAt": "2026-08-08T04:28:39.061Z",
+  "nextGate": "released: 네이티브 공간 계약, background product canary, 품질·시각 감사와 sol xhigh 검토를 통과했습니다.",
+  "observedAt": "2026-08-08T07:22:26.968Z",
   "persistedState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 20,
     "groupedMemberSets": [
-      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07",
-      "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04",
+      "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
       "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
       "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
       "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
     ],
     "membershipValid": true,
     "nestedGroupCount": 0,
-    "semanticHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+    "semanticHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
     "staleGroupReferenceCount": 0,
     "totalUnitCount": 23,
     "ungroupedUnitCount": 3,
@@ -722,44 +1108,49 @@
   },
   "probeMode": "existing-disposable-canary-actual-blueprint-compiler-payload-one-versioned-save-with-read-only-resume",
   "productContract": {
-    "blueprintContentHash": "8dc8778dd93eda4f66caabc180a6023530f7e7dcf2d1109e4445954b3593e8d5",
+    "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
     "blueprintId": "number.division.quotient-remainder.claim-evidence-v1",
-    "blueprintVersion": "2.0.0",
-    "compiledPayloadHash": "c096891fdb3cee37acded8d51965e909fec434ac36e561916d8f4c5cad498a9d",
-    "compiledProjectTitle": "묶어 보고 몫과 나머지 설명하기 · 3학년 · 1문제 · 보통 [AI-12F9EC64C5D5]",
+    "blueprintVersion": "2.1.0",
+    "compiledPayloadHash": "d4a3f076a5da1fe9e51867b84c5de93ddf41702c649b9528b3b72ff6750976ce",
+    "compiledProjectTitle": "묶어 보고 몫과 나머지 설명하기 · 3학년 · 1문제 · 보통 [AI-B178C31C8090]",
     "correctValueText": "5묶음, 3자루",
+    "explanationLabelText": "식과 까닭 쓰기",
     "generatorId": "curriculum.claim-evidence-items",
-    "generatorVersion": "1.2.0",
+    "generatorVersion": "1.3.0",
+    "groupLaneLabelText": "4개씩 묶은 모형",
     "itemId": "division-remainder-1",
     "localValidationCanCreate": true,
     "localValidationIssueCodes": [],
+    "poolLabelText": "예상한 답 고르기",
     "poolPlacementCanvas": {
       "height": 588,
       "width": 470,
       "x": 110,
-      "y": 495
+      "y": 463
     },
     "questionText": "연필 23자루를 4자루씩 묶으면 몇 묶음이고 몇 자루가 남을까요?",
-    "resolvedHash": "9030c1537ea1e025474d04b81cc347722a4d60aa2e414d332c0556a6f18b56a8",
+    "resolvedHash": "b309cdc2c6f5fa956e0a1a4281c8e74c973c5bc1d9ad3a535d1b1a32845e3b0f",
     "seed": "division-scenario-7",
-    "spatialContractId": "division-grouping-no01sc-01-composition-v1",
-    "spatialContractVersion": "1.0.0"
+    "sourceLabelText": "묶기 전 모형",
+    "spatialContractId": "division-grouping-no01sc-01-composition-v2",
+    "spatialContractVersion": "2.0.0",
+    "verifyInstructionText": "② 모형을 4개씩 옮겨 가까이 놓고, 4개를 골라 ‘그룹’을 누르세요."
   },
-  "qualityEvidenceScope": "native-workbench-only",
-  "releaseQualified": false,
+  "qualityEvidenceScope": "full-activity-1280x800-background-canary",
+  "releaseQualified": true,
   "reopenedState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 20,
     "groupedMemberSets": [
-      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07",
-      "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04",
+      "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
       "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
       "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
       "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
     ],
     "membershipValid": true,
     "nestedGroupCount": 0,
-    "semanticHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+    "semanticHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
     "staleGroupReferenceCount": 0,
     "totalUnitCount": 23,
     "ungroupedUnitCount": 3,
@@ -795,7 +1186,7 @@
     "seed": "division-scenario-7",
     "total": 23
   },
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "screenshots": [
     ".mathcanvas-contract-lab/previews/wave18/division-counting-group/initial.png",
     ".mathcanvas-contract-lab/previews/wave18/division-counting-group/selected-single-unit.png",
@@ -809,15 +1200,15 @@
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 20,
     "groupedMemberSets": [
-      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07",
-      "division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04|division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-08",
+      "division-remainder-1-counting-model-pool-unit-01|division-remainder-1-counting-model-pool-unit-02|division-remainder-1-counting-model-pool-unit-03|division-remainder-1-counting-model-pool-unit-04",
+      "division-remainder-1-counting-model-pool-unit-05|division-remainder-1-counting-model-pool-unit-06|division-remainder-1-counting-model-pool-unit-07|division-remainder-1-counting-model-pool-unit-08",
       "division-remainder-1-counting-model-pool-unit-09|division-remainder-1-counting-model-pool-unit-10|division-remainder-1-counting-model-pool-unit-11|division-remainder-1-counting-model-pool-unit-12",
       "division-remainder-1-counting-model-pool-unit-13|division-remainder-1-counting-model-pool-unit-14|division-remainder-1-counting-model-pool-unit-15|division-remainder-1-counting-model-pool-unit-16",
       "division-remainder-1-counting-model-pool-unit-17|division-remainder-1-counting-model-pool-unit-18|division-remainder-1-counting-model-pool-unit-19|division-remainder-1-counting-model-pool-unit-20"
     ],
     "membershipValid": true,
     "nestedGroupCount": 0,
-    "semanticHash": "48d30caea247bd36b957666a7d1baf9aa13345428c9e57b8067d1bfee3a9bc71",
+    "semanticHash": "8caa716f4fe969a3bd88d24b433ebb46a3af70974383291f6b132893184f2dec",
     "staleGroupReferenceCount": 0,
     "totalUnitCount": 23,
     "ungroupedUnitCount": 3,
@@ -837,11 +1228,124 @@
     ]
   },
   "selectedState": {
+    "formationEvidence": [
+      {
+        "allMembersInsideTarget": true,
+        "clusterBoundsCssPx": {
+          "height": 87.963,
+          "width": 87.963,
+          "x": 935.455,
+          "y": 355.232
+        },
+        "columns": 2,
+        "formedByNativeDrag": true,
+        "gapXCssPx": 6,
+        "gapYCssPx": 6,
+        "groupIndex": 1,
+        "memberIds": [
+          "division-remainder-1-counting-model-pool-unit-01",
+          "division-remainder-1-counting-model-pool-unit-02",
+          "division-remainder-1-counting-model-pool-unit-03",
+          "division-remainder-1-counting-model-pool-unit-04"
+        ],
+        "rows": 2,
+        "sourcePlacementVerified": true
+      },
+      {
+        "allMembersInsideTarget": true,
+        "clusterBoundsCssPx": {
+          "height": 87.963,
+          "width": 87.963,
+          "x": 719.373,
+          "y": 384.362
+        },
+        "columns": 2,
+        "formedByNativeDrag": true,
+        "gapXCssPx": 6,
+        "gapYCssPx": 6,
+        "groupIndex": 2,
+        "memberIds": [
+          "division-remainder-1-counting-model-pool-unit-05",
+          "division-remainder-1-counting-model-pool-unit-06",
+          "division-remainder-1-counting-model-pool-unit-07",
+          "division-remainder-1-counting-model-pool-unit-08"
+        ],
+        "rows": 2,
+        "sourcePlacementVerified": true
+      },
+      {
+        "allMembersInsideTarget": true,
+        "clusterBoundsCssPx": {
+          "height": 87.963,
+          "width": 87.963,
+          "x": 935.455,
+          "y": 471.753
+        },
+        "columns": 2,
+        "formedByNativeDrag": true,
+        "gapXCssPx": 6,
+        "gapYCssPx": 6,
+        "groupIndex": 3,
+        "memberIds": [
+          "division-remainder-1-counting-model-pool-unit-09",
+          "division-remainder-1-counting-model-pool-unit-10",
+          "division-remainder-1-counting-model-pool-unit-11",
+          "division-remainder-1-counting-model-pool-unit-12"
+        ],
+        "rows": 2,
+        "sourcePlacementVerified": true
+      },
+      {
+        "allMembersInsideTarget": true,
+        "clusterBoundsCssPx": {
+          "height": 87.963,
+          "width": 87.963,
+          "x": 719.373,
+          "y": 559.144
+        },
+        "columns": 2,
+        "formedByNativeDrag": true,
+        "gapXCssPx": 6,
+        "gapYCssPx": 6,
+        "groupIndex": 4,
+        "memberIds": [
+          "division-remainder-1-counting-model-pool-unit-13",
+          "division-remainder-1-counting-model-pool-unit-14",
+          "division-remainder-1-counting-model-pool-unit-15",
+          "division-remainder-1-counting-model-pool-unit-16"
+        ],
+        "rows": 2,
+        "sourcePlacementVerified": true
+      },
+      {
+        "allMembersInsideTarget": true,
+        "clusterBoundsCssPx": {
+          "height": 87.963,
+          "width": 87.963,
+          "x": 935.455,
+          "y": 588.274
+        },
+        "columns": 2,
+        "formedByNativeDrag": true,
+        "gapXCssPx": 6,
+        "gapYCssPx": 6,
+        "groupIndex": 5,
+        "memberIds": [
+          "division-remainder-1-counting-model-pool-unit-17",
+          "division-remainder-1-counting-model-pool-unit-18",
+          "division-remainder-1-counting-model-pool-unit-19",
+          "division-remainder-1-counting-model-pool-unit-20"
+        ],
+        "rows": 2,
+        "sourcePlacementVerified": true
+      }
+    ],
+    "groupsFormedFromEmittedPlacements": true,
     "selectedChromeBoxCssPx": {
-      "height": 95.648,
-      "width": 95.648,
-      "x": 367.949,
-      "y": 410.847
+      "height": 93.333,
+      "width": 93.333,
+      "x": 930.455,
+      "y": 350.232
     },
     "selectedMemberCount": 4,
     "selectionMethod": "shift-click-native-multi-select",
@@ -849,183 +1353,210 @@
   },
   "spatialContractCandidate": {
     "allGroupChromeBoxesInsideGroupLane": true,
-    "allGroupsInsideDistinctVisibleSlots": true,
+    "allGroupChromeBoxesSeparated": true,
+    "allGroupsInsideDistinctTargetEnvelopes": true,
     "allGroupVisualBoxesInsideGroupLane": true,
     "allUngroupedInsideRemainderLane": true,
     "allWrappersInsideGroupLane": true,
-    "emptyGroupSlotCount": 1,
+    "emptyTargetEnvelopeCount": 0,
     "groupChromeBoxesCssPx": [
       {
         "height": 104.167,
         "width": 104.167,
-        "x": 931.398,
-        "y": 363.185
+        "x": 708.957,
+        "y": 373.945
       },
       {
         "height": 104.167,
         "width": 104.167,
-        "x": 714.384,
-        "y": 470.824
+        "x": 925.039,
+        "y": 461.336
       },
       {
         "height": 104.167,
         "width": 104.167,
-        "x": 931.398,
-        "y": 470.824
+        "x": 708.957,
+        "y": 548.727
       },
       {
         "height": 104.167,
         "width": 104.167,
-        "x": 714.384,
-        "y": 578.463
+        "x": 925.039,
+        "y": 577.858
       },
       {
         "height": 104.167,
         "width": 104.167,
-        "x": 714.384,
-        "y": 363.185
+        "x": 925.039,
+        "y": 344.815
       }
     ],
+    "groupLabelClearancePassed": true,
+    "groupLabelToNearestVisualCssPx": 20.403,
     "groupLaneCssPx": {
-      "height": 377.315,
-      "width": 445.023,
+      "height": 387.731,
+      "width": 427.662,
       "x": 653.62,
-      "y": 331.935
+      "y": 301.264
     },
-    "groupSlotBoxesCssPx": [
+    "groupTargetEnvelopeBoxesCssPx": [
       {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 658.829,
-        "y": 360.87
+        "height": 109.251,
+        "width": 211.58,
+        "x": 869.702,
+        "y": 340.643
       },
       {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 875.843,
-        "y": 360.87
+        "height": 167.512,
+        "width": 211.58,
+        "x": 653.62,
+        "y": 340.643
       },
       {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 658.829,
-        "y": 468.509
+        "height": 109.251,
+        "width": 211.58,
+        "x": 869.702,
+        "y": 457.164
       },
       {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 875.843,
-        "y": 468.509
+        "height": 167.512,
+        "width": 211.58,
+        "x": 653.62,
+        "y": 515.425
       },
       {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 658.829,
-        "y": 576.148
-      },
-      {
-        "height": 108.796,
-        "width": 215.278,
-        "x": 875.843,
-        "y": 576.148
+        "height": 109.251,
+        "width": 211.58,
+        "x": 869.702,
+        "y": 573.686
       }
     ],
     "groupVisualBoxesCssPx": [
       {
         "height": 83.333,
         "width": 83.333,
-        "x": 941.815,
-        "y": 373.602
+        "x": 719.373,
+        "y": 384.362
       },
       {
         "height": 83.333,
         "width": 83.333,
-        "x": 724.801,
-        "y": 481.241
+        "x": 935.455,
+        "y": 471.753
       },
       {
         "height": 83.333,
         "width": 83.333,
-        "x": 941.815,
-        "y": 481.241
+        "x": 719.373,
+        "y": 559.144
       },
       {
         "height": 83.333,
         "width": 83.333,
-        "x": 724.801,
-        "y": 588.88
+        "x": 935.455,
+        "y": 588.274
       },
       {
         "height": 83.333,
         "width": 83.333,
-        "x": 724.801,
-        "y": 373.602
+        "x": 935.455,
+        "y": 355.232
       }
     ],
-    "nativeUngroupVisuallyVacatesSlot": true,
-    "occupiedGroupSlotCount": 5,
-    "occupiedGroupSlotIndexes": [
+    "nativeOverlayIntersectionCount": 0,
+    "nativeUngroupVisuallyVacatesTarget": true,
+    "occupiedTargetEnvelopeCount": 5,
+    "occupiedTargetEnvelopeIndexes": [
       0,
       1,
       2,
       3,
       4
     ],
-    "persistentVisualGroupingByLaneAndSlots": true,
+    "overlayToolbarBoxesCssPx": [
+      {
+        "height": 48,
+        "width": 480,
+        "x": 400,
+        "y": 744
+      },
+      {
+        "height": 48,
+        "width": 390,
+        "x": 445,
+        "y": 688
+      },
+      {
+        "height": 48,
+        "width": 196,
+        "x": 542,
+        "y": 688
+      }
+    ],
+    "persistentVisualGroupingByOpenLane": true,
     "placementCanvas": {
       "height": 588,
       "width": 470,
       "x": 110,
-      "y": 495
+      "y": 463
     },
     "remainderBoxesCssPx": [
       {
         "height": 37.037,
         "width": 37.037,
-        "x": 1125.843,
-        "y": 449.25
+        "x": 1117.162,
+        "y": 422.329
       },
       {
         "height": 37.037,
         "width": 37.037,
-        "x": 1125.843,
-        "y": 524.713
+        "x": 1117.162,
+        "y": 499.875
       },
       {
         "height": 37.037,
         "width": 37.037,
-        "x": 1125.843,
-        "y": 600.176
+        "x": 1117.162,
+        "y": 577.421
       }
     ],
+    "remainderLabelClearancePassed": true,
+    "remainderLabelToNearestVisualCssPx": 87.5,
     "remainderLaneCssPx": {
-      "height": 377.315,
-      "width": 84.491,
-      "x": 1102.116,
-      "y": 331.935
+      "height": 387.731,
+      "width": 101.852,
+      "x": 1084.755,
+      "y": 301.264
     },
     "reopenedAllUngroupedInsideRemainderLane": true,
     "reopenedAllWrappersInsideGroupLane": true,
     "reserveBoxCanvas": {
-      "height": 650,
+      "height": 668,
       "width": 1500,
       "x": 50,
-      "y": 445
+      "y": 392
     },
     "selectedChromeBoxCssPx": {
-      "height": 95.648,
-      "width": 95.648,
-      "x": 367.949,
-      "y": 410.847
+      "height": 93.333,
+      "width": 93.333,
+      "x": 930.455,
+      "y": 350.232
     },
     "selectionChromeRequiredAfterDeselect": false,
+    "selectionOverlayExclusionZoneCssPx": {
+      "height": 104,
+      "width": 480,
+      "x": 400,
+      "y": 688
+    },
     "taskEnvelopeCanvas": {
-      "height": 650,
+      "height": 668,
       "width": 1500,
       "x": 50,
-      "y": 445
+      "y": 392
     }
   },
+  "status": "pass",
   "toolKey": "NO01SC",
   "undoResetState": {
     "duplicateMembershipCount": 0,
@@ -1071,14 +1602,14 @@
     "allowedSaveCountThisExecution": 1,
     "allowedSaveStatus": 200,
     "approvalEvidenceMatched": true,
-    "blockedNonSafeRequestCount": 7,
+    "blockedNonSafeRequestCount": 8,
     "createCount": 0,
     "cumulativeApprovedSaveCount": 1,
     "disposableTitleMarkerMatched": true,
     "existingDisposableProjectReused": true,
     "priorApprovedSaveObserved": false,
     "priorApprovedVersionCount": 0,
-    "reopenBlockedNonSafeRequestCount": 3,
+    "reopenBlockedNonSafeRequestCount": 2,
     "reopenPutAttemptCount": 0,
     "resumedFromPriorApprovedSave": false,
     "saveSkippedToAvoidDuplicateWrite": false,

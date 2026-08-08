@@ -144,6 +144,10 @@ function envelopeRecommendation(
       manipulation: "probability-fraction-strip-drag",
       grade: 6
     },
+    "number.division.quotient-remainder.claim-evidence-v1": {
+      manipulation: "claim-evidence-revision-drag",
+      grade: 3
+    },
     "measure.angle.turn-size.claim-evidence-v1": {
       manipulation: "claim-evidence-revision-drag",
       grade: 4
@@ -529,6 +533,6 @@ describe("P2 구조 적합성", () => {
         envelopeRunCount += 1;
       }
     }
-    expect(envelopeRunCount).toBe(92);
+    expect(envelopeRunCount).toBe(93);
   }, 10_000);
 });

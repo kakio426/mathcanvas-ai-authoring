@@ -12,7 +12,7 @@ export const CLAIM_EVIDENCE_GENERATOR_ID =
   "curriculum.claim-evidence-items" as const;
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
 export const CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION = "1.1.0" as const;
-export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.2.0" as const;
+export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.3.0" as const;
 export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
 
 export function makeUnresolvedDotField(total: number): string {
@@ -86,7 +86,9 @@ export function generateClaimEvidenceItems(
           ...(item.countableGroupSize !== undefined
             ? {
                 countableGroupSize: item.countableGroupSize,
-                groupLaneLabelText: `${item.countableGroupSize}개씩 묶은 곳`
+                groupLaneLabelText: `${item.countableGroupSize}개씩 묶은 모형`,
+                verifyInstructionText:
+                  `② 모형을 ${item.countableGroupSize}개씩 옮겨 가까이 놓고, ${item.countableGroupSize}개를 골라 ‘그룹’을 누르세요.`
               }
             : {}),
           ...(item.targetAngleDegrees !== undefined

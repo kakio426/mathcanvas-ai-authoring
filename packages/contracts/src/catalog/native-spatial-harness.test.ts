@@ -8,11 +8,13 @@ import {
 } from "./native-spatial-harness.js";
 
 const intrinsicContract = {
+  contractKind: "intrinsic-element" as const,
   contractId: "contract.element.v1",
   toolKey: "NO01SC",
   variantId: "NO01SC-01",
   toolVersionFingerprint: "bundle:v1",
   minInteractiveSize: { width: 80, height: 80 },
+  minInteractiveCssSize: { width: 44, height: 44 },
   reserveBox: { x: -50, y: -50, width: 100, height: 100 },
   reserveAnchor: "placement-center" as const,
   roundTripStable: true,
@@ -22,7 +24,59 @@ const intrinsicContract = {
 
 const compositionContract = {
   ...intrinsicContract,
-  contractId: "contract.activity.v1"
+  contractKind: "activity-composition" as const,
+  contractId: "contract.activity.v1",
+  composition: {
+    layoutPresetId: "layout.v1",
+    layoutContentHash: "c".repeat(64),
+    blueprintContentHash: "a".repeat(64),
+    canvas: {
+      width: 1600,
+      height: 1220,
+      canvasBaseHeight: 200,
+      itemPitch: 1020,
+      itemCount: 1,
+      canvasUnitsToCssPx: 0.58
+    },
+    releaseViewport: {
+      width: 1280,
+      height: 800,
+      devicePixelRatio: 1,
+      surfaceMode: "authoring-editor" as const,
+      sidebarState: "expanded" as const,
+      zoomMode: "fit" as const,
+      pan: { x: 0, y: 0 }
+    },
+    semanticRegions: [
+      "prediction",
+      "source-pool",
+      "group-lane",
+      "remainder-lane",
+      "explanation"
+    ].map((id, index) => ({
+      id,
+      bounds: { x: index * 100, y: 0, width: 80, height: 80 }
+    })),
+    selectionOverlayExclusionZoneCssPx: {
+      x: 400,
+      y: 680,
+      width: 480,
+      height: 60
+    },
+    minGap: 16,
+    labelClearance: 12,
+    zOrder: ["locked-guides", "native-units", "selection-chrome"],
+    manipulatedStateEnvelopes: [
+      {
+        id: "grouped-clusters",
+        bounds: { x: 600, y: 300, width: 700, height: 600 }
+      },
+      {
+        id: "remainder-units",
+        bounds: { x: 1400, y: 300, width: 120, height: 600 }
+      }
+    ]
+  }
 };
 
 const observation = (state: "initial" | "selected" | "manipulated" | "undo-reset" | "reopened", hash: string) => ({
@@ -62,6 +116,26 @@ const evidence = {
   nonPointerInteraction: "not-observed" as const
 };
 
+const compositionEvidence = {
+  ...evidence,
+  environment: {
+    ...evidence.environment,
+    interactionContext: {
+      surfaceMode: "authoring-editor" as const,
+      sidebarState: "expanded" as const,
+      zoomMode: "fit" as const,
+      pan: { x: 0, y: 0 },
+      canvasUnitsToCssPx: 0.58,
+      selectionOverlayCssPx: {
+        x: 400,
+        y: 680,
+        width: 480,
+        height: 60
+      }
+    }
+  }
+};
+
 const scope: NativeSpatialActivityScope = {
   schemaVersion: "1.0.0",
   entries: [{ activityId: "activity.v1", blueprintContentHash: "a".repeat(64) }]
@@ -70,6 +144,7 @@ const scope: NativeSpatialActivityScope = {
 const blueprint = {
   id: "activity.v1",
   contentHash: "a".repeat(64),
+  layout: { tokenSet: "layout.v1" },
   toolRoles: [
     {
       role: "native-piece",
@@ -82,7 +157,7 @@ const blueprint = {
 };
 
 function makeCatalog(input?: {
-  readonly compositionEvidence?: typeof evidence;
+  readonly compositionEvidence?: typeof compositionEvidence;
   readonly compositionUpstreamHash?: string;
 }): NativeSpatialContractCatalog {
   const intrinsicRecordBody = {
@@ -96,12 +171,13 @@ function makeCatalog(input?: {
     ...intrinsicRecordBody,
     recordHash: nativeSpatialContractRecordHash(intrinsicRecordBody)
   };
-  const compositionEvidence = input?.compositionEvidence ?? evidence;
+  const selectedCompositionEvidence =
+    input?.compositionEvidence ?? compositionEvidence;
   const compositionRecordBody = {
     recordKind: "activity-composition" as const,
     contractVersion: "v1",
     contract: compositionContract,
-    evidence: compositionEvidence,
+    evidence: selectedCompositionEvidence,
     upstreamContracts: [
       {
         contractId: intrinsicContract.contractId,
@@ -111,7 +187,7 @@ function makeCatalog(input?: {
     ]
   };
   return {
-    schemaVersion: "1.0.0",
+    schemaVersion: "2.0.0",
     records: [
       intrinsicRecord,
       {
@@ -126,7 +202,7 @@ describe("native spatial issue harness", () => {
   it("generates a blocking issue for a changed native role without a contract", () => {
     const result = collectNativeSpatialIssues({
       scope,
-      catalog: { schemaVersion: "1.0.0", records: [] },
+      catalog: { schemaVersion: "2.0.0", records: [] },
       blueprints: [
         {
           ...blueprint,
@@ -162,7 +238,10 @@ describe("native spatial issue harness", () => {
 
   it("turns a state-change failure in the catalog into a ratchet issue", () => {
     const catalog = makeCatalog({
-      compositionEvidence: { ...evidence, persistedStateChanged: false }
+      compositionEvidence: {
+        ...compositionEvidence,
+        persistedStateChanged: false
+      }
     });
     const result = collectNativeSpatialIssues({
       scope,
@@ -185,7 +264,7 @@ describe("native spatial issue harness", () => {
     };
     expect(() =>
       nativeSpatialContractCatalogSchema.parse({
-        schemaVersion: "1.0.0",
+        schemaVersion: "2.0.0",
         records: [
           {
             ...compositionRecordBody,

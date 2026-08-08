@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "1.0.0",
   "entries": [
     {
       "activityId": "number.division.quotient-remainder.claim-evidence-v1",
-      "blueprintContentHash": "8dc8778dd93eda4f66caabc180a6023530f7e7dcf2d1109e4445954b3593e8d5"
+      "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b"
     }
-  ]
+  ],
+  "schemaVersion": "1.0.0"
 }

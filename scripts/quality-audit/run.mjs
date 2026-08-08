@@ -40,6 +40,7 @@ import {
   INTERACTIVE_TARGET_BLOCKING_CSS_PX,
   INTERACTIVE_TARGET_RECOMMENDED_CSS_PX,
   INTER_ITEM_MINIMUM_GAP_CSS_PX,
+  LAYOUT_RENDER_SCALE_EVIDENCE,
   OUTSIDE_ELEMENT_PROXIMITY_RATIO,
   RECOMMENDED_TEXT_CSS_PX,
   RENDER_SCALE_EVIDENCE,
@@ -54,7 +55,8 @@ const jsonPath = resolve(root, "reports/quality-audit/latest.json");
 const markdownPath = resolve(root, "reports/ACTIVITY_QUALITY_AUDIT.md");
 const strict = !process.argv.includes("--allow-issues");
 
-const px = (units) => Number(toCssPx(units).toFixed(1));
+const px = (blueprint, units) =>
+  Number(toCssPx(units, blueprint.layout.tokenSet).toFixed(1));
 const visible = (emission) => emission.renderedBounds ?? emission.bounds;
 
 const QUESTION_ROLE = /^(question|prompt)$/;
@@ -135,7 +137,7 @@ function auditTypography({ blueprint, control, resolved, issues }) {
     ) {
       continue;
     }
-    const rendered = px(properties.fontSize);
+    const rendered = px(blueprint, properties.fontSize);
     if (rendered < ABSOLUTE_MINIMUM_TEXT_CSS_PX) {
       pushIssue(issues, {
         severity: "P0",
@@ -201,8 +203,8 @@ function auditHierarchy({ blueprint, resolved, issues }) {
         blueprintId: blueprint.id,
         role: `${question.role}<${candidate.role}`,
         detail:
-          `질문 ${question.role}(${questionSize}, ${px(questionSize)}px)이 ` +
-          `보기 ${candidate.role}(${size}, ${px(size)}px)보다 작습니다. ` +
+          `질문 ${question.role}(${questionSize}, ${px(blueprint, questionSize)}px)이 ` +
+          `보기 ${candidate.role}(${size}, ${px(blueprint, size)}px)보다 작습니다. ` +
           "학생이 무엇을 묻는지보다 무엇을 고를지를 먼저 봅니다."
       });
     }
@@ -256,7 +258,7 @@ function auditInteraction({ blueprint, resolved, issues }) {
     const targetBounds = visible(target);
     const targetShort = Math.min(targetBounds.width, targetBounds.height);
 
-    if (px(targetShort) < INTERACTIVE_TARGET_BLOCKING_CSS_PX) {
+    if (px(blueprint, targetShort) < INTERACTIVE_TARGET_BLOCKING_CSS_PX) {
       pushIssue(issues, {
         severity: "P0",
         axis: "답 입력",
@@ -264,10 +266,12 @@ function auditInteraction({ blueprint, resolved, issues }) {
         blueprintId: blueprint.id,
         role: target.role,
         detail:
-          `${target.role}의 짧은 변이 화면 ${px(targetShort)}px으로 ` +
+          `${target.role}의 짧은 변이 화면 ${px(blueprint, targetShort)}px으로 ` +
           `WCAG 최소 대상 크기 ${INTERACTIVE_TARGET_BLOCKING_CSS_PX}px 미만입니다.`
       });
-    } else if (px(targetShort) < INTERACTIVE_TARGET_RECOMMENDED_CSS_PX) {
+    } else if (
+      px(blueprint, targetShort) < INTERACTIVE_TARGET_RECOMMENDED_CSS_PX
+    ) {
       pushIssue(issues, {
         severity: "P1",
         axis: "답 입력",
@@ -275,7 +279,7 @@ function auditInteraction({ blueprint, resolved, issues }) {
         blueprintId: blueprint.id,
         role: target.role,
         detail:
-          `${target.role}의 짧은 변이 화면 ${px(targetShort)}px입니다. ` +
+          `${target.role}의 짧은 변이 화면 ${px(blueprint, targetShort)}px입니다. ` +
           `초등 조작 권장은 ${INTERACTIVE_TARGET_RECOMMENDED_CSS_PX}px입니다.`
       });
     }
@@ -293,7 +297,7 @@ function auditInteraction({ blueprint, resolved, issues }) {
       const tightest = Math.min(slackX, slackY);
       const axis = slackX <= slackY ? "가로" : "세로";
 
-      if (px(tightest) < DROP_SLACK_BLOCKING_CSS_PX) {
+      if (px(blueprint, tightest) < DROP_SLACK_BLOCKING_CSS_PX) {
         pushIssue(issues, {
           severity: "P0",
           axis: "답 입력",
@@ -302,10 +306,12 @@ function auditInteraction({ blueprint, resolved, issues }) {
           role: pairKey,
           detail:
             `${source.role}를 ${target.role}에 놓을 때 ${axis} 여유가 화면 ` +
-            `${px(tightest)}px뿐입니다(±${(px(tightest) / 2).toFixed(1)}px). ` +
+            `${px(blueprint, tightest)}px뿐입니다(±${(px(blueprint, tightest) / 2).toFixed(1)}px). ` +
             "학생이 픽셀 단위로 맞춰야 합니다."
         });
-      } else if (px(tightest) < DROP_SLACK_RECOMMENDED_CSS_PX) {
+      } else if (
+        px(blueprint, tightest) < DROP_SLACK_RECOMMENDED_CSS_PX
+      ) {
         pushIssue(issues, {
           severity: "P1",
           axis: "답 입력",
@@ -313,7 +319,7 @@ function auditInteraction({ blueprint, resolved, issues }) {
           blueprintId: blueprint.id,
           role: pairKey,
           detail:
-            `${source.role} → ${target.role}의 여유가 화면 ${px(tightest)}px입니다. ` +
+            `${source.role} → ${target.role}의 여유가 화면 ${px(blueprint, tightest)}px입니다. ` +
             `권장은 ${DROP_SLACK_RECOMMENDED_CSS_PX}px입니다.`
         });
       }
@@ -327,7 +333,7 @@ function auditWritingRegions({ blueprint, resolved, issues }) {
   for (const emission of resolved.emissions) {
     if (!WRITING_ROLE.test(emission.role)) continue;
     const bounds = visible(emission);
-    const height = px(bounds.height);
+    const height = px(blueprint, bounds.height);
 
     if (height < WRITING_REGION_BLOCKING_CSS_PX) {
       pushIssue(issues, {
@@ -421,14 +427,17 @@ function auditItemGrouping({ blueprint, resolved, issues }) {
     const gapAbove = top - (panel.y + panel.height);
     const gapBelow = nextPanel.y - bottom;
 
-    if (px(Math.min(gapAbove, gapBelow)) < INTER_ITEM_MINIMUM_GAP_CSS_PX) {
+    if (
+      px(blueprint, Math.min(gapAbove, gapBelow)) <
+      INTER_ITEM_MINIMUM_GAP_CSS_PX
+    ) {
       pushIssue(issues, {
         severity: "P1",
         axis: "문제의 위치",
         code: "inter-item-gap-too-small",
         blueprintId: blueprint.id,
         role: "outside-elements",
-        detail: `문제 사이 최소 간격이 화면 ${px(Math.min(gapAbove, gapBelow))}px입니다.`
+        detail: `문제 사이 최소 간격이 화면 ${px(blueprint, Math.min(gapAbove, gapBelow))}px입니다.`
       });
     }
 
@@ -440,8 +449,8 @@ function auditItemGrouping({ blueprint, resolved, issues }) {
         blueprintId: blueprint.id,
         role: "outside-elements",
         detail:
-          `패널 밖 요소 ${outside.length}개가 자기 문제와 ${px(gapAbove)}px, ` +
-          `다음 문제와 ${px(gapBelow)}px 떨어져 있습니다(비율 ` +
+          `패널 밖 요소 ${outside.length}개가 자기 문제와 ${px(blueprint, gapAbove)}px, ` +
+          `다음 문제와 ${px(blueprint, gapBelow)}px 떨어져 있습니다(비율 ` +
           `${(gapBelow / gapAbove).toFixed(2)}, 기준 ${OUTSIDE_ELEMENT_PROXIMITY_RATIO}). ` +
           "어느 문제의 것인지 학생이 구분하기 어렵습니다."
       });
@@ -488,9 +497,17 @@ function auditItemQuestionGate({ blueprint, resolved, issues }) {
 
 // ----------------------------------------------------------------------- 실행
 
-const blueprints = listRegisteredBlueprints().filter(
-  (blueprint) => getRegisteredActivitySupportState(blueprint.id) === "released"
+const requestedActivityId = process.argv
+  .find((argument) => argument.startsWith("--activity="))
+  ?.slice("--activity=".length);
+const blueprints = listRegisteredBlueprints().filter((blueprint) =>
+  requestedActivityId
+    ? blueprint.id === requestedActivityId
+    : getRegisteredActivitySupportState(blueprint.id) === "released"
 );
+if (requestedActivityId && blueprints.length !== 1) {
+  throw new Error(`quality-audit-activity-missing:${requestedActivityId}`);
+}
 
 const results = [];
 for (const blueprint of blueprints) {
@@ -564,6 +581,7 @@ const report = {
   schemaVersion: "1.0.0",
   generatedAt: new Date().toISOString(),
   renderScale: RENDER_SCALE_EVIDENCE,
+  renderScaleByLayout: LAYOUT_RENDER_SCALE_EVIDENCE,
   activityCount: results.length,
   variationCount: results.reduce(
     (sum, result) => sum + result.variationCount,

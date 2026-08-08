@@ -34,12 +34,7 @@ const claimEvidenceManifests = Object.fromEntries(
             "counting-model-pool",
             "group-lane-label",
             "remainder-lane-label",
-            "group-slot-1-border-top",
-            "group-slot-2-border-top",
-            "group-slot-3-border-top",
-            "group-slot-4-border-top",
-            "group-slot-5-border-top",
-            "group-slot-6-border-top"
+            "array-border-top"
           ]
         : [
             "array-panel",

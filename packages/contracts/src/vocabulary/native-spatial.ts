@@ -21,29 +21,162 @@ export const spatialContractAnchorSchema = z.enum([
   "placement-center"
 ]);
 
-export const nativeSpatialContractSchema = z
+const spatialSizeSchema = z
   .object({
+    width: z.number().positive().finite(),
+    height: z.number().positive().finite()
+  })
+  .strict();
+
+const contentHashSchema = z.string().regex(/^[a-f0-9]{64}$/);
+
+const nativeSpatialContractBaseSchema = z.object({
     contractId: stableIdSchema,
     toolKey: stableIdSchema,
     variantId: stableIdSchema,
     toolVersionFingerprint: z.string().min(1).max(240),
-    minInteractiveSize: z
-      .object({
-        width: z.number().positive().finite(),
-        height: z.number().positive().finite()
-      })
-      .strict(),
+    minInteractiveSize: spatialSizeSchema,
+    minInteractiveCssSize: spatialSizeSchema,
     reserveBox: localSpatialBoundsSchema,
     reserveAnchor: spatialContractAnchorSchema,
     roundTripStable: z.boolean(),
     roundTripTolerance: z.number().nonnegative().finite(),
     derivedFromEvidenceIds: z.array(stableIdSchema).min(1).max(16)
+  });
+
+export const nativeIntrinsicSpatialContractSchema =
+  nativeSpatialContractBaseSchema
+    .extend({
+      contractKind: z.literal("intrinsic-element")
+    })
+    .strict();
+
+const compositionSemanticRegionSchema = z
+  .object({
+    id: stableIdSchema,
+    bounds: spatialBoundsSchema
   })
   .strict();
+
+const compositionManipulatedEnvelopeSchema = z
+  .object({
+    id: stableIdSchema,
+    bounds: spatialBoundsSchema
+  })
+  .strict();
+
+export const nativeActivityCompositionSpatialContractSchema =
+  nativeSpatialContractBaseSchema
+    .extend({
+      contractKind: z.literal("activity-composition"),
+      composition: z
+        .object({
+          layoutPresetId: stableIdSchema,
+          layoutContentHash: contentHashSchema,
+          blueprintContentHash: contentHashSchema,
+          canvas: z
+            .object({
+              width: z.number().positive().finite(),
+              height: z.number().positive().finite(),
+              canvasBaseHeight: z.number().nonnegative().finite(),
+              itemPitch: z.number().positive().finite(),
+              itemCount: z.number().int().positive(),
+              canvasUnitsToCssPx: z.number().positive().finite()
+            })
+            .strict(),
+          releaseViewport: z
+            .object({
+              width: z.number().int().positive(),
+              height: z.number().int().positive(),
+              devicePixelRatio: z.number().positive().finite(),
+              surfaceMode: z.enum(["authoring-editor", "student-view"]),
+              sidebarState: z.enum(["expanded", "collapsed", "absent"]),
+              zoomMode: z.literal("fit"),
+              pan: z
+                .object({ x: z.number().finite(), y: z.number().finite() })
+                .strict()
+            })
+            .strict(),
+          semanticRegions: z.array(compositionSemanticRegionSchema).min(5).max(16),
+          selectionOverlayExclusionZoneCssPx: spatialBoundsSchema,
+          minGap: z.number().nonnegative().finite(),
+          labelClearance: z.number().nonnegative().finite(),
+          zOrder: z.array(stableIdSchema).min(3).max(16),
+          manipulatedStateEnvelopes: z
+            .array(compositionManipulatedEnvelopeSchema)
+            .min(2)
+            .max(16)
+        })
+        .strict()
+    })
+    .strict()
+    .superRefine((contract, context) => {
+      const { canvas, releaseViewport, semanticRegions, manipulatedStateEnvelopes } =
+        contract.composition;
+      const expectedHeight =
+        canvas.canvasBaseHeight + canvas.itemCount * canvas.itemPitch;
+      if (Math.abs(canvas.height - expectedHeight) > 1e-6) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["composition", "canvas", "height"],
+          message: "composition canvas height가 base + itemCount × itemPitch와 다릅니다."
+        });
+      }
+      const overlay = contract.composition.selectionOverlayExclusionZoneCssPx;
+      if (
+        overlay.x < 0 ||
+        overlay.y < 0 ||
+        overlay.x + overlay.width > releaseViewport.width ||
+        overlay.y + overlay.height > releaseViewport.height
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["composition", "selectionOverlayExclusionZoneCssPx"],
+          message: "selection overlay exclusion zone이 release viewport를 벗어납니다."
+        });
+      }
+      for (const [path, entries] of [
+        ["semanticRegions", semanticRegions],
+        ["manipulatedStateEnvelopes", manipulatedStateEnvelopes]
+      ] as const) {
+        const ids = entries.map((entry) => entry.id);
+        if (new Set(ids).size !== ids.length) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["composition", path],
+            message: `${path} ID가 중복됩니다.`
+          });
+        }
+      }
+    });
+
+export const nativeSpatialContractSchema = z.union([
+  nativeIntrinsicSpatialContractSchema,
+  nativeActivityCompositionSpatialContractSchema
+]);
+
+export type NativeIntrinsicSpatialContract = z.infer<
+  typeof nativeIntrinsicSpatialContractSchema
+>;
+
+export type NativeActivityCompositionSpatialContract = z.infer<
+  typeof nativeActivityCompositionSpatialContractSchema
+>;
 
 export type NativeSpatialContract = z.infer<
   typeof nativeSpatialContractSchema
 >;
+
+export const nativeSpatialEvidenceInteractionContextSchema = z
+  .object({
+    surfaceMode: z.enum(["authoring-editor", "student-view"]),
+    sidebarState: z.enum(["expanded", "collapsed", "absent"]),
+    zoomMode: z.literal("fit"),
+    pan: z.object({ x: z.number().finite(), y: z.number().finite() }).strict(),
+    canvasUnitsToCssPx: z.number().positive().finite(),
+    selectionOverlayCssPx: spatialBoundsSchema
+  })
+  .strict();
 
 export const nativeSpatialStateSchema = z.enum([
   "initial",
@@ -87,7 +220,8 @@ export const nativeSpatialEvidenceSchema = z
         devicePixelRatio: z.number().positive().finite(),
         fontFingerprint: z.string().min(1).max(240),
         assetFingerprint: z.string().min(1).max(240),
-        harnessVersion: z.string().min(1).max(120)
+        harnessVersion: z.string().min(1).max(120),
+        interactionContext: nativeSpatialEvidenceInteractionContextSchema.optional()
       })
       .strict(),
     observations: z.array(nativeSpatialObservationSchema).min(1).max(5),
@@ -131,6 +265,12 @@ export function assertNativeSpatialContract(
     parsed.reserveBox.height < parsed.minInteractiveSize.height
   ) {
     throw new Error("native-spatial-reserve-box-below-min-interactive-size");
+  }
+  if (
+    parsed.minInteractiveCssSize.width < 24 ||
+    parsed.minInteractiveCssSize.height < 24
+  ) {
+    throw new Error("native-spatial-css-interaction-size-below-absolute-minimum");
   }
   return parsed;
 }

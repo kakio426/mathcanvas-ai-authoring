@@ -35,10 +35,44 @@ function centeredLatexWidth(
   );
 }
 
+function textAdvanceFactor(character: string): number {
+  if (/^[가-힣ㄱ-ㅎㅏ-ㅣ]$/.test(character)) return 1;
+  if (/^[0-9A-Za-z]$/.test(character)) return 0.6;
+  if (/^\s$/.test(character)) return 0.36;
+  return 0.5;
+}
+
+export function centeredTextBounds(
+  intent: Extract<NativeToolIntent, { kind: "text" }>,
+  placement: NativeToolPlacement
+): NativeRenderedBounds {
+  const fontSize = intent.fontSize ?? 40;
+  const estimatedWidth = Math.min(
+    placement.width,
+    Math.max(
+      fontSize,
+      [...intent.text].reduce(
+        (sum, character) => sum + textAdvanceFactor(character) * fontSize,
+        0
+      )
+    )
+  );
+  const estimatedHeight = Math.min(placement.height, fontSize * 1.25);
+  return {
+    x: placement.x + (placement.width - estimatedWidth) / 2,
+    y: placement.y + (placement.height - estimatedHeight) / 2,
+    width: estimatedWidth,
+    height: estimatedHeight
+  };
+}
+
 export function resolveNativeRenderedBounds(
   intent: NativeToolIntent,
   placement: NativeToolPlacement
 ): NativeRenderedBounds {
+  if (intent.kind === "text" && intent.centerInPlacement) {
+    return centeredTextBounds(intent, placement);
+  }
   if (intent.kind === "latex" && intent.centerInPlacement) {
     const width = centeredLatexWidth(intent, placement.width);
     return {

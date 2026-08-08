@@ -65,6 +65,7 @@ export type TextIntent = {
   readonly toolKey: "common.text";
   readonly text: string;
   readonly fontSize?: number;
+  readonly centerInPlacement?: boolean;
 };
 
 export type LatexIntent = {

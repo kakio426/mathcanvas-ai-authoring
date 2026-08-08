@@ -35,7 +35,7 @@
     },
     {
       "path": "packages/contracts/src/vocabulary/native-spatial.ts",
-      "sha256": "550e85490f337d984eaffd9d253ff9e43e8f60c42aa19d46bcc4570732cef13f"
+      "sha256": "046c096490d664e977c2a48e43fbf83bfc2172474bc27ac570209a6df4e530c8"
     },
     {
       "path": "packages/contracts/src/vocabulary/resolved.ts",
@@ -43,7 +43,7 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/core/compile-resolved.ts",
-      "sha256": "ed3829bc0f5cfb33e9a9be95d5db683633eaca2c5ad186638d2592c3f2219a24"
+      "sha256": "68255decd7b18032c0498066648f43369d87ecd5566fad4f9dda4171187a1009"
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
@@ -71,7 +71,7 @@
     },
     {
       "path": "packages/validator/src/layers/reference.ts",
-      "sha256": "ecc65a9dfd75b434020abab4ede27cc38566b6c16776380df5f1d5096602f901"
+      "sha256": "f928458d9789dcf86946737f11ac93731ce8178517336a9efc29ca051f6205eb"
     },
     {
       "path": "packages/validator/src/layers/semantic.ts",
@@ -86,5 +86,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "fb107b0147f3709fd6ac474c5cff7988afb39d73e8b64095cc14cc59808afddc"
+  "manifestHash": "905cf46b6e4e6ad20c03e2f9e1832cf1b48cbea70285916bbdfe0c21b9ca38b3"
 }

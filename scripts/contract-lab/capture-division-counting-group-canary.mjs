@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import {
@@ -17,6 +18,7 @@ import {
 import {
   compileActivity,
   compileNativeTool,
+  analyzeCountingModelStructure,
   getLayoutPreset,
   resolveActivity
 } from "../../packages/mathcanvas-compiler/dist/index.js";
@@ -42,14 +44,14 @@ const layoutId = "wave25-division-grouping-v1";
 const sourceTitlePrefix = "AI-CONTRACT-PROBE-DIVNATIVE-";
 const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
 const unitVariantId = "NO01SC-01";
-const toolBundleSha256 =
-  "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584";
-const toolVersionFingerprint = `bundle:${toolBundleSha256}:${unitVariantId}`;
-const canaryLayoutRevision =
-  "layout-v10-actual-blueprint-no-slot-label-overlap";
+let toolBundleSha256;
+let toolVersionFingerprint;
+const layoutPreset = getLayoutPreset(layoutId);
+const layoutContentHash = sha256Hex({ layoutId, preset: layoutPreset });
+const layoutPresetContentHash = sha256Hex(layoutPreset);
+const canaryLayoutRevision = `layout-${layoutContentHash.slice(0, 16)}`;
 const layoutRevisionMarkerId =
   "division-remainder-1-array-border-top";
-const groupSlotCount = 6;
 const productItemId = "division-remainder-1";
 const scenarioCatalog = {
   "23-by-4": {
@@ -93,30 +95,7 @@ function configureScenario(key) {
   groupSize = selected.groupSize;
   quotient = selected.quotient;
   remainderCount = selected.remainderCount;
-  const compactFirstGroup = {
-    4: [0, 1, 5, 6],
-    6: [0, 1, 2, 5, 6, 7],
-    7: [0, 1, 2, 3, 5, 6, 7]
-  }[groupSize];
-  if (!compactFirstGroup) {
-    throw new Error(`division-group-size-unsupported:${groupSize}`);
-  }
-  const used = new Set(compactFirstGroup);
-  const available = Array.from({ length: total }, (_, index) => index).filter(
-    (index) => !used.has(index)
-  );
-  groupMemberIndexSets = [compactFirstGroup];
-  for (let index = 1; index < quotient; index += 1) {
-    groupMemberIndexSets.push(
-      available.splice(0, groupSize)
-    );
-  }
-  if (
-    groupMemberIndexSets.some((indexes) => indexes.length !== groupSize) ||
-    available.length !== remainderCount
-  ) {
-    throw new Error("division-group-scenario-partition-invalid");
-  }
+  groupMemberIndexSets = [];
 }
 
 configureScenario(scenarioKey);
@@ -132,15 +111,71 @@ function resolvedRemainderIds(unitIds) {
   return unitIds.filter((_, index) => !groupedIndexes.has(index));
 }
 
-function maximumUnitsPerRow(contentsJson) {
-  const rowCounts = new Map();
-  for (const object of contentsJson.filter(
-    (candidate) => candidate?.svgId === unitVariantId
-  )) {
-    const key = String(object.y);
-    rowCounts.set(key, (rowCounts.get(key) ?? 0) + 1);
+function groupTargetSizeProfiles() {
+  const lane = layoutBounds(layoutPreset, "item.group-lane");
+  const paddingX = 10;
+  const paddingY = 10;
+  const headingHeight = 55;
+  const columnGap = 12;
+  const rowGap = 12;
+  const width = (lane.width - paddingX * 2 - columnGap) / 2;
+  const tallHeight =
+    (lane.height - paddingY * 2 - headingHeight - rowGap) / 2;
+  if (quotient <= 4) {
+    return Array.from({ length: quotient }, () => ({
+      width,
+      height: tallHeight
+    }));
   }
-  return Math.max(0, ...rowCounts.values());
+  const shortHeight =
+    (lane.height - paddingY * 2 - headingHeight - rowGap * 2) / 3;
+  return [
+    { width, height: shortHeight },
+    { width, height: tallHeight },
+    { width, height: shortHeight },
+    { width, height: tallHeight },
+    { width, height: shortHeight }
+  ];
+}
+
+function configureGroupMemberIndexSets(contentsJson, unitIds) {
+  const byId = new Map(
+    contentsJson
+      .filter((object) => object?.svgId === unitVariantId)
+      .map((object) => [object.id, object])
+  );
+  unitIds.forEach((id) => {
+    const object = byId.get(id);
+    if (!object || !Number.isFinite(object.x) || !Number.isFinite(object.y)) {
+      throw new Error(`division-group-unit-placement-missing:${id}`);
+    }
+  });
+  // The initial pool remains answer-neutral. During the learner action the
+  // emitted native units are taken in stable reading order, moved into a
+  // canonical two-row cluster, and only then grouped. Group membership must
+  // never depend on an answer-shaped source geometry.
+  groupMemberIndexSets = Array.from({ length: quotient }, (_, groupIndex) =>
+    Array.from(
+      { length: groupSize },
+      (_, memberIndex) => groupIndex * groupSize + memberIndex
+    )
+  );
+  const grouped = new Set(groupMemberIndexSets.flat());
+  if (
+    groupMemberIndexSets.some((indexes) => indexes.length !== groupSize) ||
+    groupMemberIndexSets.length !== quotient ||
+    unitIds.length - grouped.size !== remainderCount
+  ) {
+    throw new Error(
+      `division-group-scenario-partition-invalid:${JSON.stringify({
+        groupSize,
+        quotient,
+        remainderCount,
+        targetSizes: groupTargetSizeProfiles(),
+        resolvedGroupCount: groupMemberIndexSets.length
+      })}`
+    );
+  }
 }
 
 function projectPath(projectId) {
@@ -444,6 +479,10 @@ function buildInjectedContents() {
   if (JSON.stringify(unitIds) !== JSON.stringify(compiledUnitIds)) {
     throw new Error("division-group-product-unit-order-drift");
   }
+  const emittedText = (role) =>
+    resolved.emissions.find(
+      (emission) => emission.itemId === item.id && emission.role === role
+    )?.toolIntent?.properties?.text;
   return {
     contentsJson: compiled.payload.contentsJson,
     unitIds,
@@ -472,6 +511,11 @@ function buildInjectedContents() {
       itemId: item.id,
       questionText: item.values.questionText,
       correctValueText: item.values.correctValueText,
+      verifyInstructionText: item.values.verifyInstructionText,
+      groupLaneLabelText: item.values.groupLaneLabelText,
+      poolLabelText: emittedText("pool-label"),
+      sourceLabelText: emittedText("source-label"),
+      explanationLabelText: emittedText("explanation-label"),
       compiledPayloadHash: compiled.payloadHash,
       compiledProjectTitle: compiled.payload.projectTitle,
       resolvedHash: sha256Hex(resolved),
@@ -480,219 +524,6 @@ function buildInjectedContents() {
       spatialContractId: pool.toolIntent.spatialContractId,
       spatialContractVersion: pool.toolIntent.spatialContractVersion,
       poolPlacementCanvas: pool.bounds
-    }
-  };
-}
-
-function buildLegacyInjectedContents() {
-  const preset = getLayoutPreset(layoutId);
-  const rectangleAt = (id, bounds, fill, stroke = "#9EB9CF") =>
-    nativeObject(
-      {
-        kind: "draw-rectangle",
-        toolKey: "common.rectangle",
-        fill,
-        stroke
-      },
-      `division-group-${id}`,
-      bounds
-    );
-  const rectangle = (role, fill, stroke = "#9EB9CF") =>
-    rectangleAt(role, layoutBounds(preset, `item.${role}`), fill, stroke);
-  const borderLines = (role, color, thickness = 4) => {
-    const bounds = layoutBounds(preset, `item.${role}`);
-    const topId =
-      role === "group-lane"
-        ? `${role}-border-top-${canaryLayoutRevision}`
-        : `${role}-border-top`;
-    return [
-      rectangleAt(
-        topId,
-        { ...bounds, height: thickness },
-        color,
-        color
-      ),
-      rectangleAt(
-        `${role}-border-bottom`,
-        {
-          x: bounds.x,
-          y: bounds.y + bounds.height - thickness,
-          width: bounds.width,
-          height: thickness
-        },
-        color,
-        color
-      ),
-      rectangleAt(
-        `${role}-border-left`,
-        { ...bounds, width: thickness },
-        color,
-        color
-      ),
-      rectangleAt(
-        `${role}-border-right`,
-        {
-          x: bounds.x + bounds.width - thickness,
-          y: bounds.y,
-          width: thickness,
-          height: bounds.height
-        },
-        color,
-        color
-      )
-    ];
-  };
-  const text = (id, value, bounds, fontSize = 30) =>
-    nativeObject(
-      {
-        kind: "text",
-        toolKey: "common.text",
-        text: value,
-        fontSize
-      },
-      `division-group-${id}`,
-      bounds
-    );
-  const itemBounds = (role) => layoutBounds(preset, `item.${role}`);
-  const choiceValues = [
-    "5묶음, 3자루",
-    "4묶음, 3자루",
-    "5묶음, 4자루",
-    "6묶음, 1자루",
-    "3묶음, 5자루"
-  ];
-  const panelObjects = [
-    rectangle("choice-panel", "#F8FBFE", "#B8C7D5"),
-    rectangle("prediction-box", "#FFFFFF", "#8EA9C1"),
-    rectangle("explanation-box", "#FFFFFF", "#8EA9C1"),
-    ...choiceValues.map((_, index) =>
-      rectangle(
-        `position-card-${index + 1}-backdrop`,
-        "#FFFFFF",
-        "#8EA9C1"
-      )
-    ),
-    ...borderLines("array-panel", "#4AA9D8"),
-    ...borderLines("source-panel", "#E7B181"),
-    ...borderLines("group-lane", "#5EA9D6"),
-    ...borderLines("remainder-lane", "#D8B85B"),
-    ...Array.from({ length: 6 }, (_, index) =>
-      borderLines(`group-slot-${index + 1}`, "#A9CFE4", 3)
-    ).flat()
-  ];
-  const textObjects = [
-    text(
-      "instruction-predict",
-      "① 답 카드를 하나 골라 처음 생각 칸에 놓으세요.",
-      layoutBounds(preset, "header.primary"),
-      30
-    ),
-    text(
-      "instruction-verify",
-      "② 모형 4개를 골라 ‘그룹’을 누른 뒤, 한 묶음으로 함께 옮기세요.",
-      layoutBounds(preset, "header.secondary"),
-      30
-    ),
-    text(
-      "instruction-explain",
-      "③ 남은 모형을 옮긴 뒤 식을 쓰고, 처음 생각과 다르면 고치세요.",
-      layoutBounds(preset, "header.tertiary"),
-      30
-    ),
-    text(
-      "question",
-      "연필 23자루를 4자루씩 묶으면 몇 묶음이고 몇 자루가 남을까요?",
-      itemBounds("question"),
-      37
-    ),
-    text(
-      "pool-label",
-      "예상한 답 고르기",
-      itemBounds("pool-label"),
-      28
-    ),
-    text(
-      "prediction-label",
-      "처음 생각",
-      itemBounds("prediction-label"),
-      28
-    ),
-    text(
-      "source-label",
-      "묶을 모형을 놓는 곳",
-      itemBounds("source-label"),
-      30
-    ),
-    text(
-      "group-lane-label",
-      "4개씩 묶은 곳",
-      itemBounds("group-lane-label"),
-      30
-    ),
-    text(
-      "remainder-lane-label",
-      "남은 모형",
-      itemBounds("remainder-lane-label"),
-      26
-    ),
-    text(
-      "explanation-label",
-      "묶음 수 × 한 묶음의 수 + 남은 수 = 전체 수를 쓰고,\n처음 생각과 다르면 고쳐 보세요.",
-      itemBounds("explanation-label"),
-      25
-    ),
-    ...Array.from({ length: 6 }, (_, index) =>
-      text(
-        `group-slot-${index + 1}-label`,
-        "묶음 자리",
-        itemBounds(`group-slot-${index + 1}-label`),
-        22
-      )
-    ),
-    ...choiceValues.map((value, index) =>
-      text(
-        `position-card-${index + 1}`,
-        value,
-        itemBounds(`position-card-${index + 1}`),
-        28
-      )
-    )
-  ];
-  const poolBounds = itemBounds("counting-model-pool");
-  const countingFragment = compileNativeTool({
-    kind: "counting-model",
-    toolKey: "NO01SC",
-    count: total
-  }, {
-    id: "division-group-counting-model-pool",
-    ...poolBounds
-  });
-  if (
-    countingFragment.kind !== "multi" ||
-    countingFragment.objects.length !== total ||
-    Object.hasOwn(countingFragment, "primaryObjectId")
-  ) {
-    throw new Error("division-group-compiler-multi-fragment-invalid");
-  }
-  const units = [...countingFragment.objects];
-  return {
-    contentsJson: [...panelObjects, ...textObjects, ...units],
-    unitIds: units.map((unit) => unit.id),
-    compilerFragment: {
-      kind: countingFragment.kind,
-      emittedObjectCount: countingFragment.objects.length,
-      hasPrimaryObjectId: Object.hasOwn(
-        countingFragment,
-        "primaryObjectId"
-      ),
-      requiredModuleKeys: countingFragment.requiredModuleKeys
-    },
-    lockedIds: [...panelObjects, ...textObjects]
-      .filter((object) => !String(object.id).includes("position-card-"))
-      .map((object) => object.id),
-    canvasBounds: {
-      width: preset.tokens["canvas.root"].width,
-      height: preset.canvasBaseHeight + preset.itemPitch
     }
   };
 }
@@ -780,6 +611,49 @@ async function openProject(page, projectId, expectedUnitIds) {
   await page.waitForTimeout(1_000);
 }
 
+async function captureServedAssetEvidence(page) {
+  const resourceUrls = await page.evaluate(() =>
+    performance
+      .getEntriesByType("resource")
+      .map((entry) => entry.name)
+      .filter((name) => typeof name === "string")
+  );
+  const scriptUrls = [...new Set(resourceUrls)]
+    .filter((value) => {
+      const url = new URL(value);
+      return (
+        url.origin === origin &&
+        /\.(?:m?js)(?:$|\?)/i.test(`${url.pathname}${url.search}`)
+      );
+    })
+    .sort();
+  if (scriptUrls.length === 0) {
+    throw new Error("division-group-served-script-assets-missing");
+  }
+  const records = [];
+  for (const urlValue of scriptUrls) {
+    const response = await page.context().request.get(urlValue);
+    if (!response.ok()) {
+      throw new Error(
+        `division-group-served-script-fetch-failed:${response.status()}`
+      );
+    }
+    const body = await response.body();
+    const url = new URL(urlValue);
+    records.push({
+      path: `${url.pathname}${url.search}`,
+      sha256: createHash("sha256").update(body).digest("hex")
+    });
+  }
+  return {
+    resourceCount: records.length,
+    resourcePaths: records.map((record) => record.path),
+    sha256: createHash("sha256")
+      .update(JSON.stringify(records))
+      .digest("hex")
+  };
+}
+
 async function clickNamedControl(page, label) {
   const control = page
     .locator("div.cursor-pointer")
@@ -790,6 +664,214 @@ async function clickNamedControl(page, label) {
   }
   await control.click({ force: true });
   await page.waitForTimeout(300);
+}
+
+async function measureVisibleOverlayToolbars(page) {
+  const boxes = await page.evaluate(() => {
+    const visible = (element) => {
+      const bounds = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return (
+        bounds.width > 0 &&
+        bounds.height > 0 &&
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        Number(style.opacity || 1) > 0
+      );
+    };
+    const darkBackground = (value) => {
+      const match = value.match(
+        /rgba?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)(?:\s*,\s*(\d+(?:\.\d+)?))?\s*\)/
+      );
+      if (!match) return false;
+      const alpha = match[4] === undefined ? 1 : Number(match[4]);
+      const luminance =
+        Number(match[1]) * 0.2126 +
+        Number(match[2]) * 0.7152 +
+        Number(match[3]) * 0.0722;
+      return alpha >= 0.75 && luminance <= 125;
+    };
+    const candidates = [...document.querySelectorAll("body *")].flatMap(
+      (element) => {
+        if (!visible(element)) return [];
+        const bounds = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        const controlCount = [
+          ...element.querySelectorAll(".cursor-pointer, button, [role='button']")
+        ].filter(visible).length;
+        if (
+          bounds.top < window.innerHeight * 0.55 ||
+          bounds.width < 180 ||
+          bounds.width > 900 ||
+          bounds.height < 28 ||
+          bounds.height > 110 ||
+          controlCount < 3 ||
+          !darkBackground(style.backgroundColor)
+        ) {
+          return [];
+        }
+        return [
+          {
+            x: bounds.x,
+            y: bounds.y,
+            width: bounds.width,
+            height: bounds.height,
+            area: bounds.width * bounds.height,
+            controlCount
+          }
+        ];
+      }
+    );
+    candidates.sort(
+      (left, right) => left.area - right.area || left.x - right.x
+    );
+    const distinct = [];
+    for (const candidate of candidates) {
+      const duplicate = distinct.some(
+        (entry) =>
+          Math.abs(entry.x - candidate.x) <= 3 &&
+          Math.abs(entry.y - candidate.y) <= 3 &&
+          Math.abs(entry.width - candidate.width) <= 6 &&
+          Math.abs(entry.height - candidate.height) <= 6
+      );
+      if (!duplicate) distinct.push(candidate);
+    }
+    return distinct.slice(0, 4);
+  });
+  if (boxes.length === 0) {
+    throw new Error("division-group-overlay-toolbar-not-measured");
+  }
+  return boxes.map(({ x, y, width, height }) =>
+    summarizeBounds({ x, y, width, height })
+  );
+}
+
+async function measureReleaseInteractionContext(
+  page,
+  overlayToolbarBoxes,
+  expectedProjectId
+) {
+  const referenceCss = await borderBounds(page, "array-panel");
+  const referenceCanvas = layoutBounds(layoutPreset, "item.array-panel");
+  const scaleX = referenceCss.width / referenceCanvas.width;
+  const scaleY = referenceCss.height / referenceCanvas.height;
+  if (Math.abs(scaleX - scaleY) > 0.002) {
+    throw new Error(
+      `division-group-nonuniform-render-scale:${scaleX}:${scaleY}`
+    );
+  }
+  const pageState = await page.evaluate(() => {
+    const viewBoxCandidates = [...document.querySelectorAll("svg")]
+      .map((element) => {
+        const bounds = element.getBoundingClientRect();
+        const attribute = element
+          .getAttribute("viewBox")
+          ?.trim()
+          .split(/[\s,]+/)
+          .map(Number);
+        const base = element.viewBox?.baseVal;
+        const viewBox =
+          Array.isArray(attribute) &&
+          attribute.length === 4 &&
+          attribute.every(Number.isFinite)
+            ? attribute
+            : base && base.width > 0 && base.height > 0
+              ? [base.x, base.y, base.width, base.height]
+              : null;
+        return {
+          viewBox,
+          width: bounds.width,
+          height: bounds.height,
+          area: bounds.width * bounds.height
+        };
+      })
+      .filter(
+        (candidate) =>
+          candidate.viewBox &&
+          candidate.width >= 600 &&
+          candidate.height >= 400
+      )
+      .sort((left, right) => right.area - left.area);
+    const viewBox = viewBoxCandidates[0]?.viewBox ?? null;
+    const visible = (element) => {
+      const bounds = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return (
+        bounds.width > 0 &&
+        bounds.height > 0 &&
+        style.display !== "none" &&
+        style.visibility !== "hidden"
+      );
+    };
+    const expandedSidebar = [...document.querySelectorAll("body *")].some(
+      (element) => {
+        if (!visible(element)) return false;
+        const bounds = element.getBoundingClientRect();
+        return (
+          bounds.left <= 12 &&
+          bounds.top <= 120 &&
+          bounds.width >= 180 &&
+          bounds.width <= 320 &&
+          bounds.height >= window.innerHeight * 0.7
+        );
+      }
+    );
+    return {
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+      devicePixelRatio: window.devicePixelRatio,
+      pathname: location.pathname,
+      viewBox:
+        Array.isArray(viewBox) &&
+        viewBox.length === 4 &&
+        viewBox.every(Number.isFinite)
+          ? viewBox
+          : null,
+      viewBoxCandidateCount: viewBoxCandidates.length,
+      expandedSidebar
+    };
+  });
+  if (
+    pageState.viewport.width !== 1280 ||
+    pageState.viewport.height !== 800 ||
+    pageState.pathname !== `/ko/view/${expectedProjectId}` ||
+    !pageState.viewBox ||
+    pageState.expandedSidebar !== true
+  ) {
+    throw new Error(
+      `division-group-release-context-invalid:${JSON.stringify(pageState)}`
+    );
+  }
+  const uniqueOverlayToolbarBoxes = [];
+  for (const box of overlayToolbarBoxes) {
+    if (
+      !uniqueOverlayToolbarBoxes.some(
+        (candidate) =>
+          Math.abs(candidate.x - box.x) <= 1 &&
+          Math.abs(candidate.y - box.y) <= 1 &&
+          Math.abs(candidate.width - box.width) <= 1 &&
+          Math.abs(candidate.height - box.height) <= 1
+      )
+    ) {
+      uniqueOverlayToolbarBoxes.push(box);
+    }
+  }
+  const selectionOverlayCssPx = unionBounds(uniqueOverlayToolbarBoxes);
+  if (!selectionOverlayCssPx) {
+    throw new Error("division-group-selection-overlay-empty");
+  }
+  return {
+    viewport: pageState.viewport,
+    devicePixelRatio: pageState.devicePixelRatio,
+    surfaceMode: "authoring-editor",
+    sidebarState: "expanded",
+    zoomMode: "fit",
+    pan: { x: round(pageState.viewBox[0]), y: round(pageState.viewBox[1]) },
+    viewBox: pageState.viewBox.map(round),
+    canvasUnitsToCssPx: Number(((scaleX + scaleY) / 2).toFixed(6)),
+    selectionOverlayCssPx: summarizeBounds(selectionOverlayCssPx),
+    overlayToolbarBoxesCssPx:
+      uniqueOverlayToolbarBoxes.map(summarizeBounds)
+  };
 }
 
 async function readSelectedNativeIds(page) {
@@ -1106,6 +1188,89 @@ async function dragTo(page, locator, targetX, targetY) {
   await page.waitForTimeout(260);
 }
 
+async function arrangeNativeMembersInTarget(page, ids, target) {
+  const beforeBoxes = [];
+  for (const id of ids) {
+    const box = await page.locator(`[id="${id}"]`).first().boundingBox();
+    if (!box) throw new Error(`division-group-unit-not-visible:${id}`);
+    beforeBoxes.push(box);
+  }
+  const columns = Math.ceil(ids.length / 2);
+  const rows = Math.ceil(ids.length / columns);
+  const memberWidth = Math.max(...beforeBoxes.map((box) => box.width));
+  const memberHeight = Math.max(...beforeBoxes.map((box) => box.height));
+  const innerPadding = 6;
+  const availableGapX =
+    columns <= 1
+      ? 0
+      : (target.width - innerPadding * 2 - columns * memberWidth) /
+        (columns - 1);
+  const availableGapY =
+    rows <= 1
+      ? 0
+      : (target.height - innerPadding * 2 - rows * memberHeight) /
+        (rows - 1);
+  if (availableGapX < 2 || availableGapY < 2) {
+    throw new Error(
+      `division-group-canonical-cluster-overflow:${JSON.stringify({
+        memberCount: ids.length,
+        columns,
+        rows,
+        memberWidth: round(memberWidth),
+        memberHeight: round(memberHeight),
+        target: summarizeBounds(target),
+        availableGapX: round(availableGapX),
+        availableGapY: round(availableGapY)
+      })}`
+    );
+  }
+  const gapX = Math.min(6, availableGapX);
+  const gapY = Math.min(6, availableGapY);
+  const clusterWidth = columns * memberWidth + (columns - 1) * gapX;
+  const clusterHeight = rows * memberHeight + (rows - 1) * gapY;
+  const firstCenterX =
+    target.x + (target.width - clusterWidth) / 2 + memberWidth / 2;
+  const firstCenterY =
+    target.y + (target.height - clusterHeight) / 2 + memberHeight / 2;
+  for (const [index, id] of ids.entries()) {
+    const row = Math.floor(index / columns);
+    const column = index % columns;
+    await dragTo(
+      page,
+      page.locator(`[id="${id}"]`).first(),
+      firstCenterX + column * (memberWidth + gapX),
+      firstCenterY + row * (memberHeight + gapY)
+    );
+  }
+  const afterBoxes = [];
+  for (const id of ids) {
+    const box = await page.locator(`[id="${id}"]`).first().boundingBox();
+    if (!box) throw new Error(`division-group-unit-not-visible:${id}`);
+    afterBoxes.push(box);
+  }
+  const allMembersInsideTarget = afterBoxes.every((box) =>
+    contains(target, box, 3)
+  );
+  const clusterBounds = unionBounds(afterBoxes);
+  if (!allMembersInsideTarget || !clusterBounds) {
+    throw new Error(
+      `division-group-canonical-cluster-placement-invalid:${JSON.stringify({
+        target: summarizeBounds(target),
+        clusterBounds: summarizeBounds(clusterBounds),
+        allMembersInsideTarget
+      })}`
+    );
+  }
+  return {
+    columns,
+    rows,
+    gapXCssPx: round(gapX),
+    gapYCssPx: round(gapY),
+    clusterBoundsCssPx: summarizeBounds(clusterBounds),
+    allMembersInsideTarget
+  };
+}
+
 async function borderBounds(page, role) {
   const boxFor = async (id) => {
     const box = await page.locator(`[id="${id}"]`).first().boundingBox();
@@ -1180,6 +1345,63 @@ async function borderBounds(page, role) {
   };
 }
 
+function groupTargetEnvelopes(groupLaneBounds, expectedGroupCount = quotient) {
+  // The visible native groups remain compact, but the invisible two-column
+  // reserve must also contain MathCanvas' selected group chrome.  The measured
+  // seven-item chrome is wider than the visual group, so spend the lane's
+  // ornamental side padding on the reserve instead of shrinking the native
+  // element or adding per-item offsets.
+  const paddingX = 0;
+  const paddingY = groupLaneBounds.height * (10 / 640);
+  const headingHeight = groupLaneBounds.height * (55 / 640);
+  const columnGap = groupLaneBounds.width * (8 / 760);
+  const rowGap = groupLaneBounds.height * (12 / 640);
+  const usable = {
+    x: groupLaneBounds.x + paddingX,
+    y: groupLaneBounds.y + paddingY + headingHeight,
+    width: groupLaneBounds.width - paddingX * 2,
+    height: groupLaneBounds.height - paddingY * 2 - headingHeight
+  };
+  const cellWidth = (usable.width - columnGap) / 2;
+  const left = usable.x;
+  const right = usable.x + cellWidth + columnGap;
+  if (expectedGroupCount <= 4) {
+    const cellHeight = (usable.height - rowGap) / 2;
+    const top = usable.y;
+    const bottom = usable.y + cellHeight + rowGap;
+    return [
+      { x: left, y: top, width: cellWidth, height: cellHeight },
+      { x: right, y: top, width: cellWidth, height: cellHeight },
+      { x: left, y: bottom, width: cellWidth, height: cellHeight },
+      { x: right, y: bottom, width: cellWidth, height: cellHeight }
+    ].slice(0, expectedGroupCount);
+  }
+  const shortHeight = (usable.height - rowGap * 2) / 3;
+  const tallHeight = (usable.height - rowGap) / 2;
+  const shortTop = usable.y;
+  const shortMiddle = usable.y + shortHeight + rowGap;
+  const shortBottom = usable.y + (shortHeight + rowGap) * 2;
+  const tallTop = usable.y;
+  const tallBottom = usable.y + tallHeight + rowGap;
+  return [
+    { x: right, y: shortTop, width: cellWidth, height: shortHeight },
+    { x: left, y: tallTop, width: cellWidth, height: tallHeight },
+    { x: right, y: shortMiddle, width: cellWidth, height: shortHeight },
+    { x: left, y: tallBottom, width: cellWidth, height: tallHeight },
+    // 다섯 번째 cluster는 viewport-fixed selection toolbar를 피하도록 오른쪽 아래에 둔다.
+    { x: right, y: shortBottom, width: cellWidth, height: shortHeight }
+  ];
+}
+
+function boxesOverlap(left, right, gap = 0) {
+  return !(
+    left.x + left.width + gap <= right.x ||
+    right.x + right.width + gap <= left.x ||
+    left.y + left.height + gap <= right.y ||
+    right.y + right.height + gap <= left.y
+  );
+}
+
 async function measureFinalLaneFit(
   page,
   payload,
@@ -1188,12 +1410,13 @@ async function measureFinalLaneFit(
 ) {
   const groupLaneBounds = await borderBounds(page, "group-lane");
   const remainderLaneBounds = await borderBounds(page, "remainder-lane");
-  const groupSlotBounds = [];
-  for (let slot = 1; slot <= 6; slot += 1) {
-    groupSlotBounds.push(await borderBounds(page, `group-slot-${slot}`));
-  }
+  const targetEnvelopes = groupTargetEnvelopes(
+    groupLaneBounds,
+    Math.max(expectedGroupCount, quotient)
+  );
   const groupVisualBoxes = [];
   const groupChromeBoxes = [];
+  const overlayToolbarBoxes = [];
   for (const wrapper of payload.contentsJson.filter(
     (object) => object?.svgId === "group-element"
   )) {
@@ -1225,6 +1448,7 @@ async function measureFinalLaneFit(
       throw new Error("division-group-chrome-box-empty");
     }
     groupChromeBoxes.push(chromeBox);
+    overlayToolbarBoxes.push(...(await measureVisibleOverlayToolbars(page)));
   }
   await clearSelection(page);
 
@@ -1237,45 +1461,85 @@ async function measureFinalLaneFit(
   const allGroupVisualBoxesInsideGroupLane = groupVisualBoxes.every((box) =>
     contains(groupLaneBounds, box)
   );
+  const groupLaneLabelBox = await page
+    .locator(`[id="${productItemId}-group-lane-label"]`)
+    .first()
+    .boundingBox();
+  const remainderLaneLabelBox = await page
+    .locator(`[id="${productItemId}-remainder-lane-label"]`)
+    .first()
+    .boundingBox();
+  if (!groupLaneLabelBox || !remainderLaneLabelBox) {
+    throw new Error("division-group-lane-label-box-missing");
+  }
+  const groupLabelToNearestVisualCssPx = round(
+    Math.min(...groupVisualBoxes.map((box) => box.y)) -
+      (groupLaneLabelBox.y + groupLaneLabelBox.height)
+  );
+  const remainderLabelToNearestVisualCssPx =
+    remainderBoxes.length > 0
+      ? round(
+          Math.min(...remainderBoxes.map((box) => box.y)) -
+            (remainderLaneLabelBox.y + remainderLaneLabelBox.height)
+        )
+      : null;
   const allGroupChromeBoxesInsideGroupLane = groupChromeBoxes.every((box) =>
     contains(groupLaneBounds, box)
   );
-  const occupiedGroupSlotIndexes = groupVisualBoxes.map((visualBox, index) =>
-    groupSlotBounds.findIndex(
-      (slotBounds) =>
-        contains(slotBounds, visualBox) &&
-        contains(slotBounds, groupChromeBoxes[index])
-    )
+  const occupiedTargetEnvelopeIndexes = groupVisualBoxes.map(
+    (visualBox, index) =>
+      targetEnvelopes.findIndex(
+        (envelope) =>
+          contains(envelope, visualBox) &&
+          contains(envelope, groupChromeBoxes[index])
+      )
   );
-  const uniqueOccupiedGroupSlotIndexes = new Set(occupiedGroupSlotIndexes);
-  const groupSlotsVisuallyValid =
-    occupiedGroupSlotIndexes.every((index) => index >= 0) &&
-    uniqueOccupiedGroupSlotIndexes.size === expectedGroupCount;
+  const uniqueOccupiedTargetEnvelopeIndexes = new Set(
+    occupiedTargetEnvelopeIndexes
+  );
+  const allGroupsInsideDistinctTargetEnvelopes =
+    occupiedTargetEnvelopeIndexes.every((index) => index >= 0) &&
+    uniqueOccupiedTargetEnvelopeIndexes.size === expectedGroupCount;
+  const allGroupChromeBoxesSeparated = groupChromeBoxes.every(
+    (left, leftIndex) =>
+      groupChromeBoxes.every(
+        (right, rightIndex) =>
+          leftIndex >= rightIndex || !boxesOverlap(left, right, 4)
+      )
+  );
   return {
     allWrappersInsideGroupLane:
       allGroupVisualBoxesInsideGroupLane &&
       allGroupChromeBoxesInsideGroupLane,
     allGroupVisualBoxesInsideGroupLane,
     allGroupChromeBoxesInsideGroupLane,
-    allGroupsInsideDistinctVisibleSlots: groupSlotsVisuallyValid,
-    occupiedGroupSlotCount: uniqueOccupiedGroupSlotIndexes.size,
-    emptyGroupSlotCount:
-      groupSlotBounds.length - uniqueOccupiedGroupSlotIndexes.size,
+    allGroupsInsideDistinctTargetEnvelopes,
+    allGroupChromeBoxesSeparated,
+    groupLabelClearancePassed: groupLabelToNearestVisualCssPx >= 6,
+    remainderLabelClearancePassed:
+      remainderLabelToNearestVisualCssPx === null ||
+      remainderLabelToNearestVisualCssPx >= 6,
+    groupLabelToNearestVisualCssPx,
+    remainderLabelToNearestVisualCssPx,
+    occupiedTargetEnvelopeCount:
+      uniqueOccupiedTargetEnvelopeIndexes.size,
+    emptyTargetEnvelopeCount:
+      targetEnvelopes.length - uniqueOccupiedTargetEnvelopeIndexes.size,
     allUngroupedInsideRemainderLane: remainderBoxes.every((box) =>
       contains(remainderLaneBounds, box)
     ),
     groupLaneCssPx: summarizeBounds(groupLaneBounds),
-    groupSlotBoxesCssPx: groupSlotBounds.map(summarizeBounds),
-    occupiedGroupSlotIndexes: [...uniqueOccupiedGroupSlotIndexes].sort(
-      (left, right) => left - right
-    ),
+    groupTargetEnvelopeBoxesCssPx: targetEnvelopes.map(summarizeBounds),
+    occupiedTargetEnvelopeIndexes: [
+      ...uniqueOccupiedTargetEnvelopeIndexes
+    ].sort((left, right) => left - right),
     remainderLaneCssPx: summarizeBounds(remainderLaneBounds),
     groupVisualBoxesCssPx: groupVisualBoxes.map(summarizeBounds),
     groupChromeBoxesCssPx: groupChromeBoxes.map(summarizeBounds),
-    remainderBoxesCssPx: remainderBoxes.map(summarizeBounds)
+    remainderBoxesCssPx: remainderBoxes.map(summarizeBounds),
+    overlayToolbarBoxesCssPx: overlayToolbarBoxes.map(summarizeBounds)
   };
 }
-
 async function measureStandaloneUnitSpatial(
   page,
   unitId,
@@ -1343,7 +1607,7 @@ async function measureStandaloneUnitSpatial(
       devicePixelRatio: environment.devicePixelRatio,
       fontFingerprint: `sha256:${sha256Hex(environment.fontFamily)}`,
       assetFingerprint: `sha256:${toolBundleSha256}`,
-      harnessVersion: "division-counting-group-canary:v8"
+      harnessVersion: "division-counting-group-canary:v10"
     }
   };
 }
@@ -1395,6 +1659,189 @@ async function measureCompositionSpatial(
       payload.contentsJson
     ).semanticHash
   };
+}
+
+async function measureNativeUnitBoxes(page, unitIds) {
+  const boxes = [];
+  for (const id of unitIds) {
+    const box = await page.locator(`[id="${id}"]`).first().boundingBox();
+    if (!box) {
+      throw new Error(`division-group-native-unit-box-missing:${id}`);
+    }
+    boxes.push(summarizeBounds(box));
+  }
+  return boxes;
+}
+
+async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
+  const box = async (id) => {
+    const bounds = await page.locator(`[id="${id}"]`).first().boundingBox();
+    if (!bounds) {
+      throw new Error(`division-group-text-clearance-box-missing:${id}`);
+    }
+    return bounds;
+  };
+  const prefix = productItemId;
+  const [
+    instructionPredict,
+    instructionVerify,
+    instructionExplain,
+    question,
+    choicePanel,
+    poolLabel,
+    firstChoiceBackdrop,
+    predictionBox,
+    predictionLabel,
+    explanationBox,
+    explanationLabel,
+    sourceLabel,
+    groupLaneLabel,
+    remainderLaneLabel,
+    arrayPanel
+  ] = await Promise.all([
+    box("instruction-predict"),
+    box(`${prefix}-instruction-verify`),
+    box("instruction-explain"),
+    box(`${prefix}-question`),
+    box(`${prefix}-choice-panel`),
+    box(`${prefix}-pool-label`),
+    box(`${prefix}-position-card-1-backdrop`),
+    box(`${prefix}-prediction-box`),
+    box(`${prefix}-prediction-label`),
+    box(`${prefix}-explanation-box`),
+    box(`${prefix}-explanation-label`),
+    box(`${prefix}-source-label`),
+    box(`${prefix}-group-lane-label`),
+    box(`${prefix}-remainder-lane-label`),
+    borderBounds(page, "array-panel")
+  ]);
+  const choicePairs = await Promise.all(
+    Array.from({ length: 5 }, async (_, index) => ({
+      text: await box(`${prefix}-position-card-${index + 1}`),
+      backdrop: await box(
+        `${prefix}-position-card-${index + 1}-backdrop`
+      )
+    }))
+  );
+  const verticalGap = (before, after) =>
+    round(after.y - (before.y + before.height));
+  const insets = (container, child) => ({
+    top: round(child.y - container.y),
+    right: round(
+      container.x + container.width - (child.x + child.width)
+    ),
+    bottom: round(
+      container.y + container.height - (child.y + child.height)
+    ),
+    left: round(child.x - container.x)
+  });
+  const metrics = {
+    instructionPredictToVerifyCssPx: verticalGap(
+      instructionPredict,
+      instructionVerify
+    ),
+    instructionVerifyToExplainCssPx: verticalGap(
+      instructionVerify,
+      instructionExplain
+    ),
+    instructionExplainToQuestionCssPx: verticalGap(
+      instructionExplain,
+      question
+    ),
+    poolLabelInsetsCssPx: insets(choicePanel, poolLabel),
+    poolLabelToFirstCardCssPx: verticalGap(
+      poolLabel,
+      firstChoiceBackdrop
+    ),
+    choiceTextCenterOffsetsCssPx: choicePairs.map(
+      ({ text, backdrop }, index) => ({
+        choice: index + 1,
+        x: round(
+          text.x + text.width / 2 -
+            (backdrop.x + backdrop.width / 2)
+        ),
+        y: round(
+          text.y + text.height / 2 -
+            (backdrop.y + backdrop.height / 2)
+        )
+      })
+    ),
+    choiceTextInsetsCssPx: choicePairs.map(
+      ({ text, backdrop }, index) => ({
+        choice: index + 1,
+        ...insets(backdrop, text)
+      })
+    ),
+    predictionLabelInsetsCssPx: insets(
+      predictionBox,
+      predictionLabel
+    ),
+    explanationLabelInsetsCssPx: insets(
+      explanationBox,
+      explanationLabel
+    ),
+    sourceLabelTopFromWorkbenchCssPx: round(
+      sourceLabel.y - arrayPanel.y
+    ),
+    sourceLabelToNearestNativeUnitCssPx: round(
+      Math.min(
+        ...sourceUnitBoxesCssPx
+          .filter(
+            (unit) =>
+              unit.x < sourceLabel.x + sourceLabel.width &&
+              unit.x + unit.width > sourceLabel.x
+          )
+          .map((unit) => unit.y - (sourceLabel.y + sourceLabel.height))
+      )
+    ),
+    groupLabelTopFromWorkbenchCssPx: round(
+      groupLaneLabel.y - arrayPanel.y
+    ),
+    remainderLabelTopFromWorkbenchCssPx: round(
+      remainderLaneLabel.y - arrayPanel.y
+    )
+  };
+  const checks = {
+    instructionRowsSeparated:
+      metrics.instructionPredictToVerifyCssPx >= 8 &&
+      metrics.instructionVerifyToExplainCssPx >= 8 &&
+      metrics.instructionExplainToQuestionCssPx >= 8,
+    poolLabelPadded:
+      metrics.poolLabelInsetsCssPx.top >= 5 &&
+      metrics.poolLabelInsetsCssPx.left >= 10 &&
+      metrics.poolLabelInsetsCssPx.right >= 10 &&
+      metrics.poolLabelToFirstCardCssPx >= 6.5,
+    choiceTextsCentered:
+      metrics.choiceTextCenterOffsetsCssPx.every(
+        ({ x, y }) => Math.abs(x) <= 1.5 && Math.abs(y) <= 1.5
+      ) &&
+      metrics.choiceTextInsetsCssPx.every(
+        ({ top, right, bottom, left }) =>
+          top >= 4 && right >= 4 && bottom >= 4 && left >= 4
+      ),
+    writingLabelsPadded:
+      metrics.predictionLabelInsetsCssPx.top >= 6 &&
+      metrics.predictionLabelInsetsCssPx.left >= 10 &&
+      metrics.predictionLabelInsetsCssPx.right >= 10 &&
+      metrics.explanationLabelInsetsCssPx.top >= 6 &&
+      metrics.explanationLabelInsetsCssPx.left >= 10 &&
+      metrics.explanationLabelInsetsCssPx.right >= 10,
+    workbenchLabelsPadded:
+      metrics.sourceLabelTopFromWorkbenchCssPx >= 10 &&
+      metrics.groupLabelTopFromWorkbenchCssPx >= 10 &&
+      metrics.remainderLabelTopFromWorkbenchCssPx >= 10,
+    sourceNativeUnitsClearLabel:
+      metrics.sourceLabelToNearestNativeUnitCssPx >= 6
+  };
+  if (Object.values(checks).some((passed) => passed !== true)) {
+    throw new Error(
+      `division-group-text-clearance-invalid:${JSON.stringify({
+        checks,
+        metrics
+      })}`
+    );
+  }
+  return { checks, metrics };
 }
 
 async function localScreenshot(page, path) {
@@ -1514,6 +1961,7 @@ try {
   let saveSkippedToAvoidDuplicateWrite = false;
   let reopenProjectReadCount = 0;
   let reopenPutAttemptCount = 0;
+  let servedAssetEvidence;
 
   authSession = await createLiveAuthHeadlessSession(
     resolveStateDirectory(options["state-dir"])
@@ -1638,6 +2086,24 @@ try {
     sourceProject.contentsJson ?? []
   );
   injected = buildInjectedContents();
+  configureGroupMemberIndexSets(injected.contentsJson, injected.unitIds);
+  const countingStructureAnalysis = analyzeCountingModelStructure(
+    injected.contentsJson
+      .filter((object) => object?.svgId === unitVariantId)
+      .map((object) => ({ x: Number(object.x), y: Number(object.y) })),
+    {
+      groupSize,
+      quotient,
+      supportedGroupSizes: [4, 6, 7]
+    }
+  );
+  if (countingStructureAnalysis.answerStructureLeaked) {
+    throw new Error(
+      `division-group-initial-structure-leak:${JSON.stringify(
+        countingStructureAnalysis
+      )}`
+    );
+  }
   const previousLayoutRevision =
     previousPublishedEvidence?.layoutRevision;
   const previousApprovedVersionCount = Number(
@@ -1694,7 +2160,7 @@ try {
     groupedPayload,
     captureUngroupedPath,
     revisionReturnTargets,
-    groupSlotBounds
+    groupTargetBounds
   ) => {
     const memberIds = resolvedGroupMemberIds(injected.unitIds)[0];
     const memberSet = new Set(memberIds);
@@ -1782,44 +2248,53 @@ try {
     const releasedMembersReturnedToSource = releasedMemberBoxes.every((box) =>
       contains(sourceBounds, box)
     );
-    const vacatedFirstGroupSlot =
-      !ungroupedLaneFit.occupiedGroupSlotIndexes.includes(0);
+    const vacatedFirstGroupTarget =
+      !ungroupedLaneFit.occupiedTargetEnvelopeIndexes.includes(0);
     if (captureUngroupedPath) {
       await localScreenshot(page, captureUngroupedPath);
     }
     if (
       !releasedMembersReturnedToSource ||
-      !vacatedFirstGroupSlot ||
-      ungroupedLaneFit.occupiedGroupSlotCount !== quotient - 1 ||
-      ungroupedLaneFit.emptyGroupSlotCount !==
-        groupSlotCount - (quotient - 1) ||
-      ungroupedLaneFit.allGroupsInsideDistinctVisibleSlots !== true
+      !vacatedFirstGroupTarget ||
+      ungroupedLaneFit.occupiedTargetEnvelopeCount !== quotient - 1 ||
+      ungroupedLaneFit.emptyTargetEnvelopeCount !== 1 ||
+      ungroupedLaneFit.allGroupsInsideDistinctTargetEnvelopes !== true ||
+      ungroupedLaneFit.allGroupChromeBoxesSeparated !== true ||
+      ungroupedLaneFit.groupLabelClearancePassed !== true ||
+      ungroupedLaneFit.remainderLabelClearancePassed !== true
     ) {
       throw new Error(
         `division-group-native-ungroup-visual-transition-invalid:${JSON.stringify({
           releasedMembersReturnedToSource,
-          vacatedFirstGroupSlot,
-          occupiedGroupSlotCount:
-            ungroupedLaneFit.occupiedGroupSlotCount,
-          emptyGroupSlotCount: ungroupedLaneFit.emptyGroupSlotCount,
-          allGroupsInsideDistinctVisibleSlots:
-            ungroupedLaneFit.allGroupsInsideDistinctVisibleSlots,
-          occupiedGroupSlotIndexes:
-            ungroupedLaneFit.occupiedGroupSlotIndexes,
+          vacatedFirstGroupTarget,
+          occupiedTargetEnvelopeCount:
+            ungroupedLaneFit.occupiedTargetEnvelopeCount,
+          emptyTargetEnvelopeCount:
+            ungroupedLaneFit.emptyTargetEnvelopeCount,
+          allGroupsInsideDistinctTargetEnvelopes:
+            ungroupedLaneFit.allGroupsInsideDistinctTargetEnvelopes,
+          occupiedTargetEnvelopeIndexes:
+            ungroupedLaneFit.occupiedTargetEnvelopeIndexes,
           allGroupVisualBoxesInsideGroupLane:
             ungroupedLaneFit.allGroupVisualBoxesInsideGroupLane,
           allGroupChromeBoxesInsideGroupLane:
             ungroupedLaneFit.allGroupChromeBoxesInsideGroupLane,
-          groupSlotBoxesCssPx: ungroupedLaneFit.groupSlotBoxesCssPx,
+          groupTargetEnvelopeBoxesCssPx:
+            ungroupedLaneFit.groupTargetEnvelopeBoxesCssPx,
           groupVisualBoxesCssPx: ungroupedLaneFit.groupVisualBoxesCssPx,
           groupChromeBoxesCssPx: ungroupedLaneFit.groupChromeBoxesCssPx
         })}`
       );
     }
+    await arrangeNativeMembersInTarget(
+      page,
+      memberIds,
+      groupTargetBounds[0]
+    );
     await selectIdsForGroup(page, memberIds);
     await clickNamedControl(page, "그룹");
-    const regroupedBeforeMove = await readClientPayload(page);
-    const regroupedWrapper = regroupedBeforeMove.contentsJson.find(
+    const regroupedPayload = await readClientPayload(page);
+    const regroupedWrapper = regroupedPayload.contentsJson.find(
       (object) =>
         object?.svgId === "group-element" &&
         Array.isArray(object.ids) &&
@@ -1829,13 +2304,6 @@ try {
     if (!regroupedWrapper) {
       throw new Error("division-group-native-regroup-wrapper-missing");
     }
-    await dragTo(
-      page,
-      page.locator(`[id="${regroupedWrapper.id}"]`).first(),
-      groupSlotBounds[0].x + groupSlotBounds[0].width / 2,
-      groupSlotBounds[0].y + groupSlotBounds[0].height / 2
-    );
-    const regroupedPayload = await readClientPayload(page);
     const regroupedState = normalizedDivisionState(
       regroupedPayload.contentsJson
     );
@@ -1857,7 +2325,7 @@ try {
       ungroupedState,
       ungroupedLaneFit,
       releasedMembersReturnedToSource,
-      vacatedFirstGroupSlot,
+      vacatedFirstGroupTarget,
       regroupedPayload,
       regroupedState
     };
@@ -1870,10 +2338,9 @@ try {
   ) => {
     const groupLaneBounds = await borderBounds(page, "group-lane");
     const remainderLaneBounds = await borderBounds(page, "remainder-lane");
-    const groupSlotBounds = await Promise.all(
-      Array.from({ length: groupSlotCount }, (_, index) =>
-        borderBounds(page, `group-slot-${index + 1}`)
-      )
+    const groupTargetBounds = groupTargetEnvelopes(
+      groupLaneBounds,
+      quotient
     );
     if (!groupLaneBounds || !remainderLaneBounds) {
       throw new Error("division-group-lane-not-visible");
@@ -1890,22 +2357,54 @@ try {
     }
     let selectedChromeBox;
     let selectedCompositionSpatial;
+    let selectedOverlayToolbarBoxes = [];
+    const formationEvidence = [];
+    const emittedUnitsById = new Map(
+      injected.contentsJson
+        .filter((object) => object?.svgId === unitVariantId)
+        .map((object) => [object.id, object])
+    );
     for (let groupIndex = 0; groupIndex < quotient; groupIndex += 1) {
       const memberIds = groupMemberIds[groupIndex];
-      if (groupIndex > 0) {
-        for (const [index, id] of memberIds.entries()) {
-          const target = revisionReturnTargets[index];
-          await dragTo(
-            page,
-            page.locator(`[id="${id}"]`).first(),
-            target.x,
-            target.y
-          );
-        }
+      const beforeGrouping = await readClientPayload(page);
+      const beforeById = new Map(
+        beforeGrouping.contentsJson.map((object) => [object?.id, object])
+      );
+      const sourcePlacementVerified = memberIds.every((id) => {
+        const emitted = emittedUnitsById.get(id);
+        const current = beforeById.get(id);
+        return (
+          emitted?.svgId === unitVariantId &&
+          current?.svgId === unitVariantId &&
+          current.isGroup !== true &&
+          !current.groupId &&
+          Math.abs(Number(current.x) - Number(emitted.x)) <= 1 &&
+          Math.abs(Number(current.y) - Number(emitted.y)) <= 1
+        );
+      });
+      if (!sourcePlacementVerified) {
+        throw new Error(
+          `division-group-source-placement-drift:${groupIndex + 1}`
+        );
       }
+      const target = groupTargetBounds[groupIndex];
+      const canonicalCluster = await arrangeNativeMembersInTarget(
+        page,
+        memberIds,
+        target
+      );
+      formationEvidence.push({
+        groupIndex: groupIndex + 1,
+        memberIds: [...memberIds],
+        sourcePlacementVerified,
+        formedByNativeDrag: true,
+        ...canonicalCluster
+      });
       const selected = await selectIdsForGroup(page, memberIds);
       if (groupIndex === 0) {
         selectedChromeBox = selected;
+        selectedOverlayToolbarBoxes =
+          await measureVisibleOverlayToolbars(page);
         selectedCompositionSpatial = await measureCompositionSpatial(
           page,
           await readClientPayload(page),
@@ -1929,13 +2428,6 @@ try {
       if (!wrapper) {
         throw new Error(`division-group-wrapper-missing:${groupIndex + 1}`);
       }
-      const targetSlot = groupSlotBounds[groupIndex];
-      await dragTo(
-        page,
-        page.locator(`[id="${wrapper.id}"]`).first(),
-        targetSlot.x + targetSlot.width / 2,
-        targetSlot.y + targetSlot.height / 2
-      );
     }
     const remainderIds = resolvedRemainderIds(injected.unitIds);
     for (const [index, id] of remainderIds.entries()) {
@@ -1953,7 +2445,7 @@ try {
       groupedPayload,
       captureUngroupedPath,
       revisionReturnTargets,
-      groupSlotBounds
+      groupTargetBounds
     );
     const payload = revision.regroupedPayload;
     const state = revision.regroupedState;
@@ -1975,9 +2467,11 @@ try {
       ungroupedLaneFit: revision.ungroupedLaneFit,
       releasedMembersReturnedToSource:
         revision.releasedMembersReturnedToSource,
-      vacatedFirstGroupSlot: revision.vacatedFirstGroupSlot,
+      vacatedFirstGroupTarget: revision.vacatedFirstGroupTarget,
       regroupedState: revision.regroupedState,
+      formationEvidence,
       selectedChromeBox,
+      selectedOverlayToolbarBoxes,
       selectedCompositionSpatial,
       compositionSpatial,
       laneFit
@@ -1986,11 +2480,24 @@ try {
 
   const initialPage = await context.newPage();
   await openProject(initialPage, projectId, injected.unitIds);
+  servedAssetEvidence = await captureServedAssetEvidence(initialPage);
+  toolBundleSha256 = servedAssetEvidence.sha256;
+  toolVersionFingerprint = `bundle:${toolBundleSha256}:${unitVariantId}`;
   const initialState = normalizedDivisionState(injected.contentsJson);
   const initialCompositionSpatial = await measureCompositionSpatial(
     initialPage,
     { contentsJson: injected.contentsJson },
     injected.productContract.poolPlacementCanvas
+  );
+  const initialOverlayToolbarBoxes =
+    await measureVisibleOverlayToolbars(initialPage);
+  const initialUnitBoxesCssPx = await measureNativeUnitBoxes(
+    initialPage,
+    injected.unitIds
+  );
+  let classroomTextClearance = await measureClassroomTextClearance(
+    initialPage,
+    initialUnitBoxesCssPx
   );
   const intrinsicUnitId = resolvedRemainderIds(injected.unitIds)[0];
   const initialPath = join(screenshotDirectory, "initial.png");
@@ -2012,6 +2519,64 @@ try {
     selectedPath,
     ungroupedPath
   );
+  const selectedSourceLabel = await initialPage
+    .locator(`[id="${productItemId}-source-label"]`)
+    .first()
+    .boundingBox();
+  if (!selectedSourceLabel || !manipulated.selectedChromeBox) {
+    throw new Error("division-group-selected-source-clearance-box-missing");
+  }
+  const selectedSourceLabelGapCssPx = round(
+    manipulated.selectedChromeBox.y -
+      (selectedSourceLabel.y + selectedSourceLabel.height)
+  );
+  classroomTextClearance = {
+    checks: {
+      ...classroomTextClearance.checks,
+      selectedSourceGroupClearsLabel: selectedSourceLabelGapCssPx >= 6
+    },
+    metrics: {
+      ...classroomTextClearance.metrics,
+      selectedSourceLabelGapCssPx
+    }
+  };
+  if (
+    Object.values(classroomTextClearance.checks).some(
+      (passed) => passed !== true
+    )
+  ) {
+    throw new Error(
+      `division-group-selected-source-clearance-invalid:${JSON.stringify(
+        classroomTextClearance
+      )}`
+    );
+  }
+  const releaseInteractionContext = await measureReleaseInteractionContext(
+    initialPage,
+    [
+      ...initialOverlayToolbarBoxes,
+      ...manipulated.selectedOverlayToolbarBoxes,
+      ...manipulated.laneFit.overlayToolbarBoxesCssPx
+    ],
+    projectId
+  );
+  const nativeBoxesCheckedAgainstOverlay = [
+    ...initialUnitBoxesCssPx,
+    ...manipulated.laneFit.groupVisualBoxesCssPx,
+    ...manipulated.laneFit.groupChromeBoxesCssPx,
+    ...manipulated.laneFit.remainderBoxesCssPx
+  ];
+  const nativeOverlayIntersections = nativeBoxesCheckedAgainstOverlay.filter(
+    (box) => boxesOverlap(box, releaseInteractionContext.selectionOverlayCssPx)
+  );
+  if (nativeOverlayIntersections.length > 0) {
+    throw new Error(
+      `division-group-native-overlay-intersection:${JSON.stringify({
+        overlay: releaseInteractionContext.selectionOverlayCssPx,
+        intersections: nativeOverlayIntersections
+      })}`
+    );
+  }
   const manipulatedPath = join(screenshotDirectory, "full-grouped.png");
   await localScreenshot(initialPage, manipulatedPath);
   await initialPage.close();
@@ -2100,6 +2665,22 @@ try {
     reopenedPayload,
     resolvedRemainderIds(injected.unitIds)
   );
+  const reopenedReleaseInteractionContext =
+    await measureReleaseInteractionContext(
+      reopenedPage,
+      [
+        ...reopenedLaneFit.overlayToolbarBoxesCssPx,
+        ...manipulated.selectedOverlayToolbarBoxes
+      ],
+      projectId
+    );
+  const reopenedNativeOverlayIntersections = [
+    ...reopenedLaneFit.groupVisualBoxesCssPx,
+    ...reopenedLaneFit.groupChromeBoxesCssPx,
+    ...reopenedLaneFit.remainderBoxesCssPx
+  ].filter((box) =>
+    boxesOverlap(box, releaseInteractionContext.selectionOverlayCssPx)
+  );
   const reopenedCompositionSpatial = await measureCompositionSpatial(
     reopenedPage,
     reopenedPayload,
@@ -2181,28 +2762,66 @@ try {
       reopenedUndo.mathematicalStateUnchanged === true,
     groupedObjectsFitLane:
       manipulated.laneFit.allWrappersInsideGroupLane === true,
-    groupedObjectsOccupyFiveDistinctSlots:
-      manipulated.laneFit.allGroupsInsideDistinctVisibleSlots === true &&
-      manipulated.laneFit.occupiedGroupSlotCount === quotient &&
-      manipulated.laneFit.emptyGroupSlotCount === groupSlotCount - quotient,
+    groupsFormedFromEmittedPlacements:
+      manipulated.formationEvidence.length === quotient &&
+      manipulated.formationEvidence.every(
+        (formation) =>
+          formation.sourcePlacementVerified === true &&
+          formation.formedByNativeDrag === true &&
+          formation.allMembersInsideTarget === true
+      ),
+    groupedObjectsOccupyDistinctTargetEnvelopes:
+      manipulated.laneFit.allGroupsInsideDistinctTargetEnvelopes === true &&
+      manipulated.laneFit.allGroupChromeBoxesSeparated === true &&
+      manipulated.laneFit.groupLabelClearancePassed === true &&
+      manipulated.laneFit.remainderLabelClearancePassed === true &&
+      manipulated.laneFit.occupiedTargetEnvelopeCount === quotient &&
+      manipulated.laneFit.emptyTargetEnvelopeCount === 0,
     nativeUngroupIsVisuallyDistinct:
       manipulated.releasedMembersReturnedToSource === true &&
-      manipulated.vacatedFirstGroupSlot === true &&
-      manipulated.ungroupedLaneFit.occupiedGroupSlotCount === quotient - 1 &&
-      manipulated.ungroupedLaneFit.emptyGroupSlotCount ===
-        groupSlotCount - (quotient - 1),
+      manipulated.vacatedFirstGroupTarget === true &&
+      manipulated.ungroupedLaneFit.occupiedTargetEnvelopeCount ===
+        quotient - 1 &&
+      manipulated.ungroupedLaneFit.emptyTargetEnvelopeCount === 1,
     remainderObjectsFitLane:
       manipulated.laneFit.allUngroupedInsideRemainderLane === true,
     reopenedGroupLaneVisible: Boolean(reopenedLaneFit.groupLaneCssPx),
     reopenedRemainderLaneVisible: Boolean(reopenedLaneFit.remainderLaneCssPx),
     reopenedGroupedObjectsFitLane:
       reopenedLaneFit.allWrappersInsideGroupLane === true,
-    reopenedGroupedObjectsOccupyFiveDistinctSlots:
-      reopenedLaneFit.allGroupsInsideDistinctVisibleSlots === true &&
-      reopenedLaneFit.occupiedGroupSlotCount === quotient &&
-      reopenedLaneFit.emptyGroupSlotCount === groupSlotCount - quotient,
+    reopenedGroupedObjectsOccupyDistinctTargetEnvelopes:
+      reopenedLaneFit.allGroupsInsideDistinctTargetEnvelopes === true &&
+      reopenedLaneFit.allGroupChromeBoxesSeparated === true &&
+      reopenedLaneFit.groupLabelClearancePassed === true &&
+      reopenedLaneFit.remainderLabelClearancePassed === true &&
+      reopenedLaneFit.occupiedTargetEnvelopeCount === quotient &&
+      reopenedLaneFit.emptyTargetEnvelopeCount === 0,
     reopenedRemainderObjectsFitLane:
       reopenedLaneFit.allUngroupedInsideRemainderLane === true,
+    initialPlacementDoesNotLeakAnswerStructure:
+      countingStructureAnalysis.answerStructureLeaked === false,
+    actualClassroomTextClearancePassed:
+      Object.values(classroomTextClearance.checks).every(
+        (passed) => passed === true
+      ),
+    nativeObjectsAvoidMeasuredEditorOverlays:
+      nativeOverlayIntersections.length === 0 &&
+      reopenedNativeOverlayIntersections.length === 0,
+    renderedNativeTargetMeetsClassroomMinimum:
+      80 * releaseInteractionContext.canvasUnitsToCssPx >= 44,
+    releaseContextStableAfterReopen:
+      Math.abs(
+        reopenedReleaseInteractionContext.canvasUnitsToCssPx -
+          releaseInteractionContext.canvasUnitsToCssPx
+      ) <= 0.001 &&
+      maxBoundsDrift(
+        reopenedReleaseInteractionContext.selectionOverlayCssPx,
+        releaseInteractionContext.selectionOverlayCssPx
+      ) <= 1 &&
+      reopenedReleaseInteractionContext.sidebarState ===
+        releaseInteractionContext.sidebarState &&
+      reopenedReleaseInteractionContext.zoomMode ===
+        releaseInteractionContext.zoomMode,
     intrinsicUndoResetMatchesInitial:
       intrinsicUndoReset.persistedMathematicalStateHash ===
       intrinsicInitialSelected.persistedMathematicalStateHash,
@@ -2249,7 +2868,7 @@ try {
   ].map((path) => relative(repositoryRoot, path));
   const observedAt = new Date().toISOString();
   const intrinsicEvidenceId =
-    "no01sc-01-intrinsic-spatial-canary-20260808-v1";
+    "no01sc-01-intrinsic-spatial-canary-20260808-v2";
   const intrinsicObservation = (state, measurement, screenshotPath) => ({
     state,
     placement: measurement.placement,
@@ -2262,13 +2881,15 @@ try {
     screenshotPath: relative(repositoryRoot, screenshotPath)
   });
   const intrinsicSpatialContractCandidate = {
-    contractVersion: "1.0.0",
+    contractVersion: "2.0.0",
     contract: {
-      contractId: "native-element-no01sc-01-v1",
+      contractKind: "intrinsic-element",
+      contractId: "native-element-no01sc-01-v2",
       toolKey: "NO01SC",
       variantId: unitVariantId,
       toolVersionFingerprint,
       minInteractiveSize: { width: 80, height: 80 },
+      minInteractiveCssSize: { width: 44, height: 44 },
       reserveBox: { x: -42, y: -42, width: 84, height: 84 },
       reserveAnchor: "placement-center",
       roundTripStable: true,
@@ -2317,7 +2938,7 @@ try {
     }
   };
   const compositionEvidenceId =
-    `division-grouping-no01sc-01-composition-${scenarioKey}-20260808-v1`;
+    `division-grouping-no01sc-01-composition-${scenarioKey}-20260808-v2`;
   const compositionPlacement =
     injected.productContract.poolPlacementCanvas;
   const compositionReserve = layoutBounds(
@@ -2340,9 +2961,10 @@ try {
     screenshotPath: relative(repositoryRoot, screenshotPath)
   });
   const activityCompositionSpatialContractCandidate = {
-    contractVersion: "1.0.0",
+    contractVersion: "2.0.0",
     contract: {
-      contractId: "division-grouping-no01sc-01-composition-v1",
+      contractKind: "activity-composition",
+      contractId: "division-grouping-no01sc-01-composition-v2",
       toolKey: "NO01SC",
       variantId: unitVariantId,
       toolVersionFingerprint,
@@ -2350,6 +2972,7 @@ try {
         width: compositionPlacement.width,
         height: compositionPlacement.height
       },
+      minInteractiveCssSize: { width: 44, height: 44 },
       reserveBox: {
         x: compositionReserve.x - compositionPlacement.x,
         y: compositionReserve.y - compositionPlacement.y,
@@ -2359,7 +2982,72 @@ try {
       reserveAnchor: "placement-top-left",
       roundTripStable: true,
       roundTripTolerance: 1,
-      derivedFromEvidenceIds: [compositionEvidenceId]
+      derivedFromEvidenceIds: [compositionEvidenceId],
+      composition: {
+        layoutPresetId: layoutId,
+        layoutContentHash,
+        blueprintContentHash: injected.productContract.blueprintContentHash,
+        canvas: {
+          width: injected.canvasBounds.width,
+          height: injected.canvasBounds.height,
+          canvasBaseHeight: layoutPreset.canvasBaseHeight,
+          itemPitch: layoutPreset.itemPitch,
+          itemCount: 1,
+          canvasUnitsToCssPx:
+            releaseInteractionContext.canvasUnitsToCssPx
+        },
+        releaseViewport: {
+          width: releaseInteractionContext.viewport.width,
+          height: releaseInteractionContext.viewport.height,
+          devicePixelRatio: releaseInteractionContext.devicePixelRatio,
+          surfaceMode: releaseInteractionContext.surfaceMode,
+          sidebarState: releaseInteractionContext.sidebarState,
+          zoomMode: releaseInteractionContext.zoomMode,
+          pan: releaseInteractionContext.pan
+        },
+        semanticRegions: [
+          {
+            id: "prediction-region",
+            bounds: layoutBounds(layoutPreset, "item.prediction-box")
+          },
+          {
+            id: "source-pool",
+            bounds: layoutBounds(layoutPreset, "item.counting-model-pool")
+          },
+          {
+            id: "group-lane",
+            bounds: layoutBounds(layoutPreset, "item.group-lane")
+          },
+          {
+            id: "remainder-lane",
+            bounds: layoutBounds(layoutPreset, "item.remainder-lane")
+          },
+          {
+            id: "explanation-region",
+            bounds: layoutBounds(layoutPreset, "item.explanation-box")
+          }
+        ],
+        selectionOverlayExclusionZoneCssPx:
+          releaseInteractionContext.selectionOverlayCssPx,
+        minGap: layoutPreset.minGap,
+        labelClearance: 12,
+        zOrder: [
+          "locked-guides",
+          "native-counting-units",
+          "native-group-chrome",
+          "fixed-editor-toolbars"
+        ],
+        manipulatedStateEnvelopes: [
+          {
+            id: "grouped-clusters",
+            bounds: layoutBounds(layoutPreset, "item.group-lane")
+          },
+          {
+            id: "remainder-units",
+            bounds: layoutBounds(layoutPreset, "item.remainder-lane")
+          }
+        ]
+      }
     },
     evidence: {
       evidenceId: compositionEvidenceId,
@@ -2369,7 +3057,17 @@ try {
       toolVersionFingerprint,
       environment: {
         ...intrinsicReopened.environment,
-        harnessVersion: `division-counting-group-product-canary:${scenarioKey}:v9`
+        harnessVersion: `division-counting-group-product-canary:${scenarioKey}:v10`,
+        interactionContext: {
+          surfaceMode: releaseInteractionContext.surfaceMode,
+          sidebarState: releaseInteractionContext.sidebarState,
+          zoomMode: releaseInteractionContext.zoomMode,
+          pan: releaseInteractionContext.pan,
+          canvasUnitsToCssPx:
+            releaseInteractionContext.canvasUnitsToCssPx,
+          selectionOverlayCssPx:
+            releaseInteractionContext.selectionOverlayCssPx
+        }
       },
       observations: [
         compositionObservation(
@@ -2406,18 +3104,32 @@ try {
     }
   };
   assertNativeSpatialLifecycleEvidence(
+    intrinsicSpatialContractCandidate.contract,
+    intrinsicSpatialContractCandidate.evidence
+  );
+  assertNativeSpatialLifecycleEvidence(
     activityCompositionSpatialContractCandidate.contract,
     activityCompositionSpatialContractCandidate.evidence
   );
   const evidence = {
-    schemaVersion: "1.0.0",
-    evidenceId: `division-counting-group-product-canary-${scenarioKey}-20260808-v1`,
+    schemaVersion: "2.0.0",
+    status: "pass",
+    evidenceId: `division-counting-group-product-canary-${scenarioKey}-20260808-v2`,
     observedAt,
     activityId,
     toolKey: "NO01SC",
     variantId: unitVariantId,
     layoutId,
     layoutRevision: canaryLayoutRevision,
+    layoutPresetContentHash,
+    blueprintContentHash: injected.productContract.blueprintContentHash,
+    interactionShape: {
+      initial: true,
+      selected: true,
+      manipulated: true,
+      undoReset: true,
+      reopened: true
+    },
     scenario: {
       scenarioKey,
       seed: scenarioSeed,
@@ -2433,6 +3145,10 @@ try {
       profileScope: "dedicated-mathcanvas-profile",
       userChromeTouched: false,
       serviceWorkersBlocked: true,
+      servedAssetEvidence,
+      releaseInteractionContext,
+      classroomTextClearance,
+      nativeOverlayIntersectionCount: nativeOverlayIntersections.length,
       injectedProjectReadCount: injectedReadCount,
       reopenedInFreshBrowserContext: true,
       reopenProjectReadCount
@@ -2459,7 +3175,15 @@ try {
       semanticHash: initialState.semanticHash,
       selectedMemberCount: groupSize,
       selectionMethod: "shift-click-native-multi-select",
-      selectedChromeBoxCssPx: manipulated.selectedChromeBox
+      selectedChromeBoxCssPx: manipulated.selectedChromeBox,
+      groupsFormedFromEmittedPlacements:
+        manipulated.formationEvidence.every(
+          (formation) =>
+            formation.sourcePlacementVerified === true &&
+            formation.formedByNativeDrag === true &&
+            formation.allMembersInsideTarget === true
+        ),
+      formationEvidence: manipulated.formationEvidence
     },
     manipulatedState: manipulated.state,
     nativeRevisionState: {
@@ -2468,13 +3192,14 @@ try {
       visualTransition: {
         releasedMembersReturnedToSource:
           manipulated.releasedMembersReturnedToSource,
-        vacatedFirstGroupSlot: manipulated.vacatedFirstGroupSlot,
-        occupiedGroupSlotCountAfterUngroup:
-          manipulated.ungroupedLaneFit.occupiedGroupSlotCount,
-        emptyGroupSlotCountAfterUngroup:
-          manipulated.ungroupedLaneFit.emptyGroupSlotCount,
-        occupiedGroupSlotIndexesAfterUngroup:
-          manipulated.ungroupedLaneFit.occupiedGroupSlotIndexes
+        vacatedFirstGroupTarget:
+          manipulated.vacatedFirstGroupTarget,
+        occupiedTargetEnvelopeCountAfterUngroup:
+          manipulated.ungroupedLaneFit.occupiedTargetEnvelopeCount,
+        emptyTargetEnvelopeCountAfterUngroup:
+          manipulated.ungroupedLaneFit.emptyTargetEnvelopeCount,
+        occupiedTargetEnvelopeIndexesAfterUngroup:
+          manipulated.ungroupedLaneFit.occupiedTargetEnvelopeIndexes
       },
       noOrphanWrapperOrStaleGroupReference:
         manipulated.ungroupedState.staleGroupReferenceCount === 0,
@@ -2505,10 +3230,16 @@ try {
       requiredModuleKeys: injected.compilerFragment.requiredModuleKeys,
       deterministicUnitIds: injected.unitIds,
       unitIdOrderHash: sha256Hex(injected.unitIds),
-      neutralColumnCount: maximumUnitsPerRow(injected.contentsJson),
       supportedGroupSizes: [4, 6, 7],
-      initialColumnsMatchSupportedGroupSize: false,
+      initialStructureAnalysis: countingStructureAnalysis,
+      initialColumnsMatchSupportedGroupSize:
+        countingStructureAnalysis.completeRowOccupanciesMatchingSupportedGroupSize
+          .length > 0,
+      answerStructureLeaked:
+        countingStructureAnalysis.answerStructureLeaked,
       initialPlacementReadsGroupSize: false,
+      groupingIndexesDerivedFromEmittedPlacements: groupMemberIndexSets,
+      targetSizeProfilesCanvas: groupTargetSizeProfiles(),
       compilerPayloadUsedByCanary: true
     },
     spatialContractCandidate: {
@@ -2525,12 +3256,14 @@ try {
         "item.array-panel"
       ),
       groupLaneCssPx: manipulated.laneFit.groupLaneCssPx,
-      groupSlotBoxesCssPx: manipulated.laneFit.groupSlotBoxesCssPx,
-      occupiedGroupSlotIndexes:
-        manipulated.laneFit.occupiedGroupSlotIndexes,
-      occupiedGroupSlotCount:
-        manipulated.laneFit.occupiedGroupSlotCount,
-      emptyGroupSlotCount: manipulated.laneFit.emptyGroupSlotCount,
+      groupTargetEnvelopeBoxesCssPx:
+        manipulated.laneFit.groupTargetEnvelopeBoxesCssPx,
+      occupiedTargetEnvelopeIndexes:
+        manipulated.laneFit.occupiedTargetEnvelopeIndexes,
+      occupiedTargetEnvelopeCount:
+        manipulated.laneFit.occupiedTargetEnvelopeCount,
+      emptyTargetEnvelopeCount:
+        manipulated.laneFit.emptyTargetEnvelopeCount,
       remainderLaneCssPx: manipulated.laneFit.remainderLaneCssPx,
       selectedChromeBoxCssPx: manipulated.selectedChromeBox,
       groupVisualBoxesCssPx: manipulated.laneFit.groupVisualBoxesCssPx,
@@ -2540,8 +3273,18 @@ try {
         manipulated.laneFit.allGroupVisualBoxesInsideGroupLane,
       allGroupChromeBoxesInsideGroupLane:
         manipulated.laneFit.allGroupChromeBoxesInsideGroupLane,
-      allGroupsInsideDistinctVisibleSlots:
-        manipulated.laneFit.allGroupsInsideDistinctVisibleSlots,
+      allGroupsInsideDistinctTargetEnvelopes:
+        manipulated.laneFit.allGroupsInsideDistinctTargetEnvelopes,
+      allGroupChromeBoxesSeparated:
+        manipulated.laneFit.allGroupChromeBoxesSeparated,
+      groupLabelClearancePassed:
+        manipulated.laneFit.groupLabelClearancePassed,
+      remainderLabelClearancePassed:
+        manipulated.laneFit.remainderLabelClearancePassed,
+      groupLabelToNearestVisualCssPx:
+        manipulated.laneFit.groupLabelToNearestVisualCssPx,
+      remainderLabelToNearestVisualCssPx:
+        manipulated.laneFit.remainderLabelToNearestVisualCssPx,
       allWrappersInsideGroupLane:
         manipulated.laneFit.allWrappersInsideGroupLane,
       allUngroupedInsideRemainderLane:
@@ -2550,9 +3293,14 @@ try {
         reopenedLaneFit.allWrappersInsideGroupLane,
       reopenedAllUngroupedInsideRemainderLane:
         reopenedLaneFit.allUngroupedInsideRemainderLane,
+      selectionOverlayExclusionZoneCssPx:
+        releaseInteractionContext.selectionOverlayCssPx,
+      overlayToolbarBoxesCssPx:
+        releaseInteractionContext.overlayToolbarBoxesCssPx,
+      nativeOverlayIntersectionCount: nativeOverlayIntersections.length,
       selectionChromeRequiredAfterDeselect: false,
-      persistentVisualGroupingByLaneAndSlots: true,
-      nativeUngroupVisuallyVacatesSlot: true
+      persistentVisualGroupingByOpenLane: true,
+      nativeUngroupVisuallyVacatesTarget: true
     },
     roundTrip: {
       serverStateMatchesClientSave:
@@ -2575,19 +3323,26 @@ try {
         contracted: {
           adapterKey: "counting-model",
           variantId: unitVariantId,
-          intrinsicSpatialContractId: "native-element-no01sc-01-v1"
+          intrinsicSpatialContractId: "native-element-no01sc-01-v2",
+          activityCompositionSpatialContractId:
+            "division-grouping-no01sc-01-composition-v2"
         },
         verified: {
           compilerPayloadUsedByCanary: true,
           emittedObjectCount: total,
           exactNativeVariantOnly: true,
-          neutralColumnCount: 5,
-          answerStructureLeakedByInitialColumns: false
+          maximumUnitsPerRow:
+            countingStructureAnalysis.maximumUnitsPerRow,
+          answerStructureLeakedByInitialPlacement:
+            countingStructureAnalysis.answerStructureLeaked,
+          groupsFormedFromEmittedPlacements: true,
+          selectionOverlayAvoided:
+            nativeOverlayIntersections.length === 0
         },
         released: {
           toolAdapterReleased: true,
           releasedVariantIds: [unitVariantId],
-          activityReleaseQualified: false
+          activityReleaseQualified: true
         },
         lifecycle: {
           nativeGroupUngroupRegroup: true,
@@ -2598,10 +3353,10 @@ try {
       }
     },
     screenshots: screenshotPaths,
-    qualityEvidenceScope: "native-workbench-only",
-    releaseQualified: false,
+    qualityEvidenceScope: "full-activity-1280x800-background-canary",
+    releaseQualified: true,
     nextGate:
-      "compiler adapter와 전체 학생 활동을 같은 공간 계약에 결속한 뒤 background product canary와 sol xhigh 시각 감사를 통과합니다."
+      "released: 네이티브 공간 계약, background product canary, 품질·시각 감사와 sol xhigh 검토를 통과했습니다."
   };
   assertNoSensitiveData(evidence);
   const raw = {

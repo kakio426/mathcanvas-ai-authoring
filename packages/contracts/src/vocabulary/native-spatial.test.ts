@@ -9,11 +9,13 @@ import {
 } from "./native-spatial.js";
 
 const contract = {
+  contractKind: "intrinsic-element" as const,
   contractId: "NO04NT.default.spatial-v1",
   toolKey: "NO04NT",
   variantId: "NO04NT-01",
   toolVersionFingerprint: "bundle:stable-number-card-v1",
   minInteractiveSize: { width: 80, height: 80 },
+  minInteractiveCssSize: { width: 44, height: 44 },
   reserveBox: { x: -50, y: -50, width: 100, height: 100 },
   reserveAnchor: "placement-center" as const,
   roundTripStable: true,
@@ -89,6 +91,15 @@ describe("native spatial contract", () => {
         reserveBox: { x: 0, y: 0, width: 1, height: 1 }
       })
     ).toThrow("native-spatial-reserve-box-below-min-interactive-size");
+  });
+
+  it("rejects an intrinsic CSS target below the absolute minimum", () => {
+    expect(() =>
+      assertNativeSpatialContract({
+        ...contract,
+        minInteractiveCssSize: { width: 23, height: 44 }
+      })
+    ).toThrow("native-spatial-css-interaction-size-below-absolute-minimum");
   });
 
   it("rejects an explicitly unstable lifecycle contract", () => {

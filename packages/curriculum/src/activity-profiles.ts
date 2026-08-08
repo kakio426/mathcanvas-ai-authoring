@@ -92,7 +92,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
     promptSeed: "나눗셈에서 수 세기 모형을 직접 묶고 옮겨 몫과 나머지의 의미를 확인하는 활동",
     predictionLabel: "처음 고른 답",
     evidenceHeading: "수 세기 모형을 묶어 확인하기",
-    explanationLabel: "묶음 수와 남은 수 쓰기",
+    explanationLabel: "식과 까닭 쓰기",
     misconceptionConflict:
       "나누는 수와 몫을 바꾸거나 남은 수를 몫에 포함하는 생각을 실제 묶음과 충돌시킨다.",
     verificationInvariant:
@@ -123,16 +123,16 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       candidateAlignment: "center",
       fontSizes: {
         instruction: 30,
-        question: 37,
+        question: 45,
         label: 30,
         candidate: 28,
         evidenceLabel: 30,
         evidenceText: 30
       },
       instructions: [
-        "① 답 카드를 하나 골라 처음 생각 칸에 놓으세요.",
-        "② 가까이 있는 모형을 한 묶음의 수만큼 골라 ‘그룹’을 누르고 함께 옮기세요.",
-        "③ 남은 모형을 옮긴 뒤 식을 쓰고, 처음 생각과 다르면 고치세요."
+        "① 답 카드를 하나 골라 처음 고른 답 칸에 놓으세요.",
+        "② 문제에 나온 수만큼 모형을 옮겨 가까이 놓고, 그 수만큼 골라 ‘그룹’을 누르세요.",
+        "③ 묶음 수와 남은 수를 식으로 쓰고 까닭을 설명한 뒤, 처음 답이 다르면 고치세요."
       ]
     },
     items: [

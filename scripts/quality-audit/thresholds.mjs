@@ -13,7 +13,7 @@
  */
 export const CANVAS_UNIT_TO_CSS_PX = 0.5803;
 
-export const RENDER_SCALE_EVIDENCE = Object.freeze({
+const DEFAULT_RENDER_SCALE_EVIDENCE = Object.freeze({
   layoutPreset: "wave10-common-unit-v1",
   token: "item.join-lane",
   tokenWidthUnits: 720,
@@ -22,8 +22,36 @@ export const RENDER_SCALE_EVIDENCE = Object.freeze({
   viewport: "1280x800"
 });
 
-export const toCssPx = (units) => units * CANVAS_UNIT_TO_CSS_PX;
-export const toUnits = (cssPx) => cssPx / CANVAS_UNIT_TO_CSS_PX;
+const DIVISION_RENDER_SCALE_EVIDENCE = Object.freeze({
+  layoutPreset: "wave25-division-grouping-v1",
+  token: "item.group-lane",
+  tokenWidthUnits: 760,
+  measuredWidthCssPx: 445.023,
+  canaryPath:
+    "research/mathcanvas/division-counting-group-31-by-6-canary.json",
+  viewport: "1280x800"
+});
+
+export const LAYOUT_RENDER_SCALE_EVIDENCE = Object.freeze({
+  [DEFAULT_RENDER_SCALE_EVIDENCE.layoutPreset]: DEFAULT_RENDER_SCALE_EVIDENCE,
+  [DIVISION_RENDER_SCALE_EVIDENCE.layoutPreset]:
+    DIVISION_RENDER_SCALE_EVIDENCE
+});
+
+/** Backward-compatible default evidence; new audits select by layout preset. */
+export const RENDER_SCALE_EVIDENCE = DEFAULT_RENDER_SCALE_EVIDENCE;
+
+export function renderScaleForLayout(layoutPreset) {
+  const evidence =
+    LAYOUT_RENDER_SCALE_EVIDENCE[layoutPreset] ??
+    DEFAULT_RENDER_SCALE_EVIDENCE;
+  return evidence.measuredWidthCssPx / evidence.tokenWidthUnits;
+}
+
+export const toCssPx = (units, layoutPreset) =>
+  units * renderScaleForLayout(layoutPreset);
+export const toUnits = (cssPx, layoutPreset) =>
+  cssPx / renderScaleForLayout(layoutPreset);
 
 /** 어떤 학년에게도 허용하지 않는 절대 하한. */
 export const ABSOLUTE_MINIMUM_TEXT_CSS_PX = 14;

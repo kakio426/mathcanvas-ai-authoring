@@ -18,12 +18,8 @@ import {
 import { withStudentScreenQuality } from "./student-screen-quality.js";
 
 const DIVISION_SPATIAL_CONTRACT_ID =
-  "division-grouping-no01sc-01-composition-v1" as const;
-const DIVISION_SPATIAL_CONTRACT_VERSION = "1.0.0" as const;
-const GROUP_SLOT_BORDER_TOP_ROLES = Array.from(
-  { length: 6 },
-  (_, index) => `group-slot-${index + 1}-border-top`
-);
+  "division-grouping-no01sc-01-composition-v2" as const;
+const DIVISION_SPATIAL_CONTRACT_VERSION = "2.0.0" as const;
 
 function lineRole(role: string, instructionalIntent: string) {
   return {
@@ -76,6 +72,17 @@ function withoutLegacyWorkPanel(
       return role;
     })
     .map((role) => {
+      if (role.role === "instruction-verify") {
+        return {
+          ...role,
+          scope: "each-item" as const,
+          properties: {
+            ...role.properties,
+            text: ""
+          },
+          bindings: { text: "item.verifyInstructionText" }
+        };
+      }
       const candidateIndex = CHOICE_CARD_ROLES.indexOf(
         role.role as (typeof CHOICE_CARD_ROLES)[number]
       );
@@ -86,7 +93,7 @@ function withoutLegacyWorkPanel(
         intentKind: "text" as const,
         properties: {
           text: "",
-          fontSize: 28,
+          fontSize: 30,
           centerInPlacement: true
         },
         bindings: { text: `item.candidate${candidateIndex + 1}` }
@@ -138,21 +145,12 @@ export function makeDivisionQuotientRemainderBlueprint(
         "묶기 전 모형, 묶은 모형, 남은 모형의 공간을 구분합니다."
       )
   );
-  const groupSlotBorderRoles = Array.from({ length: 6 }, (_, index) =>
-    ["top", "bottom", "left", "right"].map((edge) =>
-      lineRole(
-        `group-slot-${index + 1}-border-${edge}`,
-        "한 묶음으로 만든 네이티브 모형을 놓을 빈 자리를 표시합니다."
-      )
-    )
-  ).flat();
   const customRoles: ActivityBlueprintBody["toolRoles"] = [
     ...arrayBorderRoles,
     ...separatorRoles,
-    ...groupSlotBorderRoles,
     labelRole({
       role: "source-label",
-      text: "묶을 모형을 놓는 곳",
+      text: "묶기 전 모형",
       fontSize: presentation.fontSizes.evidenceLabel,
       instructionalIntent:
         "문제의 전체 수만큼 놓인 중립적인 모형 풀을 안내합니다."
@@ -167,7 +165,7 @@ export function makeDivisionQuotientRemainderBlueprint(
     labelRole({
       role: "remainder-lane-label",
       text: "남은 모형",
-      fontSize: 24,
+      fontSize: 30,
       instructionalIntent:
         "더 묶지 못하고 남은 수를 따로 확인할 공간을 안내합니다."
     }),
@@ -188,9 +186,13 @@ export function makeDivisionQuotientRemainderBlueprint(
       bindings: { count: "item.countableTotal" }
     }
   ];
-  const scaffoldLayout = makeChoiceExplanationScaffoldLayoutChildren(5).filter(
-    (block) => block.id !== "work-panel" && block.id !== "number"
-  );
+  const scaffoldLayout = makeChoiceExplanationScaffoldLayoutChildren(5)
+    .filter((block) => block.id !== "work-panel" && block.id !== "number")
+    .map((block) =>
+      block.id === "instruction-verify"
+        ? { ...block, repeat: "each-item" as const }
+        : block
+    );
   const customLayout = [
     ...["top", "bottom", "left", "right"].map((edge) =>
       layoutBlock(
@@ -212,16 +214,6 @@ export function makeDivisionQuotientRemainderBlueprint(
       "item.remainder-separator",
       "each-item"
     ),
-    ...Array.from({ length: 6 }, (_, index) =>
-      ["top", "bottom", "left", "right"].map((edge) =>
-        layoutBlock(
-          `group-slot-${index + 1}-border-${edge}`,
-          "slot",
-          `item.group-slot-${index + 1}-border-${edge}`,
-          "each-item"
-        )
-      )
-    ).flat(),
     layoutBlock("source-label", "slot", "item.source-label", "each-item"),
     layoutBlock(
       "group-lane-label",
@@ -248,7 +240,7 @@ export function makeDivisionQuotientRemainderBlueprint(
       {
         schemaVersion: "1.0.0",
         id: profile.activityId,
-        version: "2.0.0",
+        version: "2.1.0",
         title: profile.title,
         learningObjective: profile.learningObjective,
         curriculumBinding: {
@@ -304,7 +296,7 @@ export function makeDivisionQuotientRemainderBlueprint(
                 "counting-model-pool",
                 "group-lane-label",
                 "remainder-lane-label",
-                ...GROUP_SLOT_BORDER_TOP_ROLES
+                "array-border-top"
               ]
             }
           },
@@ -346,6 +338,85 @@ export function makeDivisionQuotientRemainderBlueprint(
                 ...CHOICE_CARD_ROLES
               ],
               maximumFillRatio: 0.96
+            }
+          },
+          {
+            kind: "visual.text-clearance",
+            parameters: {
+              containerInsets: [
+                {
+                  role: "pool-label",
+                  containerRole: "choice-panel",
+                  minimumTop: 10,
+                  minimumRight: 20,
+                  minimumBottom: 0,
+                  minimumLeft: 18
+                },
+                {
+                  role: "prediction-label",
+                  containerRole: "prediction-box",
+                  minimumTop: 10,
+                  minimumRight: 20,
+                  minimumBottom: 0,
+                  minimumLeft: 20
+                },
+                {
+                  role: "explanation-label",
+                  containerRole: "explanation-box",
+                  minimumTop: 10,
+                  minimumRight: 20,
+                  minimumBottom: 0,
+                  minimumLeft: 20
+                }
+              ],
+              verticalGaps: [
+                {
+                  beforeRole: "instruction-predict",
+                  afterRole: "instruction-verify",
+                  minimumGap: 14
+                },
+                {
+                  beforeRole: "instruction-verify",
+                  afterRole: "instruction-explain",
+                  minimumGap: 14
+                },
+                {
+                  beforeRole: "instruction-explain",
+                  afterRole: "question",
+                  minimumGap: 14
+                },
+                {
+                  beforeRole: "pool-label",
+                  afterRole: "position-card-1-backdrop",
+                  minimumGap: 12
+                },
+                {
+                  beforeRole: "array-border-top",
+                  afterRole: "source-label",
+                  minimumGap: 19
+                },
+                {
+                  beforeRole: "source-label",
+                  afterRole: "counting-model-pool",
+                  minimumGap: 12
+                },
+                {
+                  beforeRole: "array-border-top",
+                  afterRole: "group-lane-label",
+                  minimumGap: 19
+                },
+                {
+                  beforeRole: "array-border-top",
+                  afterRole: "remainder-lane-label",
+                  minimumGap: 19
+                }
+              ],
+              centerPairs: CHOICE_CARD_ROLES.map((role) => ({
+                role,
+                containerRole: `${role}-backdrop`,
+                maximumOffsetX: 0,
+                maximumOffsetY: 0
+              }))
             }
           },
           {

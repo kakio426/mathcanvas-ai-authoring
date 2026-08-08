@@ -325,10 +325,17 @@ function scoreFor(issues) {
   return Math.max(0, 100 - deduction);
 }
 
-const blueprints = listRegisteredBlueprints().filter(
-  (blueprint) =>
-    getRegisteredActivitySupportState(blueprint.id) === "released"
+const requestedActivityId = process.argv
+  .find((argument) => argument.startsWith("--activity="))
+  ?.slice("--activity=".length);
+const blueprints = listRegisteredBlueprints().filter((blueprint) =>
+  requestedActivityId
+    ? blueprint.id === requestedActivityId
+    : getRegisteredActivitySupportState(blueprint.id) === "released"
 );
+if (requestedActivityId && blueprints.length !== 1) {
+  throw new Error(`visual-audit-activity-missing:${requestedActivityId}`);
+}
 const results = [];
 for (const blueprint of blueprints) {
   const control = VISUAL_ACTIVITY_CONTROLS[blueprint.id];

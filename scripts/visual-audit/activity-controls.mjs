@@ -111,6 +111,13 @@ export const VISUAL_ACTIVITY_CONTROLS = Object.freeze({
     previewPath:
       ".mathcanvas-contract-lab/previews/wave17/probability-bag-comparison.png"
   },
+  "number.division.quotient-remainder.claim-evidence-v1": {
+    family: "claim-evidence",
+    manipulation: "claim-evidence-revision-drag",
+    grade: 3,
+    previewPath:
+      ".mathcanvas-contract-lab/previews/wave18/division-counting-group/initial.png"
+  },
   "measure.angle.turn-size.claim-evidence-v1": {
     family: "claim-evidence",
     manipulation: "claim-evidence-revision-drag",

@@ -1,6 +1,8 @@
 import { z } from "zod";
 import {
   assertNativeSpatialLifecycleEvidence,
+  nativeActivityCompositionSpatialContractSchema,
+  nativeIntrinsicSpatialContractSchema,
   nativeSpatialContractSchema,
   nativeSpatialEvidenceSchema,
   type NativeSpatialContract,
@@ -89,6 +91,13 @@ export const nativeSpatialContractRecordSchema = z
   })
   .strict()
   .superRefine((record, context) => {
+    if (record.recordKind !== record.contract.contractKind) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["contract", "contractKind"],
+        message: "record kind와 contract kind가 일치하지 않습니다."
+      });
+    }
     if (
       record.recordKind === "intrinsic-element" &&
       record.upstreamContracts.length > 0
@@ -109,6 +118,71 @@ export const nativeSpatialContractRecordSchema = z
         message: "activity composition contract에는 intrinsic upstream이 필요합니다."
       });
     }
+    if (record.recordKind === "intrinsic-element") {
+      const result = nativeIntrinsicSpatialContractSchema.safeParse(
+        record.contract
+      );
+      if (!result.success) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["contract"],
+          message: "intrinsic element record가 intrinsic contract schema와 다릅니다."
+        });
+      }
+    }
+    if (record.recordKind === "activity-composition") {
+      const result = nativeActivityCompositionSpatialContractSchema.safeParse(
+        record.contract
+      );
+      if (!result.success) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["contract"],
+          message: "activity composition record가 composition contract schema와 다릅니다."
+        });
+      } else {
+        const interaction = record.evidence.environment.interactionContext;
+        const composition = result.data.composition;
+        const viewport = `${composition.releaseViewport.width}x${composition.releaseViewport.height}`;
+        if (
+          !interaction ||
+          record.evidence.environment.viewport !== viewport ||
+          interaction.surfaceMode !== composition.releaseViewport.surfaceMode ||
+          interaction.sidebarState !== composition.releaseViewport.sidebarState ||
+          interaction.zoomMode !== composition.releaseViewport.zoomMode ||
+          interaction.pan.x !== composition.releaseViewport.pan.x ||
+          interaction.pan.y !== composition.releaseViewport.pan.y ||
+          Math.abs(
+            interaction.canvasUnitsToCssPx -
+              composition.canvas.canvasUnitsToCssPx
+          ) > 1e-6 ||
+          Math.max(
+            Math.abs(
+              interaction.selectionOverlayCssPx.x -
+                composition.selectionOverlayExclusionZoneCssPx.x
+            ),
+            Math.abs(
+              interaction.selectionOverlayCssPx.y -
+                composition.selectionOverlayExclusionZoneCssPx.y
+            ),
+            Math.abs(
+              interaction.selectionOverlayCssPx.width -
+                composition.selectionOverlayExclusionZoneCssPx.width
+            ),
+            Math.abs(
+              interaction.selectionOverlayCssPx.height -
+                composition.selectionOverlayExclusionZoneCssPx.height
+            )
+          ) > 1e-6
+        ) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["evidence", "environment", "interactionContext"],
+            message: "composition evidence의 interaction context가 계약과 일치하지 않습니다."
+          });
+        }
+      }
+    }
     if (record.recordHash !== nativeSpatialContractRecordHash(record)) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
@@ -120,7 +194,7 @@ export const nativeSpatialContractRecordSchema = z
 
 export const nativeSpatialContractCatalogSchema = z
   .object({
-    schemaVersion: z.literal("1.0.0"),
+    schemaVersion: z.literal("2.0.0"),
     records: z.array(nativeSpatialContractRecordSchema).max(64)
   })
   .strict()
@@ -154,6 +228,28 @@ export const nativeSpatialContractCatalogSchema = z
             path: ["records"],
             message: `composition upstream 불일치: ${id} -> ${upstream.contractId}`
           });
+          continue;
+        }
+        if (
+          record.recordKind === "activity-composition" &&
+          record.contract.contractKind === "activity-composition" &&
+          dependency.contract.contractKind === "intrinsic-element"
+        ) {
+          const scale = record.contract.composition.canvas.canvasUnitsToCssPx;
+          const renderedWidth =
+            dependency.contract.minInteractiveSize.width * scale;
+          const renderedHeight =
+            dependency.contract.minInteractiveSize.height * scale;
+          if (
+            renderedWidth < dependency.contract.minInteractiveCssSize.width ||
+            renderedHeight < dependency.contract.minInteractiveCssSize.height
+          ) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["records"],
+              message: `composition CSS interaction size 미달: ${id} -> ${upstream.contractId}`
+            });
+          }
         }
       }
     }
@@ -171,6 +267,7 @@ type NativeSpatialRole = Pick<
 export interface NativeSpatialBlueprintLike {
   readonly id: string;
   readonly contentHash: string;
+  readonly layout: Pick<ActivityBlueprint["layout"], "tokenSet">;
   readonly toolRoles: readonly NativeSpatialRole[];
 }
 
@@ -255,8 +352,13 @@ export function collectNativeSpatialIssues(input: {
       }
       if (
         record.recordKind !== "activity-composition" ||
+        record.contract.contractKind !== "activity-composition" ||
         record.contract.toolKey !== role.toolKey ||
-        record.contractVersion !== role.spatialContractVersion
+        record.contractVersion !== role.spatialContractVersion ||
+        record.contract.composition.blueprintContentHash !==
+          blueprint.contentHash ||
+        record.contract.composition.layoutPresetId !==
+          blueprint.layout.tokenSet
       ) {
         issues.push(
           issue(

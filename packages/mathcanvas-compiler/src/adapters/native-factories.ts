@@ -23,6 +23,7 @@ import { NUMBER_CARD_SVG_BY_VALUE } from "./number-card-digit-contract.js";
 import {
   NUMBER_CARD_RENDERED_SIZE,
   PLACE_VALUE_MODEL_RENDERED_DIAMETER,
+  centeredTextBounds,
   resolveNativeRenderedBounds
 } from "./native-rendered-bounds.js";
 import { PATTERN_BLOCK_VARIANTS } from "./native-pattern-block-contract.js";
@@ -493,20 +494,23 @@ export function makeTextObject(
   placement: NativeToolPlacement
 ): Record<string, unknown> {
   const fontSize = intent.fontSize ?? 40;
+  const rendered = intent.centerInPlacement
+    ? centeredTextBounds(intent, placement)
+    : placement;
   return {
     ...objectCommon,
-    x: placement.x,
-    y: placement.y,
-    _x: placement.x,
-    _y: placement.y,
+    x: rendered.x,
+    y: rendered.y,
+    _x: rendered.x,
+    _y: rendered.y,
     cx: 0,
     cy: 0,
     id: placement.id,
     fill: "#000000",
     text: intent.text,
     svgId: "input-text",
-    width: placement.width,
-    height: placement.height,
+    width: rendered.width,
+    height: rendered.height,
     parent: { observer: null },
     isEyeOn: false,
     fontSize,

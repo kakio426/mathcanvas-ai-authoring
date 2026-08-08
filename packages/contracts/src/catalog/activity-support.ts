@@ -146,7 +146,7 @@ export const ACTIVITY_SUPPORT: Readonly<
   [ACTIVITY_IDS.repeatingPatternUnit]: "released",
   [ACTIVITY_IDS.multiplicationArrayMeaning]: "released",
   [ACTIVITY_IDS.probabilityBagComparison]: "released",
-  [ACTIVITY_IDS.divisionRemainderClaim]: "verified",
+  [ACTIVITY_IDS.divisionRemainderClaim]: "released",
   [ACTIVITY_IDS.angleMeasureClaim]: "released",
   [ACTIVITY_IDS.mixedCalculationClaim]: "verified",
   [ACTIVITY_IDS.ratioMeaningClaim]: "verified",
@@ -220,7 +220,9 @@ export const ACTIVITY_RELEASE_EVIDENCE: Readonly<
     "research/mathcanvas/wave17-probability-release-canary.json"
   ],
   [ACTIVITY_IDS.divisionRemainderClaim]: [
-    "research/mathcanvas/wave18-division-remainder-release-canary.json"
+    "research/mathcanvas/division-counting-group-31-by-6-canary.json",
+    "research/mathcanvas/division-counting-group-29-by-7-canary.json",
+    "research/mathcanvas/division-counting-group-canary.json"
   ],
   [ACTIVITY_IDS.angleMeasureClaim]: [
     "research/mathcanvas/wave18-angle-turn-release-canary.json"

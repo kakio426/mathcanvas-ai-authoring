@@ -6,11 +6,13 @@ import {
 } from "./native-spatial-layout.js";
 
 const contract = {
+  contractKind: "intrinsic-element" as const,
   contractId: "number-card.spatial.test-v1",
   toolKey: "NO04NT",
   variantId: "NO04NT-01",
   toolVersionFingerprint: "test-bundle-v1",
   minInteractiveSize: { width: 80, height: 80 },
+  minInteractiveCssSize: { width: 44, height: 44 },
   reserveBox: { x: -50, y: -50, width: 100, height: 100 },
   reserveAnchor: "placement-center" as const,
   roundTripStable: true,

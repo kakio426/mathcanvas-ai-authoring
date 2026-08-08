@@ -149,9 +149,21 @@ describe("fail-closed tool adapter registry", () => {
     });
     expect(first.objects[30]).toMatchObject({
       svgId: "NO01SC-01",
-      x: 345,
+      x: 471,
       y: 896
     });
+    const rows = new Map<number, number[]>();
+    for (const object of first.objects) {
+      const xs = rows.get(Number(object.y)) ?? [];
+      xs.push(Number(object.x));
+      rows.set(Number(object.y), xs);
+    }
+    expect([...rows.values()].map((xs) => xs.length)).toEqual([
+      5, 4, 5, 4, 5, 4, 4
+    ]);
+    expect([...rows.values()].slice(0, 2).map((xs) => xs[0])).toEqual([
+      177, 219
+    ]);
     expect(() =>
       compileNativeTool({ ...intent, count: 32 }, placement)
     ).toThrow("counting-model-count-out-of-range:32");
@@ -180,6 +192,37 @@ describe("fail-closed tool adapter registry", () => {
         text: "안내"
       }, placement)
     ).not.toThrow();
+  });
+
+  it("가운데 배치 text는 실제 추정 bounds의 가로·세로 중심을 유지한다", () => {
+    const intent = {
+      kind: "text",
+      toolKey: "common.text",
+      text: "4묶음, 3자루",
+      fontSize: 28,
+      centerInPlacement: true
+    } as const;
+    const placement = {
+      id: "centered-choice",
+      x: 100,
+      y: 200,
+      width: 190,
+      height: 38
+    };
+    const fragment = compileNativeTool(intent, placement);
+    expect(fragment.kind).toBe("single");
+    expect(Number(fragment.object.x) + Number(fragment.object.width) / 2).toBeCloseTo(
+      placement.x + placement.width / 2
+    );
+    expect(Number(fragment.object.y) + Number(fragment.object.height) / 2).toBeCloseTo(
+      placement.y + placement.height / 2
+    );
+    expect(resolveNativeRenderedBounds(intent, placement)).toMatchObject({
+      x: fragment.object.x,
+      y: fragment.object.y,
+      width: fragment.object.width,
+      height: fragment.object.height
+    });
   });
 
   it("회색 목표 각과 움직이는 세 점 측정 각을 같은 좌표계로 만든다", () => {

@@ -32,6 +32,57 @@ function lcm(left, right) {
 export function validateActivityReleaseCanaryEvidence(
   evidence
 ) {
+  if (
+    evidence?.schemaVersion === "2.0.0" &&
+    evidence?.activityId ===
+      "number.division.quotient-remainder.claim-evidence-v1"
+  ) {
+    const interactionStates = Object.values(
+      evidence?.interactionShape ?? {}
+    );
+    const clearanceChecks = Object.values(
+      evidence?.environment?.classroomTextClearance?.checks ?? {}
+    );
+    const claims = evidence?.claims?.NO01SC;
+    const scenario = evidence?.scenario;
+    const supportedScenario = new Set([
+      "23-by-4:23:4:5:3",
+      "29-by-7:29:7:4:1",
+      "31-by-6:31:6:5:1"
+    ]).has(
+      `${scenario?.scenarioKey}:${scenario?.total}:${scenario?.groupSize}:${scenario?.quotient}:${scenario?.remainderCount}`
+    );
+    if (
+      typeof evidence?.observedAt !== "string" ||
+      Number.isNaN(Date.parse(evidence.observedAt)) ||
+      !hashPattern.test(evidence?.blueprintContentHash ?? "") ||
+      !hashPattern.test(evidence?.layoutPresetContentHash ?? "") ||
+      evidence?.status !== "pass" ||
+      evidence?.releaseQualified !== true ||
+      !supportedScenario ||
+      interactionStates.length !== 5 ||
+      interactionStates.some((observed) => observed !== true) ||
+      clearanceChecks.length < 7 ||
+      clearanceChecks.some((observed) => observed !== true) ||
+      claims?.verified?.answerStructureLeakedByInitialPlacement !== false ||
+      claims?.verified?.groupsFormedFromEmittedPlacements !== true ||
+      claims?.verified?.selectionOverlayAvoided !== true ||
+      claims?.released?.activityReleaseQualified !== true ||
+      claims?.lifecycle?.nativeGroupUngroupRegroup !== true ||
+      claims?.lifecycle?.saveReopenInFreshContext !== true ||
+      claims?.lifecycle?.secondGetBodyAsserted !== true ||
+      !Number.isFinite(claims?.lifecycle?.roundTripDrift) ||
+      claims.lifecycle.roundTripDrift > 1
+    ) {
+      throw new Error(
+        "activity-release-canary-evidence-shape-invalid"
+      );
+    }
+    return {
+      ...evidence,
+      blueprintId: evidence.activityId
+    };
+  }
   const itemCount = evidence?.problemCount;
   const shape = evidence?.reopenShape;
   const persisted = evidence?.persistedShape;

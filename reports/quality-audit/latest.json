@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-08T04:36:08.213Z",
+  "generatedAt": "2026-08-08T07:33:04.297Z",
   "renderScale": {
     "layoutPreset": "wave10-common-unit-v1",
     "token": "item.join-lane",
@@ -9,8 +9,26 @@
     "canaryPath": "research/mathcanvas/wave10-common-unit-release-canary.json",
     "viewport": "1280x800"
   },
-  "activityCount": 20,
-  "variationCount": 92,
+  "renderScaleByLayout": {
+    "wave10-common-unit-v1": {
+      "layoutPreset": "wave10-common-unit-v1",
+      "token": "item.join-lane",
+      "tokenWidthUnits": 720,
+      "measuredWidthCssPx": 417.8240966796875,
+      "canaryPath": "research/mathcanvas/wave10-common-unit-release-canary.json",
+      "viewport": "1280x800"
+    },
+    "wave25-division-grouping-v1": {
+      "layoutPreset": "wave25-division-grouping-v1",
+      "token": "item.group-lane",
+      "tokenWidthUnits": 760,
+      "measuredWidthCssPx": 445.023,
+      "canaryPath": "research/mathcanvas/division-counting-group-31-by-6-canary.json",
+      "viewport": "1280x800"
+    }
+  },
+  "activityCount": 21,
+  "variationCount": 93,
   "status": "pass",
   "issueCounts": {
     "p0": 0,
@@ -61,6 +79,13 @@
     ]
   },
   "activities": [
+    {
+      "blueprintId": "number.division.quotient-remainder.claim-evidence-v1",
+      "grade": 3,
+      "family": "claim-evidence",
+      "variationCount": 1,
+      "issues": []
+    },
     {
       "blueprintId": "measure.angle.turn-size.claim-evidence-v1",
       "grade": 4,
