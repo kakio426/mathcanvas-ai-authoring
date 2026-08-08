@@ -146,7 +146,7 @@
 ## R3 — native affordance 조사·공간 및 semantic 조건부 계약
 
 - Depth: `core`
-- Status: `pending`
+- Status: `in_progress`
 - Depends on: R1, R2
 - Scope:
   - `packages/contracts/src/catalog`
@@ -155,15 +155,15 @@
   - `scripts/contract-lab`
   - `research/mathcanvas`
 - Definition of done:
-  - [ ] R1의 affordance 요구를 title별이 아니라 `affordanceFamily`별로 dedupe한다.
-  - [ ] 각 affordanceFamily에서 가장 구체적인 기존 released 도구를 먼저 검토한다.
+  - [x] R1의 affordance 요구를 title별이 아니라 `affordanceFamily`별로 dedupe한다. 현재 30개 entry는 7개 family registry로 묶었다.
+  - [x] 각 affordanceFamily에서 가장 구체적인 기존 도구 후보를 `preferredToolKey`로 먼저 기록한다. 실제 새 V2 release 승격은 lifecycle gate 뒤다.
   - [ ] released 도구가 수학 상태를 충분히 표현하지 못할 때만 bounded candidate probe를 추가한다.
   - [ ] 후보 평가는 이름·모양이 아니라 학생 조작이 바꾸는 primary mathematical state로 한다.
   - [ ] required 후보마다 existing evidence와 read-only/isolated probe로 initial, selected, core-manipulated, undo/reset과 semantic state 변화를 관측한다.
   - [ ] intrinsic `visualBox`, selected `chromeBox`, task `reserveBox`, bounded movement envelope, min interaction size, label clearance가 있다.
   - [ ] 각 adapter가 viewport·selection·전체 평행이동을 제외하고 학습 관계만 남기는 닫힌 `semanticStateProjection`을 제공한다.
   - [ ] 관련 수학 관계가 바뀌지 않은 단순 이동은 persisted semantic hash가 같고 핵심 조작은 다르다.
-  - [ ] 신규 도구는 R3에서 최대 `contracted`이며 conditional GO를 released로 주장하지 않는다.
+  - [x] 신규 V2 경로의 도구는 R3에서 최대 `contracted`이며 conditional GO를 released로 주장하지 않는다.
   - [ ] actual save/fresh reopen과 roundtrip tolerance는 R5/R8의 승인된 첫 released entry PUT 안에서 검증한다.
   - [ ] tool/factory/bundle fingerprint가 evidence에 결속되고 변경 시 stale된다.
   - [ ] `captured → contracted → verified → released`를 건너뛰지 않는다.
@@ -175,11 +175,11 @@
   - [ ] 기존 current actual evidence에서 1280×800 editor chrome height, visible content width, zoom mode를 관측한다.
   - [ ] layout profile별 `canvasUnitsToCssPx`를 evidence에서 유도해 source evidence ID와 함께 R4 입력으로 pin한다.
   - [ ] R3 종료 때 affordanceFamily partition과 tool candidate 결정을 freeze한다.
-  - [ ] 사용자의 Chrome·화면·포커스·일반 프로필을 사용하지 않는다.
-  - [ ] 토큰·쿠키·계정 ID·비공개 원문이 evidence에 없다.
+  - [x] 사용자의 Chrome·화면·포커스·일반 프로필을 사용하지 않는다.
+  - [x] 토큰·쿠키·계정 ID·비공개 원문이 evidence에 없다.
 - Verification:
-  - [ ] affordance requirement/support schema tests
-  - [ ] pure placement unchanged / semantic relation changed hash tests
+  - [x] affordance requirement/support schema tests
+  - [x] pure placement unchanged / semantic relation changed hash tests
   - [ ] stale fingerprint/roundtrip drift failure tests
   - [ ] affordanceFamily별 candidate rubric과 GO/NO-GO
   - [ ] DOM/SVG text-box availability probe와 fallback decision
@@ -192,7 +192,11 @@
 - Commit gate:
   - [ ] 독립 affordanceFamily가 contracted conditional GO 또는 명시적 NO-GO로 닫힐 때마다 관련 변경만 commit·push한다. verified/released commit은 R5/R8 actual lifecycle 뒤다.
 - Evidence/notes:
-  - 미착수.
+  - `packages/contracts/src/catalog/native-affordance-v2.ts`: affordanceFamily/support/evidence/spatial reference와 viewport·selection·전체 이동을 제외하는 semantic projection/hash 계약을 추가했다.
+  - `packages/curriculum/src/native-affordance-catalog-v2.ts`: 30개 pilot을 7개 family로 dedupe하고 family별 preferred tool, candidate, evidence, blocker를 고정했다. canonical catalog는 재귀 freeze하고 finder는 clone을 반환한다. `native-counting-model-v1`은 기존 NO01SC-01 evidence를 사용해 `contracted·conditional-go`로만 남겼고 나머지는 captured/contracted·pending이다.
+  - `packages/curriculum/src/native-affordance-catalog-v2.test.ts`: family dedupe drift, candidate/evidence 단계 결속, placement·selection·viewport 불변 hash, semantic 관계 변화 hash, 상·하위 projection 충돌, spatial source SHA와 canonical authority 오염 변조 rejection을 검증한다.
+  - 기존 실제 evidence 재검증: `pnpm native-spatial:verify`, `pnpm contract:verify:division-native-rubric`, `pnpm contract:verify:division-counting-group` PASS. 1280×800 캡처 `division-counting-group-31-by-6/full-grouped.png`는 native affordance reference로만 확인했으며 학생 release 품질 캡처로 승격하지 않았다.
+  - architecture P1 baseline을 V2 native-affordance contract까지 확장했다. Sol 최종 검토 뒤 contract formatting을 반영해 interim rebaseline했으며, 현재 24-file manifest hash `be95f260c1b5a735b2e6d48a197115769b1eedff4b6ef09c2c8d4ccc796e545e`이다.
 
 ## R4 — native-first one-screen layout·typography resolver
 

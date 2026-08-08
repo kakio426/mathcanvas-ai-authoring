@@ -8,6 +8,7 @@
     "packages/mathcanvas-compiler/src/index.ts",
     "packages/validator/src/index.ts",
     "packages/contracts/src/catalog/worksheet-v2.ts",
+    "packages/contracts/src/catalog/native-affordance-v2.ts",
     "packages/planner/src/v2.ts",
     "packages/templates/src/worksheet-v2.ts",
     "packages/authoring-runtime/src/worksheet-v2.ts"
@@ -16,6 +17,10 @@
     {
       "path": "packages/authoring-runtime/src/worksheet-v2.ts",
       "sha256": "59e2b919c91258a6cfb88fd884e74a94b5c23ecf5c39fe493976d4ee1a494cf4"
+    },
+    {
+      "path": "packages/contracts/src/catalog/native-affordance-v2.ts",
+      "sha256": "735c74df8bf2c7ac751d9fdcdcc1af63ee6606db250d7cb6d3e06f064624f0ae"
     },
     {
       "path": "packages/contracts/src/catalog/worksheet-v2.ts",
@@ -106,5 +111,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "9ac16d69f952c2664f9244853010064611ac01bfde08339e79dc742302e61f5e"
+  "manifestHash": "be95f260c1b5a735b2e6d48a197115769b1eedff4b6ef09c2c8d4ccc796e545e"
 }

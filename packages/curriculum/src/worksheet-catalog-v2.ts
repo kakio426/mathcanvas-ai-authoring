@@ -12,6 +12,7 @@ import {
   grade3PilotEntries,
   grade3PilotSourceManifest
 } from "./pilot-ledger.js";
+import { findNativeAffordanceFamily } from "./native-affordance-catalog-v2.js";
 
 function authoritySource(source: {
   sourceId: string;
@@ -59,6 +60,14 @@ export const grade3PilotWorksheetCatalog: readonly WorksheetCatalogEntry[] =
           source: authoritySource(entry.crossBandReview.unit.source)
         }
       : undefined;
+    const nativeFamily = findNativeAffordanceFamily(
+      entry.nativeAffordance.affordanceFamilyId
+    );
+    if (!nativeFamily) {
+      throw new Error(
+        `worksheet-catalog-native-family-missing:${entry.nativeAffordance.affordanceFamilyId}`
+      );
+    }
     return defineWorksheetCatalogEntry({
       catalogEntryId: `grade3-basic-practice-${entry.sourceId}`,
       sourceId: entry.sourceId,
@@ -107,9 +116,9 @@ export const grade3PilotWorksheetCatalog: readonly WorksheetCatalogEntry[] =
           entry.nativeAffordance.version,
           entry.nativeAffordance.requiredOperation
         ),
-        candidateToolKeys: entry.nativeAffordance.candidateToolKeys,
-        supportState: entry.nativeAffordance.supportState,
-        evidenceIds: entry.nativeAffordance.evidenceIds
+        candidateToolKeys: nativeFamily.candidateToolKeys,
+        supportState: nativeFamily.supportState,
+        evidenceIds: nativeFamily.evidenceRefs.map((reference) => reference.id)
       },
       layoutFamily: family(
         entry.layoutFamily.id,
@@ -180,7 +189,7 @@ export function getGrade3PilotWorksheetCoverage(): WorksheetCoverageReport {
     numerator: summary.releasedEntries,
     denominator: summary.totalEntries,
     ...summary,
-    note: "pilotCoverage는 30개 콘텐츠 중 실제 released entry만 분자로 계산합니다. 현재 R2 catalog는 R3/R4 gate 전이라 blocked 상태입니다."
+    note: "pilotCoverage는 30개 콘텐츠 중 실제 released entry만 분자로 계산합니다. 현재 pilot catalog는 R3/R4 gate 전이라 blocked 상태입니다."
   });
 }
 

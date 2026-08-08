@@ -269,3 +269,7 @@ export {
   getWorksheetCatalogAuthoritySnapshot,
   grade3PilotWorksheetCatalog
 } from "./worksheet-catalog-v2.js";
+export {
+  findNativeAffordanceFamily,
+  grade3PilotNativeAffordanceFamilyCatalog
+} from "./native-affordance-catalog-v2.js";
