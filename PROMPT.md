@@ -1,481 +1,350 @@
-# MathCanvas 네이티브 affordance와 공간 계약 구현 프롬프트
+# MathCanvas 3학년 기본 연습 30개 pilot 구현 프롬프트
 
-먼저 `PLAN.md`의 확인된 결정을 읽고, `CHECKLIST.md`를 R1부터 순서대로 진행하며 각 항목의 상태를 그 파일에서 갱신한다.
+먼저 `PLAN.md`의 2026-08-08 confirmed plan을 읽고, `CHECKLIST.md`를 R1부터 순서대로 진행하며 상태와 evidence를 그 파일에서만 갱신한다.
 
 ## 역할과 목표
 
-당신은 MathCanvas 저작 엔진과 초등 수학 학습 활동을 함께 책임지는 수석 TypeScript 엔지니어이자 학습 설계자다. 현재 `verified` 상태인 나머지 있는 나눗셈 활동을 대상으로, MathCanvas를 정적 그림판처럼 쓰지 않고 학생의 수학적 판단을 실제 네이티브 조작으로 드러내는 구조를 만든다.
+당신은 MathCanvas 저작 엔진, 초등 수학 교육과정, 학생용 인터랙션, 실제 화면 품질을 함께 책임지는 수석 TypeScript 엔지니어이자 학습 설계자다.
 
-핵심 목표는 다음 두 가지를 동시에 달성하는 것이다.
+첫 목표는 `/Users/yubyeongju/Downloads/claude-all-30-ppt-content.md`의 30개 수업 아이디어를 2022 개정 교육과정에 정확히 결속하고, 교사가 선택해 실제 MathCanvas 활동으로 만들 수 있는 3학년 `기본 연습` pilot을 완성하는 것이다.
 
-1. 학생이 예상한 뒤 같은 수씩 묶어 나머지를 확인하고, 근거를 설명하고, 답을 고칠 수 있어야 한다.
-2. 네이티브 요소가 기존 고정 상자보다 크거나 선택 핸들을 펼쳐도 겹침·잘림·과도한 축소가 생기지 않아야 한다.
-
-기존 상자에 도구를 억지로 축소해 넣지 않는다. 도구의 실제 affordance와 공간 계약을 먼저 확인하고, 그 결과를 수용하는 배치 variant를 선택한다.
+단, 30개 정적 학습지를 복제하는 것이 아니다. MathCanvas의 가장 구체적인 네이티브 수학 요소를 학생의 핵심 확인 도구로 사용하고, 같은 수학적 판단과 phase 구조는 재사용 `blueprintFamily`와 variation으로 묶는다. 모든 활동은 한 화면에서 학생이 예상하고, 네이티브 요소로 확인하고, 근거를 설명하고, 처음 생각을 수정할 수 있어야 한다.
 
 ## 배경
 
 - 저장소: `/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring`
-- 시작 기준선: `main == origin/main == ca5247f12b4a6461cc3d4272d7534df32804924c`
-- 대상 활동: `number.division.quotient-remainder.claim-evidence-v1`
-- 대상 활동 상태: `verified`
-- 현 활동은 정적 점과 펜을 사용해 학생이 묶음을 표시한다. 예상→확인→설명·수정의 인지 흐름은 있지만 MathCanvas 네이티브 수학 요소 활용은 부족하다.
-- `NO01SC`(수 세기 모형), `NO01NR`(수 구슬), `NO07IC`(셈돌), `NO04NG`(배열표)는 현재 `captured` 수준이다. `NO04NT`(수 카드)는 `released`다.
-- `LayoutPreset`과 `resolveLayout`은 고정 token, `itemPitch`, `canvasBaseHeight`를 사용한다. `ResolvedEmission`에는 `bounds`와 선택적 `renderedBounds`만 있고 선택·조작·재열기 상태의 공간 계약은 없다.
-- 기존 visual audit은 초기 `renderedBounds`, 컨테이너 포함, 일부 드롭 후 위치를 검사하지만 선택 핸들, 도구 로컬 UI, undo/reset, task-relevant movement envelope, 재열기 drift를 완전히 모델링하지 않는다.
-- 각도 활동이 공통 claim-evidence preset 대신 전용 preset을 사용하는 선례가 있다.
-- 2026-08-07의 transient MathCanvas 렌더 증거는 실제 클라이언트 화면과 일회성 카드 이동만 확인했고 persistent lifecycle을 검증하지 못했다. 이를 release 증거로 승격하지 않는다.
-
-`PLAN.md`의 장기 아키텍처와 안전 원칙은 계속 유효하다. 이 문서는 그 계획을 대체하지 않고, 네이티브 affordance·공간 계약·나눗셈 재설계 범위에서 더 최근에 확정된 집중 실행 지시다. 둘이 이 범위에서 충돌하면 이 문서의 좁고 구체적인 결정이 우선한다.
+- 구현 시작 기준선: `main == origin/main == e58060e101b01261b2e22f191245ddebe04e5ed6`
+- 기존 기반: TypeScript 모노레포, 구조화 curriculum catalog, `ActivityBlueprint`, seed 기반 `ItemGenerator`, deterministic layout resolver, closed tool adapters, create-only 승인 흐름, background contract lab, native spatial contract/evidence, 시각·품질 audit.
+- 현재 교사 UI는 학년·학기·단원·성취기준·활동·학생 어려움·문항 수를 고르고 내부에서 문자열 prompt를 조합한다.
+- 현재 planner는 구조화 필드도 사용하지만 많은 prompt regex와 manipulation 분기로 template을 고른다. 새 30개 경로에서는 구조화 catalog 선택이 authority여야 한다.
+- 교육부 고시 제2022-33호 [별책 8]은 학년군 성취기준을 정하지만 출판사 교과서의 학년·학기·단원 번호를 정하지 않는다. 현재 `teacher-catalog.ts`도 official standard와 비상교육 unit을 별도 모델로 가진다.
+- 현재 30개 원고는 모두 3학년이고 1학기 15개, 2학기 15개다. 작업 분류는 `수와 연산` 21개, `도형과 측정` 7개, `자료와 가능성` 2개, `변화와 관계` 0개다.
+- 30개는 초등 1–6학년 전체 완성이 아니라 첫 pilot이다. 장기 구조는 네 영역 전체로 확장되어야 하지만 unsupported 범위를 지원한다고 주장하지 않는다.
+- `mathcanvas-learning-design`의 native-before-layout, 예상→확인→설명→수정, 교실 한국어, spatial contract, lifecycle canary 규칙을 비타협 기준으로 사용한다.
 
 ## 대상 사용자
 
-- 학습자: 초등 3–4학년, 한국어, 교실 노트북 또는 유사한 화면에서 MathCanvas 활동을 수행하는 학생
-- 운영자: 활동을 생성하고 수업에 사용하는 교사
-- 구현 검토자: MathCanvas 도구 계약, 학습 설계, 시각 품질을 검토하는 저장소 유지보수자
+- 학습자: 한국어를 사용하는 초등 3학년 학생. 교실 노트북 수준의 화면에서 한 페이지 활동을 수행한다.
+- 교사: 학년→학기→단원→성취기준→학습 유형을 고르고, 필요하면 수업 맥락을 짧게 덧붙인 뒤 결과를 확인·승인한다.
+- 유지보수자: 교육과정 결속, blueprintFamily·affordanceFamily·layoutFamily, 실제 캡처와 release evidence를 검토한다.
 
 ## 플랫폼과 환경
 
-- TypeScript 모노레포와 현재 package 경계를 유지한다.
-- 제품 런타임에 새 Python 경로나 새 workspace package를 만들지 않는다.
-- MathCanvas 조사는 `scripts/contract-lab/`의 비제품 경계에서 수행한다.
-- 실제 화면 검증은 `packages/managed-browser`의 전용 headless 프로필만 사용한다.
+- 기존 workspace package와 create-only·명시 승인·fail-closed 경계를 유지한다.
+- 제품 런타임에 Python 경로나 범용 브라우저 자동화를 추가하지 않는다.
+- 실제 MathCanvas 검증은 인증된 전용 background/headless 프로필과 기존 contract-lab 경로만 사용한다.
 - 사용자의 Chrome, 일반 Chrome 프로필, 현재 화면, 포커스, 임의 CDP endpoint를 사용하지 않는다.
-- 현재 품질 기준 viewport는 1280×800이다. 캔버스 단위는 실제 CSS px로 환산해 글자와 조작 크기를 판정한다.
-- 외부 MathCanvas write는 기존 create-only·명시 승인·fail-closed 규칙을 유지한다.
+- hard 학생 화면 profile은 실제 MathCanvas `1280×800 CSS px`다.
+- 외부 write는 기존 disposable canary 프로젝트와 승인된 save 경계만 사용한다. 기존 사용자 프로젝트를 수정·삭제하지 않는다.
+- 테스트는 변경 위험에 비례해 실행한다. 관련 package test와 table-driven audit를 먼저 돌리고, offline gate 통과 뒤에만 background canary를 실행한다.
+- 공식 교육과정과 비상교육 목차 확인에는 공개 URL/PDF에 대한 read-only web 접근을 허용한다. 이는 MathCanvas 자동화와 분리하며 사용자의 Chrome을 열지 않는다.
+- `standardAuthority`는 `교육부 고시 제2022-33호 [별책 8] 수학과 교육과정`, URL `https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4`다.
+- `unitAuthority`는 `packages/curriculum/src/teacher-catalog.ts`의 `textbookSources`가 가리키는 비상교육 2022 개정 학기별 교재 정보 페이지다. 3학년은 `https://book.visang.com/books/info/5435`와 `https://book.visang.com/books/info/5734`다.
 
 ## 이번 버전의 범위
 
-- `mathcanvas-learning-design` 스킬에 native-before-layout 및 공간 계약 규칙 추가
-- 네이티브 경계 용어와 최소 normative contract 정의
-- 관측 evidence와 normative contract 분리
-- 신규·변경 활동에 적용되는 report-only + ratchet 하네스 도입
-- 나눗셈 후보 도구의 교육적·기술적 deep probe
-- 후보가 적합하고 기존 구조 안에서 release 가능한 경우에만 도구 계약 승격
-- 선택된 도구를 수용하는 deterministic preset variant와 세로 flow
-- 나눗셈 활동의 native workbench 재설계
-- 정적 variation 검사와 작은 background canary suite
-- 실제 증거가 모두 갖춰진 경우에만 `verified → released`
+- 30개 원고의 교육부 standardAuthority·비상교육 unitAuthority 분리 결속과 provenance ledger
+- 교사에게 보이는 30개 catalog entry와 내부 재사용 blueprintFamily/variation 분리
+- `기본 연습` 학습 유형과 구조화 생성 요청
+- catalog authority를 우회하지 못하는 bounded optional prompt
+- 30개에 필요한 MathCanvas native affordance 조사·계약·지원 승격
+- 네이티브 요소의 실제 공간을 먼저 확보하는 one-screen layout profile
+- 큰 글자, 충분한 상하좌우 여백, 보기의 수평·수직 중앙 정렬
+- 기본 한 문제, 세로 예산으로 가능성이 증명된 경우에만 두 문제인 깊은 예상→확인→설명→수정 활동
+- 필수 다섯 선택을 따르는 교사 UI와 기존 preview/approval/create 흐름
+- 30개 정적 compile coverage, `(affordanceFamily × layoutProfile)` lifecycle, released entry별 actual MathCanvas save/reopen 화면
+- 장기 초등 1–6학년 coverage를 과장 없이 확장할 수 있는 catalog seam과 미지원 표시
 
 ## 비목표
 
-- 범용 constraint solver 또는 완전 동적 auto-layout 엔진
-- 모든 MathCanvas 도구의 공간 계약 완성
-- 기존 released 활동 전체를 한 번에 hard gate로 전환
-- 활동 ID별 core resolver/validator 분기
-- MathCanvas가 제공하지 않는 자동채점, 단계 강제, 자동 오답 피드백
-- `NO04NT` 수 카드가 나눗셈의 핵심 수학 상태를 바꾼다고 주장하는 것
-- captured-only 도구를 장식 목적으로 추가하는 것
-- 학생 개인정보 수집 또는 원본 인증·쿠키·토큰의 저장소 기록
-- 기존 MathCanvas 프로젝트 수정·삭제
+- PPT의 11개 수업 단계를 한 화면에 모두 축소하는 것
+- 30개 제목마다 compiler·resolver·validator·adapter를 복제하는 것
+- 네이티브 요소를 장식으로 넣거나 미검증 도구를 그림 대용으로 사용하는 것
+- 활동별 절대 좌표, per-item nudge, raw MathCanvas payload passthrough
+- 글자를 줄여 두 문제를 억지로 맞추거나 풀이에 canvas pan/scroll을 요구하는 것
+- MathCanvas가 보장하지 않는 자동채점·단계 강제·즉시 정오 피드백
+- `기본 연습` 외 학습 유형의 빈 UI 또는 placeholder 활동
+- 30개 pilot 완료를 초등 1–6학년 전체 완료로 표시하는 것
+- 모든 출판사의 단원 체계를 이번 wave에서 구현하는 것
+- 학생 이름·학급·개인 성취 데이터 수집
 
-## 핵심 학습 흐름
+## 핵심 교사 흐름
 
-화면과 지시문은 다음 순서를 위에서 아래로 일치시킨다.
+1. 교사가 학년을 고른다.
+2. 선택한 학년의 학기를 고른다.
+3. 해당 학기·출판사 mapping의 단원을 고른다.
+4. 단원에 실제 결속된 성취기준을 고른다.
+5. released 결과가 있는 학습 유형을 확인한다. 첫 wave에서는 `기본 연습` 한 장을 preselected confirmation card로 보여 주고 빈 다른 유형은 노출하지 않는다.
+6. 같은 조건에 여러 30개 entry가 있을 때만 `활동 초점`을 고른다. 전역 30개 긴 목록은 만들지 않는다.
+7. 필요하면 500자 이하의 비식별 추가 prompt를 입력한다. 허용되지 않은 변경은 적용하지 않고 이유를 알려 준다.
+8. 시스템은 기본 한 문제로 preview를 만든다. R4의 실제 세로 예산이 가능하다고 증명한 layout에서만 두 문제를 자동 선택할 수 있다.
+9. 교사가 학습 목표, 활동 흐름, MathCanvas 결과를 확인하고 명시적으로 승인한다.
+10. 시스템은 새 MathCanvas 활동만 만들고 기존 활동은 바꾸지 않는다.
 
-1. 학생은 카드를 옮기기 전에 몫과 나머지를 예상한다.
-2. 학생은 네이티브 수학 도구로 같은 수씩 묶음을 만들고 남는 양을 확인한다.
-3. 학생은 묶음 수, 묶음마다 들어간 수, 남은 수를 근거로 설명한다.
-4. 학생은 처음 선택과 실제 구성을 비교해 답을 고칠 수 있다.
+## 핵심 학생 흐름
 
-학생에게 `먼저 예상`, `세어 확인`, `근거와 수정`, `검증`, `불변량`, `후보`, `수 카드 모음` 같은 내부 용어를 보여 주지 않는다. 대상과 행동을 이름 붙인 짧은 교실 문장을 사용한다.
+모든 30개 entry는 한 화면 안에서 다음 학습 사건을 가진다.
 
-학습 설계가 답해야 할 문장은 다음과 같다.
+1. `예상`: 대표 오개념을 포함한 선택지나 구성 중 하나를 고른다. 초기 상태는 미해결이다.
+2. `수학적 확인`: 내용에 가장 알맞은 released 네이티브 요소를 조작해 핵심 불변량이나 관계를 확인한다.
+3. `설명`: 무엇을 움직이거나 비교했고 왜 그런지 학생 말로 적는다.
+4. `수정`: 처음 선택과 확인 결과가 다르면 답이나 설명을 고칠 수 있다.
 
-> 학생은 주어진 전체를 같은 수씩 몇 묶음으로 만들 수 있는지와 몇 개가 남는지를 결정해야 한다.
+완성된 정답 그림, 정답이 잠긴 text, 의미 없는 단순 drag는 이 흐름을 충족하지 않는다.
 
-오개념 갈등은 적어도 다음을 포함한다.
+## 기능 요구사항
 
-- 나머지가 묶는 수와 같아도 된다고 생각함
-- 전체 수를 묶음 수로 착각함
-- 몫과 나머지의 순서를 바꿈
-- 같은 수씩 묶지 않고 임의 크기로 나눔
+### R1. 30개 curriculum·affordance ledger `[core]`
 
-자기검증 불변량은 `묶음 수 × 묶음마다의 수 + 남은 수 = 전체 수`이며, 남은 수는 묶는 수보다 작아야 한다. 이 식을 잠긴 정답으로 미리 보여 주지 말고 학생이 만든 네이티브 구성에서 세어 확인할 수 있게 한다.
+30개 원고 각각에 stable source ID, 제목, 원고 위치, 교육부 성취기준 binding, 비상교육 학년·학기·단원 binding, 영역, 핵심 수학적 결정, 대표 오개념, 확인할 불변량, 필요한 native affordance, blueprintFamily·affordanceFamily·layoutFamily 후보를 기록한다.
+
+PPT는 auxiliary source다. `standardAuthority`는 성취기준·수학 용어만, `unitAuthority`는 학년·학기·교과서 단원만 관할한다. 원고의 단원 번호와 비상교육 목차가 다르면 unitAuthority에 맞게 교정한다. 두 locator를 한 `official` provenance로 합치지 않는다.
+
+공식 원문 검토는 다음 절차로 한다.
+
+1. 위 NCIC 공식 PDF를 read-only로 열고 source version·조회 시점·content fingerprint를 pin한다.
+2. 필요한 standard code·정확한 문구·PDF 쪽·영역·소주제와 비상교육 unit title·number를 각 authority에서 대조한다.
+3. 구현 agent의 추출 결과를 **구현 세션과 다른 별도 read-only reviewer session/model**이 같은 standard/unit locator와 비교한다. 동일 세션 자가검토는 두 번째 검토로 세지 않는다.
+4. 둘이 일치할 때 reviewer actor·reviewedAt과 함께 `official-text-verified`를 선언한다.
+5. URL/PDF 접근이 불가능하거나 문구·locator가 모호하면 `official-source-checked` 이하로 두고 종속 entry를 `blocked`로 유지한다. 사용자의 추측이나 auxiliary source만으로 승격하지 않는다.
+
+3학년 단원에서 하위 학년군 성취기준을 복습하는 경우 현재 단원의 primary standard로 위장하지 않는다. `prerequisiteStandardCodes`와 `crossBandReview`를 사용하고 교사에게 `선수 학습 복습`으로 표시한다. 이 entry는 올바른 분류와 release evidence가 있으면 `pilotCoverage`에는 포함되지만 3–4학년군 `curriculumCoverage` 분자에는 포함되지 않는다.
+
+30개 제목은 유지하되 같은 핵심 결정과 phase 구조를 공유하는 항목을 blueprintFamily 후보로 묶는다. 세 family 개수는 30이나 사전 목표 수에 맞추지 않는다.
+
+각 entry에는 원고 11단계 중 한 화면에 남긴 학습 사건과 의도적으로 제외한 단계를 기록한다.
+
+### R2. 구조화 catalog·request·coverage `[core]`
+
+기존 curriculum seam을 확장해 `CurriculumSelection`, `CurriculumAuthorityBinding`, `CurriculumActivityCatalogEntry`, `learningType`, `catalogEntryId`, `blueprintFamilyId`, `variationPresetId`, `affordanceFamilyId`, `availability`를 검증한다.
+
+새 경로에는 별도 strict `WorksheetRequestV2`를 만든다. `catalogEntryId`, 구조화 selection, optional context/modifier text, seed를 전달하고 `manipulation`은 받지 않는다. 기존 `GenerationRequest` V1과 regex path는 현재 released 활동의 compatibility-only 경로로 그대로 두며 신규 30개 manipulation 문자열이나 `ACTIVITY_IDS`를 추가하지 않는다. planner는 V2 schema를 먼저 exact-resolve하고, V1만 기존 regex chain으로 보낸다. V1은 기존 활동의 V2 migration 전까지 새 기능 없이 유지하며 장기 만료 대상임을 표시한다.
+
+V2 planner는 strict `WorksheetPlanV2`를 반환한다. 필드는 최소 `requestId`, `catalogEntryId`, `blueprintFamilyId/version`, `variationPresetId/version`, `affordanceFamilyId/version`, `layoutProfileId/version`, `seed`, authority/curriculum binding, 적용 modifier, 거부 modifier와 이유다. V2는 legacy `Recommendation`이나 `manipulation`을 합성하지 않는다.
+
+R2가 이 plan을 소비하는 templates의 별도 `prepareWorksheetV2(plan)` 진입점과 authoring-runtime의 V2 draft/hash/approval/resolve/compile 분기까지 소유한다. V1은 기존 `recommendActivity → prepareRegisteredActivity`와 manipulation 대조를 유지한다. V2는 `planWorksheetV2 → prepareWorksheetV2 → resolveActivity → compileActivity`로 내려가되 동일한 draft hash·승인·validator 안전 경계를 사용한다. R2에서는 generic transport fixture로 seam을 검증하고, R4 종료 때 실제 layout profile·LearningPhaseContract fixture로 end-to-end 통과시킨 뒤 R5를 시작한다.
+
+교사 UI에서 전달한 구조화 선택이 planner의 source of truth다. optional prompt는 선택된 entry가 선언한 수 범위·난이도·맥락 등 유한 modifier만 만들 수 있다. standard, grade, 세 family binding, tool support, raw payload, 좌표를 바꿀 수 없다.
+
+`pilotCoverage`와 장기 `curriculumCoverage`를 분리한다. 30개 밖의 미지원 성취기준은 명시적으로 unsupported로 남긴다.
+
+현재 `assertTeacherTextbookCatalog`의 고정 `92` 개수 불변조건은 authority dataset에서 계산한 기대 집합과 unmapped set 비교로 바꾼다. cross-band review는 단원 `standardCodes`에 거짓 primary code를 넣지 않고 별도 review binding으로 검증한다.
+
+### R3. native affordance 조사와 조건부 계약 `[core]`
+
+R1에서 나온 `affordanceFamily`마다 현재 released 도구가 가장 구체적인 수학 상태를 표현하는지 먼저 확인한다. 적합한 released 도구가 없을 때만 MathCanvas 팔레트 후보를 조사한다. R3 종료 때 affordanceFamily partition을 freeze하며 R6에서 바꾸려면 R3로 되돌아온다.
+
+후보는 이름이 아니라 학생이 바꾸는 수학 상태로 평가한다. R3에서는 existing evidence와 read-only/isolated probe로 initial, selected, core-manipulated, undo/reset, semantic state 변화, intrinsic box, selection chrome, bounded movement envelope를 확인해 conditional GO/NO-GO를 낸다. 신규 live write는 하지 않으며 새 도구는 최대 `contracted`다. 실제 save/fresh reopen은 R5 또는 R8의 승인된 첫 released entry PUT 안에서 검증해 `verified/released`로 승격한다.
+
+각 adapter는 raw payload hash 대신 닫힌 `semanticStateProjection`을 제공한다. viewport·selection·전체 평행이동을 정규화하고 group membership, 상대관계, 각, 분할, 단위, graph key처럼 목표에 필요한 상태만 해시한다. 관련 관계가 바뀌지 않은 단순 이동은 같은 hash이고, 핵심 조작은 다른 hash여야 한다.
+
+layout을 만들기 전에 MathCanvas text가 DOM/SVG box로 질의 가능한지 read-only로 probe한다. 가능하면 실제 box는 release 검증에만 쓰고, 불가능하면 pixel bounding box 또는 font fingerprint에 결속된 conservative metrics table을 만든다. 어느 경우에도 live glyph 측정값을 resolver의 배치 입력으로 사용하지 않는다.
+
+기존 current actual evidence에서 1280×800 editor chrome 높이, visible content width, zoom mode와 `canvasUnitsToCssPx`를 유도해 R4 세로 예산 입력으로 pin한다.
+
+`captured → contracted → verified → released`를 건너뛰지 않는다. conditional GO를 release로 주장하지 않는다. 도구가 NO-GO면 점·선·그림으로 조용히 대체하지 않고 종속 entry만 `blocked`로 둔다. 다른 독립 affordanceFamily는 계속 진행한다.
+
+### R4. one-screen layout·typography resolver `[core]`
+
+기존 상자 크기를 먼저 정하지 않는다. native spatial contract의 `reserveBox`, `chromeBox`, 최소 조작 크기, label clearance를 먼저 계산한 뒤 versioned `student-one-screen-large-v1` `OneScreenLayoutProfile`을 고른다. 이 글자 하한은 30개 pilot profile에만 적용한다. `packages/templates/src/blueprints/student-screen-quality.ts`의 legacy default 66/45/32/30/28과 `scripts/quality-audit/thresholds.mjs`의 audit `TYPE_SCALE`을 전역 상향하지 않는다. 새 하한은 explicit profile parameter로만 주입해 기존 released blueprint hash를 바꾸지 않는다.
+
+hard viewport 1280×800에서 제목 38–42px, 질문·핵심 지시 28–32px, 보기·수학 라벨 24–28px, 보조 학습자 문구 22–24px을 목표로 한다. 학습자 고정 문구는 22px 아래로 내리지 않는다. 두 줄 문장은 line-height 1.35 이상과 상하 18px·좌우 20px 목표 여백을 가진다.
+
+배치 입력은 R3에서 pin한 font fingerprint와 conservative offline metrics table만 사용한다. 보기 문구는 그 결정적 metrics로 수평·수직 중앙에 배치한다. 실제 glyph/line box는 R8에서 결과를 검증하는 ratchet이지 resolver 입력이 아니다. 자동 wrap, title/line clearance, native selected/manipulated bounds, 쓰기 영역을 함께 검사한다.
+
+먼저 실제 editor chrome 높이와 위 하한을 넣어 한 문제·두 문제의 세로 예산을 수치로 계산하고 evidence에 기록한다. 한 문제 profile은 필수다. 두 문제가 가능한 수치가 나올 때만 두 문제 profile과 관련 test를 구현한다. 불가능하면 두 문제는 unsupported로 남기고 한 문제만 사용한다. 한 문제도 맞지 않으면 축소·스크롤·per-item nudge 없이 fail-closed한다.
+
+R4에서 `ActivityBlueprint`의 닫힌 `LearningPhaseContract` schema와 generic released predicate를 정의하고 architecture baseline에 포함한다. R6는 이 schema에 30개 데이터를 결속할 뿐 vocabulary를 추가하지 않는다.
+
+R2/R3에서 baseline 대상 core를 변경하면 wave 종료 때 이유를 CHECKLIST에 기록하고 interim rebaseline할 수 있다. R4가 generic V2 request/phase/layout/font-metrics seam을 완성하면 최종 `pnpm architecture:baseline`을 검토해 동결한다. 이후 core 변경이 필요하면 R2/R4로 돌아가 근거와 Opus 검토를 받은 뒤 재동결한다.
+
+### R5. 대표 vertical slice `[core]`
+
+30개 전체 전에 적어도 다음 네 표현 계열을 실제로 완결한다.
+
+- PPT 02 `같은 묶음은 곱셈으로`: discrete group/array
+- PPT 10 `분수의 첫 조건, 똑같이`: equal partition/part-whole
+- PPT 23 `원의 중심과 반지름 찾기`: geometry native workbench
+- PPT 01 `그림 하나에 숨은 수`: picture graph/data interpretation
+
+먼저 네 slice를 offline `WorksheetPlanV2 → prepareWorksheetV2 → resolve → compile → validators → candidate approval artifact`로 완주한다. 이때 상태는 `release-candidate`이며 교사 UI와 public released planner에는 노출하지 않는다. 네 표현을 함께 본 뒤 vocabulary를 고칠 필요가 있으면 live write 전에 R2/R4로 돌아가 수정·재동결하고 candidate hash를 다시 고정한다.
+
+`release-candidate`는 두 authority, blueprint/preset, phase·수학·공간·품질 offline gate가 통과했지만 actual save/reopen evidence가 아직 없는 V2 entry다. public planner를 우회하되 compiler/validator를 우회하지 않는 `scripts/contract-lab` 전용 경로만, exact approval manifest 안에서 candidate plan을 직접 compile/write할 수 있다. teacher preview/approval token은 발급하지 않는다.
+
+hash freeze와 승인 뒤 실제 canary를 통과하면 tool/entry를 released로 승격하고, 그때 public V2 planner→authoring-runtime→teacher preview 경로까지 확인한다. 이 네 slice 때문에 core에 활동 ID 분기가 생기면 다음 30개 구현 전에 vocabulary 또는 seam을 고친다.
+
+실제 R5 canary 전에 exact 네 entry ID·hash·write count를 가진 승인 manifest를 만들고 사용자에게 승인받는다. 예상 budget은 disposable project가 없을 때 `POST ≤1`, `PUT = 4`다. 이 네 PUT은 전체 wave hard ceiling `PUT ≤30`에 포함된다.
+
+live 뒤 코드/hash 수정으로 R5 캡처가 stale되면 원래 ceiling으로 자동 재수집하지 않는다. 기존 manifest를 종료하고 이미 사용한 write 수와 재수집할 exact entry를 적은 새 manifest로 사용자 승인을 다시 받는다.
+
+### R6. 30개 blueprintFamily·variation 완성 `[core]`
+
+R1의 근거로 `blueprintFamily`, `affordanceFamily`, `layoutFamily`를 구분해 30개 entry를 모두 연결한다. 기존 released blueprint가 학습 결정과 native affordance를 충족하면 재사용·일반화하고, 충족하지 않을 때만 새 blueprintFamily를 추가한다. R3에서 freeze한 affordanceFamily를 바꿔야 하면 R3로 되돌아가 evidence를 stale 처리한다.
+
+R4에서 정의·동결한 `LearningPhaseContract`에 `prediction`, `mathematical-confirmation`, `explanation`, `revision` 데이터를 layout region·constraint·tool role로 결속한다. released predicate는 다음을 모두 요구한다: 네 phase가 순서대로 존재, prediction에 초기 미충족 decision constraint와 오개념 surplus, confirmation의 native 조작 뒤 semantic-state hash 변화, explanation에 실제 CSS 높이 44px 이상의 쓰기 영역, confirmation 뒤 도달 가능한 revision region.
+
+각 entry는 기본 한 문제, R4가 증명한 layout에서만 두 문제를 사용한다. 문제 수만 다른 복제, 정답 노출, decorative native, raw 이동만 바꾸는 의미 없는 카드 drag를 거부한다.
+
+blueprintFamily별 최소·대표·최대 variation을 생성하고 수학 불변조건, 보기의 오개념 타당성, 같은 전체/단위, 단위 변환, 몫·나머지, 그래프 key 등 해당 family의 의미 조건을 item generator 또는 closed constraint로 검증한다. validator에 entry ID 분기를 만들지 않는다.
+
+### R7. 교사 생성 UI·preview·approval `[core]`
+
+현재 teacher UI를 필수 다섯 결정 중심으로 바꾸고 실제 30개 catalog에 연결한다. 학습 유형이 하나뿐일 때는 `기본 연습`을 preselected confirmation card로 보여 주며 가짜 빈 선택지는 만들지 않는다. 기존 `학생이 어려워하는 지점`은 이번 경로의 필수 축에서 제거하거나 catalog의 오개념 preset으로 흡수한다. 4·6문항 선택은 30개 경로에 노출하지 않는다.
+
+선택지가 없거나 verified-only/blocked인 조합은 생성 가능한 것처럼 보이지 않게 하고, 이유와 다음 행동을 교사 말로 안내한다. optional prompt가 적용한 modifier와 적용하지 못한 요청을 preview에서 알 수 있어야 한다.
+
+기존 로그인 상태, session, approval token, content hash, create-only confirmation을 유지한다. 교사 UI 자체도 작은 글자·치우친 보기·과밀한 카드 없이 keyboard와 screen reader로 탐색 가능해야 한다.
+
+### R8. 실제 evidence·독립 검토·release `[core]`
+
+30/30 entry를 table-driven으로 resolve해 `release-candidate`, released compiled artifact 또는 근거가 있는 `blocked` state로 시작하고, R8 종료 때 released/blocked terminal state로 닫는다. 각 released entry마다 current hash에 결속된 actual entry screen을 하나 확보하고, 그중 `(affordanceFamily × layoutProfile)`별 위험 최대 entry가 full lifecycle 대표를 겸한다. family 최소·최대 variation은 offline/isolated로 전수 검증한다. actual entry screen은 로컬 mock이 아니라 compiler 결과를 승인된 disposable MathCanvas canary에 save하고 fresh reopen한 실제 editor 캡처다.
+
+candidate write는 R5와 같은 contract-lab 전용 `WorksheetPlanV2 → prepareWorksheetV2 → resolve → compile → validators` 경로만 사용한다. public planner/UI의 released-only gate는 우회하거나 완화하지 않는다. actual lifecycle과 모든 release gate를 통과한 뒤에만 catalog entry와 tool support를 released로 승격하고, 이후 public V2 planner와 teacher preview/approval을 검증한다.
+
+실제 캡처는 background에서만 만들며 initial, selected, core-manipulated, undo/reset, reopened 상태에서 겹침·잘림·정렬·글자 크기·교실 용어·정답 노출을 검사한다. tool/font/layout fingerprint 또는 affordanceFamily partition이 바뀌면 종속 evidence를 stale 처리한다.
+
+R8 live write 전에 R5에서 이미 사용한 4건을 제외한 exact release-candidate entry ID·hash와 write count를 manifest로 만들고 다시 사용자 승인을 받는다. `candidateWriteCount`는 entry 수가 아니라 manifest에 선언된 PUT operation 총수이며 최초 manifest는 candidate당 정확히 1 PUT이다. 전체 wave hard ceiling은 disposable project 생성 `POST ≤1`, `PUT ≤candidateWriteCount`이고 최대 30이다. full lifecycle 대표는 이 PUT 안에서 수집한다. manifest를 벗어난 write, hash 변경, 추가 project가 필요하면 실행 전에 중단하고 새 승인을 받는다.
+
+R5/R8 write 뒤 stale 재수집은 최초 ceiling에 포함된 것으로 간주하지 않는다. 기존 manifest를 종료하고 이미 사용한 write와 exact 재수집 범위를 보고한 뒤 별도 사용자 승인을 받아야 한다.
+
+시각 점검은 Sol xhigh가 수행한다. 최종 release 조건은 visual audit 100, quality audit 100, P0/P1 0, Sol xhigh P0/P1/P2 0, 관련 테스트와 `pnpm check` 통과다. Claude Opus 5의 논리·확장성 검토에서 차단 지적이 있으면 같은 wave 안에서 수정·재검증한다.
+
+모두 released면 `pilot complete 30/30`이다. blocked가 남으면 R8 실행은 partial release로 complete할 수 있지만 `released N/30`만 주장한다. blocked entry는 교사 기본 선택에서 숨기고 관리/coverage 화면에 이유와 다음 조사 비용을 남기며 pilot 완료나 그 entry의 curriculum coverage 기여를 주장하지 않는다.
+
+각 의미 있는 완결 wave만 관련 변경을 `main`에 커밋·push한다. 사용자 변경을 섞지 않고, push 뒤 `main == origin/main`을 확인한다.
+
+### R9. 장기 coverage scaffold `[scaffold]`
+
+초등 1–6학년 네 영역의 공식 standard index와 활동 지원 상태를 연결할 수 있는 real seam을 둔다. 현재 빠진 1–2학년군 index가 이 seam의 명시적 후속 범위다. `분모 코드 수가 존재`와 `공식 문구·locator까지 검증 완료`를 별도 상태로 둔다. 첫 wave에서 완전한 공식 분모를 검증하지 못하면 `curriculumCoverage`를 숫자로 추정하지 말고 `unavailable`과 필요한 다음 작업을 표시한다.
+
+다른 출판사 단원 mapping, `기본 연습` 밖의 학습 유형, 다른 학년 entry가 기존 curriculum/catalog/blueprint 경계에 데이터로 붙을 수 있어야 한다. placeholder 활동이나 가짜 released 상태는 허용하지 않는다.
+
+## 콘텐츠와 데이터 요구사항
+
+- 30개 source ID는 `ppt-01`부터 `ppt-30`까지 안정적이고 제목 변경과 분리한다.
+- source provenance는 파일 경로·제목·원고 locator·검토 hash를 가진다. PPT 원문 전체를 제품 payload에 복사하지 않는다.
+- curriculum binding은 standardAuthority source ID·PDF locator·version/fingerprint와 unitAuthority source URL·unit locator·version/fingerprint를 별도로 가지고 reviewer actor와 reviewedAt을 기록한다.
+- catalog entry는 teacher label, instructional grade, semester, unit mapping, primary standard code, prerequisite codes/crossBandReview, domain, learning type, blueprintFamily ID/version, variation preset ID/version, affordanceFamily ID, layoutFamily ID, availability, blocking reason을 가진다.
+- blueprintFamily와 preset의 content hash, generator version, layout profile, tool/spatial contract fingerprint가 release evidence에 결속된다.
+- 같은 blueprintFamily를 쓰는 entry도 서로 다른 핵심 결정을 가르치면 별도 preset 또는 blueprintFamily로 나눌 근거가 있어야 한다.
+- variation은 seed로 재현 가능하고 허용 범위 밖 수치·단위·문맥을 만들지 않는다.
+
+## 시각·UX 방향
+
+- 스타일은 native workbench가 중심인 밝은 교과서형 화면이다.
+- 색은 높은 대비의 navy/blue를 기본으로 하고 green은 확인·수정, orange는 제한된 주의 신호에만 사용한다.
+- 위에서 아래로 제목/목표 → 예상 → native workbench → 설명/수정 순서를 유지한다.
+- workbench가 학생 화면에서 가장 큰 영역을 차지한다. 설명 상자나 장식 카드가 native 수학 요소보다 커지지 않는다.
+- 제목은 이전보다 분명히 크고, 최상단 문장 카드와 보기에는 충분한 상하 여백이 있다.
+- 보기 1·2·3과 문장들은 상자의 왼쪽 아래가 아니라 수평·수직 중앙에 놓인다.
+- rounded card, 테두리, 배경색은 학습 단계 구분에 필요한 만큼만 사용한다.
+- 선택 handle, 도구 local UI, 조작 뒤 커진 group, 라벨, 다음 단계가 실제 캡처에서 겹치지 않아야 한다.
+- 학생이 화면을 pan/scroll하지 않아도 핵심 문제와 쓰기 영역을 볼 수 있어야 한다. 수학 조작용 drag는 보이는 taskEnvelope 안에서 허용한다.
 
 ## 아키텍처 백본
 
 ### 데이터 모델
 
-#### `NativeSpatialContract` `[core]`
-
-도구+variant 버전에 대한 normative 공간 계약이다. 정확한 이름은 기존 vocabulary와 조화시킬 수 있지만 책임은 유지한다.
-
-- `toolKey` 또는 `nativeModuleKey`
-- `variantId` 또는 명시적 variant matcher
-- `toolVersionFingerprint`
-- `minInteractiveSize` — 캔버스 단위의 최소 조작 크기
-- `reserveBounds` — authoring anchor 기준 로컬 경계
-- `roundTripStable`
-- `roundTripTolerance`
-- `derivedFromEvidenceIds`
-
-`reserveBounds`는 다음 정의로 계산한다.
-
-- `visualBox`: 평상시 실제로 그려지는 외곽
-- `chromeBox`: 선택 상태의 tool-local handle·label·menu를 포함한 외곽. 전역 편집기 UI는 제외한다.
-- `taskEnvelope`: 활동이 명시적으로 요구하는 정상 조작 상태들의 유계 범위
-- `reserveBox`: `visualBox ∪ chromeBox ∪ bounded taskEnvelope`에 필요한 내부 여백을 더한 배치 예약 영역
-
-`minGap`은 `reserveBox` 바깥에서 한 번만 적용한다. chrome 여백과 `minGap`을 중복 계산하지 않는다.
-
-자유 드래그 전체를 `taskEnvelope`로 저장하지 않는다. 정상 활동 상태를 유계로 정의할 수 없으면 `unbounded` 또는 동등한 명시적 상태로 실패시키고, 컨테이너 clamp가 실제 MathCanvas 계약으로 확인되지 않는 한 모든 학생 행동에서 overlap 0이라고 주장하지 않는다.
-
-#### `NativeSpatialEvidence` `[core]`
-
-관측 자료는 contract와 별도 research artifact로 둔다.
-
-- immutable evidence ID와 관측 시각
-- tool/variant 및 MathCanvas bundle/factory fingerprint
-- viewport, DPR, font hash, asset hash, harness version
-- initial, selected, core-manipulated, undo/reset, reopened 관측값
-- 실제 저장 payload의 수학 상태 전후 차이
-- non-pointer 조작 경로 관측 결과
-- 원본 민감정보를 제거한 측정·캡처 경로
-
-관측 배열 자체를 normative contract 필드로 복사하지 않는다. 재측정이 계약 값을 바꾸지 않으면 contract hash를 흔들지 않는다. evidence artifact는 별도 content hash로 결속하고, tool version이 바뀌어 contract가 stale하면 fail-closed한다.
-
-재열기 외곽이 초기 외곽과 tolerance 이상 다르면 상자를 키워 수용하지 않는다. serialization 또는 native contract 결함으로 실패시킨다.
-
-#### `LayoutVariantProfile` `[core]`
-
-- content-only selector 조건
-- explicit variant ID: 예 `horizontal`, `stacked`, `multi-row`
-- variant별 고정 `itemPitch`, `canvasBaseHeight`, token set
-- 수용 가능한 `reserveBox` 최대값
-- 허용된다면 width가 엄격히 감소하는 단 하나의 fallback variant
-
-selector는 문항의 의미 값만 읽는다. 렌더 결과나 growth 결과를 다시 읽어 variant를 반복 선택하지 않는다.
-
-### 모듈 경계와 계약
-
-1. `scripts/contract-lab/` `[core for selected tools]`
-   - headless deep probe와 sanitized evidence 생성만 담당한다.
-   - 제품 runtime에 export하지 않는다.
-2. `packages/contracts/src/catalog/` 또는 기존 도구 계약 경계 `[core]`
-   - normative spatial contract, support evidence, version staleness를 소유한다.
-3. `packages/mathcanvas-compiler/src/adapters/` `[core]`
-   - 의미 입력과 placement를 실제 native object 및 `renderedBounds`/reserve lookup으로 연결한다.
-4. `packages/mathcanvas-compiler/src/layout-presets/`와 `resolve/` `[core]`
-   - content-only variant selection, 순수 sizing, fit validation, 누적 vertical flow를 담당한다.
-5. `packages/templates/src/`와 `packages/curriculum/src/` `[core]`
-   - 나눗셈의 학습 목표, 문항 variation, 오개념, 역할, 교실 문구와 layout profile ref를 소유한다.
-6. `scripts/visual-audit/`, `scripts/quality-audit/`, cognitive harness `[core]`
-   - gate 의미와 report-only/ratchet/hard 전환을 소유한다.
-7. 기존 released 활동의 미측정 도구 baseline `[scaffold]`
-   - 초기에는 report-only가 허용되지만, 신규 위반을 허용하지 않는 실제 ratchet seam을 가져야 한다.
-8. 전체 도구 쌍의 pairwise interference catalog `[scaffold]`
-   - 이번에는 나눗셈 화면에서 실제로 공존하는 선택된 workbench 도구와 `NO04NT` 조합만 core로 검증한다.
-
-### 상태와 데이터 흐름
-
-```text
-meaningful activity values
-  → content-only layout variant selection
-  → NativeSpatialContract lookup
-  → pure sizing
-  → fit validation
-  → reserveBox-based vertical flow
-  → resolved emissions
-  → native adapters
-  → static audits
-  → headless observation evidence
-  → release evidence binding
-```
-
-selection은 content만 읽고, growth는 이미 선택된 variant와 size만 읽는다. 서로를 다시 호출하지 않는다.
-
-### real-vs-stub
-
-- 나눗셈에서 선택된 핵심 도구의 contract, adapter, layout, audit, canary는 실제 구현한다. stub을 허용하지 않는다.
-- 기존 released 활동 전체의 spatial evidence 백필은 scaffold다. baseline과 ratchet은 실제로 동작해야 하지만 모든 과거 도구의 deep probe를 이번에 끝내지 않는다.
-- 범용 auto-layout은 만들지 않는다. 향후 반복 사례가 생기면 현재 `LayoutVariantProfile` seam에 붙인다.
-
-### 확장 지점
-
-- 다른 native 도구 family의 `NativeSpatialContract` 추가
-- 같은 family의 새 `LayoutVariantProfile` 추가
-- report-only gate의 개별 hard 승격
-
-새 확장 지점은 활동 이름별 switch를 추가하지 않고 descriptor/profile 등록으로 연결되어야 한다.
-
-## 기능 요구사항
-
-### R1. 학습 설계 스킬에 native affordance 규칙 추가 `[core]`
-
-`/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`에 다음 규칙을 기존 workflow와 binary rejection rules에 자연스럽게 통합한다.
-
-- native affordance mapping before layout
-- 학습목표에 가장 구체적이며 `released`인 도구 우선
-- primitive fallback의 사유와 한계 기록
-- native 도구가 장식이 아니라 학생 조작으로 수학 상태를 바꾼다는 evidence
-- 신규·변경 활동에서 spatial contract 없는 native 배치 금지
-- overflow 순서: explicit alternate preset → wrap/stack → 검증된 최소 크기 안의 scale
-- 문항별 임의 좌표 보정 금지
-- initial/selected/core-manipulated/undo-reset/save-reopen 실제 화면 확인
-
-스킬 문구는 특정 나눗셈 도구 이름에 결합하지 않는다.
-
-### R2. 경계 vocabulary와 contract/evidence 분리 `[core]`
-
-`visualBox`, `chromeBox`, `taskEnvelope`, `reserveBox`를 문서와 타입에서 한 의미로 정의한다. 각 gate가 어떤 box를 사용하는지 표로 고정한다. normative contract와 환경 의존 evidence를 별도 schema/fixture로 만들고, tool version staleness와 roundtrip tolerance를 fail-closed로 검사한다.
-
-### R3. affordance·spatial gate와 ratchet `[core]`
-
-기존 predicate 및 audit 구조와 조화되는 최소 gate를 구현한다.
-
-- native candidates reviewed
-- semantic native preferred
-- primary mathematical state changed
-- primitive fallback bounded
-- native reserve box fit
-- native minimum interaction size
-- native vertical flow fit
-- native label clearance
-- native state change and roundtrip
-
-신규·변경 활동에서 발생한 새 위반은 즉시 실패한다. 기존 released 활동의 이미 존재하는 위반만 baseline report-only로 남길 수 있다. waiver는 `(activity, gate)` 키, 담당자, 사유, 만료일을 갖는다.
-
-gate별 hard 승격 조건은 다음과 같다.
-
-- 모든 released 활동에서 실행됨
-- 신규 회귀 0
-- 남은 위반이 모두 유효한 waiver를 가짐
-- 동일 입력에서 연속 3회 green이고 flake가 없음
-- 수동 표본에서 false positive 0
-
-### R4. 나눗셈 후보 rubric과 headless deep probe `[core]`
-
-후보를 미리 고정 순위로 가정하지 않는다. 다음 rubric으로 `NO01SC`, `NO01NR`, `NO07IC`, `NO04NG`를 평가한다.
-
-1. 학생이 묶음을 직접 만들 수 있는가
-2. 같은 수씩 묶는 조건이 조작 또는 표현으로 분명한가
-3. 나머지가 별도의 셀 수 있는 잔여물로 드러나는가
-4. 조작 전후 native payload의 수학 상태가 달라지는가
-5. 선택·핵심 조작·undo/reset·저장·재열기가 안정적인가
-6. 최소·최대 필요한 variant가 1280×800 품질 하한을 만족하는가
-7. non-pointer 경로가 있는가. 없다면 플랫폼 한계를 정확히 기록하는가
-
-각 후보의 최소·대표·최대 variant를 background에서 생성→선택→핵심 조작→undo/reset→저장→재열기한다. 원본 민감정보는 로컬에만 두고 sanitized evidence만 저장소에 둔다.
-
-### R5. 도구 release GO/NO-GO `[core]`
-
-선정 후보가 `captured-only`이면 probe 성공만으로 활동에 넣지 않는다. 기존 support state를 `captured → contracted → verified → released` 순서로 통과시킬 수 있는지 평가한다.
-
-- 기존 package와 adapter registry 안에서 contract, lifecycle, spatial bounds, persistence, 현재 필수 품질 gate를 완료할 수 있으면 좁은 도구 release slice로 진행한다.
-- 새 workspace package, 범용 solver, 검증되지 않은 raw passthrough가 필요하거나 핵심 나머지 조작이 성립하지 않으면 중단하고 현행 점+펜 활동 유지로 돌아간다.
-- 모든 후보가 탈락하면 native 장식을 추가하지 않는다. 활동은 `verified`를 유지하고 탈락 근거를 보고한다.
-
-이 checkpoint에서 범위가 도구 release 프로그램으로 크게 확장되면 사용자에게 결과와 비용을 보고하고 다음 변경 전에 확인받는다.
-
-### R6. deterministic layout variant와 flow `[core]`
-
-완전 auto-layout 없이 다음 단일 패스를 구현한다.
-
-1. content-only selection
-2. selected variant + spatial contract sizing
-3. fit validation
-4. reserveBox-based cumulative vertical flow
-
-`itemPitch`는 variant별 상수다. `workbench → explanation/revision → item panel → canvas`의 위치는 선택된 variant 안에서 누적 계산하되 다음 item origin을 다시 selection 입력으로 쓰지 않는다.
-
-가로 fit 실패 시 명시된 단조 fallback을 최대 한 번만 허용한다. fallback은 required width를 엄격히 줄여야 한다. 그래도 맞지 않으면 자동 축소나 fixpoint 반복 없이 hard error를 낸다.
-
-도구 기하가 공통 claim-evidence와 다르면 각도 선례처럼 나눗셈 전용 또는 도구 family 전용 preset을 만든다. core resolver에 활동 ID 분기를 추가하지 않는다.
-
-### R7. 나눗셈 활동 재설계 `[core]`
-
-선정·released된 도구가 있을 때만 native workbench로 바꾼다.
-
-- 처음 선택은 정답과 오개념 기반 대안을 함께 제공한다.
-- 핵심 네이티브 조작은 묶음과 나머지의 수학 상태를 실제로 바꾼다.
-- locked text나 그림에 정답을 노출하지 않는다.
-- `NO04NT`는 몫·나머지를 기록하거나 수정하는 보조 affordance로만 사용하며 primary state-change gate를 대신하지 않는다.
-- 네이티브 workbench, 라벨, 수 카드, 설명 영역은 각자의 visible container 안에 있고 shared vertical flow의 `minGap`을 지킨다.
-- 세 단계 이상 지시는 번호를 붙이고 화면 순서와 맞춘다.
-- 교실 문장은 한 문장에 한 행동을 쓰며, 학생이 만질 대상과 확인할 표현을 명시한다.
-- 예측과 설명을 위한 실제 쓰기 공간을 유지한다.
-- 문항마다 처음 상태가 미해결이고 오답 선택 후 수정 가능하다.
-
-### R8. 정적 검증과 필요한 테스트 `[core]`
-
-- 선택 도구의 최소·최대 variant와 활동 variation 전체를 컴파일한다.
-- 초기 visualBox, selected reserveBox, task-relevant post-manipulation state, undo/reset, target fit, label clearance, text fit, minGap, canvas/container bounds를 검사한다.
-- 두 native 도구가 한 화면에 공존하면 z-order, local menu, handle, movement 충돌을 확인한다.
-- empty/error/unsupported variant는 fail-closed하고 원인을 구분한다.
-- 관련 package 단위 테스트와 targeted audit만 먼저 실행한다.
-- 마지막 release 단계에서 `pnpm cognitive:verify`와 `pnpm check`를 각각 한 번 실행한다.
-
-### R9. background canary suite `[core]`
-
-오프라인 검증이 통과한 뒤 사용자의 화면을 빼앗지 않는 background canary를 실행한다. 가능하면 하나의 fresh project에 다음 4–6개 관측 케이스를 묶는다.
-
-- 최소 variant
-- 최대 variant
-- wrap/stack 경로를 실제로 발생시키는 케이스
-- 기존 released known-good 대조 활동
-- 선택 전·선택 후·핵심 조작 후·undo/reset 후·실제 save/reopen 후
-
-동일 저장 결과를 두 번 재열어 normalized measurement hash가 tolerance 내에서 같은지 확인한다. 플랫폼 제약으로 한 프로젝트에 suite를 담을 수 없다면 필요한 최소 프로젝트 수와 이유를 기록하고 임의로 범위를 넓히지 않는다.
-
-canary는 현재 blueprint hash, layout preset hash, native spatial contract hash, tool version, font/asset/harness fingerprint에 결속한다. 실제 glyph ink, 겹침, 정렬, 글자 크기, 교실 용어를 캡처에서 직접 확인한다.
-
-### R10. release와 인계 `[core]`
-
-- fresh persistent canary가 없거나 hash가 stale하면 `verified`를 유지한다.
-- 모든 P0/P1이 0이고 인지·시각·품질 gate가 통과한 경우에만 `released`로 올린다.
-- Claude Opus 5의 기존 wave 검토 원칙을 따라 외부 write 전 안전 검토와 최종 diff·증거 검토를 수행한다.
-- 의미 있는 단위가 완성되고 관련 검증이 green일 때만 `main`에 의도적으로 commit·push한다.
-- 다른 사용자 변경이나 관련 없는 dirty file을 커밋하지 않는다.
-- 결과 보고에는 선택·탈락 도구 근거, 수학 상태 전후 evidence, 실제 캡처, 테스트, 남은 플랫폼 한계를 포함한다.
-
-## 콘텐츠와 데이터 요구사항
-
-- 공식 2022 개정 교육과정 성취기준을 권위 원본으로 유지한다.
-- 고정 learning-map commit의 나눗셈 topic, prerequisite, evidence, assessment prompt를 현재 manifest와 대조한다.
-- 학습-map은 보조 ontology임을 유지하며 공식 승인으로 표현하지 않는다.
-- 후보별 rubric 결과와 탈락 사유를 evidence에 기록한다.
-- 정답·학생 개인정보·인증정보를 연구 artifact에 넣지 않는다.
-- 네이티브 공간 evidence는 tool version과 환경 fingerprint 없이는 유효하지 않다.
-
-## 시각 및 UX 방향
-
-- 기존 MathCanvas 학생 화면의 차분한 교육용 스타일을 유지한다.
-- 네이티브 조작판의 실제 크기를 먼저 확보하고 남는 공간에 텍스트를 배치한다.
-- 폭이 부족하면 축소보다 wrap 또는 stacked preset을 우선한다.
-- 라벨은 해당 요소 묶음 위에 두고 첫 행의 왼쪽과 맞춘다.
-- 여러 행은 같은 중심축과 균일한 가로·세로 간격을 쓴다.
-- 설명과 예상 라벨은 쓰기 상자 안의 머리말 정책을 유지한다.
-- 1280×800에서 학년대별 글자 하한, 24px blocking 조작 하한, 쓰기 영역, drop slack, 문제 간 간격을 통과한다.
-- bounds 검사는 실제 한글 glyph 잉크 확인을 대신하지 않는다.
+- `CurriculumSelection`: 필수 다섯 선택의 immutable authority.
+- `CurriculumAuthorityBinding`: 교육부 standardAuthority와 비상교육 unitAuthority의 분리 provenance, primary/prerequisite/cross-band relation.
+- `CurriculumActivityCatalogEntry`: 30개 teacher-facing 항목과 authority/blueprintFamily/preset/affordanceFamily/layoutFamily/release 상태의 binding.
+- `LearningPhaseContract`: prediction / mathematical-confirmation / explanation / revision의 닫힌 순서와 layout region·constraint·tool role binding.
+- 기존 `ActivityBlueprint`: 재사용 수학 활동 blueprintFamily.
+- 기존 variation registry와 `ItemGenerator`: entry별 유한 preset과 재현 가능한 문항.
+- `NativeAffordanceRequirement`: affordanceFamily별 semantic-state projection과 tool/spatial lifecycle 요구.
+- `OneScreenLayoutProfile`: layoutFamily별 viewport·pin된 font metrics·profile-scoped typography·reserve·세로 예산 계약.
+- `WorksheetRequestV2`: catalogEntryId와 structured selection을 authority로 삼는 신규 strict request. legacy V1 manipulation/prompt enum을 확장하지 않는다.
+- `WorksheetPlanV2`: catalogEntry/family/preset/layout/seed/authority binding과 적용·거부 modifier를 담는 strict planner output. legacy Recommendation/manipulation을 사용하지 않는다.
+- `WorksheetEntryReleaseState`: `release-candidate`(교사 비노출·manifest-bound contract-lab only), `released`, `blocked`의 V2 entry state.
+- `WorksheetReleaseEvidence`: 모든 입력·구조·도구·렌더 fingerprint와 `(affordanceFamily × layoutProfile)` canary binding.
+
+`blueprintFamily`, `affordanceFamily`, `layoutFamily`는 서로 다른 partition이며 명칭을 혼용하지 않는다.
+
+### 모듈 seam
+
+- `packages/curriculum`: standardAuthority truth, unitAuthority mapping, cross-band relation, 30 catalog, coverage.
+- `packages/contracts`: request/catalog/affordance/layout/evidence schema.
+- `packages/planner`: exact catalog resolution과 bounded modifier. regex prompt routing은 새 경로의 authority가 아니다.
+- `packages/templates`: blueprintFamily, variation, generator. source title별 core switch 금지.
+- `packages/mathcanvas-compiler`: generic adapter와 layout resolver. entry ID를 모른다.
+- `packages/authoring-runtime`: R2에서 V2 plan→prepareWorksheetV2→draft/hash/approval→resolve/compile 분기를 연결하고 V1 manipulation 경로와 분리한다.
+- `apps/teacher-ui`: structured selection, conditional focus, optional prompt, preview/approval.
+- `scripts/contract-lab`와 audit: native probe, actual MathCanvas lifecycle, capture/evidence.
+
+R2에서 planner/curriculum/templates/authoring-runtime의 generic V2 resolver를 catalog data와 분리된 core seam으로 만들고 architecture checker가 측정하게 한다. R2/R3의 measured core 변경은 CHECKLIST 근거를 남긴 interim rebaseline을 허용하고, R4에서 phase/layout/font metrics까지 최종 동결한다. R5–R8은 `architecture:verify`만 사용한다. core를 바꿔야 하면 R2/R4로 되돌아가 이유와 Opus 재검토 후 baseline을 갱신한다.
+
+### 상태와 source of truth
+
+두 authority fixture와 catalog, blueprint/variation registry, support manifest, release evidence가 제품 정본이다. `PLAN.md`는 결정, `CHECKLIST.md`는 진행 상태의 유일한 기록이다. 별도 progress 문서를 만들지 않는다.
+
+### 확장점
+
+- 다른 학년·성취기준의 catalog entry
+- 개념 형성·오개념 진단·적용 학습 유형
+- 다른 출판사의 unit mapping adapter
+
+이 확장 때문에 compiler·resolver·validator에 activity ID 분기가 생기면 구조 실패다.
 
 ## 기술 제약
 
-- 기존 `renderedBounds`를 제거하거나 의미를 바꾸지 않는다. spatial contract는 호환 확장으로 추가한다.
-- schema·adapter·audit 이름은 기존 코드 관례를 따르되 이 문서의 책임 분리를 보존한다.
-- 활동 이름별 core switch, raw payload escape hatch, 새 dependency, 새 workspace package를 만들지 않는다.
-- per-item `x`/`y` 미세조정으로 겹침을 숨기지 않는다.
-- screenshot pixel equality를 hard gate로 쓰지 않는다. 수치 tolerance와 normalized structural measurements를 사용한다.
-- evidence의 volatile 관측값과 normative contract hash를 섞지 않는다.
-- tool/factory/bundle fingerprint가 바뀌면 관련 spatial contract를 stale로 처리한다.
-- 현재 writing-quality transform 및 released 활동의 기존 동작을 보존한다.
+- blueprint에 `x`, `y`, `width`, `height`, answer key, raw payload, inline function을 넣지 않는다.
+- 절대 좌표는 resolved IR 이후 generic layout resolver만 만든다.
+- 새 30개 경로는 `WorksheetRequestV2.catalogEntryId`를 exact-resolve하며 planner가 prompt regex만으로 standard, 세 family binding, tool을 선택하지 않는다.
+- legacy `manipulationSchema`, `ACTIVITY_IDS`, `GenerationRequest` V1에는 30개용 신규 값을 추가하지 않는다.
+- legacy `Recommendation.manipulation`과 `prepareRegisteredActivity`는 V1 전용이다. V2는 `WorksheetPlanV2`와 `prepareWorksheetV2`를 사용한다.
+- public planner와 teacher UI는 released V2 entry만 노출한다. release-candidate는 contract-lab exact manifest 경로에서만 compiler/validator를 통과해 canary write할 수 있다.
+- native tool support state를 건너뛰지 않는다. fingerprint stale와 roundtrip drift는 fail-closed한다.
+- 신규 package, dependency, 범용 solver는 실제로 기존 seam으로 표현할 수 없다는 근거와 사용자 승인 없이는 추가하지 않는다.
+- 기존 released 활동과 안전 경계를 깨지 않는다. migration이 필요하면 명시적 schema/version과 만료 규칙을 둔다.
+- 구현 시작 시 현재 test case와 test-file 수를 기록하고 회귀 하한을 유지한다. Legacy의 132개 상한은 폐기되었고 현재 budget script는 하한이다.
+- R1–R9 전체 신규 test file은 원칙적으로 12개 이하, production seam당 1개 이하로 한다. 30 entry와 variation은 table-driven case로 기존 suite에 넣는다.
+- 각 경계는 happy path 1개와 서로 다른 fail-closed branch에 필요한 실패 case만 둔다. 새 native adapter의 독립 계약 때문에 12개를 넘겨야 하면 근거를 CHECKLIST에 쓰고 Opus 검토를 받은 뒤 예산을 바꾼다. 총 test case 수에는 상한을 두지 않는다.
+- 사용자 작업 트리의 관련 없는 변경을 덮어쓰거나 commit하지 않는다.
 
-## 개인정보와 안전 제약
+## 개인정보와 안전
 
-- 토큰, 쿠키, 계정 ID, 비공개 프로젝트 원문을 저장소에 커밋하지 않는다.
-- sanitizer를 통과한 bounded evidence만 기록한다.
-- 기존 MathCanvas 프로젝트를 수정하거나 삭제하지 않는다.
-- 새 프로젝트 생성과 저장은 기존 명시 승인·create-only 경계를 따른다.
-- 사용자의 Chrome·화면·포커스를 제어하지 않는다.
-- MathCanvas가 보장하지 않는 자동채점, 단계 순서, 글쓰기 수행, keyboard 지원을 주장하지 않는다.
+- 학생 이름, 학번, 학급, 개별 성취 정보, 인증 토큰, 쿠키, 계정 ID를 prompt·payload·fixture·evidence에 넣지 않는다.
+- 교사 context는 500자 이하 비식별 수업 맥락만 허용하고 저장·로그 범위를 최소화한다.
+- 실제 MathCanvas 작업은 새 프로젝트 생성 전용과 명시 승인 규칙을 유지한다.
+- canary evidence는 sanitize하고 인증 정보가 없는지 검증한다.
+- 사용자의 화면·Chrome·포커스를 빼앗지 않는다.
 
-## 핵심 단위별 완료 정의
+## 전체 acceptance criteria
 
-### Spatial contract `[core]`
-
-- 네 경계 용어가 타입·문서·gate에서 동일하다.
-- selected chrome과 내부 여백이 `reserveBox`에 한 번만 반영된다.
-- free drag, unsupported variant, stale version, roundtrip drift가 fail-closed한다.
-- evidence 없이 `roundTripStable: true`를 선언할 수 없다.
-
-### Gate와 ratchet `[core]`
-
-- 변경된 활동의 새 위반은 report-only 기간에도 실패한다.
-- 기존 부채만 baseline으로 식별된다.
-- waiver에 owner·reason·expiry가 없으면 유효하지 않다.
-- gate별 box semantics와 hard 승격 조건이 테스트된다.
-
-### Candidate probe와 tool decision `[core]`
-
-- 모든 후보가 같은 rubric으로 비교된다.
-- 최소·대표·최대, 선택, 조작, undo/reset, save/reopen가 관측된다.
-- 나머지의 독립적 가시성과 payload state change가 확인되지 않으면 탈락한다.
-- captured-only 도구는 release lifecycle 없이 활동에 들어가지 않는다.
-- 모두 탈락했을 때 현행 유지가 정상적인 완료 결과로 처리된다.
-
-### Layout pipeline `[core]`
-
-- selection/sizing/fit/growth가 순환 없는 순수 단계로 나뉜다.
-- `itemPitch`는 variant 상수다.
-- 단조 fallback은 최대 한 번이고 width 감소가 테스트된다.
-- max reserveBox에서도 다음 블록·다음 문항과 겹치지 않는다.
-- 적합하지 않은 경우 임의 scale이나 좌표 보정 없이 실패한다.
-
-### Division activity `[core]`
-
-- 예상→네이티브 구성→근거 설명→수정이 화면과 지시문에 드러난다.
-- 네이티브 조작 전후 수학 상태가 다르다.
-- 나머지를 실제로 세어 확인할 수 있다.
-- 정답 누출, 명백한 단일 경로, 장식용 native 사용이 없다.
-- 모든 문항이 초기 미해결이며 오개념 기반 오답과 수정 경로가 있다.
-- 실제 글쓰기 공간과 교실 용어가 유지된다.
-
-### Canary와 release `[core]`
-
-- 최소·최대·wrap·대조군이 background에서 관측된다.
-- 실제 save/load 경계를 통과하고 두 번 재열기 측정이 안정적이다.
-- initial/selected/manipulated/undo-reset/reopened 캡처와 측정이 있다.
-- 현재 code/contract/tool/environment hashes와 결속된다.
-- 실제 캡처에서 겹침·정렬·글자 크기·교실 용어 P0/P1이 0이다.
-
-## 수용 기준
-
-- [ ] 후보 선택 근거가 동일한 교육·기술 rubric으로 기록되어 있다.
-- [ ] 핵심 네이티브 조작이 좌표만이 아니라 저장 가능한 수학 상태를 바꾼다.
-- [ ] `visualBox`, `chromeBox`, `taskEnvelope`, `reserveBox`가 서로 구분된다.
-- [ ] initial/selected/core-manipulated/undo-reset/reopened 정상 상태가 컨테이너와 캔버스 안에 있고 보호 영역과 겹치지 않는다.
-- [ ] free-drag 전체에 대한 거짓 overlap 보장을 하지 않는다.
-- [ ] reopen drift가 tolerance를 넘으면 layout으로 흡수하지 않고 실패한다.
-- [ ] 1280×800에서 글자, 조작 크기, 쓰기 영역, drop slack, `minGap` 하한을 통과한다.
-- [ ] max variation/variant에서 임의 downscale과 per-item 좌표 수정이 없다.
-- [ ] `NO04NT`는 기록 affordance로만 설명된다.
-- [ ] captured-only 도구는 완전한 release lifecycle 없이 사용되지 않는다.
-- [ ] 신규 위반 ratchet과 gate별 hard 승격 조건이 동작한다.
-- [ ] background canary 증거가 현재 hashes와 결속된다.
-- [ ] `pnpm cognitive:verify`와 `pnpm check`가 통과한다.
-- [ ] 최종 support state가 증거 수준과 일치한다.
+- 30개 원고가 30/30 authority-reviewed catalog terminal state로 존재한다. full pilot 완료를 주장하려면 blocked가 0이어야 하고, blocked가 남은 실행은 `released N/30` partial release로만 종결한다.
+- 30개 teacher-facing entry와 내부 blueprint family 수가 분리되고, source ID별 core compiler/resolver/validator 분기가 0이다.
+- 교사 흐름이 학년→학기→단원→성취기준→학습 유형→조건부 활동 초점→optional prompt 순서로 작동한다.
+- optional prompt가 curriculum, 세 family binding, support state, raw payload, 좌표를 우회하지 못한다.
+- 모든 released entry가 닫힌 phase predicate로 예상→네이티브 확인→설명→수정, 미해결 초기 상태, semantic-state change, 44px 이상 쓰기 영역을 증명한다.
+- 모든 released entry가 한 화면의 기본 한 문제로 끝나고 핵심 풀이에 pan/scroll이 필요 없다. 두 문제는 R4 세로 예산이 가능하다고 증명한 profile에서만 허용된다.
+- 실제 1280×800 캡처에서 글자 하한, 중앙 정렬, 문장 여백, native chrome/label clearance를 통과한다.
+- 모든 released `(affordanceFamily × layoutProfile)`가 current lifecycle evidence를 가지고, released entry가 current-hash actual MathCanvas save/reopen 화면을 가진다.
+- live write가 승인 manifest와 wave hard ceiling `POST ≤1, PUT ≤candidateWriteCount ≤30` 안에 있다.
+- visual audit 100, quality audit 100, P0/P1 0, Sol xhigh P0/P1/P2 0, Claude Opus 5 blocking 0, `pnpm check` 통과다.
+- `pilotCoverage`와 `curriculumCoverage`가 분리되고, 30개 완료를 전체 초등 수학 완료로 과장하지 않는다.
+- 의미 있는 wave가 `main`에 분리 커밋·push되고 마지막에 `main == origin/main`이다.
 
 ## QA 경로
 
-1. 시작 시 git 상태와 기준 commit을 확인하고 관련 없는 변경을 보존한다.
-2. R1–R3은 schema·unit test·report-only audit만 실행한다.
-3. R4는 headless contract-lab probe만 실행하고 evidence를 sanitize한다.
-4. R5 checkpoint에서 도구 release 진행 또는 현행 유지 fallback을 결정한다.
-5. R6–R8은 관련 compiler/template/validator 테스트와 targeted visual/quality audit를 실행한다.
-6. 대상 활동을 `verified`로 유지한 채 background canary suite를 실행한다.
-7. 실제 preview를 열어 glyph ink, 선택 chrome, 겹침, 정렬, 크기, 교실 문구를 확인한다.
-8. `pnpm cognitive:verify`를 실행한다.
-9. `pnpm check`를 한 번 실행한다.
-10. Opus 5의 최종 diff·evidence 검토에서 P0/P1이 없을 때만 release·commit·push한다.
+1. 변경 전 git 상태와 repository instructions를 확인한다.
+2. R1 ledger와 schema를 table-driven test로 검증한다.
+3. 수정 package의 build/test와 curriculum/catalog/blueprint compile을 먼저 실행한다.
+4. blueprintFamily별 수학·phase·교실 한국어·variation 불변조건과 affordanceFamily semantic-state 조건을 검사한다.
+5. pin된 font metrics 기반 one-screen static layout과 native spatial ratchet을 검사한다.
+6. offline gate가 모두 통과한 release-candidate만 exact write manifest와 사용자 승인을 받은 뒤 전용 background canary를 실행한다.
+7. 실제 캡처에서 initial/selected/manipulated/undo-reset/reopened를 비교한다.
+8. Sol xhigh로 시각 체크리스트 전체를 점검하고 지적을 수정한다.
+9. Claude Opus 5로 구조·교육 논리·증거 과장을 읽기 전용 점검한다.
+10. 관련 wave의 최종 `pnpm check` 후 diff를 검토하고 commit·push한다.
 
-테스트 수를 늘리는 것이 목표가 아니다. 각 경계에 정상 1개와 필요한 실패 사례만 추가하고, 같은 validator의 변조 조합을 반복하지 않는다.
+## Open questions와 assumptions
 
-## 위험 검토 반영 내역
-
-- 하나의 `stateBounds` 객체에 계약과 관측을 혼합 → `NativeSpatialContract`와 immutable evidence 분리 (관측 hash churn 및 순환 방지)
-- reopened bounds를 layout 입력으로 수용 → tolerance 초과 drift는 serialization 결함으로 실패 (잘못된 레이아웃 보정 방지)
-- 모든 자유 조작에서 overlap 0 주장 → task-relevant bounded envelope만 gate, 나머지는 clamp 증거 또는 명시적 한계 (달성 불가능한 GO 기준 제거)
-- selector가 layout 결과를 재입력하고 growth가 `itemPitch` 변경 → content-only selection, variant 상수 pitch, 단일 누적 flow (결정성 확보)
-- 조건 없는 report-only → 변경분 ratchet, waiver 만료, 연속 green·FP 0 조건의 gate별 hard 전환 (영구 보고 전용화 방지)
-- 단일 대표 canary → 최소·최대·wrap·대조군의 4–6 case suite와 두 번 reopen measurement (커버리지와 flake 판별)
-- 후보 도구 고정 우선순위 → 묶음 생성·동일 크기·나머지 가시성·payload state change rubric (학습목표 불일치 방지)
-- captured-only 승자 사용 → full tool release 또는 현행 유지의 명시적 GO/NO-GO (범위 폭증과 장식용 native 방지)
-- `NO04NT`를 핵심 조작처럼 취급 → 기록 affordance로 제한 (primary state-change 허위 통과 방지)
-- 모든 기존 도구에 bounds profile 즉시 요구 → 신규·변경 활동은 hard, 기존 released는 baseline+ratchet (초기 충족 불가능 gate 방지)
-
-## 열린 질문과 가정
-
-### 열린 질문
-
-- 네 후보 중 어느 도구가 같은 수씩 묶기와 나머지의 독립적 표현을 실제로 지원하는지는 R4 probe 전에는 알 수 없다.
-- 선정 도구가 captured-only일 때 좁은 release slice가 현재 작업 범위 안에 들어오는지는 R5에서 결정한다. 범위가 크게 확장되면 사용자 확인을 받는다.
-- 4–6개 canary case를 한 fresh project에 담을 수 있는지는 실제 MathCanvas payload 제약을 확인해야 한다.
-
-### 가정
-
-- 현재 `PLAN.md`의 create-only, fail-closed, package 경계, support evidence 상태 모델은 유지한다.
-- `ca5247f` 이후 관련 없는 사용자 변경이 생기면 덮어쓰지 않고 현재 상태에 맞춰 구현한다.
-- non-pointer 핵심 조작이 플랫폼에 없으면 그 사실을 evidence와 제한 사항에 기록하며 지원한다고 주장하지 않는다.
-- 모든 후보가 탈락하는 경우 현행 점+펜 활동을 `verified`로 유지하는 것도 성공적인 fail-closed 결과다.
-- 범용 auto-layout은 최소 두 개 이상의 실제 도구 family에서 같은 요구가 반복될 때 별도 계획으로 검토한다.
-
+- 첫 wave의 단원 mapping은 현재 저장소가 검증한 비상교육 흐름을 사용한다. 다른 출판사는 scaffold다.
+- 첫 wave learning type은 `기본 연습` 하나다.
+- 수학 조작용 drag는 허용하고 화면 탐색용 pan/scroll은 금지한다.
+- 세 family partition의 정확한 수는 R1–R3에서 결정한다. 예상 범위나 quota로 구조를 왜곡하지 않는다.
+- 1280×800보다 작은 화면은 이번 release 지원 범위가 아니다.
+- 완전한 공식 1–6학년 standard denominator를 이번 wave에서 검증하지 못하면 장기 coverage 숫자를 표시하지 않는다.
+- native tool NO-GO로 blocked entry가 남으면 성공으로 포장하거나 그림 fallback하지 않고, 영향 범위와 다음 조사 비용을 사용자에게 보고한다.
+- 공식 source 접근·두 번째 검토가 실패한 entry는 release하지 않는다.
+- R4 산술 gate가 두 문제를 불가능하다고 판정하면 이번 pilot은 한 문제 profile만 구현한다.
