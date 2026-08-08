@@ -208,7 +208,7 @@
 ## R10 — 최종 검증, support state, commit·push
 
 - Depth: `core`
-- Status: `in_progress`
+- Status: `complete`
 - Depends on: R1–R9 또는 R5 NO-GO 종료 조건
 - Definition of done:
   - [x] `pnpm cognitive:verify` 통과
@@ -218,13 +218,13 @@
   - [x] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
   - [x] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
   - [x] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
-  - [ ] `main`과 `origin/main` 동기화가 확인된다.
-  - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
+  - [x] `main`과 `origin/main` 동기화가 확인된다.
+  - [x] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
   - `pnpm check`는 188개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
   - sol xhigh 최종 verdict `OKAY`: P0/P1 0건. 모든 origin 비안전 method 차단, service worker 우회 차단, rubric↔observation activity ID, viewport/state별 qualityEvidence, placement/lifecycle false, NO-GO fail-closed를 확인했다. native lifecycle은 여전히 verified/released로 승격하지 않는다.
-  - 이번 단위의 commit/push와 `main`/`origin/main` 동기화 확인 뒤 R10을 `complete`로 닫는다.
+  - live-auth probe hardening과 sanitized native affordance evidence는 `73d80fa`로 commit/push했고, checklist 마감은 이 docs-only commit으로 반영한다. `main`과 `origin/main`은 `0/0`으로 동기화되어 있다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 
