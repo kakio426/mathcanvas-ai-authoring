@@ -37,6 +37,7 @@
     "contract:probe:wave14:place-value-model": "node scripts/contract-lab/capture-wave14-place-value-model-canary.mjs",
     "contract:probe:division-native-semantics": "pnpm --filter @mathcanvas/contracts... build && node scripts/contract-lab/probe-division-native-semantics.mjs",
     "contract:canary:division-counting-group": "pnpm --filter @mathcanvas/compiler... build && node scripts/contract-lab/capture-division-counting-group-canary.mjs",
+    "contract:verify:division-counting-group": "node scripts/contract-lab/validate-division-counting-group-canary.mjs",
     "contract:verify:wave14:place-value-model": "node scripts/contract-lab/validate-wave14-place-value-model-canary.mjs",
     "contract:canary:wave14:place-value": "node scripts/contract-lab/capture-wave14-place-value-release-canary.mjs",
     "contract:canary:wave16-17": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs",
@@ -79,7 +80,7 @@
     "visual:audit:report": "node scripts/visual-audit/run.mjs --allow-issues",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",
