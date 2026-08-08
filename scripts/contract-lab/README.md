@@ -247,6 +247,33 @@ field/type, 점 수, 길이, bounding box와 hash만 기록한다.
 결과 모두 `validate-wave3-pen-canary.mjs`가 hash, ID/path 요약과 write 경계를
 독립 재계산한다.
 
+## Division native isolated semantic probe
+
+후보 비교 캔버스는 학습 화면이나 release 품질 증거가 아니다. 크기를 모르는 여러
+native 후보를 기본 좌표에 함께 놓지 않고, 한 캔버스에 한 의미 조작만 로컬로
+주입해 확인한다. 소스 프로젝트는 GET으로만 읽고 Save가 만들려는 payload만
+가로챈다. GET/HEAD/OPTIONS 외 요청과 service worker는 차단하므로 외부 write는
+항상 0회다.
+
+```sh
+pnpm contract:probe:division-native-semantics --run-id YYYYMMDDTHHMMSSZ
+pnpm contract:verify:division-native-rubric
+```
+
+정본은 `research/mathcanvas/division-native-semantic-probe.json`이다. 로컬 캡처는
+`.mathcanvas-contract-lab/previews/wave18/division-native-semantic/`에만 두며
+완성 학생 화면으로 판정하지 않는다. 현재 probe는 다음 의미 동작을 분리한다.
+
+- `NO01SC-01`: 네 낱개를 multi-select한 뒤 `그룹`, 그룹 이동, undo
+- `NO01NR-01`: 구슬 이동에 따른 `beadX` 변화
+- `NO04NG-01`: 수 칸 선택에 따른 `selectedRect` 변화
+
+`group-element`, 공통 `groupId`, 구성원 수와 가역 이동은 같은 수씩 묶기의
+후보 수학 상태로 인정한다. 다만 이 read-only probe만으로 release하지 않는다.
+23개 전체에서 구성원 4개인 wrapper 5개와 ungrouped 3개가 중복 없이 만들어지고,
+선택 해제 뒤에도 배치로 묶음과 나머지가 구분되며, 실제 save/reopen과
+`reserveBox`가 통과해야 persistent canary로 승격한다.
+
 ## Exit behavior
 
 - 성공: `PASS ...`, exit code 0

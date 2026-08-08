@@ -5,7 +5,7 @@
 ## R1 — 학습 설계 스킬 규칙 추가
 
 - Depth: `core`
-- Status: `complete`
+- Status: `in_progress`
 - Depends on: 없음
 - Scope:
   - `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`
@@ -72,17 +72,17 @@
 ## R4 — 나눗셈 후보 rubric과 background deep probe
 
 - Depth: `core`
-- Status: `blocked`
+- Status: `complete`
 - Depends on: R2, R3
 - Candidates: `NO01SC`, `NO01NR`, `NO07IC`, `NO04NG`
 - Definition of done:
-  - [ ] 모든 후보를 묶음 생성, 동일 크기 표현, 나머지 가시성, payload state change, lifecycle, 화면 품질의 같은 rubric으로 평가한다.
-  - [ ] 최소·대표·최대 variant를 관측한다.
-  - [ ] initial, selected, core manipulation, undo/reset, actual save/reopen를 관측한다.
-  - [ ] non-pointer 경로의 존재 여부를 기록한다.
-  - [ ] environment fingerprint와 immutable evidence ID가 있다.
-  - [ ] 토큰·쿠키·계정 ID·비공개 원문이 sanitized evidence에 없다.
-  - [ ] 도구 우선순위는 이름이 아니라 rubric 결과에서 도출된다.
+  - [ ] 모든 후보를 묶음 생성, 동일 크기 표현, 나머지 가시성, payload state change, lifecycle, 화면 품질의 같은 rubric으로 평가한다. (`NO01SC-01` 의미 조작을 우선 통과)
+  - [ ] 최소·대표·최대 variant를 관측한다. (`NO01SC-01`의 단위·4개 그룹 크기만 관측)
+  - [ ] initial, selected, core manipulation, undo/reset, actual save/reopen를 관측한다. (그룹·이동·undo와 client Save payload 관측, actual save/reopen 미완료)
+  - [x] non-pointer 경로의 존재 여부를 `false`로 기록했다.
+  - [x] environment fingerprint와 immutable evidence ID가 있다.
+  - [x] 토큰·쿠키·계정 ID·비공개 원문이 sanitized evidence에 없다.
+  - [x] 도구 우선순위는 이름이 아니라 의미 동작 rubric에서 도출했다. `NO01SC-01`을 조건부 primary로 선정했다.
 - Verification:
   - [x] 전용 headless profile만 사용
   - [x] 사용자의 Chrome·화면·포커스 미사용
@@ -90,33 +90,34 @@
 - Evidence/notes:
   - 인증된 전용 프로필을 read-only CDP로 재사용하는 `capture-page.mjs --headless --live-auth --path /ko/myCanvas --login-timeout-ms 0` 경로를 추가하고 실제 `/ko/myCanvas`와 owned-project editor를 1440×1000 및 1280×800에서 캡처했다. live-auth에서는 GET/HEAD/OPTIONS 외 요청을 모두 차단한다.
   - 실제 도구 설정 화면에서 `수 구슬`, `수 세기 모형`, `십 배열판`, `배열표`, `셈돌` 버튼과 bounds를 확인했다. `셈돌` 선택 시도는 설정 완료 단계에서 발생한 기존 프로젝트 `POST/PUT`을 차단했으며 write 0회로 끝났다.
-  - 사용자 Chrome·작업 화면은 건드리지 않았고 인증·관측은 별도 전용 profile/window에서만 수행했다. 생성·핵심 조작·저장·재열기를 관측하지 못했으므로 후보를 live verified로 승격하지 않는다. 1280×800 editor 캡처는 우측 선택지가 viewport 밖으로 잘려 학생 화면 품질 증거로 사용하지 않으며, sanitized summary는 `research/mathcanvas/division-native-live-affordance-observation.json`이다.
+  - 사용자 Chrome·작업 화면은 건드리지 않았다. 후보별 캔버스를 분리한 read-only 응답 주입 probe에서 `NO01SC-01` 네 낱개가 하나의 `group-element`와 공통 `groupId`를 가지며 함께 이동하고 undo로 풀리는 것을 확인했다. 정본은 `research/mathcanvas/division-native-semantic-probe.json`이고 외부 write는 0회다.
+  - 크기를 모르는 12개 후보를 기본 좌표에 겹쳐 놓은 비교 화면과 generic drag-only 탈락 판정은 방법론 오류이므로 증거·캡처·실행기에서 제거했다. 격리 probe 캡처도 완성 학생 화면 품질 증거로 사용하지 않는다.
 
 ## R5 — 선정 도구 release GO/NO-GO
 
 - Depth: `core`
-- Status: `complete`
+- Status: `in_progress`
 - Depends on: R4
 - Definition of done:
-  - [x] 후보별 static evidence와 live blocker가 기록된다. (native affordance는 관측했지만 write 승인 차단으로 교육·기술 우선순위를 아직 선정하지 않음)
+  - [x] 후보별 static evidence와 격리 의미 조작 결과가 기록된다. (`NO01SC-01` native group을 조건부 primary로 선정)
   - [x] captured-only 후보를 probe 성공만으로 활동에 넣지 않는다.
-  - [ ] 진행 시 `captured → contracted → verified → released` evidence가 모두 존재한다. (NO-GO 분기이므로 비적용)
+  - [ ] 진행 시 `captured → contracted → verified → released` evidence가 모두 존재한다.
   - [x] 새 package, 범용 solver, raw passthrough 없이 기존 seam에서 구현된다.
   - [x] 범위가 크게 확장되면 사용자에게 비용과 범위를 보고하고 확인받는다. (이번에는 확장하지 않음)
-  - [x] 모든 후보 탈락 시 현행 점+펜 유지와 `verified` 상태가 정상 fallback으로 기록된다.
+  - [x] persistent lifecycle gate 전까지 현행 점+펜 유지와 `verified` 상태가 안전 fallback으로 기록된다.
   - [x] `NO04NT`가 primary math state-change gate를 만족하지 못한다는 점이 명시된다.
 - Gate:
-  - [ ] GO — R6 이후 진행
-  - [x] NO-GO — native 장식 없이 현행 유지, 결과 보고 후 종료
+  - [x] CONDITIONAL GO — `NO01SC-01` 전용 공간 계약·23개 상태·actual save/reopen을 R6–R9에서 검증
+  - [ ] NO-GO — native 장식 없이 현행 유지, 결과 보고 후 종료
 - Evidence/notes:
-  - `research/mathcanvas/division-native-candidate-rubric.json`의 decision은 `no-go-until-approved-native-canary`다. native affordance는 확인됐지만 persistence boundary를 승인 없이 넘지 않는다.
-  - 현재 나눗셈 활동은 검증된 점+펜 fallback을 유지한다. native 장식만 추가하거나 `NO04NT`를 primary state-change로 주장하지 않는다.
+  - `research/mathcanvas/division-native-candidate-rubric.json`의 decision은 `conditional-go-no01sc-grouping-persistent-lifecycle-required`다. client Save payload의 group membership은 수학 상태로 확인했지만 실제 저장·재열기와 전체 23개 상태는 아직 release gate다.
+  - `NO01NR`는 보조 표현, `NO04NG`는 확인 표현, `NO07IC`는 의미 불일치로 분류했다. `NO04NT`는 답 기록 보조일 뿐 primary state-change로 주장하지 않는다.
 
 ## R6 — selected tool spatial adapter와 deterministic layout pipeline
 
 - Depth: `core`
-- Status: `blocked`
-- Depends on: R5 GO (R5 NO-GO로 release adapter는 보류)
+- Status: `in_progress`
+- Depends on: R5 conditional GO
 - Definition of done:
   - [ ] 선택 도구의 spatial contract가 adapter lookup에 연결된다.
   - [ ] selection은 content만 읽고 sizing/fit/growth 결과를 재입력하지 않는다.
@@ -134,13 +135,13 @@
   - [ ] unsupported/unbounded/stale failure tests
 - Evidence/notes:
   - `packages/mathcanvas-compiler/src/resolve/native-spatial-layout.ts`에 selected-tool과 분리된 bounded layout seam을 추가하고 variant selection, reserve placement, single-pass vertical flow를 단위 테스트했다. variant는 primary+optional fallback 최대 2개이며 fallback required width의 엄격한 감소와 overflow를 검사한다.
-  - selected native contract adapter 연결과 activity release는 R5의 live evidence가 생길 때까지 보류한다.
+  - `NO01SC-01`의 측정된 4개 그룹 chrome 약 116×116 CSS px를 기준으로 최소 workbench `reserveBox` 680×460 CSS px, task envelope 약 620×320 CSS px의 전용 배치를 구현한다. release 승격은 persistent lifecycle evidence까지 보류한다.
 
 ## R7 — 나눗셈 native workbench 활동 재설계
 
 - Depth: `core`
-- Status: `blocked`
-- Depends on: R5 GO, R6
+- Status: `pending`
+- Depends on: R5 conditional GO, R6
 - Definition of done:
   - [ ] 학생 결정이 몫과 나머지이며 처음 상태에서 미해결이다.
   - [ ] 오개념 기반 대안이 적어도 3개이고 rejectable surplus가 있다.
@@ -159,12 +160,12 @@
   - [ ] labeled group/text fit/no-overlap predicates
   - [ ] primary native math-state-change predicate
 - Evidence/notes:
-  - R5 NO-GO에 따라 native workbench를 구현하지 않는다. 현재 점+펜 활동은 `verified` fallback으로 유지한다.
+  - 한 활동에 한 문제만 두고 23개 낱개를 중립 pool에 배치한다. 고정된 5개 정답 슬롯 대신 `4개씩 묶은 것` 작업 lane과 `남은 것` lane을 두어 학생이 그룹 수를 직접 결정하게 한다.
 
 ## R8 — 정적 variation·spatial·품질 검증
 
 - Depth: `core`
-- Status: `blocked`
+- Status: `pending`
 - Depends on: R6, R7
 - Definition of done:
   - [ ] 활동 variation 전수와 선택 native 최소·최대 variant가 컴파일된다.
@@ -180,12 +181,12 @@
   - [ ] targeted visual audit
   - [ ] targeted quality audit
 - Evidence/notes:
-  - native selected variant가 없어 R8의 native-specific release 검증은 실행하지 않는다. generic spatial seam의 targeted tests만 R6 evidence로 남긴다.
+  - selected chrome가 사라져도 lane과 cluster 배치로 묶음과 나머지가 계속 구분되어야 한다.
 
 ## R9 — 실제 background canary suite
 
 - Depth: `core`
-- Status: `blocked`
+- Status: `pending`
 - Depends on: R8
 - Definition of done:
   - [ ] offline checks 통과 후에만 실행한다.
@@ -202,29 +203,28 @@
   - [ ] sanitized canary JSON
   - [ ] 실제 preview 경로
 - Evidence/notes:
-  - 인증된 전용 프로필을 확보했지만, 기존 프로젝트를 보호하기 위해 live-auth 캡처는 GET/HEAD/OPTIONS만 통과시켰다. R4의 native affordance 관측은 남겼고, 승인된 disposable canary가 없으므로 native activity lifecycle canary는 만들지 않는다.
-  - 1280×800에서 canvas list는 품질 증거로 통과했지만 owned-project editor는 authoring chrome와 캔버스 폭으로 우측 선택지가 잘려 reference-only로 표시했다. 학생 preview fresh canary 없이는 native 화면 품질 GO를 주장하지 않는다.
+  - 격리 의미 probe는 외부 write 0회이며 release canary가 아니다. 제품 구현과 정적 gate가 통과한 뒤 23개 전체 상태(구성원 4개 wrapper 5개, ungrouped 3개, 중복·중첩 0개)를 actual save/reopen으로 확인한다.
+  - 실제 학생 화면 캡처에서 겹침·정렬·글자 크기·교실 용어를 확인하고 시각 판정은 sol xhigh에 맡긴다.
 
 ## R10 — 최종 검증, support state, commit·push
 
 - Depth: `core`
-- Status: `complete`
+- Status: `pending`
 - Depends on: R1–R9 또는 R5 NO-GO 종료 조건
 - Definition of done:
-  - [x] `pnpm cognitive:verify` 통과
-  - [x] `pnpm check`가 수정된 최종 diff에서 통과
-  - [x] sol xhigh가 수정된 최종 diff와 evidence를 검토하고 P0/P1이 없다.
-  - [x] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다. (이번에는 fresh native canary 없음)
-  - [x] 증거가 부족하거나 R5가 NO-GO면 대상 활동은 `verified`를 유지한다.
-  - [x] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
-  - [x] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
-  - [x] `main`과 `origin/main` 동기화가 확인된다.
-  - [x] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
+  - [ ] `pnpm cognitive:verify` 통과
+  - [ ] `pnpm check`가 수정된 최종 diff에서 통과
+  - [ ] sol xhigh가 수정된 최종 diff와 evidence를 검토하고 P0/P1이 없다.
+  - [ ] persistent fresh canary와 현재 hash가 있을 때만 대상 활동이 `released`다.
+  - [x] persistent evidence가 생기기 전에는 대상 활동이 `verified`를 유지한다.
+  - [ ] 관련 없는 사용자 변경이 commit에 포함되지 않는다.
+  - [ ] 의미 있는 단위별 commit 메시지가 의도를 설명한다.
+  - [ ] `main`과 `origin/main` 동기화가 확인된다.
+  - [ ] 최종 보고에 선택/탈락 근거, 상태 전후 수학 evidence, 캡처, 테스트, 제한 사항이 있다.
 - Evidence/notes:
-  - `pnpm check`는 188개 테스트, build, hash-bound native issue harness/ratchet, division rubric verifier, cognitive, visual 100점, quality P0/P1 0건으로 통과했다. 현재 목표는 R5 NO-GO 종료 조건의 fallback 상태 검증과 native spatial foundation의 안전한 인계다.
+  - 현재 잘못된 겹침 canary 커밋은 원격에 push하지 않았으며, 정정된 의미 probe·workbench·persistent canary를 하나의 완결된 단위로 검증한 뒤 amend/commit·push한다.
   - `mathcanvas-learning-design` 스킬 변경은 `/Users/yubyeongju/.codex/skills/mathcanvas-learning-design/SKILL.md`의 로컬 skill 파일에 반영되며 이 저장소 commit에는 포함되지 않는다.
-  - sol xhigh 최종 verdict `OKAY`: P0/P1 0건. 모든 origin 비안전 method 차단, service worker 우회 차단, rubric↔observation activity ID, viewport/state별 qualityEvidence, placement/lifecycle false, NO-GO fail-closed를 확인했다. native lifecycle은 여전히 verified/released로 승격하지 않는다.
-  - live-auth probe hardening과 sanitized native affordance evidence는 `73d80fa`로 commit/push했고, checklist 마감은 이 docs-only commit으로 반영한다. `main`과 `origin/main`은 `0/0`으로 동기화되어 있다.
+  - `NO01SC-01` 의미 probe에 대한 sol xhigh 중간 판정은 ITERATE다. primary 후보 선정은 타당하지만 full 23 state, 선택 해제 뒤 지속적 시각 구분, save/reopen이 P1 release gate로 남아 있다.
 
 ## Scaffold debt — 이번 범위에서 추적만 하는 항목
 

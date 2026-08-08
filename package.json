@@ -35,6 +35,8 @@
     "contract:probe:wave12:bar-graph-scale": "node scripts/contract-lab/capture-wave8-fraction-sum-release-canary.mjs --bar-graph",
     "contract:probe:wave13:broken-ruler": "node scripts/contract-lab/capture-wave13-broken-ruler-release-canary.mjs",
     "contract:probe:wave14:place-value-model": "node scripts/contract-lab/capture-wave14-place-value-model-canary.mjs",
+    "contract:probe:division-native-semantics": "pnpm --filter @mathcanvas/contracts... build && node scripts/contract-lab/probe-division-native-semantics.mjs",
+    "contract:canary:division-counting-group": "pnpm --filter @mathcanvas/compiler... build && node scripts/contract-lab/capture-division-counting-group-canary.mjs",
     "contract:verify:wave14:place-value-model": "node scripts/contract-lab/validate-wave14-place-value-model-canary.mjs",
     "contract:canary:wave14:place-value": "node scripts/contract-lab/capture-wave14-place-value-release-canary.mjs",
     "contract:canary:wave16-17": "node scripts/contract-lab/capture-wave16-17-release-canaries.mjs",

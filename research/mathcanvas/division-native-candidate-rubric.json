@@ -1,19 +1,24 @@
 {
   "schemaVersion": "1.0.0",
   "rubricId": "division-native-candidate-rubric-v1",
-  "observedAt": "2026-08-07T23:47:36Z",
+  "observedAt": "2026-08-08T01:27:58.586Z",
   "activityId": "number.division.quotient-remainder.claim-evidence-v1",
-  "probeMode": "static-catalog-plus-live-affordance-observation",
+  "probeMode": "static-catalog-plus-live-isolated-semantic-probe",
   "liveProbe": {
-    "status": "blocked-write-approval-required",
-    "attempt": "node scripts/contract-lab/capture-page.mjs --headless --live-auth --path /ko/view/<owned-project> --open-tool-settings --login-timeout-ms 0",
-    "detail": "전용 live-auth headless 캡처에서 native 후보와 도구 설정 선택 UI를 확인했다. 기존 프로젝트를 보호하기 위해 설정 완료 시 발생한 POST/PUT을 차단했으며, 생성·핵심 조작·저장·재열기는 실행하지 않았다.",
+    "status": "semantic-grouping-observed-persistent-lifecycle-required",
+    "attempt": "pnpm contract:probe:division-native-semantics --run-id <approved-disposable-run-id>",
+    "detail": "전용 headless context에서 후보별 캔버스를 분리하고 응답에만 로컬 객체를 주입했다. NO01SC-01 네 낱개는 native 그룹 뒤 하나의 group-element와 공통 groupId를 가졌고, wrapper 이동과 undo가 네 구성원에 동일하게 반영됐다. Save payload는 관측만 하고 모든 비안전 요청을 차단했다.",
     "writeCount": 0,
     "userChromeTouched": false,
-    "persistedMathematicalStateChange": false,
+    "clientSavePayloadMathematicalStateChange": true,
+    "persistedServerStateObserved": false,
     "saveReopenObserved": false,
+    "unknownCandidatesColocated": false,
+    "oneSemanticCasePerCanvas": true,
+    "qualityEvidence": false,
+    "decisionStatus": "conditional-go-no01sc-grouping-persistent-lifecycle-required",
     "evidence": [
-      "research/mathcanvas/division-native-live-affordance-observation.json"
+      "research/mathcanvas/division-native-semantic-probe.json"
     ]
   },
   "rubric": [
@@ -38,13 +43,13 @@
         "research/mathcanvas/module-variant-contract.static.json#tool=NO01SC",
         "research/mathcanvas/common-draw-contract.observations.json#module=NO01SC"
       ],
-      "rubricResult": "unverified-live",
+      "semanticEvidence": "research/mathcanvas/division-native-semantic-probe.json#candidate=NO01SC",
+      "rubricResult": "conditional-primary-candidate",
       "releaseBlockers": [
-        "savedSvgId",
-        "serverNormalization",
-        "wireFieldTypes",
-        "manipulation-state-change",
-        "save-reopen-roundtrip"
+        "full-23-object-state",
+        "persistent-visual-grouping",
+        "actual-save-reopen-roundtrip",
+        "reserve-box-and-task-envelope"
       ]
     },
     {
@@ -58,13 +63,12 @@
         "research/mathcanvas/tool-catalog.snapshot.json#tool=NO01NR",
         "research/mathcanvas/module-variant-contract.static.json#tool=NO01NR"
       ],
-      "rubricResult": "unverified-live",
+      "semanticEvidence": "research/mathcanvas/division-native-semantic-probe.json#candidate=NO01NR",
+      "rubricResult": "secondary-representation-not-equal-group-core",
       "releaseBlockers": [
-        "savedSvgId",
-        "serverNormalization",
-        "wireFieldTypes",
-        "manipulation-state-change",
-        "save-reopen-roundtrip"
+        "equal-group-wrapper-state",
+        "remainder-independence",
+        "actual-save-reopen-roundtrip"
       ]
     },
     {
@@ -78,13 +82,11 @@
         "research/mathcanvas/tool-catalog.snapshot.json#tool=NO07IC",
         "research/mathcanvas/module-variant-contract.static.json#tool=NO07IC"
       ],
-      "rubricResult": "unverified-live",
+      "rubricResult": "rejected-semantic-mismatch",
       "releaseBlockers": [
-        "savedSvgId",
-        "serverNormalization",
-        "wireFieldTypes",
-        "manipulation-state-change",
-        "save-reopen-roundtrip"
+        "plus-zero-minus-semantics-not-division-grouping",
+        "equal-group-wrapper-state",
+        "actual-save-reopen-roundtrip"
       ]
     },
     {
@@ -98,13 +100,12 @@
         "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NG",
         "research/mathcanvas/module-variant-contract.static.json#tool=NO04NG"
       ],
-      "rubricResult": "unverified-live",
+      "semanticEvidence": "research/mathcanvas/division-native-semantic-probe.json#candidate=NO04NG",
+      "rubricResult": "secondary-checking-representation-not-group-core",
       "releaseBlockers": [
-        "savedSvgId",
-        "serverNormalization",
-        "wireFieldTypes",
-        "manipulation-state-change",
-        "save-reopen-roundtrip"
+        "student-created-equal-groups",
+        "remainder-independence",
+        "actual-save-reopen-roundtrip"
       ]
     }
   ],
@@ -120,8 +121,9 @@
     "limitation": "수 카드는 몫·나머지를 기록할 수 있지만 같은 수씩 묶기와 잔여물 구성의 핵심 상태를 대신하지 않는다."
   },
   "decision": {
-    "status": "no-go-until-approved-native-canary",
-    "reason": "native 후보와 선택 UI는 live로 확인했지만, 설정 완료가 기존 프로젝트 저장을 시도하므로 승인된 disposable canary 없이는 핵심 수학 조작과 lifecycle을 확인할 수 없다. 활동에 native 도구를 추가하지 않는다.",
-    "safeFallback": "현행 점+펜 활동을 verified로 유지한다. 장식용 native를 추가하지 않는다."
+    "status": "conditional-go-no01sc-grouping-persistent-lifecycle-required",
+    "primaryCandidate": "NO01SC-01",
+    "reason": "NO01SC-01의 native group membership은 같은 수씩 묶기의 명시적이고 가역적인 client 수학 상태다. 이전 12후보 겹침 화면과 generic drag 판정은 증거에서 제외한다. 23개 전체 상태, 선택 해제 뒤 공간적 구분, actual save/reopen, reserveBox를 통과한 뒤에만 활동을 release한다.",
+    "safeFallback": "persistent lifecycle gate를 통과하기 전까지 현행 점+펜 활동은 verified 상태로 유지한다."
   }
 }

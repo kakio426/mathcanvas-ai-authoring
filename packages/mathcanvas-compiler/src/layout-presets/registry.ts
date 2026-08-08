@@ -25,6 +25,7 @@ import {
   wave23AngleClaimEvidenceLayoutPreset,
   wave23ClaimEvidenceLayoutPreset
 } from "./wave23-claim-evidence-v1.js";
+import { wave25DivisionGroupingLayoutPreset } from "./wave25-division-grouping-v1.js";
 
 type WritingLayoutShift = {
   readonly fromY: number;
@@ -281,7 +282,8 @@ const rawPresets: Readonly<Record<string, LayoutPreset>> = {
   "wave21-claim-evidence-v2": wave21ClaimEvidenceV2LayoutPreset,
   "wave23-claim-evidence-v1": wave23ClaimEvidenceLayoutPreset,
   "wave23-angle-claim-evidence-v1":
-    wave23AngleClaimEvidenceLayoutPreset
+    wave23AngleClaimEvidenceLayoutPreset,
+  "wave25-division-grouping-v1": wave25DivisionGroupingLayoutPreset
 };
 
 const presets: Readonly<Record<string, LayoutPreset>> =

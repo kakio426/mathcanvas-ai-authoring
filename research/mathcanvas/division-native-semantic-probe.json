@@ -1,0 +1,155 @@
+{
+  "activityId": "number.division.quotient-remainder.claim-evidence-v1",
+  "candidates": [
+    {
+      "decision": "primary-candidate-persistent-lifecycle-required",
+      "mathematicalState": {
+        "clientSavePayloadHasCommonGroupMembership": true,
+        "fullDivisionStateObserved": false,
+        "groupedWrapperCount": 1,
+        "groupedWrapperMemberCount": 4,
+        "groupMoveDelta": {
+          "x": 259.199951,
+          "y": 69.119995
+        },
+        "initialMemberCount": 4,
+        "memberMoveMatchesWrapper": true,
+        "undoRestoresUngroupedState": true
+      },
+      "moduleKey": "NO01SC",
+      "nextGate": "23개 전체에서 구성원 4개인 wrapper 5개, ungrouped 3개, 중복 0개를 실제 저장·재열기로 확인합니다.",
+      "observedName": "수 세기 모형",
+      "semanticOperation": "multi-select-group-move-undo",
+      "spatialObservationCssPx": {
+        "groupedChromeBox": {
+          "height": 115.741,
+          "width": 115.741,
+          "x": 549.454,
+          "y": 289.111
+        },
+        "selectedUnits": {
+          "items": [
+            {
+              "height": 37.037,
+              "width": 37.037,
+              "x": 559.87,
+              "y": 299.528
+            },
+            {
+              "height": 37.037,
+              "width": 37.037,
+              "x": 617.741,
+              "y": 299.528
+            },
+            {
+              "height": 37.037,
+              "width": 37.037,
+              "x": 559.87,
+              "y": 357.398
+            },
+            {
+              "height": 37.037,
+              "width": 37.037,
+              "x": 617.741,
+              "y": 357.398
+            }
+          ],
+          "union": {
+            "height": 118.907,
+            "width": 118.907,
+            "x": 547.87,
+            "y": 287.528
+          }
+        }
+      },
+      "variantId": "NO01SC-01"
+    },
+    {
+      "decision": "secondary-representation-not-equal-group-core",
+      "mathematicalState": {
+        "afterBeadX": [
+          46,
+          274,
+          334,
+          394,
+          454,
+          514,
+          574,
+          634,
+          694,
+          754
+        ],
+        "beforeBeadX": [
+          214,
+          274,
+          334,
+          394,
+          454,
+          514,
+          574,
+          634,
+          694,
+          754
+        ],
+        "persistedClientStateChanged": true
+      },
+      "moduleKey": "NO01NR",
+      "observedName": "수 구슬",
+      "semanticOperation": "bead-drag",
+      "variantId": "NO01NR-01"
+    },
+    {
+      "decision": "secondary-checking-representation-not-group-core",
+      "mathematicalState": {
+        "afterSelectedRect": [
+          "2",
+          "2"
+        ],
+        "beforeSelectedRect": [],
+        "persistedClientStateChanged": true
+      },
+      "moduleKey": "NO04NG",
+      "observedName": "배열표",
+      "semanticOperation": "number-cell-select",
+      "variantId": "NO04NG-01"
+    }
+  ],
+  "decision": {
+    "primaryCandidate": "NO01SC-01",
+    "reason": "NO01SC-01 네 단위 모형의 native group membership과 가역 이동이 확인되어 drag-only 탈락 결론을 폐기합니다. 전체 23개 상태, 선택 해제 뒤 시각적 묶음 구분, 실제 save/reopen, reserveBox는 아직 release gate입니다.",
+    "releaseQualified": false,
+    "status": "conditional-go-no01sc-grouping-persistent-lifecycle-required"
+  },
+  "environment": {
+    "attemptedSavePayloadCount": 5,
+    "blockedNonSafeRequestCount": 15,
+    "externalWriteCount": 0,
+    "injectedProjectReadCount": 9,
+    "profileScope": "dedicated-mathcanvas-profile",
+    "serviceWorkersBlocked": true,
+    "userChromeTouched": false,
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    }
+  },
+  "evidenceId": "division-native-semantic-probe-20260808-v1",
+  "isolation": {
+    "localScreenshots": [
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/counting-grouped.png",
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/counting-grouped-moved.png",
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/counting-grouped-deselected.png",
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/counting-group-undo.png",
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/number-rack-bead-moved.png",
+      ".mathcanvas-contract-lab/previews/wave18/division-native-semantic/number-grid-cell-selected.png"
+    ],
+    "oneSemanticCasePerCanvas": true,
+    "qualityEvidence": false,
+    "reason": "후보의 의미 조작을 분리 관측한 reference probe이며 완성 학생 활동 캡처가 아닙니다.",
+    "sourceProjectPersistedStateChanged": false,
+    "unknownCandidatesColocated": false
+  },
+  "observedAt": "2026-08-08T01:27:58.586Z",
+  "probeMode": "dedicated-live-auth-read-only-response-injection",
+  "schemaVersion": "1.0.0"
+}

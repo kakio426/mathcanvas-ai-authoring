@@ -1,11 +1,12 @@
 import {
   mkdirSync,
   mkdtempSync,
+  rmSync,
   readFileSync,
   writeFileSync
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, expect, it } from "vitest";
 import { sha256Hex } from "@mathcanvas/contracts";
@@ -68,6 +69,12 @@ const validateWave4NumberCardCanaryCli = join(
   "contract-lab",
   "validate-wave4-number-card-canary.mjs"
 );
+const verifyDivisionNativeRubricCli = join(
+  root,
+  "scripts",
+  "contract-lab",
+  "verify-division-native-rubric.mjs"
+);
 
 function runNode(arguments_: string[]) {
   return spawnSync(process.execPath, arguments_, {
@@ -86,6 +93,60 @@ function rehashCommonDrawObservation(
 }
 
 describe("P0 contract-lab 격리와 정규화", () => {
+  it("division native verifier는 후보를 겹친 의미 probe를 거부한다", () => {
+    const temporary = mkdtempSync(
+      join(root, ".mathcanvas-contract-lab", "division-native-rubric-")
+    );
+    try {
+      const rubric = JSON.parse(
+        readFileSync(
+          join(
+            root,
+            "research",
+            "mathcanvas",
+            "division-native-candidate-rubric.json"
+          ),
+          "utf8"
+        )
+      ) as {
+        liveProbe: { evidence: string[] };
+      };
+      const semanticProbe = JSON.parse(
+        readFileSync(
+          join(
+            root,
+            "research",
+            "mathcanvas",
+            "division-native-semantic-probe.json"
+          ),
+          "utf8"
+        )
+      ) as { isolation: { unknownCandidatesColocated: boolean } };
+      semanticProbe.isolation.unknownCandidatesColocated = true;
+      const observationPath = join(temporary, "semantic-probe.json");
+      const rubricPath = join(temporary, "rubric.json");
+      writeFileSync(
+        observationPath,
+        `${JSON.stringify(semanticProbe)}\n`,
+        "utf8"
+      );
+      rubric.liveProbe.evidence = [relative(root, observationPath)];
+      writeFileSync(rubricPath, `${JSON.stringify(rubric)}\n`, "utf8");
+
+      const result = runNode([
+        verifyDivisionNativeRubricCli,
+        `--input=${rubricPath}`
+      ]);
+
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain(
+        "division-native-rubric-linked-semantic-probe-invalid"
+      );
+    } finally {
+      rmSync(temporary, { recursive: true, force: true });
+    }
+  });
+
   it("민감 key와 값을 제거하고 같은 입력에서 byte-stable 출력을 만든다", () => {
     const temporary = mkdtempSync(
       join(tmpdir(), "mathcanvas-contract-lab-")
