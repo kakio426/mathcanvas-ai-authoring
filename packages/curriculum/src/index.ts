@@ -5,6 +5,7 @@ import {
 } from "@mathcanvas/contracts";
 import {
   LEARNING_MAP_COMMIT,
+  grade3PilotOfficialRecords,
   angleMeasurementRecord,
   barGraphInterpretationRecord,
   lengthMeasurementRecord,
@@ -63,6 +64,9 @@ export interface CurriculumResolution {
 export function resolveCurriculum(
   standardCode = "[6수01-07]"
 ): CurriculumResolution {
+  const grade3PilotRecords = Object.fromEntries(
+    grade3PilotOfficialRecords.map((record) => [record.code, record])
+  );
   const records: Readonly<Record<string, CurriculumRecord>> = {
     "[2수01-02]": placeValueRecord,
     "[2수01-04]": numberCompositionRecord,
@@ -81,7 +85,8 @@ export function resolveCurriculum(
     "[6수01-07]": unlikeDenominatorComparisonRecord,
     "[6수01-08]": unlikeDenominatorFractionOperationsRecord,
     "[6수03-02]": lineSymmetryRecord,
-    "[6수04-04]": probabilityComparisonRecord
+    "[6수04-04]": probabilityComparisonRecord,
+    ...grade3PilotRecords
   };
   const profileMatches = [
     findClaimEvidenceActivityProfile(standardCode),
@@ -195,6 +200,7 @@ export function resolveCurriculum(
 
 export {
   LEARNING_MAP_COMMIT,
+  grade3PilotOfficialRecords,
   angleMeasurementRecord,
   barGraphInterpretationRecord,
   lengthMeasurementRecord,
@@ -247,3 +253,12 @@ export {
   type PartialOperationCardSeed,
   type PartialOperationItemSeed
 } from "./partial-operation-profile.js";
+
+export {
+  findGrade3PilotEntry,
+  getGrade3PilotCoverage,
+  grade3PilotEntries,
+  grade3PilotLedger,
+  grade3PilotSourceManifest,
+  grade3PilotStandardCodes
+} from "./pilot-ledger.js";

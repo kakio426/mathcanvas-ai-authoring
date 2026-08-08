@@ -21,7 +21,8 @@ import {
   timeDurationRecord,
   triangleClassificationRecord,
   unlikeDenominatorComparisonRecord,
-  unlikeDenominatorFractionOperationsRecord
+  unlikeDenominatorFractionOperationsRecord,
+  grade3PilotOfficialRecords
 } from "./data.js";
 import {
   CLAIM_EVIDENCE_MANIPULATION,
@@ -417,7 +418,8 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
   ]),
   standard(triangleClassificationRecord, []),
   standard(angleMeasurementRecord, []),
-  standard(lineSymmetryRecord, [])
+  standard(lineSymmetryRecord, []),
+  ...grade3PilotOfficialRecords.map((record) => standard(record, []))
 ] as const;
 
 function standardRange(
@@ -514,9 +516,18 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
       (standard) => standard.gradeBand === "1-2"
     ),
     ...curriculumReferences.map((reference) => {
-      const supported = supportedTeacherCurriculumCatalog.find(
+      const legacySupported = supportedTeacherCurriculumCatalog.find(
         (candidate) => candidate.standardCode === reference.standardCode
       );
+      const pilotRecord = grade3PilotOfficialRecords.find(
+        (record) => record.code === reference.standardCode
+      );
+      // A pilot record owns the official locator, while any pre-existing
+      // activity options remain reusable. This prevents first-match legacy
+      // records from shadowing the independently reviewed pilot authority.
+      const supported = pilotRecord
+        ? standard(pilotRecord, legacySupported?.activities ?? [])
+        : legacySupported;
       const claimEvidenceProfile = claimEvidenceActivityProfiles.find(
         (candidate) => candidate.standardCode === reference.standardCode
       );

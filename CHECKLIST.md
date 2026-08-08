@@ -30,42 +30,49 @@
 ## R1 — 30개 curriculum·affordance ledger
 
 - Depth: `core`
-- Status: `pending`
+- Status: `complete`
 - Depends on: Planning gate
 - Scope:
   - `/Users/yubyeongju/Downloads/claude-all-30-ppt-content.md`
   - `packages/curriculum`
   - 교육부 standardAuthority와 비상교육 unitAuthority fixture/provenance
 - Definition of done:
-  - [ ] `ppt-01`–`ppt-30` stable source ID와 30개 제목·원고 locator·source hash가 있다.
-  - [ ] 1학기 15개·2학기 15개가 누락 없이 결속된다.
-  - [ ] 작업 분류 `수와 연산 21`, `도형과 측정 7`, `자료와 가능성 2`, `변화와 관계 0`의 차이가 검토되거나 공식 결속에 따라 명시적으로 수정된다.
-  - [ ] standard binding은 교육부 고시 제2022-33호 [별책 8]의 source/version/fingerprint/PDF locator를 가진다.
-  - [ ] grade·semester·unit binding은 `teacher-catalog.ts`의 비상교육 학기별 source URL과 unit locator/fingerprint를 별도로 가진다.
-  - [ ] 3학년 standard 검토는 NCIC 공식 URL `https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4`를 read-only로 pin해 사용한다.
-  - [ ] 3학년 unit 검토는 비상교육 `https://book.visang.com/books/info/5435`와 `https://book.visang.com/books/info/5734`를 read-only로 pin해 사용한다.
-  - [ ] 구현 agent 추출과 구현 세션과 다른 별도 read-only reviewer session/model의 code·문구·locator가 일치할 때만 두 actor ID/reviewedAt과 함께 `official-text-verified`다. 동일 세션 자가검토는 두 번째 검토로 세지 않는다.
-  - [ ] source 접근 불가·모호함은 `official-source-checked` 이하와 종속 `blocked`로 종결한다.
-  - [ ] 원고 단원 번호가 비상교육 목차와 다르면 unitAuthority에 맞게 교정하고 변경 근거를 남긴다.
-  - [ ] `[원문 미대조]`, 추정 standard, 검증되지 않은 unit binding은 released entry에 없다.
-  - [ ] 하위 학년군 성취기준 복습은 `prerequisiteStandardCodes` + `crossBandReview`이고 현재 단원의 primary standard로 위장하지 않는다.
-  - [ ] cross-band review는 별도 unit review binding을 쓰며 교사 UI에 `선수 학습 복습`으로 표시한다.
-  - [ ] cross-band released entry는 pilotCoverage에는 포함하지만 3–4학년 curriculumCoverage 분자에는 포함하지 않는다.
-  - [ ] 각 entry가 핵심 수학적 결정, 대표 오개념, 확인할 불변량, 학생 설명 초점, 필요한 native affordance를 가진다.
-  - [ ] 각 entry가 원고 11단계 중 한 화면에 남긴 사건과 의도적으로 제외한 단계를 기록한다.
-  - [ ] 같은 수학적 결정·phase를 공유하는 항목은 blueprintFamily 후보로 묶고, native 상태는 affordanceFamily, 공간 문법은 layoutFamily 후보로 별도 기록한다.
-  - [ ] 세 family 수는 30 또는 임의 quota로 고정하지 않는다.
-  - [ ] PPT 원문 전체를 제품 payload나 source code에 복사하지 않는다.
-  - [ ] 30/30 table-driven ledger 검증이 통과한다.
+  - [x] `ppt-01`–`ppt-30` stable source ID와 30개 제목·원고 locator·source hash가 있다.
+  - [x] 1학기 15개·2학기 15개가 누락 없이 결속된다.
+  - [x] 작업 분류 `수와 연산 21`, `도형과 측정 7`, `자료와 가능성 2`, `변화와 관계 0`의 차이가 검토되거나 공식 결속에 따라 명시적으로 수정된다.
+  - [x] standard binding은 교육부 고시 제2022-33호 [별책 8]의 source/version/fingerprint/PDF locator를 가진다.
+  - [x] grade·semester·unit binding은 `teacher-catalog.ts`의 비상교육 학기별 source URL과 unit locator/fingerprint를 별도로 가진다.
+  - [x] 3학년 standard 검토는 NCIC 공식 URL `https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4`를 read-only로 pin해 사용한다.
+  - [x] 3학년 unit 검토는 비상교육 `https://book.visang.com/books/info/5435`와 `https://book.visang.com/books/info/5734`를 read-only로 pin해 사용한다.
+  - [x] 구현 agent 추출과 구현 세션과 다른 별도 read-only reviewer session/model의 code·문구·locator가 일치할 때만 두 actor ID/reviewedAt과 함께 `official-text-verified`다. 동일 세션 자가검토는 두 번째 검토로 세지 않는다.
+  - [x] source 접근 불가·모호함은 `official-source-checked` 이하와 종속 `blocked`로 종결한다.
+  - [x] 원고 단원 번호가 비상교육 목차와 다르면 unitAuthority에 맞게 교정하고 변경 근거를 남긴다.
+  - [x] `[원문 미대조]`, 추정 standard, 검증되지 않은 unit binding은 released entry에 없다.
+  - [x] 하위 학년군 성취기준 복습은 `prerequisiteStandardCodes` + `crossBandReview`이고 현재 단원의 primary standard로 위장하지 않는다.
+  - [x] cross-band review는 별도 unit review binding을 쓰며 교사 UI에 `선수 학습 복습`으로 표시한다.
+  - [x] cross-band released entry는 pilotCoverage에는 포함하지만 3–4학년 curriculumCoverage 분자에는 포함하지 않는다.
+  - [x] 각 entry가 핵심 수학적 결정, 대표 오개념, 확인할 불변량, 학생 설명 초점, 필요한 native affordance를 가진다.
+  - [x] 각 entry가 원고 11단계 중 한 화면에 남긴 사건과 의도적으로 제외한 단계를 기록한다.
+  - [x] 같은 수학적 결정·phase를 공유하는 항목은 blueprintFamily 후보로 묶고, native 상태는 affordanceFamily, 공간 문법은 layoutFamily 후보로 별도 기록한다.
+  - [x] 세 family 수는 30 또는 임의 quota로 고정하지 않는다.
+  - [x] PPT 원문 전체를 제품 payload나 source code에 복사하지 않는다.
+  - [x] 30/30 table-driven ledger 검증이 통과한다.
 - Verification:
-  - [ ] curriculum schema/unit tests
-  - [ ] duplicate/missing source ID test
-  - [ ] standardAuthority/unitAuthority/cross-band provenance tests
-  - [ ] 30개 domain·semester coverage report
+  - [x] curriculum schema/unit tests
+  - [x] duplicate/missing source ID test
+  - [x] standardAuthority/unitAuthority/cross-band provenance tests
+  - [x] 30개 domain·semester coverage report
 - Commit gate:
-  - [ ] ledger와 공식 결속이 독립적으로 검토 가능한 단위일 때 commit·push한다.
+  - [x] ledger와 공식 결속이 독립적으로 검토 가능한 단위일 때 commit·push한다.
 - Evidence/notes:
-  - 미착수.
+  - `packages/contracts/src/catalog/pilot-ledger.ts`: primary 12개 코드, 학기별 unit source, cross-band unit/source, native evidence file/tool/claim, variation definition을 fail-closed로 검증한다.
+  - `packages/curriculum/src/pilot-ledger.ts`: 30개 table-driven entry, PPT unit mapping, 수학적 결정·오개념·불변량·설명 초점, prediction→mathematical-confirmation→explanation→revision phase를 기록한다. PPT stage 10은 새 나가기 표라 제외하고 revision은 stage 2와 9의 비교로 결속했다.
+  - `packages/curriculum/src/data.ts`, `packages/curriculum/src/index.ts`, `packages/curriculum/src/teacher-catalog.ts`: 12개 공식 성취기준을 `official-text-verified` 검토본으로 교사 catalog와 resolver에 우선 결속한다.
+  - `research/curriculum/grade-3-pilot-authority-evidence.json`: NCIC raw SHA `ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840`, PDF physical p.23/26/27/29와 printed folio 17/20/21/23, 비상교육 CSRF-normalized SHA를 보존한다. manifest SHA는 `a242782652473b8d9323a297341e997ed096110f9ad815e7ab4bbde55b1045b6`이다.
+  - `fixtures/pedagogy/grade-3-pilot-learning-map.used.json`: learning-map commit `3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c`와 canonical fixture SHA `43ef984c785a1050603c8ab0fd6c3bb753392efbe12255771eef2cad4dae903c`를 고정한다.
+  - Claude Opus 5 독립 source-only audit (`claude-opus-5`, high, read-only, 2026-08-08): `SOURCE_VERDICT: PASS`, NCIC/비상교육 hashes·locators·12 goals·unit lists·PPT SHA 모두 일치, blockers 없음. 첫 source/code audit의 P1들은 fail-closed contract와 teacher catalog 우선순위로 해소했다.
+  - Sol xhigh 최종 재검토: `PASS — P0 0 / P1 0 / P2 0`; primary/cross-band/native evidence/variation/phase/teacher locator/authority provenance와 semester source-swap mutation을 확인했다.
+  - 검증 결과: contracts/curriculum build 통과, curriculum·pilot ledger 17 tests 통과, typecheck 통과, test budget `213/133+`, `git diff --check` 통과. 실제 MathCanvas save/reopen 및 시각 canary는 R3–R5/R8 범위로 남기며 이번 R1에서 release를 주장하지 않는다.
 
 ## R2 — 구조화 catalog·request·coverage 계약
 

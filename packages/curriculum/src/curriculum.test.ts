@@ -28,7 +28,7 @@ describe("교육과정 해석", () => {
   });
 
   it("지원하지 않는 성취기준을 조용히 추측하지 않는다", () => {
-    expect(() => resolveCurriculum("[4수01-11]")).toThrow(
+    expect(() => resolveCurriculum("[4수01-12]")).toThrow(
       CurriculumResolutionError
     );
   });
@@ -50,6 +50,38 @@ describe("교육과정 해석", () => {
     expect(synthesized.warnings.join(" ")).toContain("자동 합성");
   });
 
+  it("3학년 pilot의 12개 primary standard를 teacher catalog와 같은 검토본으로 해석한다", () => {
+    for (const code of [
+      "[4수01-04]",
+      "[4수01-05]",
+      "[4수01-06]",
+      "[4수01-09]",
+      "[4수01-10]",
+      "[4수01-11]",
+      "[4수03-06]",
+      "[4수03-15]",
+      "[4수03-16]",
+      "[4수03-18]",
+      "[4수03-21]",
+      "[4수04-01]"
+    ]) {
+      const result = resolveCurriculum(code);
+      expect(result.provenance).toBe("reviewed");
+      expect(result.record.officialSource.verificationStatus).toBe(
+        "official-text-verified"
+      );
+      expect(result.record.officialSource.locator).toMatch(
+        /^PDF physical \d+쪽/
+      );
+      const catalogRecord = teacherCurriculumCatalog.find(
+        (standard) => standard.standardCode === code
+      );
+      expect(catalogRecord?.sourceLocator).toBe(
+        result.record.officialSource.locator
+      );
+    }
+  });
+
   it("출시할 기하 활동과 몫·나머지 활동의 공식 원문 위치를 검토본으로 고정한다", () => {
     for (const code of [
       "[4수01-06]",
@@ -62,7 +94,9 @@ describe("교육과정 해석", () => {
       expect(result.record.officialSource.verificationStatus).toBe(
         "official-text-verified"
       );
-      expect(result.record.officialSource.locator).toMatch(/^PDF \d+쪽/);
+      expect(result.record.officialSource.locator).toMatch(
+        /^PDF (physical )?\d+쪽/
+      );
     }
   });
 

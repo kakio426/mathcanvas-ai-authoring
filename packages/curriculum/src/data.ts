@@ -65,6 +65,148 @@ const sharedAuxiliarySource = {
     "고정 스냅샷은 성취기준 코드와 상위 단원 위치를 확인하는 보조 자료입니다. 공식 목표 문구는 교육부 원문을 기준으로 삼습니다."
 };
 
+function reviewedGrade3PilotRecord(input: {
+  code: string;
+  domain: CurriculumRecord["domain"];
+  officialGoal: string;
+  pdfLocator: string;
+  learningMapLocator: string;
+}): CurriculumRecord {
+  return curriculumRecordSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    key: `kr-2022-elem-math:${input.code
+      .replaceAll("[", "")
+      .replaceAll("]", "")
+      .replace("수", "su")}`,
+    code: input.code,
+    gradeBand: "3-4",
+    domain: input.domain,
+    officialGoal: input.officialGoal,
+    prerequisites: [
+      "문제 상황에서 비교하거나 계산해야 할 양을 찾을 수 있다.",
+      "자신의 첫 생각을 수, 식, 그림 또는 말로 나타낼 수 있다."
+    ],
+    officialSource: {
+      sourceId: "kr-ncic-2022-elementary-math",
+      sourceKind: "official",
+      title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      locator: input.pdfLocator,
+      version: "교육부 고시 제2022-33호",
+      verificationStatus: "official-text-verified",
+      sourceTextIncluded: false,
+      caveat:
+        "저장소에는 교육과정 원문 전체를 재배포하지 않습니다. 관련 코드·목표 문구는 R1 authority evidence와 공식 원문 위치에서 대조한 검토 메타데이터입니다."
+    },
+    auxiliarySources: [
+      {
+        ...sharedAuxiliarySource,
+        locator: `${input.learningMapLocator} / ${input.code}`
+      }
+    ],
+    reviewedAt: "2026-08-08T00:00:00.000Z",
+    reviewer: "claude-opus-5-r1-source-review"
+  });
+}
+
+export const grade3PilotOfficialRecords: readonly CurriculumRecord[] = [
+  reviewedGrade3PilotRecord({
+    code: "[4수01-04]",
+    domain: "수와 연산",
+    officialGoal:
+      "곱하는 수가 한 자리 수 또는 두 자리 수인 곱셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-04]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수01-05]",
+    domain: "수와 연산",
+    officialGoal:
+      "나눗셈이 이루어지는 실생활 상황과 연결하여 나눗셈의 의미를 알고, 곱셈과 나눗셈의 관계를 이해한다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-05]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수01-06]",
+    domain: "수와 연산",
+    officialGoal:
+      "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-06]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수01-09]",
+    domain: "수와 연산",
+    officialGoal:
+      "양의 등분할을 통하여 분수의 필요성을 인식하고, 분수를 이해하고 읽고 쓸 수 있다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-09]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수01-10]",
+    domain: "수와 연산",
+    officialGoal:
+      "단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-10]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수01-11]",
+    domain: "수와 연산",
+    officialGoal:
+      "분모가 같은 분수끼리, 단위분수끼리 크기를 비교하고 그 방법을 설명할 수 있다.",
+    pdfLocator: "PDF physical 23쪽 (printed folio 17), 초등학교 3~4학년군 > 수와 연산 > [4수01-11]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수03-06]",
+    domain: "도형과 측정",
+    officialGoal: "원의 중심, 반지름, 지름을 이해하고, 그 성질을 안다.",
+    pdfLocator: "PDF physical 26쪽 (printed folio 20), 초등학교 3~4학년군 > 도형과 측정 > [4수03-06]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수03-15]",
+    domain: "도형과 측정",
+    officialGoal:
+      "길이 단위 1mm와 1km를 알고, 이를 이용하여 길이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+    pdfLocator: "PDF physical 27쪽 (printed folio 21), 초등학교 3~4학년군 > 도형과 측정 > [4수03-15]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수03-16]",
+    domain: "도형과 측정",
+    officialGoal:
+      "1cm와 1mm, 1km와 1m의 관계를 이해하고, 길이를 ‘몇 cm 몇 mm’와 ‘몇 mm’, ‘몇 km 몇 m’와 ‘몇 m’로 다양하게 표현할 수 있다.",
+    pdfLocator: "PDF physical 27쪽 (printed folio 21), 초등학교 3~4학년군 > 도형과 측정 > [4수03-16]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수03-18]",
+    domain: "도형과 측정",
+    officialGoal:
+      "1L와 1mL의 관계를 이해하고, 들이를 ‘몇 L 몇 mL’와 ‘몇 mL’로 표현할 수 있다.",
+    pdfLocator: "PDF physical 27쪽 (printed folio 21), 초등학교 3~4학년군 > 도형과 측정 > [4수03-18]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수03-21]",
+    domain: "도형과 측정",
+    officialGoal:
+      "1kg과 1g의 관계를 이해하고, 무게를 ‘몇 kg 몇 g’과 ‘몇 g’으로 표현할 수 있다.",
+    pdfLocator: "PDF physical 27쪽 (printed folio 21), 초등학교 3~4학년군 > 도형과 측정 > [4수03-21]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  }),
+  reviewedGrade3PilotRecord({
+    code: "[4수04-01]",
+    domain: "자료와 가능성",
+    officialGoal:
+      "자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.",
+    pdfLocator: "PDF physical 29쪽 (printed folio 23), 초등학교 3~4학년군 > 자료와 가능성 > [4수04-01]",
+    learningMapLocator: "data/kr/curriculum-standards.json / topics.json / dependencies.json"
+  })
+] as const;
+
 function reviewedGeometryRecord(input: {
   key: string;
   code: string;

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": "DECK6/korean-elementary-learning-map",
+  "commit": "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
+  "sourceFiles": [
+    "data/kr/topics.json",
+    "data/kr/dependencies.json",
+    "data/kr/curriculum-standards.json"
+  ],
+  "sourceHashes": {
+    "topics.json": "80aa059ed305ce4cbeb0df45436c0b204a42cd208204c1cc1e5332c70c4bf5f3",
+    "dependencies.json": "e09a6137bb70edf2a0b0928c05a4bd3f102c80845846ff13b10767ef4ceafe2c",
+    "curriculum-standards.json": "aaaebb939c17fcc11a808fef3ae8164823425f74bfe8092a4a66941cb8c33335"
+  },
+  "records": [
+    {
+      "standardCode": "[4수01-04]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-04.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-04.concept"],
+      "titleKorean": "[4수01-04] 세 자리 수 범위의 곱셈 - 표현과 연결",
+      "observableEvidence": ["[4수01-04] 세 자리 수 범위의 곱셈 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'세 자리 수 범위의 곱셈'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수01-05]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-05.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-05.concept"],
+      "titleKorean": "[4수01-05] 세 자리 수 범위의 나눗셈 - 표현과 연결",
+      "observableEvidence": ["[4수01-05] 세 자리 수 범위의 나눗셈 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'세 자리 수 범위의 나눗셈'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수01-06]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-06.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-06.concept"],
+      "titleKorean": "[4수01-06] 세 자리 수 범위의 나눗셈 - 표현과 연결",
+      "observableEvidence": ["[4수01-06] 세 자리 수 범위의 나눗셈 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'세 자리 수 범위의 나눗셈'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수01-09]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-09.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-09.concept"],
+      "titleKorean": "[4수01-09] 분수 - 표현과 연결",
+      "observableEvidence": ["[4수01-09] 분수 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'분수'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수01-10]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-10.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-10.concept"],
+      "titleKorean": "[4수01-10] 분수 - 표현과 연결",
+      "observableEvidence": ["[4수01-10] 분수 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'분수'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수01-11]",
+      "topicId": "kr.mt.math.number-operations.g3-4.s4-01-11.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.number-operations.g3-4.s4-01-11.concept"],
+      "titleKorean": "[4수01-11] 분수 - 표현과 연결",
+      "observableEvidence": ["[4수01-11] 분수 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'분수'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수03-06]",
+      "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-06.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.geometry-measurement.g3-4.s4-03-06.concept"],
+      "titleKorean": "[4수03-06] 원의 구성 요소 - 표현과 연결",
+      "observableEvidence": ["[4수03-06] 원의 구성 요소 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'원의 구성 요소'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수03-15]",
+      "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-15.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.geometry-measurement.g3-4.s4-03-15.concept"],
+      "titleKorean": "[4수03-15] 길이 - 표현과 연결",
+      "observableEvidence": ["[4수03-15] 길이 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'길이'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수03-16]",
+      "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-16.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.geometry-measurement.g3-4.s4-03-16.concept"],
+      "titleKorean": "[4수03-16] 길이 - 표현과 연결",
+      "observableEvidence": ["[4수03-16] 길이 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'길이'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수03-18]",
+      "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-18.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.geometry-measurement.g3-4.s4-03-18.concept"],
+      "titleKorean": "[4수03-18] 들이 - 표현과 연결",
+      "observableEvidence": ["[4수03-18] 들이 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'들이'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수03-21]",
+      "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-21.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.geometry-measurement.g3-4.s4-03-21.concept"],
+      "titleKorean": "[4수03-21] 무게 - 표현과 연결",
+      "observableEvidence": ["[4수03-21] 무게 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'무게'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "standardCode": "[4수04-01]",
+      "topicId": "kr.mt.math.data-probability.g3-4.s4-04-01.representation",
+      "prerequisiteTopicIds": ["kr.mt.math.data-probability.g3-4.s4-04-01.concept"],
+      "titleKorean": "[4수04-01] 자료의 수집과 정리 - 표현과 연결",
+      "observableEvidence": ["[4수04-01] 자료의 수집과 정리 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다."],
+      "assessmentPrompt": "'자료의 수집과 정리'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    }
+  ]
+}

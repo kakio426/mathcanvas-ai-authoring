@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": "공식 원문 전체를 저장소에 재배포하지 않고, read-only byte fetch의 SHA256과 필요한 코드·목차 locator만 고정한다.",
+  "capturedBy": "codex-r1-source-extraction",
+  "capturedAt": "2026-08-08T00:00:00.000Z",
+  "sources": [
+    {
+      "sourceId": "kr-ncic-2022-elementary-math",
+      "authority": "standard",
+      "url": "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      "version": "교육부 고시 제2022-33호",
+      "contentSha256": "ba7c7c63ad31ba0fd32e5eb8148d696dd73288acce111495c593298112f8f840",
+      "capture": {
+        "method": "curl -L --fail --silent --show-error",
+        "format": "PDF",
+        "fullBodyStored": false,
+        "verification": "pdftotext -layout로 관련 3–4학년군 페이지와 코드·문구를 대조"
+      },
+      "verifiedLocators": [
+        "PDF physical p.23 (printed folio 17) > [4수01-04], [4수01-05], [4수01-06], [4수01-09], [4수01-10], [4수01-11]",
+        "PDF physical p.26 (printed folio 20) > [4수03-06]",
+        "PDF physical p.27 (printed folio 21) > [4수03-15], [4수03-16], [4수03-18], [4수03-21]",
+        "PDF physical p.29 (printed folio 23) > [4수04-01]"
+      ]
+    },
+    {
+      "sourceId": "visang-grade-3-semester-1",
+      "authority": "unit",
+      "url": "https://book.visang.com/books/info/5435",
+      "version": "2022 개정 · 2026년 학습",
+      "contentSha256": "397690b480149e0d302b28282263e79d7f5b912f75b52300a23289fb4b1c7817",
+      "capture": {
+        "method": "curl -L --fail --silent --show-error | perl -0pe 'CSRF meta content를 <normalized-csrf>로 치환' | shasum -a 256",
+        "format": "HTML",
+        "fullBodyStored": false,
+        "normalization": "request-scoped _csrf meta token 제거, 나머지 byte는 보존",
+        "verification": "HTML line 1418 목차와 3학년 1학기 단원명을 대조"
+      },
+      "verifiedLocators": [
+        "HTML line 1418 > 1. 덧셈과 뺄셈",
+        "HTML line 1418 > 2. 평면도형",
+        "HTML line 1418 > 3. 나눗셈",
+        "HTML line 1418 > 4. 곱셈",
+        "HTML line 1418 > 5. 길이와 시간",
+        "HTML line 1418 > 6. 분수와 소수"
+      ]
+    },
+    {
+      "sourceId": "visang-grade-3-semester-2",
+      "authority": "unit",
+      "url": "https://book.visang.com/books/info/5734",
+      "version": "2022 개정 · 2026년 학습",
+      "contentSha256": "e3edf0ae9263be8276e0ee38d82f80d91a9bfb0be779aadcda6f88b6c8cca014",
+      "capture": {
+        "method": "curl -L --fail --silent --show-error | perl -0pe 'CSRF meta content를 <normalized-csrf>로 치환' | shasum -a 256",
+        "format": "HTML",
+        "fullBodyStored": false,
+        "normalization": "request-scoped _csrf meta token 제거, 나머지 byte는 보존",
+        "verification": "HTML line 1418 목차와 3학년 2학기 단원명을 대조"
+      },
+      "verifiedLocators": [
+        "HTML line 1418 > 1. 곱셈",
+        "HTML line 1418 > 2. 나눗셈",
+        "HTML line 1418 > 3. 원",
+        "HTML line 1418 > 4. 분수",
+        "HTML line 1418 > 5. 들이와 무게",
+        "HTML line 1418 > 6. 그림그래프"
+      ]
+    },
+    {
+      "sourceId": "visang-grade-2-semester-1",
+      "authority": "unit",
+      "url": "https://book.visang.com/books/info/5416",
+      "version": "2022 개정 · 2026년 학습",
+      "contentSha256": "55dc02f1d817520604cde8331a2fd3ce40ee69acdc9148198e7fc5f70b780937",
+      "capture": {
+        "method": "curl -L --fail --silent --show-error | perl -0pe 'CSRF meta content를 <normalized-csrf>로 치환' | shasum -a 256",
+        "format": "HTML",
+        "fullBodyStored": false,
+        "normalization": "request-scoped _csrf meta token 제거, 나머지 byte는 보존",
+        "verification": "HTML line 1418 목차의 2학년 1학기 4·6단원과 선수 복습을 대조"
+      },
+      "verifiedLocators": [
+        "HTML line 1418 > 4. 길이 재기",
+        "HTML line 1418 > 6. 곱셈"
+      ]
+    }
+  ]
+}
