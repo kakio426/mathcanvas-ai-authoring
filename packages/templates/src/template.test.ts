@@ -12,6 +12,7 @@ import {
   equivalentFractionBlueprint,
   fractionComparisonBlueprint,
   findClaimEvidenceBlueprint,
+  CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION,
   generateClaimEvidenceItems,
   generateFractionComparisonActivity,
   generateMultiplicationArrayMeaningItems,
@@ -37,30 +38,98 @@ function recommendation(
 }
 
 describe("분수 비교 템플릿", () => {
-  it("몫과 나머지 활동은 정답식 대신 학생이 묶어 표시할 점 모형을 만든다", () => {
+  it("몫과 나머지 활동은 그림판 점 대신 네이티브 수 세기 모형으로 예상-확인-수정하게 한다", () => {
     const blueprint = findClaimEvidenceBlueprint(
       "number.division.quotient-remainder.claim-evidence-v1"
     );
-    expect(blueprint?.version).toBe("1.1.0");
-    expect(blueprint?.instructions.join(" ")).toContain("펜으로 묶어 놓고");
-
-    const items = generateClaimEvidenceItems(
-      {
-        profileId: "division-remainder",
-        difficulty: "normal",
-        problemCount: 2
-      },
-      "division-unresolved-dot-field"
+    expect(blueprint?.version).toBe("2.0.0");
+    expect(blueprint?.generator.version).toBe(
+      CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
     );
-    for (const item of items) {
-      const evidenceText = String(item.values.evidenceText);
-      const total = Number(item.values.countableTotal);
-      expect(evidenceText.match(/●/g)).toHaveLength(total);
-      expect(evidenceText).not.toMatch(/[0-9=×+]/);
-      expect(evidenceText).not.toContain(String(item.values.correctValueText));
-      expect(Number(item.values.countableGroupSize)).toBeGreaterThan(1);
-      expect(item.provenance.generatorVersion).toBe("1.1.0");
+    expect(blueprint?.variationDefaults.problemCount).toBe(1);
+    expect(blueprint?.instructions).toEqual([
+      expect.stringContaining("답 카드를 하나 골라"),
+      expect.stringContaining("‘그룹’을 누르고"),
+      expect.stringContaining("처음 생각과 다르면 고치세요")
+    ]);
+    expect(
+      blueprint?.toolRoles.find((role) => role.role === "counting-model-pool")
+    ).toMatchObject({
+      toolKey: "NO01SC",
+      intentKind: "counting-model",
+      spatialContractId: "division-grouping-no01sc-01-composition-v1",
+      spatialContractVersion: "1.0.0",
+      locked: false,
+      movable: true,
+      bindings: { count: "item.countableTotal" }
+    });
+    expect(
+      blueprint?.toolRoles.some(
+        (role) =>
+          role.intentKind === "counting-model" || role.toolKey === "NO01SC"
+      )
+    ).toBe(true);
+    expect(
+      blueprint?.toolRoles.some(
+        (role) => role.intentKind.includes("pen") || role.toolKey.includes("pen")
+      )
+    ).toBe(false);
+    expect(blueprint?.toolRoles).toHaveLength(54);
+    expect(blueprint?.layout.root.children).toHaveLength(54);
+    expect(
+      blueprint?.toolRoles.some((role) =>
+        /^group-slot-\d+-label$/.test(role.role)
+      )
+    ).toBe(false);
+
+    const scenarios = [
+      ["division-scenario-7", 23, 4],
+      ["division-scenario-0", 29, 7],
+      ["division-scenario-4", 31, 6]
+    ] as const;
+    for (const [seed, expectedTotal, expectedGroupSize] of scenarios) {
+      const [item] = generateClaimEvidenceItems(
+        {
+          profileId: "division-remainder",
+          difficulty: "normal",
+          problemCount: 1
+        },
+        seed
+      );
+      expect(item).toBeDefined();
+      expect(item!.values.countableTotal).toBe(expectedTotal);
+      expect(item!.values.countableGroupSize).toBe(expectedGroupSize);
+      expect(item!.values.groupLaneLabelText).toBe(
+        `${expectedGroupSize}개씩 묶은 곳`
+      );
+      expect(String(item!.values.evidenceText)).not.toContain("●");
+      expect(item!.provenance.generatorVersion).toBe("1.2.0");
+      const candidates = Array.from(
+        { length: 5 },
+        (_, index) => String(item!.values[`candidate${index + 1}`])
+      );
+      expect(
+        candidates.filter(
+          (candidate) => candidate === item!.values.correctValueText
+        )
+      ).toHaveLength(1);
+      const remainderValues = candidates.map((candidate) =>
+        Number(candidate.match(/,\s*(\d+)/)?.[1])
+      );
+      expect(
+        remainderValues.some((remainder) => remainder >= expectedGroupSize)
+      ).toBe(true);
     }
+    expect(() =>
+      generateClaimEvidenceItems(
+        {
+          profileId: "division-remainder",
+          difficulty: "normal",
+          problemCount: 2
+        },
+        "division-two-problems-forbidden"
+      )
+    ).toThrow(/1문항/);
   });
 
   it("blueprint의 절대 좌표, raw payload, 함수, 직접 정답을 거부한다", () => {

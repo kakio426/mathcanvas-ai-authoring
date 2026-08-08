@@ -2,8 +2,11 @@ import { z } from "zod";
 import {
   assertNativeSpatialLifecycleEvidence,
   nativeSpatialContractSchema,
-  nativeSpatialEvidenceSchema
+  nativeSpatialEvidenceSchema,
+  type NativeSpatialContract,
+  type NativeSpatialEvidence
 } from "../vocabulary/native-spatial.js";
+import { sha256Hex } from "../hash.js";
 import type { ActivityBlueprint } from "../vocabulary/blueprint.js";
 import { stableIdSchema } from "../vocabulary/ids.js";
 import {
@@ -44,13 +47,76 @@ export type NativeSpatialActivityScope = z.infer<
   typeof nativeSpatialActivityScopeSchema
 >;
 
-export const nativeSpatialContractRecordSchema = z
+export const nativeSpatialContractRecordKindSchema = z.enum([
+  "intrinsic-element",
+  "activity-composition"
+]);
+
+export const nativeSpatialUpstreamContractSchema = z
   .object({
+    contractId: stableIdSchema,
     contractVersion: z.string().min(1).max(240),
-    contract: nativeSpatialContractSchema,
-    evidence: nativeSpatialEvidenceSchema
+    recordHash: hashSchema
   })
   .strict();
+
+export function nativeSpatialContractRecordHash(record: {
+  readonly recordKind: z.infer<typeof nativeSpatialContractRecordKindSchema>;
+  readonly contractVersion: string;
+  readonly contract: NativeSpatialContract;
+  readonly evidence: NativeSpatialEvidence;
+  readonly upstreamContracts: readonly z.infer<
+    typeof nativeSpatialUpstreamContractSchema
+  >[];
+}): string {
+  return sha256Hex({
+    recordKind: record.recordKind,
+    contractVersion: record.contractVersion,
+    contract: record.contract,
+    evidence: record.evidence,
+    upstreamContracts: record.upstreamContracts
+  });
+}
+
+export const nativeSpatialContractRecordSchema = z
+  .object({
+    recordKind: nativeSpatialContractRecordKindSchema,
+    contractVersion: z.string().min(1).max(240),
+    contract: nativeSpatialContractSchema,
+    evidence: nativeSpatialEvidenceSchema,
+    upstreamContracts: z.array(nativeSpatialUpstreamContractSchema).max(8),
+    recordHash: hashSchema
+  })
+  .strict()
+  .superRefine((record, context) => {
+    if (
+      record.recordKind === "intrinsic-element" &&
+      record.upstreamContracts.length > 0
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["upstreamContracts"],
+        message: "intrinsic element contract는 upstream contract를 가질 수 없습니다."
+      });
+    }
+    if (
+      record.recordKind === "activity-composition" &&
+      record.upstreamContracts.length === 0
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["upstreamContracts"],
+        message: "activity composition contract에는 intrinsic upstream이 필요합니다."
+      });
+    }
+    if (record.recordHash !== nativeSpatialContractRecordHash(record)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["recordHash"],
+        message: "native spatial contract record hash가 현재 내용과 일치하지 않습니다."
+      });
+    }
+  });
 
 export const nativeSpatialContractCatalogSchema = z
   .object({
@@ -60,6 +126,9 @@ export const nativeSpatialContractCatalogSchema = z
   .strict()
   .superRefine((catalog, context) => {
     const seen = new Set<string>();
+    const byId = new Map(
+      catalog.records.map((record) => [record.contract.contractId, record])
+    );
     for (const record of catalog.records) {
       const id = record.contract.contractId;
       if (seen.has(id)) {
@@ -70,6 +139,23 @@ export const nativeSpatialContractCatalogSchema = z
         });
       }
       seen.add(id);
+      for (const upstream of record.upstreamContracts) {
+        const dependency = byId.get(upstream.contractId);
+        if (
+          !dependency ||
+          dependency.recordKind !== "intrinsic-element" ||
+          dependency.contractVersion !== upstream.contractVersion ||
+          dependency.recordHash !== upstream.recordHash ||
+          dependency.contract.toolKey !== record.contract.toolKey ||
+          dependency.contract.variantId !== record.contract.variantId
+        ) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["records"],
+            message: `composition upstream 불일치: ${id} -> ${upstream.contractId}`
+          });
+        }
+      }
     }
   });
 
@@ -168,6 +254,7 @@ export function collectNativeSpatialIssues(input: {
         continue;
       }
       if (
+        record.recordKind !== "activity-composition" ||
         record.contract.toolKey !== role.toolKey ||
         record.contractVersion !== role.spatialContractVersion
       ) {

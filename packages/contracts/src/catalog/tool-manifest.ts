@@ -229,6 +229,25 @@ const releasedToolEvidence = {
       "research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=lifecycle:NO03FM"
     ]
   },
+  NO01SC: {
+    captured: [
+      "research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC",
+      "research/mathcanvas/bundle-contract.snapshot.json#tool=NO01SC"
+    ],
+    contracted: [
+      "research/mathcanvas/module-variant-contract.static.json#tool=NO01SC",
+      "research/mathcanvas/native-spatial-contract-catalog.json"
+    ],
+    verified: [
+      "research/mathcanvas/division-counting-group-canary.json#claim=verified:NO01SC"
+    ],
+    released: [
+      "research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC"
+    ],
+    lifecycle: [
+      "research/mathcanvas/division-counting-group-canary.json#claim=lifecycle:NO01SC"
+    ]
+  },
   NO04NT: {
     captured: [
       "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT",
@@ -483,6 +502,7 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
     moduleDefinitions[categoryId].map(
       ([moduleKey, observedName]): ToolManifestEntry => {
         const released =
+          moduleKey === "NO01SC" ||
           moduleKey === "NO03FM" ||
           moduleKey === "NO04NT" ||
           moduleKey === "NO04PD" ||
@@ -522,7 +542,9 @@ export const MATHCANVAS_MODULE_MANIFEST: readonly ToolManifestEntry[] =
           ...(released
             ? {
                 adapterKey:
-                  moduleKey === "NO03FM"
+                  moduleKey === "NO01SC"
+                    ? "counting-model"
+                    : moduleKey === "NO03FM"
                     ? "fraction-model"
                     : moduleKey === "NO04NT"
                       ? "number-card"

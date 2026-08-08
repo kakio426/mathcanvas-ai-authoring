@@ -20,6 +20,7 @@ import {
   makeChoiceExplanationScaffoldRoles
 } from "./choice-explanation-scaffold.js";
 import { withStudentScreenQuality } from "./student-screen-quality.js";
+import { makeDivisionQuotientRemainderBlueprint } from "./division-quotient-remainder.js";
 
 function makeClaimEvidenceBlueprint(
   profile: ClaimEvidenceActivityProfile
@@ -386,7 +387,11 @@ function makeClaimEvidenceBlueprint(
 }
 
 export const claimEvidenceBlueprints: readonly ActivityBlueprint[] =
-  claimEvidenceActivityProfiles.map(makeClaimEvidenceBlueprint);
+  claimEvidenceActivityProfiles.map((profile) =>
+    profile.profileId === "division-remainder"
+      ? makeDivisionQuotientRemainderBlueprint(profile)
+      : makeClaimEvidenceBlueprint(profile)
+  );
 
 export function findClaimEvidenceBlueprint(
   blueprintId: string

@@ -30,6 +30,10 @@ export const RELEASED_NUMBER_CARD_VARIANT_IDS = Array.from(
   (_, index) => `NO04NT-${String(index + 1).padStart(2, "0")}`
 );
 
+export const RELEASED_COUNTING_MODEL_VARIANT_IDS = [
+  "NO01SC-01"
+] as const;
+
 export const RELEASED_PLACE_VALUE_VARIANT_IDS = [
   "NO04PD-03",
   "NO04PD-04",
@@ -62,7 +66,10 @@ export const NATIVE_MODULE_VARIANT_CONTRACTS:
           ? "released" as const
           : "captured" as const,
       releasedVariantIds:
-        entry.moduleKey === "NO03FM" &&
+        entry.moduleKey === "NO01SC" &&
+        entry.supportState === "released"
+          ? RELEASED_COUNTING_MODEL_VARIANT_IDS
+        : entry.moduleKey === "NO03FM" &&
         entry.supportState === "released"
           ? releasedFractionVariantIds
           : entry.moduleKey === "NO04NT" &&

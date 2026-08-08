@@ -2,6 +2,7 @@ import type {
   AnalogClockIntent,
   BalanceScaleIntent,
   BarChartIntent,
+  CountingModelIntent,
   DataTableIntent,
   FractionModelIntent,
   LatexIntent,
@@ -13,6 +14,10 @@ import type {
   RectangleIntent,
   TextIntent
 } from "./native-tool-contracts.js";
+import {
+  COUNTING_MODEL_VARIANT_ID,
+  resolveCountingModelUnitPlacements
+} from "./native-counting-model-contract.js";
 import { assertReleasedModuleVariant } from "./native-module-variant-contracts.js";
 import { NUMBER_CARD_SVG_BY_VALUE } from "./number-card-digit-contract.js";
 import {
@@ -268,6 +273,57 @@ export function makePatternBlockObject(
     isVerticalFlip: true,
     isBluePrint: true
   };
+}
+
+const countingModelCoordinates = [
+  [-40, -40],
+  [40, -40],
+  [40, 40],
+  [-40, 40],
+  [0, 0]
+] as const;
+
+/**
+ * 실제 NO01SC-01 저장 객체에서 확인한 필드만 사용해 낱개를 만든다. 좌표와 ID
+ * 순서는 `resolveCountingModelUnitPlacements`가 전담하며 반환 배열에는 대표 객체가
+ * 없다. 모든 낱개가 학생 조작 대상이기 때문이다.
+ */
+export function makeCountingModelObjects(
+  intent: CountingModelIntent,
+  placement: NativeToolPlacement
+): readonly Record<string, unknown>[] {
+  assertReleasedModuleVariant("NO01SC", COUNTING_MODEL_VARIANT_ID);
+  return resolveCountingModelUnitPlacements(intent.count, placement).map(
+    (unit, index) => ({
+      ...objectCommon,
+      id: unit.id,
+      x: unit.x,
+      y: unit.y,
+      _x: unit.x,
+      _y: unit.y,
+      cx: 0,
+      cy: 0,
+      svgId: COUNTING_MODEL_VARIANT_ID,
+      fill: "#FF8E25",
+      coordinates: countingModelCoordinates.map((point) => [...point]),
+      initCoordinates: countingModelCoordinates.map((point) => [...point]),
+      parent: {
+        moveX: 0,
+        moveY: 0,
+        pictoGraphs: [],
+        startX: unit.x,
+        startY: unit.y,
+        syncPictoGraph: null
+      },
+      order: index + 1,
+      numberFrameSnap: true,
+      isEyeOn: false,
+      isGroup: false,
+      groupId: "",
+      isGroupElement: false,
+      isMoveRotateHandler: false
+    })
+  );
 }
 
 export function makeBalanceScaleObject(

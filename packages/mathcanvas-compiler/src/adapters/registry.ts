@@ -4,6 +4,7 @@ import {
 import {
   makeBalanceScaleObject,
   makeAnalogClockObject,
+  makeCountingModelObjects,
   makeFractionObject,
   makeLatexObject,
   makeNumberCardObject,
@@ -20,13 +21,15 @@ import {
 } from "./native-draw-contracts.js";
 import type {
   NativeToolIntent,
-  NativeToolPlacement
+  NativeToolPlacement,
+  CountingModelIntent
 } from "./native-tool-contracts.js";
 
 export type NativeToolCompileRequest = NativeToolIntent;
 export type {
   AnalogClockIntent,
   BalanceScaleIntent,
+  CountingModelIntent,
   FractionModelIntent,
   LatexIntent,
   NativeToolIntent,
@@ -47,8 +50,41 @@ export {
 } from "./native-rendered-bounds.js";
 
 export interface CompiledToolFragment {
-  readonly object: Record<string, unknown>;
+  readonly kind: "single" | "multi";
   readonly requiredModuleKeys: readonly string[];
+}
+
+export interface CompiledSingleToolFragment extends CompiledToolFragment {
+  readonly kind: "single";
+  readonly object: Record<string, unknown>;
+  readonly primaryObjectId: string;
+}
+
+export interface CompiledMultiToolFragment extends CompiledToolFragment {
+  readonly kind: "multi";
+  readonly objects: readonly Record<string, unknown>[];
+}
+
+export type CompiledNativeToolFragment =
+  | CompiledSingleToolFragment
+  | CompiledMultiToolFragment;
+
+type SingleNativeToolCompileRequest = Exclude<
+  NativeToolCompileRequest,
+  CountingModelIntent
+>;
+
+function singleFragment(
+  object: Record<string, unknown>,
+  primaryObjectId: string,
+  requiredModuleKeys: readonly string[]
+): CompiledSingleToolFragment {
+  return {
+    kind: "single",
+    object,
+    primaryObjectId,
+    requiredModuleKeys
+  };
 }
 
 export const REGISTERED_TOOL_ADAPTERS = [
@@ -66,6 +102,11 @@ export const REGISTERED_TOOL_ADAPTERS = [
     adapterKey: "fraction-model",
     toolKey: "NO03FM",
     contractFamily: "native-fraction-model"
+  },
+  {
+    adapterKey: "counting-model",
+    toolKey: "NO01SC",
+    contractFamily: "native-counting-model-pool"
   },
   {
     adapterKey: "number-card",
@@ -115,9 +156,21 @@ export const REGISTERED_TOOL_ADAPTERS = [
 ] as const;
 
 export function compileNativeTool(
+  request: CountingModelIntent,
+  placement: NativeToolPlacement
+): CompiledMultiToolFragment;
+export function compileNativeTool(
+  request: SingleNativeToolCompileRequest,
+  placement: NativeToolPlacement
+): CompiledSingleToolFragment;
+export function compileNativeTool(
   request: NativeToolCompileRequest,
   placement: NativeToolPlacement
-): CompiledToolFragment {
+): CompiledNativeToolFragment;
+export function compileNativeTool(
+  request: NativeToolCompileRequest,
+  placement: NativeToolPlacement
+): CompiledNativeToolFragment {
   const contract = assertReleasedTool(request.toolKey);
   if (contract.adapterKey !== request.kind) {
     throw new Error(
@@ -126,66 +179,84 @@ export function compileNativeTool(
   }
   switch (request.kind) {
     case "analog-clock":
-      return {
-        object: makeAnalogClockObject(request, placement),
-        requiredModuleKeys: ["SM02AD"]
-      };
+      return singleFragment(
+        makeAnalogClockObject(request, placement),
+        placement.id,
+        ["SM02AD"]
+      );
     case "fraction-model":
+      return singleFragment(
+        makeFractionObject(request, placement),
+        placement.id,
+        ["NO03FM"]
+      );
+    case "counting-model":
       return {
-        object: makeFractionObject(request, placement),
-        requiredModuleKeys: ["NO03FM"]
+        kind: "multi",
+        objects: makeCountingModelObjects(request, placement),
+        requiredModuleKeys: ["NO01SC"]
       };
     case "number-card":
-      return {
-        object: makeNumberCardObject(request, placement),
-        requiredModuleKeys: ["NO04NT"]
-      };
+      return singleFragment(
+        makeNumberCardObject(request, placement),
+        placement.id,
+        ["NO04NT"]
+      );
     case "place-value-model":
-      return {
-        object: makePlaceValueModelObject(request, placement),
-        requiredModuleKeys: ["NO04PD"]
-      };
+      return singleFragment(
+        makePlaceValueModelObject(request, placement),
+        placement.id,
+        ["NO04PD"]
+      );
     case "pattern-block":
-      return {
-        object: makePatternBlockObject(request, placement),
-        requiredModuleKeys: ["SM02PB"]
-      };
+      return singleFragment(
+        makePatternBlockObject(request, placement),
+        placement.id,
+        ["SM02PB"]
+      );
     case "balance-scale":
-      return {
-        object: makeBalanceScaleObject(request, placement),
-        requiredModuleKeys: ["CR07BS"]
-      };
+      return singleFragment(
+        makeBalanceScaleObject(request, placement),
+        placement.id,
+        ["CR07BS"]
+      );
     case "bar-chart":
-      return {
-        object: makeBarChartObject(request, placement),
-        requiredModuleKeys: ["DP04BC"]
-      };
+      return singleFragment(
+        makeBarChartObject(request, placement),
+        placement.id,
+        ["DP04BC"]
+      );
     case "data-table":
-      return {
-        object: makeDataTableObject(request, placement),
-        requiredModuleKeys: ["DP02TG"]
-      };
+      return singleFragment(
+        makeDataTableObject(request, placement),
+        placement.id,
+        ["DP02TG"]
+      );
     case "text":
-      return {
-        object: makeTextObject(request, placement),
-        requiredModuleKeys: []
-      };
+      return singleFragment(
+        makeTextObject(request, placement),
+        placement.id,
+        []
+      );
     case "latex":
-      return {
-        object: makeLatexObject(request, placement),
-        requiredModuleKeys: []
-      };
+      return singleFragment(
+        makeLatexObject(request, placement),
+        placement.id,
+        []
+      );
     case "draw-rectangle":
       assertContractedNativeDrawShape(request.toolKey);
-      return {
-        object: makeRectangleObject(request, placement),
-        requiredModuleKeys: []
-      };
+      return singleFragment(
+        makeRectangleObject(request, placement),
+        placement.id,
+        []
+      );
     case "point-line":
-      return {
-        object: makePointLineObject(request, placement),
-        requiredModuleKeys: []
-      };
+      return singleFragment(
+        makePointLineObject(request, placement),
+        placement.id,
+        []
+      );
     default:
       throw new Error(
         `tool-adapter-unregistered:${String(

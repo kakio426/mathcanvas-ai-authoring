@@ -1,4 +1,459 @@
 {
   "schemaVersion": "1.0.0",
-  "records": []
+  "records": [
+    {
+      "recordKind": "intrinsic-element",
+      "contractVersion": "1.0.0",
+      "contract": {
+        "contractId": "native-element-no01sc-01-v1",
+        "derivedFromEvidenceIds": [
+          "no01sc-01-intrinsic-spatial-canary-20260808-v1"
+        ],
+        "minInteractiveSize": {
+          "height": 80,
+          "width": 80
+        },
+        "reserveAnchor": "placement-center",
+        "reserveBox": {
+          "height": 84,
+          "width": 84,
+          "x": -42,
+          "y": -42
+        },
+        "roundTripStable": true,
+        "roundTripTolerance": 1,
+        "toolKey": "NO01SC",
+        "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+        "variantId": "NO01SC-01"
+      },
+      "evidence": {
+        "environment": {
+          "assetFingerprint": "sha256:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584",
+          "devicePixelRatio": 1,
+          "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
+          "harnessVersion": "division-counting-group-canary:v5",
+          "viewport": "1280x800"
+        },
+        "evidenceId": "no01sc-01-intrinsic-spatial-canary-20260808-v1",
+        "nonPointerInteraction": "unavailable",
+        "observations": [
+          {
+            "chromeBox": {
+              "height": 79.694,
+              "width": 79.893,
+              "x": 437.483,
+              "y": 698.889
+            },
+            "persistedMathematicalStateHash": "28a031286532578af37ca4838664cbff517eed515c208735f789e60e9b8f5aab",
+            "placement": {
+              "height": 80,
+              "width": 80,
+              "x": 437.43,
+              "y": 698.736
+            },
+            "reserveBox": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/initial.png",
+            "state": "initial",
+            "taskEnvelope": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "visualBox": {
+              "height": 63.755,
+              "width": 63.915,
+              "x": 445.473,
+              "y": 706.858
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 79.694,
+              "width": 79.893,
+              "x": 437.483,
+              "y": 698.889
+            },
+            "persistedMathematicalStateHash": "28a031286532578af37ca4838664cbff517eed515c208735f789e60e9b8f5aab",
+            "placement": {
+              "height": 80,
+              "width": 80,
+              "x": 437.43,
+              "y": 698.736
+            },
+            "reserveBox": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/selected-single-unit.png",
+            "state": "selected",
+            "taskEnvelope": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "visualBox": {
+              "height": 63.755,
+              "width": 63.915,
+              "x": 445.473,
+              "y": 706.858
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 79.693,
+              "width": 79.894,
+              "x": 1429.161,
+              "y": 580.664
+            },
+            "persistedMathematicalStateHash": "4ae1c3b2b0372b305f66067315c0bddfd297f48e6b29273f4d0574a4dbabfbd3",
+            "placement": {
+              "height": 80,
+              "width": 80,
+              "x": 1429.108,
+              "y": 580.51
+            },
+            "reserveBox": {
+              "height": 84,
+              "width": 84,
+              "x": 1427.108,
+              "y": 578.51
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/full-grouped.png",
+            "state": "manipulated",
+            "taskEnvelope": {
+              "height": 84,
+              "width": 84,
+              "x": 1427.108,
+              "y": 578.51
+            },
+            "visualBox": {
+              "height": 63.755,
+              "width": 63.915,
+              "x": 1437.15,
+              "y": 588.633
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 79.694,
+              "width": 79.893,
+              "x": 437.483,
+              "y": 698.889
+            },
+            "persistedMathematicalStateHash": "28a031286532578af37ca4838664cbff517eed515c208735f789e60e9b8f5aab",
+            "placement": {
+              "height": 80,
+              "width": 80,
+              "x": 437.43,
+              "y": 698.736
+            },
+            "reserveBox": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reset.png",
+            "state": "undo-reset",
+            "taskEnvelope": {
+              "height": 84,
+              "width": 84,
+              "x": 435.43,
+              "y": 696.736
+            },
+            "visualBox": {
+              "height": 63.755,
+              "width": 63.915,
+              "x": 445.473,
+              "y": 706.858
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 79.693,
+              "width": 79.894,
+              "x": 1429.161,
+              "y": 580.664
+            },
+            "persistedMathematicalStateHash": "4ae1c3b2b0372b305f66067315c0bddfd297f48e6b29273f4d0574a4dbabfbd3",
+            "placement": {
+              "height": 80,
+              "width": 80,
+              "x": 1429.108,
+              "y": 580.51
+            },
+            "reserveBox": {
+              "height": 84,
+              "width": 84,
+              "x": 1427.108,
+              "y": 578.51
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group/reopened.png",
+            "state": "reopened",
+            "taskEnvelope": {
+              "height": 84,
+              "width": 84,
+              "x": 1427.108,
+              "y": 578.51
+            },
+            "visualBox": {
+              "height": 63.755,
+              "width": 63.915,
+              "x": 1437.15,
+              "y": 588.633
+            }
+          }
+        ],
+        "observedAt": "2026-08-08T03:19:07.748Z",
+        "persistedStateChanged": true,
+        "roundTripDrift": 0,
+        "roundTripDriftWithinTolerance": true,
+        "roundTripReferenceState": "manipulated",
+        "toolKey": "NO01SC",
+        "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+        "variantId": "NO01SC-01"
+      },
+      "upstreamContracts": [],
+      "recordHash": "62aa1deed37bf75f452c516129e639bb171b93b0d0c98177b904d24270dacd0a"
+    },
+    {
+      "recordKind": "activity-composition",
+      "contractVersion": "1.0.0",
+      "contract": {
+        "contractId": "division-grouping-no01sc-01-composition-v1",
+        "derivedFromEvidenceIds": [
+          "division-grouping-no01sc-01-composition-31-by-6-20260808-v1"
+        ],
+        "minInteractiveSize": {
+          "height": 588,
+          "width": 470
+        },
+        "reserveAnchor": "placement-top-left",
+        "reserveBox": {
+          "height": 650,
+          "width": 1500,
+          "x": -60,
+          "y": -50
+        },
+        "roundTripStable": true,
+        "roundTripTolerance": 1,
+        "toolKey": "NO01SC",
+        "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+        "variantId": "NO01SC-01"
+      },
+      "evidence": {
+        "environment": {
+          "assetFingerprint": "sha256:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584",
+          "devicePixelRatio": 1,
+          "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
+          "harnessVersion": "division-counting-group-product-canary:31-by-6:v9",
+          "viewport": "1280x800"
+        },
+        "evidenceId": "division-grouping-no01sc-01-composition-31-by-6-20260808-v1",
+        "nonPointerInteraction": "unavailable",
+        "observations": [
+          {
+            "chromeBox": {
+              "height": 566.258,
+              "width": 399.467,
+              "x": 145.872,
+              "y": 505.813
+            },
+            "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
+            "placement": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 495
+            },
+            "reserveBox": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/initial.png",
+            "state": "initial",
+            "taskEnvelope": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "visualBox": {
+              "height": 566.258,
+              "width": 399.467,
+              "x": 145.872,
+              "y": 505.813
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 164.773,
+              "width": 248.948,
+              "x": 137.244,
+              "y": 497.199
+            },
+            "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
+            "placement": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 495
+            },
+            "reserveBox": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/selected-first-four.png",
+            "state": "selected",
+            "taskEnvelope": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "visualBox": {
+              "height": 574.233,
+              "width": 407.457,
+              "x": 137.883,
+              "y": 497.837
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 550.308,
+              "width": 813.916,
+              "x": 695.14,
+              "y": 498.834
+            },
+            "persistedMathematicalStateHash": "33aa9cc8d99781512f503f37651c0274acf6ef86e1e3146ffb87bbe410b4df3d",
+            "placement": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 495
+            },
+            "reserveBox": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/full-grouped.png",
+            "state": "manipulated",
+            "taskEnvelope": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "visualBox": {
+              "height": 514.417,
+              "width": 795.939,
+              "x": 713.116,
+              "y": 516.779
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 566.258,
+              "width": 399.467,
+              "x": 145.872,
+              "y": 505.813
+            },
+            "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
+            "placement": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 495
+            },
+            "reserveBox": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reset.png",
+            "state": "undo-reset",
+            "taskEnvelope": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "visualBox": {
+              "height": 566.258,
+              "width": 399.467,
+              "x": 145.872,
+              "y": 505.813
+            }
+          },
+          {
+            "chromeBox": {
+              "height": 550.308,
+              "width": 813.916,
+              "x": 695.14,
+              "y": 498.834
+            },
+            "persistedMathematicalStateHash": "33aa9cc8d99781512f503f37651c0274acf6ef86e1e3146ffb87bbe410b4df3d",
+            "placement": {
+              "height": 588,
+              "width": 470,
+              "x": 110,
+              "y": 495
+            },
+            "reserveBox": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reopened.png",
+            "state": "reopened",
+            "taskEnvelope": {
+              "height": 650,
+              "width": 1500,
+              "x": 50,
+              "y": 445
+            },
+            "visualBox": {
+              "height": 514.417,
+              "width": 795.939,
+              "x": 713.116,
+              "y": 516.779
+            }
+          }
+        ],
+        "observedAt": "2026-08-08T04:23:39.649Z",
+        "persistedStateChanged": true,
+        "roundTripDrift": 0,
+        "roundTripDriftWithinTolerance": true,
+        "roundTripReferenceState": "manipulated",
+        "toolKey": "NO01SC",
+        "toolVersionFingerprint": "bundle:bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584:NO01SC-01",
+        "variantId": "NO01SC-01"
+      },
+      "upstreamContracts": [
+        {
+          "contractId": "native-element-no01sc-01-v1",
+          "contractVersion": "1.0.0",
+          "recordHash": "62aa1deed37bf75f452c516129e639bb171b93b0d0c98177b904d24270dacd0a"
+        }
+      ],
+      "recordHash": "9cafae20b5387878af93d08381d6f40a53997ba3b85baf2b0b87f6edec53c631"
+    }
+  ]
 }

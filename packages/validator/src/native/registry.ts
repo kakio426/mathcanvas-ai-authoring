@@ -5,9 +5,11 @@ import type {
   ValidationIssue
 } from "@mathcanvas/contracts";
 import {
+  COUNTING_MODEL_VARIANT_ID,
   FRACTION_SVG_BY_DENOMINATOR,
   NUMBER_CARD_SVG_BY_VALUE,
-  PLACE_VALUE_SVG_BY_VALUE
+  PLACE_VALUE_SVG_BY_VALUE,
+  resolveCountingModelUnitPlacements
 } from "@mathcanvas/compiler";
 import { PATTERN_BLOCK_VARIANTS } from "@mathcanvas/compiler";
 import { issue } from "../layers/shared.js";
@@ -533,9 +535,89 @@ function pointLineHandler(
   }
 }
 
+function countingModelHandler(
+  _resolved: ResolvedActivity,
+  emission: ResolvedEmission,
+  contentsJson: readonly NativeObject[],
+  issues: ValidationIssue[]
+): void {
+  const count = emission.toolIntent.properties.count;
+  if (typeof count !== "number") {
+    issue(
+      issues,
+      "native-counting-model-mismatch",
+      "api-contract",
+      `${emission.id}의 수 세기 모형 개수가 올바르지 않습니다.`
+    );
+    return;
+  }
+  let expected;
+  try {
+    expected = resolveCountingModelUnitPlacements(count, {
+      id: emission.id,
+      ...emission.bounds
+    });
+  } catch {
+    issue(
+      issues,
+      "native-counting-model-mismatch",
+      "api-contract",
+      `${emission.id}의 수 세기 모형 배치가 지원 범위를 벗어납니다.`
+    );
+    return;
+  }
+  const nativeById = new Map(
+    contentsJson.flatMap((object) =>
+      typeof object.id === "string"
+        ? [[object.id, object] as const]
+        : []
+    )
+  );
+  const actualPoolIds = contentsJson
+    .flatMap((object) =>
+      typeof object.id === "string" &&
+      object.id.startsWith(`${emission.id}-unit-`)
+        ? [object.id]
+        : []
+    )
+    .sort();
+  const expectedIds = expected.map((unit) => unit.id).sort();
+  const mismatch =
+    JSON.stringify(actualPoolIds) !== JSON.stringify(expectedIds) ||
+    expected.some((unit, index) => {
+      const native = nativeById.get(unit.id);
+      return (
+        !native ||
+        native.svgId !== COUNTING_MODEL_VARIANT_ID ||
+        native.x !== unit.x ||
+        native.y !== unit.y ||
+        native._x !== unit.x ||
+        native._y !== unit.y ||
+        native.order !== index + 1 ||
+        native.numberFrameSnap !== true ||
+        native.isEyeOn !== false ||
+        native.isGroup !== false ||
+        native.groupId !== "" ||
+        native.isGroupElement !== false ||
+        native.isMoveRotateHandler !== false ||
+        !Array.isArray(native.coordinates) ||
+        native.coordinates.length !== 5
+      );
+    });
+  if (mismatch) {
+    issue(
+      issues,
+      "native-counting-model-mismatch",
+      "api-contract",
+      `${emission.id}의 native 낱개 수·ID·순서·중립 배치가 의미 입력과 다릅니다.`
+    );
+  }
+}
+
 const handlers: Readonly<Record<string, Handler | undefined>> = {
   "analog-clock": analogClockHandler,
   "balance-scale": balanceScaleHandler,
+  "counting-model": undefined,
   "fraction-model": fractionHandler,
   latex: latexHandler,
   "number-card": numberCardHandler,
@@ -559,8 +641,6 @@ export function validateRegisteredNativeEmissions(
     )
   );
   for (const emission of resolved.emissions) {
-    const native = nativeById.get(emission.id);
-    if (!native) continue;
     if (!(emission.toolIntent.kind in handlers)) {
       issue(
         issues,
@@ -570,6 +650,17 @@ export function validateRegisteredNativeEmissions(
       );
       continue;
     }
+    if (emission.toolIntent.kind === "counting-model") {
+      countingModelHandler(
+        resolved,
+        emission,
+        compiled.payload.contentsJson,
+        issues
+      );
+      continue;
+    }
+    const native = nativeById.get(emission.id);
+    if (!native) continue;
     handlers[emission.toolIntent.kind]?.(
       resolved,
       emission,

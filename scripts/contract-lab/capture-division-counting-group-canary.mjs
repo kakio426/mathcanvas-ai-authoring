@@ -2,12 +2,25 @@
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
-import { sha256Hex } from "../../packages/contracts/dist/index.js";
 import {
+  CONTRACT_SCHEMA_VERSION,
+  assertNativeSpatialLifecycleEvidence,
+  recommendationSchema,
+  sha256Hex
+} from "../../packages/contracts/dist/index.js";
+import { resolveCurriculum } from "../../packages/curriculum/dist/index.js";
+import {
+  assertCognitiveManifestBound,
+  findClaimEvidenceBlueprint,
+  generateClaimEvidenceActivity
+} from "../../packages/templates/dist/index.js";
+import {
+  compileActivity,
   compileNativeTool,
   getLayoutPreset,
-  resolveCountingModelUnitPlacements
+  resolveActivity
 } from "../../packages/mathcanvas-compiler/dist/index.js";
+import { validateForCreation } from "../../packages/validator/dist/index.js";
 import { parseArguments, failCli } from "./lib/cli.mjs";
 import {
   assertPathInside,
@@ -29,20 +42,84 @@ const layoutId = "wave25-division-grouping-v1";
 const sourceTitlePrefix = "AI-CONTRACT-PROBE-DIVNATIVE-";
 const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
 const unitVariantId = "NO01SC-01";
-const canaryLayoutRevision = "layout-v5-six-group-slots-classroom-copy";
+const toolBundleSha256 =
+  "bf2c027b6a146b038f1c49b20fb06464c7154d8da42f95977d491c18ff366584";
+const toolVersionFingerprint = `bundle:${toolBundleSha256}:${unitVariantId}`;
+const canaryLayoutRevision =
+  "layout-v10-actual-blueprint-no-slot-label-overlap";
 const layoutRevisionMarkerId =
-  `division-group-group-lane-border-top-${canaryLayoutRevision}`;
-const total = 23;
-const groupSize = 4;
-const quotient = 5;
-const remainderCount = 3;
-const groupMemberIndexSets = [
-  [0, 1, 2, 3],
-  [6, 7, 8, 9],
-  [12, 13, 14, 15],
-  [18, 19, 20, 21],
-  [4, 5, 10, 11]
-];
+  "division-remainder-1-array-border-top";
+const groupSlotCount = 6;
+const productItemId = "division-remainder-1";
+const scenarioCatalog = {
+  "23-by-4": {
+    seed: "division-scenario-7",
+    total: 23,
+    groupSize: 4,
+    quotient: 5,
+    remainderCount: 3
+  },
+  "29-by-7": {
+    seed: "division-scenario-0",
+    total: 29,
+    groupSize: 7,
+    quotient: 4,
+    remainderCount: 1
+  },
+  "31-by-6": {
+    seed: "division-scenario-4",
+    total: 31,
+    groupSize: 6,
+    quotient: 5,
+    remainderCount: 1
+  }
+};
+let scenarioKey = "23-by-4";
+let scenarioSeed = scenarioCatalog[scenarioKey].seed;
+let total = scenarioCatalog[scenarioKey].total;
+let groupSize = scenarioCatalog[scenarioKey].groupSize;
+let quotient = scenarioCatalog[scenarioKey].quotient;
+let remainderCount = scenarioCatalog[scenarioKey].remainderCount;
+let groupMemberIndexSets = [];
+
+function configureScenario(key) {
+  const selected = scenarioCatalog[key];
+  if (!selected) {
+    throw new Error(`division-group-scenario-unsupported:${key}`);
+  }
+  scenarioKey = key;
+  scenarioSeed = selected.seed;
+  total = selected.total;
+  groupSize = selected.groupSize;
+  quotient = selected.quotient;
+  remainderCount = selected.remainderCount;
+  const compactFirstGroup = {
+    4: [0, 1, 5, 6],
+    6: [0, 1, 2, 5, 6, 7],
+    7: [0, 1, 2, 3, 5, 6, 7]
+  }[groupSize];
+  if (!compactFirstGroup) {
+    throw new Error(`division-group-size-unsupported:${groupSize}`);
+  }
+  const used = new Set(compactFirstGroup);
+  const available = Array.from({ length: total }, (_, index) => index).filter(
+    (index) => !used.has(index)
+  );
+  groupMemberIndexSets = [compactFirstGroup];
+  for (let index = 1; index < quotient; index += 1) {
+    groupMemberIndexSets.push(
+      available.splice(0, groupSize)
+    );
+  }
+  if (
+    groupMemberIndexSets.some((indexes) => indexes.length !== groupSize) ||
+    available.length !== remainderCount
+  ) {
+    throw new Error("division-group-scenario-partition-invalid");
+  }
+}
+
+configureScenario(scenarioKey);
 
 function resolvedGroupMemberIds(unitIds) {
   return groupMemberIndexSets.map((indexes) =>
@@ -53,6 +130,17 @@ function resolvedGroupMemberIds(unitIds) {
 function resolvedRemainderIds(unitIds) {
   const groupedIndexes = new Set(groupMemberIndexSets.flat());
   return unitIds.filter((_, index) => !groupedIndexes.has(index));
+}
+
+function maximumUnitsPerRow(contentsJson) {
+  const rowCounts = new Map();
+  for (const object of contentsJson.filter(
+    (candidate) => candidate?.svgId === unitVariantId
+  )) {
+    const key = String(object.y);
+    rowCounts.set(key, (rowCounts.get(key) ?? 0) + 1);
+  }
+  return Math.max(0, ...rowCounts.values());
 }
 
 function projectPath(projectId) {
@@ -96,8 +184,67 @@ function contains(outer, inner, tolerance = 2) {
   );
 }
 
+function maxBoundsDrift(left, right) {
+  return Math.max(
+    Math.abs(left.x - right.x),
+    Math.abs(left.y - right.y),
+    Math.abs(left.width - right.width),
+    Math.abs(left.height - right.height)
+  );
+}
+
+function normalizedUnitState(contentsJson, unitId) {
+  const unit = contentsJson.find((object) => object?.id === unitId);
+  if (!unit || unit.svgId !== unitVariantId) {
+    throw new Error("division-group-intrinsic-unit-state-missing");
+  }
+  const state = {
+    x: round(Number(unit.x)),
+    y: round(Number(unit.y)),
+    scale: round(Number(unit.scale ?? 1)),
+    rotate: round(Number(unit.rotate ?? 0)),
+    isGroup: unit.isGroup === true,
+    hasGroupId:
+      typeof unit.groupId === "string" && unit.groupId.length > 0
+  };
+  return {
+    ...state,
+    persistedMathematicalStateHash: sha256Hex(state)
+  };
+}
+
+function cssBoundsToCanvas(bounds, referenceCss, referenceCanvas) {
+  const scaleX = referenceCss.width / referenceCanvas.width;
+  const scaleY = referenceCss.height / referenceCanvas.height;
+  if (
+    !Number.isFinite(scaleX) ||
+    !Number.isFinite(scaleY) ||
+    scaleX <= 0 ||
+    scaleY <= 0
+  ) {
+    throw new Error("division-group-canvas-transform-invalid");
+  }
+  return {
+    x: round(
+      referenceCanvas.x + (bounds.x - referenceCss.x) / scaleX
+    ),
+    y: round(
+      referenceCanvas.y + (bounds.y - referenceCss.y) / scaleY
+    ),
+    width: round(bounds.width / scaleX),
+    height: round(bounds.height / scaleY)
+  };
+}
+
+function hasLayoutRevision(contentsJson, revision) {
+  return (
+    revision === canaryLayoutRevision &&
+    contentsJson.some((object) => object?.id === layoutRevisionMarkerId)
+  );
+}
+
 function hasCurrentLayoutRevision(contentsJson) {
-  return contentsJson.some((object) => object?.id === layoutRevisionMarkerId);
+  return hasLayoutRevision(contentsJson, canaryLayoutRevision);
 }
 
 function normalizedDivisionState(contentsJson) {
@@ -191,22 +338,12 @@ function isExpectedFinalState(state) {
   );
 }
 
-function cloneUnit(template, placement) {
-  return {
-    ...structuredClone(template),
-    id: placement.id,
-    x: placement.x,
-    y: placement.y,
-    _x: placement.x,
-    _y: placement.y,
-    groupId: "",
-    isGroup: false,
-    isGroupElement: false
-  };
-}
-
 function nativeObject(intent, id, bounds) {
-  return compileNativeTool(intent, { id, ...bounds }).object;
+  const fragment = compileNativeTool(intent, { id, ...bounds });
+  if (fragment.kind !== "single") {
+    throw new Error(`division-group-single-fragment-required:${id}`);
+  }
+  return fragment.object;
 }
 
 function layoutBounds(preset, tokenKey) {
@@ -220,7 +357,134 @@ function layoutBounds(preset, tokenKey) {
   };
 }
 
-function buildInjectedContents(unitTemplate) {
+function buildInjectedContents() {
+  const blueprint = findClaimEvidenceBlueprint(activityId);
+  if (!blueprint) {
+    throw new Error("division-group-product-blueprint-missing");
+  }
+  const curriculum = resolveCurriculum(blueprint.curriculumBinding.standardCode);
+  const recommendation = recommendationSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: `division-group-product-canary-${scenarioKey}`,
+    supported: true,
+    templateId: blueprint.id,
+    gradeBand: curriculum.record.gradeBand,
+    recommendedGrade: 3,
+    standardCode: curriculum.record.code,
+    learningGoal: blueprint.learningObjective,
+    prerequisites: curriculum.record.prerequisites,
+    problemCount: 1,
+    difficulty: "normal",
+    manipulation: "claim-evidence-revision-drag",
+    rationale: [
+      "실제 출시 블루프린트와 compiler payload의 저장·재열기 canary입니다."
+    ],
+    confidence: 0.99,
+    caveats: curriculum.warnings,
+    blockingReasons: [],
+    curriculum: curriculum.record
+  });
+  const plan = generateClaimEvidenceActivity(recommendation, {
+    seed: scenarioSeed,
+    generatedAt: "2026-08-08T00:00:00.000Z",
+    activityId: `division-native-product-${scenarioKey}`
+  });
+  assertCognitiveManifestBound(plan.blueprint);
+  const item = plan.items[0];
+  if (
+    plan.items.length !== 1 ||
+    item?.values?.countableTotal !== total ||
+    item?.values?.countableGroupSize !== groupSize
+  ) {
+    throw new Error("division-group-product-scenario-seed-drift");
+  }
+  const resolved = resolveActivity(plan);
+  const compiled = compileActivity(resolved);
+  const validation = validateForCreation(
+    resolved,
+    compiled,
+    new Date("2026-08-08T00:00:00.000Z")
+  );
+  if (!validation.canCreate || validation.issues.length > 0) {
+    throw new Error(
+      `division-group-product-local-validation-failed:${JSON.stringify(
+        validation.issues.map(({ code, role, message }) => ({
+          code,
+          role,
+          message
+        }))
+      )}`
+    );
+  }
+  const pool = resolved.emissions.find(
+    (emission) => emission.role === "counting-model-pool"
+  );
+  if (!pool || pool.id !== `${productItemId}-counting-model-pool`) {
+    throw new Error("division-group-product-pool-emission-missing");
+  }
+  const countingFragment = compileNativeTool(
+    {
+      kind: pool.toolIntent.kind,
+      toolKey: pool.toolIntent.toolKey,
+      ...pool.toolIntent.properties
+    },
+    { id: pool.id, ...pool.bounds }
+  );
+  if (
+    countingFragment.kind !== "multi" ||
+    countingFragment.objects.length !== total ||
+    Object.hasOwn(countingFragment, "primaryObjectId")
+  ) {
+    throw new Error("division-group-product-compiler-multi-fragment-invalid");
+  }
+  const unitIds = countingFragment.objects.map((object) => object.id);
+  const compiledUnitIds = compiled.payload.contentsJson
+    .filter((object) => object?.svgId === unitVariantId)
+    .map((object) => object.id);
+  if (JSON.stringify(unitIds) !== JSON.stringify(compiledUnitIds)) {
+    throw new Error("division-group-product-unit-order-drift");
+  }
+  return {
+    contentsJson: compiled.payload.contentsJson,
+    unitIds,
+    compilerFragment: {
+      kind: countingFragment.kind,
+      emittedObjectCount: countingFragment.objects.length,
+      hasPrimaryObjectId: Object.hasOwn(
+        countingFragment,
+        "primaryObjectId"
+      ),
+      requiredModuleKeys: countingFragment.requiredModuleKeys
+    },
+    lockedIds: compiled.payload.canvasOption.lockIds.flat(),
+    canvasOption: compiled.payload.canvasOption,
+    canvasBounds: {
+      width: resolved.layout.width,
+      height: resolved.layout.height
+    },
+    productContract: {
+      blueprintId: blueprint.id,
+      blueprintVersion: blueprint.version,
+      blueprintContentHash: blueprint.contentHash,
+      generatorId: blueprint.generator.id,
+      generatorVersion: blueprint.generator.version,
+      seed: scenarioSeed,
+      itemId: item.id,
+      questionText: item.values.questionText,
+      correctValueText: item.values.correctValueText,
+      compiledPayloadHash: compiled.payloadHash,
+      compiledProjectTitle: compiled.payload.projectTitle,
+      resolvedHash: sha256Hex(resolved),
+      localValidationCanCreate: validation.canCreate,
+      localValidationIssueCodes: validation.issues.map((issue) => issue.code),
+      spatialContractId: pool.toolIntent.spatialContractId,
+      spatialContractVersion: pool.toolIntent.spatialContractVersion,
+      poolPlacementCanvas: pool.bounds
+    }
+  };
+}
+
+function buildLegacyInjectedContents() {
   const preset = getLayoutPreset(layoutId);
   const rectangleAt = (id, bounds, fill, stroke = "#9EB9CF") =>
     nativeObject(
@@ -395,16 +659,34 @@ function buildInjectedContents(unitTemplate) {
     )
   ];
   const poolBounds = itemBounds("counting-model-pool");
-  const unitPlacements = resolveCountingModelUnitPlacements(total, {
+  const countingFragment = compileNativeTool({
+    kind: "counting-model",
+    toolKey: "NO01SC",
+    count: total
+  }, {
     id: "division-group-counting-model-pool",
     ...poolBounds
   });
-  const units = unitPlacements.map((placement) =>
-    cloneUnit(unitTemplate, placement)
-  );
+  if (
+    countingFragment.kind !== "multi" ||
+    countingFragment.objects.length !== total ||
+    Object.hasOwn(countingFragment, "primaryObjectId")
+  ) {
+    throw new Error("division-group-compiler-multi-fragment-invalid");
+  }
+  const units = [...countingFragment.objects];
   return {
     contentsJson: [...panelObjects, ...textObjects, ...units],
-    unitIds: unitPlacements.map((placement) => placement.id),
+    unitIds: units.map((unit) => unit.id),
+    compilerFragment: {
+      kind: countingFragment.kind,
+      emittedObjectCount: countingFragment.objects.length,
+      hasPrimaryObjectId: Object.hasOwn(
+        countingFragment,
+        "primaryObjectId"
+      ),
+      requiredModuleKeys: countingFragment.requiredModuleKeys
+    },
     lockedIds: [...panelObjects, ...textObjects]
       .filter((object) => !String(object.id).includes("position-card-"))
       .map((object) => object.id),
@@ -480,7 +762,7 @@ async function readProject(page, projectId) {
   }, { id: projectId, baseOrigin: origin });
 }
 
-async function openProject(page, projectId, expectedUnitCount) {
+async function openProject(page, projectId, expectedUnitIds) {
   await page.goto(`${origin}/ko/view/${encodeURIComponent(projectId)}`, {
     waitUntil: "domcontentloaded",
     timeout: 30_000
@@ -490,9 +772,8 @@ async function openProject(page, projectId, expectedUnitCount) {
     timeout: 30_000
   });
   await page.waitForFunction(
-    ({ prefix, count }) =>
-      document.querySelectorAll(`[id^="${prefix}"]`).length >= count,
-    { prefix: "division-group-counting-model-pool-unit-", count: expectedUnitCount },
+    (ids) => ids.every((id) => document.getElementById(id)),
+    expectedUnitIds,
     { timeout: 30_000 }
   );
   await page.evaluate(() => document.fonts.ready);
@@ -826,17 +1107,65 @@ async function dragTo(page, locator, targetX, targetY) {
 }
 
 async function borderBounds(page, role) {
+  const boxFor = async (id) => {
+    const box = await page.locator(`[id="${id}"]`).first().boundingBox();
+    if (!box) throw new Error(`division-group-border-not-visible:${role}:${id}`);
+    return box;
+  };
+  const prefix = productItemId;
+  if (
+    role === "array-panel" ||
+    role === "source-panel" ||
+    role === "group-lane" ||
+    role === "remainder-lane"
+  ) {
+    const [top, bottom, left, right, sourceSeparator, remainderSeparator] =
+      await Promise.all([
+        boxFor(`${prefix}-array-border-top`),
+        boxFor(`${prefix}-array-border-bottom`),
+        boxFor(`${prefix}-array-border-left`),
+        boxFor(`${prefix}-array-border-right`),
+        boxFor(`${prefix}-source-separator`),
+        boxFor(`${prefix}-remainder-separator`)
+      ]);
+    const outer = {
+      x: left.x,
+      y: top.y,
+      width: right.x + right.width - left.x,
+      height: bottom.y + bottom.height - top.y
+    };
+    if (role === "array-panel") return outer;
+    if (role === "source-panel") {
+      return {
+        x: outer.x,
+        y: outer.y,
+        width: sourceSeparator.x + sourceSeparator.width - outer.x,
+        height: outer.height
+      };
+    }
+    if (role === "group-lane") {
+      return {
+        x: sourceSeparator.x + sourceSeparator.width,
+        y: outer.y,
+        width:
+          remainderSeparator.x -
+          (sourceSeparator.x + sourceSeparator.width),
+        height: outer.height
+      };
+    }
+    return {
+      x: remainderSeparator.x + remainderSeparator.width,
+      y: outer.y,
+      width:
+        outer.x + outer.width -
+        (remainderSeparator.x + remainderSeparator.width),
+      height: outer.height
+    };
+  }
   const boxes = [];
   for (const side of ["top", "bottom", "left", "right"]) {
-    const id =
-      role === "group-lane" && side === "top"
-        ? layoutRevisionMarkerId
-        : `division-group-${role}-border-${side}`;
-    const box = await page
-      .locator(`[id="${id}"]`)
-      .first()
-      .boundingBox();
-    if (!box) throw new Error(`division-group-border-not-visible:${role}:${side}`);
+    const id = `${prefix}-${role}-border-${side}`;
+    const box = await boxFor(id);
     boxes.push(box);
   }
   const left = Math.min(...boxes.map((box) => box.x));
@@ -947,6 +1276,127 @@ async function measureFinalLaneFit(
   };
 }
 
+async function measureStandaloneUnitSpatial(
+  page,
+  unitId,
+  contentsJson,
+  screenshotPath
+) {
+  await clearSelection(page);
+  const unit = page.locator(`[id="${unitId}"]`).first();
+  const visualCss = await unit.boundingBox();
+  if (!visualCss || visualCss.width <= 0 || visualCss.height <= 0) {
+    throw new Error("division-group-intrinsic-visual-box-empty");
+  }
+  await unit.click({ force: true });
+  await page.waitForTimeout(160);
+  const chromeCss = await unit.locator(".item-focus").first().boundingBox();
+  if (!chromeCss || chromeCss.width <= 0 || chromeCss.height <= 0) {
+    throw new Error("division-group-intrinsic-chrome-box-empty");
+  }
+  if (screenshotPath) {
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+  }
+  const referenceCss = await borderBounds(page, "array-panel");
+  const referenceCanvas = layoutBounds(
+    getLayoutPreset(layoutId),
+    "item.array-panel"
+  );
+  const visualBox = cssBoundsToCanvas(
+    visualCss,
+    referenceCss,
+    referenceCanvas
+  );
+  const chromeBox = cssBoundsToCanvas(
+    chromeCss,
+    referenceCss,
+    referenceCanvas
+  );
+  const centerX = chromeBox.x + chromeBox.width / 2;
+  const centerY = chromeBox.y + chromeBox.height / 2;
+  const placement = {
+    x: round(centerX - 40),
+    y: round(centerY - 40),
+    width: 80,
+    height: 80
+  };
+  const reserveBox = {
+    x: round(centerX - 42),
+    y: round(centerY - 42),
+    width: 84,
+    height: 84
+  };
+  const environment = await page.evaluate(() => ({
+    devicePixelRatio: window.devicePixelRatio,
+    fontFamily: getComputedStyle(document.body).fontFamily
+  }));
+  await clearSelection(page);
+  return {
+    placement,
+    visualBox,
+    chromeBox,
+    reserveBox,
+    taskEnvelope: reserveBox,
+    ...normalizedUnitState(contentsJson, unitId),
+    environment: {
+      viewport: "1280x800",
+      devicePixelRatio: environment.devicePixelRatio,
+      fontFingerprint: `sha256:${sha256Hex(environment.fontFamily)}`,
+      assetFingerprint: `sha256:${toolBundleSha256}`,
+      harnessVersion: "division-counting-group-canary:v8"
+    }
+  };
+}
+
+async function measureCompositionSpatial(
+  page,
+  payload,
+  poolPlacementCanvas,
+  chromeCssOverride
+) {
+  const unitBoxes = [];
+  for (const object of payload.contentsJson.filter(
+    (candidate) => candidate?.svgId === unitVariantId
+  )) {
+    const box = await page
+      .locator(`[id="${object.id}"]`)
+      .first()
+      .boundingBox();
+    if (!box) {
+      throw new Error("division-group-composition-unit-not-visible");
+    }
+    unitBoxes.push(box);
+  }
+  const visualCss = unionBounds(unitBoxes);
+  const chromeCss = chromeCssOverride ?? visualCss;
+  if (!visualCss || !chromeCss) {
+    throw new Error("division-group-composition-bounds-empty");
+  }
+  const referenceCss = await borderBounds(page, "array-panel");
+  const referenceCanvas = layoutBounds(
+    getLayoutPreset(layoutId),
+    "item.array-panel"
+  );
+  return {
+    placement: { ...poolPlacementCanvas },
+    visualBox: cssBoundsToCanvas(
+      visualCss,
+      referenceCss,
+      referenceCanvas
+    ),
+    chromeBox: cssBoundsToCanvas(
+      chromeCss,
+      referenceCss,
+      referenceCanvas
+    ),
+    reserveBox: { ...referenceCanvas },
+    taskEnvelope: { ...referenceCanvas },
+    persistedMathematicalStateHash: normalizedDivisionState(
+      payload.contentsJson
+    ).semanticHash
+  };
+}
+
 async function localScreenshot(page, path) {
   await page.keyboard.press("Escape").catch(() => undefined);
   await page.waitForTimeout(120);
@@ -958,6 +1408,7 @@ let authSession;
 try {
   const options = parseArguments(process.argv.slice(2), {
     "run-id": { type: "string", required: true },
+    scenario: { type: "string", default: "23-by-4" },
     "approve-replace-existing-canary": { type: "boolean", default: false },
     output: {
       type: "string",
@@ -994,6 +1445,7 @@ try {
     "raw-root": { type: "string", default: defaultRawRoot },
     "state-dir": { type: "string", default: resolveStateDirectory() }
   });
+  configureScenario(options.scenario);
   if (options["approve-replace-existing-canary"] !== true) {
     throw new Error("division-group-canary-explicit-approval-required");
   }
@@ -1018,6 +1470,13 @@ try {
     "division group canary screenshots"
   );
   mkdirSync(screenshotDirectory, { recursive: true, mode: 0o700 });
+
+  let previousPublishedEvidence;
+  try {
+    previousPublishedEvidence = JSON.parse(readFileSync(outputPath, "utf8"));
+  } catch {
+    previousPublishedEvidence = undefined;
+  }
 
   const sourceTitle = `${sourceTitlePrefix}${options["run-id"]}`;
   const approvalEvidence = JSON.parse(
@@ -1049,6 +1508,8 @@ try {
   let injectedCanvasOption;
   let sourceIdentityVerified = false;
   let sourceServerStateAtStart;
+  let priorApprovedSaveObserved = false;
+  let priorApprovedVersionCount = 0;
   let resumedFromPriorApprovedSave = false;
   let saveSkippedToAvoidDuplicateWrite = false;
   let reopenProjectReadCount = 0;
@@ -1176,24 +1637,32 @@ try {
   sourceServerStateAtStart = normalizedDivisionState(
     sourceProject.contentsJson ?? []
   );
-  const unitTemplate = sourceProject.contentsJson?.find(
-    (object) => object?.svgId === unitVariantId
+  injected = buildInjectedContents();
+  const previousLayoutRevision =
+    previousPublishedEvidence?.layoutRevision;
+  const previousApprovedVersionCount = Number(
+    previousPublishedEvidence?.writeBoundary?.cumulativeApprovedSaveCount ?? 0
   );
-  if (!unitTemplate) {
-    throw new Error("division-group-unit-template-missing");
-  }
-  injected = buildInjectedContents(unitTemplate);
-  resumedFromPriorApprovedSave =
+  if (
     isExpectedFinalState(sourceServerStateAtStart) &&
+    typeof previousLayoutRevision === "string" &&
+    previousLayoutRevision.length > 0 &&
+    Number.isInteger(previousApprovedVersionCount) &&
+    previousApprovedVersionCount > 0 &&
+    hasLayoutRevision(
+      sourceProject.contentsJson ?? [],
+      previousLayoutRevision
+    )
+  ) {
+    priorApprovedVersionCount = previousApprovedVersionCount;
+  }
+  priorApprovedSaveObserved = priorApprovedVersionCount > 0;
+  resumedFromPriorApprovedSave =
+    priorApprovedSaveObserved &&
     hasCurrentLayoutRevision(sourceProject.contentsJson ?? []);
   injectedCanvasOption = {
-    ...structuredClone(sourceProject.canvasOption),
-    lockIds: injected.lockedIds.map((id) => [id]),
-    viewBox: [0, 0, injected.canvasBounds.width, injected.canvasBounds.height],
-    canvasCenterCoordinate: {
-      cx: injected.canvasBounds.width / 2,
-      cy: injected.canvasBounds.height / 2
-    }
+    ...structuredClone(injected.canvasOption),
+    lockIds: injected.lockedIds.map((id) => [id])
   };
   await discoveryPage.close();
 
@@ -1220,20 +1689,12 @@ try {
     }
   };
 
-  const groupTargets = [
-    [0.26, 0.27],
-    [0.74, 0.27],
-    [0.26, 0.574],
-    [0.74, 0.574],
-    [0.26, 0.878]
-  ];
-
   const exerciseUngroupRegroup = async (
     page,
     groupedPayload,
     captureUngroupedPath,
     revisionReturnTargets,
-    groupLaneBounds
+    groupSlotBounds
   ) => {
     const memberIds = resolvedGroupMemberIds(injected.unitIds)[0];
     const memberSet = new Set(memberIds);
@@ -1246,6 +1707,15 @@ try {
     );
     if (!wrapper) {
       throw new Error("division-group-revision-wrapper-missing");
+    }
+    if (captureUngroupedPath) {
+      await localScreenshot(
+        page,
+        captureUngroupedPath.replace(
+          "ungrouped-first-group",
+          "grouped-before-ungroup-debug"
+        )
+      );
     }
     await clearSelection(page);
     const memberLocator = page.locator(`[id="${memberIds[0]}"]`).first();
@@ -1314,11 +1784,15 @@ try {
     );
     const vacatedFirstGroupSlot =
       !ungroupedLaneFit.occupiedGroupSlotIndexes.includes(0);
+    if (captureUngroupedPath) {
+      await localScreenshot(page, captureUngroupedPath);
+    }
     if (
       !releasedMembersReturnedToSource ||
       !vacatedFirstGroupSlot ||
       ungroupedLaneFit.occupiedGroupSlotCount !== quotient - 1 ||
-      ungroupedLaneFit.emptyGroupSlotCount !== 2 ||
+      ungroupedLaneFit.emptyGroupSlotCount !==
+        groupSlotCount - (quotient - 1) ||
       ungroupedLaneFit.allGroupsInsideDistinctVisibleSlots !== true
     ) {
       throw new Error(
@@ -1342,9 +1816,6 @@ try {
         })}`
       );
     }
-    if (captureUngroupedPath) {
-      await localScreenshot(page, captureUngroupedPath);
-    }
     await selectIdsForGroup(page, memberIds);
     await clickNamedControl(page, "그룹");
     const regroupedBeforeMove = await readClientPayload(page);
@@ -1361,8 +1832,8 @@ try {
     await dragTo(
       page,
       page.locator(`[id="${regroupedWrapper.id}"]`).first(),
-      groupLaneBounds.x + groupLaneBounds.width * groupTargets[0][0],
-      groupLaneBounds.y + groupLaneBounds.height * groupTargets[0][1]
+      groupSlotBounds[0].x + groupSlotBounds[0].width / 2,
+      groupSlotBounds[0].y + groupSlotBounds[0].height / 2
     );
     const regroupedPayload = await readClientPayload(page);
     const regroupedState = normalizedDivisionState(
@@ -1399,6 +1870,11 @@ try {
   ) => {
     const groupLaneBounds = await borderBounds(page, "group-lane");
     const remainderLaneBounds = await borderBounds(page, "remainder-lane");
+    const groupSlotBounds = await Promise.all(
+      Array.from({ length: groupSlotCount }, (_, index) =>
+        borderBounds(page, `group-slot-${index + 1}`)
+      )
+    );
     if (!groupLaneBounds || !remainderLaneBounds) {
       throw new Error("division-group-lane-not-visible");
     }
@@ -1413,9 +1889,10 @@ try {
       });
     }
     let selectedChromeBox;
+    let selectedCompositionSpatial;
     for (let groupIndex = 0; groupIndex < quotient; groupIndex += 1) {
       const memberIds = groupMemberIds[groupIndex];
-      if (groupIndex === quotient - 1) {
+      if (groupIndex > 0) {
         for (const [index, id] of memberIds.entries()) {
           const target = revisionReturnTargets[index];
           await dragTo(
@@ -1429,6 +1906,12 @@ try {
       const selected = await selectIdsForGroup(page, memberIds);
       if (groupIndex === 0) {
         selectedChromeBox = selected;
+        selectedCompositionSpatial = await measureCompositionSpatial(
+          page,
+          await readClientPayload(page),
+          injected.productContract.poolPlacementCanvas,
+          selected
+        );
         if (captureSelectedPath) {
           await page.screenshot({ path: captureSelectedPath, fullPage: true });
         }
@@ -1446,12 +1929,12 @@ try {
       if (!wrapper) {
         throw new Error(`division-group-wrapper-missing:${groupIndex + 1}`);
       }
-      const [targetXRatio, targetYRatio] = groupTargets[groupIndex];
+      const targetSlot = groupSlotBounds[groupIndex];
       await dragTo(
         page,
         page.locator(`[id="${wrapper.id}"]`).first(),
-        groupLaneBounds.x + groupLaneBounds.width * targetXRatio,
-        groupLaneBounds.y + groupLaneBounds.height * targetYRatio
+        targetSlot.x + targetSlot.width / 2,
+        targetSlot.y + targetSlot.height / 2
       );
     }
     const remainderIds = resolvedRemainderIds(injected.unitIds);
@@ -1470,11 +1953,20 @@ try {
       groupedPayload,
       captureUngroupedPath,
       revisionReturnTargets,
-      groupLaneBounds
+      groupSlotBounds
     );
     const payload = revision.regroupedPayload;
     const state = revision.regroupedState;
     const laneFit = await measureFinalLaneFit(page, payload, remainderIds);
+    const compositionSpatial = await measureCompositionSpatial(
+      page,
+      payload,
+      injected.productContract.poolPlacementCanvas,
+      unionBounds([
+        ...laneFit.groupChromeBoxesCssPx,
+        ...laneFit.remainderBoxesCssPx
+      ])
+    );
     return {
       payload,
       state,
@@ -1486,15 +1978,33 @@ try {
       vacatedFirstGroupSlot: revision.vacatedFirstGroupSlot,
       regroupedState: revision.regroupedState,
       selectedChromeBox,
+      selectedCompositionSpatial,
+      compositionSpatial,
       laneFit
     };
   };
 
   const initialPage = await context.newPage();
-  await openProject(initialPage, projectId, total);
+  await openProject(initialPage, projectId, injected.unitIds);
   const initialState = normalizedDivisionState(injected.contentsJson);
+  const initialCompositionSpatial = await measureCompositionSpatial(
+    initialPage,
+    { contentsJson: injected.contentsJson },
+    injected.productContract.poolPlacementCanvas
+  );
+  const intrinsicUnitId = resolvedRemainderIds(injected.unitIds)[0];
   const initialPath = join(screenshotDirectory, "initial.png");
   await localScreenshot(initialPage, initialPath);
+  const selectedSinglePath = join(
+    screenshotDirectory,
+    "selected-single-unit.png"
+  );
+  const intrinsicInitialSelected = await measureStandaloneUnitSpatial(
+    initialPage,
+    intrinsicUnitId,
+    injected.contentsJson,
+    selectedSinglePath
+  );
   const selectedPath = join(screenshotDirectory, "selected-first-four.png");
   const ungroupedPath = join(screenshotDirectory, "ungrouped-first-group.png");
   const manipulated = await buildFullState(
@@ -1507,15 +2017,30 @@ try {
   await initialPage.close();
 
   const resetPage = await context.newPage();
-  await openProject(resetPage, projectId, total);
+  await openProject(resetPage, projectId, injected.unitIds);
   const resetState = normalizedDivisionState(injected.contentsJson);
+  const resetCompositionSpatial = await measureCompositionSpatial(
+    resetPage,
+    { contentsJson: injected.contentsJson },
+    injected.productContract.poolPlacementCanvas
+  );
+  const intrinsicUndoReset = await measureStandaloneUnitSpatial(
+    resetPage,
+    intrinsicUnitId,
+    injected.contentsJson
+  );
   const resetPath = join(screenshotDirectory, "reset.png");
   await localScreenshot(resetPage, resetPath);
   await resetPage.close();
 
   const persistPage = await context.newPage();
-  await openProject(persistPage, projectId, total);
+  await openProject(persistPage, projectId, injected.unitIds);
   const persistedBeforeSave = await buildFullState(persistPage);
+  const intrinsicManipulated = await measureStandaloneUnitSpatial(
+    persistPage,
+    intrinsicUnitId,
+    persistedBeforeSave.payload.contentsJson
+  );
   await persistCurrentState(persistPage);
   await persistPage.close();
 
@@ -1561,14 +2086,28 @@ try {
   });
 
   const reopenedPage = await context.newPage();
-  await openProject(reopenedPage, projectId, total);
+  await openProject(reopenedPage, projectId, injected.unitIds);
   const reopenedPath = join(screenshotDirectory, "reopened.png");
   const reopenedPayload = await readClientPayload(reopenedPage);
   const reopenedState = normalizedDivisionState(reopenedPayload.contentsJson);
+  const intrinsicReopened = await measureStandaloneUnitSpatial(
+    reopenedPage,
+    intrinsicUnitId,
+    reopenedPayload.contentsJson
+  );
   const reopenedLaneFit = await measureFinalLaneFit(
     reopenedPage,
     reopenedPayload,
     resolvedRemainderIds(injected.unitIds)
+  );
+  const reopenedCompositionSpatial = await measureCompositionSpatial(
+    reopenedPage,
+    reopenedPayload,
+    injected.productContract.poolPlacementCanvas,
+    unionBounds([
+      ...reopenedLaneFit.groupChromeBoxesCssPx,
+      ...reopenedLaneFit.remainderBoxesCssPx
+    ])
   );
   await localScreenshot(reopenedPage, reopenedPath);
   const reopenedUndo = await exerciseReopenedUndo(reopenedPage);
@@ -1578,6 +2117,35 @@ try {
   const secondRead = await readProject(secondReadPage, projectId);
   const secondReadState = normalizedDivisionState(secondRead.contentsJson ?? []);
   await secondReadPage.close();
+
+  const intrinsicRoundTripDrift = Math.max(
+    maxBoundsDrift(
+      intrinsicManipulated.visualBox,
+      intrinsicReopened.visualBox
+    ),
+    maxBoundsDrift(
+      intrinsicManipulated.chromeBox,
+      intrinsicReopened.chromeBox
+    ),
+    maxBoundsDrift(
+      intrinsicManipulated.reserveBox,
+      intrinsicReopened.reserveBox
+    )
+  );
+  const compositionRoundTripDrift = Math.max(
+    maxBoundsDrift(
+      persistedBeforeSave.compositionSpatial.visualBox,
+      reopenedCompositionSpatial.visualBox
+    ),
+    maxBoundsDrift(
+      persistedBeforeSave.compositionSpatial.chromeBox,
+      reopenedCompositionSpatial.chromeBox
+    ),
+    maxBoundsDrift(
+      persistedBeforeSave.compositionSpatial.reserveBox,
+      reopenedCompositionSpatial.reserveBox
+    )
+  );
 
   const lifecycleChecks = {
     initialIsUngrouped:
@@ -1616,12 +2184,13 @@ try {
     groupedObjectsOccupyFiveDistinctSlots:
       manipulated.laneFit.allGroupsInsideDistinctVisibleSlots === true &&
       manipulated.laneFit.occupiedGroupSlotCount === quotient &&
-      manipulated.laneFit.emptyGroupSlotCount === 1,
+      manipulated.laneFit.emptyGroupSlotCount === groupSlotCount - quotient,
     nativeUngroupIsVisuallyDistinct:
       manipulated.releasedMembersReturnedToSource === true &&
       manipulated.vacatedFirstGroupSlot === true &&
       manipulated.ungroupedLaneFit.occupiedGroupSlotCount === quotient - 1 &&
-      manipulated.ungroupedLaneFit.emptyGroupSlotCount === 2,
+      manipulated.ungroupedLaneFit.emptyGroupSlotCount ===
+        groupSlotCount - (quotient - 1),
     remainderObjectsFitLane:
       manipulated.laneFit.allUngroupedInsideRemainderLane === true,
     reopenedGroupLaneVisible: Boolean(reopenedLaneFit.groupLaneCssPx),
@@ -1631,9 +2200,26 @@ try {
     reopenedGroupedObjectsOccupyFiveDistinctSlots:
       reopenedLaneFit.allGroupsInsideDistinctVisibleSlots === true &&
       reopenedLaneFit.occupiedGroupSlotCount === quotient &&
-      reopenedLaneFit.emptyGroupSlotCount === 1,
+      reopenedLaneFit.emptyGroupSlotCount === groupSlotCount - quotient,
     reopenedRemainderObjectsFitLane:
-      reopenedLaneFit.allUngroupedInsideRemainderLane === true
+      reopenedLaneFit.allUngroupedInsideRemainderLane === true,
+    intrinsicUndoResetMatchesInitial:
+      intrinsicUndoReset.persistedMathematicalStateHash ===
+      intrinsicInitialSelected.persistedMathematicalStateHash,
+    intrinsicManipulationChangesPersistedState:
+      intrinsicManipulated.persistedMathematicalStateHash !==
+      intrinsicInitialSelected.persistedMathematicalStateHash,
+    intrinsicReopenMatchesManipulated:
+      intrinsicReopened.persistedMathematicalStateHash ===
+      intrinsicManipulated.persistedMathematicalStateHash,
+    intrinsicRoundTripWithinTolerance: intrinsicRoundTripDrift <= 1,
+    compositionRoundTripWithinTolerance: compositionRoundTripDrift <= 1,
+    compilerEmitsNativeMultiObjectPool:
+      injected.compilerFragment.kind === "multi" &&
+      injected.compilerFragment.emittedObjectCount === total &&
+      injected.compilerFragment.hasPrimaryObjectId === false &&
+      JSON.stringify(injected.compilerFragment.requiredModuleKeys) ===
+        JSON.stringify(["NO01SC"])
   };
   if (Object.values(lifecycleChecks).some((passed) => passed !== true)) {
     throw new Error(
@@ -1641,9 +2227,12 @@ try {
     );
   }
   const cumulativeApprovedSaveCount =
-    externalWriteCount + (resumedFromPriorApprovedSave ? 1 : 0);
+    externalWriteCount + priorApprovedVersionCount;
+  const expectedCumulativeSaveCount = resumedFromPriorApprovedSave
+    ? priorApprovedVersionCount
+    : priorApprovedVersionCount + 1;
   if (
-    cumulativeApprovedSaveCount !== 1 ||
+    cumulativeApprovedSaveCount !== expectedCumulativeSaveCount ||
     (resumedFromPriorApprovedSave && !saveSkippedToAvoidDuplicateWrite)
   ) {
     throw new Error("division-group-canary-save-resume-boundary-invalid");
@@ -1651,6 +2240,7 @@ try {
 
   const screenshotPaths = [
     initialPath,
+    selectedSinglePath,
     selectedPath,
     ungroupedPath,
     manipulatedPath,
@@ -1658,16 +2248,186 @@ try {
     reopenedPath
   ].map((path) => relative(repositoryRoot, path));
   const observedAt = new Date().toISOString();
+  const intrinsicEvidenceId =
+    "no01sc-01-intrinsic-spatial-canary-20260808-v1";
+  const intrinsicObservation = (state, measurement, screenshotPath) => ({
+    state,
+    placement: measurement.placement,
+    visualBox: measurement.visualBox,
+    chromeBox: measurement.chromeBox,
+    reserveBox: measurement.reserveBox,
+    taskEnvelope: measurement.taskEnvelope,
+    persistedMathematicalStateHash:
+      measurement.persistedMathematicalStateHash,
+    screenshotPath: relative(repositoryRoot, screenshotPath)
+  });
+  const intrinsicSpatialContractCandidate = {
+    contractVersion: "1.0.0",
+    contract: {
+      contractId: "native-element-no01sc-01-v1",
+      toolKey: "NO01SC",
+      variantId: unitVariantId,
+      toolVersionFingerprint,
+      minInteractiveSize: { width: 80, height: 80 },
+      reserveBox: { x: -42, y: -42, width: 84, height: 84 },
+      reserveAnchor: "placement-center",
+      roundTripStable: true,
+      roundTripTolerance: 1,
+      derivedFromEvidenceIds: [intrinsicEvidenceId]
+    },
+    evidence: {
+      evidenceId: intrinsicEvidenceId,
+      observedAt,
+      toolKey: "NO01SC",
+      variantId: unitVariantId,
+      toolVersionFingerprint,
+      environment: intrinsicReopened.environment,
+      observations: [
+        intrinsicObservation(
+          "initial",
+          intrinsicInitialSelected,
+          initialPath
+        ),
+        intrinsicObservation(
+          "selected",
+          intrinsicInitialSelected,
+          selectedSinglePath
+        ),
+        intrinsicObservation(
+          "manipulated",
+          intrinsicManipulated,
+          manipulatedPath
+        ),
+        intrinsicObservation(
+          "undo-reset",
+          intrinsicUndoReset,
+          resetPath
+        ),
+        intrinsicObservation(
+          "reopened",
+          intrinsicReopened,
+          reopenedPath
+        )
+      ],
+      persistedStateChanged: true,
+      roundTripReferenceState: "manipulated",
+      roundTripDrift: round(intrinsicRoundTripDrift),
+      roundTripDriftWithinTolerance: intrinsicRoundTripDrift <= 1,
+      nonPointerInteraction: "unavailable"
+    }
+  };
+  const compositionEvidenceId =
+    `division-grouping-no01sc-01-composition-${scenarioKey}-20260808-v1`;
+  const compositionPlacement =
+    injected.productContract.poolPlacementCanvas;
+  const compositionReserve = layoutBounds(
+    getLayoutPreset(layoutId),
+    "item.array-panel"
+  );
+  const compositionObservation = (
+    state,
+    measurement,
+    screenshotPath
+  ) => ({
+    state,
+    placement: measurement.placement,
+    visualBox: measurement.visualBox,
+    chromeBox: measurement.chromeBox,
+    reserveBox: measurement.reserveBox,
+    taskEnvelope: measurement.taskEnvelope,
+    persistedMathematicalStateHash:
+      measurement.persistedMathematicalStateHash,
+    screenshotPath: relative(repositoryRoot, screenshotPath)
+  });
+  const activityCompositionSpatialContractCandidate = {
+    contractVersion: "1.0.0",
+    contract: {
+      contractId: "division-grouping-no01sc-01-composition-v1",
+      toolKey: "NO01SC",
+      variantId: unitVariantId,
+      toolVersionFingerprint,
+      minInteractiveSize: {
+        width: compositionPlacement.width,
+        height: compositionPlacement.height
+      },
+      reserveBox: {
+        x: compositionReserve.x - compositionPlacement.x,
+        y: compositionReserve.y - compositionPlacement.y,
+        width: compositionReserve.width,
+        height: compositionReserve.height
+      },
+      reserveAnchor: "placement-top-left",
+      roundTripStable: true,
+      roundTripTolerance: 1,
+      derivedFromEvidenceIds: [compositionEvidenceId]
+    },
+    evidence: {
+      evidenceId: compositionEvidenceId,
+      observedAt,
+      toolKey: "NO01SC",
+      variantId: unitVariantId,
+      toolVersionFingerprint,
+      environment: {
+        ...intrinsicReopened.environment,
+        harnessVersion: `division-counting-group-product-canary:${scenarioKey}:v9`
+      },
+      observations: [
+        compositionObservation(
+          "initial",
+          initialCompositionSpatial,
+          initialPath
+        ),
+        compositionObservation(
+          "selected",
+          manipulated.selectedCompositionSpatial,
+          selectedPath
+        ),
+        compositionObservation(
+          "manipulated",
+          persistedBeforeSave.compositionSpatial,
+          manipulatedPath
+        ),
+        compositionObservation(
+          "undo-reset",
+          resetCompositionSpatial,
+          resetPath
+        ),
+        compositionObservation(
+          "reopened",
+          reopenedCompositionSpatial,
+          reopenedPath
+        )
+      ],
+      persistedStateChanged: true,
+      roundTripReferenceState: "manipulated",
+      roundTripDrift: round(compositionRoundTripDrift),
+      roundTripDriftWithinTolerance: compositionRoundTripDrift <= 1,
+      nonPointerInteraction: "unavailable"
+    }
+  };
+  assertNativeSpatialLifecycleEvidence(
+    activityCompositionSpatialContractCandidate.contract,
+    activityCompositionSpatialContractCandidate.evidence
+  );
   const evidence = {
     schemaVersion: "1.0.0",
-    evidenceId: "division-counting-group-canary-20260808-v1",
+    evidenceId: `division-counting-group-product-canary-${scenarioKey}-20260808-v1`,
     observedAt,
     activityId,
     toolKey: "NO01SC",
     variantId: unitVariantId,
     layoutId,
+    layoutRevision: canaryLayoutRevision,
+    scenario: {
+      scenarioKey,
+      seed: scenarioSeed,
+      total,
+      groupSize,
+      quotient,
+      remainderCount
+    },
     probeMode:
-      "existing-disposable-canary-response-injection-one-save-with-read-only-resume",
+      "existing-disposable-canary-actual-blueprint-compiler-payload-one-versioned-save-with-read-only-resume",
     environment: {
       viewport: { width: 1280, height: 800 },
       profileScope: "dedicated-mathcanvas-profile",
@@ -1683,6 +2443,8 @@ try {
       disposableTitleMarkerMatched: sourceTitle.startsWith(sourceTitlePrefix),
       createCount: 0,
       allowedSaveCountThisExecution: externalWriteCount,
+      priorApprovedSaveObserved,
+      priorApprovedVersionCount,
       resumedFromPriorApprovedSave,
       saveSkippedToAvoidDuplicateWrite,
       cumulativeApprovedSaveCount,
@@ -1720,6 +2482,8 @@ try {
         JSON.stringify(manipulated.state.groupedMemberSets) ===
         JSON.stringify(persistedBeforeSave.state.groupedMemberSets)
     },
+    intrinsicSpatialContractCandidate,
+    activityCompositionSpatialContractCandidate,
     undoResetState: resetState,
     persistedState,
     reopenedState,
@@ -1729,8 +2493,23 @@ try {
       wrapperCount: quotient,
       remainderCount,
       total,
-      equation: "4 × 5 + 3 = 23",
+      equation: `${groupSize} × ${quotient} + ${remainderCount} = ${total}`,
       derivedFromStudentConstruction: true
+    },
+    productContract: injected.productContract,
+    compilerContract: {
+      fragmentKind: injected.compilerFragment.kind,
+      emittedObjectCount: injected.compilerFragment.emittedObjectCount,
+      hasAmbiguousPrimaryObject:
+        injected.compilerFragment.hasPrimaryObjectId,
+      requiredModuleKeys: injected.compilerFragment.requiredModuleKeys,
+      deterministicUnitIds: injected.unitIds,
+      unitIdOrderHash: sha256Hex(injected.unitIds),
+      neutralColumnCount: maximumUnitsPerRow(injected.contentsJson),
+      supportedGroupSizes: [4, 6, 7],
+      initialColumnsMatchSupportedGroupSize: false,
+      initialPlacementReadsGroupSize: false,
+      compilerPayloadUsedByCanary: true
     },
     spatialContractCandidate: {
       placementCanvas: layoutBounds(
@@ -1791,6 +2570,33 @@ try {
       undoAfterReopenLeavesMathematicalStateUnchanged:
         reopenedUndo.mathematicalStateUnchanged
     },
+    claims: {
+      NO01SC: {
+        contracted: {
+          adapterKey: "counting-model",
+          variantId: unitVariantId,
+          intrinsicSpatialContractId: "native-element-no01sc-01-v1"
+        },
+        verified: {
+          compilerPayloadUsedByCanary: true,
+          emittedObjectCount: total,
+          exactNativeVariantOnly: true,
+          neutralColumnCount: 5,
+          answerStructureLeakedByInitialColumns: false
+        },
+        released: {
+          toolAdapterReleased: true,
+          releasedVariantIds: [unitVariantId],
+          activityReleaseQualified: false
+        },
+        lifecycle: {
+          nativeGroupUngroupRegroup: true,
+          saveReopenInFreshContext: true,
+          secondGetBodyAsserted: true,
+          roundTripDrift: round(intrinsicRoundTripDrift)
+        }
+      }
+    },
     screenshots: screenshotPaths,
     qualityEvidenceScope: "native-workbench-only",
     releaseQualified: false,
@@ -1824,7 +2630,7 @@ try {
     mode: 0o600
   });
   process.stdout.write(
-    `PASS division counting group canary: 5x4+3 persisted, create 0 cumulative save 1 ${outputPath}\n`
+    `PASS division counting group product canary ${scenarioKey}: compiler ${total}-unit pool, ${groupSize}x${quotient}+${remainderCount} persisted, create 0 versioned saves ${cumulativeApprovedSaveCount} ${outputPath}\n`
   );
 } catch (error) {
   failCli(error);

@@ -311,9 +311,12 @@ export const claimEvidenceTemplateDefinitions = Object.fromEntries(
         supportedGradeBands: [profile.gradeBand],
         minimumProblemCount:
           profile.presentation?.problemCount ?? 2,
-        maximumProblemCount: 2,
+        maximumProblemCount:
+          profile.presentation?.problemCount ?? 2,
         requiredModules:
-          profile.presentation?.candidateRenderer === "formula"
+          profile.profileId === "division-remainder"
+            ? ["NO01SC", "input-text", "drawElem"]
+            : profile.presentation?.candidateRenderer === "formula"
             ? ["input-text", "math-latex", "drawElem"]
             : ["input-text", "drawElem"]
       })

@@ -88,10 +88,10 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
     activityLabel: "몫과 나머지의 뜻",
     activityDescription:
-      "답을 고른 뒤 점을 직접 묶어 보고 몫과 나머지가 무엇을 뜻하는지 확인해요.",
-    promptSeed: "나눗셈에서 점을 직접 묶어 몫과 나머지의 의미를 확인하는 활동",
+      "답을 고른 뒤 수 세기 모형을 직접 묶고 옮겨 몫과 나머지가 무엇을 뜻하는지 확인해요.",
+    promptSeed: "나눗셈에서 수 세기 모형을 직접 묶고 옮겨 몫과 나머지의 의미를 확인하는 활동",
     predictionLabel: "처음 고른 답",
-    evidenceHeading: "점을 묶어 표시하기",
+    evidenceHeading: "수 세기 모형을 묶어 확인하기",
     explanationLabel: "묶음 수와 남은 수 쓰기",
     misconceptionConflict:
       "나누는 수와 몫을 바꾸거나 남은 수를 몫에 포함하는 생각을 실제 묶음과 충돌시킨다.",
@@ -114,6 +114,27 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
         promptDetail: "남은 것으로 한 묶음을 더 만들 수 있는지 확인하게 한다."
       }
     ],
+    presentation: {
+      problemCount: 1,
+      candidateCount: 5,
+      layoutTokenSet: "wave25-division-grouping-v1",
+      poolLabel: "예상한 답 고르기",
+      candidateRenderer: "text",
+      candidateAlignment: "center",
+      fontSizes: {
+        instruction: 30,
+        question: 37,
+        label: 30,
+        candidate: 28,
+        evidenceLabel: 30,
+        evidenceText: 30
+      },
+      instructions: [
+        "① 답 카드를 하나 골라 처음 생각 칸에 놓으세요.",
+        "② 가까이 있는 모형을 한 묶음의 수만큼 골라 ‘그룹’을 누르고 함께 옮기세요.",
+        "③ 남은 모형을 옮긴 뒤 식을 쓰고, 처음 생각과 다르면 고치세요."
+      ]
+    },
     items: [
       {
         questionText: "연필 23자루를 4자루씩 묶으면 몇 묶음이고 몇 자루가 남을까요?",

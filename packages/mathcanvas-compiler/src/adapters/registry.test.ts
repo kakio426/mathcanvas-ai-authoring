@@ -7,6 +7,7 @@ import {
 } from "./registry.js";
 import {
   NATIVE_MODULE_VARIANT_CONTRACTS,
+  RELEASED_COUNTING_MODEL_VARIANT_IDS,
   RELEASED_MODULE_VARIANT_IDS,
   RELEASED_NUMBER_CARD_VARIANT_IDS,
   assertReleasedModuleVariant
@@ -19,13 +20,14 @@ import {
 } from "./native-rendered-bounds.js";
 
 describe("fail-closed tool adapter registry", () => {
-  it("현재 검증된 열두 도구만 등록한다", () => {
+  it("현재 검증된 열세 도구만 등록한다", () => {
     expect(
       REGISTERED_TOOL_ADAPTERS.map((adapter) => adapter.toolKey)
     ).toEqual([
       "SM02AD",
       "CR07BS",
       "NO03FM",
+      "NO01SC",
       "NO04NT",
       "NO04PD",
       "SM02PB",
@@ -65,11 +67,12 @@ describe("fail-closed tool adapter registry", () => {
     );
   });
 
-  it("46개 module variant 중 검증된 분수·숫자 카드·자릿값 모형·접시저울·기어식 시계·패턴 블록·막대그래프·자료와 표만 허용한다", () => {
+  it("46개 module variant 중 검증된 수 세기·분수·숫자 카드·자릿값 모형·접시저울·기어식 시계·패턴 블록·막대그래프·자료와 표만 허용한다", () => {
     expect(NATIVE_MODULE_VARIANT_CONTRACTS).toHaveLength(46);
-    // 분수 12 + 수 카드 10 + 자릿값 3 + 저울 1 + 시계 1 + 패턴블록 6
+    // 수 세기 1 + 분수 12 + 수 카드 10 + 자릿값 3 + 저울 1 + 시계 1 + 패턴블록 6
     // + 막대그래프 1 + 자료와 표 1
-    expect(RELEASED_MODULE_VARIANT_IDS).toHaveLength(35);
+    expect(RELEASED_MODULE_VARIANT_IDS).toHaveLength(36);
+    expect(RELEASED_COUNTING_MODEL_VARIANT_IDS).toEqual(["NO01SC-01"]);
     expect(RELEASED_NUMBER_CARD_VARIANT_IDS).toHaveLength(10);
     expect(() =>
       assertReleasedModuleVariant("NO03FM", "NO03FM-08")
@@ -101,6 +104,57 @@ describe("fail-closed tool adapter registry", () => {
     expect(() =>
       assertReleasedModuleVariant("SM02AD", "SM02AD-02")
     ).toThrow("module-variant-not-released:SM02AD:SM02AD-02");
+    expect(() =>
+      assertReleasedModuleVariant("NO01SC", "NO01SC-01")
+    ).not.toThrow();
+    expect(() =>
+      assertReleasedModuleVariant("NO01SC", "NO01SC-02")
+    ).toThrow("module-variant-not-released:NO01SC:NO01SC-02");
+  });
+
+  it("수 세기 pool을 대표 객체 없이 결정적인 31개 낱개로 컴파일한다", () => {
+    const intent = {
+      kind: "counting-model",
+      toolKey: "NO01SC",
+      count: 31
+    } as const;
+    const placement = {
+      id: "counting-pool",
+      x: 110,
+      y: 350,
+      width: 470,
+      height: 588
+    };
+    const first = compileNativeTool(intent, placement);
+    const second = compileNativeTool(intent, placement);
+    expect(first).toEqual(second);
+    expect(first.kind).toBe("multi");
+    expect(first).not.toHaveProperty("primaryObjectId");
+    expect(first.requiredModuleKeys).toEqual(["NO01SC"]);
+    expect(first.objects).toHaveLength(31);
+    expect(first.objects.map((object) => object.id)).toEqual(
+      Array.from(
+        { length: 31 },
+        (_, index) =>
+          `counting-pool-unit-${String(index + 1).padStart(2, "0")}`
+      )
+    );
+    expect(first.objects[0]).toMatchObject({
+      svgId: "NO01SC-01",
+      x: 177,
+      y: 392,
+      isGroup: false,
+      groupId: "",
+      numberFrameSnap: true
+    });
+    expect(first.objects[30]).toMatchObject({
+      svgId: "NO01SC-01",
+      x: 345,
+      y: 896
+    });
+    expect(() =>
+      compileNativeTool({ ...intent, count: 32 }, placement)
+    ).toThrow("counting-model-count-out-of-range:32");
   });
 
   it("adapter key와 tool key가 맞지 않으면 거부한다", () => {

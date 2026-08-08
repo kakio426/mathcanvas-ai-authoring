@@ -91,6 +91,9 @@ export {
   claimEvidenceBlueprints,
   findClaimEvidenceBlueprint
 } from "./blueprints/claim-evidence.js";
+export {
+  makeDivisionQuotientRemainderBlueprint
+} from "./blueprints/division-quotient-remainder.js";
 export { factorPairArrayBlueprint } from "./blueprints/factor-pair-array.js";
 export { barGraphRepresentFromTableBlueprint } from "./blueprints/bar-graph-represent-from-table.js";
 export {
@@ -171,6 +174,7 @@ export {
   CLAIM_EVIDENCE_GENERATOR_ID,
   CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_VERSION,
+  CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION,
   CLAIM_EVIDENCE_GENERATOR_V2_VERSION,
   generateClaimEvidenceItems,
   makeUnresolvedDotField

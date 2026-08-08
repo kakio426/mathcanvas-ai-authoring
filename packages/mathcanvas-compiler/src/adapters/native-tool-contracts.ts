@@ -50,6 +50,16 @@ export type PatternBlockIntent = {
   readonly variant: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
+/**
+ * 같은 크기의 수 세기 낱개를 중립적인 pool에 놓는다. `groupSize`를 입력으로
+ * 받지 않으므로 초기 배치가 몫이나 나머지를 미리 보여 주지 않는다.
+ */
+export type CountingModelIntent = {
+  readonly kind: "counting-model";
+  readonly toolKey: "NO01SC";
+  readonly count: number;
+};
+
 export type TextIntent = {
   readonly kind: "text";
   readonly toolKey: "common.text";
@@ -126,6 +136,7 @@ export type NativeToolIntent =
   | AnalogClockIntent
   | PlaceValueModelIntent
   | PatternBlockIntent
+  | CountingModelIntent
   | BarChartIntent
   | DataTableIntent
   | TextIntent

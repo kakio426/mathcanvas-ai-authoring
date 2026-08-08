@@ -1,12 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   collectNativeSpatialIssues,
+  nativeSpatialContractCatalogSchema,
+  nativeSpatialContractRecordHash,
   type NativeSpatialContractCatalog,
   type NativeSpatialActivityScope
 } from "./native-spatial-harness.js";
 
-const contract = {
-  contractId: "contract.v1",
+const intrinsicContract = {
+  contractId: "contract.element.v1",
   toolKey: "NO01SC",
   variantId: "NO01SC-01",
   toolVersionFingerprint: "bundle:v1",
@@ -16,6 +18,11 @@ const contract = {
   roundTripStable: true,
   roundTripTolerance: 1,
   derivedFromEvidenceIds: ["evidence.v1"]
+};
+
+const compositionContract = {
+  ...intrinsicContract,
+  contractId: "contract.activity.v1"
 };
 
 const observation = (state: "initial" | "selected" | "manipulated" | "undo-reset" | "reopened", hash: string) => ({
@@ -67,12 +74,53 @@ const blueprint = {
     {
       role: "native-piece",
       toolKey: "NO01SC",
-      spatialContractId: "contract.v1",
+      spatialContractId: "contract.activity.v1",
       spatialContractVersion: "v1"
     },
     { role: "label", toolKey: "common.text" }
   ]
 };
+
+function makeCatalog(input?: {
+  readonly compositionEvidence?: typeof evidence;
+  readonly compositionUpstreamHash?: string;
+}): NativeSpatialContractCatalog {
+  const intrinsicRecordBody = {
+    recordKind: "intrinsic-element" as const,
+    contractVersion: "v1",
+    contract: intrinsicContract,
+    evidence,
+    upstreamContracts: []
+  };
+  const intrinsicRecord = {
+    ...intrinsicRecordBody,
+    recordHash: nativeSpatialContractRecordHash(intrinsicRecordBody)
+  };
+  const compositionEvidence = input?.compositionEvidence ?? evidence;
+  const compositionRecordBody = {
+    recordKind: "activity-composition" as const,
+    contractVersion: "v1",
+    contract: compositionContract,
+    evidence: compositionEvidence,
+    upstreamContracts: [
+      {
+        contractId: intrinsicContract.contractId,
+        contractVersion: intrinsicRecord.contractVersion,
+        recordHash: input?.compositionUpstreamHash ?? intrinsicRecord.recordHash
+      }
+    ]
+  };
+  return {
+    schemaVersion: "1.0.0",
+    records: [
+      intrinsicRecord,
+      {
+        ...compositionRecordBody,
+        recordHash: nativeSpatialContractRecordHash(compositionRecordBody)
+      }
+    ]
+  };
+}
 
 describe("native spatial issue harness", () => {
   it("generates a blocking issue for a changed native role without a contract", () => {
@@ -92,10 +140,7 @@ describe("native spatial issue harness", () => {
   });
 
   it("clears a changed native role only with matching lifecycle evidence", () => {
-    const catalog: NativeSpatialContractCatalog = {
-      schemaVersion: "1.0.0",
-      records: [{ contractVersion: "v1", contract, evidence }]
-    };
+    const catalog = makeCatalog();
     expect(
       collectNativeSpatialIssues({
         scope,
@@ -116,16 +161,9 @@ describe("native spatial issue harness", () => {
   });
 
   it("turns a state-change failure in the catalog into a ratchet issue", () => {
-    const catalog: NativeSpatialContractCatalog = {
-      schemaVersion: "1.0.0",
-      records: [
-        {
-          contractVersion: "v1",
-          contract,
-          evidence: { ...evidence, persistedStateChanged: false }
-        }
-      ]
-    };
+    const catalog = makeCatalog({
+      compositionEvidence: { ...evidence, persistedStateChanged: false }
+    });
     const result = collectNativeSpatialIssues({
       scope,
       catalog,
@@ -134,6 +172,60 @@ describe("native spatial issue harness", () => {
     expect(result.issues).toHaveLength(1);
     expect(result.issues[0]?.gateId).toBe(
       "affordance.primary-math-state-change"
+    );
+  });
+
+  it("rejects a composition contract without an intrinsic upstream", () => {
+    const compositionRecordBody = {
+      recordKind: "activity-composition" as const,
+      contractVersion: "v1",
+      contract: compositionContract,
+      evidence,
+      upstreamContracts: []
+    };
+    expect(() =>
+      nativeSpatialContractCatalogSchema.parse({
+        schemaVersion: "1.0.0",
+        records: [
+          {
+            ...compositionRecordBody,
+            recordHash: nativeSpatialContractRecordHash(compositionRecordBody)
+          }
+        ]
+      })
+    ).toThrow("activity composition contract");
+  });
+
+  it("rejects a composition contract with a stale intrinsic record hash", () => {
+    expect(() =>
+      nativeSpatialContractCatalogSchema.parse(
+        makeCatalog({ compositionUpstreamHash: "f".repeat(64) })
+      )
+    ).toThrow("composition upstream 불일치");
+  });
+
+  it("does not let an activity bind directly to an intrinsic element contract", () => {
+    const catalog = makeCatalog();
+    const result = collectNativeSpatialIssues({
+      scope,
+      catalog,
+      blueprints: [
+        {
+          ...blueprint,
+          toolRoles: [
+            {
+              role: "native-piece",
+              toolKey: "NO01SC",
+              spatialContractId: intrinsicContract.contractId,
+              spatialContractVersion: "v1"
+            }
+          ]
+        }
+      ]
+    });
+    expect(result.issues).toHaveLength(1);
+    expect(result.issues[0]?.gateId).toBe(
+      "affordance.semantic-native-preferred"
     );
   });
 });

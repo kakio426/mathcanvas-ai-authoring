@@ -28,6 +28,27 @@ const claimEvidenceManifests = Object.fromEntries(
       "position-card-4",
       "position-card-5"
     ].slice(0, profile.presentation?.candidateCount ?? 5);
+    const verificationRoles =
+      profile.profileId === "division-remainder"
+        ? [
+            "counting-model-pool",
+            "group-lane-label",
+            "remainder-lane-label",
+            "group-slot-1-border-top",
+            "group-slot-2-border-top",
+            "group-slot-3-border-top",
+            "group-slot-4-border-top",
+            "group-slot-5-border-top",
+            "group-slot-6-border-top"
+          ]
+        : [
+            "array-panel",
+            "group-label",
+            ...(profile.profileId === "angle-turn"
+              ? ["target-base-ray", "target-turn-ray", "measure-angle"]
+              : []),
+            "array-text"
+          ];
     return [
       blueprint.id,
       defineCognitiveDemandManifest({
@@ -36,7 +57,9 @@ const claimEvidenceManifests = Object.fromEntries(
         blueprintVersion: blueprint.version,
         blueprintContentHash: blueprint.contentHash,
         mathematicalDecision:
-          `학생은 단원 핵심 상황에 대한 서로 다른 ${candidateRoles.length}개 주장 중 하나를 근거를 보기 전에 선택한다.`,
+          profile.profileId === "division-remainder"
+            ? "학생은 수 세기 모형을 움직이기 전에 몫과 나머지에 관한 다섯 답 중 하나를 선택한다."
+            : `학생은 단원 핵심 상황에 대한 서로 다른 ${candidateRoles.length}개 주장 중 하나를 근거를 보기 전에 선택한다.`,
         misconceptionConflict: profile.misconceptionConflict,
         learningMap: {
           repository: "DECK6/korean-elementary-learning-map",
@@ -74,19 +97,14 @@ const claimEvidenceManifests = Object.fromEntries(
             profile.domain === "도형과 측정"
               ? "coordinate-or-graph"
               : "countable-unit-model",
-          roles: [
-            "array-panel",
-            "group-label",
-            ...(profile.profileId === "angle-turn"
-              ? ["target-base-ray", "target-turn-ray", "measure-angle"]
-              : []),
-            "array-text"
-          ],
+          roles: verificationRoles,
           invariant: profile.verificationInvariant
         },
         explanation: { regionRole: "explanation-box" },
         revisionPath:
-          `${candidateRoles.length}개 생각 카드는 계속 움직일 수 있으며, 검증 근거와 맞지 않으면 처음 선택을 고치고 달라진 생각을 기록한다.`,
+          profile.profileId === "division-remainder"
+            ? "다섯 답 카드는 계속 움직일 수 있으며, 직접 만든 묶음 수와 남은 수가 처음 선택과 다르면 답을 고치고 식과 까닭을 기록한다."
+            : `${candidateRoles.length}개 생각 카드는 계속 움직일 수 있으며, 검증 근거와 맞지 않으면 처음 선택을 고치고 달라진 생각을 기록한다.`,
         limitations: {
           autoGrading: "none-by-design",
           phaseOrder: "teacher-guided"

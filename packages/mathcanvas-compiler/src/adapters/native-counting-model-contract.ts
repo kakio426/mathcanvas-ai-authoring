@@ -2,10 +2,12 @@ import type { NativeToolPlacement } from "./native-tool-contracts.js";
 
 export const COUNTING_MODEL_VARIANT_ID = "NO01SC-01" as const;
 export const COUNTING_MODEL_UNIT_SIZE = 80;
-export const COUNTING_MODEL_UNIT_GAP = 8;
+// 80px placement 주위의 84px intrinsic reserve가 서로 겹치지 않도록 하는
+// 최소 간격이다. visual은 약 64px라 실제 화면에는 약 20px가 남는다.
+export const COUNTING_MODEL_UNIT_GAP = 4;
 export const COUNTING_MODEL_UNIT_PITCH =
   COUNTING_MODEL_UNIT_SIZE + COUNTING_MODEL_UNIT_GAP;
-export const COUNTING_MODEL_MAX_COUNT = 40;
+export const COUNTING_MODEL_MAX_COUNT = 31;
 
 export interface CountingModelUnitPlacement {
   readonly id: string;

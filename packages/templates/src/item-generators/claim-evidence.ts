@@ -12,6 +12,7 @@ export const CLAIM_EVIDENCE_GENERATOR_ID =
   "curriculum.claim-evidence-items" as const;
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
 export const CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION = "1.1.0" as const;
+export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.2.0" as const;
 export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
 
 export function makeUnresolvedDotField(total: number): string {
@@ -72,16 +73,21 @@ export function generateClaimEvidenceItems(
           questionText: item.questionText,
           evidenceLabelText: item.evidenceLabelText,
           evidenceText:
-            item.countableTotal === undefined
+            profile.profileId === "division-remainder"
               ? item.evidenceText
-              : makeUnresolvedDotField(item.countableTotal),
+              : item.countableTotal === undefined
+                ? item.evidenceText
+                : makeUnresolvedDotField(item.countableTotal),
           correctValueText: item.correctValueText,
           answerExplanation: item.answerExplanation,
           ...(item.countableTotal !== undefined
             ? { countableTotal: item.countableTotal }
             : {}),
           ...(item.countableGroupSize !== undefined
-            ? { countableGroupSize: item.countableGroupSize }
+            ? {
+                countableGroupSize: item.countableGroupSize,
+                groupLaneLabelText: `${item.countableGroupSize}개씩 묶은 곳`
+              }
             : {}),
           ...(item.targetAngleDegrees !== undefined
             ? { targetAngleDegrees: item.targetAngleDegrees }
@@ -101,7 +107,7 @@ export function generateClaimEvidenceItems(
           generatorId: CLAIM_EVIDENCE_GENERATOR_ID,
           generatorVersion:
             profile.profileId === "division-remainder"
-              ? CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION
+              ? CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
               : profile.presentation
                 ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION
                 : CLAIM_EVIDENCE_GENERATOR_VERSION,

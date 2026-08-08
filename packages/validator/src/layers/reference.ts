@@ -4,6 +4,10 @@ import type {
   ResolvedEmission,
   ValidationIssue
 } from "@mathcanvas/contracts";
+import {
+  compileNativeTool,
+  type NativeToolIntent
+} from "@mathcanvas/compiler";
 import { intersects, issue } from "./shared.js";
 
 function contains(
@@ -28,6 +32,27 @@ function groupBy<T>(
     groups.set(key, [...(groups.get(key) ?? []), value]);
   }
   return groups;
+}
+
+function nativeObjectIdsForEmission(
+  emission: ResolvedEmission
+): readonly string[] {
+  const fragment = compileNativeTool(
+    {
+      kind: emission.toolIntent.kind,
+      toolKey: emission.toolIntent.toolKey,
+      ...emission.toolIntent.properties
+    } as NativeToolIntent,
+    { id: emission.id, ...emission.bounds }
+  );
+  const objects =
+    fragment.kind === "single" ? [fragment.object] : fragment.objects;
+  return objects.map((object) => {
+    if (typeof object.id !== "string" || object.id.length === 0) {
+      throw new Error(`native-object-id-missing:${emission.id}`);
+    }
+    return object.id;
+  });
 }
 
 export function validateReferencesAndLayout(
@@ -172,18 +197,33 @@ export function validateReferencesAndLayout(
         `${emission.id}가 캔버스 밖으로 나갑니다.`
       );
     }
-    if (!nativeIds.has(emission.id)) {
+    let expectedNativeIds: readonly string[];
+    try {
+      expectedNativeIds = nativeObjectIdsForEmission(emission);
+    } catch (error) {
+      issue(
+        issues,
+        "native-fragment-contract-invalid",
+        "api-contract",
+        `${emission.id}의 native fragment 계약을 확인할 수 없습니다: ${String(error)}`
+      );
+      continue;
+    }
+    if (expectedNativeIds.some((id) => !nativeIds.has(id))) {
       issue(
         issues,
         emission.locked
           ? "fixed-object-missing"
           : "movable-object-missing",
         "api-contract",
-        `${emission.id}에 해당하는 native 객체가 없습니다.`
+        `${emission.id}에 해당하는 native 객체 묶음이 완전하지 않습니다.`
       );
       continue;
     }
-    if (emission.locked && !locked.has(emission.id)) {
+    if (
+      emission.locked &&
+      expectedNativeIds.some((id) => !locked.has(id))
+    ) {
       issue(
         issues,
         "fixed-object-unlocked",
@@ -191,7 +231,10 @@ export function validateReferencesAndLayout(
         `${emission.id}가 잠겨 있지 않습니다.`
       );
     }
-    if (emission.movable && locked.has(emission.id)) {
+    if (
+      emission.movable &&
+      expectedNativeIds.some((id) => locked.has(id))
+    ) {
       issue(
         issues,
         "movable-object-locked",

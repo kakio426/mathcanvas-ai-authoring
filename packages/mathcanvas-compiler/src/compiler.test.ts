@@ -247,6 +247,89 @@ describe("MathCanvas 컴파일러", () => {
     expect(locked.has("problem-1-relation-slot-label")).toBe(true);
   });
 
+  it("다중 객체 emission의 ID·순서·잠금을 결정적으로 펼친다", () => {
+    const { resolved } = compiled();
+    const replacedId = resolved.emissions[0]!.id;
+    const withCountingPool = {
+      ...resolved,
+      emissions: resolved.emissions.map((emission, index) =>
+        index === 0
+          ? {
+              ...emission,
+              bounds: { x: 110, y: 350, width: 470, height: 588 },
+              renderedBounds: undefined,
+              locked: true,
+              movable: false,
+              toolIntent: {
+                kind: "counting-model",
+                toolKey: "NO01SC",
+                properties: { count: 31 }
+              }
+            }
+          : emission
+      )
+    };
+    const first = compileActivity(withCountingPool);
+    const second = compileActivity(withCountingPool);
+    expect(first.payload).toEqual(second.payload);
+    const unitIds = first.payload.contentsJson
+      .filter((object) => object.svgId === "NO01SC-01")
+      .map((object) => object.id)
+      .filter((id): id is string => typeof id === "string");
+    expect(unitIds).toEqual(
+      Array.from(
+        { length: 31 },
+        (_, index) =>
+          `${replacedId}-unit-${String(index + 1).padStart(2, "0")}`
+      )
+    );
+    const locked = new Set(first.payload.canvasOption.lockIds.flat());
+    expect(locked.has(replacedId)).toBe(false);
+    for (const unitId of unitIds) expect(locked.has(unitId)).toBe(true);
+  });
+
+  it("저울 접시가 대표 객체 없는 다중 emission을 참조하면 명시적으로 거부한다", () => {
+    const { resolved } = compiled();
+    const sameItem = resolved.emissions.filter(
+      (emission) => emission.itemId === resolved.items[0]!.id
+    );
+    const scale = sameItem[0]!;
+    const member = sameItem[1]!;
+    const invalid = {
+      ...resolved,
+      emissions: resolved.emissions.map((emission) => {
+        if (emission.id === scale.id) {
+          return {
+            ...emission,
+            bounds: { x: 100, y: 100, width: 720, height: 360 },
+            renderedBounds: undefined,
+            toolIntent: {
+              kind: "balance-scale",
+              toolKey: "CR07BS",
+              properties: { initialDirection: "left" }
+            }
+          };
+        }
+        if (emission.id === member.id) {
+          return {
+            ...emission,
+            bounds: { x: 160, y: 400, width: 370, height: 260 },
+            renderedBounds: undefined,
+            toolIntent: {
+              kind: "counting-model",
+              toolKey: "NO01SC",
+              properties: { count: 3, balanceSide: "left" }
+            }
+          };
+        }
+        return emission;
+      })
+    };
+    expect(() => compileActivity(invalid)).toThrow(
+      `balance-scale-multi-object-member-unsupported:${member.id}`
+    );
+  });
+
   it("문제 식과 기호 놓기 칸이 겹치지 않는다", () => {
     const { compiled: result } = compiled();
     const prompt = result.payload.contentsJson.find(

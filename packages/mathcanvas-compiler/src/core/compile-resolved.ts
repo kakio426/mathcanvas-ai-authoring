@@ -10,6 +10,7 @@ import {
 import { buildModuleActivationMap } from "../adapters/module-activation.js";
 import {
   compileNativeTool,
+  type CompiledNativeToolFragment,
   type NativeToolIntent
 } from "../adapters/registry.js";
 
@@ -22,10 +23,8 @@ export function compileActivity(
 ): CompiledProject {
   const activity = resolvedActivitySchema.parse(input);
   const contentsJson: Array<Record<string, unknown>> = [];
-  const nativeByEmissionId = new Map<
-    string,
-    Record<string, unknown>
-  >();
+  const nativeByEmissionId = new Map<string, CompiledNativeToolFragment>();
+  const emittedObjectIds = new Set<string>();
   const lockedIds: string[] = [];
   const requiredModuleKeys = new Set<string>();
   for (const emission of activity.emissions) {
@@ -37,9 +36,31 @@ export function compileActivity(
       } as NativeToolIntent,
       { id: emission.id, ...emission.bounds }
     );
-    contentsJson.push(fragment.object);
-    nativeByEmissionId.set(emission.id, fragment.object);
-    if (emission.locked) lockedIds.push(emission.id);
+    const objects =
+      fragment.kind === "single" ? [fragment.object] : fragment.objects;
+    if (objects.length === 0) {
+      throw new Error(`native-fragment-empty:${emission.id}`);
+    }
+    for (const object of objects) {
+      const objectId = object.id;
+      if (typeof objectId !== "string" || objectId.length === 0) {
+        throw new Error(`native-object-id-missing:${emission.id}`);
+      }
+      if (emittedObjectIds.has(objectId)) {
+        throw new Error(`native-object-id-duplicate:${objectId}`);
+      }
+      emittedObjectIds.add(objectId);
+      contentsJson.push(object);
+      if (emission.locked) lockedIds.push(objectId);
+    }
+    if (
+      fragment.kind === "single" &&
+      (fragment.primaryObjectId !== emission.id ||
+        fragment.object.id !== fragment.primaryObjectId)
+    ) {
+      throw new Error(`native-primary-object-invalid:${emission.id}`);
+    }
+    nativeByEmissionId.set(emission.id, fragment);
     fragment.requiredModuleKeys.forEach((key) =>
       requiredModuleKeys.add(key)
     );
@@ -65,13 +86,18 @@ export function compileActivity(
     }
     const scaleId = scales[0]!.id;
     for (const emission of plateMembers) {
-      const native = nativeByEmissionId.get(emission.id);
-      if (!native) {
+      const fragment = nativeByEmissionId.get(emission.id);
+      if (!fragment) {
         throw new Error(
           `balance-scale-native-member-missing:${emission.id}`
         );
       }
-      native.plate = scaleId;
+      if (fragment.kind === "multi") {
+        throw new Error(
+          `balance-scale-multi-object-member-unsupported:${emission.id}`
+        );
+      }
+      fragment.object.plate = scaleId;
     }
   }
   const difficultyLabel = {
