@@ -1,0 +1,18 @@
+{
+  "description": "Fail-closed guard for Eduitit HTML30 MathCanvas writes and lesson-bundle link promotion.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/hooks/mathcanvas-harness-guard.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Checking the MathCanvas harness write boundary"
+          }
+        ]
+      }
+    ]
+  }
+}

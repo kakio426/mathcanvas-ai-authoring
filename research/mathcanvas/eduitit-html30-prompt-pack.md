@@ -1,9 +1,9 @@
 # Eduitit HTML 30 · MathCanvas 구현 프롬프트
 
-- harness: eduitit-html30-mathcanvas-prompt:v1
+- harness: eduitit-html30-mathcanvas-prompt:v2
 - series: vivasam-2026-middleofmath-30
 - source manifest SHA-256: 8e64368ba3fc316b037b2afbd2bad1a3ed2ed718b4a68ef94b8948691af04b59
-- harness content SHA-256: 98024ab7fb6ec0a29285a86e131850468b2b2559c849e06a8342315e922c4fcd
+- harness content SHA-256: bf70146de87a050b98a62c47699881a017ef1e0710c8f44806da135c93db381a
 - source of truth: Eduitit에 배포된 실제 `*-slides.html` 30개
 - 상태: 설계용 prompt pack. actual canary·save/reopen 전 release 금지.
 
@@ -42,7 +42,7 @@
 - candidateToolKeys: DP03PG
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=DP03PG, research/mathcanvas/graph-tool-contract.observations.json#tool=DP03PG
 - layoutFamily: one-screen-data-workbench-v1@1.0.0 · 범례·그림그래프 native 영역과 수량 해석·설명 영역을 한 화면에 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -59,19 +59,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -80,8 +84,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -123,7 +127,7 @@
 - candidateToolKeys: NO04NG
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NG, research/mathcanvas/division-native-semantic-probe.json#candidate=NO04NG
 - layoutFamily: one-screen-array-workbench-v1@1.0.0 · 배열·묶음 native 모형과 예상·설명 영역을 한 화면에 함께 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -140,19 +144,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -161,8 +169,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -204,7 +212,7 @@
 - candidateToolKeys: NO04NG
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NG, research/mathcanvas/division-native-semantic-probe.json#candidate=NO04NG
 - layoutFamily: one-screen-array-workbench-v1@1.0.0 · 배열·묶음 native 모형과 예상·설명 영역을 한 화면에 함께 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -221,19 +229,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -242,8 +254,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -285,7 +297,7 @@
 - candidateToolKeys: NO04PD
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD, research/mathcanvas/wave14-place-value-release-canary.json#tool=NO04PD
 - layoutFamily: one-screen-choice-workbench-v1@1.0.0 · 예상 선택, native 확인, 설명, 수정의 네 구역을 한 화면 세로 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -302,19 +314,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -323,8 +339,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -366,7 +382,7 @@
 - candidateToolKeys: NO04PD
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD, research/mathcanvas/wave14-place-value-release-canary.json#tool=NO04PD
 - layoutFamily: one-screen-choice-workbench-v1@1.0.0 · 예상 선택, native 확인, 설명, 수정의 네 구역을 한 화면 세로 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -383,19 +399,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -404,8 +424,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -447,7 +467,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -464,19 +484,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -485,8 +509,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -528,7 +552,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -545,19 +569,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -566,8 +594,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -609,7 +637,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -626,19 +654,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -647,8 +679,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -690,7 +722,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -707,19 +739,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -728,8 +764,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -771,7 +807,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -788,19 +824,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -809,8 +849,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -852,7 +892,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -869,19 +909,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -890,8 +934,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -933,7 +977,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -950,19 +994,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -971,8 +1019,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1014,7 +1062,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1031,19 +1079,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1052,8 +1104,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1095,7 +1147,7 @@
 - candidateToolKeys: NO04NT, NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT, research/mathcanvas/module-variant-contract.static.json#tool=NO04NT
 - layoutFamily: one-screen-measurement-rail-v1@1.0.0 · 단위 선택·변환과 측정 근거를 가로 rail과 세로 설명 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1112,19 +1164,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1133,8 +1189,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1176,7 +1232,7 @@
 - candidateToolKeys: NO04NT, NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT, research/mathcanvas/module-variant-contract.static.json#tool=NO04NT
 - layoutFamily: one-screen-measurement-rail-v1@1.0.0 · 단위 선택·변환과 측정 근거를 가로 rail과 세로 설명 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1193,19 +1249,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1214,8 +1274,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1257,7 +1317,7 @@
 - candidateToolKeys: NO04NT, NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT, research/mathcanvas/module-variant-contract.static.json#tool=NO04NT
 - layoutFamily: one-screen-measurement-rail-v1@1.0.0 · 단위 선택·변환과 측정 근거를 가로 rail과 세로 설명 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1274,19 +1334,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1295,8 +1359,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1338,7 +1402,7 @@
 - candidateToolKeys: NO04PD
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD, research/mathcanvas/wave14-place-value-release-canary.json#tool=NO04PD
 - layoutFamily: one-screen-choice-workbench-v1@1.0.0 · 예상 선택, native 확인, 설명, 수정의 네 구역을 한 화면 세로 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1355,19 +1419,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1376,8 +1444,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1419,7 +1487,7 @@
 - candidateToolKeys: NO04PD
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD, research/mathcanvas/wave14-place-value-release-canary.json#tool=NO04PD
 - layoutFamily: one-screen-choice-workbench-v1@1.0.0 · 예상 선택, native 확인, 설명, 수정의 네 구역을 한 화면 세로 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1436,19 +1504,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1457,8 +1529,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1500,7 +1572,7 @@
 - candidateToolKeys: NO04PD
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04PD, research/mathcanvas/wave14-place-value-release-canary.json#tool=NO04PD
 - layoutFamily: one-screen-choice-workbench-v1@1.0.0 · 예상 선택, native 확인, 설명, 수정의 네 구역을 한 화면 세로 흐름으로 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1517,19 +1589,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1538,8 +1614,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1581,7 +1657,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1598,19 +1674,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1619,8 +1699,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1662,7 +1742,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1679,19 +1759,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 이른 수학적 확인을 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1700,8 +1784,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1743,7 +1827,7 @@
 - candidateToolKeys: NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO01SC, research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC
 - layoutFamily: one-screen-division-workbench-v1@1.0.0 · 묶음·잔여 native 조작과 식 설명 rail을 한 화면에 고정한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1760,19 +1844,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1781,8 +1869,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1824,7 +1912,7 @@
 - candidateToolKeys: SM07CS
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=SM07CS
 - layoutFamily: one-screen-circle-workbench-v1@1.0.0 · 원 native 요소의 중심·반지름·지름 reserve를 중심으로 설명과 수정 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1841,19 +1929,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1862,8 +1954,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1905,7 +1997,7 @@
 - candidateToolKeys: SM07CS
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=SM07CS
 - layoutFamily: one-screen-circle-workbench-v1@1.0.0 · 원 native 요소의 중심·반지름·지름 reserve를 중심으로 설명과 수정 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -1922,19 +2014,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -1943,8 +2039,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -1986,7 +2082,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 검토가 필요하다: unit-title-mismatch:분수->분수와 소수. 이 불일치를 해소하기 전 compile/release하지 않는다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2003,19 +2099,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2024,8 +2124,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -2067,7 +2167,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 검토가 필요하다: unit-title-mismatch:분수->분수와 소수. 이 불일치를 해소하기 전 compile/release하지 않는다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2084,19 +2184,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2105,8 +2209,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -2148,7 +2252,7 @@
 - candidateToolKeys: NO03FM
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO03FM, research/mathcanvas/wave1-current-golden-canary.roundtrip.json#claim=released:NO03FM
 - layoutFamily: one-screen-fraction-workbench-v1@1.0.0 · 분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 검토가 필요하다: unit-title-mismatch:분수->분수와 소수. 이 불일치를 해소하기 전 compile/release하지 않는다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2165,19 +2269,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2186,8 +2294,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -2229,7 +2337,7 @@
 - candidateToolKeys: NO04NT, NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT, research/mathcanvas/module-variant-contract.static.json#tool=NO04NT
 - layoutFamily: one-screen-unit-conversion-v1@1.0.0 · 큰 단위와 작은 단위의 native 묶음, 등가 식, 설명 영역을 한 화면에 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2246,19 +2354,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2267,8 +2379,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -2310,7 +2422,7 @@
 - candidateToolKeys: NO04NT, NO01SC
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT, research/mathcanvas/module-variant-contract.static.json#tool=NO04NT
 - layoutFamily: one-screen-unit-conversion-v1@1.0.0 · 큰 단위와 작은 단위의 native 묶음, 등가 식, 설명 영역을 한 화면에 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2327,19 +2439,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2348,8 +2464,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.
@@ -2391,7 +2507,7 @@
 - candidateToolKeys: DP03PG
 - native evidenceIds: research/mathcanvas/tool-catalog.snapshot.json#tool=DP03PG, research/mathcanvas/graph-tool-contract.observations.json#tool=DP03PG
 - layoutFamily: one-screen-data-workbench-v1@1.0.0 · 범례·그림그래프 native 영역과 수량 해석·설명 영역을 한 화면에 배치한다.
-- phaseSequence: prediction → mathematical-confirmation → explanation → revision
+- legacy catalog phaseSequence (learner UI에 사용하지 않음): prediction → mathematical-confirmation → explanation → revision
 - 현재 catalog binding은 Eduitit HTML metadata와 exact이다.
 
 [실제 HTML에서 추출한 수업 근거]
@@ -2408,19 +2524,23 @@
 
 [설계 과제]
 1. 학생이 반드시 결정해야 하는 수학적 판단을 한 문장으로 먼저 쓴다.
-2. 02의 서로 다른 생각과 03의 조건 변화를 이용해 대표 오개념을 하나 정하고, 정답 외에 구별 가능한 선택지를 최소 2개 둔다.
+2. HTML의 생각 차이와 확인 장면은 교사용 설계 근거로만 쓰고, 학생 화면에는 한 문제만 남긴다.
 3. layout보다 먼저 MathCanvas native affordance를 고른다. catalog 후보는 출발점일 뿐이며 support/evidence가 부족하면 bounded probe blocker를 남긴다.
-4. 기본 1문제, 최대 2문제만 사용한다. 두 문제는 native reserve를 포함한 one-screen spatial contract가 증명할 때만 사용한다. 1280×800 학생 화면에서 스크롤이나 캔버스 패닝 없이 끝나야 한다.
-5. 예상 선택 → native 수학 상태로 확인 → 확인한 불변량을 식·말로 설명 → 처음 선택 수정의 네 단계를 위에서 아래로 배치한다.
-6. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 묶음, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
-7. 학생 문장은 대상과 행동을 직접 이름 붙이고 한 문장에 한 가지 보이는 행동만 쓴다. HTML의 내부 단계명이나 정답 문장을 그대로 복사하지 않는다.
-8. 설명은 ‘왜?’로 끝내지 말고 학생이 방금 만든 모형·식·범례·단위·선분 같은 수학적 증거를 쓰게 한다.
+4. 1280×800 학생 화면에 정확히 1문제만 만들고 스크롤이나 캔버스 패닝 없이 끝낸다.
+5. 학생 화면은 문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역 순서로 만든다.
+6. ①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다.
+7. 도구는 생성기가 미리 꺼내 놓는다. 학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다.
+8. 함께 움직여야 하는 숫자·단위·상자·기호는 저장 전에 canonical native group으로 묶고 학생은 한 덩어리로 옮긴다.
+9. native 조작은 좌표 이동만이 아니라 배열, 묶음 membership, 같은 전체의 분할, 중심·반지름 관계, 단위 조합, 범례와 실제 수량 중 하나의 primary mathematical state를 바꾸어야 한다.
+10. 작업판 안내는 최대 2문장이고, 대상·보이는 조작·놓을 곳을 초등학생이 바로 알 수 있게 쓴다.
 
 [한 화면·글자·공간 계약]
-- viewport 1280×800, fixed chrome guard 8 CSS px, no scroll.
+- viewport 1280×800, 실제 MathCanvas 100%, persisted canvasOption.scale=3, fixed chrome guard 8 CSS px, no scroll.
 - 최종 화면의 제목/문제는 28 CSS px 이상, 안내·보기·라벨은 22 CSS px 이상이어야 한다.
-- 서로 다른 의미 묶음 사이는 같은 문장 행 간격보다 크게 둔다. 제목은 안내보다 명확히 크고, 보기 글자는 상자 중앙에 둔다.
-- native visualBox/chromeBox/taskEnvelope/reserveBox를 실제 계약에서 읽고 전용 layout variant를 선택한다. 임의 좌표 nudge로 맞추지 않는다.
+- 문제 영역은 10~18%, native 작업판은 72% 이상, 작은 답 영역은 최대 10%만 사용한다.
+- composition 활동은 실제 native reserve를 먼저 재고 source tray를 위쪽 또는 왼쪽에 배치한다. 어느 방향이든 construction area가 더 크고 모든 drag 경로가 workbench 안에 있어야 한다.
+- native visualBox/chromeBox/taskEnvelope/reserveBox의 initial·selected·manipulated 최대값을 먼저 읽고 24 CSS px 여유를 둔다. 임의 좌표 nudge로 맞추지 않는다.
+- 모든 학생 요소의 visual/interaction bounds는 자기 작업 공간 안에 완전히 포함되어야 한다.
 - 실제 glyph, 겹침, 잘림, 중앙 정렬은 fresh background canary와 Sol 시각 검토 전까지 통과로 표시하지 않는다.
 
 [추가 교사 프롬프트]
@@ -2429,8 +2549,8 @@
 - 학년·학기·단원·성취기준·수학적 불변량·native tool support·raw payload·좌표·release 상태는 바꾸지 않는다.
 
 [출력 및 완료 조건]
-- source binding, mathematical decision, misconception conflict, self-verification invariant, native affordance plan, learner-facing ①②③ 흐름, one-screen layout variant, predicates, evidence plan, blockers를 구조화해 제시한다.
-- 초기 화면에 정답을 완성해 두지 않는다. 모든 물체를 뻔한 칸에 옮기는 그림판 활동으로 만들지 않는다.
+- source binding, mathematical decision, native state transition, preplaced movable units, group membership, 작업 공간 이름·목적, one-screen layout intent, predicates, evidence plan, blockers를 구조화해 제시한다.
+- 초기 화면에 정답을 완성해 두지 않는다. 학생의 조작이 수학 상태를 바꾸고 그 결과가 화면에서 확인되어야 한다.
 - 이 prompt는 design-only다. current catalog availability가 blocked이므로 canonical compile 경로에 넣지 않는다.
 - learningMapTopicId는 보조 ontology이며 official standard authority를 대신하지 않는다.
 - offline tests가 통과해도 fresh canary와 실제 save/reopen 전에는 released로 올리지 않는다.

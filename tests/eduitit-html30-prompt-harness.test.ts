@@ -57,6 +57,8 @@ type PromptEntry = {
   sourceBinding: {
     sourceKind: string;
     packageManifestPath: string;
+    packageManifestBindingPolicy: string;
+    packageManifestSha256: string;
     slideHtmlPath: string;
     slideHtmlSha256: string;
     sourceSlides: Array<{
@@ -97,8 +99,18 @@ type PromptEntry = {
     releaseAllowed: boolean;
     defaultProblemCount: number;
     maximumProblemCount: number;
+    catalogProblemCountPolicy: { min: number; max: number; default: number };
     oneScreen: boolean;
-    requiredPhases: string[];
+    mathCanvasZoomPercent: number;
+    persistedCanvasScale: number;
+    minimumWorkbenchShare: number;
+    workbenchClearanceCssPx: number;
+    learnerFlow: string[];
+    catalogLegacyPhaseSequence: string[];
+    forbiddenRegions: string[];
+    nativePlacement: string;
+    studentToolMenuRequired: boolean;
+    keyboardModifiersAllowed: string[];
     teacherContext: {
       placeholder: string;
       maximumCharacters: number;
@@ -268,6 +280,9 @@ describe("Eduitit 실제 HTML 30개 MathCanvas prompt harness", () => {
       expect(entry.sourceBinding.packageManifestPath).toMatch(
         /^eduitit:edu_materials\/static\/edu_materials\/lesson_bundles\//
       );
+      expect(entry.sourceBinding.packageManifestBindingPolicy).toBe(
+        "canonical-json-without-mathcanvas-editor-url-v1"
+      );
       expect(entry.sourceBinding.slideHtmlPath).toMatch(
         /^eduitit:edu_materials\/static\/edu_materials\/lesson_bundles\/.*-slides\.html$/
       );
@@ -288,21 +303,62 @@ describe("Eduitit 실제 HTML 30개 MathCanvas prompt harness", () => {
     }
   });
 
-  it("30개 prompt가 native-first 네 단계와 one-screen·큰 글자·release 금지를 공유한다", () => {
+  it("배포 결과인 MathCanvas 링크만 바뀌어도 수업 원본 결속은 흔들리지 않는다", () => {
+    withEduititOverlay(
+      ({ packageManifest, html }) => {
+        packageManifest.mathCanvasEditorUrl =
+          "https://mathcanvas.vivasam.com/ko/view/rebound-link";
+        return html;
+      },
+      (overlayRoot) => {
+        const rebound = module.buildEduititHtml30PromptHarness({
+          eduititRoot: overlayRoot,
+          catalog: grade3PilotWorksheetCatalog
+        }) as PromptHarness;
+        expect(rebound.entries[0]!.sourceBinding.packageManifestSha256).toBe(
+          canonical.entries[0]!.sourceBinding.packageManifestSha256
+        );
+        expect(rebound.entries[0]!.sourceBinding.slideHtmlSha256).toBe(
+          canonical.entries[0]!.sourceBinding.slideHtmlSha256
+        );
+      }
+    );
+  });
+
+  it("30개 prompt가 native-first 한 문제·100%·작업판 중심·release 금지를 공유한다", () => {
     for (const entry of canonical.entries) {
       expect(entry.promptPolicy).toMatchObject({
         status: "design-only",
         compileAllowed: false,
         releaseAllowed: false,
         defaultProblemCount: 1,
-        maximumProblemCount: 2,
+        maximumProblemCount: 1,
         oneScreen: true,
-        requiredPhases: [
+        mathCanvasZoomPercent: 100,
+        persistedCanvasScale: 3,
+        minimumWorkbenchShare: 0.72,
+        workbenchClearanceCssPx: 24,
+        learnerFlow: [
+          "question",
+          "native-construction",
+          "compact-answer-if-needed"
+        ],
+        catalogLegacyPhaseSequence: [
           "prediction",
           "mathematical-confirmation",
           "explanation",
           "revision"
         ],
+        forbiddenRegions: [
+          "top-directions",
+          "prediction",
+          "first-answer",
+          "revision",
+          "written-reason"
+        ],
+        nativePlacement: "generator-preplaced",
+        studentToolMenuRequired: false,
+        keyboardModifiersAllowed: [],
         requiresFreshBackgroundCanary: true,
         requiresActualSaveReopen: true,
         requiresSolVisualReview: true
@@ -334,15 +390,19 @@ describe("Eduitit 실제 HTML 30개 MathCanvas prompt harness", () => {
       expect(entry.implementationPrompt).toContain(
         `deployed HTML asset: ${entry.sourceBinding.slideHtmlPath}`
       );
-      expect(entry.implementationPrompt).toContain("예상 선택");
-      expect(entry.implementationPrompt).toContain("native 수학 상태로 확인");
+      expect(entry.implementationPrompt).toContain("정확히 1문제");
       expect(entry.implementationPrompt).toContain(
-        entry.sequence === 21
-          ? "02의 서로 다른 생각과 03의 이른 수학적 확인"
-          : "02의 서로 다른 생각과 03의 조건 변화"
+        "문제 → 큰 native 작업판 → 꼭 필요할 때만 작은 답 영역"
       );
-      expect(entry.implementationPrompt).not.toContain(
-        "02·03의 서로 다른 생각과 조건 변화"
+      expect(entry.implementationPrompt).toContain(
+        "①②③ 상단 안내, 예상 답, 처음 고른 답, 답 수정, 필기·까닭 칸을 만들지 않는다"
+      );
+      expect(entry.implementationPrompt).toContain(
+        "학생에게 왼쪽 메뉴에서 도구를 찾게 하거나 Shift 키를 쓰게 하지 않는다"
+      );
+      expect(entry.implementationPrompt).toContain("canonical native group");
+      expect(entry.implementationPrompt).toContain(
+        "실제 MathCanvas 100%, persisted canvasOption.scale=3"
       );
       expect(entry.implementationPrompt).toContain("28 CSS px 이상");
       expect(entry.implementationPrompt).toContain("22 CSS px 이상");
@@ -478,7 +538,7 @@ describe("Eduitit 실제 HTML 30개 MathCanvas prompt harness", () => {
     );
   });
 
-  it("문제 수와 교사 맥락 한도는 catalog modifier에서 그대로 파생한다", () => {
+  it("catalog가 1문제를 허용하는 범위에서 화면은 1문제로 고정하고 교사 맥락 한도만 파생한다", () => {
     const catalog = structuredClone(
       grade3PilotWorksheetCatalog
     ) as unknown as JsonRecord[];
@@ -489,13 +549,14 @@ describe("Eduitit 실제 HTML 30개 MathCanvas prompt harness", () => {
       catalog: catalog as unknown as typeof grade3PilotWorksheetCatalog
     }) as PromptHarness;
     expect(derived.entries[0]!.promptPolicy.maximumProblemCount).toBe(1);
+    expect(derived.entries[0]!.promptPolicy.catalogProblemCountPolicy.max).toBe(1);
     expect(
       derived.entries[0]!.promptPolicy.teacherContext.maximumCharacters
     ).toBe(100);
-    expect(derived.entries[0]!.implementationPrompt).toContain("최대 1문제");
+    expect(derived.entries[0]!.implementationPrompt).toContain("정확히 1문제");
     expect(derived.entries[0]!.implementationPrompt).toContain("100자 이하");
     expect(derived.entries[0]!.implementationPrompt).not.toContain(
-      "두 문제는 native reserve"
+      "두 문제는"
     );
   });
 

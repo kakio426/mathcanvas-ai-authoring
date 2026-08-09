@@ -57,6 +57,11 @@ export {
   type PrepareWorksheetV2Options
 } from "./worksheet-v2.js";
 export {
+  buildEduititHtml30ActivitySpecsV2,
+  type EduititHtml30PromptHarnessEntryInput,
+  type EduititHtml30PromptHarnessInput
+} from "./eduitit-html30-v2.js";
+export {
   balancedEquationCardsBlueprint
 } from "./blueprints/balanced-equation-cards.js";
 export {

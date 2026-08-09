@@ -1,0 +1,6364 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditId": "eduitit-html30-v2-single-reopen-batch",
+  "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+  "auditedAt": "2026-08-09T14:13:44.278Z",
+  "sourceArtifactContentSha256": "f80223921cfc6114b862e51ff8ff297cebc7e3aa0b07b3e5992022c6268be224",
+  "requestedCount": 30,
+  "capturedSequences": [
+    17,
+    18,
+    19
+  ],
+  "reopenedCount": 30,
+  "basicPassCount": 30,
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "observations": [
+    {
+      "sequence": 1,
+      "projectId": "rL0woz",
+      "url": "https://mathcanvas.vivasam.com/ko/view/rL0woz",
+      "expectedPayloadHash": "61d3d53a02b388aa721cd4174ee20e035876bce90b5c8708bf4876e208c84e32",
+      "reopenedPayloadHash": "0a8701dff1351a1d7f1d782970d6d72a2e130b7cc7cd2396fa554030a92abd40",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "67cabba077c5d7244796a17bdd9f147ea4be6d3f0b41b65b2e1aded89bca9328",
+      "reopenedNormalizedPayloadHash": "67cabba077c5d7244796a17bdd9f147ea4be6d3f0b41b65b2e1aded89bca9328",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/01.png",
+      "screenshotSha256": "2238844701e62aa38b16b571e5cd0953db3e6c307ea7e75391c24389b8d56658",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 7,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-1-picture-graph",
+          "bounds": {
+            "x": 399.0666809082031,
+            "y": 285.26666259765625,
+            "width": 600.8466796875,
+            "height": 415.91998291015625
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "9091d7fffe236ff28f834ca720707b3339a9b044e16cc5bf5d5e4af053b485f7"
+    },
+    {
+      "sequence": 2,
+      "projectId": "wQmu3L",
+      "url": "https://mathcanvas.vivasam.com/ko/view/wQmu3L",
+      "expectedPayloadHash": "fbf4313d82d91498cf63fcbd75cdf3fc494e2ca0f336bfaba275362b21348439",
+      "reopenedPayloadHash": "fbf4313d82d91498cf63fcbd75cdf3fc494e2ca0f336bfaba275362b21348439",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "569787eff7477d8de427afd130e7f0adfceb3f4568763e5bd094a7d0a938b0dd",
+      "reopenedNormalizedPayloadHash": "569787eff7477d8de427afd130e7f0adfceb3f4568763e5bd094a7d0a938b0dd",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/02.png",
+      "screenshotSha256": "9a460e23172c4bd3e1d18908b3d9fb02718a848de1a05a3fdf47aee6df2e321c",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 7,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-2-multiplication-array",
+          "bounds": {
+            "x": 594.6666870117188,
+            "y": 361.6666564941406,
+            "width": 266.6666259765625,
+            "height": 266.6667175292969
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "4ceea7a36a30b0c6c8fef21ff0950e9e4caf38789f446eddafd888afcaa29e7a"
+    },
+    {
+      "sequence": 3,
+      "projectId": "lhLGmb",
+      "url": "https://mathcanvas.vivasam.com/ko/view/lhLGmb",
+      "expectedPayloadHash": "79ecc18376c0be505bbf2a26cf50c441ce348f6718d1906be1af98ce46127dca",
+      "reopenedPayloadHash": "79ecc18376c0be505bbf2a26cf50c441ce348f6718d1906be1af98ce46127dca",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "04901ed30a9d3d452854b1da6057cf9f9f2f40109881dc012db166d39d966825",
+      "reopenedNormalizedPayloadHash": "04901ed30a9d3d452854b1da6057cf9f9f2f40109881dc012db166d39d966825",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/03.png",
+      "screenshotSha256": "4e98a61cfa631077c07b6439129539e6d6d4a3db1a31d5423e7361964ba98d1c",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 7,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-3-multiplication-array",
+          "bounds": {
+            "x": 561.3333129882812,
+            "y": 328.33331298828125,
+            "width": 333.3333740234375,
+            "height": 333.3333740234375
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "a3ce933e06f649fcef219782e7ea649505f9b36d02a60518a9f0e9079daaa1fd"
+    },
+    {
+      "sequence": 4,
+      "projectId": "3m4JMN",
+      "url": "https://mathcanvas.vivasam.com/ko/view/3m4JMN",
+      "expectedPayloadHash": "b212f0094783ec00aa67fceb6b6ec01dd8d0f4f84f5ef6ee1cc936c0e424d469",
+      "reopenedPayloadHash": "a42984618bb4f5dc44136c8ef154b36bdd3a7fa9e425d27b59fa415aaf45ba5c",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "00a58a010bc5ae2ea23a3bedb96d44679b6f50daeb911896ed4c21f7852d3667",
+      "reopenedNormalizedPayloadHash": "00a58a010bc5ae2ea23a3bedb96d44679b6f50daeb911896ed4c21f7852d3667",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/04.png",
+      "screenshotSha256": "9f1fccb6fbc068f3d67936705deeffbac4db768286f7c1eb99758870fff5e0e3",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 33,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-4-partial-60-group-member-1",
+          "bounds": {
+            "x": 354.66668701171875,
+            "y": 255.20001220703125,
+            "width": 213.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-3",
+          "bounds": {
+            "x": 364.66668701171875,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-4",
+          "bounds": {
+            "x": 364.66668701171875,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-5",
+          "bounds": {
+            "x": 364.66668701171875,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-6",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-7",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-8",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-1",
+          "bounds": {
+            "x": 571.3333129882812,
+            "y": 255.20001220703125,
+            "width": 313.3333740234375,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-3",
+          "bounds": {
+            "x": 581.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-4",
+          "bounds": {
+            "x": 581.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-5",
+          "bounds": {
+            "x": 581.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-6",
+          "bounds": {
+            "x": 681.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-7",
+          "bounds": {
+            "x": 681.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-8",
+          "bounds": {
+            "x": 681.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-9",
+          "bounds": {
+            "x": 781.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-10",
+          "bounds": {
+            "x": 781.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-1",
+          "bounds": {
+            "x": 888,
+            "y": 255.20001220703125,
+            "width": 213.333251953125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-3",
+          "bounds": {
+            "x": 898,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-4",
+          "bounds": {
+            "x": 898,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-5",
+          "bounds": {
+            "x": 898,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-6",
+          "bounds": {
+            "x": 997.9999389648438,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-7",
+          "bounds": {
+            "x": 997.9999389648438,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-8",
+          "bounds": {
+            "x": 997.9999389648438,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-60-group-member-2",
+          "bounds": {
+            "x": 447.33331298828125,
+            "y": 258.5333557128906,
+            "width": 28.000030517578125,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-8-group-member-2",
+          "bounds": {
+            "x": 716.3333129882812,
+            "y": 258.5333557128906,
+            "width": 23.3333740234375,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-4-partial-6-group-member-2",
+          "bounds": {
+            "x": 982.9999389648438,
+            "y": 258.5333557128906,
+            "width": 23.3333740234375,
+            "height": 30
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "382a1bf2367214e5e19f9f0dc4e64dc1421105f12a87e8a8b394696aa50b3cb9"
+    },
+    {
+      "sequence": 5,
+      "projectId": "gE2xOj",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gE2xOj",
+      "expectedPayloadHash": "3630a93d67f5027cb7fcae6fda9e98799e2c664c443779873278e08f672ef1be",
+      "reopenedPayloadHash": "e885265b8aecc8ec15bf3659fd93f669f8f34c78a496f3a166f924d552290986",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "c1d3203431409154b4db22b685d0d5b09a7a34ec7f34b12d79c1a03179df9094",
+      "reopenedNormalizedPayloadHash": "c1d3203431409154b4db22b685d0d5b09a7a34ec7f34b12d79c1a03179df9094",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/05.png",
+      "screenshotSha256": "508c7e79951151d01c0c01fe9c3e4eff8f61a477dd3021b6ee3ea2f98761c5af",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 28,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-5-partial-90-group-member-1",
+          "bounds": {
+            "x": 454.66668701171875,
+            "y": 255.20001220703125,
+            "width": 313.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-3",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-4",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-5",
+          "bounds": {
+            "x": 464.66668701171875,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-6",
+          "bounds": {
+            "x": 564.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-7",
+          "bounds": {
+            "x": 564.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-8",
+          "bounds": {
+            "x": 564.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-9",
+          "bounds": {
+            "x": 664.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-10",
+          "bounds": {
+            "x": 664.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-11",
+          "bounds": {
+            "x": 664.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-3-group-member-1",
+          "bounds": {
+            "x": 771.3333129882812,
+            "y": 255.20001220703125,
+            "width": 113.3333740234375,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-3-group-member-3",
+          "bounds": {
+            "x": 781.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-3-group-member-4",
+          "bounds": {
+            "x": 781.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-3-group-member-5",
+          "bounds": {
+            "x": 781.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-30-group-member-1",
+          "bounds": {
+            "x": 888,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-30-group-member-3",
+          "bounds": {
+            "x": 898,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-30-group-member-4",
+          "bounds": {
+            "x": 898,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-30-group-member-5",
+          "bounds": {
+            "x": 898,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-90-group-member-2",
+          "bounds": {
+            "x": 597.3333740234375,
+            "y": 258.5333557128906,
+            "width": 27.99993896484375,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-3-group-member-2",
+          "bounds": {
+            "x": 816.3333129882812,
+            "y": 258.5333557128906,
+            "width": 23.3333740234375,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-5-partial-30-group-member-2",
+          "bounds": {
+            "x": 930.6666870117188,
+            "y": 258.5333557128906,
+            "width": 28,
+            "height": 30
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "3811400476f118d3f04e6c8114f738dbe098ceda9e553c57659c4c83e09a1f7a"
+    },
+    {
+      "sequence": 6,
+      "projectId": "M7wSdO",
+      "url": "https://mathcanvas.vivasam.com/ko/view/M7wSdO",
+      "expectedPayloadHash": "95d536d8391d321893392d2b371a242f6c4497ebdd6b085f4960662a4fbddb2f",
+      "reopenedPayloadHash": "133e437a9449f874e1ce69e8e002cd4b25a8597e24a0ef00401edf892f1c4079",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "0a225bd2045e9d631637e6746df331b419b63e22624d48cc4690432f5a2db4d9",
+      "reopenedNormalizedPayloadHash": "0a225bd2045e9d631637e6746df331b419b63e22624d48cc4690432f5a2db4d9",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/06.png",
+      "screenshotSha256": "06b68c9b7187ed28ca5d7477ed5afb5f63270e05ba5874242437fa154d87a426",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 37,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-6-cookies-unit-01",
+          "bounds": {
+            "x": 434.66668701171875,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-02",
+          "bounds": {
+            "x": 501.3333435058594,
+            "y": 286.45001220703125,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-03",
+          "bounds": {
+            "x": 568,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-04",
+          "bounds": {
+            "x": 634.6666870117188,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-05",
+          "bounds": {
+            "x": 701.3333129882812,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-06",
+          "bounds": {
+            "x": 768,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-07",
+          "bounds": {
+            "x": 834.6666870117188,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-08",
+          "bounds": {
+            "x": 901.3333129882812,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-09",
+          "bounds": {
+            "x": 967.9999389648438,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-10",
+          "bounds": {
+            "x": 434.66668701171875,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-11",
+          "bounds": {
+            "x": 501.3333435058594,
+            "y": 353.1166687011719,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-12",
+          "bounds": {
+            "x": 568,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-13",
+          "bounds": {
+            "x": 634.6666870117188,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-14",
+          "bounds": {
+            "x": 701.3333129882812,
+            "y": 353.1166687011719,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-15",
+          "bounds": {
+            "x": 768,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-16",
+          "bounds": {
+            "x": 834.6666870117188,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-17",
+          "bounds": {
+            "x": 901.3333129882812,
+            "y": 353.1166687011719,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-6-cookies-unit-18",
+          "bounds": {
+            "x": 967.9999389648438,
+            "y": 353.1166687011719,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "9697bcfc5ddd8184c9be1091435d2cd5f54810faf3fe0ab33d97df98859d73aa"
+    },
+    {
+      "sequence": 7,
+      "projectId": "JcMPoX",
+      "url": "https://mathcanvas.vivasam.com/ko/view/JcMPoX",
+      "expectedPayloadHash": "b97239619ed3b072fbc413d97e033710958cf361eb64b6019c5c5c61786f0e59",
+      "reopenedPayloadHash": "f56920cf983857392e333cbbcf5e5c166a305dbffe9b0c5f974a04efc6524f69",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "10e2913e3da31583ac5e1a9ed8dd59f8ee09085a3b0ef1748c4f0c7635e94445",
+      "reopenedNormalizedPayloadHash": "10e2913e3da31583ac5e1a9ed8dd59f8ee09085a3b0ef1748c4f0c7635e94445",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/07.png",
+      "screenshotSha256": "04d75036203ba0aca28cdffb79e3f6d06c2999ae5e55be63499766e10493440e",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 27,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-7-seven-set-1-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 314.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-1-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 331.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-2-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 314.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-2-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 331.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-3-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 409.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-3-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 426.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.3333740234375
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-4-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 409.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-4-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 426.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.3333740234375
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-5-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 504.5999755859375,
+            "width": 155.83334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-5-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 521.2666625976562,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-6-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 504.5999755859375,
+            "width": 155.83331298828125,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-6-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 521.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-1-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 339.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-2-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 339.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-3-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 434.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-4-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 434.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-5-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 529.5999755859375,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-7-seven-set-6-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 529.5999755859375,
+            "width": 75.83331298828125,
+            "height": 36.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "c0dfdbf8e5c507882d002d3d9695dda7a49de0a7a73280a39d96d0af90ab9f43"
+    },
+    {
+      "sequence": 8,
+      "projectId": "m625MF",
+      "url": "https://mathcanvas.vivasam.com/ko/view/m625MF",
+      "expectedPayloadHash": "843c376bcf8d634e70e34903b07d0db730e33fb0c4be353dd2411e9fde9e452e",
+      "reopenedPayloadHash": "3155b29abea900150471e3e2ebe3aab6517324cff424bdcfc2075e34dcee4ed4",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "79bd91e29169e364de3d902c4ff732b17a25de32d2b3e66b5190d191b3a8f9d5",
+      "reopenedNormalizedPayloadHash": "79bd91e29169e364de3d902c4ff732b17a25de32d2b3e66b5190d191b3a8f9d5",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/08.png",
+      "screenshotSha256": "2f8fe73aa3e47ac629d62a35360e128377fc0c2ca4f8ba90c34d76d68dcc6b33",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 24,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-8-eight-set-1-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 342.1000061035156,
+            "width": 155.83334350585938,
+            "height": 86.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-1-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 358.4888916015625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-2-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 342.1000061035156,
+            "width": 155.83331298828125,
+            "height": 86.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-2-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 358.4888916015625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-3-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 436.54443359375,
+            "width": 155.83334350585938,
+            "height": 86.11114501953125
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-3-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 452.9333190917969,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-4-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 436.54443359375,
+            "width": 155.83331298828125,
+            "height": 86.11114501953125
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-4-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 452.9333190917969,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-5-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 530.9888916015625,
+            "width": 155.83334350585938,
+            "height": 86.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-5-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 547.3778076171875,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-1-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 366.8222351074219,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-2-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 366.8222351074219,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-3-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 461.26666259765625,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-4-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 461.26666259765625,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-8-eight-set-5-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 555.7111206054688,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "e405341610cc2608f38e07ebab9a658c855a43696142ab5587bd2956b8985ac4"
+    },
+    {
+      "sequence": 9,
+      "projectId": "c4vioX",
+      "url": "https://mathcanvas.vivasam.com/ko/view/c4vioX",
+      "expectedPayloadHash": "cf350859a9ee2d8a6a9a6580660c414454f247504a62e6c4a62e4fa78f30fe58",
+      "reopenedPayloadHash": "5915db23804e019f4b16d8a2d68cec8d3a882add6380951a3b2a978fc57d9a00",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "d3069792d922646d822b46aa6545ad5d191166e0664be92abf07509a00e1ba74",
+      "reopenedNormalizedPayloadHash": "d3069792d922646d822b46aa6545ad5d191166e0664be92abf07509a00e1ba74",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/09.png",
+      "screenshotSha256": "613c3d556d8b3befa2f06093bd7ee8a9600efde2db1c680ba399663778d3b877",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 33,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-9-six-set-1-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 284.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-1-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 301.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-2-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 284.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-2-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 301.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-3-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 379.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-3-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 396.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-4-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 379.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-4-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 396.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-5-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 474.5999755859375,
+            "width": 155.83334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-5-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 491.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-6-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 474.5999755859375,
+            "width": 155.83331298828125,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-6-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 491.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-7-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 569.5999755859375,
+            "width": 155.83334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-7-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 586.2666625976562,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-8-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 569.5999755859375,
+            "width": 155.83331298828125,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-8-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 586.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-1-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 309.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-2-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 309.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-3-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 404.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-4-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 404.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-5-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 499.5999755859375,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-6-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 499.5999755859375,
+            "width": 75.83331298828125,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-7-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 594.5999755859375,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-9-six-set-8-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 594.5999755859375,
+            "width": 75.83331298828125,
+            "height": 36.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "ce6c3a43a3bfe8eef3716827706e57df81d5a58304ffb37b9b213dc8c341f85a"
+    },
+    {
+      "sequence": 10,
+      "projectId": "sW6vTK",
+      "url": "https://mathcanvas.vivasam.com/ko/view/sW6vTK",
+      "expectedPayloadHash": "eb55da32404c0441a620ea94456091cf652334497c27769115df944817e024e7",
+      "reopenedPayloadHash": "eb55da32404c0441a620ea94456091cf652334497c27769115df944817e024e7",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "683874423331106bedaa56e23baf75c361223da3e787334f08002d808b12a466",
+      "reopenedNormalizedPayloadHash": "683874423331106bedaa56e23baf75c361223da3e787334f08002d808b12a466",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/10.png",
+      "screenshotSha256": "1240950ace6391d1d568da4bd4e80121960bfa74c6c34a2a42f4fb179d0e22d4",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 8,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-10-native",
+          "bounds": {
+            "x": 328,
+            "y": 432.5000305175781,
+            "width": 160,
+            "height": 124.99996948242188
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "d1aaf397cde29463002bae0d0817d4fdf3e1ea78fb55fd5c9e1e05fd2715a54d"
+    },
+    {
+      "sequence": 11,
+      "projectId": "qk6wPR",
+      "url": "https://mathcanvas.vivasam.com/ko/view/qk6wPR",
+      "expectedPayloadHash": "67b9e576a7931e5216483a2b42fb3cbd993c7429ba8054ae26b0789dafaf9847",
+      "reopenedPayloadHash": "cd98d41635bae5e93ab39f5761748b149bd8b9cd896ed719dfb5c14ee147762d",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "cda03e7db8115b0c9c5b83402ea88b4c3e86f1aa04e7b2413cd375d4c94626a3",
+      "reopenedNormalizedPayloadHash": "cda03e7db8115b0c9c5b83402ea88b4c3e86f1aa04e7b2413cd375d4c94626a3",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/11.png",
+      "screenshotSha256": "c02ab8eddb23a9ff9bf99b44a541ec68271162f0604b861afc6de916f4102318",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 71.66666412353516,
+        "width": 976,
+        "height": 660.9999618530273
+      },
+      "taskElementCount": 20,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-11-native",
+          "bounds": {
+            "x": 328,
+            "y": 461.4333190917969,
+            "width": 160,
+            "height": 125.00003051757812
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "b99228ca024bb16e4f8220d0b94e79f2126f805a37b6f566425717ce16274147"
+    },
+    {
+      "sequence": 12,
+      "projectId": "GwhCnM",
+      "url": "https://mathcanvas.vivasam.com/ko/view/GwhCnM",
+      "expectedPayloadHash": "f20266753b603364f95098f3faf72274b46ff9f36053c72729c5725c65c5b4d2",
+      "reopenedPayloadHash": "f20266753b603364f95098f3faf72274b46ff9f36053c72729c5725c65c5b4d2",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "c548f25c1a0577644e9c796a5bbe30e4063f844dedf9c636513958303b078bc0",
+      "reopenedNormalizedPayloadHash": "c548f25c1a0577644e9c796a5bbe30e4063f844dedf9c636513958303b078bc0",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/12.png",
+      "screenshotSha256": "2dd4dc090c6ac9de8788a5ac6bc0f7073e508d66029512d7d10e6dd3f35bc487",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 8,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-12-native",
+          "bounds": {
+            "x": 328,
+            "y": 432.5000305175781,
+            "width": 114.28570556640625,
+            "height": 124.99996948242188
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "6836a94f4541bdfe4b41f7c1fb2fbcbe78236ae3a3fc555e9a5f58ceff9eb12e"
+    },
+    {
+      "sequence": 13,
+      "projectId": "yfcOlC",
+      "url": "https://mathcanvas.vivasam.com/ko/view/yfcOlC",
+      "expectedPayloadHash": "1a4be7b35896d3e61c13897ebe98d3ad0b4388baec83e4e72c5cd6548f19ad3f",
+      "reopenedPayloadHash": "1a4be7b35896d3e61c13897ebe98d3ad0b4388baec83e4e72c5cd6548f19ad3f",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "2c0c744c7c7b8d6e2b7124afb08c137a253f104e64aeeb712aa126f3acb5a195",
+      "reopenedNormalizedPayloadHash": "2c0c744c7c7b8d6e2b7124afb08c137a253f104e64aeeb712aa126f3acb5a195",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/13.png",
+      "screenshotSha256": "254396348d09d98a4045715a8986ae792bca86cb4cdb53ff7b818abaeef1898c",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 8,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-13-native",
+          "bounds": {
+            "x": 328,
+            "y": 432.5000305175781,
+            "width": 80,
+            "height": 124.99996948242188
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "fa765a31ba0a4b335b6b47f3c6b9b58c59fa1870f6ab411828d0f93a84d00ca7"
+    },
+    {
+      "sequence": 14,
+      "projectId": "voeaZU",
+      "url": "https://mathcanvas.vivasam.com/ko/view/voeaZU",
+      "expectedPayloadHash": "7adb78817b1a202400d8bf7eb2c2595dd576bd65b686e8ffa08de816bbf36944",
+      "reopenedPayloadHash": "5813961cab2fb46035515d21c0d332ed86834b8ae4564fced9f565292c9ecb48",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "cdd254d0cabb270fa77b3cf07944e8d2032bbd12f04981a21b6c10e9f659a0ed",
+      "reopenedNormalizedPayloadHash": "cdd254d0cabb270fa77b3cf07944e8d2032bbd12f04981a21b6c10e9f659a0ed",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/14.png",
+      "screenshotSha256": "2a2efe23a73e4a98c940e38e6b2e3e392f31ee7d7515c15f940c3b981ba4bbf3",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 25,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-14-measure-5cm-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 267.9666442871094,
+            "width": 153.33334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-5cm-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-20m-group-member-1",
+          "bounds": {
+            "x": 344.25,
+            "y": 380.1666564941406,
+            "width": 220,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-20m-group-member-2",
+          "bounds": {
+            "x": 354.25,
+            "y": 390.1666564941406,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-20m-group-member-3",
+          "bounds": {
+            "x": 420.91668701171875,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-5m-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 492.3666687011719,
+            "width": 153.33334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-5m-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-20cm-group-member-1",
+          "bounds": {
+            "x": 344.25,
+            "y": 604.566650390625,
+            "width": 220,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-20cm-group-member-2",
+          "bounds": {
+            "x": 354.25,
+            "y": 614.566650390625,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-20cm-group-member-3",
+          "bounds": {
+            "x": 420.91668701171875,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-5cm-group-member-3",
+          "bounds": {
+            "x": 473.58331298828125,
+            "y": 290.4666442871094,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-measure-20m-group-member-4",
+          "bounds": {
+            "x": 509.25,
+            "y": 402.6666564941406,
+            "width": 23.33331298828125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-5m-group-member-3",
+          "bounds": {
+            "x": 475.91668701171875,
+            "y": 514.8666381835938,
+            "width": 23.33331298828125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-14-distractor-20cm-group-member-4",
+          "bounds": {
+            "x": 506.9166564941406,
+            "y": 627.066650390625,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "41ee23191dbcb4b57cd281e0df693ff51a801a9736bd3647519cc6f2b46e07c3"
+    },
+    {
+      "sequence": 15,
+      "projectId": "dHtylW",
+      "url": "https://mathcanvas.vivasam.com/ko/view/dHtylW",
+      "expectedPayloadHash": "d295e3aa0fa79753574e78d24bc0cb25df0c01c0e8e6146ce86b420b13a48ab7",
+      "reopenedPayloadHash": "37e8254a9007aef0a3d781485e2e3a47aaa9dd31d4cd627c31ae28b84ed6453c",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "923f3587b40cde2d8d6e2eb22a80e7f8cb10131a88ba8ce2823f45f623dbfffe",
+      "reopenedNormalizedPayloadHash": "923f3587b40cde2d8d6e2eb22a80e7f8cb10131a88ba8ce2823f45f623dbfffe",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/15.png",
+      "screenshotSha256": "a7dc667ee4b2f2c8f4434c07698f8776f88d0ac5a29fabc84384c5a09cfe9934",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 23,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-15-measure-2mm-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 267.9666442871094,
+            "width": 153.33334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-measure-2mm-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-measure-5km-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 380.1666564941406,
+            "width": 153.33334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-15-measure-5km-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-2km-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 492.3666687011719,
+            "width": 153.33334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-2km-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-5mm-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 604.566650390625,
+            "width": 153.33334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-5mm-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-measure-2mm-group-member-3",
+          "bounds": {
+            "x": 473.58331298828125,
+            "y": 290.4666442871094,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-measure-5km-group-member-3",
+          "bounds": {
+            "x": 473.58331298828125,
+            "y": 402.6666564941406,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-2km-group-member-3",
+          "bounds": {
+            "x": 473.58331298828125,
+            "y": 514.8666381835938,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-15-distractor-5mm-group-member-3",
+          "bounds": {
+            "x": 473.58331298828125,
+            "y": 627.066650390625,
+            "width": 28.000030517578125,
+            "height": 41.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "0964cdac174b9ebad6c1e3cd9ff687c0e140f02c5f58cc1175face24d5ade53d"
+    },
+    {
+      "sequence": 16,
+      "projectId": "gPrzqn",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gPrzqn",
+      "expectedPayloadHash": "d6a97b93b7ac46334fef95ac17f3430076284ec520f0a61bf464f7bdfeb5ebe3",
+      "reopenedPayloadHash": "fe1748391abf89ef4781523f76d87486e6a6713f39c5f8556d15bbda9abe245b",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "504843928778bccc6fc0b6cc9a79f206063e79d1b63e94615a11a4fd0895dbeb",
+      "reopenedNormalizedPayloadHash": "504843928778bccc6fc0b6cc9a79f206063e79d1b63e94615a11a4fd0895dbeb",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/16.png",
+      "screenshotSha256": "2b9913132fcba41e7e9560ca81f5ba8e4961afd41166f80f533cc5f9532b4f42",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 29,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-16-hundred-cm-1-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 267.9666442871094,
+            "width": 286.6666564941406,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-1-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-1-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-1-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 277.9666442871094,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-2-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 380.1666564941406,
+            "width": 286.6666564941406,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-2-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-2-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-2-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 390.1666564941406,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-3-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 492.3666687011719,
+            "width": 286.6666564941406,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-3-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-3-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-3-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 502.3666687011719,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-4-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 604.566650390625,
+            "width": 286.6666564941406,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-4-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-4-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-4-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 614.566650390625,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-1-group-member-5",
+          "bounds": {
+            "x": 540.25,
+            "y": 290.4666442871094,
+            "width": 28,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-2-group-member-5",
+          "bounds": {
+            "x": 540.25,
+            "y": 402.6666564941406,
+            "width": 28,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-3-group-member-5",
+          "bounds": {
+            "x": 540.25,
+            "y": 514.8666381835938,
+            "width": 28,
+            "height": 41.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-16-hundred-cm-4-group-member-5",
+          "bounds": {
+            "x": 540.25,
+            "y": 627.066650390625,
+            "width": 28,
+            "height": 41.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "98077636b33c02c897b92b9bf8cefaca9b804523a75caf8d4cbf51d247e0cbd8"
+    },
+    {
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sequence": 17,
+      "projectId": "41eVIc",
+      "url": "https://mathcanvas.vivasam.com/ko/view/41eVIc",
+      "expectedPayloadHash": "ead284a25e58b998b8de33e4910d52c6c18687b03ac59dc82b5e3b24d9c7a79c",
+      "sourceLayoutContentSha256": "9b50498c8894b5d632c218e1df41409026fbf4af28358078057a2e5e733c4fe7",
+      "reopenedPayloadHash": "b7a54707e53004f7d5033eb9f87a9263acb2b86df6cc97686ba97b299c83b2c7",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "d787f688e9600cc71f0e50b8c81d3bad4ee77507d1c2659b764f1ab4ca1dc2a7",
+      "reopenedNormalizedPayloadHash": "d787f688e9600cc71f0e50b8c81d3bad4ee77507d1c2659b764f1ab4ca1dc2a7",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/17.png",
+      "screenshotSha256": "720129596572435ad4354e9c0557993c19948352c7bcee76f1d29fd22a635acb",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 30,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-17-partial-600-group-member-1",
+          "bounds": {
+            "x": 446.3333435058594,
+            "y": 255.20001220703125,
+            "width": 213.33334350585938,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-3",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 295.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-4",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 395.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-5",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 495.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-6",
+          "bounds": {
+            "x": 556.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-7",
+          "bounds": {
+            "x": 556.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-8",
+          "bounds": {
+            "x": 556.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-120-group-member-1",
+          "bounds": {
+            "x": 663,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-120-group-member-3",
+          "bounds": {
+            "x": 673,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-120-group-member-4",
+          "bounds": {
+            "x": 673,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-120-group-member-5",
+          "bounds": {
+            "x": 673,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-3-group-member-1",
+          "bounds": {
+            "x": 779.6666870117188,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-3-group-member-3",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-3-group-member-4",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-3-group-member-5",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-30-group-member-1",
+          "bounds": {
+            "x": 896.3333129882812,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-30-group-member-3",
+          "bounds": {
+            "x": 906.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-30-group-member-4",
+          "bounds": {
+            "x": 906.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-30-group-member-5",
+          "bounds": {
+            "x": 906.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-600-group-member-2",
+          "bounds": {
+            "x": 532,
+            "y": 258.5333557128906,
+            "width": 42,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-120-group-member-2",
+          "bounds": {
+            "x": 698.6666870117188,
+            "y": 258.5333557128906,
+            "width": 42,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-3-group-member-2",
+          "bounds": {
+            "x": 824.6666870117188,
+            "y": 258.5333557128906,
+            "width": 23.33331298828125,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-17-partial-30-group-member-2",
+          "bounds": {
+            "x": 939,
+            "y": 258.5333557128906,
+            "width": 28,
+            "height": 30
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true
+    },
+    {
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sequence": 18,
+      "projectId": "6GuHVt",
+      "url": "https://mathcanvas.vivasam.com/ko/view/6GuHVt",
+      "expectedPayloadHash": "8b1859c5bc61ee7020d8fedf275d1951d92d771fed0d57287ba281fe946f786c",
+      "sourceLayoutContentSha256": "764287795cf35a1b1ccb11d0cc735d1385f85102789bc4dd4c9ce22593751368",
+      "reopenedPayloadHash": "0ee5bf0b59a7b5f1ee52171ab6bdb17b656adc73cf4aa46d9a5f2e63f81d59dd",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "ff8b6cf9d41d08a0d85a43f9bdfe082dd1a13d9989e4f83c5c44129100f23cf0",
+      "reopenedNormalizedPayloadHash": "ff8b6cf9d41d08a0d85a43f9bdfe082dd1a13d9989e4f83c5c44129100f23cf0",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/18.png",
+      "screenshotSha256": "d58aeedcc60602dc3deecbab0bdf77ef28b93252729481f100d70893f7a5be36",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 36,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-18-partial-600-group-member-1",
+          "bounds": {
+            "x": 346.3333435058594,
+            "y": 255.20001220703125,
+            "width": 213.33334350585938,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-3",
+          "bounds": {
+            "x": 356.3333435058594,
+            "y": 295.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-4",
+          "bounds": {
+            "x": 356.3333435058594,
+            "y": 395.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-5",
+          "bounds": {
+            "x": 356.3333435058594,
+            "y": 495.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-6",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 295.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-7",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 395.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-8",
+          "bounds": {
+            "x": 456.3333435058594,
+            "y": 495.20001220703125,
+            "width": 93.33334350585938,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-30-group-member-1",
+          "bounds": {
+            "x": 563,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-30-group-member-3",
+          "bounds": {
+            "x": 573,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-30-group-member-4",
+          "bounds": {
+            "x": 573,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-30-group-member-5",
+          "bounds": {
+            "x": 573,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-1",
+          "bounds": {
+            "x": 679.6666870117188,
+            "y": 255.20001220703125,
+            "width": 313.333251953125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-3",
+          "bounds": {
+            "x": 689.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-4",
+          "bounds": {
+            "x": 689.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-5",
+          "bounds": {
+            "x": 689.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-6",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-7",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-8",
+          "bounds": {
+            "x": 789.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-9",
+          "bounds": {
+            "x": 889.6666870117188,
+            "y": 295.20001220703125,
+            "width": 93.333251953125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-10",
+          "bounds": {
+            "x": 889.6666870117188,
+            "y": 395.20001220703125,
+            "width": 93.333251953125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-11",
+          "bounds": {
+            "x": 889.6666870117188,
+            "y": 495.20001220703125,
+            "width": 93.333251953125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-3-group-member-1",
+          "bounds": {
+            "x": 996.3333129882812,
+            "y": 255.20001220703125,
+            "width": 113.33331298828125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-3-group-member-3",
+          "bounds": {
+            "x": 1006.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-3-group-member-4",
+          "bounds": {
+            "x": 1006.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-3-group-member-5",
+          "bounds": {
+            "x": 1006.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-600-group-member-2",
+          "bounds": {
+            "x": 432,
+            "y": 258.5333557128906,
+            "width": 42,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-30-group-member-2",
+          "bounds": {
+            "x": 605.6666870117188,
+            "y": 258.5333557128906,
+            "width": 28,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-9-group-member-2",
+          "bounds": {
+            "x": 824.6666870117188,
+            "y": 258.5333557128906,
+            "width": 23.33331298828125,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-18-partial-3-group-member-2",
+          "bounds": {
+            "x": 1041.333251953125,
+            "y": 258.5333557128906,
+            "width": 23.3333740234375,
+            "height": 30
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true
+    },
+    {
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sequence": 19,
+      "projectId": "f6B0Li",
+      "url": "https://mathcanvas.vivasam.com/ko/view/f6B0Li",
+      "expectedPayloadHash": "6d54620ee186c709389490aef83986b96a6424b07f376402052be4a07e4316c4",
+      "sourceLayoutContentSha256": "5eaca8fb23754ea37cbeea57cac28b5d366b456a6344ea9701b067c40197277f",
+      "reopenedPayloadHash": "d087fa240b5d1cccbf8a041cec26f8bd9e1e706c3e944852ee2990bc7ed0d485",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "f9eb44f120d4b083252ff44d90740cfdf2410c707e5f399cf180fa6ca8de2a97",
+      "reopenedNormalizedPayloadHash": "f9eb44f120d4b083252ff44d90740cfdf2410c707e5f399cf180fa6ca8de2a97",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/19.png",
+      "screenshotSha256": "6fd2b5bafce030d7b1f06989361404afd2104a3bff6f447cff20490635be051a",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 34,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-19-partial-320-group-member-1",
+          "bounds": {
+            "x": 304.6666564941406,
+            "y": 255.20001220703125,
+            "width": 213.33334350585938,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-3",
+          "bounds": {
+            "x": 314.66668701171875,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-4",
+          "bounds": {
+            "x": 314.66668701171875,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-5",
+          "bounds": {
+            "x": 314.66668701171875,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-6",
+          "bounds": {
+            "x": 414.66668701171875,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-7",
+          "bounds": {
+            "x": 414.66668701171875,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-1",
+          "bounds": {
+            "x": 521.3333129882812,
+            "y": 255.20001220703125,
+            "width": 413.3333740234375,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-3",
+          "bounds": {
+            "x": 531.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-4",
+          "bounds": {
+            "x": 531.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-5",
+          "bounds": {
+            "x": 531.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-6",
+          "bounds": {
+            "x": 631.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-7",
+          "bounds": {
+            "x": 631.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-8",
+          "bounds": {
+            "x": 631.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-9",
+          "bounds": {
+            "x": 731.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-10",
+          "bounds": {
+            "x": 731.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-11",
+          "bounds": {
+            "x": 731.3333129882812,
+            "y": 495.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-12",
+          "bounds": {
+            "x": 831.3333129882812,
+            "y": 295.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-13",
+          "bounds": {
+            "x": 831.3333129882812,
+            "y": 395.20001220703125,
+            "width": 93.3333740234375,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-1",
+          "bounds": {
+            "x": 938,
+            "y": 255.20001220703125,
+            "width": 213.333251953125,
+            "height": 345.4666748046875
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-3",
+          "bounds": {
+            "x": 947.9999389648438,
+            "y": 295.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-4",
+          "bounds": {
+            "x": 947.9999389648438,
+            "y": 395.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-5",
+          "bounds": {
+            "x": 947.9999389648438,
+            "y": 495.20001220703125,
+            "width": 93.33331298828125,
+            "height": 93.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-6",
+          "bounds": {
+            "x": 1048,
+            "y": 295.20001220703125,
+            "width": 93.333251953125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-7",
+          "bounds": {
+            "x": 1048,
+            "y": 395.20001220703125,
+            "width": 93.333251953125,
+            "height": 93.33334350585938
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-320-group-member-2",
+          "bounds": {
+            "x": 390.3333435058594,
+            "y": 258.5333557128906,
+            "width": 41.999969482421875,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-128-group-member-2",
+          "bounds": {
+            "x": 707,
+            "y": 258.5333557128906,
+            "width": 42,
+            "height": 30
+          }
+        },
+        {
+          "id": "mc30v2-19-partial-32-group-member-2",
+          "bounds": {
+            "x": 1030.6666259765625,
+            "y": 258.5333557128906,
+            "width": 28,
+            "height": 30
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true
+    },
+    {
+      "sequence": 20,
+      "projectId": "ZEq3Gz",
+      "url": "https://mathcanvas.vivasam.com/ko/view/ZEq3Gz",
+      "expectedPayloadHash": "6387c6802a210ad10c11e94ed5176f41125dabb8b6b9402bb0eef53bcec46081",
+      "reopenedPayloadHash": "b0e5a38a19d973b2ee1ab9afff30f08f5ed69d6818d17a62c21a72074fb5cd90",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "86a12769b27e0ad34d63fb56c3232a43bebef02d6ca169e035a48afc904cb510",
+      "reopenedNormalizedPayloadHash": "86a12769b27e0ad34d63fb56c3232a43bebef02d6ca169e035a48afc904cb510",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/20.png",
+      "screenshotSha256": "b5fa6fa391e5a9b860b275de9da74f7762bd99796d866d2798b4e9d2cd193959",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 24,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-20-seven-set-1-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 357.1000061035156,
+            "width": 155.83334350585938,
+            "height": 76.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-1-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 368.4888916015625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-2-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 357.1000061035156,
+            "width": 155.83331298828125,
+            "height": 76.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-2-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 368.4888916015625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-3-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 441.54443359375,
+            "width": 155.83334350585938,
+            "height": 76.11114501953125
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-3-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 452.9333190917969,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-4-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 441.54443359375,
+            "width": 155.83331298828125,
+            "height": 76.11114501953125
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-4-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 452.9333190917969,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-5-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 525.9888916015625,
+            "width": 155.83334350585938,
+            "height": 76.111083984375
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-5-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 537.3778076171875,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-1-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 376.8222351074219,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-2-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 376.8222351074219,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-3-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 461.26666259765625,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-4-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 461.26666259765625,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-20-seven-set-5-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 545.7111206054688,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "aa77a6a6c4a7119bc66ee53d3c22a2a93d7d2f5c529cf5c7f3cbe89057eec92e"
+    },
+    {
+      "sequence": 21,
+      "projectId": "36m924",
+      "url": "https://mathcanvas.vivasam.com/ko/view/36m924",
+      "expectedPayloadHash": "6280ee3efb3640e67e04e42283b445fc80cedf0ace28a6828dd8d60f0a0685c0",
+      "reopenedPayloadHash": "ddb67b2deca12abcd6cdb9f3c1ee11f6fd56c7db864df785ff44b8720db16bda",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "c57e43782e367998d9ec0afd4cd24b7d5b00f42db9098ecbc4eeb0747a75068d",
+      "reopenedNormalizedPayloadHash": "c57e43782e367998d9ec0afd4cd24b7d5b00f42db9098ecbc4eeb0747a75068d",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/21.png",
+      "screenshotSha256": "0d6bb5df3434b9362f670b7b72e3d0dc044d3814f9eda6bcce9061000217e656",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 36,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-21-counters-unit-01",
+          "bounds": {
+            "x": 434.66668701171875,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-02",
+          "bounds": {
+            "x": 501.3333435058594,
+            "y": 286.45001220703125,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-03",
+          "bounds": {
+            "x": 568,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-04",
+          "bounds": {
+            "x": 634.6666870117188,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-05",
+          "bounds": {
+            "x": 701.3333129882812,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-06",
+          "bounds": {
+            "x": 768,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-07",
+          "bounds": {
+            "x": 834.6666870117188,
+            "y": 286.45001220703125,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-08",
+          "bounds": {
+            "x": 901.3333129882812,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-09",
+          "bounds": {
+            "x": 967.9999389648438,
+            "y": 286.45001220703125,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-10",
+          "bounds": {
+            "x": 434.66668701171875,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-11",
+          "bounds": {
+            "x": 501.3333435058594,
+            "y": 353.1166687011719,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-12",
+          "bounds": {
+            "x": 568,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-13",
+          "bounds": {
+            "x": 634.6666870117188,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-14",
+          "bounds": {
+            "x": 701.3333129882812,
+            "y": 353.1166687011719,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-15",
+          "bounds": {
+            "x": 768,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-16",
+          "bounds": {
+            "x": 834.6666870117188,
+            "y": 353.1166687011719,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-21-counters-unit-17",
+          "bounds": {
+            "x": 901.3333129882812,
+            "y": 353.1166687011719,
+            "width": 53.3333740234375,
+            "height": 53.333343505859375
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "bb3ce498b6104954b6770631ddd7830e7b8a92505ba5aa503ed2b6074f83d68c"
+    },
+    {
+      "sequence": 22,
+      "projectId": "EyfNrN",
+      "url": "https://mathcanvas.vivasam.com/ko/view/EyfNrN",
+      "expectedPayloadHash": "454a6b00dfada419d711bd423005124b56fb446116617ddf6fb39c9f2520b0b2",
+      "reopenedPayloadHash": "cca4fb3d80febd619dbf4926626809aab40a475619c88f18dbf9563bf99dfee9",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "62a4eec5813903a019cf38ced2a7dc60d19856aad032aa56cfb4bb525beea3b4",
+      "reopenedNormalizedPayloadHash": "62a4eec5813903a019cf38ced2a7dc60d19856aad032aa56cfb4bb525beea3b4",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/22.png",
+      "screenshotSha256": "c7183fdf50ddb0f7c865680e521da1246987be1684c17d92cff2956b1b9e7538",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 34,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-22-six-set-1-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 284.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-1-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 301.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-2-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 284.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-2-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 301.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-3-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 379.6000061035156,
+            "width": 155.83334350585938,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-3-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 396.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-4-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 379.6000061035156,
+            "width": 155.83331298828125,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-4-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 396.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.333343505859375
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-5-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 474.5999755859375,
+            "width": 155.83334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-5-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 491.26666259765625,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-6-group-member-1",
+          "bounds": {
+            "x": 468.41668701171875,
+            "y": 474.5999755859375,
+            "width": 155.83331298828125,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-6-group-member-2",
+          "bounds": {
+            "x": 481.75,
+            "y": 491.26666259765625,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-7-group-member-1",
+          "bounds": {
+            "x": 304.25,
+            "y": 569.5999755859375,
+            "width": 155.83334350585938,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-7-group-member-2",
+          "bounds": {
+            "x": 317.5833435058594,
+            "y": 586.2666625976562,
+            "width": 53.333343505859375,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-singles-unit-01",
+          "bounds": {
+            "x": 560.9166870117188,
+            "y": 611.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-singles-unit-02",
+          "bounds": {
+            "x": 490.91668701171875,
+            "y": 611.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-singles-unit-03",
+          "bounds": {
+            "x": 560.9166870117188,
+            "y": 541.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-singles-unit-04",
+          "bounds": {
+            "x": 490.91668701171875,
+            "y": 541.2666625976562,
+            "width": 53.33331298828125,
+            "height": 53.33331298828125
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-1-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 309.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-2-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 309.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-3-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 404.6000061035156,
+            "width": 75.83334350585938,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-4-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 404.6000061035156,
+            "width": 75.83331298828125,
+            "height": 36.666656494140625
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-5-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 499.5999755859375,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-6-group-member-3",
+          "bounds": {
+            "x": 541.75,
+            "y": 499.5999755859375,
+            "width": 75.83331298828125,
+            "height": 36.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-22-six-set-7-group-member-3",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 594.5999755859375,
+            "width": 75.83334350585938,
+            "height": 36.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "bfaf71617f0b2bdc52115643b84e579d1fbb0485162a961b9d5d848d814256e5"
+    },
+    {
+      "sequence": 23,
+      "projectId": "Z2HcBF",
+      "url": "https://mathcanvas.vivasam.com/ko/view/Z2HcBF",
+      "expectedPayloadHash": "d8e52236e2fa7c822ea16bd44565f2327243a000ad6e2f57dcd2a6a88b3d9936",
+      "reopenedPayloadHash": "a23ead8f3bb8ac95f029376ce1b8c1f72de623e60c008a2b96feb35199253006",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "c961620b187e58134808bc0ea0acd7bcb7b295a7a94b9ea62d8cf11240e360f0",
+      "reopenedNormalizedPayloadHash": "c961620b187e58134808bc0ea0acd7bcb7b295a7a94b9ea62d8cf11240e360f0",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/23.png",
+      "screenshotSha256": "9a5806f67552326070fa2746113a3d772ab97c7571d4926c66c513c9b60e7dea",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 71.66666412353516,
+        "width": 976,
+        "height": 660.9999618530273
+      },
+      "taskElementCount": 15,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-23-circle",
+          "bounds": {
+            "x": 721.3333129882812,
+            "y": 278.5333557128906,
+            "width": 173.3333740234375,
+            "height": 173.33331298828125
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "bafa1c5cecd1e84a206704596a983316820d28c6aba4c0a214dc3ab93ab1dc61"
+    },
+    {
+      "sequence": 24,
+      "projectId": "3vhycD",
+      "url": "https://mathcanvas.vivasam.com/ko/view/3vhycD",
+      "expectedPayloadHash": "fcd634ab9dde712ec703e03c5bc9785e31f2e3e60311ebd335c267ae58266680",
+      "reopenedPayloadHash": "f88ec0a9d9b282694472cc401979622ce89d52dd87b3551b213ccb6af1abd0c2",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "017a8692ef38f01b14add6e00e4b161bf4324342bca1f825a6fe58dfb17414c3",
+      "reopenedNormalizedPayloadHash": "017a8692ef38f01b14add6e00e4b161bf4324342bca1f825a6fe58dfb17414c3",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/24.png",
+      "screenshotSha256": "d3775a3292b486ec7c607f1eef42e5fe2bc7364659e84614e4301bfc60302955",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 71.66666412353516,
+        "width": 976,
+        "height": 660.9999618530273
+      },
+      "taskElementCount": 15,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-24-circle",
+          "bounds": {
+            "x": 721.3333129882812,
+            "y": 278.5333557128906,
+            "width": 173.3333740234375,
+            "height": 173.33331298828125
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "2e29d938e9927457163431258b51227a5a958850930a2d19e7e4345d1384ee06"
+    },
+    {
+      "sequence": 25,
+      "projectId": "i9Mf0-",
+      "url": "https://mathcanvas.vivasam.com/ko/view/i9Mf0-",
+      "expectedPayloadHash": "6d56c8b803889f7a5a1f860faf8504dc4b40093c50daf6705c62b012f94f63b3",
+      "reopenedPayloadHash": "6d56c8b803889f7a5a1f860faf8504dc4b40093c50daf6705c62b012f94f63b3",
+      "persistedPayloadExact": true,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "1f7b06ed548b4123bb4fc03827295cbc7bdd56c65265001487092d4b74899db7",
+      "reopenedNormalizedPayloadHash": "1f7b06ed548b4123bb4fc03827295cbc7bdd56c65265001487092d4b74899db7",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/25.png",
+      "screenshotSha256": "3827967fbb9a2013cf5e7ab595a326aa65fce3aeb0f76843ab4f45f6e2425561",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 8,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-25-native",
+          "bounds": {
+            "x": 328,
+            "y": 432.5000305175781,
+            "width": 80,
+            "height": 124.99996948242188
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "ffd58995ec8bcbc55ad587e2d9ce01ce014eac0b4de03bdfe854ef18d0a1d022"
+    },
+    {
+      "sequence": 26,
+      "projectId": "YMM7zS",
+      "url": "https://mathcanvas.vivasam.com/ko/view/YMM7zS",
+      "expectedPayloadHash": "1a97d8a8fda816926ab097b147b19530781834e01c888d1f4b14dcb3bf146be3",
+      "reopenedPayloadHash": "c4124e54242510df0c9dd0a8e0db7dff53e0a644fb8be97f127fa6a29601a815",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "10dc4189f021da5a01b83ad650f3fb4921b44a392851198030af66852c0541be",
+      "reopenedNormalizedPayloadHash": "10dc4189f021da5a01b83ad650f3fb4921b44a392851198030af66852c0541be",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/26.png",
+      "screenshotSha256": "094f6009a39714d82d412ecc391c55c81f376571e8a34f80f3422d1f652e1333",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 24,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-26-quarter-parts-unit-01",
+          "bounds": {
+            "x": 368,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-02",
+          "bounds": {
+            "x": 435,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-03",
+          "bounds": {
+            "x": 502,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-04",
+          "bounds": {
+            "x": 569,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-05",
+          "bounds": {
+            "x": 636,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-06",
+          "bounds": {
+            "x": 703,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-07",
+          "bounds": {
+            "x": 770,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-08",
+          "bounds": {
+            "x": 837,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-09",
+          "bounds": {
+            "x": 904,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-10",
+          "bounds": {
+            "x": 971.0000610351562,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-26-quarter-parts-unit-11",
+          "bounds": {
+            "x": 1038,
+            "y": 291.1166687011719,
+            "width": 50,
+            "height": 66.66665649414062
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "03f733e517e8495629483e91b812a95aa02b8a2e666ace5dcf12059dd3a043e3"
+    },
+    {
+      "sequence": 27,
+      "projectId": "YMrpLz",
+      "url": "https://mathcanvas.vivasam.com/ko/view/YMrpLz",
+      "expectedPayloadHash": "c5ef47254450ef6e8f809cb03e0800836fb015d2a6ab42cfaffe47e2ffc857c5",
+      "reopenedPayloadHash": "61972bc6835bf10fad44dc38b26f6cfc3b3ab69bbe51d6030e81d1bd15e371be",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "f40ad87e60ad5629fa1a6882128f80e0ed31b29d266fef01496c237ae79ff076",
+      "reopenedNormalizedPayloadHash": "f40ad87e60ad5629fa1a6882128f80e0ed31b29d266fef01496c237ae79ff076",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/27.png",
+      "screenshotSha256": "7587fe6ef3a04c7c9660ffceb602355f0cb4f5c0abfb4366e2db9ff34b7da8d8",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 71.66666412353516,
+        "width": 976,
+        "height": 660.9999618530273
+      },
+      "taskElementCount": 18,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-27-native",
+          "bounds": {
+            "x": 323.33331298828125,
+            "y": 342.73333740234375,
+            "width": 261,
+            "height": 125
+          }
+        },
+        {
+          "id": "mc30v2-27-native-second",
+          "bounds": {
+            "x": 439.9999694824219,
+            "y": 484.3999938964844,
+            "width": 609,
+            "height": 124.99996948242188
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "0e36c28bfbdc7ec5bf244f4da3a6ea154cf70b0aff3b31242221f835cd972ad0"
+    },
+    {
+      "sequence": 28,
+      "projectId": "e-ekLZ",
+      "url": "https://mathcanvas.vivasam.com/ko/view/e-ekLZ",
+      "expectedPayloadHash": "92c620b26b17ce3b6c93aa474bf821ffb7da842a1d4dc9b9164007c2b5a0c678",
+      "reopenedPayloadHash": "b1a00af3b31c859017993ef03308742fa55595a68ce12b120c6f58d57c9f8c62",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "0afd5ec33e700c1cfe347e2850068240f89ebdc742cb550551d61319774614b9",
+      "reopenedNormalizedPayloadHash": "0afd5ec33e700c1cfe347e2850068240f89ebdc742cb550551d61319774614b9",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/28.png",
+      "screenshotSha256": "48c6b64d5a38d9a40c8346407d0e62d4dbd9de0c2a6c9790aad3400d7ce45652",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 30,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-28-number-1000-a-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 267.9666442871094,
+            "width": 286.6666564941406,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-a-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-a-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 277.9666442871094,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-a-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 277.9666442871094,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-a-group-member-5",
+          "bounds": {
+            "x": 520.9166870117188,
+            "y": 277.9666442871094,
+            "width": 66.6666259765625,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-b-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 380.1666564941406,
+            "width": 286.6666564941406,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-b-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-b-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 390.1666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-b-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 390.1666564941406,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-1000-b-group-member-5",
+          "bounds": {
+            "x": 520.9166870117188,
+            "y": 390.1666564941406,
+            "width": 66.6666259765625,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-250-group-member-1",
+          "bounds": {
+            "x": 344.25,
+            "y": 492.3666687011719,
+            "width": 220,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-250-group-member-2",
+          "bounds": {
+            "x": 354.25,
+            "y": 502.3666687011719,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-250-group-member-3",
+          "bounds": {
+            "x": 420.91668701171875,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-250-group-member-4",
+          "bounds": {
+            "x": 487.5833435058594,
+            "y": 502.3666687011719,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-28-number-500-group-member-1",
+          "bounds": {
+            "x": 344.25,
+            "y": 604.566650390625,
+            "width": 220,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-500-group-member-2",
+          "bounds": {
+            "x": 354.25,
+            "y": 614.566650390625,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-500-group-member-3",
+          "bounds": {
+            "x": 420.91668701171875,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-28-number-500-group-member-4",
+          "bounds": {
+            "x": 487.5833435058594,
+            "y": 614.566650390625,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "5df02c66c64aae443013d221dcff07310e69ae614ea882a1ef023568ee1111cf"
+    },
+    {
+      "sequence": 29,
+      "projectId": "gPG4IM",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gPG4IM",
+      "expectedPayloadHash": "bfe60ff7aa161bed7eaeee64bfece1378a00215333483d9f3adcfe59ffe65003",
+      "reopenedPayloadHash": "2b21041dbb692147768a24554842ed956d318ccdae6f9a462949b3fccac647e9",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "05240f05eebaeb992bbdd09f02367383dd652b86e681d6dbd8121470634b9983",
+      "reopenedNormalizedPayloadHash": "05240f05eebaeb992bbdd09f02367383dd652b86e681d6dbd8121470634b9983",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/29.png",
+      "screenshotSha256": "6dbd4ca9cb9c2b89435a0007d8e0bddd7dd34ec866c64e9c176c355ca701e9ed",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 72.46666717529297,
+        "width": 976,
+        "height": 663.5333480834961
+      },
+      "taskElementCount": 22,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-29-number-3000-group-member-1",
+          "bounds": {
+            "x": 310.9166564941406,
+            "y": 286.6666564941406,
+            "width": 286.6666564941406,
+            "height": 86.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-29-number-3000-group-member-2",
+          "bounds": {
+            "x": 320.91668701171875,
+            "y": 296.6666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-29-number-3000-group-member-3",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 296.6666564941406,
+            "width": 66.66665649414062,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-29-number-3000-group-member-4",
+          "bounds": {
+            "x": 454.25,
+            "y": 296.6666564941406,
+            "width": 66.66668701171875,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-29-number-3000-group-member-5",
+          "bounds": {
+            "x": 520.9166870117188,
+            "y": 296.6666564941406,
+            "width": 66.6666259765625,
+            "height": 66.66665649414062
+          }
+        },
+        {
+          "id": "mc30v2-29-number-40-group-member-1",
+          "bounds": {
+            "x": 377.5833435058594,
+            "y": 436.26666259765625,
+            "width": 153.33334350585938,
+            "height": 86.6666259765625
+          }
+        },
+        {
+          "id": "mc30v2-29-number-40-group-member-2",
+          "bounds": {
+            "x": 387.5833435058594,
+            "y": 446.26666259765625,
+            "width": 66.66665649414062,
+            "height": 66.6666259765625
+          }
+        },
+        {
+          "id": "mc30v2-29-number-40-group-member-3",
+          "bounds": {
+            "x": 454.25,
+            "y": 446.26666259765625,
+            "width": 66.66668701171875,
+            "height": 66.6666259765625
+          }
+        },
+        {
+          "id": "mc30v2-29-number-300-group-member-1",
+          "bounds": {
+            "x": 344.25,
+            "y": 585.8666381835938,
+            "width": 220,
+            "height": 86.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-29-number-300-group-member-2",
+          "bounds": {
+            "x": 354.25,
+            "y": 595.8666381835938,
+            "width": 66.66668701171875,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-29-number-300-group-member-3",
+          "bounds": {
+            "x": 420.91668701171875,
+            "y": 595.8666381835938,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        },
+        {
+          "id": "mc30v2-29-number-300-group-member-4",
+          "bounds": {
+            "x": 487.5833435058594,
+            "y": 595.8666381835938,
+            "width": 66.66665649414062,
+            "height": 66.66668701171875
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "16feeeb9bfd60cb91bccb90c22b1ee1148c81c91a925157de1b2b434d3ac394f"
+    },
+    {
+      "sequence": 30,
+      "projectId": "5H1bDW",
+      "url": "https://mathcanvas.vivasam.com/ko/view/5H1bDW",
+      "expectedPayloadHash": "cf77b37ab6bea282d6b6f3142b6d24c8da7220213f1dd82e9e95129256d709ac",
+      "reopenedPayloadHash": "d2944757e211a9ac925c918c153a51641058b2184ef38fb1f0a279fbc347b69e",
+      "persistedPayloadExact": false,
+      "normalizationPolicy": "geometry-ieee754-tail-15-significant-digits-v1",
+      "expectedNormalizedPayloadHash": "2172d0c154c8f6011f1ac40d79e48d2a01e089eda35581ec85f1b4c13d6d12d6",
+      "reopenedNormalizedPayloadHash": "2172d0c154c8f6011f1ac40d79e48d2a01e089eda35581ec85f1b4c13d6d12d6",
+      "persistedPayloadEquivalent": true,
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30-v2/30.png",
+      "screenshotSha256": "ce8d7d1f006cafd121342b3d51128d700d7e6f5cbc0e83918317ef8b3b96a375",
+      "responseStatus": 200,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChrome": [
+        {
+          "selector": "#top-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 56
+          }
+        },
+        {
+          "selector": "#left-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 8,
+            "y": 64,
+            "width": 224,
+            "height": 728
+          }
+        },
+        {
+          "selector": "#right-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 1224,
+            "y": 296,
+            "width": 48,
+            "height": 208
+          }
+        },
+        {
+          "selector": "#bottom-common-toolbar",
+          "visible": true,
+          "bounds": {
+            "x": 400,
+            "y": 744,
+            "width": 480,
+            "height": 48
+          }
+        }
+      ],
+      "screenCtm": {
+        "a": 0.8333333333333334,
+        "b": 0,
+        "c": 0,
+        "d": 0.8333333333333334,
+        "e": 111.99999491373698,
+        "f": 27.999998728434246
+      },
+      "screenCtmMatched": true,
+      "fixedSafeCss": {
+        "x": 240,
+        "y": 64,
+        "width": 976,
+        "height": 672
+      },
+      "taskEnvelope": {
+        "x": 240,
+        "y": 71.66666412353516,
+        "width": 976,
+        "height": 660.9999618530273
+      },
+      "taskElementCount": 15,
+      "outOfSafeTaskIds": [],
+      "chromeOverlapTaskIds": [],
+      "nativeOutOfContentIds": [],
+      "nativeElementBounds": [
+        {
+          "id": "mc30v2-30-picture-graph",
+          "bounds": {
+            "x": 399.0666809082031,
+            "y": 235.46665954589844,
+            "width": 600.8466796875,
+            "height": 379.99993896484375
+          }
+        }
+      ],
+      "answerOutOfBandIds": [],
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "blockedNonGetCount": 1,
+      "reopened": true,
+      "capturePolicyVersion": "html30-v2-live-geometry-role-v1",
+      "sourceLayoutContentSha256": "94a988f88841b0aac0cbb09e164adb6947b9380bc79f187b24d0887470b9221d"
+    }
+  ],
+  "evidenceReboundAt": "2026-08-09T14:18:33.004Z"
+}

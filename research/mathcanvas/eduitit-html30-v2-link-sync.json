@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0.0",
+  "reportId": "eduitit-html30-v2-link-sync",
+  "syncedAt": "2026-08-09T14:21:55.409Z",
+  "releaseAttestationContentSha256": "e0d31a1325957c6795ab197025ab3a4dbbfb5b7ece5355ca1ae6416d62ab8adc",
+  "linkedCount": 30,
+  "linked": [
+    {
+      "sequence": 1,
+      "lessonId": "g3s2-pictograph-legend",
+      "url": "https://mathcanvas.vivasam.com/ko/view/rL0woz",
+      "manifestSha256": "fee978d84ff4110764aafaef55a98f42fd23a64d806219faa403a418583888ea",
+      "sourceHtmlSha256": "a71c9e95f9a4d16d9a3bb7f4b76131bb0d826363663e8012ba3c7ae84048b542"
+    },
+    {
+      "sequence": 2,
+      "lessonId": "g3s1-multiplication-groups-model",
+      "url": "https://mathcanvas.vivasam.com/ko/view/wQmu3L",
+      "manifestSha256": "22c208a8b92deeac33290f880f9c7044ffb3a800657990d7018139f77418af6b",
+      "sourceHtmlSha256": "604647802e826304bc5eb949b7cdd84648301d2a54df4723f8f920fccf5371f3"
+    },
+    {
+      "sequence": 3,
+      "lessonId": "g3s1-multiplication-array-transfer",
+      "url": "https://mathcanvas.vivasam.com/ko/view/lhLGmb",
+      "manifestSha256": "5e970c842eb7996a3e83adeed04e3b36eb2cd5982140a71ee2d961d6739b6d89",
+      "sourceHtmlSha256": "f6905f8ebd4e13f7ef59dae39ece44b1b9f65a2090cb0f07337dd7aec51fff46"
+    },
+    {
+      "sequence": 4,
+      "lessonId": "g3s1-multiplication-place-value-model",
+      "url": "https://mathcanvas.vivasam.com/ko/view/3m4JMN",
+      "manifestSha256": "c252935034eb25af1c9419b7f07099be1d4e069b31ec0a495e6d57d6fd629b8e",
+      "sourceHtmlSha256": "ff9f708c5429758703d6780023925e67f471e0fc3229e9c6543513b11f731a80"
+    },
+    {
+      "sequence": 5,
+      "lessonId": "g3s1-multiplication-place-value-context",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gE2xOj",
+      "manifestSha256": "816c355c326b2bdbb628bb2f6cc6512755dbd941d8c3172bcff3cacd7c1658ec",
+      "sourceHtmlSha256": "027e0de2a80ee177283b7f61adf7952fe7c6c65b143c4ad61557b1f5cfbc176c"
+    },
+    {
+      "sequence": 6,
+      "lessonId": "g3s1-division-equal-sharing",
+      "url": "https://mathcanvas.vivasam.com/ko/view/M7wSdO",
+      "manifestSha256": "85ac62542f8ef15be358d8e20cc494ccf4d8f02b3f630c8f0d5d76c6d8f066b9",
+      "sourceHtmlSha256": "856f29d3b080182f30da2bcd213675ae3237d194439178ec017ffa6f4db503fb"
+    },
+    {
+      "sequence": 7,
+      "lessonId": "g3s1-division-missing-factor",
+      "url": "https://mathcanvas.vivasam.com/ko/view/JcMPoX",
+      "manifestSha256": "e04ad1cf1346d318a313fc9ff47ef4607152e5734bdaf1f4a9b0d6aee84a9bc3",
+      "sourceHtmlSha256": "7f2e010f9f3261f278cca5fb4bbc29f354402779b465824a77d227aaeb80c7fe"
+    },
+    {
+      "sequence": 8,
+      "lessonId": "g3s1-division-fact-family",
+      "url": "https://mathcanvas.vivasam.com/ko/view/m625MF",
+      "manifestSha256": "03d5f91b1142a71695f27d3ea0c077583d441b34bdab102d33f57c2a59a4ee3a",
+      "sourceHtmlSha256": "1c21c215854bf8df4373d2edfd5ac52bfad53fc4656ced8aae2800824bc0402f"
+    },
+    {
+      "sequence": 9,
+      "lessonId": "g3s1-division-group-count",
+      "url": "https://mathcanvas.vivasam.com/ko/view/c4vioX",
+      "manifestSha256": "d7d0580896c86a9b171dd53f0ac7a465287160faa22108cadfe27795f8fb1688",
+      "sourceHtmlSha256": "b8c684bc1169c45c04acd249e8adae9014b99a8e58277891c28e87b37b216f73"
+    },
+    {
+      "sequence": 10,
+      "lessonId": "g3s1-fraction-equal-parts",
+      "url": "https://mathcanvas.vivasam.com/ko/view/sW6vTK",
+      "manifestSha256": "7c37371fb09d1cbf9760bc2f72913c1c6a101816dd022d1d6b6431723e34db65",
+      "sourceHtmlSha256": "5b7b31f0bc9dcbcec386734f41c2bc6b4a0f2bbe681908ffd2c11d62986090af"
+    },
+    {
+      "sequence": 11,
+      "lessonId": "g3s1-fraction-fix-partition",
+      "url": "https://mathcanvas.vivasam.com/ko/view/qk6wPR",
+      "manifestSha256": "bfde7b2bc900473cbda7296fef0def4584c5dc208d49adcb43bd51b4346bdd39",
+      "sourceHtmlSha256": "d60809c67c11eef021089fc8fb3123512bd5a961f392838cd11bfadee0188e85"
+    },
+    {
+      "sequence": 12,
+      "lessonId": "g3s1-fraction-part-whole",
+      "url": "https://mathcanvas.vivasam.com/ko/view/GwhCnM",
+      "manifestSha256": "c3fdda7b9e44189f721011d1274ee935c335ad797aca9d5c4646f85e810050f1",
+      "sourceHtmlSha256": "970ba83a5ec8b93a3935f6b6ae3a37ca501dac3b1dc8759351517205b2a1426b"
+    },
+    {
+      "sequence": 13,
+      "lessonId": "g3s1-fraction-pizza-context",
+      "url": "https://mathcanvas.vivasam.com/ko/view/yfcOlC",
+      "manifestSha256": "70c79df043ef6b67844c7850ba8b37988e9bf8d9aa23401fc73dbb1e015b7eb3",
+      "sourceHtmlSha256": "f3e06fafbe59b5c7568cdb8f22eeef4bc1cf4b5d963f139c9c8fb5c3b98e7bb8"
+    },
+    {
+      "sequence": 14,
+      "lessonId": "g3s1-length-centimeter-meter",
+      "url": "https://mathcanvas.vivasam.com/ko/view/voeaZU",
+      "manifestSha256": "8895a8faedf03ee704f81d03b3840fa1a06cd6a0ae8dbfbdb68378c8ab43d0a6",
+      "sourceHtmlSha256": "636610a9902e175065929758e8ab0bae88136a00b3554f046fa115a97a97e39e"
+    },
+    {
+      "sequence": 15,
+      "lessonId": "g3s1-length-real-world-units",
+      "url": "https://mathcanvas.vivasam.com/ko/view/dHtylW",
+      "manifestSha256": "177e2b9fc50c393a0177a8856f5658e3cbd30f420dd2445a563c8438e769efdd",
+      "sourceHtmlSha256": "349df5d58996e318d941bad3eeb81d0d674ad96f3b09f0089a076200f8d71b9c"
+    },
+    {
+      "sequence": 16,
+      "lessonId": "g3s1-length-unit-conversion",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gPrzqn",
+      "manifestSha256": "902289b8837efa852d632064ba52a8441e7a29cf44183400b14a73b0892864bf",
+      "sourceHtmlSha256": "ea811b4ae80eb035b46c53145320879cb42e76c17282ec29f2e0d35b5c837f36"
+    },
+    {
+      "sequence": 17,
+      "lessonId": "g3s2-multiplication-place-value",
+      "url": "https://mathcanvas.vivasam.com/ko/view/41eVIc",
+      "manifestSha256": "bcac87dbb12d79d447b3f1183838fa9322bc393b77e27317287b6ffd31d6ba56",
+      "sourceHtmlSha256": "722bc0fedadad3fe3377e94a30894ebe51f998b6d347328dab901b6fdf8ac58a"
+    },
+    {
+      "sequence": 18,
+      "lessonId": "g3s2-multiplication-combine",
+      "url": "https://mathcanvas.vivasam.com/ko/view/6GuHVt",
+      "manifestSha256": "89f770b5a1a99401507ee4bea6ec6d04aae7239d00fff3f9bea9d4b5dd9f8149",
+      "sourceHtmlSha256": "fd384adae931f6bd6dfac364770f47f2552ad4d733e7812244dc439086b8f4b3"
+    },
+    {
+      "sequence": 19,
+      "lessonId": "g3s2-multiplication-two-digit",
+      "url": "https://mathcanvas.vivasam.com/ko/view/f6B0Li",
+      "manifestSha256": "95f86b0ba783b98039f9d19211fa1972c830b8782b0b3d216d74c5b72858a685",
+      "sourceHtmlSha256": "a2c09e6bc363aca15cc0cb724cceca5d38ec5b6d37e1226c771a895507819a5c"
+    },
+    {
+      "sequence": 20,
+      "lessonId": "g3s2-division-meaning",
+      "url": "https://mathcanvas.vivasam.com/ko/view/ZEq3Gz",
+      "manifestSha256": "60d52ddc5c6ecfdd5f8b62f9d488ef03e158b377929ca311388144c4045406f8",
+      "sourceHtmlSha256": "0e1b8a6924946f4f43638171060a619302981c5d668acba57714c92900124a7d"
+    },
+    {
+      "sequence": 21,
+      "lessonId": "g3s2-division-remainder",
+      "url": "https://mathcanvas.vivasam.com/ko/view/36m924",
+      "manifestSha256": "30f5d68df876b3a5f11b15ce862e07436cbeb2c55a446951cda9f12268a88854",
+      "sourceHtmlSha256": "a1fda4682a681337951c12a3cad0c133f787eee0770b4e4ea71773ed2d2a8ff6"
+    },
+    {
+      "sequence": 22,
+      "lessonId": "g3s2-division-remainder-check",
+      "url": "https://mathcanvas.vivasam.com/ko/view/EyfNrN",
+      "manifestSha256": "f387c2e40142b6d4beffc5368bb29992ffec002b59536cf770f31b29a9fe9367",
+      "sourceHtmlSha256": "96fc74b254d6b214202a1e2d5b9df90a740b15b233f1047ee856d529060e5127"
+    },
+    {
+      "sequence": 23,
+      "lessonId": "g3s2-circle-parts",
+      "url": "https://mathcanvas.vivasam.com/ko/view/Z2HcBF",
+      "manifestSha256": "d93aa08336fe54914825986700c0dad6c381214400872a9970670d8b7524aafb",
+      "sourceHtmlSha256": "c2f1db7fda28ad95ea2aab37ffa4bd58d08bea514cd48d341b9ddccf31d314f5"
+    },
+    {
+      "sequence": 24,
+      "lessonId": "g3s2-circle-diameter",
+      "url": "https://mathcanvas.vivasam.com/ko/view/3vhycD",
+      "manifestSha256": "59ce46d1b307807aeee797809633cb7fbb276b6418de755e457f8d2ad63060ca",
+      "sourceHtmlSha256": "8f35b1b7f8644078d00c10adab37c36b18128a8f71df7b985d7c420bdb3b1c4a"
+    },
+    {
+      "sequence": 25,
+      "lessonId": "g3s2-fraction-part-whole",
+      "url": "https://mathcanvas.vivasam.com/ko/view/i9Mf0-",
+      "manifestSha256": "38699e02eb4c62d4f237401e3907d3ee35e45bcfc541004ecf06a872b0934c4b",
+      "sourceHtmlSha256": "32ef78a8105874200bf0cf6bbf59f8b649698e5890458976adf087a5aec05207"
+    },
+    {
+      "sequence": 26,
+      "lessonId": "g3s2-fraction-convert",
+      "url": "https://mathcanvas.vivasam.com/ko/view/YMM7zS",
+      "manifestSha256": "5dc40bd7615d4a5af3f1f51d1a84b4b46efc4331528357e5af46088025027c48",
+      "sourceHtmlSha256": "04370fac106fd821d230a3e2ce6fe10a3c85bc210c50fb552332f30917c6e72e"
+    },
+    {
+      "sequence": 27,
+      "lessonId": "g3s2-fraction-compare",
+      "url": "https://mathcanvas.vivasam.com/ko/view/YMrpLz",
+      "manifestSha256": "bbbff841516c3c891b47d8c0dbd22e5252fc4151ccbcbad1d62c3bd496cea89a",
+      "sourceHtmlSha256": "d267797c10a2448116535c93a8023fa3797be3dabf00deb4008dfb066a757d8b"
+    },
+    {
+      "sequence": 28,
+      "lessonId": "g3s2-capacity-unit",
+      "url": "https://mathcanvas.vivasam.com/ko/view/e-ekLZ",
+      "manifestSha256": "3d3125e1af1ce2d21a7745d307f17c381370e0777025fd03a50771be574283a2",
+      "sourceHtmlSha256": "9cdc96057e641411a194e4feec818532752813aa0f9f020049b1be1820f098f5"
+    },
+    {
+      "sequence": 29,
+      "lessonId": "g3s2-weight-unit",
+      "url": "https://mathcanvas.vivasam.com/ko/view/gPG4IM",
+      "manifestSha256": "687b5fb9f789932175fa4dd3b2b3e9dcc20a5fad903709126799581f410f0cb7",
+      "sourceHtmlSha256": "c4b2109d5966574e5d82250ba984c55ba77f2d2d4e75adc683d6fa0b385a6a34"
+    },
+    {
+      "sequence": 30,
+      "lessonId": "g3s2-pictograph-compare",
+      "url": "https://mathcanvas.vivasam.com/ko/view/5H1bDW",
+      "manifestSha256": "5cc99710d51fc52e8309912472e314709d739e54ac682b1695ea7583c393c7c5",
+      "sourceHtmlSha256": "7689b412d35e520669f7854cacfcf83716b0b7056ae8a41c7bba0ca4a2e6555d"
+    }
+  ],
+  "contentSha256": "0ddb11ce89d66833dea2b5a5bef0a2456618909a454fec29d9fbcd1bcea35f96"
+}

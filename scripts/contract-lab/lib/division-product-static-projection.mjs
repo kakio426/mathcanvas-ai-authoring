@@ -16,12 +16,17 @@ const geometryNumberKeys = new Set([
   "rx",
   "ry",
   "radius",
+  "startX",
+  "startY",
   "point1",
   "point2",
   "coordinates"
 ]);
 
-function normalizeSerializedNumbers(value, geometryContext = false) {
+export function normalizeMathCanvasSerializedNumbers(
+  value,
+  geometryContext = false
+) {
   if (typeof value === "number") {
     if (!Number.isFinite(value)) {
       throw new Error("division-product-static-number-invalid");
@@ -37,14 +42,14 @@ function normalizeSerializedNumbers(value, geometryContext = false) {
   }
   if (Array.isArray(value)) {
     return value.map((child) =>
-      normalizeSerializedNumbers(child, geometryContext)
+      normalizeMathCanvasSerializedNumbers(child, geometryContext)
     );
   }
   if (value && typeof value === "object") {
     return Object.fromEntries(
       Object.entries(value).map(([key, child]) => [
         key,
-        normalizeSerializedNumbers(
+        normalizeMathCanvasSerializedNumbers(
           child,
           geometryContext || geometryNumberKeys.has(key)
         )
@@ -70,7 +75,7 @@ function normalizeStaticObject(value) {
   // MathCanvas adds this explicit false during serialization for drawElem.
   // Missing and false render identically; true remains part of the identity.
   normalized.isEyeOn = normalized.isEyeOn ?? false;
-  return normalizeSerializedNumbers(normalized);
+  return normalizeMathCanvasSerializedNumbers(normalized);
 }
 
 export function projectDivisionProductStaticPayload(contentsJson) {

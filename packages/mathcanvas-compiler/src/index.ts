@@ -16,6 +16,15 @@ export * from "./layout-presets/registry.js";
 export * from "./resolve/layout-resolver.js";
 export * from "./resolve/native-spatial-layout.js";
 export {
+  EDUITIT_HTML30_100_PROFILE_V1,
+  resolveEduititHtml30LayoutCandidateV2
+} from "./resolve/eduitit-html30-layout-v2.js";
+export { buildEduititHtml30ReserveCandidatesV2 } from "./resolve/eduitit-html30-reserve-candidates-v2.js";
+export {
+  compileEduititHtml30CandidateV2,
+  type EduititHtml30CompiledCandidateV2
+} from "./compile-eduitit-html30-v2.js";
+export {
   measureConservativeText,
   resolveOneScreenLayout,
   type ConservativeTextMeasurement,
