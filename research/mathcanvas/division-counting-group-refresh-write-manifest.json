@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "division-counting-group-refresh-20260809",
+  "createdAt": "2026-08-09T06:31:43Z",
+  "authorization": {
+    "scope": "사용자가 로그인을 완료한 뒤 MathCanvas 30개 제작을 즉시 시작하도록 지시한 현재 작업 범위",
+    "disposableProjectOnly": true
+  },
+  "target": {
+    "origin": "https://mathcanvas.vivasam.com",
+    "projectId": "oEaJt5",
+    "projectTitle": "AI-CONTRACT-PROBE-DIVNATIVE-20260808T003124Z",
+    "approvalEvidenceRunId": "20260808T003124Z"
+  },
+  "sourceIdentity": {
+    "layoutRevision": "layout-8876a47136b4aab8",
+    "layoutPresetContentHash": "a7d66e21ceea214da40df391d3fc64d462e61c2f9d7c86024e05292b40c0cb49",
+    "blueprintContentHash": "2cf4eb96f66e0defd85f09f22cac95f99442bd6c52b790583c9e12df39a0a4cb"
+  },
+  "operations": [
+    {
+      "scenario": "29-by-7",
+      "method": "PUT",
+      "maximumCount": 0,
+      "reason": "서버가 이미 현재 layout의 29÷7 final state이므로 GET 기반 재검증만 수행"
+    },
+    {
+      "scenario": "23-by-4",
+      "method": "PUT",
+      "maximumCount": 1,
+      "reason": "최신 학생 문구·공간 계약·native grouping 상태 저장 및 재열기 검증"
+    },
+    {
+      "scenario": "31-by-6",
+      "method": "PUT",
+      "maximumCount": 1,
+      "reason": "최신 학생 문구·공간 계약·native grouping 상태 저장 및 재열기 검증"
+    }
+  ],
+  "hardCeiling": {
+    "GET": "read-only requests allowed; all write methods remain separately bounded",
+    "POST": 0,
+    "PUT": 2,
+    "PATCH": 0,
+    "DELETE": 0
+  },
+  "abortPolicy": "범위 밖 write, 대상 identity 불일치, 또는 예상 write count 초과 시 evidence를 쓰기 전에 실패",
+  "executionResult": {
+    "completedAt": "2026-08-09T06:40:57Z",
+    "actualCounts": {
+      "POST": 0,
+      "PUT": 2,
+      "PATCH": 0,
+      "DELETE": 0
+    },
+    "scenarios": [
+      {
+        "scenario": "29-by-7",
+        "actualPutCount": 0,
+        "canarySha256": "8eda5cffa6f96e60aabef767b87d1288fd4ef3289d39ec41e847a28c15b31cf9"
+      },
+      {
+        "scenario": "23-by-4",
+        "actualPutCount": 1,
+        "canarySha256": "11ffeb3169bd5a3f7256d453bdf2c88685814cb56b1783e1b6e3e360167fc8f7"
+      },
+      {
+        "scenario": "31-by-6",
+        "actualPutCount": 1,
+        "canarySha256": "7cc483a1d2b6007ce6b3393e9fdc4c34b55ec1f68f051a05bf517a0b36c0ee01"
+      }
+    ],
+    "unexpectedWriteCount": 0
+  }
+}

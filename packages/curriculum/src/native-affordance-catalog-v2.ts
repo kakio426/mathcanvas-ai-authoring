@@ -8,7 +8,7 @@ import {
 import { grade3PilotEntries } from "./pilot-ledger.js";
 
 const NATIVE_SPATIAL_CATALOG_SOURCE_SHA256 =
-  "229969c1590f6c2225c8a8758bb460200c2f4d90e0f9cdcfbdc046d8c91d2c1c";
+  "c678d90434179c74f154d7e4e01ef457f2ae18b25abcdd365d1b49a4e1cdbc0d";
 
 const ignoredPaths = [
   "viewport.pan",
@@ -52,14 +52,14 @@ const familyConfig: Record<
         contractId: "native-element-no01sc-01-v2",
         contractVersion: "2.0.0",
         recordHash:
-          "7e2b8402f37df7c9a42aabbfe6a0975eb1622c5578e03d996509053b10f1291b",
+          "aba24b105094ed49a18e5aba76a166735a328e13f03d05221ff725c34fa9a6a9",
         sourceFileSha256: NATIVE_SPATIAL_CATALOG_SOURCE_SHA256
       },
       {
         contractId: "division-grouping-no01sc-01-composition-v2",
         contractVersion: "2.0.0",
         recordHash:
-          "2f2cb9234825061829716c1784e03245a04369bb428e37e2272a363cdad5dff6",
+          "34f593502e6841e6d19f280d86890ca98328901b907d876bcf69ea474524031d",
         sourceFileSha256: NATIVE_SPATIAL_CATALOG_SOURCE_SHA256
       }
     ],

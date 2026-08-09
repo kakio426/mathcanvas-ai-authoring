@@ -44,7 +44,7 @@ const nativeEvidenceCatalog = {
   },
   "research/mathcanvas/division-counting-group-canary.json#claim=released:NO01SC": {
     file: "research/mathcanvas/division-counting-group-canary.json",
-    sha256: "157caf5ec1bcedd6bd2c9e8ee00b34dafc7538fb09f8fcd01cb998e0e101043b",
+    sha256: "045f8147302dd1b4625bc4a3e33ece1b9b0e2caf8b638d2b0690c7eda1e942d5",
     toolKey: "NO01SC",
     claim: "released"
   },

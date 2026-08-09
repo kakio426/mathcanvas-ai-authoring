@@ -44,23 +44,23 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
     },
     "header.primary": {
       scope: "canvas",
-      x: 60,
+      x: 0,
       y: 0,
-      width: 1520,
+      width: 1612,
       height: 53
     },
     "header.secondary": {
       scope: "canvas",
-      x: 60,
+      x: 0,
       y: 76,
-      width: 1520,
+      width: 1612,
       height: 53
     },
     "header.tertiary": {
       scope: "canvas",
-      x: 60,
+      x: 0,
       y: 152,
-      width: 1520,
+      width: 1612,
       height: 53
     },
     "item.panel": {
@@ -143,21 +143,21 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 0,
       y: 365,
-      width: 1600,
+      width: 1620,
       height: 458
     },
     "item.array-border-top": {
       scope: "item",
       x: 0,
       y: 365,
-      width: 1600,
+      width: 1620,
       height: 4
     },
     "item.array-border-bottom": {
       scope: "item",
       x: 0,
       y: 819,
-      width: 1600,
+      width: 1620,
       height: 4
     },
     "item.array-border-left": {
@@ -169,7 +169,7 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
     },
     "item.array-border-right": {
       scope: "item",
-      x: 1596,
+      x: 1616,
       y: 365,
       width: 4,
       height: 458
@@ -213,14 +213,14 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
       scope: "item",
       x: 692,
       y: 383,
-      width: 744,
+      width: 680,
       height: 56
     },
     "item.remainder-lane": {
       scope: "item",
       x: 1450,
       y: 369,
-      width: 146,
+      width: 166,
       height: 450
     },
     "item.remainder-separator": {
@@ -232,9 +232,9 @@ export const wave25DivisionGroupingLayoutPreset: LayoutPreset = {
     },
     "item.remainder-lane-label": {
       scope: "item",
-      x: 1452,
+      x: 1453,
       y: 383,
-      width: 142,
+      width: 161,
       height: 56
     }
   }

@@ -2,8 +2,8 @@
 
 - harness: eduitit-html30-mathcanvas-prompt:v1
 - series: vivasam-2026-middleofmath-30
-- source manifest SHA-256: 0a57b78ae84b82d7581485fd58747e85cabb7cdefe46321610f4fcee237899f5
-- harness content SHA-256: 120e5f919cf9f7723a2650898bcd9fbdbfcff50da2c08546d0e61a3715492220
+- source manifest SHA-256: 8e64368ba3fc316b037b2afbd2bad1a3ed2ed718b4a68ef94b8948691af04b59
+- harness content SHA-256: 98024ab7fb6ec0a29285a86e131850468b2b2559c849e06a8342315e922c4fcd
 - source of truth: Eduitit에 배포된 실제 `*-slides.html` 30개
 - 상태: 설계용 prompt pack. actual canary·save/reopen 전 release 금지.
 
@@ -22,7 +22,7 @@
 - lessonId: g3s2-pictograph-legend
 - title: 그림 하나에 숨은 수
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-legend/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-legend/b1f49dcb9cbc/g3s2-pictograph-legend-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-legend/a9359d040467/g3s2-pictograph-legend-slides.html
 - HTML SHA-256: edf8fae0ee2fe18ab0f5a269a3e727e7196fe78b39138692ff44c0338439e7c3
 - grade/semester/unit: 3학년 2학기 6. 그림그래프
 - standardCodes: [4수04-01]
@@ -103,7 +103,7 @@
 - lessonId: g3s1-multiplication-groups-model
 - title: 같은 묶음은 곱셈으로
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-groups-model/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-groups-model/4618788d24ea/g3s1-multiplication-groups-model-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-groups-model/20973ac52f65/g3s1-multiplication-groups-model-slides.html
 - HTML SHA-256: fd4236cda9a0e1b2236ad9a9566345030843a4747847a7ae6c94e012a1dc8b9d
 - grade/semester/unit: 3학년 1학기 4. 곱셈
 - standardCodes: [4수01-04]
@@ -184,7 +184,7 @@
 - lessonId: g3s1-multiplication-array-transfer
 - title: 줄과 칸으로 전체 수 찾기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-array-transfer/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-array-transfer/00a756445f5f/g3s1-multiplication-array-transfer-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-array-transfer/581348f0ccd1/g3s1-multiplication-array-transfer-slides.html
 - HTML SHA-256: ef7d601ad9279cdb7a36be9e5968a7a85190ca799f4c7bcc4cf3f30eae6bdc54
 - grade/semester/unit: 3학년 1학기 4. 곱셈
 - standardCodes: [4수01-04]
@@ -265,7 +265,7 @@
 - lessonId: g3s1-multiplication-place-value-model
 - title: 34×2를 두 부분으로
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-model/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-model/b4f9aaae411a/g3s1-multiplication-place-value-model-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-model/72059dcce98d/g3s1-multiplication-place-value-model-slides.html
 - HTML SHA-256: 82628737a0fc1c8164ad931a1d1810b029d601eb36209c77549f9d0d0245177f
 - grade/semester/unit: 3학년 1학기 4. 곱셈
 - standardCodes: [4수01-04]
@@ -346,7 +346,7 @@
 - lessonId: g3s1-multiplication-place-value-context
 - title: 상자 수를 자릿값으로 곱하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-context/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-context/8f8430293740/g3s1-multiplication-place-value-context-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-multiplication-place-value-context/e92e990b8497/g3s1-multiplication-place-value-context-slides.html
 - HTML SHA-256: 440a171b11e75f0067ad5f08fb7ea9daabafa94956ac5517abb0db415b25e57d
 - grade/semester/unit: 3학년 1학기 4. 곱셈
 - standardCodes: [4수01-04]
@@ -427,7 +427,7 @@
 - lessonId: g3s1-division-equal-sharing
 - title: 18개를 똑같이 나누면
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-equal-sharing/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-equal-sharing/0c46d8def08b/g3s1-division-equal-sharing-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-equal-sharing/3f26a9cabdbe/g3s1-division-equal-sharing-slides.html
 - HTML SHA-256: 6291e262936ebdcb2a732aa5afdec4da005ec7c30d7760c6564dc2b6f9e35984
 - grade/semester/unit: 3학년 1학기 3. 나눗셈
 - standardCodes: [4수01-05]
@@ -508,7 +508,7 @@
 - lessonId: g3s1-division-missing-factor
 - title: 곱셈의 빈칸으로 몫 찾기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-missing-factor/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-missing-factor/b3639b04d85a/g3s1-division-missing-factor-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-missing-factor/7413b7506694/g3s1-division-missing-factor-slides.html
 - HTML SHA-256: 7cf39d45811dff4c76d08beac185a4d557ed54718e5ef2312ad82676bdd060ab
 - grade/semester/unit: 3학년 1학기 3. 나눗셈
 - standardCodes: [4수01-05], [4수01-06]
@@ -589,7 +589,7 @@
 - lessonId: g3s1-division-fact-family
 - title: 한 곱셈식에서 두 나눗셈식
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-fact-family/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-fact-family/b68c2733d1f4/g3s1-division-fact-family-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-fact-family/4b67b320b570/g3s1-division-fact-family-slides.html
 - HTML SHA-256: 817fd859a12c5816a96d7d838e7c6c549988a8953e4215701f92d059cbca7b71
 - grade/semester/unit: 3학년 1학기 3. 나눗셈
 - standardCodes: [4수01-05]
@@ -670,7 +670,7 @@
 - lessonId: g3s1-division-group-count
 - title: 몇 묶음인지 곱셈으로 확인하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-group-count/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-group-count/097b5bb82020/g3s1-division-group-count-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-division-group-count/0dfdfbcc6252/g3s1-division-group-count-slides.html
 - HTML SHA-256: 08a915a48aad87b7af7220a84e263ca42f75595ec1b4d0fb945c3cf430a27389
 - grade/semester/unit: 3학년 1학기 3. 나눗셈
 - standardCodes: [4수01-05], [4수01-06]
@@ -751,7 +751,7 @@
 - lessonId: g3s1-fraction-equal-parts
 - title: 분수의 첫 조건, 똑같이
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-equal-parts/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-equal-parts/bfee3093aa72/g3s1-fraction-equal-parts-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-equal-parts/1cf03d48ea3b/g3s1-fraction-equal-parts-slides.html
 - HTML SHA-256: a3a3f6882ff0e9fd4ad92124c8c36a030935d6f71487f134480c9344044d5b6c
 - grade/semester/unit: 3학년 1학기 6. 분수와 소수
 - standardCodes: [4수01-09]
@@ -832,7 +832,7 @@
 - lessonId: g3s1-fraction-fix-partition
 - title: 같지 않은 조각을 고쳐 나누기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-fix-partition/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-fix-partition/61a39adee966/g3s1-fraction-fix-partition-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-fix-partition/c21572bfdfcd/g3s1-fraction-fix-partition-slides.html
 - HTML SHA-256: 2f2f0acd4b06437a074b3a6f76fec2ee118cebf9ebd22118d2644007d1a84bba
 - grade/semester/unit: 3학년 1학기 6. 분수와 소수
 - standardCodes: [4수01-09]
@@ -913,7 +913,7 @@
 - lessonId: g3s1-fraction-part-whole
 - title: 전체와 부분을 분수로 읽기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-part-whole/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-part-whole/5b2d432bf9f8/g3s1-fraction-part-whole-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-part-whole/7e578ddb6892/g3s1-fraction-part-whole-slides.html
 - HTML SHA-256: 78e5743ab25e05bad1db05ad07bb00cb0e689acba53e664d3d91d1b634901fbb
 - grade/semester/unit: 3학년 1학기 6. 분수와 소수
 - standardCodes: [4수01-09]
@@ -994,7 +994,7 @@
 - lessonId: g3s1-fraction-pizza-context
 - title: 피자에서 분모와 분자 찾기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-pizza-context/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-pizza-context/95468a280fd3/g3s1-fraction-pizza-context-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-fraction-pizza-context/ffe34a7b1391/g3s1-fraction-pizza-context-slides.html
 - HTML SHA-256: 8df631401525de8eb7c4fcf2a5c1a783b6e30556a44def12c9c90440a5253a4a
 - grade/semester/unit: 3학년 1학기 6. 분수와 소수
 - standardCodes: [4수01-09]
@@ -1075,7 +1075,7 @@
 - lessonId: g3s1-length-centimeter-meter
 - title: 연필에는 cm, 문에는 m
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-centimeter-meter/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-centimeter-meter/6a0b719dadd0/g3s1-length-centimeter-meter-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-centimeter-meter/57fe6e1c935d/g3s1-length-centimeter-meter-slides.html
 - HTML SHA-256: c5cf817920b835668cc2c61473ca3a6b2b4f2ede1a5a9d36ff864fd9d41dee83
 - grade/semester/unit: 3학년 1학기 5. 길이와 시간
 - standardCodes: [4수03-15]
@@ -1156,7 +1156,7 @@
 - lessonId: g3s1-length-real-world-units
 - title: 크기에 맞는 길이 단위
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-real-world-units/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-real-world-units/1f486b5f3cd4/g3s1-length-real-world-units-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-real-world-units/7da27cb1a1a4/g3s1-length-real-world-units-slides.html
 - HTML SHA-256: 7fb7e1bb7fdf64539c093302246ea1c84c3cdeda6077658c9f00093c3a4ec73b
 - grade/semester/unit: 3학년 1학기 5. 길이와 시간
 - standardCodes: [4수03-15]
@@ -1237,7 +1237,7 @@
 - lessonId: g3s1-length-unit-conversion
 - title: m·cm, km·m 연결하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-unit-conversion/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-unit-conversion/81754658937d/g3s1-length-unit-conversion-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s1-length-unit-conversion/087e32ac99e2/g3s1-length-unit-conversion-slides.html
 - HTML SHA-256: c7e5b1a50a5ab2a75b0fc7ddd5941ca949ec5fe54fa9e237b3a11725be0ad02b
 - grade/semester/unit: 3학년 1학기 5. 길이와 시간
 - standardCodes: [4수03-16]
@@ -1318,7 +1318,7 @@
 - lessonId: g3s2-multiplication-place-value
 - title: 자릿값을 살려 먼저 곱하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-place-value/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-place-value/02544f623764/g3s2-multiplication-place-value-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-place-value/adaac21fbf05/g3s2-multiplication-place-value-slides.html
 - HTML SHA-256: e93abe0d049db57fe2ad97ea3c643669e8fe3595a5783016d39057a6f3dfb366
 - grade/semester/unit: 3학년 2학기 1. 곱셈
 - standardCodes: [4수01-04]
@@ -1399,7 +1399,7 @@
 - lessonId: g3s2-multiplication-combine
 - title: 부분곱을 빠짐없이 더하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-combine/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-combine/f2b2d4f6fc4e/g3s2-multiplication-combine-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-combine/77302ccac363/g3s2-multiplication-combine-slides.html
 - HTML SHA-256: 61061ec04f33360a25e84d145bec59e5d12aed6d19098f7adb062699bec85be4
 - grade/semester/unit: 3학년 2학기 1. 곱셈
 - standardCodes: [4수01-04]
@@ -1480,7 +1480,7 @@
 - lessonId: g3s2-multiplication-two-digit
 - title: 두 자리 수를 나누어 곱하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-two-digit/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-two-digit/583a70038b62/g3s2-multiplication-two-digit-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-multiplication-two-digit/038c15141faa/g3s2-multiplication-two-digit-slides.html
 - HTML SHA-256: 07e5db55d4d438740499f2b2d9cb57f84863b2db1777e57f964d4a8d8049891e
 - grade/semester/unit: 3학년 2학기 1. 곱셈
 - standardCodes: [4수01-04]
@@ -1561,7 +1561,7 @@
 - lessonId: g3s2-division-meaning
 - title: 나눗셈이 묻는 두 가지
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-meaning/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-meaning/fb3a16e7f00c/g3s2-division-meaning-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-meaning/abe2596991c3/g3s2-division-meaning-slides.html
 - HTML SHA-256: ba840ff67b7073a4cb8173b8125fe57a8cc82d8f86450460c599856fa5aa42c1
 - grade/semester/unit: 3학년 2학기 2. 나눗셈
 - standardCodes: [4수01-05]
@@ -1642,7 +1642,7 @@
 - lessonId: g3s2-division-remainder
 - title: 먼저 나누고 남은 수 찾기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder/354d82b04db7/g3s2-division-remainder-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder/f154e104ad4d/g3s2-division-remainder-slides.html
 - HTML SHA-256: 7a70b72ad06995675ac477348857feaaf2f4504db30338bc40b6d893d444fec4
 - grade/semester/unit: 3학년 2학기 2. 나눗셈
 - standardCodes: [4수01-06]
@@ -1723,7 +1723,7 @@
 - lessonId: g3s2-division-remainder-check
 - title: 몫과 나머지로 처음 수 확인하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder-check/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder-check/388af13a9295/g3s2-division-remainder-check-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-division-remainder-check/cd44b7ffb91c/g3s2-division-remainder-check-slides.html
 - HTML SHA-256: 1048d1d8a2660f6e015eaa7a7d7707f6ef2328b439973431f14fda85ffe057c9
 - grade/semester/unit: 3학년 2학기 2. 나눗셈
 - standardCodes: [4수01-06]
@@ -1804,7 +1804,7 @@
 - lessonId: g3s2-circle-parts
 - title: 원의 중심과 반지름 찾기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-parts/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-parts/aeadd60278d8/g3s2-circle-parts-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-parts/275ac3fe9f24/g3s2-circle-parts-slides.html
 - HTML SHA-256: 1cce88148be4deca5e204f6f59906e46b0674e9679dbed40d8630225a4d4ef40
 - grade/semester/unit: 3학년 2학기 3. 원
 - standardCodes: [4수03-06]
@@ -1885,7 +1885,7 @@
 - lessonId: g3s2-circle-diameter
 - title: 반지름 두 개가 만드는 지름
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-diameter/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-diameter/28baf850de2a/g3s2-circle-diameter-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-circle-diameter/4180daf033e8/g3s2-circle-diameter-slides.html
 - HTML SHA-256: 123c01b8fcd1274e877af8851d89068ecad77efaabb716596132d8196c3ac0c8
 - grade/semester/unit: 3학년 2학기 3. 원
 - standardCodes: [4수03-06]
@@ -1966,7 +1966,7 @@
 - lessonId: g3s2-fraction-part-whole
 - title: 색칠한 부분을 분수로
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-part-whole/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-part-whole/f7aa21822170/g3s2-fraction-part-whole-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-part-whole/00a610968113/g3s2-fraction-part-whole-slides.html
 - HTML SHA-256: 093bc8724b0aa5af3b8447be00f6be93d63ebab1e7b91a7e612a11cda6c5cef9
 - grade/semester/unit: 3학년 2학기 4. 분수와 소수
 - standardCodes: [4수01-09]
@@ -2047,7 +2047,7 @@
 - lessonId: g3s2-fraction-convert
 - title: 가분수를 대분수로 바꾸기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-convert/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-convert/f93716b1e8b4/g3s2-fraction-convert-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-convert/ec55af46d704/g3s2-fraction-convert-slides.html
 - HTML SHA-256: f4df78c29fbf85be22258c0e8628c33cca18f77e3811f4b14e54fb4888eef16e
 - grade/semester/unit: 3학년 2학기 4. 분수와 소수
 - standardCodes: [4수01-10]
@@ -2128,7 +2128,7 @@
 - lessonId: g3s2-fraction-compare
 - title: 분모가 같은 분수 비교하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-compare/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-compare/386f0a495515/g3s2-fraction-compare-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-fraction-compare/1e4ee6728969/g3s2-fraction-compare-slides.html
 - HTML SHA-256: 0cb665473bc63153362226ac83b289e544c43bbddbf4a3ec8f4ca5ae10d928c1
 - grade/semester/unit: 3학년 2학기 4. 분수와 소수
 - standardCodes: [4수01-11]
@@ -2209,7 +2209,7 @@
 - lessonId: g3s2-capacity-unit
 - title: L를 mL로 정확히 바꾸기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-capacity-unit/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-capacity-unit/51ca210a12e4/g3s2-capacity-unit-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-capacity-unit/e2711b706a60/g3s2-capacity-unit-slides.html
 - HTML SHA-256: 8450d3d9e29073107e53b956caab568509603970c4d5da7661be43a9de38e600
 - grade/semester/unit: 3학년 2학기 5. 들이와 무게
 - standardCodes: [4수03-18]
@@ -2290,7 +2290,7 @@
 - lessonId: g3s2-weight-unit
 - title: kg을 g으로 정확히 바꾸기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-weight-unit/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-weight-unit/e108c2aa03dc/g3s2-weight-unit-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-weight-unit/527375efee7a/g3s2-weight-unit-slides.html
 - HTML SHA-256: 48bbeec0554171c0cd872a218032a15144eddbe28bbd619fd57e169025800055
 - grade/semester/unit: 3학년 2학기 5. 들이와 무게
 - standardCodes: [4수03-21]
@@ -2371,7 +2371,7 @@
 - lessonId: g3s2-pictograph-compare
 - title: 그림그래프의 실제 차이 구하기
 - package manifest: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-compare/manifest.json
-- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-compare/37d00d5739a4/g3s2-pictograph-compare-slides.html
+- deployed HTML asset: eduitit:edu_materials/static/edu_materials/lesson_bundles/g3s2-pictograph-compare/347b6419bc4b/g3s2-pictograph-compare-slides.html
 - HTML SHA-256: 01851ac7e536b8a552f8e2db3009f6d62a39aa7f8c44e614306321e61ffdf952
 - grade/semester/unit: 3학년 2학기 6. 그림그래프
 - standardCodes: [4수04-01]

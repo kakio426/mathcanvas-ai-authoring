@@ -3034,6 +3034,235 @@ const handlers: Record<string, Handler> = {
       predicate,
       "maximumLabelLength"
     );
+    const rawRequiredItemValueMentions = parameter(
+      predicate,
+      "requiredItemValueMentions"
+    );
+    const requiredItemValueMentions =
+      rawRequiredItemValueMentions === undefined
+        ? []
+        : Array.isArray(rawRequiredItemValueMentions)
+          ? rawRequiredItemValueMentions.map((entry) => {
+              if (
+                !entry ||
+                typeof entry !== "object" ||
+                typeof (entry as { valueKey?: unknown }).valueKey !==
+                  "string" ||
+                !Array.isArray(
+                  (entry as { roles?: unknown }).roles
+                ) ||
+                (entry as { roles: unknown[] }).roles.length === 0 ||
+                !(entry as { roles: unknown[] }).roles.every(
+                  (role) => typeof role === "string" && role.length > 0
+                ) ||
+                ("valueFields" in entry &&
+                  (!Array.isArray(
+                    (entry as { valueFields?: unknown }).valueFields
+                  ) ||
+                    (entry as { valueFields: unknown[] }).valueFields.length ===
+                      0 ||
+                    !(entry as { valueFields: unknown[] }).valueFields.every(
+                      (field) =>
+                        typeof field === "string" && field.length > 0
+                    ))) ||
+                ("allowedValues" in entry &&
+                  (!Array.isArray(
+                    (entry as { allowedValues?: unknown }).allowedValues
+                  ) ||
+                    (entry as { allowedValues: unknown[] }).allowedValues
+                      .length === 0 ||
+                    !(entry as { allowedValues: unknown[] }).allowedValues.every(
+                      (value) =>
+                        typeof value === "string" && value.trim().length > 0
+                    ) ||
+                    new Set(
+                      (entry as { allowedValues: string[] }).allowedValues
+                    ).size !==
+                      (entry as { allowedValues: string[] }).allowedValues
+                        .length)) ||
+                ("forbiddenValues" in entry &&
+                  (!Array.isArray(
+                    (entry as { forbiddenValues?: unknown })
+                      .forbiddenValues
+                  ) ||
+                    !(
+                      entry as { forbiddenValues: unknown[] }
+                    ).forbiddenValues.every(
+                      (value) =>
+                        typeof value === "string" &&
+                        value.trim().length > 0
+                    )))
+              ) {
+                throw new Error(
+                  `predicate-parameter-invalid:${predicate.kind}:requiredItemValueMentions`
+                );
+              }
+              return entry as {
+                readonly valueKey: string;
+                readonly roles: readonly string[];
+                readonly valueFields?: readonly string[];
+                readonly allowedValues?: readonly string[];
+                readonly forbiddenValues?: readonly string[];
+              };
+            })
+          : (() => {
+              throw new Error(
+                `predicate-parameter-invalid:${predicate.kind}:requiredItemValueMentions`
+              );
+            })();
+    const rawRequiredItemParticleMentions = parameter(
+      predicate,
+      "requiredItemParticleMentions"
+    );
+    const requiredItemParticleMentions =
+      rawRequiredItemParticleMentions === undefined
+        ? []
+        : Array.isArray(rawRequiredItemParticleMentions)
+          ? rawRequiredItemParticleMentions.map((entry) => {
+              if (
+                !entry ||
+                typeof entry !== "object" ||
+                typeof (entry as { valueKey?: unknown }).valueKey !==
+                  "string" ||
+                !["subject", "object", "join"].includes(
+                  String((entry as { particle?: unknown }).particle)
+                ) ||
+                !Array.isArray(
+                  (entry as { roles?: unknown }).roles
+                ) ||
+                (entry as { roles: unknown[] }).roles.length === 0 ||
+                !(entry as { roles: unknown[] }).roles.every(
+                  (role) => typeof role === "string" && role.length > 0
+                )
+              ) {
+                throw new Error(
+                  `predicate-parameter-invalid:${predicate.kind}:requiredItemParticleMentions`
+                );
+              }
+              return entry as {
+                readonly valueKey: string;
+                readonly particle: "subject" | "object" | "join";
+                readonly roles: readonly string[];
+              };
+            })
+          : (() => {
+              throw new Error(
+                `predicate-parameter-invalid:${predicate.kind}:requiredItemParticleMentions`
+              );
+            })();
+    const rawCanonicalItemStories = parameter(
+      predicate,
+      "canonicalItemStories"
+    );
+    const canonicalItemStories =
+      rawCanonicalItemStories === undefined
+        ? []
+        : Array.isArray(rawCanonicalItemStories)
+          ? rawCanonicalItemStories.map((entry) => {
+              const fields =
+                entry && typeof entry === "object" && !Array.isArray(entry)
+                  ? (entry as { fields?: unknown }).fields
+                  : undefined;
+              const candidateSet =
+                entry && typeof entry === "object" && !Array.isArray(entry)
+                  ? (entry as { candidateSet?: unknown }).candidateSet
+                  : undefined;
+              if (
+                !fields ||
+                typeof fields !== "object" ||
+                Array.isArray(fields) ||
+                Object.keys(fields).length === 0 ||
+                Object.entries(fields).some(
+                  ([key, value]) =>
+                    key.length === 0 ||
+                    !(
+                      typeof value === "string" ||
+                      typeof value === "boolean" ||
+                      (typeof value === "number" && Number.isFinite(value))
+                    )
+                ) ||
+                !Array.isArray(candidateSet) ||
+                candidateSet.length === 0 ||
+                !candidateSet.every(
+                  (value) =>
+                    typeof value === "string" && value.trim().length > 0
+                ) ||
+                new Set(candidateSet).size !== candidateSet.length
+              ) {
+                throw new Error(
+                  `predicate-parameter-invalid:${predicate.kind}:canonicalItemStories`
+                );
+              }
+              return {
+                fields: fields as Readonly<
+                  Record<string, string | number | boolean>
+                >,
+                candidateSet: candidateSet as readonly string[]
+              };
+            })
+          : (() => {
+              throw new Error(
+                `predicate-parameter-invalid:${predicate.kind}:canonicalItemStories`
+              );
+            })();
+    const canonicalCandidateValueKeys =
+      canonicalItemStories.length === 0
+        ? []
+        : stringArrayParameter(
+            predicate,
+            "canonicalCandidateValueKeys"
+          );
+    const rawExactItemRoleBindings = parameter(
+      predicate,
+      "exactItemRoleBindings"
+    );
+    const exactItemRoleBindings =
+      rawExactItemRoleBindings === undefined
+        ? []
+        : Array.isArray(rawExactItemRoleBindings)
+          ? rawExactItemRoleBindings.map((entry) => {
+              const role =
+                entry && typeof entry === "object"
+                  ? (entry as { role?: unknown }).role
+                  : undefined;
+              const valueKey =
+                entry && typeof entry === "object"
+                  ? (entry as { valueKey?: unknown }).valueKey
+                  : undefined;
+              if (
+                typeof role !== "string" ||
+                role.length === 0 ||
+                typeof valueKey !== "string" ||
+                valueKey.length === 0
+              ) {
+                throw new Error(
+                  `predicate-parameter-invalid:${predicate.kind}:exactItemRoleBindings`
+                );
+              }
+              return { role, valueKey } as const;
+            })
+          : (() => {
+              throw new Error(
+                `predicate-parameter-invalid:${predicate.kind}:exactItemRoleBindings`
+              );
+            })();
+    if (
+      (canonicalItemStories.length > 0 &&
+        (canonicalCandidateValueKeys.length === 0 ||
+          exactItemRoleBindings.length === 0)) ||
+      new Set(canonicalCandidateValueKeys).size !==
+        canonicalCandidateValueKeys.length ||
+      canonicalItemStories.some(
+        (story) =>
+          story.candidateSet.length !== canonicalCandidateValueKeys.length
+      ) ||
+      new Set(exactItemRoleBindings.map((binding) => binding.role)).size !==
+        exactItemRoleBindings.length
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:canonicalStoryBinding`
+      );
+    }
     if (
       typeof maximumInstructionLength !== "number" ||
       typeof maximumLabelLength !== "number" ||
@@ -3058,20 +3287,32 @@ const handlers: Record<string, Handler> = {
     ];
     const actionPattern =
       /(고르|골라|놓|나타내|확인|찾|비교|쓰|써|고치|옮기|바꾸|몇|무엇|어느|어디|입니까|인가요|까요)/;
-    const hasSubjectParticleMismatch = (text: string): boolean =>
-      Array.from(text.matchAll(/([가-힣]+)(이|가)(?=\s+\d)/g)).some(
-        (match) => {
-          const noun = match[1] ?? "";
-          const particle = match[2] ?? "";
-          if (!noun) return false;
-          const last = noun.codePointAt(noun.length - 1);
-          if (last === undefined || last < 0xac00 || last > 0xd7a3) {
-            return false;
-          }
-          const expected = (last - 0xac00) % 28 === 0 ? "가" : "이";
-          return particle !== expected;
-        }
-      );
+    const particlePhrases = (
+      value: string,
+      particle: "subject" | "object" | "join"
+    ): { readonly expected: string; readonly invalid: string } | undefined => {
+      const last = value.at(-1)?.codePointAt(0);
+      if (last === undefined || last < 0xac00 || last > 0xd7a3) {
+        return undefined;
+      }
+      const hasFinalConsonant = (last - 0xac00) % 28 !== 0;
+      const [suffix, invalidSuffix] =
+        particle === "subject"
+          ? hasFinalConsonant
+            ? ["이", "가"]
+            : ["가", "이"]
+          : particle === "object"
+            ? hasFinalConsonant
+              ? ["을", "를"]
+              : ["를", "을"]
+            : hasFinalConsonant
+              ? ["과", "와"]
+              : ["와", "과"];
+      return {
+        expected: `${value}${suffix}`,
+        invalid: `${value}${invalidSuffix}`
+      };
+    };
     const textOf = (
       emission: ResolvedEmission | undefined
     ): string | undefined => {
@@ -3128,7 +3369,6 @@ const handlers: Record<string, Handler> = {
           Array.from(text).length > maximumInstructionLength ||
           !/[.?]$/.test(text) ||
           !/(몇|어느|무엇|어떻게|왜|어디)/.test(text) ||
-          hasSubjectParticleMismatch(text) ||
           systemPhrases.some((phrase) => text.includes(phrase))
         ) {
           issue(
@@ -3156,6 +3396,125 @@ const handlers: Record<string, Handler> = {
           );
         }
       }
+      for (const requirement of requiredItemValueMentions) {
+        const requiredValue = item.values[requirement.valueKey];
+        const normalizedRequiredValue =
+          typeof requiredValue === "string" ? requiredValue.trim() : "";
+        const forbiddenValues = requirement.forbiddenValues ?? [];
+        const allowedValues = requirement.allowedValues ?? [];
+        const conflictingValues = allowedValues.filter(
+          (value) => value !== normalizedRequiredValue
+        );
+        if (
+          normalizedRequiredValue.length === 0 ||
+          forbiddenValues.includes(normalizedRequiredValue) ||
+          (allowedValues.length > 0 &&
+            !allowedValues.includes(normalizedRequiredValue))
+        ) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${item.id}의 ${requirement.valueKey}가 이야기 속 대상을 구체적으로 이름 붙이지 않습니다.`
+          );
+        }
+        for (const role of requirement.roles) {
+          const text = textOf(byRole(resolved, item.id, role));
+          if (
+            normalizedRequiredValue.length === 0 ||
+            !text?.includes(normalizedRequiredValue) ||
+            conflictingValues.some((value) => text.includes(value))
+          ) {
+            issue(
+              issues,
+              "classroom-language-unclear",
+              "pedagogy",
+              `${item.id}의 ${role} 문장이 ${requirement.valueKey}에 기록된 교실 대상을 직접 이름 붙이지 않습니다.`
+            );
+          }
+        }
+        for (const field of requirement.valueFields ?? []) {
+          const fieldValue = item.values[field];
+          if (
+            normalizedRequiredValue.length === 0 ||
+            typeof fieldValue !== "string" ||
+            !fieldValue.includes(normalizedRequiredValue) ||
+            conflictingValues.some((value) => fieldValue.includes(value))
+          ) {
+            issue(
+              issues,
+              "classroom-language-unclear",
+              "pedagogy",
+              `${item.id}의 ${field}가 ${requirement.valueKey}에 기록된 교실 대상과 일치하지 않습니다.`
+            );
+          }
+        }
+      }
+      for (const requirement of requiredItemParticleMentions) {
+        const rawValue = item.values[requirement.valueKey];
+        const normalizedValue =
+          typeof rawValue === "string" ? rawValue.trim() : "";
+        const phrases = particlePhrases(
+          normalizedValue,
+          requirement.particle
+        );
+        for (const role of requirement.roles) {
+          const text = textOf(byRole(resolved, item.id, role));
+          if (
+            !phrases ||
+            !text?.includes(phrases.expected) ||
+            text.includes(phrases.invalid)
+          ) {
+            issue(
+              issues,
+              "classroom-language-unclear",
+              "pedagogy",
+              `${item.id}의 ${role} 문장이 ${requirement.valueKey}에 맞는 조사를 사용하지 않습니다.`
+            );
+          }
+        }
+      }
+      if (canonicalItemStories.length > 0) {
+        const candidateValues = canonicalCandidateValueKeys.map(
+          (key) => item.values[key]
+        );
+        const candidatesAreMirrored = canonicalCandidateValueKeys.every(
+          (key) => item.values[`${key}Latex`] === item.values[key]
+        );
+        const actualCandidateSet = candidateValues.every(
+          (value): value is string => typeof value === "string"
+        )
+          ? [...candidateValues].sort()
+          : [];
+        const matchingStories = canonicalItemStories.filter(
+          (story) =>
+            Object.entries(story.fields).every(
+              ([key, expected]) => item.values[key] === expected
+            ) &&
+            JSON.stringify(actualCandidateSet) ===
+              JSON.stringify([...story.candidateSet].sort())
+        );
+        if (!candidatesAreMirrored || matchingStories.length !== 1) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${item.id}의 질문·근거·정답·설명·답 카드가 등록된 한 이야기와 정확히 일치하지 않습니다.`
+          );
+        }
+      }
+      for (const binding of exactItemRoleBindings) {
+        const expected = item.values[binding.valueKey];
+        const actual = textOf(byRole(resolved, item.id, binding.role));
+        if (typeof expected !== "string" || actual !== expected) {
+          issue(
+            issues,
+            "classroom-language-unclear",
+            "pedagogy",
+            `${item.id}의 ${binding.role} 화면 문장이 ${binding.valueKey}의 canonical 이야기와 일치하지 않습니다.`
+          );
+        }
+      }
     }
   },
   "visual.text-fit": (resolved, predicate, issues) => {
@@ -3164,11 +3523,28 @@ const handlers: Record<string, Handler> = {
       predicate,
       "maximumFillRatio"
     );
+    const rawRoleMaximumFillRatios =
+      parameter(predicate, "roleMaximumFillRatios") ?? {};
+    const roleMaximumFillRatios =
+      rawRoleMaximumFillRatios !== null &&
+      typeof rawRoleMaximumFillRatios === "object" &&
+      !Array.isArray(rawRoleMaximumFillRatios)
+        ? (rawRoleMaximumFillRatios as Record<string, unknown>)
+        : undefined;
     if (
       typeof maximumFillRatio !== "number" ||
       !Number.isFinite(maximumFillRatio) ||
       maximumFillRatio <= 0 ||
-      maximumFillRatio > 1
+      maximumFillRatio > 1 ||
+      !roleMaximumFillRatios ||
+      Object.entries(roleMaximumFillRatios).some(
+        ([role, ratio]) =>
+          !roles.includes(role) ||
+          typeof ratio !== "number" ||
+          !Number.isFinite(ratio) ||
+          ratio <= 0 ||
+          ratio > 1
+      )
     ) {
       throw new Error(
         `predicate-parameter-invalid:${predicate.kind}:maximumFillRatio`
@@ -3183,7 +3559,7 @@ const handlers: Record<string, Handler> = {
         if (/\s/u.test(character)) {
           return width + fontSize * 0.36;
         }
-        if (/[A-Za-z0-9<>=+\-.,!?()\[\]①②③④⑤⑥]/u.test(character)) {
+        if (/[A-Za-z0-9<>=+\-.,!?()\[\]①②③④⑤⑥‘’“”]/u.test(character)) {
           return width + fontSize * 0.62;
         }
         return width + fontSize;
@@ -3207,6 +3583,13 @@ const handlers: Record<string, Handler> = {
       const text = emission?.toolIntent.properties.text;
       const fontSize =
         emission?.toolIntent.properties.fontSize;
+      const roleMaximumFillRatioValue = emission
+        ? roleMaximumFillRatios[emission.role]
+        : undefined;
+      const roleMaximumFillRatio =
+        typeof roleMaximumFillRatioValue === "number"
+          ? roleMaximumFillRatioValue
+          : maximumFillRatio;
       const measuredText =
         emission?.toolIntent.kind === "latex" && typeof text === "string"
           ? text.replace(/\\[A-Za-z]+/g, "X").replace(/[{}]/g, "")
@@ -3216,7 +3599,7 @@ const handlers: Record<string, Handler> = {
         typeof measuredText !== "string" ||
         typeof fontSize !== "number" ||
         estimatedWidth(measuredText, fontSize) >
-          emission.bounds.width * maximumFillRatio
+          emission.bounds.width * roleMaximumFillRatio
       ) {
         issue(
           issues,
@@ -3245,10 +3628,13 @@ const handlers: Record<string, Handler> = {
     const containerInsets = parameter(predicate, "containerInsets");
     const verticalGaps = parameter(predicate, "verticalGaps");
     const centerPairs = parameter(predicate, "centerPairs") ?? [];
+    const horizontalLanes =
+      parameter(predicate, "horizontalLanes") ?? [];
     if (
       !Array.isArray(containerInsets) ||
       !Array.isArray(verticalGaps) ||
-      !Array.isArray(centerPairs)
+      !Array.isArray(centerPairs) ||
+      !Array.isArray(horizontalLanes)
     ) {
       throw new Error(
         `predicate-parameter-invalid:${predicate.kind}:rules`
@@ -3411,6 +3797,55 @@ const handlers: Record<string, Handler> = {
             "text-clearance-insufficient",
             "layout",
             `${item.id}의 ${role} 글자 영역이 ${containerRole} 가운데에 놓이지 않았습니다.`
+          );
+        }
+      }
+
+      for (const rawRule of horizontalLanes) {
+        const rule = record(rawRule);
+        const role = rule?.role;
+        const leftBoundaryRole = rule?.leftBoundaryRole;
+        const rightBoundaryRole = rule?.rightBoundaryRole;
+        const minimumLeft = rule
+          ? nonnegative(rule, "minimumLeft")
+          : undefined;
+        const minimumRight = rule
+          ? nonnegative(rule, "minimumRight")
+          : undefined;
+        if (
+          typeof role !== "string" ||
+          typeof leftBoundaryRole !== "string" ||
+          typeof rightBoundaryRole !== "string" ||
+          minimumLeft === undefined ||
+          minimumRight === undefined
+        ) {
+          throw new Error(
+            `predicate-parameter-invalid:${predicate.kind}:horizontalLanes`
+          );
+        }
+        const child = scopedRole(item.id, role);
+        const leftBoundary = scopedRole(item.id, leftBoundaryRole);
+        const rightBoundary = scopedRole(item.id, rightBoundaryRole);
+        const left = child && leftBoundary
+          ? child.bounds.x -
+            (leftBoundary.bounds.x + leftBoundary.bounds.width)
+          : Number.NEGATIVE_INFINITY;
+        const right = child && rightBoundary
+          ? rightBoundary.bounds.x -
+            (child.bounds.x + child.bounds.width)
+          : Number.NEGATIVE_INFINITY;
+        if (
+          !child ||
+          !leftBoundary ||
+          !rightBoundary ||
+          left < minimumLeft ||
+          right < minimumRight
+        ) {
+          issue(
+            issues,
+            "text-clearance-insufficient",
+            "layout",
+            `${item.id}의 ${role} 글자 영역이 ${leftBoundaryRole}와 ${rightBoundaryRole} 사이에 놓이지 않았습니다.`
           );
         }
       }

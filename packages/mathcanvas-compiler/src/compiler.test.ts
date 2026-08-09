@@ -256,7 +256,7 @@ describe("MathCanvas 컴파일러", () => {
         index === 0
           ? {
               ...emission,
-              bounds: { x: 110, y: 350, width: 470, height: 588 },
+              bounds: { x: 110, y: 350, width: 672, height: 336 },
               renderedBounds: undefined,
               locked: true,
               movable: false,

@@ -142,6 +142,63 @@ function summarizeRecommendation(
   };
 }
 
+const learnerInstructionRoles = [
+  "instruction-predict",
+  "instruction-verify",
+  "instruction-explain"
+] as const;
+
+export function projectLearnerFacingInstructions(
+  resolved: ResolvedActivity
+): string[] {
+  const itemScopedInstructions = resolved.emissions.filter(
+    (emission) =>
+      emission.itemId !== undefined &&
+      learnerInstructionRoles.some((role) => role === emission.role)
+  );
+  if (itemScopedInstructions.length === 0) return resolved.instructions;
+  if (resolved.items.length !== 1) {
+    throw new AuthoringServiceError(
+      "validation-failed",
+      "문항별 학생 안내 문구를 하나의 추천 요약으로 확정할 수 없어 생성하지 않았습니다."
+    );
+  }
+  const itemId = resolved.items[0]?.id;
+  if (!itemId) {
+    throw new AuthoringServiceError(
+      "validation-failed",
+      "학생 안내 문구의 문항을 확인할 수 없어 생성하지 않았습니다."
+    );
+  }
+  if (
+    itemScopedInstructions.length !== learnerInstructionRoles.length ||
+    itemScopedInstructions.some((emission) => emission.itemId !== itemId)
+  ) {
+    throw new AuthoringServiceError(
+      "validation-failed",
+      "선택된 한 문항의 학생 안내 세 역할만 확정할 수 없어 생성하지 않았습니다."
+    );
+  }
+  const instructions = learnerInstructionRoles.map((role) => {
+    const matches = resolved.emissions.filter(
+      (emission) => emission.itemId === itemId && emission.role === role
+    );
+    const text = matches[0]?.toolIntent.properties.text;
+    if (
+      matches.length !== 1 ||
+      typeof text !== "string" ||
+      text.trim().length === 0
+    ) {
+      throw new AuthoringServiceError(
+        "validation-failed",
+        `학생 안내 문구 ${role}가 누락되거나 중복되어 생성하지 않았습니다.`
+      );
+    }
+    return text.trim();
+  });
+  return instructions;
+}
+
 /**
  * 생성 실패 코드별 사용자 안내 문구의 단일 원본이다.
  * MCP 응답과 교사용 화면이 같은 문구를 쓰도록 여기서만 관리한다.
@@ -514,7 +571,7 @@ export class MathCanvasAuthoringService {
       expiresAt: expiresAt.toISOString(),
       activitySummary: {
         title: resolved.title,
-        studentInstructions: resolved.instructions,
+        studentInstructions: projectLearnerFacingInstructions(resolved),
         ...(recommendation.denominatorRelation === undefined
           ? {}
           : {

@@ -22,6 +22,9 @@ import {
 import {
   validateActivityReleaseCanaryEvidence
 } from "../scripts/contract-lab/validate-activity-release-canary.mjs";
+import {
+  divisionProductStaticPayloadIdentity
+} from "../scripts/contract-lab/lib/division-product-static-projection.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const sanitizeCli = join(
@@ -102,6 +105,97 @@ function rehashCommonDrawObservation(
 }
 
 describe("P0 contract-lab 격리와 정규화", () => {
+  it("나눗셈 고정 payload projection은 editor transient를 제외하고 학생 문구 drift는 보존한다", () => {
+    const current = [
+      {
+        id: "instruction-verify",
+        svgId: "input-text",
+        text: "② 색종이를 7장씩 가운데로 옮기세요.",
+        parent: { observer: null },
+        playgroundIndex: 1
+      }
+    ];
+    const serialized = [
+      {
+        ...current[0],
+        parent: { observer: null, editSnapshots: {} },
+        playgroundIndex: 99,
+        isEyeOn: false
+      }
+    ];
+    const staleInstruction = [
+      {
+        ...serialized[0],
+        text: "② 색종이 7장을 가운데에 모으세요."
+      }
+    ];
+    expect(divisionProductStaticPayloadIdentity(current)).toEqual(
+      divisionProductStaticPayloadIdentity(serialized)
+    );
+    expect(
+      divisionProductStaticPayloadIdentity(staleInstruction).sha256
+    ).not.toBe(divisionProductStaticPayloadIdentity(current).sha256);
+
+    const serializationTail = [
+      {
+        id: "static-object",
+        svgId: "input-text",
+        x: 184.04000000000002,
+        fontSize: 30,
+        strokeType: 1,
+        clickCount: 0
+      }
+    ];
+    const canonicalDecimal = [
+      {
+        ...serializationTail[0],
+        x: 184.04
+      }
+    ];
+    expect(divisionProductStaticPayloadIdentity(serializationTail)).toEqual(
+      divisionProductStaticPayloadIdentity(canonicalDecimal)
+    );
+
+    for (const [field, value] of [
+      ["clickCount", 0.0000004],
+      ["strokeType", 1.0000004],
+      ["fontSize", 30.0000004],
+      ["x", 184.0400004]
+    ] as const) {
+      const mutated = [
+        {
+          ...canonicalDecimal[0],
+          [field]: value
+        }
+      ];
+      expect(
+        divisionProductStaticPayloadIdentity(mutated).sha256,
+        `${field} drift must remain observable`
+      ).not.toBe(
+        divisionProductStaticPayloadIdentity(canonicalDecimal).sha256
+      );
+    }
+
+    for (const [field, value] of [
+      ["clickCount", 0.0000000000000004],
+      ["strokeType", 1.0000000000000004],
+      ["fontSize", 30.00000000000004]
+    ] as const) {
+      const mutated = [
+        {
+          ...canonicalDecimal[0],
+          [field]: value
+        }
+      ];
+      expect(
+        divisionProductStaticPayloadIdentity(mutated).sha256,
+        `${field} epsilon drift must remain exact`
+      ).not.toBe(
+        divisionProductStaticPayloadIdentity(canonicalDecimal).sha256
+      );
+    }
+  });
+
   it("나눗셈 schema 2 출시 증거를 공통 cognitive envelope로 정규화한다", () => {
     const evidence = JSON.parse(
       readFileSync(
@@ -381,6 +475,42 @@ describe("P0 contract-lab 격리와 정규화", () => {
       expect(renamedResult.status).toBe(1);
       expect(renamedResult.stderr).toContain(
         "division-counting-group-canary-invalid:environment"
+      );
+
+      const staleStaticResume = structuredClone(evidence);
+      const staleSha = sha256Hex(
+        "② 색종이 7장을 가운데에 모으세요."
+      );
+      staleStaticResume.writeBoundary.allowedSaveCountThisExecution = 0;
+      staleStaticResume.writeBoundary.priorApprovedSaveObserved = true;
+      staleStaticResume.writeBoundary.priorApprovedVersionCount = 1;
+      staleStaticResume.writeBoundary.resumedFromPriorApprovedSave = true;
+      staleStaticResume.writeBoundary.saveSkippedToAvoidDuplicateWrite = true;
+      staleStaticResume.writeBoundary.cumulativeApprovedSaveCount = 1;
+      staleStaticResume.learnerFacingStaticPayload.expectedSha256 = staleSha;
+      staleStaticResume.learnerFacingStaticPayload.sourceAtStartSha256 =
+        staleSha;
+      staleStaticResume.learnerFacingStaticPayload.sourceAtStartMatchesExpected =
+        true;
+      staleStaticResume.learnerFacingStaticPayload.persistedSha256 = staleSha;
+      staleStaticResume.learnerFacingStaticPayload.reopenedSha256 = staleSha;
+      staleStaticResume.learnerFacingStaticPayload.secondReadSha256 = staleSha;
+      const staleStaticPath = join(
+        temporary,
+        "stale-learner-facing-static-resume.json"
+      );
+      writeFileSync(
+        staleStaticPath,
+        `${JSON.stringify(staleStaticResume)}\n`,
+        "utf8"
+      );
+      const staleStaticResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${staleStaticPath}`
+      ]);
+      expect(staleStaticResult.status).toBe(1);
+      expect(staleStaticResult.stderr).toContain(
+        "division-counting-group-canary-invalid:learner-facing-static-payload"
       );
     } finally {
       rmSync(temporary, { recursive: true, force: true });

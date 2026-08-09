@@ -12,8 +12,44 @@ export const CLAIM_EVIDENCE_GENERATOR_ID =
   "curriculum.claim-evidence-items" as const;
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
 export const CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION = "1.1.0" as const;
-export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.3.0" as const;
+export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.6.0" as const;
 export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
+
+function hasFinalConsonant(value: string): boolean {
+  const last = value.at(-1);
+  if (!last) return false;
+  const offset = last.charCodeAt(0) - 0xac00;
+  return offset >= 0 && offset <= 0xd7a3 - 0xac00 && offset % 28 !== 0;
+}
+
+function withObjectParticle(value: string): string {
+  return `${value}${hasFinalConsonant(value) ? "을" : "를"}`;
+}
+
+function withAndParticle(value: string): string {
+  return `${value}${hasFinalConsonant(value) ? "과" : "와"}`;
+}
+
+export function buildDivisionClassroomLanguage(input: {
+  readonly countableGroupSize: number;
+  readonly countableObjectName: string;
+  readonly countableCounter: string;
+  readonly countableGroupName: string;
+  readonly countableGroupLaneLabelText: string;
+}) {
+  const quantity = `${input.countableGroupSize}${input.countableCounter}`;
+  return {
+    predictInstructionText:
+      "① 묶기 전에 답 카드 하나를 ‘처음 고른 답’ 칸에 놓으세요.",
+    verifyInstructionText:
+      `② ${withObjectParticle(input.countableObjectName)} ${quantity}씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. ${quantity}보다 적으면 오른쪽에 놓으세요.`,
+    explainInstructionText:
+      `③ 만든 ${withAndParticle(input.countableGroupName)} 남은 ${withObjectParticle(input.countableObjectName)} 보고 식과 까닭을 쓰세요. 처음 고른 답과 다르면 카드를 바꾸세요.`,
+    sourceLaneLabelText: `아직 묶지 않은 ${input.countableObjectName}`,
+    groupLaneLabelText: input.countableGroupLaneLabelText,
+    remainderLaneLabelText: `남은 ${input.countableObjectName}`
+  } as const;
+}
 
 export function makeUnresolvedDotField(total: number): string {
   if (!Number.isInteger(total) || total < 3 || total > 99) {
@@ -84,12 +120,37 @@ export function generateClaimEvidenceItems(
             ? { countableTotal: item.countableTotal }
             : {}),
           ...(item.countableGroupSize !== undefined
-            ? {
-                countableGroupSize: item.countableGroupSize,
-                groupLaneLabelText: `${item.countableGroupSize}개씩 묶은 모형`,
-                verifyInstructionText:
-                  `② 모형을 ${item.countableGroupSize}개씩 옮겨 가까이 놓고, ${item.countableGroupSize}개를 골라 ‘그룹’을 누르세요.`
-              }
+            ? (() => {
+                const objectName = item.countableObjectName;
+                const counter = item.countableCounter;
+                const groupName = item.countableGroupName;
+                const groupLaneLabelText =
+                  item.countableGroupLaneLabelText;
+                if (
+                  !objectName ||
+                  !counter ||
+                  !groupName ||
+                  !groupLaneLabelText
+                ) {
+                  throw new Error(
+                    "claim-evidence-countable-classroom-language-missing"
+                  );
+                }
+                const classroomLanguage = buildDivisionClassroomLanguage({
+                  countableGroupSize: item.countableGroupSize,
+                  countableObjectName: objectName,
+                  countableCounter: counter,
+                  countableGroupName: groupName,
+                  countableGroupLaneLabelText: groupLaneLabelText
+                });
+                return {
+                  countableGroupSize: item.countableGroupSize,
+                  countableObjectName: objectName,
+                  countableCounter: counter,
+                  countableGroupName: groupName,
+                  ...classroomLanguage
+                };
+              })()
             : {}),
           ...(item.targetAngleDegrees !== undefined
             ? { targetAngleDegrees: item.targetAngleDegrees }

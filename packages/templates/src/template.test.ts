@@ -42,15 +42,15 @@ describe("분수 비교 템플릿", () => {
     const blueprint = findClaimEvidenceBlueprint(
       "number.division.quotient-remainder.claim-evidence-v1"
     );
-    expect(blueprint?.version).toBe("2.2.0");
+    expect(blueprint?.version).toBe("2.5.0");
     expect(blueprint?.generator.version).toBe(
       CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
     );
     expect(blueprint?.variationDefaults.problemCount).toBe(1);
     expect(blueprint?.instructions).toEqual([
-      expect.stringContaining("처음 고른 답 칸에 놓으세요"),
-      expect.stringContaining("옮겨 가까이 놓고"),
-      expect.stringContaining("까닭을 설명한 뒤")
+      expect.stringContaining("묶기 전에 답 카드 하나"),
+      expect.stringContaining("한 묶음보다 적으면 오른쪽에 놓으세요"),
+      expect.stringContaining("묶이지 않고 남은 것")
     ]);
     expect(
       blueprint?.toolRoles.find((role) => role.role === "counting-model-pool")
@@ -81,19 +81,57 @@ describe("분수 비교 템플릿", () => {
         /^group-slot-\d+-(label|border)/.test(role.role)
       )
     ).toBe(false);
-    expect(
-      blueprint?.toolRoles.find((role) => role.role === "instruction-verify")
-    ).toMatchObject({
-      scope: "each-item",
-      bindings: { text: "item.verifyInstructionText" }
-    });
+    for (const [role, binding] of [
+      ["instruction-predict", "item.predictInstructionText"],
+      ["instruction-verify", "item.verifyInstructionText"],
+      ["instruction-explain", "item.explainInstructionText"]
+    ] as const) {
+      expect(
+        blueprint?.toolRoles.find((candidate) => candidate.role === role)
+      ).toMatchObject({
+        scope: "each-item",
+        bindings: { text: binding }
+      });
+    }
 
     const scenarios = [
-      ["division-scenario-7", 23, 4],
-      ["division-scenario-0", 29, 7],
-      ["division-scenario-4", 31, 6]
+      [
+        "division-scenario-7",
+        23,
+        4,
+        "연필",
+        "자루",
+        "묶음",
+        "4자루씩 만든 묶음"
+      ],
+      [
+        "division-scenario-0",
+        29,
+        7,
+        "색종이",
+        "장",
+        "묶음",
+        "7장씩 만든 묶음"
+      ],
+      [
+        "division-scenario-4",
+        31,
+        6,
+        "구슬",
+        "개",
+        "봉지",
+        "6개씩 담은 봉지"
+      ]
     ] as const;
-    for (const [seed, expectedTotal, expectedGroupSize] of scenarios) {
+    for (const [
+      seed,
+      expectedTotal,
+      expectedGroupSize,
+      objectName,
+      counter,
+      groupName,
+      groupLaneLabel
+    ] of scenarios) {
       const [item] = generateClaimEvidenceItems(
         {
           profileId: "division-remainder",
@@ -105,14 +143,20 @@ describe("분수 비교 템플릿", () => {
       expect(item).toBeDefined();
       expect(item!.values.countableTotal).toBe(expectedTotal);
       expect(item!.values.countableGroupSize).toBe(expectedGroupSize);
-      expect(item!.values.groupLaneLabelText).toBe(
-        `${expectedGroupSize}개씩 묶은 모형`
+      expect(item!.values.groupLaneLabelText).toBe(groupLaneLabel);
+      expect(item!.values.sourceLaneLabelText).toBe(
+        `아직 묶지 않은 ${objectName}`
       );
+      expect(item!.values.remainderLaneLabelText).toBe(`남은 ${objectName}`);
+      const objectParticle = objectName === "색종이" ? "를" : "을";
       expect(item!.values.verifyInstructionText).toBe(
-        `② 모형을 ${expectedGroupSize}개씩 옮겨 가까이 놓고, ${expectedGroupSize}개를 골라 ‘그룹’을 누르세요.`
+        `② ${objectName}${objectParticle} ${expectedGroupSize}${counter}씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. ${expectedGroupSize}${counter}보다 적으면 오른쪽에 놓으세요.`
+      );
+      expect(item!.values.explainInstructionText).toContain(
+        `만든 ${groupName}${groupName === "봉지" ? "와" : "과"} 남은 ${objectName}${objectName === "색종이" ? "를" : "을"} 보고 식과 까닭을 쓰세요.`
       );
       expect(String(item!.values.evidenceText)).not.toContain("●");
-      expect(item!.provenance.generatorVersion).toBe("1.3.0");
+      expect(item!.provenance.generatorVersion).toBe("1.6.0");
       const candidates = Array.from(
         { length: 5 },
         (_, index) => String(item!.values[`candidate${index + 1}`])

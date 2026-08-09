@@ -14,6 +14,10 @@ export interface ClaimEvidenceItemSeed {
   readonly answerExplanation: string;
   readonly countableTotal?: number;
   readonly countableGroupSize?: number;
+  readonly countableObjectName?: string;
+  readonly countableCounter?: string;
+  readonly countableGroupName?: string;
+  readonly countableGroupLaneLabelText?: string;
   readonly targetAngleDegrees?: number;
   readonly initialMeasureDegrees?: number;
 }
@@ -118,7 +122,7 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       problemCount: 1,
       candidateCount: 5,
       layoutTokenSet: "wave25-division-grouping-v1",
-      poolLabel: "예상한 답 고르기",
+      poolLabel: "답 카드 고르기",
       candidateRenderer: "text",
       candidateAlignment: "center",
       fontSizes: {
@@ -130,41 +134,53 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
         evidenceText: 30
       },
       instructions: [
-        "① 답 카드를 하나 골라 처음 고른 답 칸에 놓으세요.",
-        "② 문제에 나온 수만큼 모형을 옮겨 가까이 놓고, 그 수만큼 골라 ‘그룹’을 누르세요.",
-        "③ 묶음 수와 남은 수를 식으로 쓰고 까닭을 설명한 뒤, 처음 답이 다르면 고치세요."
+        "① 묶기 전에 답 카드 하나를 ‘처음 고른 답’ 칸에 놓으세요.",
+        "② 물건을 한 묶음씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. 한 묶음보다 적으면 오른쪽에 놓으세요.",
+        "③ 만든 묶음과 묶이지 않고 남은 것을 보고 식과 까닭을 쓰세요. 처음 고른 답과 다르면 카드를 바꾸세요."
       ]
     },
     items: [
       {
         questionText: "연필 23자루를 4자루씩 묶으면 몇 묶음이고 몇 자루가 남을까요?",
-        evidenceLabelText: "점 23개를 4개씩 묶어 표시하기",
-        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        evidenceLabelText: "연필 23자루로 4자루짜리 묶음 만들기",
+        evidenceText: "연필로 4자루짜리 묶음을 만들고 남은 연필을 세어 보세요.",
         correctValueText: "5묶음, 3자루",
         candidates: ["5묶음, 3자루", "4묶음, 3자루", "5묶음, 4자루", "6묶음, 1자루", "3묶음, 5자루"],
         answerExplanation: "4자루씩 5묶음은 20자루이고 3자루가 남습니다.",
         countableTotal: 23,
-        countableGroupSize: 4
+        countableGroupSize: 4,
+        countableObjectName: "연필",
+        countableCounter: "자루",
+        countableGroupName: "묶음",
+        countableGroupLaneLabelText: "4자루씩 만든 묶음"
       },
       {
         questionText: "구슬 31개를 6개씩 봉지에 담으면 몇 봉지이고 몇 개가 남을까요?",
-        evidenceLabelText: "점 31개를 6개씩 묶어 표시하기",
-        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        evidenceLabelText: "구슬 31개를 6개씩 봉지에 담아 보기",
+        evidenceText: "구슬을 6개씩 봉지에 담고 남은 구슬을 세어 보세요.",
         correctValueText: "5봉지, 1개",
         candidates: ["5봉지, 1개", "6봉지, 1개", "5봉지, 5개", "4봉지, 7개", "1봉지, 5개"],
         answerExplanation: "6개씩 5봉지는 30개이고 1개가 남습니다.",
         countableTotal: 31,
-        countableGroupSize: 6
+        countableGroupSize: 6,
+        countableObjectName: "구슬",
+        countableCounter: "개",
+        countableGroupName: "봉지",
+        countableGroupLaneLabelText: "6개씩 담은 봉지"
       },
       {
         questionText: "색종이 29장을 7장씩 나누면 몇 묶음이고 몇 장이 남을까요?",
-        evidenceLabelText: "점 29개를 7개씩 묶어 표시하기",
-        evidenceText: "점을 묶어 표시하고 남은 점을 세어 보세요.",
+        evidenceLabelText: "색종이 29장으로 7장짜리 묶음 만들기",
+        evidenceText: "색종이로 7장짜리 묶음을 만들고 남은 색종이를 세어 보세요.",
         correctValueText: "4묶음, 1장",
         candidates: ["4묶음, 1장", "3묶음, 8장", "4묶음, 7장", "5묶음, 1장", "1묶음, 4장"],
         answerExplanation: "7장씩 4묶음은 28장이고 1장이 남습니다.",
         countableTotal: 29,
-        countableGroupSize: 7
+        countableGroupSize: 7,
+        countableObjectName: "색종이",
+        countableCounter: "장",
+        countableGroupName: "묶음",
+        countableGroupLaneLabelText: "7장씩 만든 묶음"
       }
     ]
   },

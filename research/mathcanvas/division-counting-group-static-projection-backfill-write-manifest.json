@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "division-counting-group-static-projection-backfill-20260809",
+  "createdAt": "2026-08-09T07:01:00Z",
+  "reason": "29÷7에서 발견한 stale learner-facing payload 재열기 결함을 같은 division reference family의 23÷4와 31÷6에도 exact static projection으로 닫는다.",
+  "authorization": {
+    "scope": "사용자가 로그인 완료 뒤 MathCanvas 30개 제작을 즉시 계속하도록 지시한 현재 작업 범위",
+    "disposableProjectOnly": true
+  },
+  "target": {
+    "origin": "https://mathcanvas.vivasam.com",
+    "projectId": "oEaJt5",
+    "projectTitle": "AI-CONTRACT-PROBE-DIVNATIVE-20260808T003124Z",
+    "approvalEvidenceRunId": "20260808T003124Z"
+  },
+  "sourceIdentity": {
+    "layoutRevision": "layout-8876a47136b4aab8",
+    "layoutPresetContentHash": "a7d66e21ceea214da40df391d3fc64d462e61c2f9d7c86024e05292b40c0cb49",
+    "blueprintContentHash": "2cf4eb96f66e0defd85f09f22cac95f99442bd6c52b790583c9e12df39a0a4cb",
+    "staticProjectionPolicy": "division-product-static-v1",
+    "staticObjectCount": 29,
+    "scenarios": [
+      {
+        "scenario": "23-by-4",
+        "expectedStaticPayloadSha256": "66c8fd05ac54c235fb33581bf3225d07d1da6e9af6640821bf2391ca03ba1aed"
+      },
+      {
+        "scenario": "31-by-6",
+        "expectedStaticPayloadSha256": "6eca1a9804914a40b349e1f5747128c17f1bd234a298591e77e7b90d1a3d74fe"
+      }
+    ]
+  },
+  "hardCeiling": {
+    "POST": 0,
+    "PUT": 2,
+    "PATCH": 0,
+    "DELETE": 0
+  },
+  "abortPolicy": "정확한 disposable identity·scenario별 current static projection·총 PUT 2회 범위를 벗어나면 evidence를 쓰기 전에 실패",
+  "executionResult": {
+    "completedAt": "2026-08-09T07:05:07Z",
+    "actualCounts": {
+      "POST": 0,
+      "PUT": 2,
+      "PATCH": 0,
+      "DELETE": 0
+    },
+    "scenarios": [
+      {
+        "scenario": "23-by-4",
+        "actualPutCount": 1,
+        "persistedReopenedSecondReadStaticSha256": "66c8fd05ac54c235fb33581bf3225d07d1da6e9af6640821bf2391ca03ba1aed",
+        "canarySha256": "045f8147302dd1b4625bc4a3e33ece1b9b0e2caf8b638d2b0690c7eda1e942d5"
+      },
+      {
+        "scenario": "31-by-6",
+        "actualPutCount": 1,
+        "persistedReopenedSecondReadStaticSha256": "6eca1a9804914a40b349e1f5747128c17f1bd234a298591e77e7b90d1a3d74fe",
+        "canarySha256": "65f158a85e93c0f1ee7b598cefa34fa8ea54a5ccbbae660b00edf1f4d59c45cc"
+      }
+    ],
+    "unexpectedWriteCount": 0
+  }
+}

@@ -37,6 +37,10 @@ import {
   stableJson
 } from "./lib/normalize.mjs";
 import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
+import {
+  DIVISION_PRODUCT_STATIC_PROJECTION_POLICY,
+  divisionProductStaticPayloadIdentity
+} from "./lib/division-product-static-projection.mjs";
 
 const origin = "https://mathcanvas.vivasam.com";
 const activityId =
@@ -532,10 +536,13 @@ function buildInjectedContents() {
       itemId: item.id,
       questionText: item.values.questionText,
       correctValueText: item.values.correctValueText,
-      verifyInstructionText: item.values.verifyInstructionText,
+      predictInstructionText: emittedText("instruction-predict"),
+      verifyInstructionText: emittedText("instruction-verify"),
+      explainInstructionText: emittedText("instruction-explain"),
       groupLaneLabelText: item.values.groupLaneLabelText,
       poolLabelText: emittedText("pool-label"),
       sourceLabelText: emittedText("source-label"),
+      remainderLabelText: emittedText("remainder-lane-label"),
       explanationLabelText: emittedText("explanation-label"),
       compiledPayloadHash: compiled.payloadHash,
       compiledProjectTitle: compiled.payload.projectTitle,
@@ -1765,11 +1772,14 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     sourceLabel,
     groupLaneLabel,
     remainderLaneLabel,
-    arrayPanel
+    arrayPanel,
+    sourceLane,
+    groupLane,
+    remainderLane
   ] = await Promise.all([
-    textBox("instruction-predict"),
+    textBox(`${prefix}-instruction-predict`),
     textBox(`${prefix}-instruction-verify`),
-    textBox("instruction-explain"),
+    textBox(`${prefix}-instruction-explain`),
     textBox(`${prefix}-question`),
     box(`${prefix}-choice-panel`),
     textBox(`${prefix}-pool-label`),
@@ -1781,7 +1791,10 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     textBox(`${prefix}-source-label`),
     textBox(`${prefix}-group-lane-label`),
     textBox(`${prefix}-remainder-lane-label`),
-    borderBounds(page, "array-panel")
+    borderBounds(page, "array-panel"),
+    borderBounds(page, "source-panel"),
+    borderBounds(page, "group-lane"),
+    borderBounds(page, "remainder-lane")
   ]);
   const choicePairs = await Promise.all(
     Array.from({ length: 5 }, async (_, index) => ({
@@ -1916,7 +1929,21 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     ),
     remainderLabelTopFromWorkbenchCssPx: round(
       actualBounds(remainderLaneLabel).y - arrayPanel.y
-    )
+    ),
+    workbenchLabelLaneInsetsCssPx: [
+      {
+        role: "source-label",
+        ...insets(sourceLane, actualBounds(sourceLabel))
+      },
+      {
+        role: "group-lane-label",
+        ...insets(groupLane, actualBounds(groupLaneLabel))
+      },
+      {
+        role: "remainder-lane-label",
+        ...insets(remainderLane, actualBounds(remainderLaneLabel))
+      }
+    ]
   };
   const checks = {
     instructionRowsSeparated:
@@ -1955,6 +1982,10 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
       metrics.sourceLabelTopFromWorkbenchCssPx >= 10 &&
       metrics.groupLabelTopFromWorkbenchCssPx >= 10 &&
       metrics.remainderLabelTopFromWorkbenchCssPx >= 10,
+    workbenchLabelsInsideOwnLanes:
+      metrics.workbenchLabelLaneInsetsCssPx.every(
+        ({ left, right }) => left >= 1 && right >= 1
+      ),
     sourceNativeUnitsClearLabel:
       metrics.sourceLabelToNearestNativeUnitCssPx >= 6
   };
@@ -2014,7 +2045,10 @@ async function measureFixedChromeTaskClearance(page) {
   const taskSurfaces = [
     [
       "instruction-predict",
-      await page.locator('[id="instruction-predict"]').first().boundingBox()
+      await page
+        .locator(`[id="${prefix}-instruction-predict"]`)
+        .first()
+        .boundingBox()
     ],
     [
       "instruction-verify",
@@ -2025,7 +2059,10 @@ async function measureFixedChromeTaskClearance(page) {
     ],
     [
       "instruction-explain",
-      await page.locator('[id="instruction-explain"]').first().boundingBox()
+      await page
+        .locator(`[id="${prefix}-instruction-explain"]`)
+        .first()
+        .boundingBox()
     ],
     [
       "question",
@@ -2273,6 +2310,8 @@ try {
   let reopenProjectReadCount = 0;
   let reopenPutAttemptCount = 0;
   let servedAssetEvidence;
+  let expectedStaticPayloadIdentity;
+  let sourceStaticPayloadIdentity;
 
   authSession = await createLiveAuthHeadlessSession(
     resolveStateDirectory(options["state-dir"])
@@ -2397,6 +2436,12 @@ try {
     sourceProject.contentsJson ?? []
   );
   injected = buildInjectedContents();
+  expectedStaticPayloadIdentity = divisionProductStaticPayloadIdentity(
+    injected.contentsJson
+  );
+  sourceStaticPayloadIdentity = divisionProductStaticPayloadIdentity(
+    sourceProject.contentsJson ?? []
+  );
   configureGroupMemberIndexSets(injected.contentsJson, injected.unitIds);
   const countingStructureAnalysis = analyzeCountingModelStructure(
     injected.contentsJson
@@ -2436,7 +2481,11 @@ try {
   priorApprovedSaveObserved = priorApprovedVersionCount > 0;
   resumedFromPriorApprovedSave =
     priorApprovedSaveObserved &&
-    hasCurrentLayoutRevision(sourceProject.contentsJson ?? []);
+    hasCurrentLayoutRevision(sourceProject.contentsJson ?? []) &&
+    sourceStaticPayloadIdentity.objectCount ===
+      expectedStaticPayloadIdentity.objectCount &&
+    sourceStaticPayloadIdentity.sha256 ===
+      expectedStaticPayloadIdentity.sha256;
   injectedCanvasOption = {
     ...structuredClone(injected.canvasOption),
     lockIds: injected.lockedIds.map((id) => [id])
@@ -2927,6 +2976,10 @@ try {
   const persistedState = normalizedDivisionState(
     persistedProject.contentsJson ?? []
   );
+  const persistedStaticPayloadIdentity =
+    divisionProductStaticPayloadIdentity(
+      persistedProject.contentsJson ?? []
+    );
   await serverPage.close();
 
   await context.close();
@@ -2968,6 +3021,8 @@ try {
   const reopenedPath = join(screenshotDirectory, "reopened.png");
   const reopenedPayload = await readClientPayload(reopenedPage);
   const reopenedState = normalizedDivisionState(reopenedPayload.contentsJson);
+  const reopenedStaticPayloadIdentity =
+    divisionProductStaticPayloadIdentity(reopenedPayload.contentsJson);
   const intrinsicReopened = await measureStandaloneUnitSpatial(
     reopenedPage,
     intrinsicUnitId,
@@ -3037,7 +3092,28 @@ try {
   const secondReadPage = await context.newPage();
   const secondRead = await readProject(secondReadPage, projectId);
   const secondReadState = normalizedDivisionState(secondRead.contentsJson ?? []);
+  const secondReadStaticPayloadIdentity =
+    divisionProductStaticPayloadIdentity(secondRead.contentsJson ?? []);
   await secondReadPage.close();
+
+  for (const identity of [
+    persistedStaticPayloadIdentity,
+    reopenedStaticPayloadIdentity,
+    secondReadStaticPayloadIdentity
+  ]) {
+    if (
+      identity.policy !== DIVISION_PRODUCT_STATIC_PROJECTION_POLICY ||
+      identity.objectCount !== expectedStaticPayloadIdentity.objectCount ||
+      identity.sha256 !== expectedStaticPayloadIdentity.sha256
+    ) {
+      throw new Error(
+        `division-group-static-payload-drift:${JSON.stringify({
+          expected: expectedStaticPayloadIdentity,
+          observed: identity
+        })}`
+      );
+    }
+  }
 
   const intrinsicRoundTripDrift = Math.max(
     maxBoundsDrift(
@@ -3089,6 +3165,13 @@ try {
       reopenedState.semanticHash === persistedState.semanticHash,
     secondReadMatchesServer:
       secondReadState.semanticHash === persistedState.semanticHash,
+    learnerFacingStaticPayloadMatchesCurrent:
+      persistedStaticPayloadIdentity.sha256 ===
+        expectedStaticPayloadIdentity.sha256 &&
+      reopenedStaticPayloadIdentity.sha256 ===
+        expectedStaticPayloadIdentity.sha256 &&
+      secondReadStaticPayloadIdentity.sha256 ===
+        expectedStaticPayloadIdentity.sha256,
     persistedUsesCurrentLayout:
       hasCurrentLayoutRevision(persistedProject.contentsJson ?? []),
     reopenedUsesCurrentLayout:
@@ -3592,6 +3675,21 @@ try {
       derivedFromStudentConstruction: true
     },
     productContract: injected.productContract,
+    learnerFacingStaticPayload: {
+      policy: DIVISION_PRODUCT_STATIC_PROJECTION_POLICY,
+      objectCount: expectedStaticPayloadIdentity.objectCount,
+      expectedSha256: expectedStaticPayloadIdentity.sha256,
+      sourceAtStartSha256: sourceStaticPayloadIdentity.sha256,
+      sourceAtStartMatchesExpected:
+        sourceStaticPayloadIdentity.objectCount ===
+          expectedStaticPayloadIdentity.objectCount &&
+        sourceStaticPayloadIdentity.sha256 ===
+          expectedStaticPayloadIdentity.sha256,
+      persistedSha256: persistedStaticPayloadIdentity.sha256,
+      reopenedSha256: reopenedStaticPayloadIdentity.sha256,
+      secondReadSha256: secondReadStaticPayloadIdentity.sha256,
+      allPersistedStatesMatchExpected: true
+    },
     compilerContract: {
       fragmentKind: injected.compilerFragment.kind,
       emittedObjectCount: injected.compilerFragment.emittedObjectCount,

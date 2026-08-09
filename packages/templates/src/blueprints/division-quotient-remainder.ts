@@ -6,6 +6,7 @@ import {
 } from "@mathcanvas/contracts";
 import type { ClaimEvidenceActivityProfile } from "@mathcanvas/curriculum";
 import {
+  buildDivisionClassroomLanguage,
   CLAIM_EVIDENCE_GENERATOR_ID,
   CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
 } from "../item-generators/claim-evidence.js";
@@ -20,6 +21,19 @@ import { withStudentScreenQuality } from "./student-screen-quality.js";
 const DIVISION_SPATIAL_CONTRACT_ID =
   "division-grouping-no01sc-01-composition-v2" as const;
 const DIVISION_SPATIAL_CONTRACT_VERSION = "2.0.0" as const;
+const CHOICE_VALUE_KEYS = CHOICE_CARD_ROLES.map(
+  (_role, index) => `candidate${index + 1}`
+);
+
+function requiredDistinctTerms(
+  values: readonly (string | undefined)[],
+  field: string
+): string[] {
+  if (values.some((value) => !value?.trim())) {
+    throw new Error(`division-native-story-term-missing:${field}`);
+  }
+  return [...new Set(values.map((value) => value!.trim()))];
+}
 
 function lineRole(role: string, instructionalIntent: string) {
   return {
@@ -72,7 +86,14 @@ function withoutLegacyWorkPanel(
       return role;
     })
     .map((role) => {
-      if (role.role === "instruction-verify") {
+      const instructionBinding = (
+        {
+          "instruction-predict": "item.predictInstructionText",
+          "instruction-verify": "item.verifyInstructionText",
+          "instruction-explain": "item.explainInstructionText"
+        } as Readonly<Record<string, string>>
+      )[role.role];
+      if (instructionBinding) {
         return {
           ...role,
           scope: "each-item" as const,
@@ -80,7 +101,7 @@ function withoutLegacyWorkPanel(
             ...role.properties,
             text: ""
           },
-          bindings: { text: "item.verifyInstructionText" }
+          bindings: { text: instructionBinding }
         };
       }
       const candidateIndex = CHOICE_CARD_ROLES.indexOf(
@@ -109,6 +130,66 @@ export function makeDivisionQuotientRemainderBlueprint(
   }
   const presentation = profile.presentation;
   const instructions = presentation.instructions;
+  const allowedObjectNames = requiredDistinctTerms(
+    profile.items.map((item) => item.countableObjectName),
+    "countableObjectName"
+  );
+  const allowedCounters = requiredDistinctTerms(
+    profile.items.map((item) => item.countableCounter),
+    "countableCounter"
+  );
+  const allowedGroupNames = requiredDistinctTerms(
+    profile.items.map((item) => item.countableGroupName),
+    "countableGroupName"
+  );
+  const canonicalItemStories = profile.items.map((item) => {
+    if (
+      item.countableTotal === undefined ||
+      item.countableGroupSize === undefined ||
+      !item.countableObjectName ||
+      !item.countableCounter ||
+      !item.countableGroupName ||
+      !item.countableGroupLaneLabelText
+    ) {
+      throw new Error("division-native-canonical-story-missing");
+    }
+    const classroomLanguage = buildDivisionClassroomLanguage({
+      countableGroupSize: item.countableGroupSize,
+      countableObjectName: item.countableObjectName,
+      countableCounter: item.countableCounter,
+      countableGroupName: item.countableGroupName,
+      countableGroupLaneLabelText: item.countableGroupLaneLabelText
+    });
+    return {
+      fields: {
+        questionText: item.questionText,
+        evidenceLabelText: item.evidenceLabelText,
+        evidenceText: item.evidenceText,
+        correctValueText: item.correctValueText,
+        answerExplanation: item.answerExplanation,
+        countableTotal: item.countableTotal,
+        countableGroupSize: item.countableGroupSize,
+        countableObjectName: item.countableObjectName,
+        countableCounter: item.countableCounter,
+        countableGroupName: item.countableGroupName,
+        ...classroomLanguage
+      },
+      candidateSet: [...item.candidates].sort()
+    };
+  });
+  const exactItemRoleBindings = [
+    ["instruction-predict", "predictInstructionText"],
+    ["instruction-verify", "verifyInstructionText"],
+    ["instruction-explain", "explainInstructionText"],
+    ["question", "questionText"],
+    ["source-label", "sourceLaneLabelText"],
+    ["group-lane-label", "groupLaneLabelText"],
+    ["remainder-lane-label", "remainderLaneLabelText"],
+    ...CHOICE_CARD_ROLES.map((role, index) => [
+      role,
+      CHOICE_VALUE_KEYS[index]!
+    ])
+  ].map(([role, valueKey]) => ({ role, valueKey }));
   const scaffoldRoles = withoutLegacyWorkPanel(
     makeChoiceExplanationScaffoldRoles({
       instructions,
@@ -142,7 +223,7 @@ export function makeDivisionQuotientRemainderBlueprint(
     (role) =>
       lineRole(
         role,
-        "묶기 전 모형, 묶은 모형, 남은 모형의 공간을 구분합니다."
+        "아직 묶지 않은 것, 만든 묶음, 묶이지 않고 남은 것의 공간을 구분합니다."
       )
   );
   const customRoles: ActivityBlueprintBody["toolRoles"] = [
@@ -150,10 +231,10 @@ export function makeDivisionQuotientRemainderBlueprint(
     ...separatorRoles,
     labelRole({
       role: "source-label",
-      text: "묶기 전 모형",
+      textBinding: "item.sourceLaneLabelText",
       fontSize: presentation.fontSizes.evidenceLabel,
       instructionalIntent:
-        "문제의 전체 수만큼 놓인 중립적인 모형 풀을 안내합니다."
+        "아직 묶지 않은 이야기 속 물건을 직접 이름 붙여 안내합니다."
     }),
     labelRole({
       role: "group-lane-label",
@@ -164,10 +245,10 @@ export function makeDivisionQuotientRemainderBlueprint(
     }),
     labelRole({
       role: "remainder-lane-label",
-      text: "남은 모형",
+      textBinding: "item.remainderLaneLabelText",
       fontSize: 30,
       instructionalIntent:
-        "더 묶지 못하고 남은 수를 따로 확인할 공간을 안내합니다."
+        "더 묶지 못하고 남은 이야기 속 물건을 직접 이름 붙여 안내합니다."
     }),
     {
       role: "counting-model-pool",
@@ -189,7 +270,11 @@ export function makeDivisionQuotientRemainderBlueprint(
   const scaffoldLayout = makeChoiceExplanationScaffoldLayoutChildren(5)
     .filter((block) => block.id !== "work-panel" && block.id !== "number")
     .map((block) =>
-      block.id === "instruction-verify"
+      [
+        "instruction-predict",
+        "instruction-verify",
+        "instruction-explain"
+      ].includes(block.id)
         ? { ...block, repeat: "each-item" as const }
         : block
     );
@@ -240,7 +325,7 @@ export function makeDivisionQuotientRemainderBlueprint(
       {
         schemaVersion: "1.0.0",
         id: profile.activityId,
-        version: "2.2.0",
+        version: "2.5.0",
         title: profile.title,
         learningObjective: profile.learningObjective,
         curriculumBinding: {
@@ -318,7 +403,77 @@ export function makeDivisionQuotientRemainderBlueprint(
               ],
               promptRoles: ["question"],
               maximumInstructionLength: 74,
-              maximumLabelLength: 24
+              maximumLabelLength: 24,
+              canonicalItemStories,
+              canonicalCandidateValueKeys: CHOICE_VALUE_KEYS,
+              exactItemRoleBindings,
+              requiredItemValueMentions: [
+                {
+                  valueKey: "countableObjectName",
+                  allowedValues: allowedObjectNames,
+                  forbiddenValues: ["모형", "물건", "것"],
+                  roles: [
+                    "instruction-verify",
+                    "instruction-explain",
+                    "source-label",
+                    "remainder-lane-label",
+                    "question"
+                  ],
+                  valueFields: [
+                    "questionText",
+                    "evidenceLabelText",
+                    "evidenceText"
+                  ]
+                },
+                {
+                  valueKey: "countableCounter",
+                  allowedValues: allowedCounters,
+                  roles: [
+                    "instruction-verify",
+                    "group-lane-label",
+                    "question",
+                    ...CHOICE_CARD_ROLES
+                  ],
+                  valueFields: [
+                    "questionText",
+                    "evidenceLabelText",
+                    "evidenceText",
+                    "correctValueText",
+                    "answerExplanation",
+                    ...CHOICE_VALUE_KEYS
+                  ]
+                },
+                {
+                  valueKey: "countableGroupName",
+                  allowedValues: allowedGroupNames,
+                  roles: [
+                    "instruction-explain",
+                    "group-lane-label",
+                    "question",
+                    ...CHOICE_CARD_ROLES
+                  ],
+                  valueFields: [
+                    "questionText",
+                    "evidenceLabelText",
+                    "evidenceText",
+                    "correctValueText",
+                    "answerExplanation",
+                    ...CHOICE_VALUE_KEYS
+                  ]
+                }
+              ],
+              requiredItemParticleMentions: [
+                {
+                  valueKey: "countableObjectName",
+                  particle: "object",
+                  roles: ["instruction-verify", "instruction-explain"]
+                },
+                {
+                  valueKey: "countableGroupName",
+                  particle: "join",
+                  roles: ["instruction-explain"]
+                }
+              ]
             }
           },
           {
@@ -334,10 +489,13 @@ export function makeDivisionQuotientRemainderBlueprint(
                 "explanation-label",
                 "source-label",
                 "group-lane-label",
-                "remainder-lane-label",
                 ...CHOICE_CARD_ROLES
               ],
-              maximumFillRatio: 0.96
+              maximumFillRatio: 0.96,
+              roleMaximumFillRatios: {
+                "instruction-verify": 1,
+                "remainder-lane-label": 1
+              }
             }
           },
           {
@@ -416,7 +574,30 @@ export function makeDivisionQuotientRemainderBlueprint(
                 containerRole: `${role}-backdrop`,
                 maximumOffsetX: 0,
                 maximumOffsetY: 0
-              }))
+              })),
+              horizontalLanes: [
+                {
+                  role: "source-label",
+                  leftBoundaryRole: "array-border-left",
+                  rightBoundaryRole: "source-separator",
+                  minimumLeft: 2,
+                  minimumRight: 2
+                },
+                {
+                  role: "group-lane-label",
+                  leftBoundaryRole: "source-separator",
+                  rightBoundaryRole: "remainder-separator",
+                  minimumLeft: 2,
+                  minimumRight: 2
+                },
+                {
+                  role: "remainder-lane-label",
+                  leftBoundaryRole: "remainder-separator",
+                  rightBoundaryRole: "array-border-right",
+                  minimumLeft: 2,
+                  minimumRight: 2
+                }
+              ]
             }
           },
           {

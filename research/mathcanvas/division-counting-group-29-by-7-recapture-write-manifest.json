@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "division-counting-group-29-by-7-recapture-20260809",
+  "createdAt": "2026-08-09T06:51:55Z",
+  "reason": "Sol xhigh가 29÷7 reopened 화면의 이전 ② 문구와 read-only resume false positive를 발견해 current static payload identity를 저장·재열기한다.",
+  "authorization": {
+    "scope": "사용자가 로그인 완료 뒤 MathCanvas 30개 제작을 즉시 계속하도록 지시한 현재 작업 범위",
+    "disposableProjectOnly": true
+  },
+  "target": {
+    "origin": "https://mathcanvas.vivasam.com",
+    "projectId": "oEaJt5",
+    "projectTitle": "AI-CONTRACT-PROBE-DIVNATIVE-20260808T003124Z",
+    "approvalEvidenceRunId": "20260808T003124Z"
+  },
+  "sourceIdentity": {
+    "scenario": "29-by-7",
+    "layoutRevision": "layout-8876a47136b4aab8",
+    "layoutPresetContentHash": "a7d66e21ceea214da40df391d3fc64d462e61c2f9d7c86024e05292b40c0cb49",
+    "blueprintContentHash": "2cf4eb96f66e0defd85f09f22cac95f99442bd6c52b790583c9e12df39a0a4cb",
+    "staticProjectionPolicy": "division-product-static-v1",
+    "staticObjectCount": 29,
+    "staticPayloadSha256": "a99abd774dcd7fbc72e520a8c76c56d065f17086c3e93393c65eba53b21422fc"
+  },
+  "hardCeiling": {
+    "POST": 0,
+    "PUT": 1,
+    "PATCH": 0,
+    "DELETE": 0
+  },
+  "abortPolicy": "정확한 disposable identity·current static projection·PUT 1회 범위를 벗어나면 evidence를 쓰기 전에 실패",
+  "executionResult": {
+    "completedAt": "2026-08-09T06:58:42Z",
+    "actualCounts": {
+      "POST": 0,
+      "PUT": 1,
+      "PATCH": 0,
+      "DELETE": 0
+    },
+    "firstWriteOutcome": "current static payload를 1회 저장했으며, 서버의 유한소수 직렬화 차이를 발견해 evidence 쓰기 전에 중단했다.",
+    "finalValidationOutcome": "숫자 정규화 뒤 같은 저장본을 GET-only로 다시 열어 current static payload와 full/reopened 픽셀 동일성을 확인했다.",
+    "finalCanarySha256": "2e123654bd3131d8467c2fe406f75f40cc45bbc2a4dea0bbaafa1c954e6c3b8d",
+    "fullAndReopenedScreenshotSha256": "d28d62dca7b6ef299dbdf99b44fc0fb1726fae25342b0083f2cdbfab69c9909d",
+    "unexpectedWriteCount": 0
+  }
+}

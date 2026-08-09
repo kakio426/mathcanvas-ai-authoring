@@ -122,8 +122,8 @@ describe("fail-closed tool adapter registry", () => {
       id: "counting-pool",
       x: 110,
       y: 350,
-      width: 470,
-      height: 588
+      width: 672,
+      height: 336
     };
     const first = compileNativeTool(intent, placement);
     const second = compileNativeTool(intent, placement);
@@ -141,7 +141,7 @@ describe("fail-closed tool adapter registry", () => {
     );
     expect(first.objects[0]).toMatchObject({
       svgId: "NO01SC-01",
-      x: 177,
+      x: 152,
       y: 392,
       isGroup: false,
       groupId: "",
@@ -149,8 +149,8 @@ describe("fail-closed tool adapter registry", () => {
     });
     expect(first.objects[30]).toMatchObject({
       svgId: "NO01SC-01",
-      x: 471,
-      y: 896
+      x: 740,
+      y: 644
     });
     const rows = new Map<number, number[]>();
     for (const object of first.objects) {
@@ -158,11 +158,9 @@ describe("fail-closed tool adapter registry", () => {
       xs.push(Number(object.x));
       rows.set(Number(object.y), xs);
     }
-    expect([...rows.values()].map((xs) => xs.length)).toEqual([
-      5, 4, 5, 4, 5, 4, 4
-    ]);
+    expect([...rows.values()].map((xs) => xs.length)).toEqual([8, 7, 8, 8]);
     expect([...rows.values()].slice(0, 2).map((xs) => xs[0])).toEqual([
-      177, 219
+      152, 194
     ]);
     expect(() =>
       compileNativeTool({ ...intent, count: 32 }, placement)

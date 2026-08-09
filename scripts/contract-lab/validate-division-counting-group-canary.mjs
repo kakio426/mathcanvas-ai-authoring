@@ -4,12 +4,27 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { isAbsolute, resolve } from "node:path";
 import {
+  CONTRACT_SCHEMA_VERSION,
   assertNativeSpatialLifecycleEvidence,
+  recommendationSchema,
   sha256Hex,
   studentOneScreenGeometryProfileSchema
 } from "../../packages/contracts/dist/index.js";
-import { getLayoutPreset } from "../../packages/mathcanvas-compiler/dist/index.js";
-import { findClaimEvidenceBlueprint } from "../../packages/templates/dist/index.js";
+import { resolveCurriculum } from "../../packages/curriculum/dist/index.js";
+import {
+  compileActivity,
+  getLayoutPreset,
+  resolveActivity
+} from "../../packages/mathcanvas-compiler/dist/index.js";
+import {
+  assertCognitiveManifestBound,
+  findClaimEvidenceBlueprint,
+  generateClaimEvidenceActivity
+} from "../../packages/templates/dist/index.js";
+import {
+  DIVISION_PRODUCT_STATIC_PROJECTION_POLICY,
+  divisionProductStaticPayloadIdentity
+} from "./lib/division-product-static-projection.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const geometryProfilePath = resolve(
@@ -67,6 +82,48 @@ const total = scenario.total;
 const groupSize = scenario.groupSize;
 const quotient = scenario.quotient;
 const remainderCount = scenario.remainderCount;
+const classroomLanguageByScenario = {
+  "23-by-4": {
+    predict:
+      "① 묶기 전에 답 카드 하나를 ‘처음 고른 답’ 칸에 놓으세요.",
+    verify:
+      "② 연필을 4자루씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. 4자루보다 적으면 오른쪽에 놓으세요.",
+    explain:
+      "③ 만든 묶음과 남은 연필을 보고 식과 까닭을 쓰세요. 처음 고른 답과 다르면 카드를 바꾸세요.",
+    sourceLabel: "아직 묶지 않은 연필",
+    groupLabel: "4자루씩 만든 묶음",
+    remainderLabel: "남은 연필"
+  },
+  "29-by-7": {
+    predict:
+      "① 묶기 전에 답 카드 하나를 ‘처음 고른 답’ 칸에 놓으세요.",
+    verify:
+      "② 색종이를 7장씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. 7장보다 적으면 오른쪽에 놓으세요.",
+    explain:
+      "③ 만든 묶음과 남은 색종이를 보고 식과 까닭을 쓰세요. 처음 고른 답과 다르면 카드를 바꾸세요.",
+    sourceLabel: "아직 묶지 않은 색종이",
+    groupLabel: "7장씩 만든 묶음",
+    remainderLabel: "남은 색종이"
+  },
+  "31-by-6": {
+    predict:
+      "① 묶기 전에 답 카드 하나를 ‘처음 고른 답’ 칸에 놓으세요.",
+    verify:
+      "② 구슬을 6개씩 가운데로 옮기세요. Shift 키로 골라 ‘그룹’을 누르세요. 6개보다 적으면 오른쪽에 놓으세요.",
+    explain:
+      "③ 만든 봉지와 남은 구슬을 보고 식과 까닭을 쓰세요. 처음 고른 답과 다르면 카드를 바꾸세요.",
+    sourceLabel: "아직 묶지 않은 구슬",
+    groupLabel: "6개씩 담은 봉지",
+    remainderLabel: "남은 구슬"
+  }
+};
+const expectedClassroomLanguage =
+  classroomLanguageByScenario[scenario.scenarioKey];
+if (!expectedClassroomLanguage) {
+  throw new Error(
+    "division-counting-group-canary-invalid:classroom-language-scenario"
+  );
+}
 const layoutId = "wave25-division-grouping-v1";
 const layoutPreset = getLayoutPreset(layoutId);
 const expectedLayoutContentHash = sha256Hex({
@@ -86,6 +143,59 @@ if (!blueprint) {
 function fail(reason) {
   throw new Error(`division-counting-group-canary-invalid:${reason}`);
 }
+
+function buildExpectedProduct() {
+  const curriculum = resolveCurriculum(
+    blueprint.curriculumBinding.standardCode
+  );
+  const recommendation = recommendationSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: `division-group-product-canary-${scenario.scenarioKey}`,
+    supported: true,
+    templateId: blueprint.id,
+    gradeBand: curriculum.record.gradeBand,
+    recommendedGrade: 3,
+    standardCode: curriculum.record.code,
+    learningGoal: blueprint.learningObjective,
+    prerequisites: curriculum.record.prerequisites,
+    problemCount: 1,
+    difficulty: "normal",
+    manipulation: "claim-evidence-revision-drag",
+    rationale: [
+      "실제 출시 블루프린트와 compiler payload의 저장·재열기 canary입니다."
+    ],
+    confidence: 0.99,
+    caveats: curriculum.warnings,
+    blockingReasons: [],
+    curriculum: curriculum.record
+  });
+  const plan = generateClaimEvidenceActivity(recommendation, {
+    seed: scenario.seed,
+    generatedAt: "2026-08-08T00:00:00.000Z",
+    activityId: `division-native-product-${scenario.scenarioKey}`
+  });
+  assertCognitiveManifestBound(plan.blueprint);
+  const item = plan.items[0];
+  if (
+    plan.items.length !== 1 ||
+    item?.values?.countableTotal !== total ||
+    item?.values?.countableGroupSize !== groupSize
+  ) {
+    fail("current-product-scenario-drift");
+  }
+  const resolved = resolveActivity(plan);
+  const compiled = compileActivity(resolved);
+  return {
+    item,
+    resolvedHash: sha256Hex(resolved),
+    compiledPayloadHash: compiled.payloadHash,
+    staticPayloadIdentity: divisionProductStaticPayloadIdentity(
+      compiled.payload.contentsJson
+    )
+  };
+}
+
+const expectedProduct = buildExpectedProduct();
 
 function fileSha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -400,6 +510,7 @@ const expectedTextClearanceChecks = [
   "choiceLineBoxesCentered",
   "writingLabelsPadded",
   "workbenchLabelsPadded",
+  "workbenchLabelsInsideOwnLanes",
   "sourceNativeUnitsClearLabel",
   "selectedSourceGroupClearsLabel"
 ];
@@ -444,6 +555,11 @@ if (
   textMetrics.choiceLineBoxCenterOffsetsCssPx.length !== 5 ||
   textMetrics.choiceLineBoxCenterOffsetsCssPx.some(
     ({ x, y }) => Math.abs(x) > 1 || Math.abs(y) > 1
+  ) ||
+  !Array.isArray(textMetrics?.workbenchLabelLaneInsetsCssPx) ||
+  textMetrics.workbenchLabelLaneInsetsCssPx.length !== 3 ||
+  textMetrics.workbenchLabelLaneInsetsCssPx.some(
+    ({ left, right }) => left < 1 || right < 1
   ) ||
   !validGeometryProfileReference(environment?.geometryProfileReference) ||
   fixedChromeClearance?.stableAfterReopen !== true ||
@@ -643,16 +759,20 @@ if (
   product?.generatorVersion !== blueprint.generator.version ||
   product?.seed !== scenario.seed ||
   product?.itemId !== "division-remainder-1" ||
-  typeof product?.questionText !== "string" ||
-  typeof product?.correctValueText !== "string" ||
-  product?.verifyInstructionText !==
-    `② 모형을 ${groupSize}개씩 옮겨 가까이 놓고, ${groupSize}개를 골라 ‘그룹’을 누르세요.` ||
-  product?.groupLaneLabelText !== `${groupSize}개씩 묶은 모형` ||
-  product?.poolLabelText !== "예상한 답 고르기" ||
-  product?.sourceLabelText !== "묶기 전 모형" ||
+  product?.questionText !== expectedProduct.item.values.questionText ||
+  product?.correctValueText !==
+    expectedProduct.item.values.correctValueText ||
+  product?.predictInstructionText !== expectedClassroomLanguage.predict ||
+  product?.verifyInstructionText !== expectedClassroomLanguage.verify ||
+  product?.explainInstructionText !== expectedClassroomLanguage.explain ||
+  product?.groupLaneLabelText !== expectedClassroomLanguage.groupLabel ||
+  product?.poolLabelText !== "답 카드 고르기" ||
+  product?.sourceLabelText !== expectedClassroomLanguage.sourceLabel ||
+  product?.remainderLabelText !==
+    expectedClassroomLanguage.remainderLabel ||
   product?.explanationLabelText !== "식과 까닭 쓰기" ||
-  !/^[a-f0-9]{64}$/.test(product?.compiledPayloadHash ?? "") ||
-  !/^[a-f0-9]{64}$/.test(product?.resolvedHash ?? "") ||
+  product?.compiledPayloadHash !== expectedProduct.compiledPayloadHash ||
+  product?.resolvedHash !== expectedProduct.resolvedHash ||
   product?.localValidationCanCreate !== true ||
   product?.localValidationIssueCodes?.length !== 0 ||
   product?.spatialContractId !==
@@ -661,6 +781,26 @@ if (
   !positiveBounds(product?.poolPlacementCanvas)
 ) {
   fail("actual-product-contract");
+}
+
+const staticPayload = canary.learnerFacingStaticPayload;
+const expectedStaticPayload = expectedProduct.staticPayloadIdentity;
+const sourceAtStartMatchesExpected =
+  staticPayload?.sourceAtStartSha256 === expectedStaticPayload.sha256;
+if (
+  staticPayload?.policy !== DIVISION_PRODUCT_STATIC_PROJECTION_POLICY ||
+  staticPayload?.objectCount !== expectedStaticPayload.objectCount ||
+  staticPayload?.expectedSha256 !== expectedStaticPayload.sha256 ||
+  !/^[a-f0-9]{64}$/.test(staticPayload?.sourceAtStartSha256 ?? "") ||
+  staticPayload?.sourceAtStartMatchesExpected !==
+    sourceAtStartMatchesExpected ||
+  staticPayload?.persistedSha256 !== expectedStaticPayload.sha256 ||
+  staticPayload?.reopenedSha256 !== expectedStaticPayload.sha256 ||
+  staticPayload?.secondReadSha256 !== expectedStaticPayload.sha256 ||
+  staticPayload?.allPersistedStatesMatchExpected !== true ||
+  (readOnlyResume && !sourceAtStartMatchesExpected)
+) {
+  fail("learner-facing-static-payload");
 }
 
 const intrinsic = canary.intrinsicSpatialContractCandidate;

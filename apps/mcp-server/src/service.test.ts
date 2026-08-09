@@ -16,7 +16,10 @@ import {
 import {
   writeVerifiedDraftFixture
 } from "../../../tests/helpers/verified-draft-fixture.js";
-import { MathCanvasAuthoringService } from "./service.js";
+import {
+  MathCanvasAuthoringService,
+  projectLearnerFacingInstructions
+} from "./service.js";
 
 const fixedClock = {
   now: () => new Date("2026-07-29T04:00:00.000Z")
@@ -73,6 +76,26 @@ function createService(
     fixedClock,
     draftSnapshotPath ? { draftSnapshotPath } : {}
   );
+}
+
+function learnerInstructionFixture() {
+  const itemId = "instruction-fixture-item";
+  return {
+    items: [{ id: itemId }],
+    instructions: ["기존 공통 안내"],
+    emissions: [
+      ["instruction-predict", "① 예상하세요."],
+      ["instruction-verify", "② 확인하세요."],
+      ["instruction-explain", "③ 설명하세요."]
+    ].map(([role, text], index) => ({
+      id: `instruction-fixture-${index + 1}`,
+      role,
+      itemId,
+      toolIntent: { properties: { text } }
+    }))
+  } as unknown as Parameters<
+    typeof projectLearnerFacingInstructions
+  >[0];
 }
 
 describe("MCP 서비스 흐름", () => {
@@ -163,6 +186,77 @@ describe("MCP 서비스 흐름", () => {
     });
     expect(result.supported).toBe(false);
     expect(result.draftId).toBeUndefined();
+  });
+
+  it("몫과 나머지 추천 요약도 선택된 이야기의 학생용 지시문을 그대로 보여 준다", () => {
+    const result = createService().recommend({
+      prompt:
+        "초등학교 3학년 나눗셈에서 몫과 나머지를 직접 묶어 확인하는 활동지를 만들어 주세요.",
+      requestedStandardCode: "[4수01-06]",
+      requestedGrade: 3,
+      problemCount: 1,
+      difficulty: "normal",
+      manipulation: "claim-evidence-revision-drag"
+    });
+    expect(result.supported).toBe(true);
+    const instructions = result.activitySummary?.studentInstructions;
+    expect(instructions).toHaveLength(3);
+    expect(instructions?.[0]).toContain("답 카드 하나");
+    expect(instructions?.[1]).toContain("Shift 키로");
+    expect(instructions?.[1]).toMatch(
+      /② (연필을|색종이를|구슬을) \d+(자루|장|개)씩 가운데로 옮기세요\./
+    );
+    expect(instructions?.[1]).toContain("오른쪽에 놓으세요.");
+    expect(instructions?.[1]).not.toContain("한 묶음만큼");
+    expect(instructions?.[2]).not.toContain("남은 물건");
+  });
+
+  it("문항별 추천 안내는 exact-one 세 역할만 투영하고 부분 누락·중복·공백은 막는다", () => {
+    const valid = learnerInstructionFixture();
+    expect(projectLearnerFacingInstructions(valid)).toEqual([
+      "① 예상하세요.",
+      "② 확인하세요.",
+      "③ 설명하세요."
+    ]);
+    expect(
+      projectLearnerFacingInstructions({
+        ...valid,
+        emissions: []
+      })
+    ).toEqual(["기존 공통 안내"]);
+
+    const missing = structuredClone(valid);
+    missing.emissions = missing.emissions.filter(
+      (emission) => emission.role !== "instruction-verify"
+    );
+    expect(() => projectLearnerFacingInstructions(missing)).toThrow(
+      "한 문항의 학생 안내 세 역할"
+    );
+
+    const duplicate = structuredClone(valid);
+    duplicate.emissions.push({
+      ...structuredClone(duplicate.emissions[0]!),
+      id: "instruction-fixture-duplicate"
+    });
+    expect(() => projectLearnerFacingInstructions(duplicate)).toThrow(
+      "한 문항의 학생 안내 세 역할"
+    );
+
+    const blank = structuredClone(valid);
+    blank.emissions[1]!.toolIntent.properties.text = "   ";
+    expect(() => projectLearnerFacingInstructions(blank)).toThrow(
+      "누락되거나 중복"
+    );
+
+    const foreignItem = structuredClone(valid);
+    foreignItem.emissions.push({
+      ...structuredClone(foreignItem.emissions[1]!),
+      id: "instruction-fixture-foreign",
+      itemId: "ghost-item"
+    });
+    expect(() => projectLearnerFacingInstructions(foreignItem)).toThrow(
+      "한 문항의 학생 안내 세 역할"
+    );
   });
 
   it("브라우저 실패 코드를 교사가 행동할 수 있는 안내로 바꾼다", async () => {
