@@ -359,7 +359,10 @@
 - Commit gate:
   - [ ] 관계가 응집된 blueprintFamily wave마다 tests/evidence와 함께 commit·push한다.
 - Evidence/notes:
-  - 미착수.
+  - `research/mathcanvas/eduitit-html30-prompt-harness.json`과 `eduitit-html30-prompt-pack.md`는 Eduitit에 배포된 실제 `*-slides.html` 30개를 `series-manifest.json`·각 lesson `manifest.json`·HTML bytes/SHA에 1:1 결속한 design-only 준비 근거다. PPTX나 `claude-all-30-ppt-content.md`를 source로 사용하지 않는다.
+  - 각 prompt는 HTML 화면 02(prediction conflict), 03(condition change; 21번은 원문의 early mathematical confirmation), 06(mathematical confirmation source), 09(independent transfer), 10(misconception revision)의 static normalized slide text SHA를 보존하고 native-first 네 phase·기본 1문제/최대 2문제·1280×800 one-screen·큰 글자·bounded `teacherContext`를 요구한다. 이 text는 `sc-if`의 실제 렌더 branch 측정이 아니라 배포 HTML 정적 근거다.
+  - pinned source manifest SHA는 `0a57b78ae84b82d7581485fd58747e85cabb7cdefe46321610f4fcee237899f5`, harness content SHA는 `120e5f919cf9f7723a2650898bcd9fbdbfcff50da2c08546d0e61a3715492220`이다. 현재 source↔catalog alignment는 exact 27/30이며 25–27번은 Eduitit `분수와 소수`와 catalog `분수` 단원명 차이로 `needs-review`다. catalog availability가 30/30 blocked이므로 design-only prompt 전부 `compileAllowed: false`이며 exact 27건은 `sourceAlignmentReady`로만 구분한다.
+  - 이는 30개 구현 완료나 release 근거가 아니다. current release는 0/30이며 각 activity는 blueprint·native contract·fresh background canary·actual save/reopen·Sol 시각 검토를 별도로 통과해야 한다.
 
 ## R7 — 교사 선택 UI·bounded prompt·preview/approval
 

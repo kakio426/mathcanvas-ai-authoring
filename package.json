@@ -72,6 +72,8 @@
     "mathcanvas:ui:no-open": "MATHCANVAS_UI_NO_OPEN=1 pnpm mathcanvas:ui",
     "lesson-bundle:run": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/run-lesson-bundle-activity.mjs",
     "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
+    "prompt-harness:eduitit-html30:update": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs --write",
+    "prompt-harness:eduitit-html30:verify": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs",
     "quality:audit": "node scripts/quality-audit/run.mjs",
     "native-spatial:verify": "node scripts/quality-audit/verify-native-spatial-ratchet.mjs",
     "native-spatial:update": "node scripts/quality-audit/update-native-spatial-catalog.mjs",
