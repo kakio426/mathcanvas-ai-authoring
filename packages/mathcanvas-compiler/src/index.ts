@@ -15,4 +15,14 @@ export * from "./native-objects.js";
 export * from "./layout-presets/registry.js";
 export * from "./resolve/layout-resolver.js";
 export * from "./resolve/native-spatial-layout.js";
+export {
+  measureConservativeText,
+  resolveOneScreenLayout,
+  type ConservativeTextMeasurement,
+  type OneScreenLayoutRequest,
+  type OneScreenLayoutResult,
+  type OneScreenResolvedRegion,
+  type OneScreenTextBox,
+  type OneScreenTextInput
+} from "./resolve/one-screen-layout.js";
 export * from "./resolve/resolve-activity.js";

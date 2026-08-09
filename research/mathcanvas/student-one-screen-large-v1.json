@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0.0",
+  "profileId": "student-one-screen-large-v1",
+  "profileVersion": "1.0.0",
+  "geometryBinding": {
+    "profileId": "student-one-screen-fixed-geometry-v1",
+    "profileVersion": "1.0.0",
+    "profileFileSha256": "5af1498c3dd392eb7f2d771679b62eb435d37e1d636c3c9b74fbc34030b21732",
+    "profileContentSha256": "5709aa3b23f66761436eeeea61e7805e3ea20290ef1a5b2a55f80be6a18eaff3",
+    "fixedSafeCss": {
+      "x": 240,
+      "y": 64,
+      "width": 976,
+      "height": 672
+    },
+    "fixedSafeCanvas": {
+      "x": -84.735993,
+      "y": -18.992,
+      "width": 1686.528,
+      "height": 1161.216
+    },
+    "coordinateScaleX": 0.578703681,
+    "coordinateScaleY": 0.578703693
+  },
+  "fontMetricsBinding": {
+    "tableId": "pretendard-conservative-korean-v1",
+    "tableVersion": "1.0.0",
+    "tableFileSha256": "3bd8f3703cee8b7eff76598d3c98cd267d5361caecac97ac45c72eea36f93fc6",
+    "tableContentSha256": "d93380172a5c6af313e846739d58e1791e4af05044c7e14df9bad032e4b2c2f8",
+    "fontFingerprint": "sha256:d77e1591965fe81b0592b97c8bc4323719e80bb4581d9065dc2acf87b7a5fb9c"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "surfaceMode": "authoring-editor",
+    "sidebarState": "expanded",
+    "scrollAllowed": false,
+    "canvasPanAllowed": false
+  },
+  "typography": {
+    "fixedLearnerTextMinimumCssPx": 22,
+    "title": {
+      "minCssPx": 38,
+      "targetCssPx": 40,
+      "maxCssPx": 42,
+      "lineHeightRatio": 1.4
+    },
+    "question": {
+      "minCssPx": 28,
+      "targetCssPx": 30,
+      "maxCssPx": 32,
+      "lineHeightRatio": 1.4
+    },
+    "coreInstruction": {
+      "minCssPx": 28,
+      "targetCssPx": 30,
+      "maxCssPx": 32,
+      "lineHeightRatio": 1.4
+    },
+    "candidate": {
+      "minCssPx": 24,
+      "targetCssPx": 26,
+      "maxCssPx": 28,
+      "lineHeightRatio": 1.4
+    },
+    "mathLabel": {
+      "minCssPx": 24,
+      "targetCssPx": 26,
+      "maxCssPx": 28,
+      "lineHeightRatio": 1.4
+    },
+    "support": {
+      "minCssPx": 22,
+      "targetCssPx": 23,
+      "maxCssPx": 24,
+      "lineHeightRatio": 1.4
+    }
+  },
+  "spacing": {
+    "outerPaddingXCssPx": 20,
+    "outerPaddingYCssPx": 12,
+    "semanticGroupGapCssPx": 18,
+    "internalGapCssPx": 8,
+    "candidateCardPaddingXCssPx": 20,
+    "candidateCardPaddingYCssPx": 18,
+    "candidateColumnGapCssPx": 12,
+    "candidateRowGapCssPx": 12,
+    "interProblemGapCssPx": 24,
+    "writingMinimumHeightCssPx": 44,
+    "nativeToNextPhaseClearanceCssPx": 18,
+    "centeringToleranceCssPx": 1
+  },
+  "candidatePolicy": {
+    "minimumCount": 3,
+    "maximumCount": 3,
+    "columns": 3,
+    "horizontalAlignment": "center",
+    "verticalAlignment": "center"
+  },
+  "nativePolicy": {
+    "reserveFirst": true,
+    "interactionEvidenceRequired": true,
+    "taskEnvelopeMustBeBounded": true,
+    "requiredStates": [
+      "initial",
+      "selected",
+      "manipulated"
+    ]
+  },
+  "problemCapacity": {
+    "supportedCounts": [
+      1
+    ],
+    "assumedMinimumNativeReserveCssHeight": 120,
+    "oneProblemMinimumCssHeight": 580.4,
+    "twoProblemMinimumCssHeight": 1160.8,
+    "availableCssHeight": 672,
+    "twoProblemStatus": "unsupported",
+    "twoProblemReason": "큰 글자·세 후보·native reserve·설명 쓰기 하한을 유지하면 두 문제 최소 높이 1160.8px가 fixed-safe 672px를 넘으므로 구현하지 않는다."
+  },
+  "phaseContract": {
+    "contractId": "prediction-confirmation-explanation-revision-v1",
+    "contractVersion": "1.0.0",
+    "sequence": [
+      "prediction",
+      "mathematical-confirmation",
+      "explanation",
+      "revision"
+    ],
+    "regions": [
+      {
+        "regionRole": "phase.prediction",
+        "visibleToLearner": true,
+        "requiresStudentAction": true,
+        "phase": "prediction",
+        "requiredAction": "record-initial-mathematical-decision",
+        "requiredArtifact": "prediction-record"
+      },
+      {
+        "regionRole": "phase.mathematical-confirmation",
+        "visibleToLearner": true,
+        "requiresStudentAction": true,
+        "phase": "mathematical-confirmation",
+        "requiredAction": "change-native-mathematical-state",
+        "requiredArtifact": "native-state-evidence"
+      },
+      {
+        "regionRole": "phase.explanation",
+        "visibleToLearner": true,
+        "requiresStudentAction": true,
+        "phase": "explanation",
+        "requiredAction": "explain-with-observed-evidence",
+        "requiredArtifact": "student-evidence-explanation"
+      },
+      {
+        "regionRole": "phase.revision",
+        "visibleToLearner": true,
+        "requiresStudentAction": true,
+        "phase": "revision",
+        "requiredAction": "revise-recorded-decision",
+        "requiredArtifact": "revised-prediction-record"
+      }
+    ],
+    "initialState": {
+      "answerComplete": false,
+      "nativeMathematicalStateComplete": false
+    }
+  },
+  "eligibility": {
+    "fixedGeometryReady": true,
+    "offlineTypographyReady": true,
+    "genericInteractionReady": false,
+    "requiresActivitySpecificInteractionEvidence": true,
+    "releaseQualified": false
+  },
+  "contentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38"
+}

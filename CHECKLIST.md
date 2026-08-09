@@ -217,7 +217,7 @@
 ## R4 — native-first one-screen layout·typography resolver
 
 - Depth: `core`
-- Status: `pending`
+- Status: `completed`
 - Depends on: R2, R3의 첫 사용 tool contract·text-box probe·canary 실행 준비 완료(실행은 R5)
 - Scope:
   - `packages/contracts/src/vocabulary`
@@ -225,50 +225,55 @@
   - 30개 pilot 전용 `student-one-screen-large-v1` profile
   - visual/quality harness
 - Definition of done:
-  - [ ] `OneScreenLayoutProfile`이 viewport, profile-scoped typography minima, phase regions, native reserve, vertical budget를 검증한다.
-  - [ ] `student-one-screen-large-v1`만 explicit profile parameter로 새 글자 하한을 사용한다.
-  - [ ] `packages/templates/src/blueprints/student-screen-quality.ts`의 legacy default 66/45/32/30/28과 `scripts/quality-audit/thresholds.mjs`의 audit `TYPE_SCALE`을 전역 상향하지 않는다.
-  - [ ] 기존 released blueprint의 default path와 hash를 바꾸지 않는다.
-  - [ ] 이 profile은 같은 schema의 versioned layout profile이며 묵시적 이중 스키마가 아니다.
-  - [ ] 고정 상자를 먼저 키우지 않고 native `reserveBox`를 먼저 확보한다.
-  - [ ] selection chrome와 task-relevant movement가 다음 block과 겹치지 않는다.
-  - [ ] 실제 1280×800 editor chrome 높이, 글자 line box, 간격, writing min 44px, native reserve를 넣은 한 문제·두 문제 세로 예산을 먼저 계산하고 Evidence에 기록한다.
-  - [ ] 한 문제 profile은 deterministic하게 구현한다.
-  - [ ] 두 문제 세로 예산이 하한을 만족한다고 증명될 때만 두 문제 profile과 관련 test를 구현한다.
-  - [ ] 두 문제가 불가능하면 해당 경로를 구현하지 않고 unsupported로 명시한다.
-  - [ ] 한 문제도 맞지 않으면 scroll·pan·per-item nudge·임의 축소 없이 원인을 포함해 실패한다.
-  - [ ] font fingerprint에 결속된 conservative offline metrics table이 배치의 유일한 text-size/width 입력이다.
-  - [ ] offline metrics에서 제목 38–42px, 질문·핵심 지시 28–32px, 보기·수학 라벨 24–28px, 보조 문구 22–24px 목표를 검증한다.
-  - [ ] 학습자 고정 문구가 22px 아래로 내려가지 않는다.
-  - [ ] 두 줄 문장이 line-height 1.35 이상과 충분한 상하 18px·좌우 20px 여백을 가진다.
-  - [ ] 보기 1·2·3과 문장 label이 deterministic metrics 기준 수평·수직 중앙에 있다.
-  - [ ] wrap 뒤 predicted line box가 card, border, 다음 text와 겹치지 않는다.
-  - [ ] 제목/목표 → 예상 → workbench → 설명/수정 순서가 화면 흐름과 일치한다.
-  - [ ] 핵심 풀이와 쓰기 영역을 보기 위해 viewport pan/scroll이 필요 없다.
-  - [ ] 수학 조작용 drag는 보이는 `taskEnvelope` 안에서 끝난다.
-  - [ ] resolver와 validator가 activity/source ID를 모른다.
-  - [ ] generic V2/phase/layout/font-metrics seam을 architecture checker baseline에 한 번 검토 후 재동결한다.
-  - [ ] R5 이후 `architecture:verify`가 이 baseline을 보호하고 조용한 rebaseline을 금지한다.
-  - [ ] `LearningPhaseContract` schema와 generic release predicate를 R4에서 정의·테스트·baseline 동결한다.
-  - [ ] R6는 phase vocabulary를 추가하지 않고 entry 데이터를 결속만 한다.
+  - [x] `OneScreenLayoutProfile`이 viewport, profile-scoped typography minima, phase regions, native reserve, vertical budget를 검증한다.
+  - [x] `student-one-screen-large-v1`만 explicit profile ID로 새 글자 하한을 사용한다.
+  - [x] `packages/templates/src/blueprints/student-screen-quality.ts`의 legacy default 66/45/32/30/28과 `scripts/quality-audit/thresholds.mjs`의 audit `TYPE_SCALE`을 전역 상향하지 않는다.
+  - [x] 기존 released blueprint의 default path와 hash를 바꾸지 않는다.
+  - [x] 이 profile은 같은 schema의 versioned layout profile이며 묵시적 이중 스키마가 아니다.
+  - [x] 고정 상자를 먼저 키우지 않고 native `reserveBox`와 세 interaction state의 union을 먼저 확보한다.
+  - [x] selection chrome와 task-relevant movement는 common reserve anchor의 relative bounds로 보존되고 다음 block과 18px 이상 떨어진다. 실제 활동 bounds 승격은 R5 canary gate다.
+  - [x] 실제 1280×800 editor chrome 높이, 글자 line box, 간격, writing min 44px, native reserve를 넣은 한 문제·두 문제 세로 예산을 먼저 계산하고 Evidence에 기록한다.
+  - [x] 한 문제 profile은 deterministic하게 구현한다.
+  - [x] 두 문제 세로 예산이 하한을 만족한다고 증명될 때만 두 문제 profile과 관련 test를 구현한다.
+  - [x] 두 문제가 불가능하면 해당 경로를 구현하지 않고 unsupported로 명시한다.
+  - [x] 한 문제도 맞지 않으면 scroll·pan·per-item nudge·임의 축소 없이 원인을 포함해 실패한다.
+  - [x] font fingerprint에 결속된 conservative offline metrics table이 배치의 유일한 text-size/width 입력이다.
+  - [x] offline metrics에서 제목 38–42px, 질문·핵심 지시 28–32px, 보기·수학 라벨 24–28px, 보조 문구 22–24px 목표를 표본 문구로 측정한다. actual placement는 R5 gate다.
+  - [x] 학습자 고정 문구가 22px 아래로 내려가지 않는다.
+  - [x] phase 지시는 line-height 1.35 이상과 의미 묶음 간 18px 간격을 사용하고, 보기 카드는 상하 18px·좌우 20px 안쪽 여백을 가진다.
+  - [x] 보기 1·2·3의 predicted line box가 deterministic metrics 기준 수평·수직 중앙에 있다.
+  - [x] wrap 뒤 predicted line box가 card, border, 다음 text와 겹치지 않으며 맞지 않으면 overflow로 실패한다.
+  - [x] 제목/목표 → 예상 → workbench → 설명/수정 순서가 화면 흐름과 일치한다.
+  - [x] 핵심 풀이와 쓰기 영역을 보기 위해 viewport pan/scroll이 필요 없다.
+  - [x] 수학 조작용 drag는 활동별 pinned `taskEnvelope` 안에서 끝나야만 registry 승격할 수 있다.
+  - [x] resolver는 activity/source literal 없이 canonical registry ID만 조회한다.
+  - [x] generic V2/phase/layout/font-metrics seam을 architecture checker baseline에 한 번 검토 후 재동결한다.
+  - [x] R5 이후 `architecture:verify`가 이 baseline을 보호하고 조용한 rebaseline을 금지한다.
+  - [x] `LearningPhaseContract` schema와 generic release predicate를 R4에서 정의·테스트·baseline 동결한다.
+  - [x] R6는 phase vocabulary를 추가하지 않고 entry 데이터를 결속만 한다.
 - Named static/predicted regression views (actual 캡처는 R8에서 재검증):
-  - [ ] 최상단 네 문장 카드의 상하 여백과 줄간격
-  - [ ] `예상한 답 고르기` 지시문과 보기 상자의 분리
-  - [ ] 보기 `1`, `2`, `3`의 수평·수직 중앙 정렬
-  - [ ] `4개씩 묶기` native workbench의 group·선택 chrome·다음 단계 clearance
-  - [ ] 제목 크기와 제목 아래 첫 수학 요소의 clearance
+  - [x] 네 phase 지시 행의 42px 줄높이와 행 사이 18px 간격
+  - [x] `예상한 답 고르기` 지시문과 보기 상자의 분리
+  - [x] 보기 `1`, `2`, `3`의 수평·수직 중앙 정렬
+  - [x] `4개씩 묶기` predicted native workbench의 group·선택 chrome·다음 단계 clearance
+  - [x] 제목 크기와 제목 아래 첫 수학 요소의 18px clearance
 - Verification:
-  - [ ] one-profile determinism test
-  - [ ] two-profile arithmetic feasibility evidence; feasible일 때만 determinism test
-  - [ ] native reserve-first placement test
-  - [ ] one-problem overflow → hard failure test
-  - [ ] pinned font-metrics/font-fingerprint/font-size/centering tests
-  - [ ] predicted initial/selected/manipulated clearance tests
-  - [ ] `pnpm architecture:baseline` reviewed update and `pnpm architecture:verify`
+  - [x] one-profile determinism test
+  - [x] two-profile arithmetic feasibility evidence; feasible일 때만 determinism test
+  - [x] native reserve-first placement test
+  - [x] one-problem overflow → hard failure test
+  - [x] pinned font-metrics/font-fingerprint/font-size/centering tests
+  - [x] predicted initial/selected/manipulated common-anchor clearance tests
+  - [x] `pnpm architecture:baseline` reviewed update and `pnpm architecture:verify`
 - Commit gate:
-  - [ ] 공통 resolver와 named regression이 모두 통과하면 commit·push한다.
+  - [x] 공통 resolver와 named regression이 모두 통과하면 commit·push한다.
 - Evidence/notes:
-  - 미착수.
+  - `student-one-screen-large-v1@1.0.0`은 fixed-safe `976×672 CSS px`, title 40, core/question 30, candidate/math label 26, support 23, line-height 1.4, candidate padding X20/Y18, semantic gap 18, writing min 44를 사용한다. 한 문제 최소는 `580.4px`, 남는 native 증분은 `91.6px`, 최대 native union은 `211.6px`; 두 문제 최소 `1160.8px`는 unsupported다.
+  - production resolver는 `profileId/version + interactionEvidenceId`만 받고 profile·geometry·font metrics·interaction evidence·native contract는 deep-frozen canonical registry에서 clone 조회한다. R4 registry의 interaction record는 0건이라 R5 actual evidence 전에는 fail-closed한다. raw pinned resolver는 package root에 export하지 않는다.
+  - native initial/selected/manipulated는 `native-reserve-top-left` common anchor 기준 relative `{x,y,width,height}`로 기록하고 core reserve와 한 번 union한 뒤 동일 translation을 적용한다. 음수 selection offset과 오른쪽/아래 manipulated movement를 중앙 재배치로 숨기지 않는다.
+  - `research/mathcanvas/student-one-screen-large-v1-budget-evidence.json`은 registry↔repo profile/geometry/metrics JSON, 실제 file/content SHA, 여섯 typography role의 offline 표본 측정, 지시 행·보기 카드 예산을 검증한다. actual glyph/interaction/save-reopen은 R5에서만 승격한다.
+  - architecture P1 baseline은 30 files, manifest hash `28e1bb11e0da1d85fffe7a89336a9e15e5b2c3c5a2d29a459229c1373a4ae44c`로 reviewed rebaseline했다.
+  - Sol xhigh 최종 판정은 `OKAY · P0 0 / P1 0 / P2 0`; `pnpm one-screen:verify`, resolver 8/8, typecheck, diff check가 통과했다.
 
 ## R5 — 네 표현 계열 vertical slice
 

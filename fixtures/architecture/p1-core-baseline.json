@@ -12,6 +12,7 @@
     "packages/contracts/src/catalog/native-affordance-rubric-v2.ts",
     "packages/contracts/src/catalog/text-box-availability-v2.ts",
     "packages/contracts/src/catalog/editor-geometry-v1.ts",
+    "packages/contracts/src/catalog/one-screen-layout-registry.ts",
     "packages/planner/src/v2.ts",
     "packages/templates/src/worksheet-v2.ts",
     "packages/authoring-runtime/src/worksheet-v2.ts"
@@ -32,6 +33,10 @@
     {
       "path": "packages/contracts/src/catalog/native-affordance-v2.ts",
       "sha256": "735c74df8bf2c7ac751d9fdcdcc1af63ee6606db250d7cb6d3e06f064624f0ae"
+    },
+    {
+      "path": "packages/contracts/src/catalog/one-screen-layout-registry.ts",
+      "sha256": "a189e3d8f65b700cc97cad11401acb79748cdfc3a4d4ddd5da6bbfa154625ea3"
     },
     {
       "path": "packages/contracts/src/catalog/text-box-availability-v2.ts",
@@ -70,6 +75,10 @@
       "sha256": "046c096490d664e977c2a48e43fbf83bfc2172474bc27ac570209a6df4e530c8"
     },
     {
+      "path": "packages/contracts/src/vocabulary/one-screen-layout.ts",
+      "sha256": "9f56180b8813f2faa741081aec219d3b2e71f3f94dd6bc8aed0690c7285c3874"
+    },
+    {
       "path": "packages/contracts/src/vocabulary/resolved.ts",
       "sha256": "a6d7e7f15e0090c9bcd64dd7177872ed75de382b1c9bf107050ef403ac0e7556"
     },
@@ -79,7 +88,7 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
-      "sha256": "159e0846087947aafaf8a6e7a2c3c6d3025543d18bb77abefd9455c55525c9d2"
+      "sha256": "6de767c249c3d69b4b4fcccbd8813d1b7bc8ec68f772f790c539630213f532ba"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/layout-resolver.ts",
@@ -88,6 +97,10 @@
     {
       "path": "packages/mathcanvas-compiler/src/resolve/native-spatial-layout.ts",
       "sha256": "7ef36bef50568b5822779347c06a3d321e9c67bbd7b9b170978b1fb84ecca681"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/one-screen-layout.ts",
+      "sha256": "a95ec13ace764e87484723e6440ee14494f59fd6ca42873a5a504159a7d021c7"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts",
@@ -126,5 +139,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "1df921fc8ebc60df50d3fe035790d85a4b10e3210df4bdd0d06f1860ad0f1d54"
+  "manifestHash": "28e1bb11e0da1d85fffe7a89336a9e15e5b2c3c5a2d29a459229c1373a4ae44c"
 }

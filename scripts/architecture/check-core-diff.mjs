@@ -31,6 +31,7 @@ const fixedFiles = [
   "packages/contracts/src/catalog/native-affordance-rubric-v2.ts",
   "packages/contracts/src/catalog/text-box-availability-v2.ts",
   "packages/contracts/src/catalog/editor-geometry-v1.ts",
+  "packages/contracts/src/catalog/one-screen-layout-registry.ts",
   "packages/planner/src/v2.ts",
   "packages/templates/src/worksheet-v2.ts",
   "packages/authoring-runtime/src/worksheet-v2.ts"

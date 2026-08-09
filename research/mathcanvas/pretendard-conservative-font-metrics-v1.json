@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "tableId": "pretendard-conservative-korean-v1",
+  "tableVersion": "1.0.0",
+  "fontFingerprint": "sha256:d77e1591965fe81b0592b97c8bc4323719e80bb4581d9065dc2acf87b7a5fb9c",
+  "sourceEvidence": {
+    "probeId": "r3-text-box-availability-v1",
+    "evidenceFileSha256": "c454a6aa2e25b4ecdab91b014d4ff73943042b48ab6267418f98b17e2117d283",
+    "observedFontFamily": "\"Pretendard Variable\", Pretendard"
+  },
+  "method": "offline-conservative-codepoint-advance-v1",
+  "advanceEm": {
+    "hangul": 1,
+    "digit": 0.75,
+    "latin": 1,
+    "whitespace": 0.5,
+    "punctuation": 1,
+    "symbol": 1,
+    "emoji": 1.2,
+    "unknown": 1.2
+  },
+  "limitations": [
+    "실시간 DOM 폭을 resolver 입력으로 사용하지 않고 pinned font fingerprint에 맞는 보수적 codepoint advance만 사용한다.",
+    "실제 glyph ink box가 아니라 줄바꿈과 상자 예산을 위한 상한 추정이며 fresh canary 시각 검증을 대체하지 않는다.",
+    "Pretendard 이외 font fingerprint에서는 이 표를 선택할 수 없다."
+  ],
+  "contentSha256": "d93380172a5c6af313e846739d58e1791e4af05044c7e14df9bad032e4b2c2f8"
+}

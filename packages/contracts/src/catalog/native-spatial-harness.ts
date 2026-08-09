@@ -192,6 +192,10 @@ export const nativeSpatialContractRecordSchema = z
     }
   });
 
+export type NativeSpatialContractRecord = z.infer<
+  typeof nativeSpatialContractRecordSchema
+>;
+
 export const nativeSpatialContractCatalogSchema = z
   .object({
     schemaVersion: z.literal("2.0.0"),
