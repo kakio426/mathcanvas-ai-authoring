@@ -38,6 +38,8 @@ const canonicalLayoutContentHash =
     ?.composition?.layoutContentHash;
 for (const canary of canaries) {
   const checks = canary?.environment?.classroomTextClearance?.checks;
+  const fixedChromeClearance =
+    canary?.environment?.fixedChromeTaskClearance;
   if (
     canary?.schemaVersion !== "2.0.0" ||
     canary?.activityId !== activityId ||
@@ -50,7 +52,16 @@ for (const canary of canaries) {
       canonical.environment.servedAssetEvidence.sha256 ||
     canary?.environment?.nativeOverlayIntersectionCount !== 0 ||
     !checks ||
-    Object.values(checks).some((passed) => passed !== true)
+    Object.values(checks).some((passed) => passed !== true) ||
+    fixedChromeClearance?.stableAfterReopen !== true ||
+    Object.values(fixedChromeClearance?.initial?.checks ?? {}).length !== 3 ||
+    Object.values(fixedChromeClearance.initial.checks).some(
+      (passed) => passed !== true
+    ) ||
+    Object.values(fixedChromeClearance?.reopened?.checks ?? {}).length !== 3 ||
+    Object.values(fixedChromeClearance.reopened.checks).some(
+      (passed) => passed !== true
+    )
   ) {
     throw new Error(
       `native-spatial-catalog-scenario-evidence-invalid:${canary?.scenario?.scenarioKey ?? "unknown"}`

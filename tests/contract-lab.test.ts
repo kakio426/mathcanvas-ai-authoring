@@ -78,6 +78,12 @@ const verifyDivisionNativeRubricCli = join(
   "contract-lab",
   "verify-division-native-rubric.mjs"
 );
+const validateDivisionCountingGroupCli = join(
+  root,
+  "scripts",
+  "contract-lab",
+  "validate-division-counting-group-canary.mjs"
+);
 
 function runNode(arguments_: string[]) {
   return spawnSync(process.execPath, arguments_, {
@@ -172,6 +178,209 @@ describe("P0 contract-lab 격리와 정규화", () => {
       expect(result.status).toBe(1);
       expect(result.stderr).toContain(
         "division-native-rubric-linked-semantic-probe-invalid"
+      );
+    } finally {
+      rmSync(temporary, { recursive: true, force: true });
+    }
+  });
+
+  it("나눗셈 actual canary는 fixed chrome guard와 보기 line-box 중심 변조를 거부한다", () => {
+    const temporary = mkdtempSync(
+      join(root, ".mathcanvas-contract-lab", "division-layout-guard-")
+    );
+    try {
+      const evidence = JSON.parse(
+        readFileSync(
+          join(
+            root,
+            "research",
+            "mathcanvas",
+            "division-counting-group-31-by-6-canary.json"
+          ),
+          "utf8"
+        )
+      );
+      const shifted = structuredClone(evidence);
+      for (const state of ["initial", "reopened"]) {
+        const record =
+          shifted.environment.fixedChromeTaskClearance[state];
+        record.taskEnvelopeCssPx.x += 20;
+        record.taskSurfacesCssPx.forEach(
+          (surface: { bounds: { x: number } }) => {
+            surface.bounds.x += 20;
+          }
+        );
+        record.taskClearanceInsideSafeCssPx.left += 20;
+        record.taskClearanceInsideSafeCssPx.right -= 20;
+      }
+      const shiftedPath = join(temporary, "fixed-guard-breach.json");
+      writeFileSync(shiftedPath, `${JSON.stringify(shifted)}\n`, "utf8");
+      const shiftedResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${shiftedPath}`
+      ]);
+      expect(shiftedResult.status).toBe(1);
+      expect(shiftedResult.stderr).toContain(
+        "division-counting-group-canary-invalid:environment"
+      );
+
+      const offCenter = structuredClone(evidence);
+      offCenter.environment.classroomTextClearance.metrics
+        .choiceLineBoxCenterOffsetsCssPx[0].y = 5;
+      const offCenterPath = join(temporary, "line-box-off-center.json");
+      writeFileSync(
+        offCenterPath,
+        `${JSON.stringify(offCenter)}\n`,
+        "utf8"
+      );
+      const offCenterResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${offCenterPath}`
+      ]);
+      expect(offCenterResult.status).toBe(1);
+      expect(offCenterResult.stderr).toContain(
+        "division-counting-group-canary-invalid:environment"
+      );
+
+      const profileDrift = structuredClone(evidence);
+      for (const state of ["initial", "reopened"]) {
+        const record =
+          profileDrift.environment.fixedChromeTaskClearance[state];
+        record.fixedChrome.top.bounds.height = 32;
+        record.fixedSafeCssPx.y = 40;
+        record.fixedSafeCssPx.height = 696;
+        record.taskClearanceInsideSafeCssPx.top =
+          record.taskEnvelopeCssPx.y - 40;
+      }
+      profileDrift.environment.geometryProfileReference.fixedSafeCssPx = {
+        x: 240,
+        y: 40,
+        width: 976,
+        height: 696
+      };
+      const profileDriftPath = join(
+        temporary,
+        "coherent-fixed-profile-drift.json"
+      );
+      writeFileSync(
+        profileDriftPath,
+        `${JSON.stringify(profileDrift)}\n`,
+        "utf8"
+      );
+      const profileDriftResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${profileDriftPath}`
+      ]);
+      expect(profileDriftResult.status).toBe(1);
+      expect(profileDriftResult.stderr).toContain(
+        "division-counting-group-canary-invalid:environment"
+      );
+
+      const screenshotDrift = structuredClone(evidence);
+      screenshotDrift.screenshots[0].sha256 = "0".repeat(64);
+      const screenshotDriftPath = join(
+        temporary,
+        "screenshot-hash-drift.json"
+      );
+      writeFileSync(
+        screenshotDriftPath,
+        `${JSON.stringify(screenshotDrift)}\n`,
+        "utf8"
+      );
+      const screenshotDriftResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${screenshotDriftPath}`
+      ]);
+      expect(screenshotDriftResult.status).toBe(1);
+      expect(screenshotDriftResult.stderr).toContain(
+        "division-counting-group-canary-invalid:screenshots"
+      );
+
+      const missingScreenshot = structuredClone(evidence);
+      missingScreenshot.screenshots[0].path =
+        ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/missing.png";
+      const missingScreenshotPath = join(
+        temporary,
+        "missing-screenshot.json"
+      );
+      writeFileSync(
+        missingScreenshotPath,
+        `${JSON.stringify(missingScreenshot)}\n`,
+        "utf8"
+      );
+      const missingScreenshotResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${missingScreenshotPath}`
+      ]);
+      expect(missingScreenshotResult.status).toBe(1);
+      expect(missingScreenshotResult.stderr).toContain(
+        "division-counting-group-canary-invalid:screenshots"
+      );
+    } finally {
+      rmSync(temporary, { recursive: true, force: true });
+    }
+  });
+
+  it("나눗셈 actual canary는 그룹 chrome 중첩과 line-box check key 위조를 거부한다", () => {
+    const temporary = mkdtempSync(
+      join(root, ".mathcanvas-contract-lab", "division-spatial-guard-")
+    );
+    try {
+      const evidence = JSON.parse(
+        readFileSync(
+          join(
+            root,
+            "research",
+            "mathcanvas",
+            "division-counting-group-29-by-7-canary.json"
+          ),
+          "utf8"
+        )
+      );
+      for (const state of ["current", "reopened"] as const) {
+        const overlapped = structuredClone(evidence);
+        const spatial =
+          state === "current"
+            ? overlapped.spatialContractCandidate
+            : overlapped.spatialContractCandidate.reopenedSpatial;
+        spatial.groupChromeBoxesCssPx[1] = structuredClone(
+          spatial.groupChromeBoxesCssPx[0]
+        );
+        spatial.allGroupChromeBoxesSeparated = true;
+        const overlapPath = join(temporary, `${state}-chrome-overlap.json`);
+        writeFileSync(
+          overlapPath,
+          `${JSON.stringify(overlapped)}\n`,
+          "utf8"
+        );
+        const overlapResult = runNode([
+          validateDivisionCountingGroupCli,
+          `--input=${overlapPath}`
+        ]);
+        expect(overlapResult.status).toBe(1);
+        expect(overlapResult.stderr).toContain(
+          "division-counting-group-canary-invalid:spatial-contract-candidate"
+        );
+      }
+
+      const renamedCheck = structuredClone(evidence);
+      const checks =
+        renamedCheck.environment.classroomTextClearance.checks;
+      checks.choiceTextsCentered = checks.choiceLineBoxesCentered;
+      delete checks.choiceLineBoxesCentered;
+      const renamedPath = join(temporary, "renamed-line-box-check.json");
+      writeFileSync(
+        renamedPath,
+        `${JSON.stringify(renamedCheck)}\n`,
+        "utf8"
+      );
+      const renamedResult = runNode([
+        validateDivisionCountingGroupCli,
+        `--input=${renamedPath}`
+      ]);
+      expect(renamedResult.status).toBe(1);
+      expect(renamedResult.stderr).toContain(
+        "division-counting-group-canary-invalid:environment"
       );
     } finally {
       rmSync(temporary, { recursive: true, force: true });

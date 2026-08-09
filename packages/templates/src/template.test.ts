@@ -42,7 +42,7 @@ describe("분수 비교 템플릿", () => {
     const blueprint = findClaimEvidenceBlueprint(
       "number.division.quotient-remainder.claim-evidence-v1"
     );
-    expect(blueprint?.version).toBe("2.1.0");
+    expect(blueprint?.version).toBe("2.2.0");
     expect(blueprint?.generator.version).toBe(
       CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
     );

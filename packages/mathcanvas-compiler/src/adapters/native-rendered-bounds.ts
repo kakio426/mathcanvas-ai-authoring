@@ -21,6 +21,14 @@ export const PLACE_VALUE_MODEL_RENDERED_DIAMETER = 120;
 // with an oversized layout token, so collision checks must use the real card.
 export const NUMBER_CARD_RENDERED_SIZE = 80;
 
+// MathCanvas input-text renders with a 1.5 line-height and its editor-owned
+// textarea contributes 8 canvas units of vertical chrome to scrollHeight.
+// Using fontSize alone (or the old 1.25 estimate) makes the persisted
+// foreignObject shorter than the actual line box: the wrapper can be centered
+// while the glyphs visibly sag and overflow below it.
+export const MATHCANVAS_TEXT_LINE_HEIGHT_RATIO = 1.5;
+export const MATHCANVAS_TEXT_VERTICAL_CHROME = 8;
+
 function centeredLatexWidth(
   intent: Extract<NativeToolIntent, { kind: "latex" }>,
   maximumWidth: number
@@ -57,7 +65,11 @@ export function centeredTextBounds(
       )
     )
   );
-  const estimatedHeight = Math.min(placement.height, fontSize * 1.25);
+  const estimatedHeight = Math.min(
+    placement.height,
+    fontSize * MATHCANVAS_TEXT_LINE_HEIGHT_RATIO +
+      MATHCANVAS_TEXT_VERTICAL_CHROME
+  );
   return {
     x: placement.x + (placement.width - estimatedWidth) / 2,
     y: placement.y + (placement.height - estimatedHeight) / 2,

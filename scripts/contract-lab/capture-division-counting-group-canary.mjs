@@ -7,7 +7,8 @@ import {
   CONTRACT_SCHEMA_VERSION,
   assertNativeSpatialLifecycleEvidence,
   recommendationSchema,
-  sha256Hex
+  sha256Hex,
+  studentOneScreenGeometryProfileSchema
 } from "../../packages/contracts/dist/index.js";
 import { resolveCurriculum } from "../../packages/curriculum/dist/index.js";
 import {
@@ -44,6 +45,35 @@ const layoutId = "wave25-division-grouping-v1";
 const sourceTitlePrefix = "AI-CONTRACT-PROBE-DIVNATIVE-";
 const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
 const unitVariantId = "NO01SC-01";
+const geometryProfilePath = join(
+  repositoryRoot,
+  "research/mathcanvas/student-one-screen-geometry-profile.json"
+);
+const geometryManifestPath = join(
+  repositoryRoot,
+  "research/mathcanvas/editor-geometry-manifest.json"
+);
+const geometryProfileBytes = readFileSync(geometryProfilePath);
+const geometryProfileFileSha256 = createHash("sha256")
+  .update(geometryProfileBytes)
+  .digest("hex");
+const geometryProfile = studentOneScreenGeometryProfileSchema.parse(
+  JSON.parse(geometryProfileBytes.toString("utf8"))
+);
+const geometryManifest = JSON.parse(
+  readFileSync(geometryManifestPath, "utf8")
+);
+if (
+  geometryManifest.profileId !== geometryProfile.profileId ||
+  geometryManifest.profileVersion !== geometryProfile.profileVersion ||
+  geometryManifest.evidenceId !== geometryProfile.evidenceId ||
+  geometryManifest.profileFileSha256 !== geometryProfileFileSha256 ||
+  geometryManifest.profileContentSha256 !== geometryProfile.contentSha256 ||
+  geometryManifest.fixedGeometryInputReady !== true ||
+  geometryProfile.eligibility.fixedGeometryInputReady !== true
+) {
+  throw new Error("division-group-pinned-geometry-profile-invalid");
+}
 let toolBundleSha256;
 let toolVersionFingerprint;
 const layoutPreset = getLayoutPreset(layoutId);
@@ -113,29 +143,20 @@ function resolvedRemainderIds(unitIds) {
 
 function groupTargetSizeProfiles() {
   const lane = layoutBounds(layoutPreset, "item.group-lane");
-  const paddingX = 10;
-  const paddingY = 10;
-  const headingHeight = 55;
-  const columnGap = 12;
-  const rowGap = 12;
-  const width = (lane.width - paddingX * 2 - columnGap) / 2;
-  const tallHeight =
-    (lane.height - paddingY * 2 - headingHeight - rowGap) / 2;
-  if (quotient <= 4) {
-    return Array.from({ length: quotient }, () => ({
-      width,
-      height: tallHeight
-    }));
-  }
-  const shortHeight =
-    (lane.height - paddingY * 2 - headingHeight - rowGap * 2) / 3;
-  return [
-    { width, height: shortHeight },
-    { width, height: tallHeight },
-    { width, height: shortHeight },
-    { width, height: tallHeight },
-    { width, height: shortHeight }
-  ];
+  // Runtime lane bounds include the four-unit top and bottom borders that
+  // flank this token. Mirror that measured envelope instead of pretending the
+  // compact token height is the whole usable lane.
+  const measuredLaneHeight = lane.height + 8;
+  const paddingY = 8;
+  const headingHeight = 70;
+  const columnGap = 8;
+  const rowGap = 8;
+  const columnCount = quotient <= 4 ? 2 : 3;
+  const width =
+    (lane.width - columnGap * (columnCount - 1)) / columnCount;
+  const height =
+    (measuredLaneHeight - paddingY * 2 - headingHeight - rowGap) / 2;
+  return Array.from({ length: quotient }, () => ({ width, height }));
 }
 
 function configureGroupMemberIndexSets(contentsJson, unitIds) {
@@ -1346,51 +1367,35 @@ async function borderBounds(page, role) {
 }
 
 function groupTargetEnvelopes(groupLaneBounds, expectedGroupCount = quotient) {
-  // The visible native groups remain compact, but the invisible two-column
-  // reserve must also contain MathCanvas' selected group chrome.  The measured
-  // seven-item chrome is wider than the visual group, so spend the lane's
-  // ornamental side padding on the reserve instead of shrinking the native
-  // element or adding per-item offsets.
+  // Five-quotient cases use five of six stable 3×2 cells. The four-quotient
+  // 29÷7 case uses four wider 2×2 cells because a seven-member selected group
+  // has four native units in its first row. The source arrangement never
+  // chooses these cells, so the target geometry does not pre-state the answer.
   const paddingX = 0;
-  const paddingY = groupLaneBounds.height * (10 / 640);
-  const headingHeight = groupLaneBounds.height * (55 / 640);
-  const columnGap = groupLaneBounds.width * (8 / 760);
-  const rowGap = groupLaneBounds.height * (12 / 640);
+  const paddingY = groupLaneBounds.height * (8 / 458);
+  const headingHeight = groupLaneBounds.height * (70 / 458);
+  const columnGap = groupLaneBounds.width * (8 / 764);
+  const rowGap = groupLaneBounds.height * (8 / 458);
   const usable = {
     x: groupLaneBounds.x + paddingX,
     y: groupLaneBounds.y + paddingY + headingHeight,
     width: groupLaneBounds.width - paddingX * 2,
     height: groupLaneBounds.height - paddingY * 2 - headingHeight
   };
-  const cellWidth = (usable.width - columnGap) / 2;
-  const left = usable.x;
-  const right = usable.x + cellWidth + columnGap;
-  if (expectedGroupCount <= 4) {
-    const cellHeight = (usable.height - rowGap) / 2;
-    const top = usable.y;
-    const bottom = usable.y + cellHeight + rowGap;
-    return [
-      { x: left, y: top, width: cellWidth, height: cellHeight },
-      { x: right, y: top, width: cellWidth, height: cellHeight },
-      { x: left, y: bottom, width: cellWidth, height: cellHeight },
-      { x: right, y: bottom, width: cellWidth, height: cellHeight }
-    ].slice(0, expectedGroupCount);
-  }
-  const shortHeight = (usable.height - rowGap * 2) / 3;
-  const tallHeight = (usable.height - rowGap) / 2;
-  const shortTop = usable.y;
-  const shortMiddle = usable.y + shortHeight + rowGap;
-  const shortBottom = usable.y + (shortHeight + rowGap) * 2;
-  const tallTop = usable.y;
-  const tallBottom = usable.y + tallHeight + rowGap;
-  return [
-    { x: right, y: shortTop, width: cellWidth, height: shortHeight },
-    { x: left, y: tallTop, width: cellWidth, height: tallHeight },
-    { x: right, y: shortMiddle, width: cellWidth, height: shortHeight },
-    { x: left, y: tallBottom, width: cellWidth, height: tallHeight },
-    // 다섯 번째 cluster는 viewport-fixed selection toolbar를 피하도록 오른쪽 아래에 둔다.
-    { x: right, y: shortBottom, width: cellWidth, height: shortHeight }
-  ];
+  const columnCount = expectedGroupCount <= 4 ? 2 : 3;
+  const cellWidth =
+    (usable.width - columnGap * (columnCount - 1)) / columnCount;
+  const cellHeight = (usable.height - rowGap) / 2;
+  return Array.from({ length: columnCount * 2 }, (_, index) => {
+    const row = Math.floor(index / columnCount);
+    const column = index % columnCount;
+    return {
+      x: usable.x + column * (cellWidth + columnGap),
+      y: usable.y + row * (cellHeight + rowGap),
+      width: cellWidth,
+      height: cellHeight
+    };
+  }).slice(0, expectedGroupCount);
 }
 
 function boxesOverlap(left, right, gap = 0) {
@@ -1681,6 +1686,69 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     }
     return bounds;
   };
+  const textBox = async (id) => {
+    const root = page.locator(`[id="${id}"]`).first();
+    const outer = await root.boundingBox();
+    if (!outer) {
+      throw new Error(`division-group-text-clearance-box-missing:${id}`);
+    }
+    const content = await root.evaluate((element) => {
+      const isVisible = (candidate) => {
+        const bounds = candidate.getBoundingClientRect();
+        const style = getComputedStyle(candidate);
+        return (
+          style.display !== "none" &&
+          style.visibility !== "hidden" &&
+          Number(style.opacity || 1) > 0 &&
+          bounds.width > 0 &&
+          bounds.height > 0
+        );
+      };
+      const preferred = [
+        ...element.querySelectorAll("foreignObject .input.textarea")
+      ].filter(isVisible);
+      const fallback = [
+        ...element.querySelectorAll(
+          "foreignObject .input, foreignObject textarea, foreignObject input, foreignObject [contenteditable='true']"
+        )
+      ].filter(isVisible);
+      const candidates = preferred.length > 0 ? preferred : fallback;
+      const unique = [...new Set(candidates)];
+      if (unique.length !== 1) {
+        throw new Error(
+          `mathcanvas-text-bearing-element-ambiguous:${unique.length}`
+        );
+      }
+      const textElement = unique[0];
+      const bounds = textElement.getBoundingClientRect();
+      const style = getComputedStyle(textElement);
+      return {
+        bounds: {
+          x: bounds.x,
+          y: bounds.y,
+          width: bounds.width,
+          height: bounds.height
+        },
+        clientWidth: textElement.clientWidth,
+        clientHeight: textElement.clientHeight,
+        scrollWidth: textElement.scrollWidth,
+        scrollHeight: textElement.scrollHeight,
+        fontSize: Number.parseFloat(style.fontSize),
+        lineHeight: Number.parseFloat(style.lineHeight),
+        paddingTop: Number.parseFloat(style.paddingTop),
+        paddingRight: Number.parseFloat(style.paddingRight),
+        paddingBottom: Number.parseFloat(style.paddingBottom),
+        paddingLeft: Number.parseFloat(style.paddingLeft)
+      };
+    });
+    return {
+      outer,
+      content: {
+        ...content,
+        bounds: summarizeBounds(content.bounds)
+      }
+    };
+  };
   const prefix = productItemId;
   const [
     instructionPredict,
@@ -1699,32 +1767,49 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     remainderLaneLabel,
     arrayPanel
   ] = await Promise.all([
-    box("instruction-predict"),
-    box(`${prefix}-instruction-verify`),
-    box("instruction-explain"),
-    box(`${prefix}-question`),
+    textBox("instruction-predict"),
+    textBox(`${prefix}-instruction-verify`),
+    textBox("instruction-explain"),
+    textBox(`${prefix}-question`),
     box(`${prefix}-choice-panel`),
-    box(`${prefix}-pool-label`),
+    textBox(`${prefix}-pool-label`),
     box(`${prefix}-position-card-1-backdrop`),
     box(`${prefix}-prediction-box`),
-    box(`${prefix}-prediction-label`),
+    textBox(`${prefix}-prediction-label`),
     box(`${prefix}-explanation-box`),
-    box(`${prefix}-explanation-label`),
-    box(`${prefix}-source-label`),
-    box(`${prefix}-group-lane-label`),
-    box(`${prefix}-remainder-lane-label`),
+    textBox(`${prefix}-explanation-label`),
+    textBox(`${prefix}-source-label`),
+    textBox(`${prefix}-group-lane-label`),
+    textBox(`${prefix}-remainder-lane-label`),
     borderBounds(page, "array-panel")
   ]);
   const choicePairs = await Promise.all(
     Array.from({ length: 5 }, async (_, index) => ({
-      text: await box(`${prefix}-position-card-${index + 1}`),
+      text: await textBox(`${prefix}-position-card-${index + 1}`),
       backdrop: await box(
         `${prefix}-position-card-${index + 1}-backdrop`
       )
     }))
   );
+  const actualBounds = (measured) => measured.content?.bounds ?? measured;
+  const textMeasurements = [
+    instructionPredict,
+    instructionVerify,
+    instructionExplain,
+    question,
+    poolLabel,
+    predictionLabel,
+    explanationLabel,
+    sourceLabel,
+    groupLaneLabel,
+    remainderLaneLabel,
+    ...choicePairs.map(({ text }) => text)
+  ];
   const verticalGap = (before, after) =>
-    round(after.y - (before.y + before.height));
+    round(
+      actualBounds(after).y -
+        (actualBounds(before).y + actualBounds(before).height)
+    );
   const insets = (container, child) => ({
     top: round(child.y - container.y),
     right: round(
@@ -1748,74 +1833,114 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
       instructionExplain,
       question
     ),
-    poolLabelInsetsCssPx: insets(choicePanel, poolLabel),
+    questionToResponseBandCssPx: verticalGap(question, choicePanel),
+    instructionFontSizeCanvas: instructionPredict.content.fontSize,
+    questionFontSizeCanvas: question.content.fontSize,
+    questionToInstructionFontRatio: round(
+      question.content.fontSize / instructionPredict.content.fontSize
+    ),
+    poolLabelInsetsCssPx: insets(
+      choicePanel,
+      actualBounds(poolLabel)
+    ),
     poolLabelToFirstCardCssPx: verticalGap(
       poolLabel,
       firstChoiceBackdrop
     ),
-    choiceTextCenterOffsetsCssPx: choicePairs.map(
+    choiceLineBoxCenterOffsetsCssPx: choicePairs.map(
       ({ text, backdrop }, index) => ({
         choice: index + 1,
         x: round(
-          text.x + text.width / 2 -
+          actualBounds(text).x + actualBounds(text).width / 2 -
             (backdrop.x + backdrop.width / 2)
         ),
         y: round(
-          text.y + text.height / 2 -
+          actualBounds(text).y + actualBounds(text).height / 2 -
             (backdrop.y + backdrop.height / 2)
         )
       })
     ),
-    choiceTextInsetsCssPx: choicePairs.map(
+    choiceLineBoxInsetsCssPx: choicePairs.map(
       ({ text, backdrop }, index) => ({
         choice: index + 1,
-        ...insets(backdrop, text)
+        ...insets(backdrop, actualBounds(text))
       })
     ),
+    textBoxOverflowCanvas: textMeasurements.map((measurement, index) => ({
+      index: index + 1,
+      vertical: round(
+        measurement.content.scrollHeight - measurement.content.clientHeight
+      ),
+      horizontal: round(
+        measurement.content.scrollWidth - measurement.content.clientWidth
+      )
+    })),
+    choiceLineBoxDiagnostics: choicePairs.map(({ text }, index) => ({
+      choice: index + 1,
+      clientHeight: text.content.clientHeight,
+      scrollHeight: text.content.scrollHeight,
+      fontSize: text.content.fontSize,
+      lineHeight: text.content.lineHeight
+    })),
     predictionLabelInsetsCssPx: insets(
       predictionBox,
-      predictionLabel
+      actualBounds(predictionLabel)
     ),
     explanationLabelInsetsCssPx: insets(
       explanationBox,
-      explanationLabel
+      actualBounds(explanationLabel)
     ),
     sourceLabelTopFromWorkbenchCssPx: round(
-      sourceLabel.y - arrayPanel.y
+      actualBounds(sourceLabel).y - arrayPanel.y
     ),
     sourceLabelToNearestNativeUnitCssPx: round(
       Math.min(
         ...sourceUnitBoxesCssPx
           .filter(
             (unit) =>
-              unit.x < sourceLabel.x + sourceLabel.width &&
-              unit.x + unit.width > sourceLabel.x
+              unit.x <
+                actualBounds(sourceLabel).x +
+                  actualBounds(sourceLabel).width &&
+              unit.x + unit.width > actualBounds(sourceLabel).x
           )
-          .map((unit) => unit.y - (sourceLabel.y + sourceLabel.height))
+          .map(
+            (unit) =>
+              unit.y -
+              (actualBounds(sourceLabel).y +
+                actualBounds(sourceLabel).height)
+          )
       )
     ),
     groupLabelTopFromWorkbenchCssPx: round(
-      groupLaneLabel.y - arrayPanel.y
+      actualBounds(groupLaneLabel).y - arrayPanel.y
     ),
     remainderLabelTopFromWorkbenchCssPx: round(
-      remainderLaneLabel.y - arrayPanel.y
+      actualBounds(remainderLaneLabel).y - arrayPanel.y
     )
   };
   const checks = {
     instructionRowsSeparated:
-      metrics.instructionPredictToVerifyCssPx >= 8 &&
-      metrics.instructionVerifyToExplainCssPx >= 8 &&
-      metrics.instructionExplainToQuestionCssPx >= 8,
+      metrics.instructionPredictToVerifyCssPx >= 12 &&
+      metrics.instructionVerifyToExplainCssPx >= 12,
+    semanticTitleGap:
+      metrics.instructionExplainToQuestionCssPx >= 18 &&
+      metrics.questionToResponseBandCssPx >= 10,
+    titleHierarchy:
+      metrics.questionToInstructionFontRatio >= 1.7,
+    textBoxesContainActualLineBoxes:
+      metrics.textBoxOverflowCanvas.every(
+        ({ vertical, horizontal }) => vertical <= 1 && horizontal <= 1
+      ),
     poolLabelPadded:
       metrics.poolLabelInsetsCssPx.top >= 5 &&
       metrics.poolLabelInsetsCssPx.left >= 10 &&
       metrics.poolLabelInsetsCssPx.right >= 10 &&
       metrics.poolLabelToFirstCardCssPx >= 6.5,
-    choiceTextsCentered:
-      metrics.choiceTextCenterOffsetsCssPx.every(
-        ({ x, y }) => Math.abs(x) <= 1.5 && Math.abs(y) <= 1.5
+    choiceLineBoxesCentered:
+      metrics.choiceLineBoxCenterOffsetsCssPx.every(
+        ({ x, y }) => Math.abs(x) <= 1 && Math.abs(y) <= 1
       ) &&
-      metrics.choiceTextInsetsCssPx.every(
+      metrics.choiceLineBoxInsetsCssPx.every(
         ({ top, right, bottom, left }) =>
           top >= 4 && right >= 4 && bottom >= 4 && left >= 4
       ),
@@ -1842,6 +1967,192 @@ async function measureClassroomTextClearance(page, sourceUnitBoxesCssPx) {
     );
   }
   return { checks, metrics };
+}
+
+async function measureFixedChromeTaskClearance(page) {
+  const guardCssPx = 8;
+  const fixedChrome = await page.evaluate(() => {
+    const definitions = {
+      top: "#top-toolbar",
+      left: "#left-toolbar",
+      right: "#right-toolbar",
+      bottom: "#bottom-common-toolbar"
+    };
+    const result = {};
+    for (const [role, selector] of Object.entries(definitions)) {
+      const candidates = [...document.querySelectorAll(selector)];
+      if (candidates.length !== 1) {
+        throw new Error(
+          `fixed-chrome-selector-ambiguous:${role}:${candidates.length}`
+        );
+      }
+      const element = candidates[0];
+      const bounds = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      if (
+        bounds.width <= 0 ||
+        bounds.height <= 0 ||
+        style.display === "none" ||
+        style.visibility === "hidden" ||
+        Number(style.opacity || 1) <= 0
+      ) {
+        throw new Error(`fixed-chrome-not-visible:${role}`);
+      }
+      result[role] = {
+        selector,
+        bounds: {
+          x: bounds.x,
+          y: bounds.y,
+          width: bounds.width,
+          height: bounds.height
+        }
+      };
+    }
+    return result;
+  });
+  const prefix = productItemId;
+  const taskSurfaces = [
+    [
+      "instruction-predict",
+      await page.locator('[id="instruction-predict"]').first().boundingBox()
+    ],
+    [
+      "instruction-verify",
+      await page
+        .locator(`[id="${prefix}-instruction-verify"]`)
+        .first()
+        .boundingBox()
+    ],
+    [
+      "instruction-explain",
+      await page.locator('[id="instruction-explain"]').first().boundingBox()
+    ],
+    [
+      "question",
+      await page
+        .locator(`[id="${prefix}-question"]`)
+        .first()
+        .boundingBox()
+    ],
+    [
+      "choice-panel",
+      await page
+        .locator(`[id="${prefix}-choice-panel"]`)
+        .first()
+        .boundingBox()
+    ],
+    [
+      "prediction-box",
+      await page
+        .locator(`[id="${prefix}-prediction-box"]`)
+        .first()
+        .boundingBox()
+    ],
+    [
+      "explanation-box",
+      await page
+        .locator(`[id="${prefix}-explanation-box"]`)
+        .first()
+        .boundingBox()
+    ],
+    ["native-workbench", await borderBounds(page, "array-panel")]
+  ].map(([role, bounds]) => {
+    if (!bounds) {
+      throw new Error(`division-group-task-surface-missing:${role}`);
+    }
+    return { role, bounds };
+  });
+  const fixedSafeCssPx = {
+    x:
+      fixedChrome.left.bounds.x +
+      fixedChrome.left.bounds.width +
+      guardCssPx,
+    y:
+      fixedChrome.top.bounds.y +
+      fixedChrome.top.bounds.height +
+      guardCssPx,
+    width:
+      fixedChrome.right.bounds.x -
+      guardCssPx -
+      (fixedChrome.left.bounds.x +
+        fixedChrome.left.bounds.width +
+        guardCssPx),
+    height:
+      fixedChrome.bottom.bounds.y -
+      guardCssPx -
+      (fixedChrome.top.bounds.y +
+        fixedChrome.top.bounds.height +
+        guardCssPx)
+  };
+  const taskEnvelope = unionBounds(
+    taskSurfaces.map(({ bounds }) => bounds)
+  );
+  if (!taskEnvelope) {
+    throw new Error("division-group-task-envelope-empty");
+  }
+  const inflatedFixedChrome = Object.fromEntries(
+    Object.entries(fixedChrome).map(([role, entry]) => [
+      role,
+      {
+        x: entry.bounds.x - guardCssPx,
+        y: entry.bounds.y - guardCssPx,
+        width: entry.bounds.width + guardCssPx * 2,
+        height: entry.bounds.height + guardCssPx * 2
+      }
+    ])
+  );
+  const taskWithinFixedSafe = contains(
+    fixedSafeCssPx,
+    taskEnvelope,
+    0.25
+  );
+  const taskAvoidsInflatedFixedChrome = taskSurfaces.every(
+    ({ bounds }) =>
+      Object.values(inflatedFixedChrome).every(
+        (chrome) => !boxesOverlap(bounds, chrome)
+      )
+  );
+  const result = {
+    guardCssPx,
+    fixedChrome: Object.fromEntries(
+      Object.entries(fixedChrome).map(([role, entry]) => [
+        role,
+        {
+          selector: entry.selector,
+          bounds: summarizeBounds(entry.bounds)
+        }
+      ])
+    ),
+    fixedSafeCssPx: summarizeBounds(fixedSafeCssPx),
+    taskSurfacesCssPx: taskSurfaces.map(({ role, bounds }) => ({
+      role,
+      bounds: summarizeBounds(bounds)
+    })),
+    taskEnvelopeCssPx: summarizeBounds(taskEnvelope),
+    taskClearanceInsideSafeCssPx: {
+      top: round(taskEnvelope.y - fixedSafeCssPx.y),
+      right: round(
+        fixedSafeCssPx.x + fixedSafeCssPx.width -
+          (taskEnvelope.x + taskEnvelope.width)
+      ),
+      bottom: round(
+        fixedSafeCssPx.y + fixedSafeCssPx.height -
+          (taskEnvelope.y + taskEnvelope.height)
+      ),
+      left: round(taskEnvelope.x - fixedSafeCssPx.x)
+    },
+    checks: {
+      exactVisibleFixedChrome: true,
+      taskWithinFixedSafe,
+      taskAvoidsInflatedFixedChrome
+    }
+  };
+  if (Object.values(result.checks).some((passed) => passed !== true)) {
+    throw new Error(
+      `division-group-fixed-chrome-clearance-invalid:${JSON.stringify(result)}`
+    );
+  }
+  return result;
 }
 
 async function localScreenshot(page, path) {
@@ -2499,6 +2810,8 @@ try {
     initialPage,
     initialUnitBoxesCssPx
   );
+  const initialFixedChromeTaskClearance =
+    await measureFixedChromeTaskClearance(initialPage);
   const intrinsicUnitId = resolvedRemainderIds(injected.unitIds)[0];
   const initialPath = join(screenshotDirectory, "initial.png");
   await localScreenshot(initialPage, initialPath);
@@ -2674,6 +2987,33 @@ try {
       ],
       projectId
     );
+  const reopenedFixedChromeTaskClearance =
+    await measureFixedChromeTaskClearance(reopenedPage);
+  const fixedChromeTaskClearanceStableAfterReopen =
+    maxBoundsDrift(
+      initialFixedChromeTaskClearance.fixedSafeCssPx,
+      reopenedFixedChromeTaskClearance.fixedSafeCssPx
+    ) <= 1 &&
+    maxBoundsDrift(
+      initialFixedChromeTaskClearance.taskEnvelopeCssPx,
+      reopenedFixedChromeTaskClearance.taskEnvelopeCssPx
+    ) <= 1;
+  for (const fixedChromeRecord of [
+    initialFixedChromeTaskClearance,
+    reopenedFixedChromeTaskClearance
+  ]) {
+    if (
+      fixedChromeRecord.guardCssPx !== geometryProfile.guardCssPx ||
+      maxBoundsDrift(
+        fixedChromeRecord.fixedSafeCssPx,
+        geometryProfile.fixedSafeCss
+      ) > geometryProfile.tolerance.geometryCssPx
+    ) {
+      throw new Error(
+        "division-group-fixed-chrome-not-bound-to-pinned-geometry-profile"
+      );
+    }
+  }
   const reopenedNativeOverlayIntersections = [
     ...reopenedLaneFit.groupVisualBoxesCssPx,
     ...reopenedLaneFit.groupChromeBoxesCssPx,
@@ -2804,6 +3144,15 @@ try {
       Object.values(classroomTextClearance.checks).every(
         (passed) => passed === true
       ),
+    taskEnvelopeAvoidsFixedEditorChrome:
+      Object.values(initialFixedChromeTaskClearance.checks).every(
+        (passed) => passed === true
+      ) &&
+      Object.values(reopenedFixedChromeTaskClearance.checks).every(
+        (passed) => passed === true
+      ),
+    fixedChromeTaskClearanceStableAfterReopen:
+      fixedChromeTaskClearanceStableAfterReopen,
     nativeObjectsAvoidMeasuredEditorOverlays:
       nativeOverlayIntersections.length === 0 &&
       reopenedNativeOverlayIntersections.length === 0,
@@ -2857,15 +3206,19 @@ try {
     throw new Error("division-group-canary-save-resume-boundary-invalid");
   }
 
-  const screenshotPaths = [
-    initialPath,
-    selectedSinglePath,
-    selectedPath,
-    ungroupedPath,
-    manipulatedPath,
-    resetPath,
-    reopenedPath
-  ].map((path) => relative(repositoryRoot, path));
+  const screenshotEvidence = [
+    ["initial", initialPath],
+    ["selected-single-unit", selectedSinglePath],
+    ["selected-first-group", selectedPath],
+    ["ungrouped-first-group", ungroupedPath],
+    ["full-grouped", manipulatedPath],
+    ["reset", resetPath],
+    ["reopened", reopenedPath]
+  ].map(([state, path]) => ({
+    state,
+    path: relative(repositoryRoot, path),
+    sha256: createHash("sha256").update(readFileSync(path)).digest("hex")
+  }));
   const observedAt = new Date().toISOString();
   const intrinsicEvidenceId =
     "no01sc-01-intrinsic-spatial-canary-20260808-v2";
@@ -3148,6 +3501,23 @@ try {
       servedAssetEvidence,
       releaseInteractionContext,
       classroomTextClearance,
+      geometryProfileReference: {
+        profileId: geometryProfile.profileId,
+        profileVersion: geometryProfile.profileVersion,
+        evidenceId: geometryProfile.evidenceId,
+        profileFileSha256: geometryProfileFileSha256,
+        profileContentSha256: geometryProfile.contentSha256,
+        viewport: geometryProfile.viewport,
+        surfaceMode: geometryProfile.surfaceMode,
+        sidebarState: geometryProfile.sidebarState,
+        guardCssPx: geometryProfile.guardCssPx,
+        fixedSafeCssPx: geometryProfile.fixedSafeCss
+      },
+      fixedChromeTaskClearance: {
+        initial: initialFixedChromeTaskClearance,
+        reopened: reopenedFixedChromeTaskClearance,
+        stableAfterReopen: fixedChromeTaskClearanceStableAfterReopen
+      },
       nativeOverlayIntersectionCount: nativeOverlayIntersections.length,
       injectedProjectReadCount: injectedReadCount,
       reopenedInFreshBrowserContext: true,
@@ -3269,6 +3639,33 @@ try {
       groupVisualBoxesCssPx: manipulated.laneFit.groupVisualBoxesCssPx,
       groupChromeBoxesCssPx: manipulated.laneFit.groupChromeBoxesCssPx,
       remainderBoxesCssPx: manipulated.laneFit.remainderBoxesCssPx,
+      reopenedSpatial: {
+        groupLaneCssPx: reopenedLaneFit.groupLaneCssPx,
+        groupTargetEnvelopeBoxesCssPx:
+          reopenedLaneFit.groupTargetEnvelopeBoxesCssPx,
+        occupiedTargetEnvelopeIndexes:
+          reopenedLaneFit.occupiedTargetEnvelopeIndexes,
+        occupiedTargetEnvelopeCount:
+          reopenedLaneFit.occupiedTargetEnvelopeCount,
+        emptyTargetEnvelopeCount:
+          reopenedLaneFit.emptyTargetEnvelopeCount,
+        remainderLaneCssPx: reopenedLaneFit.remainderLaneCssPx,
+        groupVisualBoxesCssPx: reopenedLaneFit.groupVisualBoxesCssPx,
+        groupChromeBoxesCssPx: reopenedLaneFit.groupChromeBoxesCssPx,
+        remainderBoxesCssPx: reopenedLaneFit.remainderBoxesCssPx,
+        allGroupVisualBoxesInsideGroupLane:
+          reopenedLaneFit.allGroupVisualBoxesInsideGroupLane,
+        allGroupChromeBoxesInsideGroupLane:
+          reopenedLaneFit.allGroupChromeBoxesInsideGroupLane,
+        allGroupsInsideDistinctTargetEnvelopes:
+          reopenedLaneFit.allGroupsInsideDistinctTargetEnvelopes,
+        allGroupChromeBoxesSeparated:
+          reopenedLaneFit.allGroupChromeBoxesSeparated,
+        allWrappersInsideGroupLane:
+          reopenedLaneFit.allWrappersInsideGroupLane,
+        allUngroupedInsideRemainderLane:
+          reopenedLaneFit.allUngroupedInsideRemainderLane
+      },
       allGroupVisualBoxesInsideGroupLane:
         manipulated.laneFit.allGroupVisualBoxesInsideGroupLane,
       allGroupChromeBoxesInsideGroupLane:
@@ -3352,7 +3749,7 @@ try {
         }
       }
     },
-    screenshots: screenshotPaths,
+    screenshots: screenshotEvidence,
     qualityEvidenceScope: "full-activity-1280x800-background-canary",
     releaseQualified: true,
     nextGate:

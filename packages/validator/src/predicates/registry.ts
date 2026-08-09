@@ -3427,6 +3427,19 @@ const handlers: Record<string, Handler> = {
       "memberRoles",
       2
     );
+    const alignmentRolesValue = parameter(
+      predicate,
+      "alignmentRoles"
+    );
+    const alignmentRoles =
+      alignmentRolesValue === undefined
+        ? memberRoles
+        : stringArrayParameter(predicate, "alignmentRoles", 2);
+    if (alignmentRoles.length !== memberRoles.length) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:alignmentRoles`
+      );
+    }
     const containerRole = stringParameter(
       predicate,
       "containerRole"
@@ -3482,7 +3495,7 @@ const handlers: Record<string, Handler> = {
         item.id,
         containerRole
       );
-      const members = memberRoles.map((role) =>
+      const members = alignmentRoles.map((role) =>
         byRole(resolved, item.id, role)
       );
       if (

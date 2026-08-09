@@ -123,9 +123,9 @@ export const claimEvidenceActivityProfiles: readonly ClaimEvidenceActivityProfil
       candidateAlignment: "center",
       fontSizes: {
         instruction: 30,
-        question: 45,
+        question: 52,
         label: 30,
-        candidate: 28,
+        candidate: 32,
         evidenceLabel: 30,
         evidenceText: 30
       },

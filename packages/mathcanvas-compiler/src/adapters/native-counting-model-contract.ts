@@ -8,10 +8,10 @@ export const COUNTING_MODEL_UNIT_GAP = 4;
 export const COUNTING_MODEL_UNIT_PITCH =
   COUNTING_MODEL_UNIT_SIZE + COUNTING_MODEL_UNIT_GAP;
 export const COUNTING_MODEL_MAX_COUNT = 31;
-export const COUNTING_MODEL_COLUMN_COUNT = 5;
+export const COUNTING_MODEL_COLUMN_COUNT = 8;
 export const COUNTING_MODEL_ROW_STAGGER = COUNTING_MODEL_UNIT_PITCH / 2;
 export const COUNTING_MODEL_ROW_CAPACITIES = [
-  5, 4, 5, 4, 5, 4, 4
+  8, 7, 8, 8
 ] as const;
 
 export interface CountingModelUnitPlacement {
@@ -21,9 +21,10 @@ export interface CountingModelUnitPlacement {
 }
 
 /**
- * `5-4-5-4-5-4-4` 고정 벌집 행을 순서대로 채우는 중립 pool. 한 묶음 크기는
- * 배치 입력으로 읽지 않으며, 23과 31도 `5열×4/6행+나머지` 직사각형이 되지
- * 않는다. 마지막 부분 행은 가운데 정렬하지 않아 남은 수 단서도 만들지 않는다.
+ * `8-7-8-8` 고정 벌집 행을 순서대로 채우는 넓고 낮은 중립 pool. 한 묶음
+ * 크기는 배치 입력으로 읽지 않으며, 23·29·31 어느 경우도 지원하는 묶음 수
+ * 4·6·7을 반복 행이나 열로 미리 보여 주지 않는다. 마지막 부분 행은 가운데
+ * 정렬하지 않아 남은 수 단서도 만들지 않는다.
  */
 export function resolveCountingModelUnitPlacements(
   count: number,

@@ -42,181 +42,181 @@
         "observations": [
           {
             "chromeBox": {
-              "height": 79.761,
-              "width": 79.893,
-              "x": 431.491,
-              "y": 968.275
+              "height": 79.652,
+              "width": 79.9,
+              "x": 594.257,
+              "y": 947.491
             },
-            "persistedMathematicalStateHash": "bba0e3f1b64886317c30f531b450e5c665b3d5b7e974705fa9ecec53daaf7299",
+            "persistedMathematicalStateHash": "4a92d1a6f7d0739a08dad5a4a167f4822ffc4daa4f45c2e602970848eeb0b881",
             "placement": {
               "height": 80,
               "width": 80,
-              "x": 431.438,
-              "y": 968.155
+              "x": 594.207,
+              "y": 947.317
             },
             "reserveBox": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/initial.png",
             "state": "initial",
             "taskEnvelope": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "visualBox": {
-              "height": 63.809,
-              "width": 63.915,
-              "x": 439.481,
-              "y": 976.251
+              "height": 63.722,
+              "width": 63.92,
+              "x": 602.247,
+              "y": 955.456
             }
           },
           {
             "chromeBox": {
-              "height": 79.761,
-              "width": 79.893,
-              "x": 431.491,
-              "y": 968.275
+              "height": 79.652,
+              "width": 79.9,
+              "x": 594.257,
+              "y": 947.491
             },
-            "persistedMathematicalStateHash": "bba0e3f1b64886317c30f531b450e5c665b3d5b7e974705fa9ecec53daaf7299",
+            "persistedMathematicalStateHash": "4a92d1a6f7d0739a08dad5a4a167f4822ffc4daa4f45c2e602970848eeb0b881",
             "placement": {
               "height": 80,
               "width": 80,
-              "x": 431.438,
-              "y": 968.155
+              "x": 594.207,
+              "y": 947.317
             },
             "reserveBox": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/selected-single-unit.png",
             "state": "selected",
             "taskEnvelope": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "visualBox": {
-              "height": 63.809,
-              "width": 63.915,
-              "x": 439.481,
-              "y": 976.251
+              "height": 63.722,
+              "width": 63.92,
+              "x": 602.247,
+              "y": 955.456
             }
           },
           {
             "chromeBox": {
-              "height": 79.761,
-              "width": 79.893,
-              "x": 1422.17,
-              "y": 592.599
+              "height": 79.652,
+              "width": 79.9,
+              "x": 1485.143,
+              "y": 727.054
             },
-            "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
+            "persistedMathematicalStateHash": "e8429c31b9db5eb508309aea2b77c2db439b2513abcaab67f85b78a68e729181",
             "placement": {
               "height": 80,
               "width": 80,
-              "x": 1422.117,
-              "y": 592.48
+              "x": 1485.093,
+              "y": 726.88
             },
             "reserveBox": {
               "height": 84,
               "width": 84,
-              "x": 1420.117,
-              "y": 590.48
+              "x": 1483.093,
+              "y": 724.88
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/full-grouped.png",
             "state": "manipulated",
             "taskEnvelope": {
               "height": 84,
               "width": 84,
-              "x": 1420.117,
-              "y": 590.48
+              "x": 1483.093,
+              "y": 724.88
             },
             "visualBox": {
-              "height": 63.809,
-              "width": 63.915,
-              "x": 1430.16,
-              "y": 600.576
+              "height": 63.722,
+              "width": 63.92,
+              "x": 1493.133,
+              "y": 735.019
             }
           },
           {
             "chromeBox": {
-              "height": 79.761,
-              "width": 79.893,
-              "x": 431.491,
-              "y": 968.275
+              "height": 79.652,
+              "width": 79.9,
+              "x": 594.257,
+              "y": 947.491
             },
-            "persistedMathematicalStateHash": "bba0e3f1b64886317c30f531b450e5c665b3d5b7e974705fa9ecec53daaf7299",
+            "persistedMathematicalStateHash": "4a92d1a6f7d0739a08dad5a4a167f4822ffc4daa4f45c2e602970848eeb0b881",
             "placement": {
               "height": 80,
               "width": 80,
-              "x": 431.438,
-              "y": 968.155
+              "x": 594.207,
+              "y": 947.317
             },
             "reserveBox": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reset.png",
             "state": "undo-reset",
             "taskEnvelope": {
               "height": 84,
               "width": 84,
-              "x": 429.438,
-              "y": 966.155
+              "x": 592.207,
+              "y": 945.317
             },
             "visualBox": {
-              "height": 63.809,
-              "width": 63.915,
-              "x": 439.481,
-              "y": 976.251
+              "height": 63.722,
+              "width": 63.92,
+              "x": 602.247,
+              "y": 955.456
             }
           },
           {
             "chromeBox": {
-              "height": 79.761,
-              "width": 79.893,
-              "x": 1422.17,
-              "y": 592.599
+              "height": 79.652,
+              "width": 79.9,
+              "x": 1485.143,
+              "y": 727.054
             },
-            "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
+            "persistedMathematicalStateHash": "e8429c31b9db5eb508309aea2b77c2db439b2513abcaab67f85b78a68e729181",
             "placement": {
               "height": 80,
               "width": 80,
-              "x": 1422.117,
-              "y": 592.48
+              "x": 1485.093,
+              "y": 726.88
             },
             "reserveBox": {
               "height": 84,
               "width": 84,
-              "x": 1420.117,
-              "y": 590.48
+              "x": 1483.093,
+              "y": 724.88
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reopened.png",
             "state": "reopened",
             "taskEnvelope": {
               "height": 84,
               "width": 84,
-              "x": 1420.117,
-              "y": 590.48
+              "x": 1483.093,
+              "y": 724.88
             },
             "visualBox": {
-              "height": 63.809,
-              "width": 63.915,
-              "x": 1430.16,
-              "y": 600.576
+              "height": 63.722,
+              "width": 63.92,
+              "x": 1493.133,
+              "y": 735.019
             }
           }
         ],
-        "observedAt": "2026-08-08T07:25:49.639Z",
+        "observedAt": "2026-08-09T00:19:13.232Z",
         "persistedStateChanged": true,
         "roundTripDrift": 0,
         "roundTripDriftWithinTolerance": true,
@@ -225,41 +225,41 @@
         "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
         "variantId": "NO01SC-01"
       },
-      "recordHash": "7e2b8402f37df7c9a42aabbfe6a0975eb1622c5578e03d996509053b10f1291b",
+      "recordHash": "3416f514903926828b6c326278d02e23e409dd85b474f9e00b038735439e9654",
       "recordKind": "intrinsic-element",
       "upstreamContracts": []
     },
     {
       "contract": {
         "composition": {
-          "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
+          "blueprintContentHash": "1d3ef263cb7b00b49518daa0a4a47ff41b2d230edc10f431970e33f480a39af6",
           "canvas": {
             "canvasBaseHeight": 200,
-            "canvasUnitsToCssPx": 0.579956,
+            "canvasUnitsToCssPx": 0.580329,
             "height": 1220,
             "itemCount": 1,
             "itemPitch": 1020,
-            "width": 1600
+            "width": 1640
           },
           "labelClearance": 12,
-          "layoutContentHash": "0ec1c3bafcfab59cd0c8bc081284abd9ddbc6948fd47619906158b664a047b7a",
+          "layoutContentHash": "70446629d2b2459a1da3f23dcb6d123849080a96059925dc937527c58d7fe05f",
           "layoutPresetId": "wave25-division-grouping-v1",
           "manipulatedStateEnvelopes": [
             {
               "bounds": {
-                "height": 658,
-                "width": 740,
-                "x": 630,
-                "y": 402
+                "height": 450,
+                "width": 764,
+                "x": 682,
+                "y": 606
               },
               "id": "grouped-clusters"
             },
             {
               "bounds": {
-                "height": 658,
-                "width": 150,
-                "x": 1380,
-                "y": 402
+                "height": 450,
+                "width": 146,
+                "x": 1450,
+                "y": 606
               },
               "id": "remainder-units"
             }
@@ -269,7 +269,7 @@
             "devicePixelRatio": 1,
             "height": 800,
             "pan": {
-              "x": -499.456,
+              "x": -479.456,
               "y": -129.584
             },
             "sidebarState": "expanded",
@@ -286,46 +286,46 @@
           "semanticRegions": [
             {
               "bounds": {
-                "height": 178,
-                "width": 250,
+                "height": 234,
+                "width": 280,
                 "x": 770,
-                "y": 209
+                "y": 356
               },
               "id": "prediction-region"
             },
             {
               "bounds": {
-                "height": 588,
-                "width": 470,
-                "x": 110,
-                "y": 463
+                "height": 336,
+                "width": 672,
+                "x": 4,
+                "y": 694
               },
               "id": "source-pool"
             },
             {
               "bounds": {
-                "height": 658,
-                "width": 740,
-                "x": 630,
-                "y": 402
+                "height": 450,
+                "width": 764,
+                "x": 682,
+                "y": 606
               },
               "id": "group-lane"
             },
             {
               "bounds": {
-                "height": 658,
-                "width": 150,
-                "x": 1380,
-                "y": 402
+                "height": 450,
+                "width": 146,
+                "x": 1450,
+                "y": 606
               },
               "id": "remainder-lane"
             },
             {
               "bounds": {
-                "height": 178,
-                "width": 490,
-                "x": 1040,
-                "y": 209
+                "height": 234,
+                "width": 540,
+                "x": 1060,
+                "y": 356
               },
               "id": "explanation-region"
             }
@@ -347,15 +347,15 @@
           "width": 44
         },
         "minInteractiveSize": {
-          "height": 588,
-          "width": 470
+          "height": 336,
+          "width": 672
         },
         "reserveAnchor": "placement-top-left",
         "reserveBox": {
-          "height": 668,
-          "width": 1500,
-          "x": -60,
-          "y": -71
+          "height": 458,
+          "width": 1600,
+          "x": -4,
+          "y": -92
         },
         "roundTripStable": true,
         "roundTripTolerance": 1,
@@ -371,9 +371,9 @@
           "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
           "harnessVersion": "division-counting-group-product-canary:31-by-6:v10",
           "interactionContext": {
-            "canvasUnitsToCssPx": 0.579956,
+            "canvasUnitsToCssPx": 0.580329,
             "pan": {
-              "x": -499.456,
+              "x": -479.456,
               "y": -129.584
             },
             "selectionOverlayCssPx": {
@@ -393,181 +393,181 @@
         "observations": [
           {
             "chromeBox": {
-              "height": 566.304,
-              "width": 399.467,
-              "x": 145.872,
-              "y": 473.755
+              "height": 314.626,
+              "width": 651.186,
+              "x": 14.981,
+              "y": 704.552
             },
             "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
             "placement": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "reserveBox": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/initial.png",
             "state": "initial",
             "taskEnvelope": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "visualBox": {
-              "height": 566.304,
-              "width": 399.467,
-              "x": 145.872,
-              "y": 473.755
+              "height": 314.626,
+              "width": 651.186,
+              "x": 14.981,
+              "y": 704.552
             }
           },
           {
             "chromeBox": {
-              "height": 160.798,
-              "width": 229.71,
-              "x": 1070.826,
-              "y": 476.364
+              "height": 160.578,
+              "width": 229.729,
+              "x": 692.466,
+              "y": 693.515
             },
             "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
             "placement": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "reserveBox": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/selected-first-four.png",
             "state": "selected",
             "taskEnvelope": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "visualBox": {
-              "height": 563.058,
-              "width": 1154.024,
-              "x": 145.872,
-              "y": 477.002
+              "height": 325.027,
+              "width": 906.575,
+              "x": 14.981,
+              "y": 694.152
             }
           },
           {
             "chromeBox": {
-              "height": 580.959,
-              "width": 805.489,
-              "x": 688.585,
-              "y": 467.032
+              "height": 369.218,
+              "width": 873.934,
+              "x": 683.119,
+              "y": 684.195
             },
             "persistedMathematicalStateHash": "c0f53cc922a52703a034b664e4081f85e2b1d7b693e25d004ef7962ec256b2af",
             "placement": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "reserveBox": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/full-grouped.png",
             "state": "manipulated",
             "taskEnvelope": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "visualBox": {
-              "height": 545.066,
-              "width": 787.513,
-              "x": 706.562,
-              "y": 484.978
+              "height": 333.374,
+              "width": 855.958,
+              "x": 701.096,
+              "y": 702.117
             }
           },
           {
             "chromeBox": {
-              "height": 566.304,
-              "width": 399.467,
-              "x": 145.872,
-              "y": 473.755
+              "height": 314.626,
+              "width": 651.186,
+              "x": 14.981,
+              "y": 704.552
             },
             "persistedMathematicalStateHash": "dfff8ec40c8c6a0b89f56b1eb458e63e945b36256b7b8c70a75455ba2be15a56",
             "placement": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "reserveBox": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reset.png",
             "state": "undo-reset",
             "taskEnvelope": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "visualBox": {
-              "height": 566.304,
-              "width": 399.467,
-              "x": 145.872,
-              "y": 473.755
+              "height": 314.626,
+              "width": 651.186,
+              "x": 14.981,
+              "y": 704.552
             }
           },
           {
             "chromeBox": {
-              "height": 580.959,
-              "width": 805.489,
-              "x": 688.585,
-              "y": 467.032
+              "height": 369.218,
+              "width": 873.934,
+              "x": 683.119,
+              "y": 684.195
             },
             "persistedMathematicalStateHash": "c0f53cc922a52703a034b664e4081f85e2b1d7b693e25d004ef7962ec256b2af",
             "placement": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "reserveBox": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-31-by-6/reopened.png",
             "state": "reopened",
             "taskEnvelope": {
-              "height": 668,
-              "width": 1500,
-              "x": 50,
-              "y": 392
+              "height": 458,
+              "width": 1600,
+              "x": 0,
+              "y": 602
             },
             "visualBox": {
-              "height": 545.066,
-              "width": 787.513,
-              "x": 706.562,
-              "y": 484.978
+              "height": 333.374,
+              "width": 855.958,
+              "x": 701.096,
+              "y": 702.117
             }
           }
         ],
-        "observedAt": "2026-08-08T07:25:49.639Z",
+        "observedAt": "2026-08-09T00:19:13.232Z",
         "persistedStateChanged": true,
         "roundTripDrift": 0,
         "roundTripDriftWithinTolerance": true,
@@ -576,13 +576,13 @@
         "toolVersionFingerprint": "bundle:bcdf0887a0d77ecc832310cf5561668ec16031ad79dfe0b2bac29e02d894031e:NO01SC-01",
         "variantId": "NO01SC-01"
       },
-      "recordHash": "2f2cb9234825061829716c1784e03245a04369bb428e37e2272a363cdad5dff6",
+      "recordHash": "b5bf36e6e5264ab3019223d4c1a28869b6d32117418de48d4ba1c04cf0981426",
       "recordKind": "activity-composition",
       "upstreamContracts": [
         {
           "contractId": "native-element-no01sc-01-v2",
           "contractVersion": "2.0.0",
-          "recordHash": "7e2b8402f37df7c9a42aabbfe6a0975eb1622c5578e03d996509053b10f1291b"
+          "recordHash": "3416f514903926828b6c326278d02e23e409dd85b474f9e00b038735439e9654"
         }
       ]
     }

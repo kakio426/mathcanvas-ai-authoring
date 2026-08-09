@@ -308,15 +308,25 @@ for (const manifest of manifests) {
       1;
   if (isHomogeneousMovablePool) {
     const poolPredicate = blueprint.valuePredicates.find(
-      (predicate) =>
-        predicate.kind === "visual.labeled-pool-row" &&
-        Array.isArray(predicate.parameters.memberRoles) &&
-        sameSet(
+      (predicate) => {
+        if (
+          predicate.kind !== "visual.labeled-pool-row" ||
+          !Array.isArray(predicate.parameters.memberRoles)
+        ) {
+          return false;
+        }
+        const layoutMemberRoles =
           predicate.parameters.memberRoles.filter(
             (role) => typeof role === "string"
-          ),
-          decisionMemberRoles
-        )
+          );
+        return (
+          sameSet(layoutMemberRoles, decisionMemberRoles) ||
+          sameSet(
+            layoutMemberRoles,
+            decisionMemberRoles.map((role) => `${role}-backdrop`)
+          )
+        );
+      }
     );
     const labelRole =
       typeof poolPredicate?.parameters.labelRole === "string"

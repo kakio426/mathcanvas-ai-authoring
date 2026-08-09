@@ -66,7 +66,7 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
     ["division-scenario-0", 29, 7],
     ["division-scenario-4", 31, 6]
   ] as const)(
-    "%s: %i개를 %i개씩 묶는 실제 compiler payload가 중립적인 max-5 brick pool을 만든다",
+    "%s: %i개를 %i개씩 묶는 실제 compiler payload가 중립적인 max-8 brick pool을 만든다",
     (seed, expectedTotal, expectedGroupSize) => {
       assertCognitiveManifestBound(blueprint);
       const first = compileScenario(seed);
@@ -107,9 +107,9 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
           }, new Map<string, number>())
           .values()
       ];
-      expect(Math.max(...rowCounts)).toBe(5);
+      expect(Math.max(...rowCounts)).toBe(8);
       expect(rowCounts).toEqual(
-        [5, 4, 5, 4, 5, 4, 4].reduce<readonly number[]>(
+        [8, 7, 8, 8].reduce<readonly number[]>(
           (rows, capacity) => {
             const used = rows.reduce((sum, value) => sum + value, 0);
             return used >= expectedTotal
@@ -119,7 +119,7 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
           []
         )
       );
-      expect(expectedGroupSize).not.toBe(5);
+      expect(expectedGroupSize).not.toBe(8);
       const positions = units.map((unit) => {
         if (typeof unit.x !== "number" || typeof unit.y !== "number") {
           throw new Error("counting-model-test-position-missing");
@@ -131,7 +131,7 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
         quotient: Math.floor(expectedTotal / expectedGroupSize),
         supportedGroupSizes: [4, 6, 7]
       });
-      expect(structure.maximumUnitsPerRow).toBe(5);
+      expect(structure.maximumUnitsPerRow).toBe(8);
       expect(structure.distinctColumnCount).toBeGreaterThan(rowCounts.length);
       expect(
         structure.completeRowOccupanciesMatchingSupportedGroupSize
@@ -206,6 +206,55 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
           (emission) => emission.role === "group-lane-label"
         )?.toolIntent.properties.text
       ).toBe(`${expectedGroupSize}개씩 묶은 모형`);
+      const instructions = [
+        "instruction-predict",
+        "instruction-verify",
+        "instruction-explain"
+      ].map(
+        (role) =>
+          first.resolved.emissions.find(
+            (emission) => emission.role === role
+          )!
+      );
+      expect(
+        instructions.map((instruction) => instruction.bounds.height)
+      ).toEqual([53, 53, 53]);
+      expect(
+        instructions.slice(1).map(
+          (instruction, index) =>
+            instruction.bounds.y -
+            (instructions[index]!.bounds.y +
+              instructions[index]!.bounds.height)
+        )
+      ).toEqual([23, 23]);
+      const question = first.resolved.emissions.find(
+        (emission) => emission.role === "question"
+      )!;
+      expect(question.toolIntent.properties.fontSize).toBe(52);
+      expect(question.bounds.height).toBe(86);
+      expect(
+        question.bounds.y -
+          (instructions[2]!.bounds.y + instructions[2]!.bounds.height)
+      ).toBe(32);
+      const firstChoice = first.resolved.emissions.find(
+        (emission) => emission.role === "position-card-1"
+      )!;
+      const firstBackdrop = first.resolved.emissions.find(
+        (emission) => emission.role === "position-card-1-backdrop"
+      )!;
+      expect(firstChoice.toolIntent.properties).toMatchObject({
+        fontSize: 32,
+        centerInPlacement: true
+      });
+      expect(firstChoice.bounds.height).toBe(56);
+      expect(firstBackdrop.bounds.height).toBe(70);
+      expect(
+        firstChoice.bounds.y - firstBackdrop.bounds.y
+      ).toBe(7);
+      expect(
+        firstBackdrop.bounds.y + firstBackdrop.bounds.height -
+          (firstChoice.bounds.y + firstChoice.bounds.height)
+      ).toBe(7);
       expect(first.resolved.emissions).not.toEqual(
         expect.arrayContaining([
           expect.objectContaining({ role: expect.stringMatching(/^group-slot-/) })
@@ -274,6 +323,23 @@ describe("몫과 나머지 네이티브 묶기 활동", () => {
       ])
     );
     expect(choiceReport.canCreate).toBe(false);
+
+    const unevenCardRow = structuredClone(resolved);
+    const firstBackdrop = unevenCardRow.emissions.find(
+      (emission) => emission.role === "position-card-1-backdrop"
+    )!;
+    firstBackdrop.bounds.x += 18;
+    const cardRowReport = validateForCreation(
+      unevenCardRow,
+      compileActivity(unevenCardRow),
+      new Date(generatedAt)
+    );
+    expect(cardRowReport.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "labeled-pool-row-invalid" })
+      ])
+    );
+    expect(cardRowReport.canCreate).toBe(false);
   });
 
   it("의도적으로 제수 크기 행을 반복한 배치를 답 구조 유출로 판정한다", () => {

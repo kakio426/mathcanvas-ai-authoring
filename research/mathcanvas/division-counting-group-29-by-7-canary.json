@@ -2,34 +2,34 @@
   "activityCompositionSpatialContractCandidate": {
     "contract": {
       "composition": {
-        "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
+        "blueprintContentHash": "1d3ef263cb7b00b49518daa0a4a47ff41b2d230edc10f431970e33f480a39af6",
         "canvas": {
           "canvasBaseHeight": 200,
-          "canvasUnitsToCssPx": 0.579956,
+          "canvasUnitsToCssPx": 0.580329,
           "height": 1220,
           "itemCount": 1,
           "itemPitch": 1020,
-          "width": 1600
+          "width": 1640
         },
         "labelClearance": 12,
-        "layoutContentHash": "0ec1c3bafcfab59cd0c8bc081284abd9ddbc6948fd47619906158b664a047b7a",
+        "layoutContentHash": "70446629d2b2459a1da3f23dcb6d123849080a96059925dc937527c58d7fe05f",
         "layoutPresetId": "wave25-division-grouping-v1",
         "manipulatedStateEnvelopes": [
           {
             "bounds": {
-              "height": 658,
-              "width": 740,
-              "x": 630,
-              "y": 402
+              "height": 450,
+              "width": 764,
+              "x": 682,
+              "y": 606
             },
             "id": "grouped-clusters"
           },
           {
             "bounds": {
-              "height": 658,
-              "width": 150,
-              "x": 1380,
-              "y": 402
+              "height": 450,
+              "width": 146,
+              "x": 1450,
+              "y": 606
             },
             "id": "remainder-units"
           }
@@ -39,7 +39,7 @@
           "devicePixelRatio": 1,
           "height": 800,
           "pan": {
-            "x": -499.456,
+            "x": -479.456,
             "y": -129.584
           },
           "sidebarState": "expanded",
@@ -56,46 +56,46 @@
         "semanticRegions": [
           {
             "bounds": {
-              "height": 178,
-              "width": 250,
+              "height": 234,
+              "width": 280,
               "x": 770,
-              "y": 209
+              "y": 356
             },
             "id": "prediction-region"
           },
           {
             "bounds": {
-              "height": 588,
-              "width": 470,
-              "x": 110,
-              "y": 463
+              "height": 336,
+              "width": 672,
+              "x": 4,
+              "y": 694
             },
             "id": "source-pool"
           },
           {
             "bounds": {
-              "height": 658,
-              "width": 740,
-              "x": 630,
-              "y": 402
+              "height": 450,
+              "width": 764,
+              "x": 682,
+              "y": 606
             },
             "id": "group-lane"
           },
           {
             "bounds": {
-              "height": 658,
-              "width": 150,
-              "x": 1380,
-              "y": 402
+              "height": 450,
+              "width": 146,
+              "x": 1450,
+              "y": 606
             },
             "id": "remainder-lane"
           },
           {
             "bounds": {
-              "height": 178,
-              "width": 490,
-              "x": 1040,
-              "y": 209
+              "height": 234,
+              "width": 540,
+              "x": 1060,
+              "y": 356
             },
             "id": "explanation-region"
           }
@@ -117,15 +117,15 @@
         "width": 44
       },
       "minInteractiveSize": {
-        "height": 588,
-        "width": 470
+        "height": 336,
+        "width": 672
       },
       "reserveAnchor": "placement-top-left",
       "reserveBox": {
-        "height": 668,
-        "width": 1500,
-        "x": -60,
-        "y": -71
+        "height": 458,
+        "width": 1600,
+        "x": -4,
+        "y": -92
       },
       "roundTripStable": true,
       "roundTripTolerance": 1,
@@ -141,9 +141,9 @@
         "fontFingerprint": "sha256:144e837de8e4d7282306e360726b333d921e3aebc61b0d6e0f39dd3dbd295232",
         "harnessVersion": "division-counting-group-product-canary:29-by-7:v10",
         "interactionContext": {
-          "canvasUnitsToCssPx": 0.579956,
+          "canvasUnitsToCssPx": 0.580329,
           "pan": {
-            "x": -499.456,
+            "x": -479.456,
             "y": -129.584
           },
           "selectionOverlayCssPx": {
@@ -163,181 +163,181 @@
       "observations": [
         {
           "chromeBox": {
-            "height": 566.304,
-            "width": 399.467,
-            "x": 145.872,
-            "y": 473.755
+            "height": 314.626,
+            "width": 651.186,
+            "x": 14.981,
+            "y": 704.552
           },
           "persistedMathematicalStateHash": "7d59d724eac79f93456e67797e64b113a77f95d6d425ee3ae87cc2aca9a2bff5",
           "placement": {
-            "height": 588,
-            "width": 470,
-            "x": 110,
-            "y": 463
+            "height": 336,
+            "width": 672,
+            "x": 4,
+            "y": 694
           },
           "reserveBox": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/initial.png",
           "state": "initial",
           "taskEnvelope": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "visualBox": {
-            "height": 566.304,
-            "width": 399.467,
-            "x": 145.872,
-            "y": 473.755
+            "height": 314.626,
+            "width": 651.186,
+            "x": 14.981,
+            "y": 704.552
           }
         },
         {
           "chromeBox": {
-            "height": 160.798,
-            "width": 309.602,
-            "x": 660.798,
-            "y": 526.551
+            "height": 160.578,
+            "width": 309.628,
+            "x": 719.414,
+            "y": 693.515
           },
           "persistedMathematicalStateHash": "7d59d724eac79f93456e67797e64b113a77f95d6d425ee3ae87cc2aca9a2bff5",
           "placement": {
-            "height": 588,
-            "width": 470,
-            "x": 110,
-            "y": 463
+            "height": 336,
+            "width": 672,
+            "x": 4,
+            "y": 694
           },
           "reserveBox": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-first-four.png",
           "state": "selected",
           "taskEnvelope": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "visualBox": {
-            "height": 512.871,
-            "width": 823.891,
-            "x": 145.872,
-            "y": 527.189
+            "height": 325.027,
+            "width": 1013.422,
+            "x": 14.981,
+            "y": 694.152
           }
         },
         {
           "chromeBox": {
-            "height": 480.585,
-            "width": 842.623,
-            "x": 651.452,
-            "y": 517.218
+            "height": 369.218,
+            "width": 846.988,
+            "x": 710.065,
+            "y": 684.195
           },
           "persistedMathematicalStateHash": "86ce223bdbf30c3f035009f2fdd2ba51a1e11e15253e656d72fae938ad7edf67",
           "placement": {
-            "height": 588,
-            "width": 470,
-            "x": 110,
-            "y": 463
+            "height": 336,
+            "width": 672,
+            "x": 4,
+            "y": 694
           },
           "reserveBox": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/full-grouped.png",
           "state": "manipulated",
           "taskEnvelope": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "visualBox": {
-            "height": 444.692,
-            "width": 824.647,
-            "x": 669.427,
-            "y": 535.165
+            "height": 333.374,
+            "width": 829.01,
+            "x": 728.043,
+            "y": 702.117
           }
         },
         {
           "chromeBox": {
-            "height": 566.304,
-            "width": 399.467,
-            "x": 145.872,
-            "y": 473.755
+            "height": 314.626,
+            "width": 651.186,
+            "x": 14.981,
+            "y": 704.552
           },
           "persistedMathematicalStateHash": "7d59d724eac79f93456e67797e64b113a77f95d6d425ee3ae87cc2aca9a2bff5",
           "placement": {
-            "height": 588,
-            "width": 470,
-            "x": 110,
-            "y": 463
+            "height": 336,
+            "width": 672,
+            "x": 4,
+            "y": 694
           },
           "reserveBox": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reset.png",
           "state": "undo-reset",
           "taskEnvelope": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "visualBox": {
-            "height": 566.304,
-            "width": 399.467,
-            "x": 145.872,
-            "y": 473.755
+            "height": 314.626,
+            "width": 651.186,
+            "x": 14.981,
+            "y": 704.552
           }
         },
         {
           "chromeBox": {
-            "height": 480.585,
-            "width": 842.623,
-            "x": 651.452,
-            "y": 517.218
+            "height": 369.218,
+            "width": 846.988,
+            "x": 710.065,
+            "y": 684.195
           },
           "persistedMathematicalStateHash": "86ce223bdbf30c3f035009f2fdd2ba51a1e11e15253e656d72fae938ad7edf67",
           "placement": {
-            "height": 588,
-            "width": 470,
-            "x": 110,
-            "y": 463
+            "height": 336,
+            "width": 672,
+            "x": 4,
+            "y": 694
           },
           "reserveBox": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reopened.png",
           "state": "reopened",
           "taskEnvelope": {
-            "height": 668,
-            "width": 1500,
-            "x": 50,
-            "y": 392
+            "height": 458,
+            "width": 1600,
+            "x": 0,
+            "y": 602
           },
           "visualBox": {
-            "height": 444.692,
-            "width": 824.647,
-            "x": 669.427,
-            "y": 535.165
+            "height": 333.374,
+            "width": 829.01,
+            "x": 728.043,
+            "y": 702.117
           }
         }
       ],
-      "observedAt": "2026-08-08T07:23:57.833Z",
+      "observedAt": "2026-08-09T00:22:24.025Z",
       "persistedStateChanged": true,
       "roundTripDrift": 0,
       "roundTripDriftWithinTolerance": true,
@@ -348,7 +348,7 @@
     }
   },
   "activityId": "number.division.quotient-remainder.claim-evidence-v1",
-  "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
+  "blueprintContentHash": "1d3ef263cb7b00b49518daa0a4a47ff41b2d230edc10f431970e33f480a39af6",
   "claims": {
     "NO01SC": {
       "contracted": {
@@ -376,7 +376,7 @@
         "emittedObjectCount": 29,
         "exactNativeVariantOnly": true,
         "groupsFormedFromEmittedPlacements": true,
-        "maximumUnitsPerRow": 5,
+        "maximumUnitsPerRow": 8,
         "selectionOverlayAvoided": true
       }
     }
@@ -462,26 +462,29 @@
       "answerStructureLeaked": false,
       "columnOccupancies": [
         3,
-        4,
+        1,
         3,
-        4,
+        1,
         3,
+        1,
         3,
+        1,
         3,
+        1,
         3,
-        3
+        1,
+        2,
+        1,
+        2
       ],
       "completeRowOccupanciesMatchingSupportedGroupSize": [],
-      "distinctColumnCount": 9,
-      "maximumUnitsPerRow": 5,
+      "distinctColumnCount": 15,
+      "maximumUnitsPerRow": 8,
       "rowOccupancies": [
-        5,
-        4,
-        5,
-        4,
-        5,
-        4,
-        2
+        8,
+        7,
+        8,
+        6
       ],
       "transposedRectangleMatchingDivision": false
     },
@@ -495,20 +498,20 @@
     ],
     "targetSizeProfilesCanvas": [
       {
-        "height": 285.5,
-        "width": 354
+        "height": 182,
+        "width": 378
       },
       {
-        "height": 285.5,
-        "width": 354
+        "height": 182,
+        "width": 378
       },
       {
-        "height": 285.5,
-        "width": 354
+        "height": 182,
+        "width": 378
       },
       {
-        "height": 285.5,
-        "width": 354
+        "height": 182,
+        "width": 378
       }
     ],
     "unitIdOrderHash": "dce42f12fedd2fb3eb5c191f7eb62dd628dce8482c7f7f52005844c5efdbe869"
@@ -516,113 +519,530 @@
   "environment": {
     "classroomTextClearance": {
       "checks": {
-        "choiceTextsCentered": true,
+        "choiceLineBoxesCentered": true,
         "instructionRowsSeparated": true,
         "poolLabelPadded": true,
         "selectedSourceGroupClearsLabel": true,
+        "semanticTitleGap": true,
         "sourceNativeUnitsClearLabel": true,
+        "textBoxesContainActualLineBoxes": true,
+        "titleHierarchy": true,
         "workbenchLabelsPadded": true,
         "writingLabelsPadded": true
       },
       "metrics": {
-        "choiceTextCenterOffsetsCssPx": [
+        "choiceLineBoxCenterOffsetsCssPx": [
           {
             "choice": 1,
-            "x": -0.001,
+            "x": -0.004,
             "y": 0
           },
           {
             "choice": 2,
-            "x": -0.001,
+            "x": -0.004,
             "y": 0
           },
           {
             "choice": 3,
-            "x": -0.001,
+            "x": -0.004,
             "y": 0
           },
           {
             "choice": 4,
-            "x": -0.001,
-            "y": 0
+            "x": -0.003,
+            "y": -0.001
           },
           {
             "choice": 5,
-            "x": -0.001,
-            "y": 0
+            "x": -0.004,
+            "y": -0.001
           }
         ],
-        "choiceTextInsetsCssPx": [
+        "choiceLineBoxDiagnostics": [
           {
-            "bottom": 5.208,
             "choice": 1,
-            "left": 18.576,
-            "right": 18.578,
-            "top": 5.208
+            "clientHeight": 56,
+            "fontSize": 32,
+            "lineHeight": 48,
+            "scrollHeight": 56
           },
           {
-            "bottom": 5.208,
             "choice": 2,
-            "left": 18.576,
-            "right": 18.578,
-            "top": 5.208
+            "clientHeight": 56,
+            "fontSize": 32,
+            "lineHeight": 48,
+            "scrollHeight": 56
           },
           {
-            "bottom": 5.208,
             "choice": 3,
-            "left": 18.576,
-            "right": 18.578,
-            "top": 5.208
+            "clientHeight": 56,
+            "fontSize": 32,
+            "lineHeight": 48,
+            "scrollHeight": 56
           },
           {
-            "bottom": 5.208,
             "choice": 4,
-            "left": 18.576,
-            "right": 18.578,
-            "top": 5.208
+            "clientHeight": 56,
+            "fontSize": 32,
+            "lineHeight": 48,
+            "scrollHeight": 56
           },
           {
-            "bottom": 5.208,
             "choice": 5,
-            "left": 18.576,
-            "right": 18.578,
-            "top": 5.208
+            "clientHeight": 56,
+            "fontSize": 32,
+            "lineHeight": 48,
+            "scrollHeight": 56
+          }
+        ],
+        "choiceLineBoxInsetsCssPx": [
+          {
+            "bottom": 4.63,
+            "choice": 1,
+            "left": 20.278,
+            "right": 20.286,
+            "top": 4.629
+          },
+          {
+            "bottom": 4.63,
+            "choice": 2,
+            "left": 20.278,
+            "right": 20.285,
+            "top": 4.629
+          },
+          {
+            "bottom": 4.63,
+            "choice": 3,
+            "left": 20.278,
+            "right": 20.285,
+            "top": 4.629
+          },
+          {
+            "bottom": 4.631,
+            "choice": 4,
+            "left": 20.278,
+            "right": 20.285,
+            "top": 4.629
+          },
+          {
+            "bottom": 4.631,
+            "choice": 5,
+            "left": 20.277,
+            "right": 20.286,
+            "top": 4.629
           }
         ],
         "explanationLabelInsetsCssPx": {
-          "bottom": 76.968,
+          "bottom": 97.802,
           "left": 12.153,
           "right": 12.153,
-          "top": 7.523
+          "top": 6.365
         },
-        "groupLabelTopFromWorkbenchCssPx": 13.889,
-        "instructionExplainToQuestionCssPx": 8.102,
-        "instructionPredictToVerifyCssPx": 8.102,
-        "instructionVerifyToExplainCssPx": 8.102,
+        "groupLabelTopFromWorkbenchCssPx": 10.995,
+        "instructionExplainToQuestionCssPx": 18.519,
+        "instructionFontSizeCanvas": 30,
+        "instructionPredictToVerifyCssPx": 13.31,
+        "instructionVerifyToExplainCssPx": 13.311,
         "poolLabelInsetsCssPx": {
-          "bottom": 79.282,
-          "left": 10.995,
-          "right": 233.218,
-          "top": 6.366
+          "bottom": 97.802,
+          "left": 12.153,
+          "right": 249.421,
+          "top": 6.365
         },
-        "poolLabelToFirstCardCssPx": 8.681,
+        "poolLabelToFirstCardCssPx": 8.103,
         "predictionLabelInsetsCssPx": {
-          "bottom": 76.968,
+          "bottom": 97.802,
           "left": 12.153,
           "right": 12.153,
-          "top": 7.523
+          "top": 6.365
         },
-        "remainderLabelTopFromWorkbenchCssPx": 13.889,
-        "selectedSourceLabelGapCssPx": 44.533,
-        "sourceLabelToNearestNativeUnitCssPx": 13.889,
-        "sourceLabelTopFromWorkbenchCssPx": 13.889
+        "questionFontSizeCanvas": 52,
+        "questionToInstructionFontRatio": 1.733,
+        "questionToResponseBandCssPx": 18.518,
+        "remainderLabelTopFromWorkbenchCssPx": 10.995,
+        "selectedSourceLabelGapCssPx": 9.789,
+        "sourceLabelToNearestNativeUnitCssPx": 16.204,
+        "sourceLabelTopFromWorkbenchCssPx": 10.995,
+        "textBoxOverflowCanvas": [
+          {
+            "horizontal": 0,
+            "index": 1,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 2,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 3,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 4,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 5,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 6,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 7,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 8,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 9,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 10,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 11,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 12,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 13,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 14,
+            "vertical": 0
+          },
+          {
+            "horizontal": 0,
+            "index": 15,
+            "vertical": 0
+          }
+        ]
       }
+    },
+    "fixedChromeTaskClearance": {
+      "initial": {
+        "checks": {
+          "exactVisibleFixedChrome": true,
+          "taskAvoidsInflatedFixedChrome": true,
+          "taskWithinFixedSafe": true
+        },
+        "fixedChrome": {
+          "bottom": {
+            "bounds": {
+              "height": 48,
+              "width": 480,
+              "x": 400,
+              "y": 744
+            },
+            "selector": "#bottom-common-toolbar"
+          },
+          "left": {
+            "bounds": {
+              "height": 728,
+              "width": 224,
+              "x": 8,
+              "y": 64
+            },
+            "selector": "#left-toolbar"
+          },
+          "right": {
+            "bounds": {
+              "height": 208,
+              "width": 48,
+              "x": 1224,
+              "y": 296
+            },
+            "selector": "#right-toolbar"
+          },
+          "top": {
+            "bounds": {
+              "height": 56,
+              "width": 1280,
+              "x": 0,
+              "y": 0
+            },
+            "selector": "#top-toolbar"
+          }
+        },
+        "fixedSafeCssPx": {
+          "height": 672,
+          "width": 976,
+          "x": 240,
+          "y": 64
+        },
+        "guardCssPx": 8,
+        "taskClearanceInsideSafeCssPx": {
+          "bottom": 47.005,
+          "left": 36.884,
+          "right": 5.667,
+          "top": 10.991
+        },
+        "taskEnvelopeCssPx": {
+          "height": 614.005,
+          "width": 933.449,
+          "x": 276.884,
+          "y": 74.991
+        },
+        "taskSurfacesCssPx": [
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 74.991
+            },
+            "role": "instruction-predict"
+          },
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 118.972
+            },
+            "role": "instruction-verify"
+          },
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 162.954
+            },
+            "role": "instruction-explain"
+          },
+          {
+            "bounds": {
+              "height": 49.769,
+              "width": 932.87,
+              "x": 277.463,
+              "y": 212.144
+            },
+            "role": "question"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 435.185,
+              "x": 282.671,
+              "y": 280.431
+            },
+            "role": "choice-panel"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 163.194,
+              "x": 722.486,
+              "y": 280.431
+            },
+            "role": "prediction-box"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 313.657,
+              "x": 890.31,
+              "y": 280.431
+            },
+            "role": "explanation-box"
+          },
+          {
+            "bounds": {
+              "height": 266.204,
+              "width": 927.083,
+              "x": 276.884,
+              "y": 422.792
+            },
+            "role": "native-workbench"
+          }
+        ]
+      },
+      "reopened": {
+        "checks": {
+          "exactVisibleFixedChrome": true,
+          "taskAvoidsInflatedFixedChrome": true,
+          "taskWithinFixedSafe": true
+        },
+        "fixedChrome": {
+          "bottom": {
+            "bounds": {
+              "height": 48,
+              "width": 480,
+              "x": 400,
+              "y": 744
+            },
+            "selector": "#bottom-common-toolbar"
+          },
+          "left": {
+            "bounds": {
+              "height": 728,
+              "width": 224,
+              "x": 8,
+              "y": 64
+            },
+            "selector": "#left-toolbar"
+          },
+          "right": {
+            "bounds": {
+              "height": 208,
+              "width": 48,
+              "x": 1224,
+              "y": 296
+            },
+            "selector": "#right-toolbar"
+          },
+          "top": {
+            "bounds": {
+              "height": 56,
+              "width": 1280,
+              "x": 0,
+              "y": 0
+            },
+            "selector": "#top-toolbar"
+          }
+        },
+        "fixedSafeCssPx": {
+          "height": 672,
+          "width": 976,
+          "x": 240,
+          "y": 64
+        },
+        "guardCssPx": 8,
+        "taskClearanceInsideSafeCssPx": {
+          "bottom": 47.005,
+          "left": 36.884,
+          "right": 5.667,
+          "top": 10.991
+        },
+        "taskEnvelopeCssPx": {
+          "height": 614.005,
+          "width": 933.449,
+          "x": 276.884,
+          "y": 74.991
+        },
+        "taskSurfacesCssPx": [
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 74.991
+            },
+            "role": "instruction-predict"
+          },
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 118.972
+            },
+            "role": "instruction-verify"
+          },
+          {
+            "bounds": {
+              "height": 30.671,
+              "width": 879.63,
+              "x": 312.185,
+              "y": 162.954
+            },
+            "role": "instruction-explain"
+          },
+          {
+            "bounds": {
+              "height": 49.769,
+              "width": 932.87,
+              "x": 277.463,
+              "y": 212.144
+            },
+            "role": "question"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 435.185,
+              "x": 282.671,
+              "y": 280.431
+            },
+            "role": "choice-panel"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 163.194,
+              "x": 722.486,
+              "y": 280.431
+            },
+            "role": "prediction-box"
+          },
+          {
+            "bounds": {
+              "height": 136.574,
+              "width": 313.657,
+              "x": 890.31,
+              "y": 280.431
+            },
+            "role": "explanation-box"
+          },
+          {
+            "bounds": {
+              "height": 266.204,
+              "width": 927.083,
+              "x": 276.884,
+              "y": 422.792
+            },
+            "role": "native-workbench"
+          }
+        ]
+      },
+      "stableAfterReopen": true
+    },
+    "geometryProfileReference": {
+      "evidenceId": "r3-editor-geometry-1280-v1",
+      "fixedSafeCssPx": {
+        "height": 672,
+        "width": 976,
+        "x": 240,
+        "y": 64
+      },
+      "guardCssPx": 8,
+      "profileContentSha256": "5709aa3b23f66761436eeeea61e7805e3ea20290ef1a5b2a55f80be6a18eaff3",
+      "profileFileSha256": "5af1498c3dd392eb7f2d771679b62eb435d37e1d636c3c9b74fbc34030b21732",
+      "profileId": "student-one-screen-fixed-geometry-v1",
+      "profileVersion": "1.0.0",
+      "sidebarState": "expanded",
+      "surfaceMode": "authoring-editor",
+      "viewport": "1280x800"
     },
     "injectedProjectReadCount": 9,
     "nativeOverlayIntersectionCount": 0,
     "profileScope": "dedicated-mathcanvas-profile",
     "releaseInteractionContext": {
-      "canvasUnitsToCssPx": 0.579956,
+      "canvasUnitsToCssPx": 0.580329,
       "devicePixelRatio": 1,
       "overlayToolbarBoxesCssPx": [
         {
@@ -645,7 +1065,7 @@
         }
       ],
       "pan": {
-        "x": -499.456,
+        "x": -479.456,
         "y": -129.584
       },
       "selectionOverlayCssPx": {
@@ -657,7 +1077,7 @@
       "sidebarState": "expanded",
       "surfaceMode": "authoring-editor",
       "viewBox": [
-        -499.456,
+        -479.456,
         -129.584,
         2211.84,
         1382.4
@@ -783,181 +1203,181 @@
       "observations": [
         {
           "chromeBox": {
-            "height": 79.761,
-            "width": 79.893,
-            "x": 263.715,
-            "y": 968.275
+            "height": 79.652,
+            "width": 79.9,
+            "x": 426.467,
+            "y": 947.491
           },
-          "persistedMathematicalStateHash": "a541a4dd892d4c9494d9b807da01d3ea7c27aebbb482b012f3c02908182d0704",
+          "persistedMathematicalStateHash": "92c11827fcf097869b1c76eb869227a2b52d27d03780cabcff55c7de7a6d880c",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 263.661,
-            "y": 968.155
+            "x": 426.417,
+            "y": 947.317
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/initial.png",
           "state": "initial",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "visualBox": {
-            "height": 63.809,
-            "width": 63.915,
-            "x": 271.704,
-            "y": 976.251
+            "height": 63.722,
+            "width": 63.92,
+            "x": 434.457,
+            "y": 955.456
           }
         },
         {
           "chromeBox": {
-            "height": 79.761,
-            "width": 79.893,
-            "x": 263.715,
-            "y": 968.275
+            "height": 79.652,
+            "width": 79.9,
+            "x": 426.467,
+            "y": 947.491
           },
-          "persistedMathematicalStateHash": "a541a4dd892d4c9494d9b807da01d3ea7c27aebbb482b012f3c02908182d0704",
+          "persistedMathematicalStateHash": "92c11827fcf097869b1c76eb869227a2b52d27d03780cabcff55c7de7a6d880c",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 263.661,
-            "y": 968.155
+            "x": 426.417,
+            "y": 947.317
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-single-unit.png",
           "state": "selected",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "visualBox": {
-            "height": 63.809,
-            "width": 63.915,
-            "x": 271.704,
-            "y": 976.251
+            "height": 63.722,
+            "width": 63.92,
+            "x": 434.457,
+            "y": 955.456
           }
         },
         {
           "chromeBox": {
-            "height": 79.761,
-            "width": 79.893,
-            "x": 1422.17,
-            "y": 592.599
+            "height": 79.652,
+            "width": 79.9,
+            "x": 1485.143,
+            "y": 727.054
           },
-          "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
+          "persistedMathematicalStateHash": "e8429c31b9db5eb508309aea2b77c2db439b2513abcaab67f85b78a68e729181",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 1422.117,
-            "y": 592.48
+            "x": 1485.093,
+            "y": 726.88
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 1420.117,
-            "y": 590.48
+            "x": 1483.093,
+            "y": 724.88
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/full-grouped.png",
           "state": "manipulated",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 1420.117,
-            "y": 590.48
+            "x": 1483.093,
+            "y": 724.88
           },
           "visualBox": {
-            "height": 63.809,
-            "width": 63.915,
-            "x": 1430.16,
-            "y": 600.576
+            "height": 63.722,
+            "width": 63.92,
+            "x": 1493.133,
+            "y": 735.019
           }
         },
         {
           "chromeBox": {
-            "height": 79.761,
-            "width": 79.893,
-            "x": 263.715,
-            "y": 968.275
+            "height": 79.652,
+            "width": 79.9,
+            "x": 426.467,
+            "y": 947.491
           },
-          "persistedMathematicalStateHash": "a541a4dd892d4c9494d9b807da01d3ea7c27aebbb482b012f3c02908182d0704",
+          "persistedMathematicalStateHash": "92c11827fcf097869b1c76eb869227a2b52d27d03780cabcff55c7de7a6d880c",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 263.661,
-            "y": 968.155
+            "x": 426.417,
+            "y": 947.317
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reset.png",
           "state": "undo-reset",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 261.661,
-            "y": 966.155
+            "x": 424.417,
+            "y": 945.317
           },
           "visualBox": {
-            "height": 63.809,
-            "width": 63.915,
-            "x": 271.704,
-            "y": 976.251
+            "height": 63.722,
+            "width": 63.92,
+            "x": 434.457,
+            "y": 955.456
           }
         },
         {
           "chromeBox": {
-            "height": 79.761,
-            "width": 79.893,
-            "x": 1422.17,
-            "y": 592.599
+            "height": 79.652,
+            "width": 79.9,
+            "x": 1485.143,
+            "y": 727.054
           },
-          "persistedMathematicalStateHash": "78a4693fe970b634985e2d8bc708aebe1d82086019945bcb4597b9348ac4e83b",
+          "persistedMathematicalStateHash": "e8429c31b9db5eb508309aea2b77c2db439b2513abcaab67f85b78a68e729181",
           "placement": {
             "height": 80,
             "width": 80,
-            "x": 1422.117,
-            "y": 592.48
+            "x": 1485.093,
+            "y": 726.88
           },
           "reserveBox": {
             "height": 84,
             "width": 84,
-            "x": 1420.117,
-            "y": 590.48
+            "x": 1483.093,
+            "y": 724.88
           },
           "screenshotPath": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reopened.png",
           "state": "reopened",
           "taskEnvelope": {
             "height": 84,
             "width": 84,
-            "x": 1420.117,
-            "y": 590.48
+            "x": 1483.093,
+            "y": 724.88
           },
           "visualBox": {
-            "height": 63.809,
-            "width": 63.915,
-            "x": 1430.16,
-            "y": 600.576
+            "height": 63.722,
+            "width": 63.92,
+            "x": 1493.133,
+            "y": 735.019
           }
         }
       ],
-      "observedAt": "2026-08-08T07:23:57.833Z",
+      "observedAt": "2026-08-09T00:22:24.025Z",
       "persistedStateChanged": true,
       "roundTripDrift": 0,
       "roundTripDriftWithinTolerance": true,
@@ -968,8 +1388,8 @@
     }
   },
   "layoutId": "wave25-division-grouping-v1",
-  "layoutPresetContentHash": "d8148031ec414e293ad2bf44e997e41e2cc29b8d6082c7001ddf2869502e066d",
-  "layoutRevision": "layout-0ec1c3bafcfab59c",
+  "layoutPresetContentHash": "50890c19d873d0ab8d8b923fe10fcc9d4e6b0208bb3154587346bbda55f089f4",
+  "layoutRevision": "layout-70446629d2b2459a",
   "manipulatedState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 28,
@@ -1080,7 +1500,7 @@
     }
   },
   "nextGate": "released: 네이티브 공간 계약, background product canary, 품질·시각 감사와 sol xhigh 검토를 통과했습니다.",
-  "observedAt": "2026-08-08T07:23:57.833Z",
+  "observedAt": "2026-08-09T00:22:24.025Z",
   "persistedState": {
     "duplicateMembershipCount": 0,
     "groupedMemberCount": 28,
@@ -1110,11 +1530,11 @@
   },
   "probeMode": "existing-disposable-canary-actual-blueprint-compiler-payload-one-versioned-save-with-read-only-resume",
   "productContract": {
-    "blueprintContentHash": "6d2756bb1bfbe9c09ae06280c3a396777cecb2416cb226aa57e5841a3204a42b",
+    "blueprintContentHash": "1d3ef263cb7b00b49518daa0a4a47ff41b2d230edc10f431970e33f480a39af6",
     "blueprintId": "number.division.quotient-remainder.claim-evidence-v1",
-    "blueprintVersion": "2.1.0",
-    "compiledPayloadHash": "a27b1033a57b1c045f10e39c8f9979bf484feb6ddfe526a5cc26e377a3ca718b",
-    "compiledProjectTitle": "묶어 보고 몫과 나머지 설명하기 · 3학년 · 1문제 · 보통 [AI-00F59B341884]",
+    "blueprintVersion": "2.2.0",
+    "compiledPayloadHash": "f65a62924d85122213a26e6bea3d8e55069906753a7bdaf3bb68fa9fd262ff2c",
+    "compiledProjectTitle": "묶어 보고 몫과 나머지 설명하기 · 3학년 · 1문제 · 보통 [AI-FB822E1EF41D]",
     "correctValueText": "4묶음, 1장",
     "explanationLabelText": "식과 까닭 쓰기",
     "generatorId": "curriculum.claim-evidence-items",
@@ -1125,13 +1545,13 @@
     "localValidationIssueCodes": [],
     "poolLabelText": "예상한 답 고르기",
     "poolPlacementCanvas": {
-      "height": 588,
-      "width": 470,
-      "x": 110,
-      "y": 463
+      "height": 336,
+      "width": 672,
+      "x": 4,
+      "y": 694
     },
     "questionText": "색종이 29장을 7장씩 나누면 몇 묶음이고 몇 장이 남을까요?",
-    "resolvedHash": "11fafb58443a0590d3aee5ddbfad55a918383a591fe8b4a8ae5ed83863001582",
+    "resolvedHash": "f2acb48717bfe0517057374869b67e9e13c3e5a515ddbf4aff9c8c2886c955d8",
     "seed": "division-scenario-0",
     "sourceLabelText": "묶기 전 모형",
     "spatialContractId": "division-grouping-no01sc-01-composition-v2",
@@ -1186,13 +1606,41 @@
   },
   "schemaVersion": "2.0.0",
   "screenshots": [
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/initial.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-single-unit.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-first-four.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/ungrouped-first-group.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/full-grouped.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reset.png",
-    ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reopened.png"
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/initial.png",
+      "sha256": "0dbed70facb2566a1dc9ffc6650508a2925a53e5d5f685dfac607b728d7a7e29",
+      "state": "initial"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-single-unit.png",
+      "sha256": "af3b2db4afb17468d33f7cfc59085c2715d5125917d1a9f5f5a678239806d828",
+      "state": "selected-single-unit"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/selected-first-four.png",
+      "sha256": "34b80a0d2815961ff7382bf9e991a4af2b4aa2e03972449bc06a47a15eba74cd",
+      "state": "selected-first-group"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/ungrouped-first-group.png",
+      "sha256": "b98d88ee973e0179b334f557634ddbea3d98a2d4fd6eda327335de61497408ea",
+      "state": "ungrouped-first-group"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/full-grouped.png",
+      "sha256": "3e51e75689598feef889d8358b6e2ab786222a99104b45f2821410bc3eca01ca",
+      "state": "full-grouped"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reset.png",
+      "sha256": "0dbed70facb2566a1dc9ffc6650508a2925a53e5d5f685dfac607b728d7a7e29",
+      "state": "reset"
+    },
+    {
+      "path": ".mathcanvas-contract-lab/previews/wave18/division-counting-group-29-by-7/reopened.png",
+      "sha256": "3e51e75689598feef889d8358b6e2ab786222a99104b45f2821410bc3eca01ca",
+      "state": "reopened"
+    }
   ],
   "secondReadState": {
     "duplicateMembershipCount": 0,
@@ -1228,8 +1676,8 @@
         "clusterBoundsCssPx": {
           "height": 87.963,
           "width": 169.407,
-          "x": 676.336,
-          "y": 384.362
+          "x": 698.732,
+          "y": 480.983
         },
         "columns": 4,
         "formedByNativeDrag": true,
@@ -1253,8 +1701,8 @@
         "clusterBoundsCssPx": {
           "height": 87.963,
           "width": 169.407,
-          "x": 892.418,
-          "y": 384.362
+          "x": 921.527,
+          "y": 480.983
         },
         "columns": 4,
         "formedByNativeDrag": true,
@@ -1278,8 +1726,8 @@
         "clusterBoundsCssPx": {
           "height": 87.963,
           "width": 169.407,
-          "x": 676.336,
-          "y": 559.144
+          "x": 698.732,
+          "y": 591.416
         },
         "columns": 4,
         "formedByNativeDrag": true,
@@ -1303,8 +1751,8 @@
         "clusterBoundsCssPx": {
           "height": 87.963,
           "width": 169.407,
-          "x": 892.418,
-          "y": 559.144
+          "x": 921.527,
+          "y": 591.416
         },
         "columns": 4,
         "formedByNativeDrag": true,
@@ -1328,8 +1776,8 @@
     "selectedChromeBoxCssPx": {
       "height": 93.333,
       "width": 179.407,
-      "x": 671.336,
-      "y": 379.362
+      "x": 693.732,
+      "y": 475.983
     },
     "selectedMemberCount": 7,
     "selectionMethod": "shift-click-native-multi-select",
@@ -1347,86 +1795,86 @@
       {
         "height": 104.167,
         "width": 190.241,
-        "x": 882.002,
-        "y": 373.945
+        "x": 911.11,
+        "y": 470.566
       },
       {
         "height": 104.167,
         "width": 190.241,
-        "x": 665.92,
-        "y": 548.727
+        "x": 688.315,
+        "y": 581
       },
       {
         "height": 104.167,
         "width": 190.241,
-        "x": 882.002,
-        "y": 548.727
+        "x": 911.11,
+        "y": 581
       },
       {
         "height": 104.167,
         "width": 190.241,
-        "x": 665.92,
-        "y": 373.945
+        "x": 688.315,
+        "y": 470.566
       }
     ],
     "groupLabelClearancePassed": true,
-    "groupLabelToNearestVisualCssPx": 49.533,
+    "groupLabelToNearestVisualCssPx": 14.788,
     "groupLaneCssPx": {
-      "height": 387.731,
-      "width": 427.662,
-      "x": 653.62,
-      "y": 301.264
+      "height": 266.204,
+      "width": 440.972,
+      "x": 672.718,
+      "y": 422.792
     },
     "groupTargetEnvelopeBoxesCssPx": [
       {
-        "height": 167.512,
-        "width": 211.58,
-        "x": 653.62,
-        "y": 340.643
+        "height": 105.784,
+        "width": 218.177,
+        "x": 672.718,
+        "y": 468.128
       },
       {
-        "height": 167.512,
-        "width": 211.58,
-        "x": 869.702,
-        "y": 340.643
+        "height": 105.784,
+        "width": 218.177,
+        "x": 895.512,
+        "y": 468.128
       },
       {
-        "height": 167.512,
-        "width": 211.58,
-        "x": 653.62,
-        "y": 515.425
+        "height": 105.784,
+        "width": 218.177,
+        "x": 672.718,
+        "y": 578.562
       },
       {
-        "height": 167.512,
-        "width": 211.58,
-        "x": 869.702,
-        "y": 515.425
+        "height": 105.784,
+        "width": 218.177,
+        "x": 895.512,
+        "y": 578.562
       }
     ],
     "groupVisualBoxesCssPx": [
       {
         "height": 83.333,
         "width": 169.407,
-        "x": 892.418,
-        "y": 384.362
+        "x": 921.527,
+        "y": 480.983
       },
       {
         "height": 83.333,
         "width": 169.407,
-        "x": 676.336,
-        "y": 559.144
+        "x": 698.732,
+        "y": 591.416
       },
       {
         "height": 83.333,
         "width": 169.407,
-        "x": 892.418,
-        "y": 559.144
+        "x": 921.527,
+        "y": 591.416
       },
       {
         "height": 83.333,
         "width": 169.407,
-        "x": 676.336,
-        "y": 384.362
+        "x": 698.732,
+        "y": 480.983
       }
     ],
     "nativeOverlayIntersectionCount": 0,
@@ -1460,40 +1908,154 @@
     ],
     "persistentVisualGroupingByOpenLane": true,
     "placementCanvas": {
-      "height": 588,
-      "width": 470,
-      "x": 110,
-      "y": 463
+      "height": 336,
+      "width": 672,
+      "x": 4,
+      "y": 694
     },
     "remainderBoxesCssPx": [
       {
         "height": 37.037,
         "width": 37.037,
-        "x": 1117.162,
-        "y": 422.329
+        "x": 1142.046,
+        "y": 500.107
       }
     ],
     "remainderLabelClearancePassed": true,
-    "remainderLabelToNearestVisualCssPx": 87.5,
+    "remainderLabelToNearestVisualCssPx": 33.912,
     "remainderLaneCssPx": {
-      "height": 387.731,
-      "width": 101.852,
-      "x": 1084.755,
-      "y": 301.264
+      "height": 266.204,
+      "width": 86.806,
+      "x": 1117.162,
+      "y": 422.792
     },
     "reopenedAllUngroupedInsideRemainderLane": true,
     "reopenedAllWrappersInsideGroupLane": true,
+    "reopenedSpatial": {
+      "allGroupChromeBoxesInsideGroupLane": true,
+      "allGroupChromeBoxesSeparated": true,
+      "allGroupsInsideDistinctTargetEnvelopes": true,
+      "allGroupVisualBoxesInsideGroupLane": true,
+      "allUngroupedInsideRemainderLane": true,
+      "allWrappersInsideGroupLane": true,
+      "emptyTargetEnvelopeCount": 0,
+      "groupChromeBoxesCssPx": [
+        {
+          "height": 104.167,
+          "width": 190.241,
+          "x": 911.11,
+          "y": 470.566
+        },
+        {
+          "height": 104.167,
+          "width": 190.241,
+          "x": 688.315,
+          "y": 581
+        },
+        {
+          "height": 104.167,
+          "width": 190.241,
+          "x": 911.11,
+          "y": 581
+        },
+        {
+          "height": 104.167,
+          "width": 190.241,
+          "x": 688.315,
+          "y": 470.566
+        }
+      ],
+      "groupLaneCssPx": {
+        "height": 266.204,
+        "width": 440.972,
+        "x": 672.718,
+        "y": 422.792
+      },
+      "groupTargetEnvelopeBoxesCssPx": [
+        {
+          "height": 105.784,
+          "width": 218.177,
+          "x": 672.718,
+          "y": 468.128
+        },
+        {
+          "height": 105.784,
+          "width": 218.177,
+          "x": 895.512,
+          "y": 468.128
+        },
+        {
+          "height": 105.784,
+          "width": 218.177,
+          "x": 672.718,
+          "y": 578.562
+        },
+        {
+          "height": 105.784,
+          "width": 218.177,
+          "x": 895.512,
+          "y": 578.562
+        }
+      ],
+      "groupVisualBoxesCssPx": [
+        {
+          "height": 83.333,
+          "width": 169.407,
+          "x": 921.527,
+          "y": 480.983
+        },
+        {
+          "height": 83.333,
+          "width": 169.407,
+          "x": 698.732,
+          "y": 591.416
+        },
+        {
+          "height": 83.333,
+          "width": 169.407,
+          "x": 921.527,
+          "y": 591.416
+        },
+        {
+          "height": 83.333,
+          "width": 169.407,
+          "x": 698.732,
+          "y": 480.983
+        }
+      ],
+      "occupiedTargetEnvelopeCount": 4,
+      "occupiedTargetEnvelopeIndexes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "remainderBoxesCssPx": [
+        {
+          "height": 37.037,
+          "width": 37.037,
+          "x": 1142.046,
+          "y": 500.107
+        }
+      ],
+      "remainderLaneCssPx": {
+        "height": 266.204,
+        "width": 86.806,
+        "x": 1117.162,
+        "y": 422.792
+      }
+    },
     "reserveBoxCanvas": {
-      "height": 668,
-      "width": 1500,
-      "x": 50,
-      "y": 392
+      "height": 458,
+      "width": 1600,
+      "x": 0,
+      "y": 602
     },
     "selectedChromeBoxCssPx": {
       "height": 93.333,
       "width": 179.407,
-      "x": 671.336,
-      "y": 379.362
+      "x": 693.732,
+      "y": 475.983
     },
     "selectionChromeRequiredAfterDeselect": false,
     "selectionOverlayExclusionZoneCssPx": {
@@ -1503,10 +2065,10 @@
       "y": 688
     },
     "taskEnvelopeCanvas": {
-      "height": 668,
-      "width": 1500,
-      "x": 50,
-      "y": 392
+      "height": 458,
+      "width": 1600,
+      "x": 0,
+      "y": 602
     }
   },
   "status": "pass",
@@ -1568,7 +2130,7 @@
     "existingDisposableProjectReused": true,
     "priorApprovedSaveObserved": false,
     "priorApprovedVersionCount": 0,
-    "reopenBlockedNonSafeRequestCount": 2,
+    "reopenBlockedNonSafeRequestCount": 3,
     "reopenPutAttemptCount": 0,
     "resumedFromPriorApprovedSave": false,
     "saveSkippedToAvoidDuplicateWrite": false,

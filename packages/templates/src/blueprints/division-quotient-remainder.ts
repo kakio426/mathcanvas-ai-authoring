@@ -92,8 +92,8 @@ function withoutLegacyWorkPanel(
         toolKey: "common.text",
         intentKind: "text" as const,
         properties: {
+          ...role.properties,
           text: "",
-          fontSize: 30,
           centerInPlacement: true
         },
         bindings: { text: `item.candidate${candidateIndex + 1}` }
@@ -240,7 +240,7 @@ export function makeDivisionQuotientRemainderBlueprint(
       {
         schemaVersion: "1.0.0",
         id: profile.activityId,
-        version: "2.1.0",
+        version: "2.2.0",
         title: profile.title,
         learningObjective: profile.learningObjective,
         curriculumBinding: {
@@ -373,17 +373,17 @@ export function makeDivisionQuotientRemainderBlueprint(
                 {
                   beforeRole: "instruction-predict",
                   afterRole: "instruction-verify",
-                  minimumGap: 14
+                  minimumGap: 23
                 },
                 {
                   beforeRole: "instruction-verify",
                   afterRole: "instruction-explain",
-                  minimumGap: 14
+                  minimumGap: 23
                 },
                 {
                   beforeRole: "instruction-explain",
                   afterRole: "question",
-                  minimumGap: 14
+                  minimumGap: 32
                 },
                 {
                   beforeRole: "pool-label",
@@ -393,22 +393,22 @@ export function makeDivisionQuotientRemainderBlueprint(
                 {
                   beforeRole: "array-border-top",
                   afterRole: "source-label",
-                  minimumGap: 19
+                  minimumGap: 14
                 },
                 {
                   beforeRole: "source-label",
                   afterRole: "counting-model-pool",
-                  minimumGap: 12
+                  minimumGap: 18
                 },
                 {
                   beforeRole: "array-border-top",
                   afterRole: "group-lane-label",
-                  minimumGap: 19
+                  minimumGap: 14
                 },
                 {
                   beforeRole: "array-border-top",
                   afterRole: "remainder-lane-label",
-                  minimumGap: 19
+                  minimumGap: 14
                 }
               ],
               centerPairs: CHOICE_CARD_ROLES.map((role) => ({
@@ -423,7 +423,9 @@ export function makeDivisionQuotientRemainderBlueprint(
             kind: "visual.labeled-pool-row",
             parameters: {
               labelRole: "pool-label",
-              memberRoles: CHOICE_CARD_ROLES,
+              memberRoles: CHOICE_CARD_ROLES.map(
+                (role) => `${role}-backdrop`
+              ),
               containerRole: "choice-panel",
               rowCenterTolerance: 2,
               gapTolerance: 2,

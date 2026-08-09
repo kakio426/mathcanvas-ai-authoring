@@ -184,6 +184,7 @@
   - [x] affordanceFamily별 candidate rubric과 현재 GO/NO-GO/pending 판정
   - [x] DOM/SVG text-box availability probe와 fallback decision
   - [x] editor chrome/fixed content width/full CTM coordinate evidence
+  - [x] 나눗셈 reference canary에서 실제 inner line box·의미 간격·보기 중앙과 4개 fixed chrome 8px guard를 initial/reopened로 검증하고 coherent right-shift·line-box offset 변조를 차단했다. 이는 R4 generic typography/layout 완료가 아니다.
   - [ ] read-only/isolated semantic and spatial probe; actual lifecycle은 R5/R8에 위임
 - Cost gate:
   - [ ] 동일 `(affordanceFamily × layoutProfile)` 계약을 title 수만큼 반복 probe하지 않는다.
@@ -205,6 +206,9 @@
   - `packages/curriculum/src/native-affordance-rubric-v2.ts`: 7개 family rubric을 생성한다. NO01SC만 기존 read-only semantic probe에 근거한 `isolated-semantic-probe·contracted·conditional-go`, 나머지는 `static-evidence-triage·pending`이며 각 blocker를 유지한다.
   - `packages/curriculum/src/native-affordance-catalog-v2.test.ts`: family dedupe drift, candidate/evidence 단계 결속, placement·selection·viewport 불변 hash, semantic 관계 변화 hash, 상·하위 projection 충돌, spatial source SHA와 canonical authority 오염 변조 rejection을 검증한다.
   - 기존 실제 evidence 재검증: `pnpm native-spatial:verify`, `pnpm contract:verify:division-native-rubric`, `pnpm contract:verify:division-counting-group` PASS. 1280×800 캡처 `division-counting-group-31-by-6/full-grouped.png`는 native affordance reference로만 확인했으며 학생 release 품질 캡처로 승격하지 않았다.
+  - 사용자 피드백에 따른 wave25 나눗셈 reference 배치는 MathCanvas `input-text`의 실제 `1.5×font + 8` line box를 반영했다. 1280×800 actual 23÷4·29÷7·31÷6 canary에서 안내 행 간격 `13.310/13.311px`, 세 번째 안내→제목 `18.519px`, 제목→응답 band `18.518px`, 제목/안내 font ratio `1.733`, 보기 line-box 중심 오차 `≤0.004px`, 15개 text box overflow `0`을 확인했다. 보기 glyph 중앙은 DOM ink box라고 과장하지 않고 fresh screenshot Sol 육안 gate로 남긴다.
+  - 같은 canary는 `#top-toolbar`, `#left-toolbar`, `#right-toolbar`, `#bottom-common-toolbar` exact-one bounds로 fixed-safe `x240 y64 976×672`를 다시 파생한다. 이 값은 `student-one-screen-fixed-geometry-v1@1.0.0`의 file/content SHA·8px guard에 exact 결속한다. 안내 3행·제목·응답·네이티브 작업판을 모두 포함한 learner task envelope는 guard 안에서 추가 오른쪽 여백 `5.667px`를 가지며 initial/reopened가 동일하다. 7개 lifecycle screenshot은 상태별 exact repo path·PNG SHA·파일 존재를 검증하고 versioned artifact로 보존한다. 31개 source는 답 구조를 읽지 않는 `8-7-8-8`, group reserve는 5묶음 `3×2`·4묶음 `2×2`로 두어 NO01SC 80-unit 조작 크기(`46.426 CSS px`)를 줄이지 않았다. 이 증거는 division reference repair이며 R3 전체·R4 generic one-screen profile·30개 release 완료를 뜻하지 않는다.
+  - Sol xhigh 최종 재검토는 `PASS/OKAY`, `P0 0 / P1 0 / P2 0`이다. coherent fixed-chrome/profile drift, screenshot path·SHA·containment, top task 침범, manipulated/reopened group chrome 중첩, line-box check-key 위조를 직접 변조해 모두 차단됨을 확인했다.
   - architecture P1 baseline을 V2 native-affordance contract, candidate-rubric contract, text-box availability contract와 editor geometry contract까지 확장했다. 현재 27-file manifest hash는 `1df921fc8ebc60df50d3fe035790d85a4b10e3210df4bdd0d06f1860ad0f1d54`이며 `pnpm architecture:verify`가 통과한다.
 
 ## R4 — native-first one-screen layout·typography resolver
