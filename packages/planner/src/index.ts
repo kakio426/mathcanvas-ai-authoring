@@ -518,7 +518,8 @@ export class PlanningError extends Error {
       | "invalid-request"
       | "unsupported-intent"
       | "grade-mismatch"
-      | "low-confidence",
+      | "low-confidence"
+      | "teacher-intent-confirmation-required",
     message: string
   ) {
     super(message);
@@ -537,14 +538,49 @@ export function recommendActivity(input: unknown): Recommendation {
     );
   }
   const request: GenerationRequest = parsed.data;
-  const candidate = request.manipulation
-    ? verifiedCandidate(request)
+  if (
+    request.teacherIntent &&
+    request.manipulation !== undefined &&
+    request.manipulation !== "multiplication-array-choice-drag"
+  ) {
+    throw new PlanningError(
+      "teacher-intent-confirmation-required",
+      "지정한 수와 맥락은 곱셈 배열 활동에서만 정확히 반영할 수 있습니다. 이 조건을 빼고 만들거나 곱셈 배열 활동으로 바꿔 주세요."
+    );
+  }
+  if (
+    request.teacherIntent &&
+    request.requestedStandardCode !== undefined &&
+    request.requestedStandardCode !== "[2수01-10]"
+  ) {
+    throw new PlanningError(
+      "teacher-intent-confirmation-required",
+      "지정한 곱셈 조건은 성취기준 [2수01-10] 활동에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 성취기준을 다시 골라 주세요."
+    );
+  }
+  const routedRequest: GenerationRequest = request.teacherIntent
+    ? {
+        ...request,
+        manipulation: "multiplication-array-choice-drag"
+      }
+    : request;
+  const candidate = routedRequest.manipulation
+    ? verifiedCandidate(routedRequest)
     : makeTenPatterns.some((pattern) => pattern.test(request.prompt))
-      ? verifiedCandidate(request)
+      ? verifiedCandidate(routedRequest)
       : hasSupportedIntent(request.prompt)
         ? undefined
-        : verifiedCandidate(request);
+        : verifiedCandidate(routedRequest);
   if (candidate) {
+    if (
+      request.teacherIntent &&
+      candidate.templateId !== ACTIVITY_IDS.multiplicationArrayMeaning
+    ) {
+      throw new PlanningError(
+        "teacher-intent-confirmation-required",
+        "지정한 곱셈 조건을 선택한 활동에서 정확히 지킬 수 없습니다. 조건을 빼고 만들거나 취소해 주세요."
+      );
+    }
     const curriculum = resolveCurriculum(candidate.standardCode);
     const supportState = getActivitySupportState(candidate.templateId);
     const problemCount =
@@ -591,6 +627,9 @@ export function recommendActivity(input: unknown): Recommendation {
       problemCount,
       difficulty,
       manipulation: candidate.manipulation,
+      ...(request.teacherIntent === undefined
+        ? {}
+        : { teacherIntent: request.teacherIntent }),
       rationale: [
         "요청을 등록된 활동 유형과 성취기준에 연결했습니다."
       ],

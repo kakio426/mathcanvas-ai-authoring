@@ -188,6 +188,38 @@ describe("MCP 서비스 흐름", () => {
     expect(result.draftId).toBeUndefined();
   });
 
+  it("곱셈 TeacherIntent를 실제 첫 문항·정답·추천 echo에 반영한다", () => {
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    } as const;
+    const result = createService().recommend({
+      prompt: "곱셈 배열에서 두 수의 뜻을 확인하는 활동을 만들어 주세요.",
+      requestedStandardCode: "[2수01-10]",
+      requestedGrade: 3,
+      problemCount: 2,
+      manipulation: "multiplication-array-choice-drag",
+      teacherIntent
+    });
+    expect(result.supported).toBe(true);
+    expect(result.recommendation.teacherIntent).toEqual(teacherIntent);
+    expect(result.activitySummary?.problemPreviews[0]).toEqual({
+      problemNumber: 1,
+      statements: [
+        "한 묶음에 아이스크림이 4개씩 있습니다. 6묶음을 나타낸 식은 무엇인가요?"
+      ],
+      statementSource: "learner-instructions"
+    });
+    expect(result.teacherAnswerKey?.[0]).toMatchObject({
+      problemNumber: 1,
+      answer: "4\\times6",
+      explanation: expect.stringContaining("4개")
+    });
+  });
+
   it("몫과 나머지 추천 요약도 선택된 이야기의 학생용 지시문을 그대로 보여 준다", () => {
     const result = createService().recommend({
       prompt:

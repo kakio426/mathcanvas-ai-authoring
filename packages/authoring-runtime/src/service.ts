@@ -17,6 +17,7 @@ import {
   resolvedActivitySchema,
   sha256Hex,
   verifyApprovalReceipt,
+  type MultiplicationArrayTeacherIntent,
   type Recommendation,
   type ResolvedActivity
 } from "@mathcanvas/contracts";
@@ -32,6 +33,7 @@ import {
 } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
 import {
+  buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
   getRegisteredBlueprintContentHash,
   prepareRegisteredActivity,
@@ -77,6 +79,7 @@ export interface RecommendationSummary {
     Recommendation["denominatorRelation"]
   >;
   manipulation?: NonNullable<Recommendation["manipulation"]>;
+  teacherIntent?: MultiplicationArrayTeacherIntent;
   rationale: string[];
   caveats: string[];
   blockingReasons: string[];
@@ -121,6 +124,9 @@ function summarizeRecommendation(
     ...(recommendation.manipulation === undefined
       ? {}
       : { manipulation: recommendation.manipulation }),
+    ...(recommendation.teacherIntent === undefined
+      ? {}
+      : { teacherIntent: recommendation.teacherIntent }),
     rationale: recommendation.rationale,
     caveats: recommendation.caveats,
     blockingReasons: recommendation.blockingReasons,
@@ -209,6 +215,31 @@ export function projectProblemPreviews(
   resolved: ResolvedActivity,
   answerKey: readonly TeacherAnswer[]
 ): ProblemPreview[] {
+  const registeredPreviews = buildRegisteredProblemPreviews(resolved);
+  if (registeredPreviews) {
+    const expectedProblemNumbers = [...resolved.items]
+      .sort((left, right) => left.order - right.order)
+      .map((item) => item.order);
+    if (
+      registeredPreviews.length !== resolved.items.length ||
+      registeredPreviews.some(
+        (preview, index) =>
+          preview.problemNumber !== expectedProblemNumbers[index] ||
+          preview.statements.length === 0 ||
+          preview.statements.some((statement) => statement.trim().length === 0)
+      )
+    ) {
+      throw new AuthoringServiceError(
+        "validation-failed",
+        "등록된 실제 문항 미리보기가 완전하지 않아 생성하지 않았습니다."
+      );
+    }
+    return registeredPreviews.map((preview) => ({
+      problemNumber: preview.problemNumber,
+      statements: [...preview.statements],
+      statementSource: "learner-instructions"
+    }));
+  }
   const answerByProblemNumber = new Map(
     answerKey.map((answer) => [answer.problemNumber, answer])
   );
@@ -247,6 +278,29 @@ export function projectProblemPreviews(
         statementSource: "answer-explanation" as const
       };
     });
+}
+
+export function projectAppliedTeacherIntent(
+  resolved: ResolvedActivity
+): MultiplicationArrayTeacherIntent | undefined {
+  const teacherIntent = resolved.recommendationSnapshot.teacherIntent;
+  if (!teacherIntent) return undefined;
+  const firstItem = [...resolved.items].sort(
+    (left, right) => left.order - right.order
+  )[0];
+  if (
+    !firstItem ||
+    firstItem.values.each !== teacherIntent.itemsPerGroup ||
+    firstItem.values.groups !== teacherIntent.groupCount ||
+    firstItem.values.contextObjectId !== teacherIntent.contextObjectId ||
+    firstItem.values.misconceptionId !== teacherIntent.misconceptionId
+  ) {
+    throw new AuthoringServiceError(
+      "validation-failed",
+      "요청한 첫 문항 조건과 실제 생성값이 달라 안전하게 멈췄습니다. 조건을 다시 확인해 주세요."
+    );
+  }
+  return teacherIntent;
 }
 
 /**
@@ -317,7 +371,8 @@ export class AuthoringServiceError extends Error {
       | "approval-required"
       | "activity-spec-changed"
       | "validation-failed"
-      | "unsupported-request",
+      | "unsupported-request"
+      | "teacher-intent-confirmation-required",
     message: string
   ) {
     super(message);
@@ -529,6 +584,7 @@ export class MathCanvasAuthoringService {
       Recommendation["denominatorRelation"]
     >;
     manipulation?: NonNullable<Recommendation["manipulation"]>;
+    teacherIntent?: MultiplicationArrayTeacherIntent;
   }): {
     supported: boolean;
     recommendation: RecommendationSummary;
@@ -539,6 +595,7 @@ export class MathCanvasAuthoringService {
       title: string;
       studentInstructions: string[];
       problemPreviews: ProblemPreview[];
+      appliedTeacherIntent?: MultiplicationArrayTeacherIntent;
       minimumVisualDifferencePercent?: number;
     };
     teacherAnswerKey?: TeacherAnswer[];
@@ -583,6 +640,9 @@ export class MathCanvasAuthoringService {
       ...(input.manipulation === undefined
         ? {}
         : { manipulation: input.manipulation }),
+      ...(input.teacherIntent === undefined
+        ? {}
+        : { teacherIntent: input.teacherIntent }),
       createdAt: now.toISOString()
     });
     const recommendation = recommendActivity(request);
@@ -605,6 +665,7 @@ export class MathCanvasAuthoringService {
     const activitySpecHash = sha256Hex(spec);
     const teacherAnswerKey = buildRegisteredTeacherAnswerKey(resolved);
     const problemPreviews = projectProblemPreviews(resolved, teacherAnswerKey);
+    const appliedTeacherIntent = projectAppliedTeacherIntent(resolved);
     this.#drafts.set(draftId, {
       draftSchemaVersion: 3,
       draftId,
@@ -626,6 +687,9 @@ export class MathCanvasAuthoringService {
         title: resolved.title,
         studentInstructions: projectLearnerFacingInstructions(resolved),
         problemPreviews,
+        ...(appliedTeacherIntent === undefined
+          ? {}
+          : { appliedTeacherIntent }),
         ...(recommendation.denominatorRelation === undefined
           ? {}
           : {

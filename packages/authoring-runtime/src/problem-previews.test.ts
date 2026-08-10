@@ -218,7 +218,6 @@ describe("문항 미리보기 프로젝션", () => {
       "measure.length.unit-iteration.ruler-v1",
       "number.place-value.regroup-ten-bundles-v1",
       "pattern.repeat-unit.pattern-blocks-v1",
-      "number.multiplication.group-array-meaning-v1",
       "probability.compare.bag-ratios-v1"
     ]);
   });

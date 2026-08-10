@@ -304,6 +304,45 @@ describe("분수 비교 템플릿", () => {
     ).toEqual(["1.2.0", "1.2.0", "1.2.0"]);
   });
 
+  it("곱셈 TeacherIntent를 첫 문항의 상황·식·역순 보기에 함께 반영한다", () => {
+    const items = generateMultiplicationArrayMeaningItems(
+      {
+        difficulty: "normal",
+        problemCount: 2,
+        teacherIntent: {
+          kind: "multiplication-array-v1",
+          itemsPerGroup: 4,
+          groupCount: 6,
+          contextObjectId: "ice-cream",
+          misconceptionId: "groups-size-order"
+        }
+      },
+      "teacher-intent-golden"
+    );
+    const first = items[0];
+    expect(first).toBeDefined();
+    expect(first!.values).toMatchObject({
+      questionText:
+        "한 묶음에 아이스크림이 4개씩 있습니다. 6묶음을 나타낸 식은 무엇인가요?",
+      groupLabelText: "4개씩 6묶음",
+      correctValueText: "4\\times6",
+      each: 4,
+      groups: 6,
+      total: 24,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    });
+    const candidates = Array.from(
+      { length: 5 },
+      (_, index) => String(first!.values[`candidate${index + 1}`])
+    );
+    expect(candidates.filter((candidate) => candidate === "4\\times6"))
+      .toHaveLength(1);
+    expect(candidates.filter((candidate) => candidate === "6\\times4"))
+      .toHaveLength(1);
+    expect(items[1]?.values).toMatchObject({ each: 6, groups: 7 });
+  });
+
   it.each(["easy", "normal", "hard"] as const)(
     "%s 난이도에서 정확한 서로 다른 분모 문제를 만든다",
     (difficulty) => {

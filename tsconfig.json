@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@mathcanvas/contracts": ["packages/contracts/src/index.ts"],
+      "@mathcanvas/contracts/teacher-intent": ["packages/contracts/src/teacher-intent.ts"],
       "@mathcanvas/curriculum": ["packages/curriculum/src/index.ts"],
       "@mathcanvas/planner": ["packages/planner/src/index.ts"],
       "@mathcanvas/templates": ["packages/templates/src/index.ts"],

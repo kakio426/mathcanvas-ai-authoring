@@ -82,6 +82,9 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
       "denominatorRelation"
     );
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "teacherIntent"
+    );
     expect(JSON.stringify(tools)).not.toMatch(
       /rawPayload|contentsJson|absoluteCoordinates|nativeToolId|toolKey/
     );
@@ -216,6 +219,50 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(result.structuredContent)).not.toContain(
       "visualModels"
     );
+  });
+
+  it("곱셈 TeacherIntent를 첫 문항에 반영하고 충돌하는 활동 조합은 차단한다", async () => {
+    const client = await connectedClient();
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    };
+    const result = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "곱셈 배열에서 두 수의 뜻을 확인하는 활동을 만들어 주세요.",
+        requestedGrade: 3,
+        problemCount: 2,
+        manipulation: "multiplication-array-choice-drag",
+        teacherIntent
+      }
+    });
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      supported: true,
+      recommendation: { teacherIntent }
+    });
+    expect(JSON.stringify(result.structuredContent)).toContain(
+      "한 묶음에 아이스크림이 4개씩"
+    );
+
+    const conflict = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "분수 비교 활동을 만들어 주세요.",
+        manipulation: "fraction-strip-common-start-drag",
+        teacherIntent
+      }
+    });
+    expect(conflict.isError).toBe(true);
+    expect(conflict.structuredContent).toMatchObject({
+      ok: false,
+      errorCode: "teacher-intent-confirmation-required"
+    });
   });
 
   it("teacherConfirmed가 없으면 MCP 스키마 단계에서 쓰기를 막는다", async () => {

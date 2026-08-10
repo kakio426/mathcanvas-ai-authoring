@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./teacher-intent": {
+      "types": "./dist/teacher-intent.d.ts",
+      "default": "./dist/teacher-intent.js"
     }
   },
   "scripts": {

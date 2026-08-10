@@ -1,5 +1,6 @@
 export {
   FRACTION_TEMPLATE_VERSION,
+  buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
   balancedEquationCardsTemplateDefinition,
   balanceScaleSumTemplateDefinition,
@@ -48,6 +49,7 @@ export {
   prepareRegisteredActivityForEnvelopeValidation,
   projectRegisteredApprovalView,
   type GenerateActivitySpecOptions,
+  type RegisteredProblemPreview,
   type RegisteredTeacherAnswer,
   type RegisteredActivityPlan
 } from "./registry.js";

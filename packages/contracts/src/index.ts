@@ -22,6 +22,7 @@ export * from "./catalog/eduitit-html30-release-v2.js";
 export * from "./scaffolds.js";
 export * from "./schemas.js";
 export * from "./security.js";
+export * from "./teacher-intent.js";
 export * from "./vocabulary/blueprint.js";
 export * from "./vocabulary/constraints.js";
 export * from "./vocabulary/ids.js";

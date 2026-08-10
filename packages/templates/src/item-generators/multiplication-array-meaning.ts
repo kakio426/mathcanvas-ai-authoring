@@ -1,14 +1,41 @@
-import { createSeededRandom, type Difficulty, type ResolvedItem } from "@mathcanvas/contracts";
+import {
+  createSeededRandom,
+  type Difficulty,
+  type MultiplicationArrayContextObjectId,
+  type MultiplicationArrayTeacherIntent,
+  type ResolvedItem
+} from "@mathcanvas/contracts";
 import { shuffled } from "./common-unit-pool.js";
 
 export const MULTIPLICATION_ARRAY_MEANING_GENERATOR_ID = "number.multiplication.array-meaning-choice" as const;
 export const MULTIPLICATION_ARRAY_MEANING_GENERATOR_VERSION = "1.2.0" as const;
 
-const configurations = [
+interface MultiplicationConfiguration {
+  readonly each: number;
+  readonly groups: number;
+  readonly thing: string;
+  readonly container: string;
+  readonly contextObjectId?: MultiplicationArrayContextObjectId;
+  readonly misconceptionId?: "groups-size-order";
+}
+
+const configurations: readonly MultiplicationConfiguration[] = [
   { each: 3, groups: 4, thing: "연필", container: "봉지" },
   { each: 6, groups: 7, thing: "바둑돌", container: "줄" },
   { each: 5, groups: 6, thing: "붙임 딱지", container: "줄" }
 ] as const;
+
+const contextCopy: Readonly<
+  Record<
+    MultiplicationArrayContextObjectId,
+    { readonly thing: string; readonly container: string }
+  >
+> = {
+  "ice-cream": { thing: "아이스크림", container: "묶음" },
+  pencil: { thing: "연필", container: "봉지" },
+  "baduk-stone": { thing: "바둑돌", container: "줄" },
+  sticker: { thing: "붙임 딱지", container: "줄" }
+};
 
 function subjectParticle(word: string): "이" | "가" {
   const last = word.codePointAt(word.length - 1);
@@ -23,16 +50,32 @@ function objectParticle(word: string): "을" | "를" {
 }
 
 export function generateMultiplicationArrayMeaningItems(
-  parameters: { readonly difficulty: Difficulty; readonly problemCount: number },
+  parameters: {
+    readonly difficulty: Difficulty;
+    readonly problemCount: number;
+    readonly teacherIntent?: MultiplicationArrayTeacherIntent;
+  },
   seed: string
 ): ResolvedItem[] {
   if (parameters.difficulty !== "normal" || parameters.problemCount < 2 || parameters.problemCount > 3) {
     throw new RangeError("곱셈 배열 활동은 기본 난이도에서 2~3문항을 지원합니다.");
   }
   const random = createSeededRandom(`${seed}:multiplication-array-meaning`);
+  const selectedConfigurations = [...configurations];
+  if (parameters.teacherIntent) {
+    const context = contextCopy[parameters.teacherIntent.contextObjectId];
+    selectedConfigurations[0] = {
+      each: parameters.teacherIntent.itemsPerGroup,
+      groups: parameters.teacherIntent.groupCount,
+      thing: context.thing,
+      container: context.container,
+      contextObjectId: parameters.teacherIntent.contextObjectId,
+      misconceptionId: parameters.teacherIntent.misconceptionId
+    };
+  }
   // Keep the worksheet's authored problem order stable. Randomness is reserved for
   // answer-card placement so the generated activity remains an exact lesson match.
-  return configurations.slice(0, parameters.problemCount).map((item, index) => {
+  return selectedConfigurations.slice(0, parameters.problemCount).map((item, index) => {
     const groupNoun = `${item.groups}${item.container}`;
     const groupedDots = Array.from(
       { length: item.groups },
@@ -65,6 +108,12 @@ export function generateMultiplicationArrayMeaningItems(
         each: item.each,
         groups: item.groups,
         total: item.each * item.groups,
+        ...(item.contextObjectId === undefined
+          ? {}
+          : { contextObjectId: item.contextObjectId }),
+        ...(item.misconceptionId === undefined
+          ? {}
+          : { misconceptionId: item.misconceptionId }),
         ...Object.fromEntries(candidates.flatMap((value, i) => [[`candidate${i + 1}`, value], [`candidate${i + 1}Latex`, value]])),
         difficulty: parameters.difficulty
       },

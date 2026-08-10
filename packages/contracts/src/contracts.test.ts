@@ -5,6 +5,7 @@ import {
   canonicalJson,
   createSeededRandom,
   generationRequestSchema,
+  multiplicationArrayTeacherIntentSchema,
   redactSensitiveText,
   sha256Hex,
   assertNoSensitiveKeys
@@ -48,6 +49,76 @@ describe("공통 계약", () => {
     const first = createSeededRandom("lesson-seed");
     const second = createSeededRandom("lesson-seed");
     expect([first(), first(), first()]).toEqual([second(), second(), second()]);
+  });
+
+  it("곱셈 TeacherIntent에서 두 수의 역할과 등록 맥락을 검증한다", () => {
+    const golden = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    };
+    expect(multiplicationArrayTeacherIntentSchema.parse(golden)).toEqual(
+      golden
+    );
+    expect(
+      multiplicationArrayTeacherIntentSchema.parse({
+        ...golden,
+        itemsPerGroup: 6,
+        groupCount: 7
+      })
+    ).toMatchObject({ itemsPerGroup: 6, groupCount: 7 });
+    expect(
+      generationRequestSchema.parse({
+        schemaVersion: CONTRACT_SCHEMA_VERSION,
+        requestId: "request-teacher-intent",
+        prompt: "곱셈 배열의 두 수가 뜻하는 바를 확인하는 활동",
+        manipulation: "multiplication-array-choice-drag",
+        teacherIntent: golden,
+        createdAt: "2026-08-10T00:00:00.000Z"
+      }).teacherIntent
+    ).toEqual(golden);
+  });
+
+  it.each([
+    ["한 묶음의 수 하한", { itemsPerGroup: 1 }],
+    ["한 묶음의 수 상한", { itemsPerGroup: 7 }],
+    ["묶음 수 하한", { groupCount: 1 }],
+    ["묶음 수 상한", { groupCount: 8 }],
+    ["같은 두 수", { itemsPerGroup: 4, groupCount: 4 }],
+    ["미등록 맥락", { contextObjectId: "cookie" }],
+    ["미등록 오개념", { misconceptionId: "addition-instead" }]
+  ])("곱셈 TeacherIntent의 %s 위반을 거부한다", (_label, override) => {
+    expect(
+      multiplicationArrayTeacherIntentSchema.safeParse({
+        kind: "multiplication-array-v1",
+        itemsPerGroup: 4,
+        groupCount: 6,
+        contextObjectId: "ice-cream",
+        misconceptionId: "groups-size-order",
+        ...override
+      }).success
+    ).toBe(false);
+  });
+
+  it("역할 없는 숫자 배열과 partial TeacherIntent를 거부한다", () => {
+    expect(
+      generationRequestSchema.safeParse({
+        schemaVersion: CONTRACT_SCHEMA_VERSION,
+        requestId: "request-roleless-numbers",
+        prompt: "곱셈 배열에서 4와 6을 사용하는 활동",
+        specificNumbers: [4, 6],
+        createdAt: "2026-08-10T00:00:00.000Z"
+      }).success
+    ).toBe(false);
+    expect(
+      multiplicationArrayTeacherIntentSchema.safeParse({
+        kind: "multiplication-array-v1",
+        itemsPerGroup: 4,
+        groupCount: 6
+      }).success
+    ).toBe(false);
   });
 
   it("로그 문자열에서 JWT와 Authorization 값을 가린다", () => {

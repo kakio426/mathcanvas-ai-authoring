@@ -195,6 +195,59 @@ describe("활동 추천", () => {
     expect(result.blockingReasons.join(" ")).toContain("학년");
   });
 
+  it("곱셈 TeacherIntent를 의미 역할 그대로 추천에 echo한다", () => {
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    } as const;
+    const result = recommendActivity({
+      ...baseRequest,
+      requestId: "request-multiplication-teacher-intent",
+      prompt: "같은 수씩 묶은 곱셈 배열의 두 수 뜻을 확인하는 활동",
+      requestedStandardCode: "[2수01-10]",
+      requestedGrade: 3,
+      problemCount: 2,
+      teacherIntent
+    });
+    expect(result).toMatchObject({
+      supported: true,
+      templateId: "number.multiplication.group-array-meaning-v1",
+      manipulation: "multiplication-array-choice-drag",
+      teacherIntent
+    });
+  });
+
+  it("곱셈 TeacherIntent와 다른 활동·성취기준 조합을 명시적으로 차단한다", () => {
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    } as const;
+    for (const override of [
+      { manipulation: "fraction-strip-common-start-drag" },
+      { requestedStandardCode: "[6수01-07]" }
+    ] as const) {
+      try {
+        recommendActivity({
+          ...baseRequest,
+          prompt: "곱셈 배열에서 두 수의 뜻을 확인하는 활동",
+          teacherIntent,
+          ...override
+        });
+        throw new Error("expected-teacher-intent-rejection");
+      } catch (error) {
+        expect(error).toMatchObject({
+          code: "teacher-intent-confirmation-required"
+        });
+      }
+    }
+  });
+
   it("스키마 범위를 벗어난 문제 수를 거부한다", () => {
     expect(() =>
       recommendActivity({ ...baseRequest, problemCount: 12 })

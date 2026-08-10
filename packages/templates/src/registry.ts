@@ -368,6 +368,14 @@ function prepare(
   if (recommendation.confidence < definition.confidenceThreshold) {
     throw new Error(`activity-confidence-too-low:${blueprint.id}`);
   }
+  if (
+    recommendation.teacherIntent !== undefined &&
+    blueprint.id !== multiplicationArrayMeaningBlueprint.id
+  ) {
+    throw new Error(
+      `teacher-intent-template-mismatch:${blueprint.id}`
+    );
+  }
   if (Number.isNaN(Date.parse(options.generatedAt))) {
     throw new Error("generatedAt-invalid");
   }
@@ -386,7 +394,8 @@ function prepare(
     items: generateBlueprintItems(
       blueprint,
       options.seed,
-      variation
+      variation,
+      recommendation.teacherIntent
     ),
     recommendation,
     options: {
@@ -691,12 +700,20 @@ type RegistryEntry = {
   readonly answerKey: (
     resolved: ResolvedActivity
   ) => RegisteredTeacherAnswer[];
+  readonly problemPreviews?: (
+    resolved: ResolvedActivity
+  ) => RegisteredProblemPreview[];
 };
 
 export interface RegisteredTeacherAnswer {
   readonly problemNumber: number;
   readonly answer: string;
   readonly explanation: string;
+}
+
+export interface RegisteredProblemPreview {
+  readonly problemNumber: number;
+  readonly statements: readonly string[];
 }
 
 function ratioValue(
@@ -970,6 +987,25 @@ function multiplicationArrayMeaningAnswerKey(resolved: ResolvedActivity): Regist
   }));
 }
 
+function multiplicationArrayMeaningProblemPreviews(
+  resolved: ResolvedActivity
+): RegisteredProblemPreview[] {
+  return [...resolved.items]
+    .sort((left, right) => left.order - right.order)
+    .map((item) => {
+      const questionText = item.values.questionText;
+      if (typeof questionText !== "string" || questionText.trim().length === 0) {
+        throw new Error(
+          `multiplication-question-preview-missing:${item.id}`
+        );
+      }
+      return {
+        problemNumber: item.order,
+        statements: [questionText.trim()]
+      };
+    });
+}
+
 function probabilityBagComparisonAnswerKey(resolved: ResolvedActivity): RegisteredTeacherAnswer[] {
   return resolved.items.map((item) => {
     const left = ratioValue(item, "left");
@@ -1200,7 +1236,8 @@ const registry: Readonly<Record<string, RegistryEntry>> = {
     blueprint: multiplicationArrayMeaningBlueprint,
     prepare: generateMultiplicationArrayMeaningActivity,
     supportState: getActivitySupportState(multiplicationArrayMeaningBlueprint.id) ?? "verified",
-    answerKey: multiplicationArrayMeaningAnswerKey
+    answerKey: multiplicationArrayMeaningAnswerKey,
+    problemPreviews: multiplicationArrayMeaningProblemPreviews
   },
   [probabilityBagComparisonBlueprint.id]: {
     blueprint: probabilityBagComparisonBlueprint,
@@ -1269,6 +1306,18 @@ export function buildRegisteredTeacherAnswerKey(
     );
   }
   return entry.answerKey(resolved);
+}
+
+export function buildRegisteredProblemPreviews(
+  resolved: ResolvedActivity
+): RegisteredProblemPreview[] | undefined {
+  const entry = registry[resolved.binding.blueprintId];
+  if (!entry) {
+    throw new Error(
+      `activity-handler-unregistered:${resolved.binding.blueprintId}`
+    );
+  }
+  return entry.problemPreviews?.(resolved);
 }
 
 export function getRegisteredActivitySupportState(

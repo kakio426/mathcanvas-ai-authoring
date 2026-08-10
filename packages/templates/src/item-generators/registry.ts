@@ -2,6 +2,7 @@ import type {
   ActivityBlueprint,
   DenominatorRelation,
   Difficulty,
+  MultiplicationArrayTeacherIntent,
   ResolvedItem
 } from "@mathcanvas/contracts";
 import { resolveRegisteredVariation } from "../variations/registry.js";
@@ -120,6 +121,7 @@ type Generator = (
     readonly problemCount: number;
     readonly denominatorRelation?: DenominatorRelation;
     readonly profileId?: string;
+    readonly teacherIntent?: MultiplicationArrayTeacherIntent;
   },
   seed: string
 ) => ResolvedItem[];
@@ -178,7 +180,8 @@ const generators: Readonly<Record<string, Generator>> = {
 export function generateBlueprintItems(
   blueprint: ActivityBlueprint,
   seed: string,
-  variation: Readonly<Record<string, unknown>>
+  variation: Readonly<Record<string, unknown>>,
+  teacherIntent?: MultiplicationArrayTeacherIntent
 ): ResolvedItem[] {
   const generator =
     generators[
@@ -203,7 +206,8 @@ export function generateBlueprintItems(
             denominatorRelation:
               resolved.denominatorRelation as DenominatorRelation
           }
-        : {})
+        : {}),
+      ...(teacherIntent === undefined ? {} : { teacherIntent })
     },
     seed
   );
