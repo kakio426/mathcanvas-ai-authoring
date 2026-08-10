@@ -65,7 +65,8 @@ const attestationSchema = z
     allKeyboardModifiersAbsent: z.literal(true),
     allCanonicalGroupsPersisted: z.literal(true),
     allToolBindingsExact: z.literal(true),
-    allReserveStatesContained: z.literal(true),
+    allEstimatedReserveStatesContained: z.literal(true),
+    actualReserveStatesVerified: z.literal(false),
     allReserveUnionsCentered: z.literal(true),
     allNativeAutoScaleDisabled: z.literal(true),
     minimumEdgeClearanceCssPx: z.number().finite().min(24),
@@ -124,7 +125,7 @@ function addOfflineBodyIssues(
   let allKeyboardModifiersAbsent = true;
   let allCanonicalGroupsPersisted = true;
   let allToolBindingsExact = true;
-  let allReserveStatesContained = true;
+  let allEstimatedReserveStatesContained = true;
   let allReserveUnionsCentered = true;
   let allNativeAutoScaleDisabled = true;
   let minimumEdgeClearanceCssPx = Number.POSITIVE_INFINITY;
@@ -192,11 +193,11 @@ function addOfflineBodyIssues(
         (candidate) => candidate.role === placement.role
       );
       if (!region) {
-        allReserveStatesContained = false;
+        allEstimatedReserveStatesContained = false;
         continue;
       }
-      allReserveStatesContained &&=
-        layout.checks.allReserveStatesContained &&
+      allEstimatedReserveStatesContained &&=
+        layout.checks.allEstimatedReserveStatesContained &&
         region.states.every((state) =>
           contains(
             placement.contentRectCss,
@@ -216,7 +217,8 @@ function addOfflineBodyIssues(
     allKeyboardModifiersAbsent,
     allCanonicalGroupsPersisted,
     allToolBindingsExact,
-    allReserveStatesContained,
+    allEstimatedReserveStatesContained,
+    actualReserveStatesVerified: false,
     allReserveUnionsCentered,
     allNativeAutoScaleDisabled,
     minimumEdgeClearanceCssPx

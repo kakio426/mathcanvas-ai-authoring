@@ -4,18 +4,24 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { sha256Hex } from "../../packages/contracts/dist/index.js";
+import {
+  eduititHtml30ReleaseAttestationV2Schema,
+  eduititHtml30VisualReviewV2Schema,
+  sha256Hex
+} from "../../packages/contracts/dist/index.js";
 import {
   canonicalJson,
   packageManifestAuthoringBinding,
   sha256
 } from "./eduitit-html30.mjs";
+import { verifyEduititHtml30LifecycleEvidence } from "./lib/verify-eduitit-html30-v2-lifecycle.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDirectory, "..", "..");
 const eduititRoot = resolve(repositoryRoot, "..", "..", "eduitit");
 const harnessPath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-prompt-harness.json");
 const artifactPath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-v2-compiled-candidates.json");
+const offlinePath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-v2-offline-design.json");
 const projectsPath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-v2-created-projects.json");
 const auditPath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-v2-reopen-audit.json");
 const attestationPath = join(repositoryRoot, "research/mathcanvas/eduitit-html30-v2-release-attestation.json");
@@ -49,11 +55,35 @@ if (!/^[a-f0-9]{64}$/.test(expectedAttestationSha ?? "")) {
 
 const harness = readJson(harnessPath);
 const artifact = readJson(artifactPath);
+const offline = readJson(offlinePath);
 const projects = readJson(projectsPath);
 const audit = readJson(auditPath);
-const attestation = readJson(attestationPath);
+const attestation = eduititHtml30ReleaseAttestationV2Schema.parse(
+  readJson(attestationPath)
+);
 const { contentSha256: artifactContentSha256, ...artifactBody } = artifact;
 const { contentSha256: attestationContentSha256, ...attestationBody } = attestation;
+const lifecycleBinding = attestation.sourceBindings.lifecycleEvidence;
+const lifecycleBindingInvalid = (() => {
+  if (!lifecycleBinding || lifecycleBinding.verdict !== "PASS") return true;
+  const path = join(repositoryRoot, lifecycleBinding.path);
+  if (!existsSync(path) || fileSha256(path) !== lifecycleBinding.fileSha256) return true;
+  try {
+    const parsed = verifyEduititHtml30LifecycleEvidence({
+      repositoryRoot,
+      lifecyclePath: path,
+      artifact,
+      offline,
+      manifest: projects
+    });
+    return (
+      parsed.contentSha256 !== lifecycleBinding.contentSha256 ||
+      parsed.verdict !== "PASS"
+    );
+  } catch {
+    return true;
+  }
+})();
 if (
   artifactContentSha256 !== sha256Hex(artifactBody) ||
   attestationContentSha256 !== expectedAttestationSha ||
@@ -62,10 +92,28 @@ if (
   attestation.sourceBindings?.promptHarnessContentSha256 !== harness.contentSha256 ||
   attestation.sourceBindings?.projectManifestFileSha256 !== fileSha256(projectsPath) ||
   attestation.sourceBindings?.reopenAuditFileSha256 !== fileSha256(auditPath) ||
-  attestation.solVisualReview?.verdict !== "PASS" ||
-  attestation.solVisualReview?.p0 !== 0 ||
-  attestation.solVisualReview?.p1 !== 0 ||
-  attestation.solVisualReview?.p2 !== 0 ||
+  !Object.values(attestation.gates).every(Boolean) ||
+  lifecycleBindingInvalid ||
+  attestation.sourceBindings.visualReviews.length !== 2 ||
+  attestation.sourceBindings.visualReviews.some((review) => {
+    const path = join(repositoryRoot, review.path);
+    if (review.verdict !== "PASS" || !existsSync(path) || fileSha256(path) !== review.fileSha256) {
+      return true;
+    }
+    try {
+      const parsed = eduititHtml30VisualReviewV2Schema.parse(readJson(path));
+      const { contentSha256, ...body } = parsed;
+      return (
+        contentSha256 !== sha256Hex(body) ||
+        contentSha256 !== review.contentSha256 ||
+        parsed.reviewer.model !== review.model ||
+        parsed.reviewer.sessionId !== review.sessionId ||
+        parsed.verdict !== review.verdict
+      );
+    } catch {
+      return true;
+    }
+  }) ||
   attestation.releaseQualifiedCount !== 30 ||
   attestation.linkSyncAllowed !== true ||
   attestation.blockers?.length !== 0 ||

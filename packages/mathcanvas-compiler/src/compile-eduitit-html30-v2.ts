@@ -13,6 +13,7 @@ import { compileNativeTool, type CompiledNativeToolFragment } from "./adapters/r
 import { makeCanonicalNativeGroupV2 } from "./adapters/canonical-native-group-v2.js";
 import {
   makeCircleDiameterCandidateObjectV2,
+  makeCircleRadiusCandidateObjectV2,
   makeCountingTokenCandidateObjectV2,
   makeMultiplicationArrayCandidateObjectV2,
   makePictureGraphCandidateObjectV2
@@ -37,6 +38,13 @@ export interface EduititHtml30CompiledCandidateV2 {
   readonly sourceLayoutContentSha256: string;
   readonly payloadHash: string;
   readonly payload: ReturnType<typeof mathCanvasPayloadSchema.parse>;
+  readonly initialTextLeakageAudit: {
+    readonly policyVersion: "html30-v2-initial-answer-leakage-v2";
+    readonly forbiddenTexts: readonly string[];
+    readonly checkedTextIds: readonly string[];
+    readonly violations: readonly string[];
+    readonly passed: true;
+  };
   readonly lifecycle: {
     readonly externalWriteAllowed: false;
     readonly releaseQualified: false;
@@ -44,6 +52,87 @@ export interface EduititHtml30CompiledCandidateV2 {
       "live 100-percent geometry confirmation is pending",
       "actual save-reopen and visual review are pending"
     ];
+  };
+}
+
+const forbiddenInitialTextBySequence: Readonly<Record<number, readonly string[]>> = {
+  1: ["5개"],
+  2: ["20"],
+  3: ["42"],
+  4: ["60", "8", "68"],
+  5: ["90", "3", "93"],
+  6: ["3개"],
+  7: ["5묶음"],
+  8: ["4묶음"],
+  9: ["7묶음"],
+  10: ["1/5"],
+  11: ["안 돼요"],
+  12: ["3/7"],
+  13: ["4/10", "2/5"],
+  14: [],
+  15: [],
+  16: ["300cm"],
+  17: ["600", "120", "3", "723"],
+  18: ["600", "30", "9", "639"],
+  19: ["320", "128", "448"],
+  20: ["4묶음"],
+  21: ["3…2"],
+  22: [],
+  23: ["반지름"],
+  24: ["14cm"],
+  25: ["6/10", "3/5"],
+  26: ["2 3/4"],
+  27: [],
+  28: ["2250", "2250mL"],
+  29: ["3040", "3040g"],
+  30: ["12명"]
+};
+
+function compactText(value: string): string {
+  return value.normalize("NFKC").replace(/\s+/g, "").trim();
+}
+
+export function auditEduititHtml30InitialTextLeakageV2(
+  sequence: number,
+  contentsJson: readonly Record<string, unknown>[]
+): {
+  readonly policyVersion: "html30-v2-initial-answer-leakage-v2";
+  readonly forbiddenTexts: readonly string[];
+  readonly checkedTextIds: readonly string[];
+  readonly violations: readonly string[];
+  readonly passed: boolean;
+} {
+  const forbiddenTexts = forbiddenInitialTextBySequence[sequence];
+  if (!forbiddenTexts || Object.keys(forbiddenInitialTextBySequence).length !== 30) {
+    throw new Error(`html30-v2:answer-leakage-policy-missing:${sequence}`);
+  }
+  const textEntries = contentsJson.flatMap((object) => {
+    const id = typeof object.id === "string" ? object.id : "";
+    const text = typeof object.text === "string" ? object.text.trim() : "";
+    if (
+      !id ||
+      !text ||
+      /-question$|-answer-choice-\d+-group-text$/.test(id)
+    ) {
+      return [];
+    }
+    return [{ id, text: compactText(text) }];
+  });
+  const violations = textEntries.flatMap((entry) =>
+    forbiddenTexts.flatMap((forbidden) => {
+      const token = compactText(forbidden);
+      const exposed =
+        entry.text === token ||
+        (token.length >= 2 && entry.text.includes(token));
+      return exposed ? [`${entry.id}:${forbidden}`] : [];
+    })
+  );
+  return {
+    policyVersion: "html30-v2-initial-answer-leakage-v2",
+    forbiddenTexts: [...forbiddenTexts],
+    checkedTextIds: textEntries.map((entry) => entry.id),
+    violations,
+    passed: violations.length === 0
   };
 }
 
@@ -212,6 +301,18 @@ function roleContentPlacement(
   return canvasBounds(placement.contentRectCss);
 }
 
+function stageSingleObjectIds(activity: Activity): readonly string[] {
+  const ids = activity.nativePlan.movableUnits.flatMap((unit) =>
+    unit.startsIn === "native-stage" && unit.representation.kind === "single-native-object"
+      ? [unit.representation.objectId]
+      : []
+  );
+  if (ids.length === 0 || new Set(ids).size !== ids.length) {
+    throw new Error(`html30-v2:stage-single-object-binding:${activity.sequence}`);
+  }
+  return ids;
+}
+
 function addScaffold(
   collector: ObjectCollector,
   activity: Activity,
@@ -346,7 +447,7 @@ function addAnswer(
     24
   );
   const choicesWidth = dropBounds.x - (inner.x + 90) - 12;
-  const gap = 12;
+  const gap = 20;
   const cardWidth =
     (choicesWidth - gap * (answer.choices.length - 1)) / answer.choices.length;
   answer.choices.forEach((choice, index) => {
@@ -376,7 +477,7 @@ function addPictureGraph(collector: ObjectCollector, activity: Activity, layout:
   collector.moduleKeys.add("DP03PG");
   collector.add(
     makePictureGraphCandidateObjectV2({
-      id: `mc30v2-${activity.sequence}-picture-graph`,
+      id: stageSingleObjectIds(activity)[0]!,
       // Center the full native footprint (graph plus its right-side unit control),
       // not only the graph grid.
       x: stage.x + stage.width * 0.065,
@@ -391,7 +492,7 @@ function addPictureGraph(collector: ObjectCollector, activity: Activity, layout:
   addLockedText(
     collector,
     `${activity.activityId}-legend`,
-    isDifference ? "그림 한 개 = 4명" : "그림 한 개 = 5권",
+    isDifference ? "노란 그림 1개 = 4명" : "노란 그림 1개 = 책 5권",
     {
       x: stage.x + stage.width - 365,
       y: stage.y + 18,
@@ -416,7 +517,7 @@ function addMultiplicationArray(
   collector.moduleKeys.add("NO04NG");
   collector.add(
     makeMultiplicationArrayCandidateObjectV2({
-      id: `mc30v2-${activity.sequence}-multiplication-array`,
+      id: stageSingleObjectIds(activity)[0]!,
       x: center(stage).x - width / 2,
       y: center(stage).y - height / 2,
       visibleRows,
@@ -442,6 +543,7 @@ function addPlaceValuePartials(
   layout: Layout
 ): void {
   const stage = roleContentPlacement(layout, "native-stage");
+  const regionLabelFontSize = layout.typographyCssPx.regionLabel * CSS_TO_CANVAS;
   const groups = activity.nativePlan.movableUnits.map((unit) => {
     const representation = unit.representation;
     if (representation.kind !== "canonical-native-group") {
@@ -457,7 +559,9 @@ function addPlaceValuePartials(
     const columns = Math.ceil(values.length / 3);
     return { representation, value, values, columns, width: columns * 120 };
   });
-  const gap = 20;
+  // cardBounds adds 8 canvas units on both sides. A 36-unit anchor gap
+  // therefore preserves a visible 20-unit (16.67 CSS px) semantic gap.
+  const gap = 36;
   const totalWidth =
     groups.reduce((sum, group) => sum + group.width, 0) + gap * (groups.length - 1);
   let x = center(stage).x - totalWidth / 2;
@@ -479,9 +583,9 @@ function addPlaceValuePartials(
     `${activity.activityId}-place-value-target-label`,
     "이 칸에서 같은 자리끼리 모으세요.",
     targetBounds,
-    28
+    regionLabelFontSize
   );
-  for (const group of groups) {
+  for (const [groupIndex, group] of groups.entries()) {
     const cardBounds = {
       x: x - 8,
       y: stage.y,
@@ -496,9 +600,9 @@ function addPlaceValuePartials(
       }),
       textObject(
         group.representation.memberIds[1]!,
-        String(group.value),
+        `모형 ${String.fromCharCode(65 + groupIndex)}`,
         { x, y: stage.y + 4, width: group.width, height: 36 },
-        28
+        regionLabelFontSize
       ),
       ...group.values.map((value, index) => {
       const column = Math.floor(index / 3);
@@ -536,7 +640,7 @@ function addDistributionLanes(
   }
   const count = unit.representation.memberCount;
   const columns = Math.ceil(count / 2);
-  const pitch = 80;
+  const pitch = 96;
   const tokenWidth = columns * pitch;
   const tokenHeight = 2 * pitch;
   let order = 1;
@@ -546,8 +650,8 @@ function addDistributionLanes(
     collector.add(
       makeCountingTokenCandidateObjectV2(
         `${unit.representation.memberIdPrefix}-unit-${String(index + 1).padStart(2, "0")}`,
-        center(source).x - tokenWidth / 2 + 40 + column * pitch,
-        center(source).y - tokenHeight / 2 + 40 + row * pitch,
+        center(source).x - tokenWidth / 2 + pitch / 2 + column * pitch,
+        center(source).y - tokenHeight / 2 + pitch / 2 + row * pitch,
         order
       )
     );
@@ -588,7 +692,7 @@ function addCompactCountingGroups(
   activity: Activity,
   layout: Layout
 ): void {
-  const source = rolePlacement(layout, "source-tray");
+  const source = roleContentPlacement(layout, "source-tray");
   const construction = rolePlacement(layout, "construction-area");
   const groupUnits = activity.nativePlan.movableUnits.filter(
     (unit) => unit.representation.kind === "canonical-native-group"
@@ -596,11 +700,22 @@ function addCompactCountingGroups(
   const independent = activity.nativePlan.movableUnits.find(
     (unit) => unit.representation.kind === "independent-native-set"
   );
-  const columns = 2;
+  const individualUnits = activity.nativePlan.movableUnits.filter(
+    (unit) =>
+      unit.representation.kind === "single-native-object" &&
+      unit.startsIn === "source-tray"
+  );
+  const regionLabelFontSize = layout.typographyCssPx.regionLabel * CSS_TO_CANVAS;
+  const columns = activity.sequence === 22 ? 3 : 2;
   const rows = Math.ceil(groupUnits.length / columns);
-  const gap = 10;
-  const tileWidth = (source.width - gap) / columns;
-  const tileHeight = Math.min(104, (source.height - gap * (rows - 1)) / rows);
+  const gap = 24;
+  const tileWidth = (source.width - gap * (columns - 1)) / columns;
+  const looseReserveHeight = independent || individualUnits.length > 0 ? 112 : 0;
+  const groupAreaHeight = source.height - looseReserveHeight;
+  const tileHeight = 114;
+  if (rows * tileHeight + gap * (rows - 1) > groupAreaHeight) {
+    throw new Error(`html30-v2:compact-group-area-overflow:${activity.sequence}`);
+  }
   groupUnits.forEach((unit, index) => {
     if (unit.representation.kind !== "canonical-native-group") return;
     const column = index % columns;
@@ -614,27 +729,52 @@ function addCompactCountingGroups(
     const groupNumber = Number(/(\d+)개|([678])장/.exec(unit.mathematicalMeaning)?.[1] ??
       /([678])/.exec(unit.mathematicalMeaning)?.[1] ?? 0);
     const memberIds = unit.representation.memberIds;
+    if (groupNumber < 2 || memberIds.length !== groupNumber + 2) {
+      throw new Error(
+        `html30-v2:compact-group-member-drift:${activity.sequence}:${unit.unitId}`
+      );
+    }
+    const tokenColumns = Math.ceil(groupNumber / 2);
+    const tokenPitchX = 32;
+    const tokenPitchY = 32;
+    const tokenStartX =
+      bounds.x + bounds.width / 2 - ((tokenColumns - 1) * tokenPitchX) / 2;
+    const tokenObjects = Array.from({ length: groupNumber }, (_, tokenIndex) => {
+      const columnIndex = tokenIndex % tokenColumns;
+      const rowIndex = Math.floor(tokenIndex / tokenColumns);
+      const token = makeCountingTokenCandidateObjectV2(
+        memberIds[tokenIndex + 1]!,
+        tokenStartX + columnIndex * tokenPitchX,
+        bounds.y + 50 + rowIndex * tokenPitchY,
+        index * 10 + tokenIndex + 1
+      );
+      const compactCoordinates = [
+        [-14, -14],
+        [14, -14],
+        [14, 14],
+        [-14, 14],
+        [0, 0]
+      ];
+      token.coordinates = compactCoordinates.map((point) => [...point]);
+      token.initCoordinates = compactCoordinates.map((point) => [...point]);
+      return token;
+    });
     collector.addGroup(unit.representation.groupId, [
       rectangleObject(memberIds[0]!, bounds, {
         fill: "#FFF7E8",
         stroke: "#E6A23C"
       }),
-      makeCountingTokenCandidateObjectV2(
-        memberIds[1]!,
-        bounds.x + 48,
-        bounds.y + bounds.height / 2,
-        index + 1
-      ),
+      ...tokenObjects,
       textObject(
-        memberIds[2]!,
+        memberIds.at(-1)!,
         `${groupNumber}${activity.sequence === 9 ? "장" : "개"} 묶음`,
         {
-          x: bounds.x + 88,
+          x: bounds.x,
           y: bounds.y,
-          width: bounds.width - 96,
-          height: bounds.height
+          width: bounds.width,
+          height: 32
         },
-        24
+        20
       )
     ]);
   });
@@ -652,6 +792,21 @@ function addCompactCountingGroups(
       );
     }
   }
+  if (individualUnits.length > 0) {
+    const pitch = 96;
+    const startX = center(source).x - ((individualUnits.length - 1) * pitch) / 2;
+    individualUnits.forEach((unit, index) => {
+      if (unit.representation.kind !== "single-native-object") return;
+      collector.add(
+        makeCountingTokenCandidateObjectV2(
+          unit.representation.objectId,
+          startX + index * pitch,
+          source.y + source.height - 48,
+          groupUnits.length + index + 1
+        )
+      );
+    });
+  }
   addLockedRectangle(
     collector,
     `${activity.activityId}-construction-target`,
@@ -661,9 +816,9 @@ function addCompactCountingGroups(
   addLockedText(
     collector,
     `${activity.activityId}-construction-hint`,
-    activity.sequence === 22 ? "6개 묶음 6개 + 낱개 2개" : "필요한 묶음만 이곳에 놓으세요.",
+    activity.sequence === 22 ? "묶음과 낱개로 38을 확인하세요." : "필요한 묶음만 이곳에 놓으세요.",
     construction,
-    28
+    regionLabelFontSize
   );
 }
 
@@ -688,6 +843,10 @@ function addSingleFractions(
   const fractions = activity.sequence === 27
     ? [{ numerator: 3, denominator: 8 }, { numerator: 7, denominator: 8 }]
     : [fractionIntent(activity)];
+  const nativeObjectIds = stageSingleObjectIds(activity);
+  if (nativeObjectIds.length !== fractions.length) {
+    throw new Error(`html30-v2:fraction-object-binding:${activity.sequence}`);
+  }
   if (activity.sequence === 11) {
     const referenceY = stage.y + 8;
     const widths = [72, 108, 54, 126, 90];
@@ -742,12 +901,10 @@ function addSingleFractions(
           toolKey: "NO03FM",
           fraction,
           color: colors[index]!,
-          showLabel: activity.sequence !== 10
+          showLabel: ![10, 11, 12, 13, 25].includes(activity.sequence)
         },
         {
-          id: index === 0
-            ? `mc30v2-${activity.sequence}-native`
-            : `mc30v2-${activity.sequence}-native-second`,
+          id: nativeObjectIds[index]!,
           x,
           y,
           width,
@@ -818,8 +975,9 @@ function addQuarterPartComposition(
 }
 
 function numberAndUnit(value: string): { readonly digits: readonly number[]; readonly suffix: string } {
-  const match = /^(\d+)(cm|mm|km|m)?$/.exec(value);
+  const match = /^(\d*)(cm|mm|km|m)?$/.exec(value);
   if (!match) throw new Error(`html30-v2:number-card-value:${value}`);
+  if (!match[1] && !match[2]) throw new Error(`html30-v2:number-card-value:${value}`);
   return {
     digits: [...match[1]!].map(Number),
     suffix: match[2] ?? ""
@@ -827,7 +985,9 @@ function numberAndUnit(value: string): { readonly digits: readonly number[]; rea
 }
 
 function unitValue(unit: MovableUnit): string {
-  const match = /(\d+(?:cm|mm|km|m)?)/.exec(unit.mathematicalMeaning);
+  const match = /(?:^|\s)(\d+(?:(?:cm|mm|km|m))?|cm|mm|km|m)(?:\s|$)/.exec(
+    unit.mathematicalMeaning
+  );
   if (!match) throw new Error(`html30-v2:unit-value:${unit.unitId}`);
   return match[1]!;
 }
@@ -840,6 +1000,7 @@ function addNumberCardComposition(
   const source = roleContentPlacement(layout, "source-tray");
   const construction = roleContentPlacement(layout, "construction-area");
   const units = activity.nativePlan.movableUnits;
+  const regionLabelFontSize = layout.typographyCssPx.regionLabel * CSS_TO_CANVAS;
   const oneColumn = [14, 15, 16, 28, 29].includes(activity.sequence);
   const columns = oneColumn ? 1 : 2;
   const rows = Math.ceil(units.length / columns);
@@ -910,7 +1071,13 @@ function addNumberCardComposition(
         bounds,
         { fill: "#FFFFFF", stroke: "#78BCE8", strokeDashArray: "8 6" }
       );
-      addLockedText(collector, `${activity.activityId}-target-label-${index + 1}`, label, bounds, 28);
+      addLockedText(
+        collector,
+        `${activity.activityId}-target-label-${index + 1}`,
+        label,
+        bounds,
+        regionLabelFontSize
+      );
     });
     return;
   }
@@ -921,7 +1088,13 @@ function addNumberCardComposition(
       construction,
       { fill: "#FFFFFF", stroke: "#78BCE8", strokeDashArray: "8 6" }
     );
-    addLockedText(collector, `${activity.activityId}-cm-target-label`, "3m 만들기", construction, 30);
+    addLockedText(
+      collector,
+      `${activity.activityId}-cm-target-label`,
+      "3m 만들기",
+      construction,
+      regionLabelFontSize
+    );
     return;
   }
   const plusCount = activity.sequence === 28 ? 2 : 1;
@@ -958,13 +1131,36 @@ function addNumberCardComposition(
 function addCircle(collector: ObjectCollector, activity: Activity, layout: Layout): void {
   const stage = rolePlacement(layout, "native-stage");
   const point = center(stage);
+  const nativeObjectId = stageSingleObjectIds(activity)[0]!;
   collector.moduleKeys.add("SM07CS");
+  if (activity.sequence === 23) {
+    collector.add(
+      makeCircleRadiusCandidateObjectV2(nativeObjectId, point.x, point.y)
+    );
+    return;
+  }
+  const reference = makeCircleRadiusCandidateObjectV2(
+    `${activity.activityId}-circle-reference`,
+    point.x,
+    point.y
+  );
+  reference.centerText = "";
+  reference.isSurroundRect = false;
+  reference.strokeWidth = 2;
+  collector.add(reference, { locked: true });
   collector.add(
     makeCircleDiameterCandidateObjectV2(
-      `mc30v2-${activity.sequence}-circle`,
+      nativeObjectId,
       point.x,
       point.y
     )
+  );
+  addLockedText(
+    collector,
+    `${activity.activityId}-radius-scale-label`,
+    "반지름 한 개 = 7cm",
+    { x: point.x - 180, y: point.y + 220, width: 360, height: 48 },
+    layout.typographyCssPx.regionLabel * CSS_TO_CANVAS
   );
 }
 
@@ -1061,6 +1257,16 @@ export function compileEduititHtml30CandidateV2(
   addNativeScene(collector, activity, layout);
   addAnswer(collector, activity, layout);
   const compiled = collector.result();
+  const initialTextLeakageAudit = auditEduititHtml30InitialTextLeakageV2(
+    activity.sequence,
+    compiled.contentsJson
+  );
+  if (!initialTextLeakageAudit.passed) {
+    throw new Error(
+      `html30-v2:initial-answer-leakage:${activity.sequence}:` +
+        initialTextLeakageAudit.violations.join(",")
+    );
+  }
   const category = MATHCANVAS_PROJECT_CATEGORIES[domain];
   const payload = mathCanvasPayloadSchema.parse({
     projectTitle: `[EDUITIT-MC30-V2-${String(activity.sequence).padStart(2, "0")}] ${activity.title}`,
@@ -1101,6 +1307,10 @@ export function compileEduititHtml30CandidateV2(
     sourceLayoutContentSha256: sha256Hex(layout),
     payloadHash: sha256Hex(payload),
     payload,
+    initialTextLeakageAudit: {
+      ...initialTextLeakageAudit,
+      passed: true
+    },
     lifecycle: {
       externalWriteAllowed: false,
       releaseQualified: false,

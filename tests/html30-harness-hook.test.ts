@@ -116,13 +116,29 @@ describe("Eduitit HTML30 Codex harness hook", () => {
     });
   });
 
-  it("does not govern commands from another repository", () => {
+  it("blocks protected writes even when the command starts outside this repository", () => {
     expect(
       evaluate(
         "curl -X PUT https://mathcanvas.vivasam.com/api/project/example",
         resolve(root, "..")
       )
-    ).toEqual({ allowed: true, code: "outside-repository" });
+    ).toMatchObject({
+      allowed: false,
+      code: "outside-repository-protected-write"
+    });
+    expect(
+      evaluate(
+        `node ${resolve(root, "scripts/contract-lab/create-eduitit-html30-v2-candidates.mjs")} --execute-live --artifact-sha ${"a".repeat(64)}`,
+        resolve(root, "..")
+      )
+    ).toMatchObject({
+      allowed: false,
+      code: "outside-repository-protected-write"
+    });
+    expect(evaluate("pnpm test", resolve(root, ".."))).toEqual({
+      allowed: true,
+      code: "outside-repository"
+    });
   });
 
   it("keeps the legacy writer entrypoints fail-closed even without Codex hooks", () => {

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "manifestId": "eduitit-html30-v2-created-projects",
   "sourceArtifactPath": "research/mathcanvas/eduitit-html30-v2-compiled-candidates.json",
-  "sourceArtifactContentSha256": "f80223921cfc6114b862e51ff8ff297cebc7e3aa0b07b3e5992022c6268be224",
+  "sourceArtifactContentSha256": "faaa01dd7eda03cbd460302ae342b3b2041e2b0907921062660d1ab0a4f3f88c",
   "mode": "authenticated-background-put-existing-once-per-candidate",
   "expectedCreateCount": 30,
   "projects": [
@@ -12,9 +12,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-01] 그림 하나에 숨은 수",
       "projectId": "rL0woz",
       "url": "https://mathcanvas.vivasam.com/ko/view/rL0woz",
-      "payloadHash": "61d3d53a02b388aa721cd4174ee20e035876bce90b5c8708bf4876e208c84e32",
+      "payloadHash": "02b19588e967db29ea6f98a4ae6d4b8e960a47075684d51982e3b52c6284530b",
       "createdAt": "2026-08-09T12:58:03.761Z",
-      "updatedAt": "2026-08-09T14:08:33.443Z"
+      "updatedAt": "2026-08-10T02:59:40.713Z"
     },
     {
       "sequence": 2,
@@ -22,9 +22,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-02] 같은 묶음은 곱셈으로",
       "projectId": "wQmu3L",
       "url": "https://mathcanvas.vivasam.com/ko/view/wQmu3L",
-      "payloadHash": "fbf4313d82d91498cf63fcbd75cdf3fc494e2ca0f336bfaba275362b21348439",
+      "payloadHash": "86b9e718867a467a4c2efc5e8e5906d81a93e187b995031b7002eca81ad9a71a",
       "createdAt": "2026-08-09T12:58:03.932Z",
-      "updatedAt": "2026-08-09T13:36:27.539Z"
+      "updatedAt": "2026-08-10T02:18:30.998Z"
     },
     {
       "sequence": 3,
@@ -32,9 +32,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-03] 줄과 칸으로 전체 수 찾기",
       "projectId": "lhLGmb",
       "url": "https://mathcanvas.vivasam.com/ko/view/lhLGmb",
-      "payloadHash": "79ecc18376c0be505bbf2a26cf50c441ce348f6718d1906be1af98ce46127dca",
+      "payloadHash": "9fe8736112510bbc3b2a56c154cd89152c73ae0a6db49a4f03cb1674db2026ce",
       "createdAt": "2026-08-09T12:58:04.021Z",
-      "updatedAt": "2026-08-09T13:36:27.699Z"
+      "updatedAt": "2026-08-10T02:18:31.295Z"
     },
     {
       "sequence": 4,
@@ -42,9 +42,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-04] 34×2를 두 부분으로",
       "projectId": "3m4JMN",
       "url": "https://mathcanvas.vivasam.com/ko/view/3m4JMN",
-      "payloadHash": "b212f0094783ec00aa67fceb6b6ec01dd8d0f4f84f5ef6ee1cc936c0e424d469",
+      "payloadHash": "b7ae2d8dfd20d898c4b061d88f9ce1c3242f62c5c04a544561c92e519c370def",
       "createdAt": "2026-08-09T12:58:04.119Z",
-      "updatedAt": "2026-08-09T14:08:34.073Z"
+      "updatedAt": "2026-08-10T02:59:41.054Z"
     },
     {
       "sequence": 5,
@@ -52,9 +52,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-05] 상자 수를 자릿값으로 곱하기",
       "projectId": "gE2xOj",
       "url": "https://mathcanvas.vivasam.com/ko/view/gE2xOj",
-      "payloadHash": "3630a93d67f5027cb7fcae6fda9e98799e2c664c443779873278e08f672ef1be",
+      "payloadHash": "24710aa745e34135a924e507d2df468049342e50d0157bf96b401486b77d3e48",
       "createdAt": "2026-08-09T12:58:04.207Z",
-      "updatedAt": "2026-08-09T14:08:34.235Z"
+      "updatedAt": "2026-08-10T02:59:41.356Z"
     },
     {
       "sequence": 6,
@@ -62,9 +62,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-06] 18개를 똑같이 나누면",
       "projectId": "M7wSdO",
       "url": "https://mathcanvas.vivasam.com/ko/view/M7wSdO",
-      "payloadHash": "95d536d8391d321893392d2b371a242f6c4497ebdd6b085f4960662a4fbddb2f",
+      "payloadHash": "27c79b1cc7469d2f4ac1f7741625eb10a025038511a436dfea6c3e3ba91b61bf",
       "createdAt": "2026-08-09T12:58:04.304Z",
-      "updatedAt": "2026-08-09T13:36:28.171Z"
+      "updatedAt": "2026-08-10T02:18:31.970Z"
     },
     {
       "sequence": 7,
@@ -72,9 +72,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-07] 곱셈의 빈칸으로 몫 찾기",
       "projectId": "JcMPoX",
       "url": "https://mathcanvas.vivasam.com/ko/view/JcMPoX",
-      "payloadHash": "b97239619ed3b072fbc413d97e033710958cf361eb64b6019c5c5c61786f0e59",
+      "payloadHash": "9f220b9113a3663946316cf1dae6968e7606fcf92a9ba19031c495733c1fa02a",
       "createdAt": "2026-08-09T12:58:04.389Z",
-      "updatedAt": "2026-08-09T13:36:28.296Z"
+      "updatedAt": "2026-08-10T03:06:39.787Z"
     },
     {
       "sequence": 8,
@@ -82,9 +82,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-08] 한 곱셈식에서 두 나눗셈식",
       "projectId": "m625MF",
       "url": "https://mathcanvas.vivasam.com/ko/view/m625MF",
-      "payloadHash": "843c376bcf8d634e70e34903b07d0db730e33fb0c4be353dd2411e9fde9e452e",
+      "payloadHash": "d9b5a425a523b530e851a01ff4565d4a0583916f87ae1ea67e31c00e70e34fe2",
       "createdAt": "2026-08-09T12:58:04.476Z",
-      "updatedAt": "2026-08-09T13:36:28.427Z"
+      "updatedAt": "2026-08-10T03:06:39.950Z"
     },
     {
       "sequence": 9,
@@ -92,9 +92,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-09] 몇 묶음인지 곱셈으로 확인하기",
       "projectId": "c4vioX",
       "url": "https://mathcanvas.vivasam.com/ko/view/c4vioX",
-      "payloadHash": "cf350859a9ee2d8a6a9a6580660c414454f247504a62e6c4a62e4fa78f30fe58",
+      "payloadHash": "7ce84265d23fbbd5ab2f12ccd7504641b1a0ea9b7f9fe4efe4b92f8dc9b22b20",
       "createdAt": "2026-08-09T12:58:04.561Z",
-      "updatedAt": "2026-08-09T13:36:28.622Z"
+      "updatedAt": "2026-08-10T03:06:40.148Z"
     },
     {
       "sequence": 10,
@@ -102,9 +102,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-10] 분수의 첫 조건, 똑같이",
       "projectId": "sW6vTK",
       "url": "https://mathcanvas.vivasam.com/ko/view/sW6vTK",
-      "payloadHash": "eb55da32404c0441a620ea94456091cf652334497c27769115df944817e024e7",
+      "payloadHash": "9947cee6f0ef0b04e4b704c480cb934cdb32ef06fd444b69ade118a5fd65fe4f",
       "createdAt": "2026-08-09T12:58:04.624Z",
-      "updatedAt": "2026-08-09T14:08:34.329Z"
+      "updatedAt": "2026-08-10T02:18:32.795Z"
     },
     {
       "sequence": 11,
@@ -112,9 +112,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-11] 같지 않은 조각을 고쳐 나누기",
       "projectId": "qk6wPR",
       "url": "https://mathcanvas.vivasam.com/ko/view/qk6wPR",
-      "payloadHash": "67b9e576a7931e5216483a2b42fb3cbd993c7429ba8054ae26b0789dafaf9847",
+      "payloadHash": "d0ba14e7acd2587c7b0630a38b8c2adda30d7d91388a1a5e12f4d21ea474873d",
       "createdAt": "2026-08-09T12:58:04.694Z",
-      "updatedAt": "2026-08-09T13:36:28.841Z"
+      "updatedAt": "2026-08-10T02:59:42.394Z"
     },
     {
       "sequence": 12,
@@ -122,9 +122,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-12] 전체와 부분을 분수로 읽기",
       "projectId": "GwhCnM",
       "url": "https://mathcanvas.vivasam.com/ko/view/GwhCnM",
-      "payloadHash": "f20266753b603364f95098f3faf72274b46ff9f36053c72729c5725c65c5b4d2",
+      "payloadHash": "2995c767d99eb0edef4f5173b572ee9e83be76e753ae23703a89ac3b218e8cf8",
       "createdAt": "2026-08-09T12:58:04.748Z",
-      "updatedAt": "2026-08-09T13:36:28.936Z"
+      "updatedAt": "2026-08-10T02:18:33.413Z"
     },
     {
       "sequence": 13,
@@ -132,9 +132,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-13] 피자에서 분모와 분자 찾기",
       "projectId": "yfcOlC",
       "url": "https://mathcanvas.vivasam.com/ko/view/yfcOlC",
-      "payloadHash": "1a4be7b35896d3e61c13897ebe98d3ad0b4388baec83e4e72c5cd6548f19ad3f",
+      "payloadHash": "09090f2e29472953d860ba4b59ddd3d154034fd0c865fe955e3ac62f83b39d70",
       "createdAt": "2026-08-09T12:58:04.800Z",
-      "updatedAt": "2026-08-09T13:36:29.021Z"
+      "updatedAt": "2026-08-10T02:18:33.623Z"
     },
     {
       "sequence": 14,
@@ -142,9 +142,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-14] 연필에는 cm, 문에는 m",
       "projectId": "voeaZU",
       "url": "https://mathcanvas.vivasam.com/ko/view/voeaZU",
-      "payloadHash": "7adb78817b1a202400d8bf7eb2c2595dd576bd65b686e8ffa08de816bbf36944",
+      "payloadHash": "01d355d5f6f97beec2b767aec80610fe1dc1289a641c687eedf6b6a4fa0125c6",
       "createdAt": "2026-08-09T12:58:04.875Z",
-      "updatedAt": "2026-08-09T13:36:29.464Z"
+      "updatedAt": "2026-08-10T02:59:42.627Z"
     },
     {
       "sequence": 15,
@@ -152,9 +152,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-15] 크기에 맞는 길이 단위",
       "projectId": "dHtylW",
       "url": "https://mathcanvas.vivasam.com/ko/view/dHtylW",
-      "payloadHash": "d295e3aa0fa79753574e78d24bc0cb25df0c01c0e8e6146ce86b420b13a48ab7",
+      "payloadHash": "e4af7be1b0d72eaa5905d6404b9d88fb9e721841d182bd1dcd5be7f1912007a7",
       "createdAt": "2026-08-09T12:58:04.960Z",
-      "updatedAt": "2026-08-09T13:36:29.619Z"
+      "updatedAt": "2026-08-10T02:59:42.805Z"
     },
     {
       "sequence": 16,
@@ -162,9 +162,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-16] m·cm, km·m 연결하기",
       "projectId": "gPrzqn",
       "url": "https://mathcanvas.vivasam.com/ko/view/gPrzqn",
-      "payloadHash": "d6a97b93b7ac46334fef95ac17f3430076284ec520f0a61bf464f7bdfeb5ebe3",
+      "payloadHash": "d044e70a152aed04cd4a71370ce3ab9997e7a4a11fa18f7f1323c979da05b2a7",
       "createdAt": "2026-08-09T12:58:05.055Z",
-      "updatedAt": "2026-08-09T14:08:34.484Z"
+      "updatedAt": "2026-08-10T02:18:34.067Z"
     },
     {
       "sequence": 17,
@@ -172,9 +172,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-17] 자릿값을 살려 먼저 곱하기",
       "projectId": "41eVIc",
       "url": "https://mathcanvas.vivasam.com/ko/view/41eVIc",
-      "payloadHash": "ead284a25e58b998b8de33e4910d52c6c18687b03ac59dc82b5e3b24d9c7a79c",
+      "payloadHash": "b92cc0dbf508ceaede59cbd73d5a0555146f5a3d88922215fcf2a2eded923bc2",
       "createdAt": "2026-08-09T12:58:05.137Z",
-      "updatedAt": "2026-08-09T14:12:56.630Z"
+      "updatedAt": "2026-08-10T02:59:42.992Z"
     },
     {
       "sequence": 18,
@@ -182,9 +182,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-18] 부분곱을 빠짐없이 더하기",
       "projectId": "6GuHVt",
       "url": "https://mathcanvas.vivasam.com/ko/view/6GuHVt",
-      "payloadHash": "8b1859c5bc61ee7020d8fedf275d1951d92d771fed0d57287ba281fe946f786c",
+      "payloadHash": "bc7866c1af549e9049b49346b227c6d0fa91e3afdadbb5273ea913bb989f720e",
       "createdAt": "2026-08-09T12:58:05.214Z",
-      "updatedAt": "2026-08-09T14:12:56.759Z"
+      "updatedAt": "2026-08-10T02:59:43.188Z"
     },
     {
       "sequence": 19,
@@ -192,9 +192,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-19] 두 자리 수를 나누어 곱하기",
       "projectId": "f6B0Li",
       "url": "https://mathcanvas.vivasam.com/ko/view/f6B0Li",
-      "payloadHash": "6d54620ee186c709389490aef83986b96a6424b07f376402052be4a07e4316c4",
+      "payloadHash": "cac3b9c3059b3ca9bf23a6172f26cc7c48d9e70ccfae823034ecb9bb9557304a",
       "createdAt": "2026-08-09T12:58:05.284Z",
-      "updatedAt": "2026-08-09T14:12:56.892Z"
+      "updatedAt": "2026-08-10T02:59:43.368Z"
     },
     {
       "sequence": 20,
@@ -202,9 +202,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-20] 나눗셈이 묻는 두 가지",
       "projectId": "ZEq3Gz",
       "url": "https://mathcanvas.vivasam.com/ko/view/ZEq3Gz",
-      "payloadHash": "6387c6802a210ad10c11e94ed5176f41125dabb8b6b9402bb0eef53bcec46081",
+      "payloadHash": "4e2ba12e23fa98bcc85608dc6bf5fb9c6a49c5b1e88682a8704683189ada44df",
       "createdAt": "2026-08-09T12:58:05.366Z",
-      "updatedAt": "2026-08-09T13:36:30.256Z"
+      "updatedAt": "2026-08-10T03:06:40.309Z"
     },
     {
       "sequence": 21,
@@ -212,9 +212,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-21] 먼저 나누고 남은 수 찾기",
       "projectId": "36m924",
       "url": "https://mathcanvas.vivasam.com/ko/view/36m924",
-      "payloadHash": "6280ee3efb3640e67e04e42283b445fc80cedf0ace28a6828dd8d60f0a0685c0",
+      "payloadHash": "ef4a273e84ec4da7b2f9bb6d64917b22cf2a3ae19f9512f6d724f3b1ea5ab5b0",
       "createdAt": "2026-08-09T12:58:05.454Z",
-      "updatedAt": "2026-08-09T13:36:30.458Z"
+      "updatedAt": "2026-08-10T02:18:36.534Z"
     },
     {
       "sequence": 22,
@@ -222,9 +222,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-22] 몫과 나머지로 처음 수 확인하기",
       "projectId": "EyfNrN",
       "url": "https://mathcanvas.vivasam.com/ko/view/EyfNrN",
-      "payloadHash": "454a6b00dfada419d711bd423005124b56fb446116617ddf6fb39c9f2520b0b2",
+      "payloadHash": "8948d40f1d0d7e14f40dea3c1c42787f35ef2c27a0916c74b4f421bb86679e2b",
       "createdAt": "2026-08-09T12:58:05.543Z",
-      "updatedAt": "2026-08-09T13:36:30.593Z"
+      "updatedAt": "2026-08-10T03:06:40.482Z"
     },
     {
       "sequence": 23,
@@ -232,9 +232,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-23] 원의 중심과 반지름 찾기",
       "projectId": "Z2HcBF",
       "url": "https://mathcanvas.vivasam.com/ko/view/Z2HcBF",
-      "payloadHash": "d8e52236e2fa7c822ea16bd44565f2327243a000ad6e2f57dcd2a6a88b3d9936",
+      "payloadHash": "d6546bb97c54eec4013da92a37fa0089f1c43c825c32f4281e1a43168f30dee4",
       "createdAt": "2026-08-09T12:58:05.616Z",
-      "updatedAt": "2026-08-09T13:36:30.695Z"
+      "updatedAt": "2026-08-10T02:59:44.320Z"
     },
     {
       "sequence": 24,
@@ -242,9 +242,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-24] 반지름 두 개가 만드는 지름",
       "projectId": "3vhycD",
       "url": "https://mathcanvas.vivasam.com/ko/view/3vhycD",
-      "payloadHash": "fcd634ab9dde712ec703e03c5bc9785e31f2e3e60311ebd335c267ae58266680",
+      "payloadHash": "8c68922915852fcf8fe09df8e8970fd053c412a80299a5a9022432dd752507ed",
       "createdAt": "2026-08-09T12:58:05.683Z",
-      "updatedAt": "2026-08-09T13:36:30.806Z"
+      "updatedAt": "2026-08-10T02:59:44.499Z"
     },
     {
       "sequence": 25,
@@ -252,9 +252,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-25] 색칠한 부분을 분수로",
       "projectId": "i9Mf0-",
       "url": "https://mathcanvas.vivasam.com/ko/view/i9Mf0-",
-      "payloadHash": "6d56c8b803889f7a5a1f860faf8504dc4b40093c50daf6705c62b012f94f63b3",
+      "payloadHash": "1fa25667a994793fe26b1652ac19f7d771364da2f3c97ad0c422804b5727b29f",
       "createdAt": "2026-08-09T12:58:05.738Z",
-      "updatedAt": "2026-08-09T13:36:30.897Z"
+      "updatedAt": "2026-08-10T02:18:37.213Z"
     },
     {
       "sequence": 26,
@@ -272,9 +272,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-27] 분모가 같은 분수 비교하기",
       "projectId": "YMrpLz",
       "url": "https://mathcanvas.vivasam.com/ko/view/YMrpLz",
-      "payloadHash": "c5ef47254450ef6e8f809cb03e0800836fb015d2a6ab42cfaffe47e2ffc857c5",
+      "payloadHash": "f50e1a73978485558dd23f558416a08d3e79a0e5f2616564a8561dfb2c1e3222",
       "createdAt": "2026-08-09T12:58:06.003Z",
-      "updatedAt": "2026-08-09T13:36:31.469Z"
+      "updatedAt": "2026-08-10T02:59:44.824Z"
     },
     {
       "sequence": 28,
@@ -282,9 +282,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-28] L를 mL로 정확히 바꾸기",
       "projectId": "e-ekLZ",
       "url": "https://mathcanvas.vivasam.com/ko/view/e-ekLZ",
-      "payloadHash": "92c620b26b17ce3b6c93aa474bf821ffb7da842a1d4dc9b9164007c2b5a0c678",
+      "payloadHash": "4639afc28d27107cbd19738ac1d95642bf641b953f73b3e5ab014262d2c167f8",
       "createdAt": "2026-08-09T12:58:06.096Z",
-      "updatedAt": "2026-08-09T14:08:34.977Z"
+      "updatedAt": "2026-08-10T02:59:45.033Z"
     },
     {
       "sequence": 29,
@@ -292,9 +292,9 @@
       "projectTitle": "[EDUITIT-MC30-V2-29] kg을 g으로 정확히 바꾸기",
       "projectId": "gPG4IM",
       "url": "https://mathcanvas.vivasam.com/ko/view/gPG4IM",
-      "payloadHash": "bfe60ff7aa161bed7eaeee64bfece1378a00215333483d9f3adcfe59ffe65003",
+      "payloadHash": "3997c09224e92fde788f7052b1059b9797c6efd3925d8fad125ed85c66f59de8",
       "createdAt": "2026-08-09T12:58:06.211Z",
-      "updatedAt": "2026-08-09T14:08:35.091Z"
+      "updatedAt": "2026-08-10T02:59:45.206Z"
     },
     {
       "sequence": 30,
@@ -302,14 +302,14 @@
       "projectTitle": "[EDUITIT-MC30-V2-30] 그림그래프의 실제 차이 구하기",
       "projectId": "5H1bDW",
       "url": "https://mathcanvas.vivasam.com/ko/view/5H1bDW",
-      "payloadHash": "cf77b37ab6bea282d6b6f3142b6d24c8da7220213f1dd82e9e95129256d709ac",
+      "payloadHash": "c59c2f9b64158b9486c2fdba6e5f9c93fd3fac8a4af96731627a947e6795272a",
       "createdAt": "2026-08-09T12:58:06.291Z",
-      "updatedAt": "2026-08-09T14:08:35.202Z"
+      "updatedAt": "2026-08-10T02:59:45.394Z"
     }
   ],
   "completedCount": 30,
   "completed": true,
-  "finishedAt": "2026-08-09T14:12:57.044Z",
-  "updateCompletedAt": "2026-08-09T14:12:57.044Z",
+  "finishedAt": "2026-08-10T03:06:40.661Z",
+  "updateCompletedAt": "2026-08-10T03:06:40.661Z",
   "evidenceReboundAt": "2026-08-09T14:18:33.004Z"
 }

@@ -90,7 +90,27 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "범례 5권을 적용하지 않고 그림 다섯 개를 책 다섯 권으로 읽는다.",
+          "reachableStateWitnesses": [
+            {
+              "actualCount": 15,
+              "category": "책",
+              "legendValue": 5,
+              "pictureCount": 3
+            },
+            {
+              "actualCount": 20,
+              "category": "책",
+              "legendValue": 5,
+              "pictureCount": 4
+            },
+            {
+              "actualCount": 25,
+              "category": "책",
+              "legendValue": 5,
+              "pictureCount": 5
+            }
+          ],
           "selfVerification": "그림 수 × 그림 한 개의 값 = 실제 수량"
         },
         "keyboardModifiers": [],
@@ -237,7 +257,24 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "한 접시의 수와 접시 수 중 한 방향만 바꾸어 4×4 배열에서 멈춘다.",
+          "reachableStateWitnesses": [
+            {
+              "columns": 3,
+              "product": 9,
+              "rows": 3
+            },
+            {
+              "columns": 4,
+              "product": 16,
+              "rows": 4
+            },
+            {
+              "columns": 4,
+              "product": 20,
+              "rows": 5
+            }
+          ],
           "selfVerification": "한 줄의 수 × 줄 수 = 전체 수"
         },
         "keyboardModifiers": [],
@@ -384,7 +421,24 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "한 줄의 수와 줄 수를 혼동해 6×6 배열에서 멈춘다.",
+          "reachableStateWitnesses": [
+            {
+              "columns": 4,
+              "product": 16,
+              "rows": 4
+            },
+            {
+              "columns": 6,
+              "product": 36,
+              "rows": 6
+            },
+            {
+              "columns": 6,
+              "product": 42,
+              "rows": 7
+            }
+          ],
           "selfVerification": "한 줄의 수 × 줄 수 = 전체 수"
         },
         "keyboardModifiers": [],
@@ -500,8 +554,8 @@
           "configuredInitialState": {
             "candidatePartials": [
               60,
-              8,
-              6
+              6,
+              8
             ],
             "combined": null,
             "selectedPartials": []
@@ -535,7 +589,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "십의 자리 3을 두 번 센 6을 부분곱 60 대신 고른다.",
           "rejectableUnitIds": [
             "activity-4-partial-6"
           ],
@@ -570,6 +624,29 @@
           },
           {
             "endsIn": "native-stage",
+            "mathematicalMeaning": "3×2로 잘못 계산한 6 모형",
+            "representation": {
+              "groupId": "mc30v2-4-partial-6-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-4-partial-6-group-member-1",
+                "mc30v2-4-partial-6-group-member-2",
+                "mc30v2-4-partial-6-group-member-3",
+                "mc30v2-4-partial-6-group-member-4",
+                "mc30v2-4-partial-6-group-member-5",
+                "mc30v2-4-partial-6-group-member-6",
+                "mc30v2-4-partial-6-group-member-7",
+                "mc30v2-4-partial-6-group-member-8"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "native-stage",
+            "studentAction": "direct-drag",
+            "unitId": "activity-4-partial-6"
+          },
+          {
+            "endsIn": "native-stage",
             "mathematicalMeaning": "4×2를 나타내는 8 모형",
             "representation": {
               "groupId": "mc30v2-4-partial-8-group",
@@ -592,29 +669,6 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-4-partial-8"
-          },
-          {
-            "endsIn": "native-stage",
-            "mathematicalMeaning": "3×2로 잘못 계산한 6 모형",
-            "representation": {
-              "groupId": "mc30v2-4-partial-6-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-4-partial-6-group-member-1",
-                "mc30v2-4-partial-6-group-member-2",
-                "mc30v2-4-partial-6-group-member-3",
-                "mc30v2-4-partial-6-group-member-4",
-                "mc30v2-4-partial-6-group-member-5",
-                "mc30v2-4-partial-6-group-member-6",
-                "mc30v2-4-partial-6-group-member-7",
-                "mc30v2-4-partial-6-group-member-8"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "native-stage",
-            "studentAction": "direct-drag",
-            "unitId": "activity-4-partial-6"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -715,9 +769,9 @@
         "core": {
           "configuredInitialState": {
             "candidatePartials": [
+              30,
               90,
-              3,
-              30
+              3
             ],
             "combined": null,
             "selectedPartials": []
@@ -751,7 +805,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "상자 세 개를 반영하지 않고 30 모형을 전체 부분곱으로 고른다.",
           "rejectableUnitIds": [
             "activity-5-partial-30"
           ],
@@ -761,6 +815,26 @@
         },
         "keyboardModifiers": [],
         "movableUnits": [
+          {
+            "endsIn": "native-stage",
+            "mathematicalMeaning": "30을 한 번만 센 30 모형",
+            "representation": {
+              "groupId": "mc30v2-5-partial-30-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-5-partial-30-group-member-1",
+                "mc30v2-5-partial-30-group-member-2",
+                "mc30v2-5-partial-30-group-member-3",
+                "mc30v2-5-partial-30-group-member-4",
+                "mc30v2-5-partial-30-group-member-5"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "native-stage",
+            "studentAction": "direct-drag",
+            "unitId": "activity-5-partial-30"
+          },
           {
             "endsIn": "native-stage",
             "mathematicalMeaning": "30×3을 나타내는 90 모형",
@@ -806,26 +880,6 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-5-partial-3"
-          },
-          {
-            "endsIn": "native-stage",
-            "mathematicalMeaning": "30을 한 번만 센 30 모형",
-            "representation": {
-              "groupId": "mc30v2-5-partial-30-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-5-partial-30-group-member-1",
-                "mc30v2-5-partial-30-group-member-2",
-                "mc30v2-5-partial-30-group-member-3",
-                "mc30v2-5-partial-30-group-member-4",
-                "mc30v2-5-partial-30-group-member-5"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "native-stage",
-            "studentAction": "direct-drag",
-            "unitId": "activity-5-partial-30"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -977,7 +1031,45 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "쿠키 수는 모두 쓰지만 여섯 칸의 수가 서로 다르게 나눈다.",
+          "reachableStateWitnesses": [
+            {
+              "distributions": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "recipients": 6,
+              "total": 18
+            },
+            {
+              "distributions": [
+                4,
+                4,
+                3,
+                3,
+                2,
+                2
+              ],
+              "recipients": 6,
+              "total": 18
+            },
+            {
+              "distributions": [
+                3,
+                3,
+                3,
+                3,
+                3,
+                3
+              ],
+              "recipients": 6,
+              "total": 18
+            }
+          ],
           "selfVerification": "전체 수 ÷ 사람 수 = 한 사람이 받는 수"
         },
         "keyboardModifiers": [],
@@ -1130,7 +1222,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "7개라는 묶음의 크기를 묶음 수로 읽어 묶음을 일곱 개 옮긴다.",
           "rejectableUnitIds": [
             "activity-7-seven-set-6"
           ],
@@ -1149,7 +1241,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-1-group-member-1",
                 "mc30v2-7-seven-set-1-group-member-2",
-                "mc30v2-7-seven-set-1-group-member-3"
+                "mc30v2-7-seven-set-1-group-member-3",
+                "mc30v2-7-seven-set-1-group-member-4",
+                "mc30v2-7-seven-set-1-group-member-5",
+                "mc30v2-7-seven-set-1-group-member-6",
+                "mc30v2-7-seven-set-1-group-member-7",
+                "mc30v2-7-seven-set-1-group-member-8",
+                "mc30v2-7-seven-set-1-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1167,7 +1265,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-2-group-member-1",
                 "mc30v2-7-seven-set-2-group-member-2",
-                "mc30v2-7-seven-set-2-group-member-3"
+                "mc30v2-7-seven-set-2-group-member-3",
+                "mc30v2-7-seven-set-2-group-member-4",
+                "mc30v2-7-seven-set-2-group-member-5",
+                "mc30v2-7-seven-set-2-group-member-6",
+                "mc30v2-7-seven-set-2-group-member-7",
+                "mc30v2-7-seven-set-2-group-member-8",
+                "mc30v2-7-seven-set-2-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1185,7 +1289,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-3-group-member-1",
                 "mc30v2-7-seven-set-3-group-member-2",
-                "mc30v2-7-seven-set-3-group-member-3"
+                "mc30v2-7-seven-set-3-group-member-3",
+                "mc30v2-7-seven-set-3-group-member-4",
+                "mc30v2-7-seven-set-3-group-member-5",
+                "mc30v2-7-seven-set-3-group-member-6",
+                "mc30v2-7-seven-set-3-group-member-7",
+                "mc30v2-7-seven-set-3-group-member-8",
+                "mc30v2-7-seven-set-3-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1203,7 +1313,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-4-group-member-1",
                 "mc30v2-7-seven-set-4-group-member-2",
-                "mc30v2-7-seven-set-4-group-member-3"
+                "mc30v2-7-seven-set-4-group-member-3",
+                "mc30v2-7-seven-set-4-group-member-4",
+                "mc30v2-7-seven-set-4-group-member-5",
+                "mc30v2-7-seven-set-4-group-member-6",
+                "mc30v2-7-seven-set-4-group-member-7",
+                "mc30v2-7-seven-set-4-group-member-8",
+                "mc30v2-7-seven-set-4-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1221,7 +1337,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-5-group-member-1",
                 "mc30v2-7-seven-set-5-group-member-2",
-                "mc30v2-7-seven-set-5-group-member-3"
+                "mc30v2-7-seven-set-5-group-member-3",
+                "mc30v2-7-seven-set-5-group-member-4",
+                "mc30v2-7-seven-set-5-group-member-5",
+                "mc30v2-7-seven-set-5-group-member-6",
+                "mc30v2-7-seven-set-5-group-member-7",
+                "mc30v2-7-seven-set-5-group-member-8",
+                "mc30v2-7-seven-set-5-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1239,7 +1361,13 @@
               "memberIds": [
                 "mc30v2-7-seven-set-6-group-member-1",
                 "mc30v2-7-seven-set-6-group-member-2",
-                "mc30v2-7-seven-set-6-group-member-3"
+                "mc30v2-7-seven-set-6-group-member-3",
+                "mc30v2-7-seven-set-6-group-member-4",
+                "mc30v2-7-seven-set-6-group-member-5",
+                "mc30v2-7-seven-set-6-group-member-6",
+                "mc30v2-7-seven-set-6-group-member-7",
+                "mc30v2-7-seven-set-6-group-member-8",
+                "mc30v2-7-seven-set-6-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1384,7 +1512,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "32를 만드는 데 필요한 네 묶음보다 한 묶음을 더 옮긴다.",
           "rejectableUnitIds": [
             "activity-8-eight-set-5"
           ],
@@ -1403,7 +1531,14 @@
               "memberIds": [
                 "mc30v2-8-eight-set-1-group-member-1",
                 "mc30v2-8-eight-set-1-group-member-2",
-                "mc30v2-8-eight-set-1-group-member-3"
+                "mc30v2-8-eight-set-1-group-member-3",
+                "mc30v2-8-eight-set-1-group-member-4",
+                "mc30v2-8-eight-set-1-group-member-5",
+                "mc30v2-8-eight-set-1-group-member-6",
+                "mc30v2-8-eight-set-1-group-member-7",
+                "mc30v2-8-eight-set-1-group-member-8",
+                "mc30v2-8-eight-set-1-group-member-9",
+                "mc30v2-8-eight-set-1-group-member-10"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1421,7 +1556,14 @@
               "memberIds": [
                 "mc30v2-8-eight-set-2-group-member-1",
                 "mc30v2-8-eight-set-2-group-member-2",
-                "mc30v2-8-eight-set-2-group-member-3"
+                "mc30v2-8-eight-set-2-group-member-3",
+                "mc30v2-8-eight-set-2-group-member-4",
+                "mc30v2-8-eight-set-2-group-member-5",
+                "mc30v2-8-eight-set-2-group-member-6",
+                "mc30v2-8-eight-set-2-group-member-7",
+                "mc30v2-8-eight-set-2-group-member-8",
+                "mc30v2-8-eight-set-2-group-member-9",
+                "mc30v2-8-eight-set-2-group-member-10"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1439,7 +1581,14 @@
               "memberIds": [
                 "mc30v2-8-eight-set-3-group-member-1",
                 "mc30v2-8-eight-set-3-group-member-2",
-                "mc30v2-8-eight-set-3-group-member-3"
+                "mc30v2-8-eight-set-3-group-member-3",
+                "mc30v2-8-eight-set-3-group-member-4",
+                "mc30v2-8-eight-set-3-group-member-5",
+                "mc30v2-8-eight-set-3-group-member-6",
+                "mc30v2-8-eight-set-3-group-member-7",
+                "mc30v2-8-eight-set-3-group-member-8",
+                "mc30v2-8-eight-set-3-group-member-9",
+                "mc30v2-8-eight-set-3-group-member-10"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1457,7 +1606,14 @@
               "memberIds": [
                 "mc30v2-8-eight-set-4-group-member-1",
                 "mc30v2-8-eight-set-4-group-member-2",
-                "mc30v2-8-eight-set-4-group-member-3"
+                "mc30v2-8-eight-set-4-group-member-3",
+                "mc30v2-8-eight-set-4-group-member-4",
+                "mc30v2-8-eight-set-4-group-member-5",
+                "mc30v2-8-eight-set-4-group-member-6",
+                "mc30v2-8-eight-set-4-group-member-7",
+                "mc30v2-8-eight-set-4-group-member-8",
+                "mc30v2-8-eight-set-4-group-member-9",
+                "mc30v2-8-eight-set-4-group-member-10"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1475,7 +1631,14 @@
               "memberIds": [
                 "mc30v2-8-eight-set-5-group-member-1",
                 "mc30v2-8-eight-set-5-group-member-2",
-                "mc30v2-8-eight-set-5-group-member-3"
+                "mc30v2-8-eight-set-5-group-member-3",
+                "mc30v2-8-eight-set-5-group-member-4",
+                "mc30v2-8-eight-set-5-group-member-5",
+                "mc30v2-8-eight-set-5-group-member-6",
+                "mc30v2-8-eight-set-5-group-member-7",
+                "mc30v2-8-eight-set-5-group-member-8",
+                "mc30v2-8-eight-set-5-group-member-9",
+                "mc30v2-8-eight-set-5-group-member-10"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1620,7 +1783,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "42장을 만드는 데 필요한 일곱 묶음보다 한 묶음을 더 옮긴다.",
           "rejectableUnitIds": [
             "activity-9-six-set-8"
           ],
@@ -1639,7 +1802,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-1-group-member-1",
                 "mc30v2-9-six-set-1-group-member-2",
-                "mc30v2-9-six-set-1-group-member-3"
+                "mc30v2-9-six-set-1-group-member-3",
+                "mc30v2-9-six-set-1-group-member-4",
+                "mc30v2-9-six-set-1-group-member-5",
+                "mc30v2-9-six-set-1-group-member-6",
+                "mc30v2-9-six-set-1-group-member-7",
+                "mc30v2-9-six-set-1-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1657,7 +1825,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-2-group-member-1",
                 "mc30v2-9-six-set-2-group-member-2",
-                "mc30v2-9-six-set-2-group-member-3"
+                "mc30v2-9-six-set-2-group-member-3",
+                "mc30v2-9-six-set-2-group-member-4",
+                "mc30v2-9-six-set-2-group-member-5",
+                "mc30v2-9-six-set-2-group-member-6",
+                "mc30v2-9-six-set-2-group-member-7",
+                "mc30v2-9-six-set-2-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1675,7 +1848,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-3-group-member-1",
                 "mc30v2-9-six-set-3-group-member-2",
-                "mc30v2-9-six-set-3-group-member-3"
+                "mc30v2-9-six-set-3-group-member-3",
+                "mc30v2-9-six-set-3-group-member-4",
+                "mc30v2-9-six-set-3-group-member-5",
+                "mc30v2-9-six-set-3-group-member-6",
+                "mc30v2-9-six-set-3-group-member-7",
+                "mc30v2-9-six-set-3-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1693,7 +1871,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-4-group-member-1",
                 "mc30v2-9-six-set-4-group-member-2",
-                "mc30v2-9-six-set-4-group-member-3"
+                "mc30v2-9-six-set-4-group-member-3",
+                "mc30v2-9-six-set-4-group-member-4",
+                "mc30v2-9-six-set-4-group-member-5",
+                "mc30v2-9-six-set-4-group-member-6",
+                "mc30v2-9-six-set-4-group-member-7",
+                "mc30v2-9-six-set-4-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1711,7 +1894,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-5-group-member-1",
                 "mc30v2-9-six-set-5-group-member-2",
-                "mc30v2-9-six-set-5-group-member-3"
+                "mc30v2-9-six-set-5-group-member-3",
+                "mc30v2-9-six-set-5-group-member-4",
+                "mc30v2-9-six-set-5-group-member-5",
+                "mc30v2-9-six-set-5-group-member-6",
+                "mc30v2-9-six-set-5-group-member-7",
+                "mc30v2-9-six-set-5-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1729,7 +1917,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-6-group-member-1",
                 "mc30v2-9-six-set-6-group-member-2",
-                "mc30v2-9-six-set-6-group-member-3"
+                "mc30v2-9-six-set-6-group-member-3",
+                "mc30v2-9-six-set-6-group-member-4",
+                "mc30v2-9-six-set-6-group-member-5",
+                "mc30v2-9-six-set-6-group-member-6",
+                "mc30v2-9-six-set-6-group-member-7",
+                "mc30v2-9-six-set-6-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1747,7 +1940,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-7-group-member-1",
                 "mc30v2-9-six-set-7-group-member-2",
-                "mc30v2-9-six-set-7-group-member-3"
+                "mc30v2-9-six-set-7-group-member-3",
+                "mc30v2-9-six-set-7-group-member-4",
+                "mc30v2-9-six-set-7-group-member-5",
+                "mc30v2-9-six-set-7-group-member-6",
+                "mc30v2-9-six-set-7-group-member-7",
+                "mc30v2-9-six-set-7-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1765,7 +1963,12 @@
               "memberIds": [
                 "mc30v2-9-six-set-8-group-member-1",
                 "mc30v2-9-six-set-8-group-member-2",
-                "mc30v2-9-six-set-8-group-member-3"
+                "mc30v2-9-six-set-8-group-member-3",
+                "mc30v2-9-six-set-8-group-member-4",
+                "mc30v2-9-six-set-8-group-member-5",
+                "mc30v2-9-six-set-8-group-member-6",
+                "mc30v2-9-six-set-8-group-member-7",
+                "mc30v2-9-six-set-8-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -1855,7 +2058,7 @@
         "constructionStateStatesAnswer": true,
         "localDirections": [
           "분수 띠를 누르세요.",
-          "나타난 오른쪽 점을 끌어 같은 조각 5개로 전체를 채우세요."
+          "나타난 오른쪽 점을 끌어 전체를 똑같이 5조각으로 나누세요."
         ],
         "question": "전체를 똑같이 5조각으로 나눈 한 조각은 얼마일까요?"
       },
@@ -1905,7 +2108,24 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "다섯 조각이 전체를 채우기 전에 네 조각에서 멈춘다.",
+          "reachableStateWitnesses": [
+            {
+              "denominator": 5,
+              "visibleParts": 1,
+              "wholeComplete": false
+            },
+            {
+              "denominator": 5,
+              "visibleParts": 4,
+              "wholeComplete": false
+            },
+            {
+              "denominator": 5,
+              "visibleParts": 5,
+              "wholeComplete": true
+            }
+          ],
           "selfVerification": "전체 1은 똑같은 1/5 조각 다섯 개이다."
         },
         "keyboardModifiers": [],
@@ -2014,7 +2234,7 @@
         "constructionStateStatesAnswer": false,
         "localDirections": [
           "분수 띠를 누르세요.",
-          "나타난 오른쪽 점을 끌어 같은 1/5 조각을 5개로 만드세요."
+          "나타난 오른쪽 점을 끌어 전체를 5조각으로 나누세요."
         ],
         "question": "크기가 다른 5조각 중 한 조각을 1/5이라고 해도 될까요?"
       },
@@ -2063,7 +2283,23 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "조각 수만 다섯이면 된다고 보고 크기가 다른 분할을 그대로 받아들인다.",
+          "reachableStateWitnesses": [
+            {
+              "nativeVisibleParts": 1,
+              "referencePartsEqual": false
+            },
+            {
+              "nativePartsEqual": false,
+              "nativeVisibleParts": 5,
+              "referencePartsEqual": false
+            },
+            {
+              "nativePartsEqual": true,
+              "nativeVisibleParts": 5,
+              "referencePartsEqual": false
+            }
+          ],
           "selfVerification": "분수의 한 조각은 전체를 똑같이 나눈 조각이어야 한다."
         },
         "keyboardModifiers": [],
@@ -2139,7 +2375,7 @@
             "purpose": "같은 1/7 조각 세 개를 나타낸다.",
             "regionId": "activity-12-native-stage",
             "role": "native-stage",
-            "studentLabel": "7등분 분수 띠"
+            "studentLabel": "분수 띠"
           }
         ],
         "semanticGapCssPx": 16,
@@ -2160,7 +2396,7 @@
         "constructionStateStatesAnswer": true,
         "localDirections": [
           "분수 띠를 누르세요.",
-          "나타난 오른쪽 점을 끌어 1/7 조각을 3개로 만드세요."
+          "나타난 오른쪽 점을 끌어 7칸 중 3칸이 색칠되게 하세요."
         ],
         "question": "전체 7조각 중 3조각을 고르면 얼마일까요?"
       },
@@ -2208,7 +2444,21 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "고른 세 조각 대신 남은 네 조각을 분자로 나타낸다.",
+          "reachableStateWitnesses": [
+            {
+              "denominator": 7,
+              "numerator": 1
+            },
+            {
+              "denominator": 7,
+              "numerator": 4
+            },
+            {
+              "denominator": 7,
+              "numerator": 3
+            }
+          ],
           "selfVerification": "전체 조각 수는 분모, 고른 조각 수는 분자이다."
         },
         "keyboardModifiers": [],
@@ -2284,7 +2534,7 @@
             "purpose": "같은 1/10 조각 네 개를 나타낸다.",
             "regionId": "activity-13-native-stage",
             "role": "native-stage",
-            "studentLabel": "10등분 분수 띠"
+            "studentLabel": "분수 띠"
           }
         ],
         "semanticGapCssPx": 16,
@@ -2305,7 +2555,7 @@
         "constructionStateStatesAnswer": true,
         "localDirections": [
           "분수 띠를 누르세요.",
-          "나타난 오른쪽 점을 끌어 1/10 조각을 4개로 만드세요."
+          "나타난 오른쪽 점을 끌어 10칸 중 4칸이 색칠되게 하세요."
         ],
         "question": "피자 10조각 중 4조각을 먹으면 먹은 양은 얼마일까요?"
       },
@@ -2353,7 +2603,21 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "먹은 네 조각 대신 남은 여섯 조각을 분자로 나타낸다.",
+          "reachableStateWitnesses": [
+            {
+              "denominator": 10,
+              "numerator": 1
+            },
+            {
+              "denominator": 10,
+              "numerator": 6
+            },
+            {
+              "denominator": 10,
+              "numerator": 4
+            }
+          ],
           "selfVerification": "전체 조각 수는 분모, 고른 조각 수는 분자이다."
         },
         "keyboardModifiers": [],
@@ -2457,7 +2721,7 @@
         "localDirections": [
           "단위 카드를 알맞은 물건 자리로 옮기세요."
         ],
-        "question": "지우개와 복도의 길이에 알맞은 단위는 무엇일까요?"
+        "question": "지우개와 복도의 길이를 재기 편한 단위는 무엇일까요?"
       },
       "lifecycle": {
         "blockers": [
@@ -2473,11 +2737,11 @@
       "nativePlan": {
         "core": {
           "configuredInitialState": {
-            "matches": [],
             "targets": [
               "지우개",
               "복도"
-            ]
+            ],
+            "unitMatches": []
           },
           "evidenceIds": [
             "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT",
@@ -2493,14 +2757,14 @@
           "semanticOperation": "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
           "supportState": "captured",
           "targetState": {
-            "matches": [
+            "unitMatches": [
               {
-                "measure": "5cm",
-                "target": "지우개"
+                "target": "지우개",
+                "unit": "cm"
               },
               {
-                "measure": "20m",
-                "target": "복도"
+                "target": "복도",
+                "unit": "m"
               }
             ]
           },
@@ -2516,10 +2780,10 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "물건의 크기를 비교하지 않고 지우개에 m, 복도에 cm를 놓는다.",
           "rejectableUnitIds": [
-            "activity-14-distractor-5m",
-            "activity-14-distractor-20cm"
+            "activity-14-distractor-mm",
+            "activity-14-distractor-km"
           ],
           "selfVerification": "측정 단위는 대상의 실제 크기에 맞아야 한다.",
           "solutionUsesFewerMovableUnitsThanSupplied": true,
@@ -2529,88 +2793,82 @@
         "movableUnits": [
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "지우개에 맞는 5cm 카드",
+            "mathematicalMeaning": "비교할 mm 단위 카드",
             "representation": {
-              "groupId": "mc30v2-14-measure-5cm-group",
+              "groupId": "mc30v2-14-distractor-mm-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-14-measure-5cm-group-member-1",
-                "mc30v2-14-measure-5cm-group-member-2",
-                "mc30v2-14-measure-5cm-group-member-3"
+                "mc30v2-14-distractor-mm-group-member-1",
+                "mc30v2-14-distractor-mm-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-14-measure-5cm"
+            "unitId": "activity-14-distractor-mm"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "복도에 맞는 20m 카드",
+            "mathematicalMeaning": "지우개 길이에 알맞은 cm 단위 카드",
             "representation": {
-              "groupId": "mc30v2-14-measure-20m-group",
+              "groupId": "mc30v2-14-unit-cm-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-14-measure-20m-group-member-1",
-                "mc30v2-14-measure-20m-group-member-2",
-                "mc30v2-14-measure-20m-group-member-3",
-                "mc30v2-14-measure-20m-group-member-4"
+                "mc30v2-14-unit-cm-group-member-1",
+                "mc30v2-14-unit-cm-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-14-measure-20m"
+            "unitId": "activity-14-unit-cm"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "비교할 5m 카드",
+            "mathematicalMeaning": "비교할 km 단위 카드",
             "representation": {
-              "groupId": "mc30v2-14-distractor-5m-group",
+              "groupId": "mc30v2-14-distractor-km-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-14-distractor-5m-group-member-1",
-                "mc30v2-14-distractor-5m-group-member-2",
-                "mc30v2-14-distractor-5m-group-member-3"
+                "mc30v2-14-distractor-km-group-member-1",
+                "mc30v2-14-distractor-km-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-14-distractor-5m"
+            "unitId": "activity-14-distractor-km"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "비교할 20cm 카드",
+            "mathematicalMeaning": "복도 길이에 알맞은 m 단위 카드",
             "representation": {
-              "groupId": "mc30v2-14-distractor-20cm-group",
+              "groupId": "mc30v2-14-unit-m-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-14-distractor-20cm-group-member-1",
-                "mc30v2-14-distractor-20cm-group-member-2",
-                "mc30v2-14-distractor-20cm-group-member-3",
-                "mc30v2-14-distractor-20cm-group-member-4"
+                "mc30v2-14-unit-m-group-member-1",
+                "mc30v2-14-unit-m-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-14-distractor-20cm"
+            "unitId": "activity-14-unit-m"
           }
         ],
         "placementMode": "generator-preplaced",
         "studentToolMenuRequired": false,
         "supporting": {
           "configuredInitialState": {
-            "matches": [],
             "targets": [
               "지우개",
               "복도"
-            ]
+            ],
+            "unitMatches": []
           },
           "evidenceIds": [
             "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT",
@@ -2626,14 +2884,14 @@
           "semanticOperation": "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
           "supportState": "captured",
           "targetState": {
-            "matches": [
+            "unitMatches": [
               {
-                "measure": "5cm",
-                "target": "지우개"
+                "target": "지우개",
+                "unit": "cm"
               },
               {
-                "measure": "20m",
-                "target": "복도"
+                "target": "복도",
+                "unit": "m"
               }
             ]
           },
@@ -2728,7 +2986,7 @@
         "localDirections": [
           "단위 카드를 알맞은 대상 자리로 옮기세요."
         ],
-        "question": "단추의 두께와 도시 사이 거리에 알맞은 단위는 무엇일까요?"
+        "question": "단추의 두께와 도시 사이 거리를 재기 편한 단위는 무엇일까요?"
       },
       "lifecycle": {
         "blockers": [
@@ -2744,11 +3002,11 @@
       "nativePlan": {
         "core": {
           "configuredInitialState": {
-            "matches": [],
             "targets": [
               "단추",
               "도시 사이"
-            ]
+            ],
+            "unitMatches": []
           },
           "evidenceIds": [
             "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT",
@@ -2764,14 +3022,14 @@
           "semanticOperation": "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
           "supportState": "captured",
           "targetState": {
-            "matches": [
+            "unitMatches": [
               {
-                "measure": "2mm",
-                "target": "단추"
+                "target": "단추",
+                "unit": "mm"
               },
               {
-                "measure": "5km",
-                "target": "도시 사이"
+                "target": "도시 사이",
+                "unit": "km"
               }
             ]
           },
@@ -2786,10 +3044,10 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "아주 작은 두께와 먼 거리를 구분하지 않고 mm와 km를 바꾸어 놓는다.",
           "rejectableUnitIds": [
-            "activity-15-distractor-2km",
-            "activity-15-distractor-5mm"
+            "activity-15-distractor-cm",
+            "activity-15-distractor-m"
           ],
           "selfVerification": "측정 단위는 대상의 실제 크기에 맞아야 한다.",
           "solutionUsesFewerMovableUnitsThanSupplied": true,
@@ -2799,86 +3057,82 @@
         "movableUnits": [
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "단추에 맞는 2mm 카드",
+            "mathematicalMeaning": "비교할 cm 단위 카드",
             "representation": {
-              "groupId": "mc30v2-15-measure-2mm-group",
+              "groupId": "mc30v2-15-distractor-cm-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-15-measure-2mm-group-member-1",
-                "mc30v2-15-measure-2mm-group-member-2",
-                "mc30v2-15-measure-2mm-group-member-3"
+                "mc30v2-15-distractor-cm-group-member-1",
+                "mc30v2-15-distractor-cm-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-15-measure-2mm"
+            "unitId": "activity-15-distractor-cm"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "도시 사이에 맞는 5km 카드",
+            "mathematicalMeaning": "단추 두께에 알맞은 mm 단위 카드",
             "representation": {
-              "groupId": "mc30v2-15-measure-5km-group",
+              "groupId": "mc30v2-15-unit-mm-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-15-measure-5km-group-member-1",
-                "mc30v2-15-measure-5km-group-member-2",
-                "mc30v2-15-measure-5km-group-member-3"
+                "mc30v2-15-unit-mm-group-member-1",
+                "mc30v2-15-unit-mm-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-15-measure-5km"
+            "unitId": "activity-15-unit-mm"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "비교할 2km 카드",
+            "mathematicalMeaning": "비교할 m 단위 카드",
             "representation": {
-              "groupId": "mc30v2-15-distractor-2km-group",
+              "groupId": "mc30v2-15-distractor-m-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-15-distractor-2km-group-member-1",
-                "mc30v2-15-distractor-2km-group-member-2",
-                "mc30v2-15-distractor-2km-group-member-3"
+                "mc30v2-15-distractor-m-group-member-1",
+                "mc30v2-15-distractor-m-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-15-distractor-2km"
+            "unitId": "activity-15-distractor-m"
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "비교할 5mm 카드",
+            "mathematicalMeaning": "도시 사이 거리에 알맞은 km 단위 카드",
             "representation": {
-              "groupId": "mc30v2-15-distractor-5mm-group",
+              "groupId": "mc30v2-15-unit-km-group",
               "kind": "canonical-native-group",
               "memberIds": [
-                "mc30v2-15-distractor-5mm-group-member-1",
-                "mc30v2-15-distractor-5mm-group-member-2",
-                "mc30v2-15-distractor-5mm-group-member-3"
+                "mc30v2-15-unit-km-group-member-1",
+                "mc30v2-15-unit-km-group-member-2"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-15-distractor-5mm"
+            "unitId": "activity-15-unit-km"
           }
         ],
         "placementMode": "generator-preplaced",
         "studentToolMenuRequired": false,
         "supporting": {
           "configuredInitialState": {
-            "matches": [],
             "targets": [
               "단추",
               "도시 사이"
-            ]
+            ],
+            "unitMatches": []
           },
           "evidenceIds": [
             "research/mathcanvas/tool-catalog.snapshot.json#tool=NO04NT",
@@ -2894,14 +3148,14 @@
           "semanticOperation": "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
           "supportState": "captured",
           "targetState": {
-            "matches": [
+            "unitMatches": [
               {
-                "measure": "2mm",
-                "target": "단추"
+                "target": "단추",
+                "unit": "mm"
               },
               {
-                "measure": "5km",
-                "target": "도시 사이"
+                "target": "도시 사이",
+                "unit": "km"
               }
             ]
           },
@@ -3043,7 +3297,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "1m를 10cm로 바꾸어 100cm 묶음을 한 개만 옮긴다.",
           "rejectableUnitIds": [
             "activity-16-hundred-cm-4"
           ],
@@ -3262,9 +3516,9 @@
           "configuredInitialState": {
             "candidatePartials": [
               600,
+              30,
               120,
-              3,
-              30
+              3
             ],
             "combined": null,
             "selectedPartials": []
@@ -3300,7 +3554,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "일의 자리 1을 십으로 보아 30 모형을 필요한 부분곱으로 고른다.",
           "rejectableUnitIds": [
             "activity-17-partial-30"
           ],
@@ -3332,6 +3586,26 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-17-partial-600"
+          },
+          {
+            "endsIn": "native-stage",
+            "mathematicalMeaning": "일의 자리 1을 십으로 본 30 모형",
+            "representation": {
+              "groupId": "mc30v2-17-partial-30-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-17-partial-30-group-member-1",
+                "mc30v2-17-partial-30-group-member-2",
+                "mc30v2-17-partial-30-group-member-3",
+                "mc30v2-17-partial-30-group-member-4",
+                "mc30v2-17-partial-30-group-member-5"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "native-stage",
+            "studentAction": "direct-drag",
+            "unitId": "activity-17-partial-30"
           },
           {
             "endsIn": "native-stage",
@@ -3372,26 +3646,6 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-17-partial-3"
-          },
-          {
-            "endsIn": "native-stage",
-            "mathematicalMeaning": "일의 자리 1을 십으로 본 30 모형",
-            "representation": {
-              "groupId": "mc30v2-17-partial-30-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-17-partial-30-group-member-1",
-                "mc30v2-17-partial-30-group-member-2",
-                "mc30v2-17-partial-30-group-member-3",
-                "mc30v2-17-partial-30-group-member-4",
-                "mc30v2-17-partial-30-group-member-5"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "native-stage",
-            "studentAction": "direct-drag",
-            "unitId": "activity-17-partial-30"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -3492,10 +3746,10 @@
         "core": {
           "configuredInitialState": {
             "candidatePartials": [
+              3,
               600,
               30,
-              9,
-              3
+              9
             ],
             "combined": null,
             "selectedPartials": []
@@ -3531,7 +3785,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "일의 자리 3을 세 번 곱하지 않고 3 모형을 필요한 부분곱으로 고른다.",
           "rejectableUnitIds": [
             "activity-18-partial-3"
           ],
@@ -3541,6 +3795,26 @@
         },
         "keyboardModifiers": [],
         "movableUnits": [
+          {
+            "endsIn": "native-stage",
+            "mathematicalMeaning": "일의 자리 3을 한 번만 센 3 모형",
+            "representation": {
+              "groupId": "mc30v2-18-partial-3-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-18-partial-3-group-member-1",
+                "mc30v2-18-partial-3-group-member-2",
+                "mc30v2-18-partial-3-group-member-3",
+                "mc30v2-18-partial-3-group-member-4",
+                "mc30v2-18-partial-3-group-member-5"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "native-stage",
+            "studentAction": "direct-drag",
+            "unitId": "activity-18-partial-3"
+          },
           {
             "endsIn": "native-stage",
             "mathematicalMeaning": "200×3을 나타내는 600 모형",
@@ -3609,26 +3883,6 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-18-partial-9"
-          },
-          {
-            "endsIn": "native-stage",
-            "mathematicalMeaning": "일의 자리 3을 한 번만 센 3 모형",
-            "representation": {
-              "groupId": "mc30v2-18-partial-3-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-18-partial-3-group-member-1",
-                "mc30v2-18-partial-3-group-member-2",
-                "mc30v2-18-partial-3-group-member-3",
-                "mc30v2-18-partial-3-group-member-4",
-                "mc30v2-18-partial-3-group-member-5"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "native-stage",
-            "studentAction": "direct-drag",
-            "unitId": "activity-18-partial-3"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -3730,8 +3984,8 @@
           "configuredInitialState": {
             "candidatePartials": [
               320,
-              128,
-              32
+              32,
+              128
             ],
             "combined": null,
             "selectedPartials": []
@@ -3767,7 +4021,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "14의 십 자릿값을 놓치고 32 모형을 32×10의 부분곱으로 고른다.",
           "rejectableUnitIds": [
             "activity-19-partial-32"
           ],
@@ -3801,6 +4055,28 @@
           },
           {
             "endsIn": "native-stage",
+            "mathematicalMeaning": "14의 십 자릿값을 놓친 32 모형",
+            "representation": {
+              "groupId": "mc30v2-19-partial-32-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-19-partial-32-group-member-1",
+                "mc30v2-19-partial-32-group-member-2",
+                "mc30v2-19-partial-32-group-member-3",
+                "mc30v2-19-partial-32-group-member-4",
+                "mc30v2-19-partial-32-group-member-5",
+                "mc30v2-19-partial-32-group-member-6",
+                "mc30v2-19-partial-32-group-member-7"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "native-stage",
+            "studentAction": "direct-drag",
+            "unitId": "activity-19-partial-32"
+          },
+          {
+            "endsIn": "native-stage",
             "mathematicalMeaning": "32×4를 나타내는 128 모형",
             "representation": {
               "groupId": "mc30v2-19-partial-128-group",
@@ -3826,28 +4102,6 @@
             "startsIn": "native-stage",
             "studentAction": "direct-drag",
             "unitId": "activity-19-partial-128"
-          },
-          {
-            "endsIn": "native-stage",
-            "mathematicalMeaning": "14의 십 자릿값을 놓친 32 모형",
-            "representation": {
-              "groupId": "mc30v2-19-partial-32-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-19-partial-32-group-member-1",
-                "mc30v2-19-partial-32-group-member-2",
-                "mc30v2-19-partial-32-group-member-3",
-                "mc30v2-19-partial-32-group-member-4",
-                "mc30v2-19-partial-32-group-member-5",
-                "mc30v2-19-partial-32-group-member-6",
-                "mc30v2-19-partial-32-group-member-7"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "native-stage",
-            "studentAction": "direct-drag",
-            "unitId": "activity-19-partial-32"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -3985,7 +4239,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "28을 만드는 데 필요한 네 묶음보다 한 묶음을 더 옮긴다.",
           "rejectableUnitIds": [
             "activity-20-seven-set-5"
           ],
@@ -4004,7 +4258,13 @@
               "memberIds": [
                 "mc30v2-20-seven-set-1-group-member-1",
                 "mc30v2-20-seven-set-1-group-member-2",
-                "mc30v2-20-seven-set-1-group-member-3"
+                "mc30v2-20-seven-set-1-group-member-3",
+                "mc30v2-20-seven-set-1-group-member-4",
+                "mc30v2-20-seven-set-1-group-member-5",
+                "mc30v2-20-seven-set-1-group-member-6",
+                "mc30v2-20-seven-set-1-group-member-7",
+                "mc30v2-20-seven-set-1-group-member-8",
+                "mc30v2-20-seven-set-1-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4022,7 +4282,13 @@
               "memberIds": [
                 "mc30v2-20-seven-set-2-group-member-1",
                 "mc30v2-20-seven-set-2-group-member-2",
-                "mc30v2-20-seven-set-2-group-member-3"
+                "mc30v2-20-seven-set-2-group-member-3",
+                "mc30v2-20-seven-set-2-group-member-4",
+                "mc30v2-20-seven-set-2-group-member-5",
+                "mc30v2-20-seven-set-2-group-member-6",
+                "mc30v2-20-seven-set-2-group-member-7",
+                "mc30v2-20-seven-set-2-group-member-8",
+                "mc30v2-20-seven-set-2-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4040,7 +4306,13 @@
               "memberIds": [
                 "mc30v2-20-seven-set-3-group-member-1",
                 "mc30v2-20-seven-set-3-group-member-2",
-                "mc30v2-20-seven-set-3-group-member-3"
+                "mc30v2-20-seven-set-3-group-member-3",
+                "mc30v2-20-seven-set-3-group-member-4",
+                "mc30v2-20-seven-set-3-group-member-5",
+                "mc30v2-20-seven-set-3-group-member-6",
+                "mc30v2-20-seven-set-3-group-member-7",
+                "mc30v2-20-seven-set-3-group-member-8",
+                "mc30v2-20-seven-set-3-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4058,7 +4330,13 @@
               "memberIds": [
                 "mc30v2-20-seven-set-4-group-member-1",
                 "mc30v2-20-seven-set-4-group-member-2",
-                "mc30v2-20-seven-set-4-group-member-3"
+                "mc30v2-20-seven-set-4-group-member-3",
+                "mc30v2-20-seven-set-4-group-member-4",
+                "mc30v2-20-seven-set-4-group-member-5",
+                "mc30v2-20-seven-set-4-group-member-6",
+                "mc30v2-20-seven-set-4-group-member-7",
+                "mc30v2-20-seven-set-4-group-member-8",
+                "mc30v2-20-seven-set-4-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4076,7 +4354,13 @@
               "memberIds": [
                 "mc30v2-20-seven-set-5-group-member-1",
                 "mc30v2-20-seven-set-5-group-member-2",
-                "mc30v2-20-seven-set-5-group-member-3"
+                "mc30v2-20-seven-set-5-group-member-3",
+                "mc30v2-20-seven-set-5-group-member-4",
+                "mc30v2-20-seven-set-5-group-member-5",
+                "mc30v2-20-seven-set-5-group-member-6",
+                "mc30v2-20-seven-set-5-group-member-7",
+                "mc30v2-20-seven-set-5-group-member-8",
+                "mc30v2-20-seven-set-5-group-member-9"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4234,7 +4518,43 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "17개를 모두 쓰지만 다섯 칸을 같은 수로 나누지 않는다.",
+          "reachableStateWitnesses": [
+            {
+              "distributed": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "divisor": 5,
+              "remainder": 0,
+              "total": 17
+            },
+            {
+              "distributed": [
+                3,
+                3,
+                3,
+                3,
+                2
+              ],
+              "quotient": null,
+              "remainder": 3
+            },
+            {
+              "distributed": [
+                3,
+                3,
+                3,
+                3,
+                3
+              ],
+              "quotient": 3,
+              "remainder": 2
+            }
+          ],
           "selfVerification": "17 = 5×몫 + 나머지이고 나머지는 5보다 작다."
         },
         "keyboardModifiers": [],
@@ -4337,7 +4657,7 @@
         },
         "constructionStateStatesAnswer": true,
         "localDirections": [
-          "6개짜리 묶음 6개와 낱개 2개를 모아 38을 만드세요."
+          "묶음과 낱개를 골라 모두 38이 되게 놓으세요."
         ],
         "question": "38÷6=6…2가 맞는지 어떻게 확인할 수 있을까요?"
       },
@@ -4383,12 +4703,19 @@
           ]
         },
         "decisionContract": {
-          "distinguishablePossibilityCount": 3,
+          "distinguishablePossibilityCount": 11,
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
-          "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
-          "selfVerification": "나누는 수 × 몫 + 나머지 = 처음 수"
+          "mode": "movable-subset",
+          "plausibleWrongPath": "몫과 나머지를 확인하면서 묶음 하나나 낱개를 필요 이상으로 넣는다.",
+          "rejectableUnitIds": [
+            "activity-22-six-set-7",
+            "activity-22-single-3",
+            "activity-22-single-4"
+          ],
+          "selfVerification": "나누는 수 × 몫 + 나머지 = 처음 수",
+          "solutionUsesFewerMovableUnitsThanSupplied": true,
+          "suppliedMovableUnitCount": 11
         },
         "keyboardModifiers": [],
         "movableUnits": [
@@ -4401,7 +4728,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-1-group-member-1",
                 "mc30v2-22-six-set-1-group-member-2",
-                "mc30v2-22-six-set-1-group-member-3"
+                "mc30v2-22-six-set-1-group-member-3",
+                "mc30v2-22-six-set-1-group-member-4",
+                "mc30v2-22-six-set-1-group-member-5",
+                "mc30v2-22-six-set-1-group-member-6",
+                "mc30v2-22-six-set-1-group-member-7",
+                "mc30v2-22-six-set-1-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4419,7 +4751,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-2-group-member-1",
                 "mc30v2-22-six-set-2-group-member-2",
-                "mc30v2-22-six-set-2-group-member-3"
+                "mc30v2-22-six-set-2-group-member-3",
+                "mc30v2-22-six-set-2-group-member-4",
+                "mc30v2-22-six-set-2-group-member-5",
+                "mc30v2-22-six-set-2-group-member-6",
+                "mc30v2-22-six-set-2-group-member-7",
+                "mc30v2-22-six-set-2-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4437,7 +4774,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-3-group-member-1",
                 "mc30v2-22-six-set-3-group-member-2",
-                "mc30v2-22-six-set-3-group-member-3"
+                "mc30v2-22-six-set-3-group-member-3",
+                "mc30v2-22-six-set-3-group-member-4",
+                "mc30v2-22-six-set-3-group-member-5",
+                "mc30v2-22-six-set-3-group-member-6",
+                "mc30v2-22-six-set-3-group-member-7",
+                "mc30v2-22-six-set-3-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4455,7 +4797,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-4-group-member-1",
                 "mc30v2-22-six-set-4-group-member-2",
-                "mc30v2-22-six-set-4-group-member-3"
+                "mc30v2-22-six-set-4-group-member-3",
+                "mc30v2-22-six-set-4-group-member-4",
+                "mc30v2-22-six-set-4-group-member-5",
+                "mc30v2-22-six-set-4-group-member-6",
+                "mc30v2-22-six-set-4-group-member-7",
+                "mc30v2-22-six-set-4-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4473,7 +4820,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-5-group-member-1",
                 "mc30v2-22-six-set-5-group-member-2",
-                "mc30v2-22-six-set-5-group-member-3"
+                "mc30v2-22-six-set-5-group-member-3",
+                "mc30v2-22-six-set-5-group-member-4",
+                "mc30v2-22-six-set-5-group-member-5",
+                "mc30v2-22-six-set-5-group-member-6",
+                "mc30v2-22-six-set-5-group-member-7",
+                "mc30v2-22-six-set-5-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4491,7 +4843,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-6-group-member-1",
                 "mc30v2-22-six-set-6-group-member-2",
-                "mc30v2-22-six-set-6-group-member-3"
+                "mc30v2-22-six-set-6-group-member-3",
+                "mc30v2-22-six-set-6-group-member-4",
+                "mc30v2-22-six-set-6-group-member-5",
+                "mc30v2-22-six-set-6-group-member-6",
+                "mc30v2-22-six-set-6-group-member-7",
+                "mc30v2-22-six-set-6-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4509,7 +4866,12 @@
               "memberIds": [
                 "mc30v2-22-six-set-7-group-member-1",
                 "mc30v2-22-six-set-7-group-member-2",
-                "mc30v2-22-six-set-7-group-member-3"
+                "mc30v2-22-six-set-7-group-member-3",
+                "mc30v2-22-six-set-7-group-member-4",
+                "mc30v2-22-six-set-7-group-member-5",
+                "mc30v2-22-six-set-7-group-member-6",
+                "mc30v2-22-six-set-7-group-member-7",
+                "mc30v2-22-six-set-7-group-member-8"
               ],
               "membersMoveAsOne": true,
               "persistedBeforeStudentUse": true
@@ -4520,15 +4882,47 @@
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "나머지로 고를 낱개",
+            "mathematicalMeaning": "나머지로 고를 낱개 1",
             "representation": {
-              "kind": "independent-native-set",
-              "memberCount": 4,
-              "memberIdPrefix": "mc30v2-22-singles"
+              "kind": "single-native-object",
+              "objectId": "mc30v2-22-single-unit-01"
             },
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
-            "unitId": "activity-22-singles"
+            "unitId": "activity-22-single-1"
+          },
+          {
+            "endsIn": "construction-area",
+            "mathematicalMeaning": "나머지로 고를 낱개 2",
+            "representation": {
+              "kind": "single-native-object",
+              "objectId": "mc30v2-22-single-unit-02"
+            },
+            "startsIn": "source-tray",
+            "studentAction": "direct-drag",
+            "unitId": "activity-22-single-2"
+          },
+          {
+            "endsIn": "construction-area",
+            "mathematicalMeaning": "나머지로 고를 낱개 3",
+            "representation": {
+              "kind": "single-native-object",
+              "objectId": "mc30v2-22-single-unit-03"
+            },
+            "startsIn": "source-tray",
+            "studentAction": "direct-drag",
+            "unitId": "activity-22-single-3"
+          },
+          {
+            "endsIn": "construction-area",
+            "mathematicalMeaning": "나머지로 고를 낱개 4",
+            "representation": {
+              "kind": "single-native-object",
+              "objectId": "mc30v2-22-single-unit-04"
+            },
+            "startsIn": "source-tray",
+            "studentAction": "direct-drag",
+            "unitId": "activity-22-single-4"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -4626,9 +5020,9 @@
         },
         "constructionStateStatesAnswer": false,
         "localDirections": [
-          "원을 누르면 나타나는 검은 점 하나를 옮겨 선분 길이를 바꾸세요."
+          "원을 누르세요. 원 위 검은 점을 옮겨 선분 길이를 바꾸세요."
         ],
-        "question": "중심 O에서 원 위까지 이은 선분의 이름은 무엇일까요?"
+        "question": "원을 누르면 나타나는 중심 O와 원 위 점 사이의 선분은 무엇일까요?"
       },
       "lifecycle": {
         "blockers": [
@@ -4645,8 +5039,9 @@
         "core": {
           "configuredInitialState": {
             "center": "O",
-            "selected": false,
-            "visibleRadiusSegments": 2
+            "endpointRelation": "on-circle",
+            "radiusCanvasUnits": 200,
+            "visibleRadiusSegments": 0
           },
           "evidenceIds": [
             "research/mathcanvas/tool-catalog.snapshot.json#tool=SM07CS"
@@ -4662,12 +5057,13 @@
           "supportState": "captured",
           "targetState": {
             "center": "O",
-            "selected": true,
-            "visibleRadiusSegments": 2
+            "endpointRelation": "on-circle",
+            "radiusCanvasUnits": 140,
+            "visibleRadiusSegments": 1
           },
           "toolKey": "SM07CS",
           "variantIds": [
-            "SM07CS-02"
+            "SM07CS-01"
           ]
         },
         "decisionContract": {
@@ -4675,7 +5071,27 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "중심에서 원 위까지의 선분을 원을 가로지르는 지름과 혼동한다.",
+          "reachableStateWitnesses": [
+            {
+              "center": "O",
+              "endpointRelation": "on-circle",
+              "radiusCanvasUnits": 200,
+              "visibleRadiusSegments": 0
+            },
+            {
+              "center": "O",
+              "endpointRelation": "on-circle",
+              "radiusCanvasUnits": 260,
+              "visibleRadiusSegments": 1
+            },
+            {
+              "center": "O",
+              "endpointRelation": "on-circle",
+              "radiusCanvasUnits": 140,
+              "visibleRadiusSegments": 1
+            }
+          ],
           "selfVerification": "원의 중심과 원 위의 한 점을 이은 선분은 반지름이다."
         },
         "keyboardModifiers": [],
@@ -4804,6 +5220,7 @@
       "nativePlan": {
         "core": {
           "configuredInitialState": {
+            "angleDegrees": 90,
             "diameterAligned": false,
             "radiusCentimeters": 7
           },
@@ -4820,6 +5237,7 @@
           "semanticOperation": "원 위 두 조절점을 중심 O의 양쪽에 맞춰 지름 관계를 만든다.",
           "supportState": "captured",
           "targetState": {
+            "angleDegrees": 180,
             "diameterAligned": true,
             "diameterCentimeters": 14,
             "radiusCentimeters": 7
@@ -4834,7 +5252,25 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "반지름 하나의 길이를 그대로 지름으로 고르거나 세 배로 계산한다.",
+          "reachableStateWitnesses": [
+            {
+              "angleDegrees": 90,
+              "diameterAligned": false,
+              "radiusCentimeters": 7
+            },
+            {
+              "angleDegrees": 270,
+              "diameterAligned": false,
+              "radiusCentimeters": 7
+            },
+            {
+              "angleDegrees": 180,
+              "diameterAligned": true,
+              "diameterCentimeters": 14,
+              "radiusCentimeters": 7
+            }
+          ],
           "selfVerification": "지름 = 반지름 × 2"
         },
         "keyboardModifiers": [],
@@ -4909,7 +5345,7 @@
             "purpose": "같은 1/10 조각 여섯 개를 나타낸다.",
             "regionId": "activity-25-native-stage",
             "role": "native-stage",
-            "studentLabel": "10등분 분수 띠"
+            "studentLabel": "분수 띠"
           }
         ],
         "semanticGapCssPx": 16,
@@ -4930,7 +5366,7 @@
         "constructionStateStatesAnswer": true,
         "localDirections": [
           "분수 띠를 누르세요.",
-          "나타난 오른쪽 점을 끌어 1/10 조각을 6개로 만드세요."
+          "나타난 오른쪽 점을 끌어 10칸 중 6칸이 색칠되게 하세요."
         ],
         "question": "10칸 중 6칸을 색칠하면 색칠한 부분은 얼마일까요?"
       },
@@ -4978,7 +5414,21 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "색칠한 여섯 칸 대신 색칠하지 않은 네 칸을 분자로 나타낸다.",
+          "reachableStateWitnesses": [
+            {
+              "denominator": 10,
+              "numerator": 1
+            },
+            {
+              "denominator": 10,
+              "numerator": 4
+            },
+            {
+              "denominator": 10,
+              "numerator": 6
+            }
+          ],
           "selfVerification": "전체 칸 수는 분모, 색칠한 칸 수는 분자이다."
         },
         "keyboardModifiers": [],
@@ -5130,7 +5580,24 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "네 조각이 전체 하나라는 관계를 쓰지 않고 11/4를 그대로 두거나 잘못 묶는다.",
+          "reachableStateWitnesses": [
+            {
+              "completedWholes": 0,
+              "quarterParts": 11,
+              "remainingParts": 11
+            },
+            {
+              "completedWholes": 1,
+              "mixedNumber": null,
+              "remainingParts": 7
+            },
+            {
+              "completedWholes": 2,
+              "mixedNumber": "2 3/4",
+              "remainingParts": 3
+            }
+          ],
           "selfVerification": "분모만큼 모인 조각은 전체 1이고 남은 조각 수는 분자이다."
         },
         "keyboardModifiers": [],
@@ -5299,7 +5766,32 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "분모가 같을 때 분자를 비교하지 않고 3/8을 더 크다고 고른다.",
+          "reachableStateWitnesses": [
+            {
+              "fractions": [
+                "3/8",
+                "7/8"
+              ],
+              "leftEdgesAligned": false
+            },
+            {
+              "fractions": [
+                "3/8",
+                "7/8"
+              ],
+              "greater": "3/8",
+              "leftEdgesAligned": true
+            },
+            {
+              "fractions": [
+                "3/8",
+                "7/8"
+              ],
+              "greater": "7/8",
+              "leftEdgesAligned": true
+            }
+          ],
           "selfVerification": "분모가 같으면 분자가 큰 분수가 더 크다."
         },
         "keyboardModifiers": [],
@@ -5432,9 +5924,9 @@
           "configuredInitialState": {
             "cardGroups": [
               "1000",
+              "500",
               "1000",
-              "250",
-              "500"
+              "250"
             ],
             "expression": [],
             "fixedOperators": [
@@ -5477,7 +5969,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "1L를 1000mL가 아닌 500mL로 바꾼 카드를 식에 넣는다.",
           "rejectableUnitIds": [
             "activity-28-number-500"
           ],
@@ -5506,6 +5998,25 @@
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
             "unitId": "activity-28-number-1000-a"
+          },
+          {
+            "endsIn": "construction-area",
+            "mathematicalMeaning": "500 수 카드(L를 500mL로 잘못 바꾼 값)",
+            "representation": {
+              "groupId": "mc30v2-28-number-500-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-28-number-500-group-member-1",
+                "mc30v2-28-number-500-group-member-2",
+                "mc30v2-28-number-500-group-member-3",
+                "mc30v2-28-number-500-group-member-4"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "source-tray",
+            "studentAction": "direct-drag",
+            "unitId": "activity-28-number-500"
           },
           {
             "endsIn": "construction-area",
@@ -5545,25 +6056,6 @@
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
             "unitId": "activity-28-number-250"
-          },
-          {
-            "endsIn": "construction-area",
-            "mathematicalMeaning": "500 수 카드(L를 500mL로 잘못 바꾼 값)",
-            "representation": {
-              "groupId": "mc30v2-28-number-500-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-28-number-500-group-member-1",
-                "mc30v2-28-number-500-group-member-2",
-                "mc30v2-28-number-500-group-member-3",
-                "mc30v2-28-number-500-group-member-4"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "source-tray",
-            "studentAction": "direct-drag",
-            "unitId": "activity-28-number-500"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -5572,9 +6064,9 @@
           "configuredInitialState": {
             "cardGroups": [
               "1000",
+              "500",
               "1000",
-              "250",
-              "500"
+              "250"
             ],
             "expression": [],
             "fixedOperators": [
@@ -5714,8 +6206,8 @@
           "configuredInitialState": {
             "cardGroups": [
               "3000",
-              "40",
-              "300"
+              "300",
+              "40"
             ],
             "expression": [],
             "fixedOperators": [
@@ -5755,7 +6247,7 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "movable-subset",
-          "plausibleWrongPath": "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+          "plausibleWrongPath": "1kg를 1000g가 아닌 100g으로 바꾼 300 카드를 식에 넣는다.",
           "rejectableUnitIds": [
             "activity-29-number-300"
           ],
@@ -5787,24 +6279,6 @@
           },
           {
             "endsIn": "construction-area",
-            "mathematicalMeaning": "40 수 카드",
-            "representation": {
-              "groupId": "mc30v2-29-number-40-group",
-              "kind": "canonical-native-group",
-              "memberIds": [
-                "mc30v2-29-number-40-group-member-1",
-                "mc30v2-29-number-40-group-member-2",
-                "mc30v2-29-number-40-group-member-3"
-              ],
-              "membersMoveAsOne": true,
-              "persistedBeforeStudentUse": true
-            },
-            "startsIn": "source-tray",
-            "studentAction": "direct-drag",
-            "unitId": "activity-29-number-40"
-          },
-          {
-            "endsIn": "construction-area",
             "mathematicalMeaning": "kg를 100g으로 잘못 바꾼 300 수 카드",
             "representation": {
               "groupId": "mc30v2-29-number-300-group",
@@ -5821,6 +6295,24 @@
             "startsIn": "source-tray",
             "studentAction": "direct-drag",
             "unitId": "activity-29-number-300"
+          },
+          {
+            "endsIn": "construction-area",
+            "mathematicalMeaning": "40 수 카드",
+            "representation": {
+              "groupId": "mc30v2-29-number-40-group",
+              "kind": "canonical-native-group",
+              "memberIds": [
+                "mc30v2-29-number-40-group-member-1",
+                "mc30v2-29-number-40-group-member-2",
+                "mc30v2-29-number-40-group-member-3"
+              ],
+              "membersMoveAsOne": true,
+              "persistedBeforeStudentUse": true
+            },
+            "startsIn": "source-tray",
+            "studentAction": "direct-drag",
+            "unitId": "activity-29-number-40"
           }
         ],
         "placementMode": "generator-preplaced",
@@ -5829,8 +6321,8 @@
           "configuredInitialState": {
             "cardGroups": [
               "3000",
-              "40",
-              "300"
+              "300",
+              "40"
             ],
             "expression": [],
             "fixedOperators": [
@@ -6013,7 +6505,34 @@
           "initiallyUnresolved": true,
           "lockedAnswerExposed": false,
           "mode": "native-state-space",
-          "plausibleWrongPath": "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
+          "plausibleWrongPath": "그림 세 개의 차이에 범례 4명을 적용하지 않고 3명이나 8명을 고른다.",
+          "reachableStateWitnesses": [
+            {
+              "categories": {
+                "A": 5,
+                "B": 2
+              },
+              "legendValue": 4
+            },
+            {
+              "actualDifference": 8,
+              "categories": {
+                "A": 4,
+                "B": 2
+              },
+              "legendValue": 4,
+              "removedPictures": 1
+            },
+            {
+              "actualDifference": 12,
+              "categories": {
+                "A": 2,
+                "B": 2
+              },
+              "legendValue": 4,
+              "removedPictures": 3
+            }
+          ],
           "selfVerification": "그림 수의 차이 × 그림 한 개의 값 = 실제 수량의 차이"
         },
         "keyboardModifiers": [],
@@ -6076,13 +6595,14 @@
   "artifactId": "eduitit-html30-native-first-offline-design-v2",
   "artifactVersion": "1.0.0",
   "attestation": {
+    "actualReserveStatesVerified": false,
     "allAtMathCanvas100Percent": true,
     "allCanonicalGroupsPersisted": true,
+    "allEstimatedReserveStatesContained": true,
     "allForbiddenRegionsAbsent": true,
     "allKeyboardModifiersAbsent": true,
     "allNativeAutoScaleDisabled": true,
     "allOneProblem": true,
-    "allReserveStatesContained": true,
     "allReserveUnionsCentered": true,
     "allSourceBindingsExact": true,
     "allToolBindingsExact": true,
@@ -6100,7 +6620,7 @@
     "minimumEdgeClearanceCssPx": 24,
     "releaseQualified": false
   },
-  "contentSha256": "1d1575c487e9e923ecd4c1c7ae19b786bd208847c80a5244aa4328df3e0cccd3",
+  "contentSha256": "08028af3b8f0b916400f96ef70a965cd0203d10b675cb7aed106bd8b72c57795",
   "layouts": [
     {
       "activityId": "eduitit-html30-v2-01",
@@ -6134,7 +6654,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6255,7 +6776,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6381,7 +6903,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6507,7 +7030,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6633,7 +7157,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6759,7 +7284,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -6926,7 +7452,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7093,7 +7620,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7260,7 +7788,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7427,7 +7956,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7558,7 +8088,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7684,7 +8215,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7810,7 +8342,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -7936,7 +8469,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8103,7 +8637,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8270,7 +8805,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8437,7 +8973,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8563,7 +9100,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8689,7 +9227,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8815,7 +9354,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -8982,7 +9522,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9149,7 +9690,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9321,7 +9863,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9452,7 +9995,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9578,7 +10122,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9704,7 +10249,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -9876,7 +10422,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -10002,7 +10549,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -10169,7 +10717,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -10341,7 +10890,8 @@
         ]
       },
       "checks": {
-        "allReserveStatesContained": true,
+        "actualReserveStatesVerified": false,
+        "allEstimatedReserveStatesContained": true,
         "allReserveUnionsCentered": true,
         "externalWriteAllowed": false,
         "noCanvasPan": true,
@@ -12581,27 +13131,27 @@
   "schemaVersion": "1.0.0",
   "sourceBindings": {
     "activityContract": {
-      "fileSha256": "d199ad42948ad2af53c3f2bf3ed334210774727f615c532677545ac66b483db0",
+      "fileSha256": "fdef9d5a902913a53f0294051f122e9f4622f1394a5093df0332a21c3dd250e1",
       "path": "packages/contracts/src/catalog/eduitit-html30-v2.ts"
     },
     "activityTemplate": {
-      "fileSha256": "d11bb7f88ff5ab24f724c31413ea6318d06f5ded2899b93be011f7a9b410800e",
+      "fileSha256": "6982899f4ce7fef17a97d1ce26d7849beff7dc366cd2a82111987b647771d7ce",
       "path": "packages/templates/src/eduitit-html30-v2.ts"
     },
     "artifactBuilder": {
-      "fileSha256": "59e4cab7498991e3046005202e8ff2f5491d7061d25ba8268e3199e1ae857414",
+      "fileSha256": "6fcaf575c54343d3e0d4208b197c215576bf4790f4a9180a31f372f8034d31aa",
       "path": "scripts/prompt-harness/build-eduitit-html30-v2-offline.mjs"
     },
     "layoutContract": {
-      "fileSha256": "cc76fd3c4a4ab2f38f00dfd696a3151dec3dfe2ea601dea3ce361f1a098d1b66",
+      "fileSha256": "383a4966223f8b1dd2dd183844f137f01370c0027c31f7ba285dcc1bb2dab0c6",
       "path": "packages/contracts/src/catalog/eduitit-html30-layout-v2.ts"
     },
     "layoutResolver": {
-      "fileSha256": "53e75c8e7c2b4a9b2111c13b7e5e7662f868fde0d330c2914b0ee372ed6c00ce",
+      "fileSha256": "323deee64c23be8d54010b0c1483f020c43355051552637265f54a7418629631",
       "path": "packages/mathcanvas-compiler/src/resolve/eduitit-html30-layout-v2.ts"
     },
     "offlineContract": {
-      "fileSha256": "1a43e2417ff7b86198689d320433224b623326f24c2a61706955ac215c3c9fa0",
+      "fileSha256": "997c3fbabe434ef7aba894183684ca94044d6f6e79e1482f1ce9278e8356259c",
       "path": "packages/contracts/src/catalog/eduitit-html30-offline-v2.ts"
     },
     "promptHarness": {

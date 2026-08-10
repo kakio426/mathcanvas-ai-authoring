@@ -16,6 +16,7 @@ export * from "./catalog/editor-geometry-v1.js";
 export * from "./catalog/eduitit-html30-v2.js";
 export * from "./catalog/eduitit-html30-layout-v2.js";
 export * from "./catalog/eduitit-html30-offline-v2.js";
+export * from "./catalog/eduitit-html30-release-v2.js";
 export * from "./scaffolds.js";
 export * from "./schemas.js";
 export * from "./security.js";

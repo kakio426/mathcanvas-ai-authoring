@@ -47,13 +47,35 @@ function scriptContainsHtml30Write(scriptPath, root) {
 export function evaluateMathCanvasHarnessGuard(input, options = {}) {
   const root = resolve(options.repositoryRoot ?? repositoryRoot);
   const cwd = resolve(input?.cwd ?? root);
-  if (!isInsideRepository(cwd, root)) {
-    return { allowed: true, code: "outside-repository" };
-  }
-
   const command = normalizeCommand(input?.tool_input?.command);
   if (!command) {
-    return { allowed: true, code: "non-command-tool" };
+    return {
+      allowed: true,
+      code: isInsideRepository(cwd, root) ? "non-command-tool" : "outside-repository"
+    };
+  }
+
+  if (!isInsideRepository(cwd, root)) {
+    const referencesProtectedEntrypoint = protectedEntrypoints.some(
+      (entrypoint) =>
+        command.includes(entrypoint) ||
+        command.includes(normalizeCommand(resolve(root, entrypoint)))
+    );
+    if (
+      referencesProtectedEntrypoint ||
+      canonicalLiveWritePattern.test(command.trim()) ||
+      (projectEndpointPattern.test(command) && writeMethodPattern.test(command)) ||
+      html30WriteIntentPattern.test(command)
+    ) {
+      return {
+        allowed: false,
+        code: "outside-repository-protected-write",
+        reason:
+          "작업 디렉터리를 바꿔 HTML30 하네스를 우회하는 외부 쓰기를 차단했습니다. " +
+          "MathCanvas 저장과 수업꾸러미 링크 반영은 저장소 안의 canonical 명령으로만 실행해야 합니다."
+      };
+    }
+    return { allowed: true, code: "outside-repository" };
   }
 
   if (canonicalLiveWritePattern.test(command.trim())) {

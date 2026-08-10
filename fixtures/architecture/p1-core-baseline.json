@@ -88,7 +88,15 @@
     },
     {
       "path": "packages/mathcanvas-compiler/src/index.ts",
-      "sha256": "6de767c249c3d69b4b4fcccbd8813d1b7bc8ec68f772f790c539630213f532ba"
+      "sha256": "0c19c9d67a857d8695b842c1d59b04bb54d2a4f3dc561bc3bcac92452077a952"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/eduitit-html30-layout-v2.ts",
+      "sha256": "323deee64c23be8d54010b0c1483f020c43355051552637265f54a7418629631"
+    },
+    {
+      "path": "packages/mathcanvas-compiler/src/resolve/eduitit-html30-reserve-candidates-v2.ts",
+      "sha256": "8256c9e395b2b54bbb818a82ce7b96f0d69da2f4dfefd7ff1832c8a68b01c1bc"
     },
     {
       "path": "packages/mathcanvas-compiler/src/resolve/layout-resolver.ts",
@@ -139,5 +147,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "28e1bb11e0da1d85fffe7a89336a9e15e5b2c3c5a2d29a459229c1373a4ae44c"
+  "manifestHash": "da2ec01769cc3ba2f6893fb590daf614d06c677a1c09c9d69acf9ee44b77612e"
 }

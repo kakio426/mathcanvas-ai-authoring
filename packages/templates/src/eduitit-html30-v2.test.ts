@@ -122,7 +122,7 @@ describe("Eduitit HTML30 native-first V2 activity specs", () => {
   });
 
   it("부분 선택 활동은 정답에 쓰지 않는 대안을 실제 이동물 ID에 결속한다", () => {
-    const subsetSequences = [4, 5, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 28, 29];
+    const subsetSequences = [4, 5, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 22, 28, 29];
     for (const entry of entries()) {
       const contract = entry.nativePlan.decisionContract;
       if (!subsetSequences.includes(entry.sequence)) {
@@ -137,6 +137,31 @@ describe("Eduitit HTML30 native-first V2 activity specs", () => {
       expect(contract.rejectableUnitIds.every((unitId) => unitIds.includes(unitId))).toBe(true);
       expect(contract.solutionUsesFewerMovableUnitsThanSupplied).toBe(true);
     }
+  });
+
+  it("state-space 활동은 초기·오답·목표의 서로 다른 실제 상태를 결속한다", () => {
+    for (const entry of entries()) {
+      const contract = entry.nativePlan.decisionContract;
+      if (contract.mode !== "native-state-space") continue;
+      expect(contract.reachableStateWitnesses).toHaveLength(3);
+      expect(
+        new Set(contract.reachableStateWitnesses.map((state) => JSON.stringify(state))).size
+      ).toBe(3);
+      expect(contract.reachableStateWitnesses).toContainEqual(
+        entry.nativePlan.core.configuredInitialState
+      );
+      expect(contract.reachableStateWitnesses).toContainEqual(
+        entry.nativePlan.core.targetState
+      );
+    }
+  });
+
+  it("30개 활동의 오개념 경로는 활동별로 구체적이고 서로 다르다", () => {
+    const paths = entries().map(
+      (entry) => entry.nativePlan.decisionContract.plausibleWrongPath
+    );
+    expect(new Set(paths).size).toBe(30);
+    expect(paths.every((path) => path.length >= 20)).toBe(true);
   });
 
   it("조작 결과가 답이면 답 상자를 만들지 않고 필요한 활동만 작은 답을 둔다", () => {
@@ -178,16 +203,16 @@ describe("Eduitit HTML30 native-first V2 activity specs", () => {
     tool.nativePlan.core.variantIds = ["NO04NT-01"];
     expect(eduititHtml30ActivitySpecV2Schema.safeParse(tool).success).toBe(false);
 
-    const obvious = structuredClone(entries()[3]!);
-    obvious.nativePlan.decisionContract = {
-      mode: "native-state-space",
-      distinguishablePossibilityCount: 3,
-      initiallyUnresolved: true,
-      lockedAnswerExposed: false,
-      plausibleWrongPath: "다른 상태",
-      selfVerification: obvious.nativePlan.core.invariant
-    };
-    expect(eduititHtml30ActivitySpecV2Schema.safeParse(obvious).success).toBe(false);
+    const incompleteStateSpace = structuredClone(entries()[0]!);
+    if (incompleteStateSpace.nativePlan.decisionContract.mode !== "native-state-space") {
+      throw new Error("test fixture state-space decision missing");
+    }
+    incompleteStateSpace.nativePlan.decisionContract.reachableStateWitnesses = [
+      incompleteStateSpace.nativePlan.core.configuredInitialState,
+      incompleteStateSpace.nativePlan.core.configuredInitialState,
+      incompleteStateSpace.nativePlan.core.targetState
+    ];
+    expect(eduititHtml30ActivitySpecV2Schema.safeParse(incompleteStateSpace).success).toBe(false);
 
     const missingAlternative = structuredClone(entries()[3]!);
     if (missingAlternative.nativePlan.decisionContract.mode !== "movable-subset") {

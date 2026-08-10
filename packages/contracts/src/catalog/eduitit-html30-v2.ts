@@ -170,7 +170,8 @@ const decisionContractSchema = z.discriminatedUnion("mode", [
   z
     .object({
       mode: z.literal("native-state-space"),
-      ...decisionContractCommon
+      ...decisionContractCommon,
+      reachableStateWitnesses: z.array(jsonRecordSchema).min(3).max(8)
     })
     .strict(),
   z
@@ -357,20 +358,26 @@ export const eduititHtml30ActivitySpecV2Schema = z
         message: "core 1개와 선택적 supporting 1개만 catalog 후보 도구에서 사용할 수 있습니다."
       });
     }
-    const subsetDecisionSequences = new Set([
-      4, 5, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 28, 29
-    ]);
-    const expectedDecisionMode = subsetDecisionSequences.has(value.sequence)
-      ? "movable-subset"
-      : "native-state-space";
-    if (value.nativePlan.decisionContract.mode !== expectedDecisionMode) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["nativePlan", "decisionContract", "mode"],
-        message: "각 HTML30 활동은 검토된 수학적 선택 방식에 정확히 결속되어야 합니다."
-      });
-    }
-    if (value.nativePlan.decisionContract.mode === "movable-subset") {
+    if (value.nativePlan.decisionContract.mode === "native-state-space") {
+      const witnesses = value.nativePlan.decisionContract.reachableStateWitnesses.map(
+        (state) => JSON.stringify(state)
+      );
+      const initial = JSON.stringify(value.nativePlan.core.configuredInitialState);
+      const target = JSON.stringify(value.nativePlan.core.targetState);
+      if (
+        new Set(witnesses).size !== witnesses.length ||
+        !witnesses.includes(initial) ||
+        !witnesses.includes(target) ||
+        initial === target
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["nativePlan", "decisionContract", "reachableStateWitnesses"],
+          message:
+            `native state-space 활동 ${value.sequence}은 서로 다른 초기·오답·목표 상태를 실제 상태 스냅샷으로 밝혀야 합니다.`
+        });
+      }
+    } else {
       const contract = value.nativePlan.decisionContract;
       const movableIds = value.nativePlan.movableUnits.map((unit) => unit.unitId);
       if (
@@ -467,6 +474,11 @@ export const eduititHtml30ActivitySetV2Schema = z
     if (
       sequences.some((sequence, index) => sequence !== expected[index]) ||
       new Set(value.entries.map((entry) => entry.activityId)).size !== 30 ||
+      new Set(
+        value.entries.map(
+          (entry) => entry.nativePlan.decisionContract.plausibleWrongPath
+        )
+      ).size !== 30 ||
       value.entries.some(
         (entry) =>
           entry.sourceBinding.promptHarnessContentSha256 !==
@@ -476,7 +488,8 @@ export const eduititHtml30ActivitySetV2Schema = z
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["entries"],
-        message: "30개 sequence·activityId·prompt harness binding이 정확해야 합니다."
+        message:
+          "30개 sequence·activityId·prompt harness binding과 활동별 오개념 경로가 정확해야 합니다."
       });
     }
   });

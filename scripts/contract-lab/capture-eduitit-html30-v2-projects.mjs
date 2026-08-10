@@ -2,13 +2,18 @@
 
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import {
   mathCanvasPayloadSchema,
   sha256Hex
 } from "../../packages/contracts/dist/index.js";
 import { createLiveAuthHeadlessSession } from "./lib/live-auth-headless.mjs";
 import { normalizeMathCanvasSerializedNumbers } from "./lib/division-product-static-projection.mjs";
+import {
+  findPeerClearanceViolations,
+  findPeerOverlapPairs,
+  resolveMovableRootBounds
+} from "./lib/peer-overlap.mjs";
 import { repositoryRoot, resolveStateDirectory } from "./lib/paths.mjs";
 
 const manifestPath = join(
@@ -25,7 +30,7 @@ const offlineArtifactPath = join(
 );
 const outputDirectory = join(
   repositoryRoot,
-  ".mathcanvas-contract-lab/previews/eduitit-html30-v2"
+  "research/mathcanvas/evidence/eduitit-html30-v2"
 );
 const auditPath = join(
   repositoryRoot,
@@ -40,7 +45,9 @@ const expectedScreenCtm = Object.freeze({
   e: 112,
   f: 28
 });
-const capturePolicyVersion = "html30-v2-live-geometry-role-v1";
+const capturePolicyVersion = "html30-v2-live-geometry-role-v3";
+const peerOverlapToleranceCssPx = 1.5;
+const peerMinimumClearanceCssPx = 16;
 
 function sha256File(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -103,6 +110,9 @@ const candidateBySequence = new Map(
 const layoutByActivity = new Map(
   offlineArtifact.layouts.map((layout) => [layout.activityId, layout])
 );
+const activityById = new Map(
+  offlineArtifact.activities.map((activity) => [activity.activityId, activity])
+);
 const captureSequences = requestedSequences();
 const captureSequenceSet = new Set(captureSequences);
 const previousAudit =
@@ -122,6 +132,11 @@ function isBasicPass(entry) {
     entry.taskEnvelope !== null &&
     entry.outOfSafeTaskIds?.length === 0 &&
     entry.chromeOverlapTaskIds?.length === 0 &&
+    entry.missingMovableRootIds?.length === 0 &&
+    entry.peerOverlapToleranceCssPx === peerOverlapToleranceCssPx &&
+    entry.peerOverlapPairs?.length === 0 &&
+    entry.peerMinimumClearanceCssPx === peerMinimumClearanceCssPx &&
+    entry.peerClearanceViolations?.length === 0 &&
     entry.nativeOutOfContentIds?.length === 0 &&
     entry.answerOutOfBandIds?.length === 0 &&
     entry.viewport?.width === 1280 &&
@@ -156,6 +171,7 @@ function reusableObservation(entry) {
   return {
     ...entry,
     capturePolicyVersion,
+    screenshotPath: relative(repositoryRoot, screenshotPath),
     sourceLayoutContentSha256: candidate.sourceLayoutContentSha256
   };
 }
@@ -186,14 +202,59 @@ try {
     .sort((left, right) => left.sequence - right.sequence)) {
     const candidate = candidateBySequence.get(project.sequence);
     const layout = candidate ? layoutByActivity.get(candidate.activityId) : null;
+    const activity = candidate ? activityById.get(candidate.activityId) : null;
     if (
       !candidate ||
       !layout ||
+      !activity ||
       candidate.payloadHash !== project.payloadHash ||
       candidate.sourceLayoutContentSha256 !== sha256Hex(layout)
     ) {
       throw new Error(`html30-v2-capture:candidate-manifest-drift:${project.sequence}`);
     }
+    const nativeMovableRootSpecs = activity.nativePlan.movableUnits.flatMap((unit) => {
+      const representation = unit.representation;
+      if (representation.kind === "canonical-native-group") {
+        const group = candidate.payload.contentsJson.find(
+          (item) =>
+            item.id === representation.groupId &&
+            item.isGroup === true &&
+            Array.isArray(item.ids)
+        );
+        if (!group || group.ids.length === 0) {
+          throw new Error(
+            `html30-v2-capture:canonical-group-members-missing:${project.sequence}:${representation.groupId}`
+          );
+        }
+        return [{ id: representation.groupId, memberIds: [...group.ids] }];
+      }
+      if (representation.kind === "independent-native-set") {
+        return Array.from(
+          { length: representation.memberCount },
+          (_, index) => ({
+            id: `${representation.memberIdPrefix}-unit-${String(index + 1).padStart(2, "0")}`,
+            memberIds: null
+          })
+        );
+      }
+      if (representation.kind === "single-native-object") {
+        return [{ id: representation.objectId, memberIds: null }];
+      }
+      return [];
+    });
+    const answerMovableRootSpecs = candidate.payload.contentsJson.flatMap((item) =>
+      typeof item.id === "string" &&
+      new RegExp(`^${activity.activityId}-answer-choice-\\d+-group$`).test(item.id) &&
+      item.isGroup === true &&
+      Array.isArray(item.ids) &&
+      item.ids.length > 0
+        ? [{ id: item.id, memberIds: [...item.ids] }]
+        : []
+    );
+    const movableRootSpecs = [
+      ...nativeMovableRootSpecs,
+      ...answerMovableRootSpecs
+    ];
     const screenshotPath = join(
       outputDirectory,
       `${String(project.sequence).padStart(2, "0")}.png`
@@ -291,8 +352,10 @@ try {
               )
           )
           .map((entry) => entry.id);
-        const nativeElementBounds = taskElements.filter((entry) =>
-          entry.id.startsWith("mc30v2-")
+        const nativeElementBounds = taskElements.filter(
+          (entry) =>
+            entry.id.startsWith("mc30v2-") ||
+            /-answer-choice-\d+-group-(?:card|text)$/.test(entry.id)
         );
         const answerElements = taskElements.filter((entry) =>
           /-answer-(?:label|choice|drop)/.test(entry.id)
@@ -363,6 +426,17 @@ try {
           answerRectCss: layout.answerRectCss
         }
       });
+      const { movableRootBounds, missingMovableRootIds } =
+        resolveMovableRootBounds(state.nativeElementBounds, movableRootSpecs);
+      const peerOverlapPairs = findPeerOverlapPairs(
+        movableRootBounds,
+        peerOverlapToleranceCssPx
+      );
+      const peerClearanceViolations = findPeerClearanceViolations(
+        movableRootBounds,
+        peerMinimumClearanceCssPx,
+        peerOverlapToleranceCssPx
+      );
       const reopenedPayload = state.projectBody
         ? persistedPayload(state.projectBody)
         : null;
@@ -389,7 +463,7 @@ try {
         reopenedNormalizedPayloadHash,
         persistedPayloadEquivalent:
           reopenedNormalizedPayloadHash === expectedNormalizedPayloadHash,
-        screenshotPath: screenshotPath.replace(`${repositoryRoot}/`, ""),
+        screenshotPath: relative(repositoryRoot, screenshotPath),
         screenshotSha256: sha256File(screenshotPath),
         responseStatus: state.responseStatus,
         canvasRootVisible: state.canvasRootVisible,
@@ -400,6 +474,12 @@ try {
         fixedSafeCss: state.fixedSafeCss,
         taskEnvelope: state.taskEnvelope,
         taskElementCount: state.taskElementCount,
+        movableRootBounds,
+        missingMovableRootIds,
+        peerOverlapToleranceCssPx,
+        peerOverlapPairs,
+        peerMinimumClearanceCssPx,
+        peerClearanceViolations,
         outOfSafeTaskIds: state.outOfSafeTaskIds,
         chromeOverlapTaskIds: state.chromeOverlapTaskIds,
         nativeOutOfContentIds: state.nativeOutOfContentIds,
@@ -439,6 +519,8 @@ const audit = {
   reopenedCount: observations.filter((entry) => entry.reopened).length,
   basicPassCount,
   viewport: { width: 1280, height: 800 },
+  peerOverlapToleranceCssPx,
+  peerMinimumClearanceCssPx,
   observations: observations.sort((left, right) => left.sequence - right.sequence)
 };
 writeFileSync(auditPath, `${JSON.stringify(audit, null, 2)}\n`, "utf8");

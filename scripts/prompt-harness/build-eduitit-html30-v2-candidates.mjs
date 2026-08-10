@@ -106,12 +106,20 @@ function buildArtifact() {
       !activity.structure.writtenReasonRegion &&
       !activity.structure.penRequired
   );
+  const allInitialTextLeakageAuditsPass = candidates.every(
+    (candidate) =>
+      candidate.initialTextLeakageAudit?.policyVersion ===
+        "html30-v2-initial-answer-leakage-v2" &&
+      candidate.initialTextLeakageAudit?.passed === true &&
+      candidate.initialTextLeakageAudit?.violations?.length === 0
+  );
   if (
     candidates.length !== 30 ||
     !allAtScale3 ||
     !allOneProblem ||
     !allGroupWrappersExact ||
-    !allForbiddenRegionsAbsent
+    !allForbiddenRegionsAbsent ||
+    !allInitialTextLeakageAuditsPass
   ) {
     throw new Error("html30-v2-compiled:attestation-failed");
   }
@@ -141,6 +149,7 @@ function buildArtifact() {
       allAtMathCanvas100PercentScale3: allAtScale3,
       allForbiddenRegionsAbsent,
       allCanonicalGroupsPersisted: allGroupWrappersExact,
+      allInitialTextLeakageAuditsPass,
       legacyWriterUsed: false,
       externalWriteAllowed: false,
       liveValidationPending: true,

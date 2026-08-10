@@ -133,6 +133,25 @@ function independentSet(
   };
 }
 
+function independentObjects(
+  sequence: number,
+  name: string,
+  count: number,
+  meaning: string
+): readonly MovableUnit[] {
+  return Array.from({ length: count }, (_, index) => ({
+    unitId: `activity-${sequence}-${name}-${index + 1}`,
+    mathematicalMeaning: `${meaning} ${index + 1}`,
+    representation: {
+      kind: "single-native-object" as const,
+      objectId: `mc30v2-${sequence}-${name}-unit-${String(index + 1).padStart(2, "0")}`
+    },
+    studentAction: "direct-drag" as const,
+    startsIn: "source-tray" as const,
+    endsIn: "construction-area" as const
+  }));
+}
+
 function nativeGroup(
   sequence: number,
   name: string,
@@ -194,13 +213,14 @@ function compactLabeledGroups(
   sequence: number,
   name: string,
   groupCount: number,
+  groupSize: number,
   meaning: string
 ): readonly MovableUnit[] {
   return Array.from({ length: groupCount }, (_, index) =>
     nativeGroup(
       sequence,
       `${name}-${index + 1}`,
-      3,
+      groupSize + 2,
       `${meaning} ${index + 1}`
     )
   );
@@ -212,6 +232,62 @@ const fractionVariantByDenominator: Readonly<Record<number, string>> = {
   7: "NO03FM-04",
   8: "NO03FM-03",
   10: "NO03FM-01"
+};
+
+const plausibleWrongPathBySequence: Readonly<Record<number, string>> = {
+  1: "범례 5권을 적용하지 않고 그림 다섯 개를 책 다섯 권으로 읽는다.",
+  2: "한 접시의 수와 접시 수 중 한 방향만 바꾸어 4×4 배열에서 멈춘다.",
+  3: "한 줄의 수와 줄 수를 혼동해 6×6 배열에서 멈춘다.",
+  4: "십의 자리 3을 두 번 센 6을 부분곱 60 대신 고른다.",
+  5: "상자 세 개를 반영하지 않고 30 모형을 전체 부분곱으로 고른다.",
+  6: "쿠키 수는 모두 쓰지만 여섯 칸의 수가 서로 다르게 나눈다.",
+  7: "7개라는 묶음의 크기를 묶음 수로 읽어 묶음을 일곱 개 옮긴다.",
+  8: "32를 만드는 데 필요한 네 묶음보다 한 묶음을 더 옮긴다.",
+  9: "42장을 만드는 데 필요한 일곱 묶음보다 한 묶음을 더 옮긴다.",
+  10: "다섯 조각이 전체를 채우기 전에 네 조각에서 멈춘다.",
+  11: "조각 수만 다섯이면 된다고 보고 크기가 다른 분할을 그대로 받아들인다.",
+  12: "고른 세 조각 대신 남은 네 조각을 분자로 나타낸다.",
+  13: "먹은 네 조각 대신 남은 여섯 조각을 분자로 나타낸다.",
+  14: "물건의 크기를 비교하지 않고 지우개에 m, 복도에 cm를 놓는다.",
+  15: "아주 작은 두께와 먼 거리를 구분하지 않고 mm와 km를 바꾸어 놓는다.",
+  16: "1m를 10cm로 바꾸어 100cm 묶음을 한 개만 옮긴다.",
+  17: "일의 자리 1을 십으로 보아 30 모형을 필요한 부분곱으로 고른다.",
+  18: "일의 자리 3을 세 번 곱하지 않고 3 모형을 필요한 부분곱으로 고른다.",
+  19: "14의 십 자릿값을 놓치고 32 모형을 32×10의 부분곱으로 고른다.",
+  20: "28을 만드는 데 필요한 네 묶음보다 한 묶음을 더 옮긴다.",
+  21: "17개를 모두 쓰지만 다섯 칸을 같은 수로 나누지 않는다.",
+  22: "몫과 나머지를 확인하면서 묶음 하나나 낱개를 필요 이상으로 넣는다.",
+  23: "중심에서 원 위까지의 선분을 원을 가로지르는 지름과 혼동한다.",
+  24: "반지름 하나의 길이를 그대로 지름으로 고르거나 세 배로 계산한다.",
+  25: "색칠한 여섯 칸 대신 색칠하지 않은 네 칸을 분자로 나타낸다.",
+  26: "네 조각이 전체 하나라는 관계를 쓰지 않고 11/4를 그대로 두거나 잘못 묶는다.",
+  27: "분모가 같을 때 분자를 비교하지 않고 3/8을 더 크다고 고른다.",
+  28: "1L를 1000mL가 아닌 500mL로 바꾼 카드를 식에 넣는다.",
+  29: "1kg를 1000g가 아닌 100g으로 바꾼 300 카드를 식에 넣는다.",
+  30: "그림 세 개의 차이에 범례 4명을 적용하지 않고 3명이나 8명을 고른다."
+};
+
+const wrongStateBySequence: Readonly<Record<number, Record<string, unknown>>> = {
+  1: { category: "책", legendValue: 5, pictureCount: 4, actualCount: 20 },
+  2: { rows: 4, columns: 4, product: 16 },
+  3: { rows: 6, columns: 6, product: 36 },
+  6: { total: 18, recipients: 6, distributions: [4, 4, 3, 3, 2, 2] },
+  10: { denominator: 5, visibleParts: 4, wholeComplete: false },
+  11: { referencePartsEqual: false, nativePartsEqual: false, nativeVisibleParts: 5 },
+  12: { denominator: 7, numerator: 4 },
+  13: { denominator: 10, numerator: 6 },
+  21: { distributed: [3, 3, 3, 3, 2], quotient: null, remainder: 3 },
+  23: { center: "O", visibleRadiusSegments: 1, radiusCanvasUnits: 260, endpointRelation: "on-circle" },
+  24: { radiusCentimeters: 7, diameterAligned: false, angleDegrees: 270 },
+  25: { denominator: 10, numerator: 4 },
+  26: { completedWholes: 1, remainingParts: 7, mixedNumber: null },
+  27: { fractions: ["3/8", "7/8"], leftEdgesAligned: true, greater: "3/8" },
+  30: {
+    legendValue: 4,
+    categories: { A: 4, B: 2 },
+    removedPictures: 1,
+    actualDifference: 8
+  }
 };
 
 const configs: readonly ActivityConfig[] = [
@@ -290,13 +366,13 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04PD",
     variantIds: ["NO04PD-04", "NO04PD-05"],
     semanticOperation: "부분곱 60과 8을 나타내는 place-value group을 같은 자릿값에 맞춰 합친다.",
-    initialState: { candidatePartials: [60, 8, 6], selectedPartials: [], combined: null },
+    initialState: { candidatePartials: [60, 6, 8], selectedPartials: [], combined: null },
     targetState: { tens: 6, ones: 8, combined: 68 },
     invariant: "30×2와 4×2를 더하면 34×2와 같다.",
     movableUnits: [
       stageNativeGroup(4, "partial-60", 8, "30×2를 나타내는 60 모형"),
-      stageNativeGroup(4, "partial-8", 10, "4×2를 나타내는 8 모형"),
-      stageNativeGroup(4, "partial-6", 8, "3×2로 잘못 계산한 6 모형")
+      stageNativeGroup(4, "partial-6", 8, "3×2로 잘못 계산한 6 모형"),
+      stageNativeGroup(4, "partial-8", 10, "4×2를 나타내는 8 모형")
     ],
     rejectableUnitIds: ["activity-4-partial-6"],
     workbench: {
@@ -314,13 +390,13 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04PD",
     variantIds: ["NO04PD-04", "NO04PD-05"],
     semanticOperation: "부분곱 90과 3을 나타내는 place-value group을 같은 자릿값에 맞춰 합친다.",
-    initialState: { candidatePartials: [90, 3, 30], selectedPartials: [], combined: null },
+    initialState: { candidatePartials: [30, 90, 3], selectedPartials: [], combined: null },
     targetState: { tens: 9, ones: 3, combined: 93 },
     invariant: "30×3과 1×3을 더하면 31×3과 같다.",
     movableUnits: [
+      stageNativeGroup(5, "partial-30", 5, "30을 한 번만 센 30 모형"),
       stageNativeGroup(5, "partial-90", 11, "30×3을 나타내는 90 모형"),
-      stageNativeGroup(5, "partial-3", 5, "1×3을 나타내는 3 모형"),
-      stageNativeGroup(5, "partial-30", 5, "30을 한 번만 센 30 모형")
+      stageNativeGroup(5, "partial-3", 5, "1×3을 나타내는 3 모형")
     ],
     rejectableUnitIds: ["activity-5-partial-30"],
     workbench: {
@@ -362,7 +438,7 @@ const configs: readonly ActivityConfig[] = [
     initialState: { groupSize: 7, availableGroups: 6, constructedGroups: 0 },
     targetState: { groupSize: 7, constructedGroups: 5, total: 35 },
     invariant: "한 묶음의 수 × 묶음 수 = 전체 수",
-    movableUnits: compactLabeledGroups(7, "seven-set", 6, "7개짜리 묶음"),
+    movableUnits: compactLabeledGroups(7, "seven-set", 6, 7, "7개짜리 묶음"),
     rejectableUnitIds: ["activity-7-seven-set-6"],
     workbench: {
       variant: "composition-workbench",
@@ -384,7 +460,7 @@ const configs: readonly ActivityConfig[] = [
     initialState: { groupSize: 8, availableGroups: 5, constructedGroups: 0 },
     targetState: { groupSize: 8, constructedGroups: 4, total: 32 },
     invariant: "32÷8은 8개짜리 묶음의 수이다.",
-    movableUnits: compactLabeledGroups(8, "eight-set", 5, "8개짜리 묶음"),
+    movableUnits: compactLabeledGroups(8, "eight-set", 5, 8, "8개짜리 묶음"),
     rejectableUnitIds: ["activity-8-eight-set-5"],
     workbench: {
       variant: "composition-workbench",
@@ -406,7 +482,7 @@ const configs: readonly ActivityConfig[] = [
     initialState: { groupSize: 6, availableGroups: 8, constructedGroups: 0 },
     targetState: { groupSize: 6, constructedGroups: 7, total: 42 },
     invariant: "한 묶음의 수 × 묶음 수 = 전체 수",
-    movableUnits: compactLabeledGroups(9, "six-set", 8, "6장짜리 묶음"),
+    movableUnits: compactLabeledGroups(9, "six-set", 8, 6, "6장짜리 묶음"),
     rejectableUnitIds: ["activity-9-six-set-8"],
     workbench: {
       variant: "composition-workbench",
@@ -421,7 +497,7 @@ const configs: readonly ActivityConfig[] = [
     question: "전체를 똑같이 5조각으로 나눈 한 조각은 얼마일까요?",
     directions: [
       "분수 띠를 누르세요.",
-      "나타난 오른쪽 점을 끌어 같은 조각 5개로 전체를 채우세요."
+      "나타난 오른쪽 점을 끌어 전체를 똑같이 5조각으로 나누세요."
     ],
     answer: noAnswer(),
     mathematicalDecision: "같은 전체를 똑같이 다섯 조각으로 나눈 한 조각을 1/5로 결정한다.",
@@ -443,7 +519,7 @@ const configs: readonly ActivityConfig[] = [
     question: "크기가 다른 5조각 중 한 조각을 1/5이라고 해도 될까요?",
     directions: [
       "분수 띠를 누르세요.",
-      "나타난 오른쪽 점을 끌어 같은 1/5 조각을 5개로 만드세요."
+      "나타난 오른쪽 점을 끌어 전체를 5조각으로 나누세요."
     ],
     answer: compactChoice(["돼요", "안 돼요"], 1),
     mathematicalDecision: "조각 수만 같아서는 부족하고 다섯 조각의 크기가 모두 같아야 1/5임을 결정한다.",
@@ -465,7 +541,7 @@ const configs: readonly ActivityConfig[] = [
     question: "전체 7조각 중 3조각을 고르면 얼마일까요?",
     directions: [
       "분수 띠를 누르세요.",
-      "나타난 오른쪽 점을 끌어 1/7 조각을 3개로 만드세요."
+      "나타난 오른쪽 점을 끌어 7칸 중 3칸이 색칠되게 하세요."
     ],
     answer: noAnswer(),
     mathematicalDecision: "전체 조각 수 7을 분모로, 고른 조각 수 3을 분자로 결정한다.",
@@ -478,7 +554,7 @@ const configs: readonly ActivityConfig[] = [
     movableUnits: [singleObject(12, "전체가 7등분된 분수 띠")],
     workbench: {
       variant: "single-native-workbench",
-      label: "7등분 분수 띠",
+      label: "분수 띠",
       purpose: "같은 1/7 조각 세 개를 나타낸다."
     }
   },
@@ -487,7 +563,7 @@ const configs: readonly ActivityConfig[] = [
     question: "피자 10조각 중 4조각을 먹으면 먹은 양은 얼마일까요?",
     directions: [
       "분수 띠를 누르세요.",
-      "나타난 오른쪽 점을 끌어 1/10 조각을 4개로 만드세요."
+      "나타난 오른쪽 점을 끌어 10칸 중 4칸이 색칠되게 하세요."
     ],
     answer: noAnswer(),
     mathematicalDecision: "전체 조각 수 10을 분모로, 먹은 조각 수 4를 분자로 결정한다.",
@@ -500,29 +576,29 @@ const configs: readonly ActivityConfig[] = [
     movableUnits: [singleObject(13, "전체가 10등분된 분수 띠")],
     workbench: {
       variant: "single-native-workbench",
-      label: "10등분 분수 띠",
+      label: "분수 띠",
       purpose: "같은 1/10 조각 네 개를 나타낸다."
     }
   },
   {
     sequence: 14,
-    question: "지우개와 복도의 길이에 알맞은 단위는 무엇일까요?",
+    question: "지우개와 복도의 길이를 재기 편한 단위는 무엇일까요?",
     directions: ["단위 카드를 알맞은 물건 자리로 옮기세요."],
     answer: noAnswer(),
     mathematicalDecision: "지우개처럼 작은 길이에는 cm, 복도처럼 긴 길이에는 m를 대응한다.",
     toolKey: "NO04NT",
     variantIds: ["NO04NT-01", "NO04NT-03", "NO04NT-06"],
     semanticOperation: "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
-    initialState: { targets: ["지우개", "복도"], matches: [] },
-    targetState: { matches: [{ target: "지우개", measure: "5cm" }, { target: "복도", measure: "20m" }] },
+    initialState: { targets: ["지우개", "복도"], unitMatches: [] },
+    targetState: { unitMatches: [{ target: "지우개", unit: "cm" }, { target: "복도", unit: "m" }] },
     invariant: "측정 단위는 대상의 실제 크기에 맞아야 한다.",
     movableUnits: [
-      nativeGroup(14, "measure-5cm", 3, "지우개에 맞는 5cm 카드"),
-      nativeGroup(14, "measure-20m", 4, "복도에 맞는 20m 카드"),
-      nativeGroup(14, "distractor-5m", 3, "비교할 5m 카드"),
-      nativeGroup(14, "distractor-20cm", 4, "비교할 20cm 카드")
+      nativeGroup(14, "distractor-mm", 2, "비교할 mm 단위 카드"),
+      nativeGroup(14, "unit-cm", 2, "지우개 길이에 알맞은 cm 단위 카드"),
+      nativeGroup(14, "distractor-km", 2, "비교할 km 단위 카드"),
+      nativeGroup(14, "unit-m", 2, "복도 길이에 알맞은 m 단위 카드")
     ],
-    rejectableUnitIds: ["activity-14-distractor-5m", "activity-14-distractor-20cm"],
+    rejectableUnitIds: ["activity-14-distractor-mm", "activity-14-distractor-km"],
     workbench: {
       variant: "composition-workbench",
       sourceLabel: "단위 카드",
@@ -535,23 +611,23 @@ const configs: readonly ActivityConfig[] = [
   },
   {
     sequence: 15,
-    question: "단추의 두께와 도시 사이 거리에 알맞은 단위는 무엇일까요?",
+    question: "단추의 두께와 도시 사이 거리를 재기 편한 단위는 무엇일까요?",
     directions: ["단위 카드를 알맞은 대상 자리로 옮기세요."],
     answer: noAnswer(),
     mathematicalDecision: "매우 작은 두께에는 mm, 매우 먼 거리에는 km를 대응한다.",
     toolKey: "NO04NT",
     variantIds: ["NO04NT-03", "NO04NT-06"],
     semanticOperation: "숫자 카드와 단위 표기를 한 그룹으로 움직여 두 대상에 맞춘다.",
-    initialState: { targets: ["단추", "도시 사이"], matches: [] },
-    targetState: { matches: [{ target: "단추", measure: "2mm" }, { target: "도시 사이", measure: "5km" }] },
+    initialState: { targets: ["단추", "도시 사이"], unitMatches: [] },
+    targetState: { unitMatches: [{ target: "단추", unit: "mm" }, { target: "도시 사이", unit: "km" }] },
     invariant: "측정 단위는 대상의 실제 크기에 맞아야 한다.",
     movableUnits: [
-      nativeGroup(15, "measure-2mm", 3, "단추에 맞는 2mm 카드"),
-      nativeGroup(15, "measure-5km", 3, "도시 사이에 맞는 5km 카드"),
-      nativeGroup(15, "distractor-2km", 3, "비교할 2km 카드"),
-      nativeGroup(15, "distractor-5mm", 3, "비교할 5mm 카드")
+      nativeGroup(15, "distractor-cm", 2, "비교할 cm 단위 카드"),
+      nativeGroup(15, "unit-mm", 2, "단추 두께에 알맞은 mm 단위 카드"),
+      nativeGroup(15, "distractor-m", 2, "비교할 m 단위 카드"),
+      nativeGroup(15, "unit-km", 2, "도시 사이 거리에 알맞은 km 단위 카드")
     ],
-    rejectableUnitIds: ["activity-15-distractor-2km", "activity-15-distractor-5mm"],
+    rejectableUnitIds: ["activity-15-distractor-cm", "activity-15-distractor-m"],
     workbench: {
       variant: "composition-workbench",
       sourceLabel: "단위 카드",
@@ -595,14 +671,14 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04PD",
     variantIds: ["NO04PD-03", "NO04PD-04", "NO04PD-05"],
     semanticOperation: "부분곱 600·120·3을 나타내는 place-value group을 같은 자릿값에 맞춰 합친다.",
-    initialState: { candidatePartials: [600, 120, 3, 30], selectedPartials: [], combined: null },
+    initialState: { candidatePartials: [600, 30, 120, 3], selectedPartials: [], combined: null },
     targetState: { hundreds: 7, tens: 2, ones: 3, combined: 723 },
     invariant: "200×3, 40×3, 1×3을 더하면 241×3과 같다.",
     movableUnits: [
       stageNativeGroup(17, "partial-600", 8, "200×3을 나타내는 600 모형"),
+      stageNativeGroup(17, "partial-30", 5, "일의 자리 1을 십으로 본 30 모형"),
       stageNativeGroup(17, "partial-120", 5, "40×3을 나타내는 120 모형"),
-      stageNativeGroup(17, "partial-3", 5, "1×3을 나타내는 3 모형"),
-      stageNativeGroup(17, "partial-30", 5, "일의 자리 1을 십으로 본 30 모형")
+      stageNativeGroup(17, "partial-3", 5, "1×3을 나타내는 3 모형")
     ],
     rejectableUnitIds: ["activity-17-partial-30"],
     workbench: {
@@ -620,14 +696,14 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04PD",
     variantIds: ["NO04PD-03", "NO04PD-04", "NO04PD-05"],
     semanticOperation: "부분곱 600·30·9를 나타내는 place-value group을 같은 자릿값에 맞춰 합친다.",
-    initialState: { candidatePartials: [600, 30, 9, 3], selectedPartials: [], combined: null },
+    initialState: { candidatePartials: [3, 600, 30, 9], selectedPartials: [], combined: null },
     targetState: { hundreds: 6, tens: 3, ones: 9, combined: 639 },
     invariant: "200×3, 10×3, 3×3을 더하면 213×3과 같다.",
     movableUnits: [
+      stageNativeGroup(18, "partial-3", 5, "일의 자리 3을 한 번만 센 3 모형"),
       stageNativeGroup(18, "partial-600", 8, "200×3을 나타내는 600 모형"),
       stageNativeGroup(18, "partial-30", 5, "10×3을 나타내는 30 모형"),
-      stageNativeGroup(18, "partial-9", 11, "3×3을 나타내는 9 모형"),
-      stageNativeGroup(18, "partial-3", 5, "일의 자리 3을 한 번만 센 3 모형")
+      stageNativeGroup(18, "partial-9", 11, "3×3을 나타내는 9 모형")
     ],
     rejectableUnitIds: ["activity-18-partial-3"],
     workbench: {
@@ -645,13 +721,13 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04PD",
     variantIds: ["NO04PD-03", "NO04PD-04", "NO04PD-05"],
     semanticOperation: "미리 그룹화한 두 부분곱의 자릿값 모형을 한 construction area에 합친다.",
-    initialState: { candidatePartials: [320, 128, 32], selectedPartials: [], combined: null },
+    initialState: { candidatePartials: [320, 32, 128], selectedPartials: [], combined: null },
     targetState: { hundreds: 4, tens: 4, ones: 8, combined: 448 },
     invariant: "32×14 = 32×10 + 32×4",
     movableUnits: [
       stageNativeGroup(19, "partial-320", 7, "32×10을 나타내는 320 모형"),
-      stageNativeGroup(19, "partial-128", 13, "32×4를 나타내는 128 모형"),
-      stageNativeGroup(19, "partial-32", 7, "14의 십 자릿값을 놓친 32 모형")
+      stageNativeGroup(19, "partial-32", 7, "14의 십 자릿값을 놓친 32 모형"),
+      stageNativeGroup(19, "partial-128", 13, "32×4를 나타내는 128 모형")
     ],
     rejectableUnitIds: ["activity-19-partial-32"],
     workbench: {
@@ -672,7 +748,7 @@ const configs: readonly ActivityConfig[] = [
     initialState: { groupSize: 7, availableGroups: 5, constructedGroups: 0 },
     targetState: { groupSize: 7, constructedGroups: 4, total: 28 },
     invariant: "전체 수 ÷ 한 묶음의 수 = 묶음 수",
-    movableUnits: compactLabeledGroups(20, "seven-set", 5, "7개짜리 구슬 묶음"),
+    movableUnits: compactLabeledGroups(20, "seven-set", 5, 7, "7개짜리 구슬 묶음"),
     rejectableUnitIds: ["activity-20-seven-set-5"],
     workbench: {
       variant: "composition-workbench",
@@ -706,7 +782,7 @@ const configs: readonly ActivityConfig[] = [
   {
     sequence: 22,
     question: "38÷6=6…2가 맞는지 어떻게 확인할 수 있을까요?",
-    directions: ["6개짜리 묶음 6개와 낱개 2개를 모아 38을 만드세요."],
+    directions: ["묶음과 낱개를 골라 모두 38이 되게 놓으세요."],
     answer: noAnswer(),
     mathematicalDecision: "6개씩 6묶음과 나머지 2를 합쳐 처음 수 38이 되는지 확인한다.",
     toolKey: "NO01SC",
@@ -716,8 +792,13 @@ const configs: readonly ActivityConfig[] = [
     targetState: { sixGroupsUsed: 6, singlesUsed: 2, total: 38 },
     invariant: "나누는 수 × 몫 + 나머지 = 처음 수",
     movableUnits: [
-      ...compactLabeledGroups(22, "six-set", 7, "6개짜리 묶음"),
-      independentSet(22, "singles", 4, "나머지로 고를 낱개")
+      ...compactLabeledGroups(22, "six-set", 7, 6, "6개짜리 묶음"),
+      ...independentObjects(22, "single", 4, "나머지로 고를 낱개")
+    ],
+    rejectableUnitIds: [
+      "activity-22-six-set-7",
+      "activity-22-single-3",
+      "activity-22-single-4"
     ],
     workbench: {
       variant: "composition-workbench",
@@ -729,17 +810,17 @@ const configs: readonly ActivityConfig[] = [
   },
   {
     sequence: 23,
-    question: "중심 O에서 원 위까지 이은 선분의 이름은 무엇일까요?",
+    question: "원을 누르면 나타나는 중심 O와 원 위 점 사이의 선분은 무엇일까요?",
     directions: [
-      "원을 누르면 나타나는 검은 점 하나를 옮겨 선분 길이를 바꾸세요."
+      "원을 누르세요. 원 위 검은 점을 옮겨 선분 길이를 바꾸세요."
     ],
     answer: compactChoice(["반지름", "지름", "원의 둘레"], 0),
     mathematicalDecision: "원의 크기가 달라져도 중심 O에서 원 위까지의 선분을 반지름으로 결정한다.",
     toolKey: "SM07CS",
-    variantIds: ["SM07CS-02"],
+    variantIds: ["SM07CS-01"],
     semanticOperation: "중심을 고정한 채 원 위 검은 점을 움직여 중심에서 원 위까지의 선분 길이를 바꾼다.",
-    initialState: { center: "O", visibleRadiusSegments: 2, selected: false },
-    targetState: { center: "O", visibleRadiusSegments: 2, selected: true },
+    initialState: { center: "O", visibleRadiusSegments: 0, radiusCanvasUnits: 200, endpointRelation: "on-circle" },
+    targetState: { center: "O", visibleRadiusSegments: 1, radiusCanvasUnits: 140, endpointRelation: "on-circle" },
     invariant: "원의 중심과 원 위의 한 점을 이은 선분은 반지름이다.",
     movableUnits: [singleObject(23, "중심과 반지름 선분이 보이는 원")],
     workbench: {
@@ -759,8 +840,8 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "SM07CS",
     variantIds: ["SM07CS-02"],
     semanticOperation: "원 위 두 조절점을 중심 O의 양쪽에 맞춰 지름 관계를 만든다.",
-    initialState: { radiusCentimeters: 7, diameterAligned: false },
-    targetState: { radiusCentimeters: 7, diameterAligned: true, diameterCentimeters: 14 },
+    initialState: { radiusCentimeters: 7, diameterAligned: false, angleDegrees: 90 },
+    targetState: { radiusCentimeters: 7, diameterAligned: true, angleDegrees: 180, diameterCentimeters: 14 },
     invariant: "지름 = 반지름 × 2",
     movableUnits: [singleObject(24, "중심과 두 반지름이 있는 원")],
     workbench: {
@@ -774,7 +855,7 @@ const configs: readonly ActivityConfig[] = [
     question: "10칸 중 6칸을 색칠하면 색칠한 부분은 얼마일까요?",
     directions: [
       "분수 띠를 누르세요.",
-      "나타난 오른쪽 점을 끌어 1/10 조각을 6개로 만드세요."
+      "나타난 오른쪽 점을 끌어 10칸 중 6칸이 색칠되게 하세요."
     ],
     answer: noAnswer(),
     mathematicalDecision: "전체 칸 수 10을 분모로, 색칠한 칸 수 6을 분자로 결정한다.",
@@ -787,7 +868,7 @@ const configs: readonly ActivityConfig[] = [
     movableUnits: [singleObject(25, "전체가 10등분된 분수 띠")],
     workbench: {
       variant: "single-native-workbench",
-      label: "10등분 분수 띠",
+      label: "분수 띠",
       purpose: "같은 1/10 조각 여섯 개를 나타낸다."
     }
   },
@@ -850,14 +931,14 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04NT",
     variantIds: ["NO04NT-01", "NO04NT-03", "NO04NT-06"],
     semanticOperation: "미리 그룹화한 수 카드를 고정된 더하기 기호 사이에 순서대로 배치한다.",
-    initialState: { cardGroups: ["1000", "1000", "250", "500"], fixedOperators: ["+", "+"], expression: [] },
+    initialState: { cardGroups: ["1000", "500", "1000", "250"], fixedOperators: ["+", "+"], expression: [] },
     targetState: { expression: ["1000", "+", "1000", "+", "250"], totalMilliliters: 2250 },
     invariant: "1L = 1000mL이고 바꾼 mL를 남은 mL와 더한다.",
     movableUnits: [
       nativeGroup(28, "number-1000-a", 5, "첫 번째 1000 수 카드"),
+      nativeGroup(28, "number-500", 4, "500 수 카드(L를 500mL로 잘못 바꾼 값)"),
       nativeGroup(28, "number-1000-b", 5, "두 번째 1000 수 카드"),
-      nativeGroup(28, "number-250", 4, "250 수 카드"),
-      nativeGroup(28, "number-500", 4, "500 수 카드(L를 500mL로 잘못 바꾼 값)")
+      nativeGroup(28, "number-250", 4, "250 수 카드")
     ],
     rejectableUnitIds: ["activity-28-number-500"],
     workbench: {
@@ -879,13 +960,13 @@ const configs: readonly ActivityConfig[] = [
     toolKey: "NO04NT",
     variantIds: ["NO04NT-01", "NO04NT-04", "NO04NT-05"],
     semanticOperation: "미리 그룹화한 수 카드를 고정된 더하기 기호 양쪽에 배치한다.",
-    initialState: { cardGroups: ["3000", "40", "300"], fixedOperators: ["+"], expression: [] },
+    initialState: { cardGroups: ["3000", "300", "40"], fixedOperators: ["+"], expression: [] },
     targetState: { expression: ["3000", "+", "40"], totalGrams: 3040 },
     invariant: "1kg = 1000g이고 바꾼 g을 남은 g과 더한다.",
     movableUnits: [
       nativeGroup(29, "number-3000", 5, "3000 수 카드"),
-      nativeGroup(29, "number-40", 3, "40 수 카드"),
-      nativeGroup(29, "number-300", 4, "kg를 100g으로 잘못 바꾼 300 수 카드")
+      nativeGroup(29, "number-300", 4, "kg를 100g으로 잘못 바꾼 300 수 카드"),
+      nativeGroup(29, "number-40", 3, "40 수 카드")
     ],
     rejectableUnitIds: ["activity-29-number-300"],
     workbench: {
@@ -971,26 +1052,35 @@ function affordancePlan(
 function decisionContract(
   config: ActivityConfig
 ): EduititHtml30ActivitySpecV2["nativePlan"]["decisionContract"] {
+  const plausibleWrongPath = plausibleWrongPathBySequence[config.sequence];
+  if (!plausibleWrongPath) {
+    throw new Error(`eduitit-html30-v2:plausible-wrong-path-missing:${config.sequence}`);
+  }
   if (config.rejectableUnitIds) {
     return {
       mode: "movable-subset",
       distinguishablePossibilityCount: Math.max(3, config.movableUnits.length),
       initiallyUnresolved: true,
       lockedAnswerExposed: false,
-      plausibleWrongPath: "필요하지 않은 카드나 묶음까지 목표 영역에 포함할 수 있다.",
+      plausibleWrongPath,
       selfVerification: config.invariant,
       suppliedMovableUnitCount: config.movableUnits.length,
       rejectableUnitIds: [...config.rejectableUnitIds],
       solutionUsesFewerMovableUnitsThanSupplied: true
     };
   }
+  const wrongState = wrongStateBySequence[config.sequence];
+  if (!wrongState) {
+    throw new Error(`eduitit-html30-v2:wrong-state-witness-missing:${config.sequence}`);
+  }
   return {
     mode: "native-state-space",
     distinguishablePossibilityCount: 3,
     initiallyUnresolved: true,
     lockedAnswerExposed: false,
-    plausibleWrongPath: "목표와 다른 native 상태에서 조작을 멈출 수 있다.",
-    selfVerification: config.invariant
+    plausibleWrongPath,
+    selfVerification: config.invariant,
+    reachableStateWitnesses: [config.initialState, wrongState, config.targetState]
   };
 }
 
@@ -999,6 +1089,22 @@ export function buildEduititHtml30ActivitySpecsV2(
 ): readonly EduititHtml30ActivitySpecV2[] {
   if (harness.entries.length !== 30 || configs.length !== 30) {
     throw new Error("eduitit-html30-v2:exact-30-required");
+  }
+  const expectedSequences = configs.map((config) => config.sequence);
+  const plausibleWrongPathSequences = Object.keys(plausibleWrongPathBySequence)
+    .map(Number)
+    .sort((left, right) => left - right);
+  const expectedStateSpaceSequences = configs
+    .filter((config) => !config.rejectableUnitIds)
+    .map((config) => config.sequence);
+  const wrongStateSequences = Object.keys(wrongStateBySequence)
+    .map(Number)
+    .sort((left, right) => left - right);
+  if (
+    JSON.stringify(plausibleWrongPathSequences) !== JSON.stringify(expectedSequences) ||
+    JSON.stringify(wrongStateSequences) !== JSON.stringify(expectedStateSpaceSequences)
+  ) {
+    throw new Error("eduitit-html30-v2:decision-witness-key-drift");
   }
   return configs.map((config, index) => {
     const source = harness.entries[index];

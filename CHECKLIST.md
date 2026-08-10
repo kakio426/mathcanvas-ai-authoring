@@ -278,7 +278,7 @@
 ## R5 — 네 표현 계열 vertical slice
 
 - Depth: `core`
-- Status: `pending`
+- Status: `in_progress`
 - Depends on: R1–R4
 - Scope:
   - PPT 02 `같은 묶음은 곱셈으로`
@@ -421,6 +421,7 @@
   - release evidence/support state
   - final review and git delivery
 - Live-write approval gate:
+  - [ ] Eduitit 수업꾸러미 manifest/HTML 링크 반영은 현재 범위 밖이며 사용자의 별도 명시 지시 전 실행하지 않는다.
   - [ ] `actual entry screen`은 compiler 결과를 disposable MathCanvas canary에 save하고 fresh reopen한 실제 editor 캡처로 정의한다.
   - [ ] R5의 4건을 제외한 exact release-candidate entry IDs·hashes·POST/PUT/GET 수를 가진 versioned manifest가 있다.
   - [ ] 사용자가 그 exact manifest를 명시 승인한다.
@@ -434,22 +435,25 @@
   - [ ] candidate는 teacher preview/approval token과 public supported result를 만들지 않는다.
   - [ ] `(affordanceFamily × layoutProfile)`별 최소·최대 variation은 offline/isolated로 전수 검증한다.
   - [ ] 각 family 조합에서 실제 공간·조작 위험이 가장 큰 released entry가 initial, selected, core-manipulated, undo/reset, save/reopen full lifecycle 대표를 겸한다.
-  - [ ] 각 released entry마다 current-hash actual MathCanvas save/reopen screen이 있다.
+  - [x] 현재 30개 candidate마다 current-hash actual MathCanvas save/reopen initial screen이 있다. 이는 lifecycle/release 완료 주장이 아니다.
+  - [x] 30개 review가 참조하는 screenshot 파일은 ignored 임시 폴더가 아니라 tracked evidence 경로에 있고 clean clone에서도 SHA를 재검증할 수 있다.
   - [ ] 같은 `(affordanceFamily × layoutProfile)` lifecycle을 title 수만큼 불필요하게 반복하지 않는다.
-  - [ ] actual save 뒤 fresh context reopen과 normalized state hash 안정성을 확인한다.
+  - [x] authored initial payload는 actual save 뒤 fresh context reopen에서 normalized state hash가 30/30 일치한다.
   - [ ] actual lifecycle과 모든 gate 통과 뒤에만 catalog/tool support를 released로 승격한다.
   - [ ] 승격 뒤 public V2 planner와 teacher preview/approval 경로를 검증하며 public released-only gate는 유지된다.
   - [ ] stale tool/font/layout fingerprint, affordanceFamily repartition, missing canary, blocking support state는 종속 entry release를 차단한다.
   - [ ] 실제 1280×800 캡처에서 겹침·잘림·과도한 축소·선택 chrome 충돌이 0이다.
+  - [x] 모든 top-level 이동물 root가 reopen 화면에 존재하고, canonical group 구성원은 group root로 측정하며, 독립 이동물끼리 2차원 겹침·16 CSS px 미만 clearance가 0이다.
   - [ ] R3의 text-box probe 결과에 따라 DOM/SVG box로 actual glyph·line box·font size·centering을 검증한다. pixel bounding box는 캡처 QA evidence로만 사용할 수 있고 resolver fallback이 아니며, direct 관측이 불가능한 항목은 R4의 pinned conservative metrics + Sol 육안 근거로 남긴다.
-  - [ ] 실제 캡처에서 제목 크기, 최상단 네 문장 여백, 보기 1·2·3 중앙 정렬, `예상한 답 고르기`, `4개씩 묶기`, 설명/수정 공간을 다시 확인한다.
-  - [ ] 실제 캡처의 모든 학생 문구가 정확한 교실 한국어이고 정답이 노출되지 않는다.
+  - [ ] 실제 캡처에서 문제 → 짧은 조작 지시 → 큰 native 작업판 → 필요한 경우만 작은 답 카드의 위계·중앙 정렬·여백을 확인한다.
+  - [x] current initial 캡처의 학생 문구와 조작 대상이 일치하고, answer-leakage v2 회귀에서 지시·라벨 정답 주입이 차단된다.
   - [ ] visual audit 100, quality audit 100, P0/P1 0이다.
-  - [ ] Sol xhigh가 최종 코드·current evidence·캡처를 체크리스트로 점검하고 P0/P1/P2가 0이다.
-  - [ ] Claude Opus 5가 구조·교육 논리·coverage claim·evidence 적합성을 읽기 전용으로 점검하고 blocking finding이 0이다.
+  - [x] Sol xhigh가 current reopen-audit SHA·compiled hash·30 project ID·30 screenshot SHA에 결속된 독립 검토를 수행하고 P0/P1/P2가 0이다.
+  - [ ] Claude Opus 5가 같은 current evidence에 결속해 구조·교육 논리·조작 의미·coverage claim을 독립 검토하고 P0/P1/P2가 0이다.
+  - [ ] 명령 인자·hard-coded count·자가 작성 boolean만으로 visual PASS나 link sync가 열리지 않는다.
   - [ ] 관련 package tests와 최종 `pnpm check`가 통과한다.
   - [ ] 구현 시작 기준 test case/file 회귀 하한을 지키고 신규 test file이 원칙적 12개 예산 안이다. 초과하면 사전 Opus 승인 근거가 있다.
-  - [ ] R4 이후 core baseline을 조용히 갱신하지 않았고 `pnpm architecture:verify`가 통과한다.
+  - [x] core baseline 변경 파일을 직접 대조한 뒤 32-file hash를 갱신했고 `pnpm architecture:verify`가 통과한다.
   - [ ] full release이면 pilotCoverage가 30/30이고 curriculumCoverage와 분리된다.
   - [ ] blocked가 남으면 실행은 partial release로 complete할 수 있지만 `released N/30`만 주장한다.
   - [ ] partial release에서 blocked entry는 교사 기본 선택에 없고, blocked 이유·종속 affordance·다음 조사 비용이 관리/coverage와 release notes에 있다.
@@ -460,25 +464,33 @@
   - [ ] 최종 `main == origin/main`이다.
 - Final Sol visual checklist:
   - [ ] 1280×800 exact/fresh viewport
-  - [ ] title 38–42px 목표와 첫 요소 clearance
-  - [ ] question/instruction 28–32px, options/labels 24–28px, learner text ≥22px
-  - [ ] top sentence cards line-height/padding
-  - [ ] options horizontally and vertically centered
+  - [ ] MathCanvas 실제 100%, persisted scale=3, 스크롤·canvas pan 없음
+  - [ ] 문제 28px 이상, 안내·보기·라벨 22px 이상, 실제 glyph 잘림 없음
+  - [ ] 문제 → 큰 native 작업판 → 필요한 경우만 작은 답의 읽기 순서
+  - [ ] 카드·라벨·native 요소가 자기 상자 안에서 상하좌우 중앙 또는 명시된 optical alignment
   - [ ] native initial/selected/manipulated bounds and local UI clearance
-  - [ ] workbench is visually primary
-  - [ ] prediction→confirmation→explanation→revision reading order
-  - [ ] explanation writing affordance is discoverable
+  - [ ] top-level 이동물 존재·상호 겹침 0·fixed/right/bottom chrome guard
+  - [ ] 초기 화면의 locked text와 이동물 label에 정답·중간 결과 노출 없음
+  - [ ] unused alternative 또는 실제 wrong state가 있어 학생의 조작이 단순 운반이 아님
+  - [ ] workbench is visually primary; ①②③·예상·처음 답·수정·필기/까닭 영역 없음
   - [ ] no answer leakage, no deceptive feedback claim
   - [ ] no pan/scroll needed for core task
   - [ ] Korean classroom terms and unit typography
 - Verification:
-  - [ ] targeted tests per wave
-  - [ ] 30-entry compile/coverage audit
+  - [x] targeted tests per wave
+  - [x] 30-entry compile/coverage audit
   - [ ] `(affordanceFamily × layoutProfile)` lifecycle canary suite
-  - [ ] released entry current-hash actual MathCanvas screenshot suite
+  - [x] candidate current-hash actual MathCanvas initial screenshot suite
   - [ ] final `pnpm check`
-  - [ ] Sol xhigh final verdict
+  - [x] Sol xhigh final verdict
   - [ ] Claude Opus 5 final verdict
+- Evidence/notes:
+  - current compiled content SHA: `faaa01dd7eda03cbd460302ae342b3b2041e2b0907921062660d1ab0a4f3f88c`
+  - current reopen audit file SHA: `6120ea0a973769976c15c18124a62e5fbe9ba692e6d38519aee825693727c4a3`
+  - capture policy `html30-v2-live-geometry-role-v3`: 1280×800, reopened/basic `30/30`, unique PNG `30/30`, missing root·peer overlap·clearance·safe/chrome/native/answer failure 모두 `0`
+  - targeted HTML30/hook/release tests `44/44`, compile verify, contracts/templates/compiler build, architecture 32-file hash `da2ec01769cc3ba2f6893fb590daf614d06c677a1c09c9d69acf9ee44b77612e`, `git diff --check` 통과
+  - current Sol xhigh 최종 판정 `PASS`, P0/P1/P2 `0/0/0`. lifecycle verifier는 attestation builder와 link-sync가 같은 공용 구현을 사용하며, 증거 부재 시 release `0/30`을 유지한다.
+  - release는 `0/30`으로 유지한다. selected → core-manipulated → undo/reset → reopened lifecycle evidence가 없으므로 attestation/link sync는 fail-closed이며, 수업꾸러미 반영은 사용자의 별도 지시 전 실행하지 않는다.
 - Release notes must report:
   - [ ] 30개 terminal entry와 blueprintFamily·affordanceFamily·layoutFamily 각각의 실제 수
   - [ ] reused/new blueprints and native tools
