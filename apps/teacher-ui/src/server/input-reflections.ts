@@ -1,4 +1,8 @@
 import type { RecommendationSummary } from "@mathcanvas/authoring-runtime";
+import {
+  MULTIPLICATION_ARRAY_CONTEXT_LABELS,
+  type MultiplicationArrayTeacherIntent
+} from "@mathcanvas/contracts";
 import type { InputReflection } from "../shared/contract.js";
 
 export interface TeacherRecommendationInput {
@@ -11,6 +15,8 @@ export interface TeacherRecommendationInput {
   learningNeedLabel: string;
   contextNote: string;
   problemCount: number;
+  teacherIntent?: MultiplicationArrayTeacherIntent;
+  appliedTeacherIntent?: MultiplicationArrayTeacherIntent;
 }
 
 function memoSummary(value: string): string {
@@ -104,6 +110,57 @@ export function buildInputReflections(
       status: "reference-only",
       note: "기록으로 남겨 두었습니다. 아직 문항 내용에는 반영되지 않습니다."
     });
+  }
+
+  if (input.teacherIntent) {
+    const applied = input.appliedTeacherIntent;
+    const recommendationIntent = recommendation.teacherIntent;
+    const valuesMatch = (
+      field: keyof Omit<MultiplicationArrayTeacherIntent, "kind">
+    ) =>
+      recommendationIntent?.[field] === input.teacherIntent?.[field] &&
+      applied?.[field] === input.teacherIntent?.[field];
+    const firstProblemNote =
+      "요청한 값을 실제 첫 문항에 반영했습니다. 나머지 문항은 검증된 기본 구성입니다.";
+    const intentRows: Array<{
+      inputLabel: string;
+      value: string;
+      field: keyof Omit<MultiplicationArrayTeacherIntent, "kind">;
+    }> = [
+      {
+        inputLabel: "한 묶음의 수",
+        value: `${input.teacherIntent.itemsPerGroup}개씩`,
+        field: "itemsPerGroup"
+      },
+      {
+        inputLabel: "묶음 수",
+        value: `${input.teacherIntent.groupCount}묶음`,
+        field: "groupCount"
+      },
+      {
+        inputLabel: "사물 맥락",
+        value:
+          MULTIPLICATION_ARRAY_CONTEXT_LABELS[
+            input.teacherIntent.contextObjectId
+          ],
+        field: "contextObjectId"
+      },
+      {
+        inputLabel: "확인할 오개념",
+        value: "두 수의 뜻 바꾸기",
+        field: "misconceptionId"
+      }
+    ];
+    reflections.push(
+      ...intentRows.map(({ inputLabel, value, field }) => ({
+        inputLabel,
+        value,
+        status: valuesMatch(field) ? "applied" as const : "needs-review" as const,
+        note: valuesMatch(field)
+          ? firstProblemNote
+          : "요청한 값과 추천 또는 실제 첫 문항이 달라 다시 확인해 주세요."
+      }))
+    );
   }
 
   for (const caveat of recommendation.caveats) {

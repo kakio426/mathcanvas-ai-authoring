@@ -96,4 +96,60 @@ describe("교사 입력 반영 상태", () => {
       reflections.find(({ inputLabel }) => inputLabel === "문항 수")?.note
     ).toContain("4문항");
   });
+
+  it("곱셈 TeacherIntent가 추천과 실제 첫 문항에 맞으면 네 조건을 반영됨으로 표시한다", () => {
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    } as const;
+    const reflections = buildInputReflections(
+      {
+        ...input,
+        teacherIntent,
+        appliedTeacherIntent: teacherIntent
+      },
+      { ...recommendation, teacherIntent }
+    );
+    const intentRows = reflections.filter((reflection) =>
+      ["한 묶음의 수", "묶음 수", "사물 맥락", "확인할 오개념"].includes(
+        reflection.inputLabel
+      )
+    );
+    expect(intentRows).toHaveLength(4);
+    expect(intentRows.every(({ status }) => status === "applied")).toBe(true);
+    expect(intentRows.map(({ value }) => value)).toEqual([
+      "4개씩",
+      "6묶음",
+      "아이스크림",
+      "두 수의 뜻 바꾸기"
+    ]);
+    expect(intentRows.every(({ note }) => note.includes("첫 문항"))).toBe(true);
+  });
+
+  it("실제 첫 문항 값이 다르면 TeacherIntent 조건을 확인 필요로 표시한다", () => {
+    const teacherIntent = {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    } as const;
+    const reflections = buildInputReflections(
+      {
+        ...input,
+        teacherIntent,
+        appliedTeacherIntent: { ...teacherIntent, itemsPerGroup: 5 }
+      },
+      { ...recommendation, teacherIntent }
+    );
+    expect(
+      reflections.find(({ inputLabel }) => inputLabel === "한 묶음의 수")
+    ).toMatchObject({ status: "needs-review" });
+    expect(
+      reflections.find(({ inputLabel }) => inputLabel === "묶음 수")
+    ).toMatchObject({ status: "applied" });
+  });
 });

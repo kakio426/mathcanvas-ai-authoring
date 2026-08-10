@@ -31,6 +31,10 @@ import {
   type TeacherSession
 } from "./session.js";
 import { buildInputReflections } from "./input-reflections.js";
+import {
+  multiplicationArrayTeacherIntentSchema,
+  type MultiplicationArrayTeacherIntent
+} from "@mathcanvas/contracts";
 import { appendTeacherInputLog } from "./teacher-input-log.js";
 
 const currentDirectory = dirname(fileURLToPath(import.meta.url));
@@ -159,6 +163,7 @@ function toPublicActivity(
     >;
     learningNeedLabel: string;
     contextNote: string;
+    teacherIntent?: MultiplicationArrayTeacherIntent;
   }
 ): PublicActivity {
   const recommendation = result.recommendation;
@@ -200,7 +205,16 @@ function toPublicActivity(
         manipulation: fallback.manipulation,
         learningNeedLabel: fallback.learningNeedLabel,
         contextNote: fallback.contextNote,
-        problemCount: fallback.problemCount
+        problemCount: fallback.problemCount,
+        ...(fallback.teacherIntent === undefined
+          ? {}
+          : { teacherIntent: fallback.teacherIntent }),
+        ...(result.activitySummary?.appliedTeacherIntent === undefined
+          ? {}
+          : {
+              appliedTeacherIntent:
+                result.activitySummary.appliedTeacherIntent
+            })
       },
       recommendation
     ),
@@ -320,6 +334,9 @@ async function handleApi(
           defaultProblemCount: activity.defaultProblemCount,
           availableProblemCounts: [...activity.availableProblemCounts],
           availability: activity.availability,
+          ...(activity.manipulation === "multiplication-array-choice-drag"
+            ? { teacherIntentCapability: "multiplication-array-v1" as const }
+            : {}),
           learningNeeds: activity.learningNeeds.map((need) => ({
             id: need.id,
             label: need.label,
@@ -371,6 +388,12 @@ async function handleApi(
     const contextNote = typeof body.contextNote === "string" ? body.contextNote.trim() : "";
     const requestedGrade = Number(body.requestedGrade);
     const problemCount = Number(body.problemCount);
+    const teacherIntentResult =
+      body.teacherIntent === undefined
+        ? undefined
+        : multiplicationArrayTeacherIntentSchema.safeParse(
+            body.teacherIntent
+          );
     const unit = findTeacherTextbookUnit(unitId);
     const standard = findTeacherCurriculumStandard(standardCode);
     const activityOption = standard?.activities.find((candidate) => candidate.id === activityId);
@@ -390,6 +413,29 @@ async function handleApi(
       error(response, 400, "invalid_lesson", "학년, 단원, 성취기준과 학생의 어려움을 다시 확인해 주세요.");
       return;
     }
+    if (teacherIntentResult && !teacherIntentResult.success) {
+      error(
+        response,
+        400,
+        "teacher_intent_confirmation_required",
+        "첫 문항 맞춤 조건을 정확히 확인해 주세요.",
+        teacherIntentResult.error.issues.map((issue) => issue.message)
+      );
+      return;
+    }
+    const teacherIntent = teacherIntentResult?.data;
+    if (
+      teacherIntent &&
+      activityOption.manipulation !== "multiplication-array-choice-drag"
+    ) {
+      error(
+        response,
+        400,
+        "teacher_intent_confirmation_required",
+        "첫 문항 맞춤 조건은 곱셈 배열 활동에서만 사용할 수 있습니다."
+      );
+      return;
+    }
     const prompt = [
       activityOption.promptSeed,
       learningNeed.promptDetail,
@@ -405,7 +451,8 @@ async function handleApi(
       requestedStandardCode: standard.standardCode,
       requestedGrade,
       problemCount,
-      manipulation: activityOption.manipulation
+      manipulation: activityOption.manipulation,
+      ...(teacherIntent === undefined ? {} : { teacherIntent })
     });
     await appendTeacherInputLog(teacherInputLogPath, {
       at: new Date().toISOString(),
@@ -415,6 +462,7 @@ async function handleApi(
       learningNeedId,
       problemCount,
       contextNote,
+      ...(teacherIntent === undefined ? {} : { teacherIntent }),
       supported: result.supported
     });
     if (
@@ -441,7 +489,8 @@ async function handleApi(
       activityLabel: activityOption.label,
       manipulation: activityOption.manipulation,
       learningNeedLabel: learningNeed.label,
-      contextNote
+      contextNote,
+      ...(teacherIntent === undefined ? {} : { teacherIntent })
     });
     sessions.addCard(session, {
       activity,

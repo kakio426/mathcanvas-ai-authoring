@@ -21,14 +21,32 @@ describe("교사 입력 로컬 로그", () => {
     await appendTeacherInputLog(path, {
       ...base,
       at: "2026-08-10T00:01:00.000Z",
-      contextNote: "수업 메모"
+      contextNote: "수업 메모",
+      teacherIntent: {
+        kind: "multiplication-array-v1",
+        itemsPerGroup: 4,
+        groupCount: 6,
+        contextObjectId: "ice-cream",
+        misconceptionId: "groups-size-order"
+      }
     });
 
     const lines = readFileSync(path, "utf8").trim().split("\n");
     expect(lines).toHaveLength(2);
     expect(lines.map((line) => JSON.parse(line) as unknown)).toEqual([
       base,
-      { ...base, at: "2026-08-10T00:01:00.000Z", contextNote: "수업 메모" }
+      {
+        ...base,
+        at: "2026-08-10T00:01:00.000Z",
+        contextNote: "수업 메모",
+        teacherIntent: {
+          kind: "multiplication-array-v1",
+          itemsPerGroup: 4,
+          groupCount: 6,
+          contextObjectId: "ice-cream",
+          misconceptionId: "groups-size-order"
+        }
+      }
     ]);
   });
 

@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState, type FormEvent } from "react";
-import type {
-  ApiErrorBody,
-  CreationStatus,
-  CurriculumActivityOption,
-  CurriculumCatalogResponse,
-  CurriculumStandardOption,
-  CurriculumUnitOption,
-  PreviewResponse,
-  PublicActivity,
-  SessionResponse,
-  InputReflectionStatus
+import {
+  MULTIPLICATION_ARRAY_CONTEXT_LABELS,
+  MULTIPLICATION_ARRAY_CONTEXT_OBJECT_IDS,
+  MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE,
+  MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE,
+  multiplicationArrayTeacherIntentSchema,
+  type ApiErrorBody,
+  type CreationStatus,
+  type CurriculumActivityOption,
+  type CurriculumCatalogResponse,
+  type CurriculumStandardOption,
+  type CurriculumUnitOption,
+  type InputReflectionStatus,
+  type MultiplicationArrayTeacherIntent,
+  type PreviewResponse,
+  type PublicActivity,
+  type SessionResponse
 } from "../shared/contract";
 
 type View = "desk" | "compose" | "preview" | "creating" | "done" | "failed";
@@ -23,6 +29,8 @@ interface LessonForm {
   learningNeedId: string;
   contextNote: string;
   problemCount: 1 | 2 | 4 | 6;
+  teacherIntentEnabled: boolean;
+  teacherIntent: MultiplicationArrayTeacherIntent;
 }
 
 class ApiClientError extends Error {
@@ -77,7 +85,8 @@ function formForStandard(
       ...current,
       standardCode: standard.standardCode,
       activityId: "",
-      learningNeedId: ""
+      learningNeedId: "",
+      teacherIntentEnabled: false
     };
   }
   return {
@@ -85,7 +94,11 @@ function formForStandard(
     standardCode: standard.standardCode,
     activityId: activity.id,
     learningNeedId: learningNeed.id,
-    problemCount: activity.defaultProblemCount
+    problemCount: activity.defaultProblemCount,
+    teacherIntentEnabled:
+      activity.teacherIntentCapability === "multiplication-array-v1"
+        ? current.teacherIntentEnabled
+        : false
   };
 }
 
@@ -204,6 +217,14 @@ export function App() {
     learningNeedId: "",
     contextNote: "",
     problemCount: 4,
+    teacherIntentEnabled: false,
+    teacherIntent: {
+      kind: "multiplication-array-v1",
+      itemsPerGroup: 4,
+      groupCount: 6,
+      contextObjectId: "ice-cream",
+      misconceptionId: "groups-size-order"
+    }
   });
   const [catalog, setCatalog] = useState<CurriculumCatalogResponse>();
   const [recommending, setRecommending] = useState(false);
@@ -325,11 +346,36 @@ export function App() {
       setMessage("학년, 단원, 성취기준과 학생이 어려워하는 지점을 골라 주세요.");
       return;
     }
+    if (
+      form.teacherIntentEnabled &&
+      selectedActivity?.teacherIntentCapability !== "multiplication-array-v1"
+    ) {
+      setMessage("첫 문항 맞춤은 곱셈 배열 활동에서만 사용할 수 있어요.");
+      return;
+    }
+    const parsedTeacherIntent = form.teacherIntentEnabled
+      ? multiplicationArrayTeacherIntentSchema.safeParse(form.teacherIntent)
+      : undefined;
+    if (parsedTeacherIntent && !parsedTeacherIntent.success) {
+      setMessage("첫 문항에 사용할 수와 맥락을 다시 확인해 주세요.");
+      setHints(parsedTeacherIntent.error.issues.map((issue) => issue.message));
+      return;
+    }
     setRecommending(true);
     try {
+      const {
+        teacherIntentEnabled: _teacherIntentEnabled,
+        teacherIntent: _teacherIntent,
+        ...lessonForm
+      } = form;
       const recommendation = await api<{ card: { cardId: string } }>("/api/recommendations", {
         method: "POST",
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          ...lessonForm,
+          ...(parsedTeacherIntent?.success
+            ? { teacherIntent: parsedTeacherIntent.data }
+            : {})
+        })
       });
       const preview = await api<PreviewResponse>(
         `/api/recommendations/${recommendation.card.cardId}`,
@@ -632,6 +678,107 @@ export function App() {
                     options={selectedActivity.availableProblemCounts.map((value) => ({ value, label: `${value}문항` }))}
                     onChange={(problemCount) => setForm({ ...form, problemCount })}
                   />
+                  {selectedActivity.teacherIntentCapability === "multiplication-array-v1" ? (
+                    <div className="teacher-intent-settings">
+                      <label className="intent-toggle">
+                        <input
+                          type="checkbox"
+                          checked={form.teacherIntentEnabled}
+                          onChange={(event) =>
+                            setForm((current) => ({
+                              ...current,
+                              teacherIntentEnabled: event.target.checked
+                            }))
+                          }
+                        />
+                        <span>
+                          <strong>첫 문항 직접 맞추기</strong>
+                          <small>수의 뜻과 사물 맥락을 실제 첫 문제에 넣습니다.</small>
+                        </span>
+                      </label>
+                      {form.teacherIntentEnabled ? (
+                        <div className="intent-controls">
+                          <div className="intent-equation" aria-label="첫 문항 곱셈 상황">
+                            <label>
+                              <span>한 묶음의 수</span>
+                              <span className="number-control">
+                                <input
+                                  type="number"
+                                  min={MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE.min}
+                                  max={MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE.max}
+                                  value={form.teacherIntent.itemsPerGroup}
+                                  onChange={(event) =>
+                                    setForm((current) => ({
+                                      ...current,
+                                      teacherIntent: {
+                                        ...current.teacherIntent,
+                                        itemsPerGroup: Number(event.target.value)
+                                      }
+                                    }))
+                                  }
+                                />
+                                <em>개씩</em>
+                              </span>
+                            </label>
+                            <span className="intent-times" aria-hidden="true">×</span>
+                            <label>
+                              <span>묶음 수</span>
+                              <span className="number-control">
+                                <input
+                                  type="number"
+                                  min={MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE.min}
+                                  max={MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE.max}
+                                  value={form.teacherIntent.groupCount}
+                                  onChange={(event) =>
+                                    setForm((current) => ({
+                                      ...current,
+                                      teacherIntent: {
+                                        ...current.teacherIntent,
+                                        groupCount: Number(event.target.value)
+                                      }
+                                    }))
+                                  }
+                                />
+                                <em>묶음</em>
+                              </span>
+                            </label>
+                          </div>
+                          <div className="intent-select-grid">
+                            <label className="select-field">
+                              <span>사물 맥락</span>
+                              <select
+                                value={form.teacherIntent.contextObjectId}
+                                onChange={(event) =>
+                                  setForm((current) => ({
+                                    ...current,
+                                    teacherIntent: {
+                                      ...current.teacherIntent,
+                                      contextObjectId: event.target.value as MultiplicationArrayTeacherIntent["contextObjectId"]
+                                    }
+                                  }))
+                                }
+                              >
+                                {MULTIPLICATION_ARRAY_CONTEXT_OBJECT_IDS.map((contextObjectId) => (
+                                  <option key={contextObjectId} value={contextObjectId}>
+                                    {MULTIPLICATION_ARRAY_CONTEXT_LABELS[contextObjectId]}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            <label className="select-field">
+                              <span>확인할 오개념</span>
+                              <select value={form.teacherIntent.misconceptionId} disabled>
+                                <option value="groups-size-order">두 수의 뜻 바꾸기</option>
+                              </select>
+                            </label>
+                          </div>
+                          <p className="intent-help">
+                            맞춤 조건은 첫 문항에만 적용합니다. 나머지 문항은 검증된 기본 구성으로 이어집니다.
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </details>
               ) : null}
               {message ? (

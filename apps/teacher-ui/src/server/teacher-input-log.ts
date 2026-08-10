@@ -1,5 +1,6 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
+import type { MultiplicationArrayTeacherIntent } from "@mathcanvas/contracts";
 
 export interface TeacherInputLogEntry {
   at: string;
@@ -9,6 +10,7 @@ export interface TeacherInputLogEntry {
   learningNeedId: string;
   problemCount: number;
   contextNote: string;
+  teacherIntent?: MultiplicationArrayTeacherIntent;
   supported: boolean;
 }
 
@@ -23,6 +25,6 @@ export async function appendTeacherInputLog(
       mode: 0o600
     });
   } catch {
-    // 파일럿용 로컬 기록 실패가 교사의 추천 흐름을 막아서는 안 된다.
+    // 1인 실사용 기록 실패가 교사의 추천 흐름을 막아서는 안 된다.
   }
 }

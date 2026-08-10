@@ -207,6 +207,21 @@ h2 { margin: 0; color: var(--mc-ink); font-size: 21px; line-height: 1.4; letter-
 .detail-settings[open] summary { margin: 0 -17px; border-bottom: 1px solid var(--mc-line); }
 .detail-settings .choice-group { margin-top: 18px; }
 .detail-settings .choice-grid { max-width: 360px; }
+.teacher-intent-settings { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--mc-line); }
+.intent-toggle { display: flex; align-items: flex-start; gap: 11px; cursor: pointer; }
+.intent-toggle input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--mc-blue); }
+.intent-toggle span { display: flex; flex-direction: column; gap: 3px; }
+.intent-toggle strong { color: var(--mc-ink); font-size: 15px; }
+.intent-toggle small { color: var(--mc-copy); font-size: 12px; line-height: 1.5; }
+.intent-controls { margin-top: 15px; padding: 18px; border: 1px solid #bdddff; border-radius: 14px; background: linear-gradient(135deg, #f1f8ff, #fbfdff); }
+.intent-equation { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 14px; }
+.intent-equation label { display: flex; flex-direction: column; gap: 7px; color: var(--mc-ink); font-size: 13px; font-weight: 800; }
+.number-control { min-height: 52px; display: flex; align-items: center; border: 1px solid #b9cee2; border-radius: 12px; overflow: hidden; background: white; }
+.number-control input { width: 100%; min-width: 0; height: 50px; padding: 0 10px 0 14px; border: 0; color: var(--mc-blue-dark); background: transparent; font-size: 20px; font-weight: 850; }
+.number-control em { padding-right: 14px; color: var(--mc-copy); font-size: 13px; font-style: normal; white-space: nowrap; }
+.intent-times { padding-bottom: 13px; color: var(--mc-violet); font-family: "Arial Rounded MT Bold", Arial, sans-serif; font-size: 25px; font-weight: 900; }
+.intent-select-grid { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.intent-help { margin: 13px 0 0; color: var(--mc-copy); font-size: 12px; line-height: 1.55; }
 .form-footer { margin-top: 34px; padding-top: 24px; display: flex; justify-content: flex-end; align-items: center; gap: 20px; border-top: 1px solid var(--mc-line); }
 .working-note { flex: 1; display: flex; align-items: center; gap: 14px; color: var(--mc-copy); font-size: 14px; line-height: 1.5; }
 .working-note strong { display: block; color: var(--mc-ink); }
@@ -320,6 +335,9 @@ h2 { margin: 0; color: var(--mc-ink); font-size: 21px; line-height: 1.4; letter-
   .standard-card code { position: static; display: block; margin-top: 11px; }
   .detail-settings { margin-left: 0; }
   .detail-settings .choice-grid { grid-template-columns: repeat(3, 1fr); }
+  .intent-equation { grid-template-columns: 1fr; gap: 10px; }
+  .intent-times { display: none; }
+  .intent-select-grid { grid-template-columns: 1fr; }
   .context-field small { flex-direction: column; gap: 3px; }
   .form-footer { align-items: stretch; flex-direction: column; }
   .form-footer .button { width: 100%; }
