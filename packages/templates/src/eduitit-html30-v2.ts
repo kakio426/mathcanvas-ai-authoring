@@ -18,6 +18,11 @@ export interface EduititHtml30PromptHarnessEntryInput {
   };
   readonly catalogBinding: {
     readonly catalogEntryId: string;
+    readonly domain:
+      | "수와 연산"
+      | "변화와 관계"
+      | "도형과 측정"
+      | "자료와 가능성";
     readonly alignmentStatus: "exact" | "needs-review";
     readonly snapshotSha256: string;
     readonly affordanceFamily: CatalogAffordance;

@@ -2,13 +2,17 @@ import { describe, expect, it } from "vitest";
 import {
   eduititHtml30LifecycleEvidenceV2Schema,
   eduititHtml30ReleaseAttestationV2Schema,
-  eduititHtml30VisualReviewV2Schema
+  eduititHtml30VisualReviewV2Schema,
+  type EduititHtml30ReleaseAttestationV2,
+  type EduititHtml30VisualReviewV2
 } from "./eduitit-html30-release-v2.js";
 import { sha256Hex } from "../hash.js";
 
 const sha = "a".repeat(64);
 
-function passReview(model: "gpt-5.6-sol" | "claude-opus-5") {
+function passReview(
+  model: "gpt-5.6-sol" | "claude-opus-5"
+): EduititHtml30VisualReviewV2 {
   return {
     schemaVersion: "2.0.0",
     reviewId:
@@ -41,7 +45,7 @@ function passReview(model: "gpt-5.6-sol" | "claude-opus-5") {
   };
 }
 
-function passAttestation() {
+function passAttestation(): EduititHtml30ReleaseAttestationV2 {
   return {
     schemaVersion: "2.1.0",
     attestationId: "eduitit-html30-v2-release-attestation",

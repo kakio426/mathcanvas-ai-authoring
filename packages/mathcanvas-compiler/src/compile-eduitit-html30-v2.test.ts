@@ -28,8 +28,8 @@ function compiled() {
   const domainBySequence = new Map(
     source.entries.map((entry) => [
       entry.sequence,
-      entry.catalogBinding.domain as Parameters<typeof compileEduititHtml30CandidateV2>[2]
-    ])
+      entry.catalogBinding.domain
+    ] as const)
   );
   return activities.map((activity, index) => ({
     activity,
