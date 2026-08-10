@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { CONTRACT_SCHEMA_VERSION } from "@mathcanvas/contracts";
+import {
+  CONTRACT_SCHEMA_VERSION,
+  TEACHER_INTENT_CAPABILITIES
+} from "@mathcanvas/contracts";
 import {
   teacherCurriculumCatalog,
   teacherTextbookUnits
@@ -218,6 +221,78 @@ describe("활동 추천", () => {
       manipulation: "multiplication-array-choice-drag",
       teacherIntent
     });
+  });
+
+  it("등록된 세 TeacherIntent를 중앙 분기 없이 해당 활동으로 라우팅한다", () => {
+    for (const capability of TEACHER_INTENT_CAPABILITIES) {
+      const result = recommendActivity({
+        ...baseRequest,
+        requestId: `request-${capability.kind}`,
+        prompt: `${capability.title} 활동을 만들어 주세요.`,
+        requestedStandardCode: capability.standardCode,
+        requestedGrade: capability.recommendedGrade,
+        teacherIntent: capability.defaultIntent
+      });
+      expect(result, capability.kind).toMatchObject({
+        supported: true,
+        templateId: capability.templateId,
+        standardCode: capability.standardCode,
+        recommendedGrade: capability.recommendedGrade,
+        problemCount: capability.defaultProblemCount,
+        manipulation: capability.manipulation,
+        teacherIntent: capability.defaultIntent
+      });
+      if (capability.denominatorRelation) {
+        expect(result.denominatorRelation).toBe(
+          capability.denominatorRelation
+        );
+      }
+    }
+  });
+
+  it("각 TeacherIntent를 다른 registry route와 결합하면 확인 질문으로 차단한다", () => {
+    for (const [index, capability] of TEACHER_INTENT_CAPABILITIES.entries()) {
+      const other =
+        TEACHER_INTENT_CAPABILITIES[
+          (index + 1) % TEACHER_INTENT_CAPABILITIES.length
+        ]!;
+      try {
+        recommendActivity({
+          ...baseRequest,
+          requestId: `request-conflict-${capability.kind}`,
+          prompt: `${capability.title} 활동을 만들어 주세요.`,
+          manipulation: other.manipulation,
+          teacherIntent: capability.defaultIntent
+        });
+        throw new Error("expected-teacher-intent-rejection");
+      } catch (error) {
+        expect(error, capability.kind).toMatchObject({
+          code: "teacher-intent-confirmation-required"
+        });
+      }
+    }
+  });
+
+  it("사람 수로 똑같이 나누는 요청을 몇 개씩 묶는 나눗셈으로 바꾸지 않는다", () => {
+    expect(() =>
+      recommendActivity({
+        ...baseRequest,
+        requestId: "request-division-sharing-conflict",
+        prompt: "사탕 23개를 4명에게 똑같이 나누는 문제를 만들어 주세요.",
+        teacherIntent: {
+          kind: "division-grouping-v1",
+          totalCount: 23,
+          groupSize: 4,
+          contextObjectId: "candy",
+          misconceptionId: "quotient-remainder-meaning"
+        }
+      })
+    ).toThrowError(
+      expect.objectContaining({
+        code: "teacher-intent-confirmation-required",
+        message: expect.stringContaining("몇 개씩 묶는 상황")
+      })
+    );
   });
 
   it("곱셈 TeacherIntent와 다른 활동·성취기준 조합을 명시적으로 차단한다", () => {

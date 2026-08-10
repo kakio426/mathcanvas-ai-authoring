@@ -4,8 +4,8 @@ import {
   denominatorRelationSchema,
   difficultySchema,
   manipulationSchema,
-  multiplicationArrayTeacherIntentSchema,
-  redactSensitiveText
+  redactSensitiveText,
+  teacherIntentSchema
 } from "@mathcanvas/contracts";
 import { PlanningError } from "@mathcanvas/planner";
 import {
@@ -112,7 +112,7 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     {
       title: "MathCanvas 활동 추천",
       description:
-        "교사 요청을 공식 교육과정과 검증된 템플릿에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. 곱셈 TeacherIntent를 보내면 첫 문항의 한 묶음 수·묶음 수·맥락·순서 오개념을 정확히 맞춥니다. 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
+        "교사 요청을 공식 교육과정과 검증된 템플릿에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. teacherIntent는 곱셈 배열, 몇 개씩 묶는 나눗셈, 공통 분자 분수 비교 3종의 첫 문항 조건을 정확히 맞춥니다. 지원하지 않는 자유문장 조건을 임의로 채우지 말고 사용자에게 확인하세요. 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
       inputSchema: z
         .object({
           prompt: z.string().min(5).max(2000),
@@ -123,9 +123,9 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
           // 계약 스키마에서 직접 파생한다. 활동을 추가하면서 이 목록을
           // 갱신하지 않아 MCP에서만 활동에 접근하지 못하는 드리프트를 막는다.
           manipulation: manipulationSchema.optional(),
-          teacherIntent: multiplicationArrayTeacherIntentSchema
+          teacherIntent: teacherIntentSchema
             .describe(
-              "곱셈 배열 첫 문항만 맞춤 설정합니다. itemsPerGroup은 한 묶음의 수이고 groupCount는 묶음 수입니다."
+              "등록된 활동의 첫 문항만 맞춤 설정합니다. kind별 필드의 수학적 역할을 그대로 사용하며 지원하지 않는 조합은 거부합니다."
             )
             .optional()
         })

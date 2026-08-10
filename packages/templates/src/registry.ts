@@ -1,10 +1,13 @@
 import {
+  ACTIVITY_IDS,
   getActivitySupportState,
+  getTeacherIntentCapability,
   templateDefinitionSchema,
   type ActivityBlueprint,
   type Recommendation,
   type ResolvedActivity,
   type ResolvedItem,
+  type TeacherIntent,
   type TemplateDefinition
 } from "@mathcanvas/contracts";
 import { balancedEquationCardsBlueprint } from "./blueprints/balanced-equation-cards.js";
@@ -370,7 +373,8 @@ function prepare(
   }
   if (
     recommendation.teacherIntent !== undefined &&
-    blueprint.id !== multiplicationArrayMeaningBlueprint.id
+    blueprint.id !==
+      getTeacherIntentCapability(recommendation.teacherIntent.kind).templateId
   ) {
     throw new Error(
       `teacher-intent-template-mismatch:${blueprint.id}`
@@ -703,6 +707,9 @@ type RegistryEntry = {
   readonly problemPreviews?: (
     resolved: ResolvedActivity
   ) => RegisteredProblemPreview[];
+  readonly appliedTeacherIntent?: (
+    resolved: ResolvedActivity
+  ) => TeacherIntent | undefined;
 };
 
 export interface RegisteredTeacherAnswer {
@@ -1006,6 +1013,114 @@ function multiplicationArrayMeaningProblemPreviews(
     });
 }
 
+function fractionComparisonProblemPreviews(
+  resolved: ResolvedActivity
+): RegisteredProblemPreview[] {
+  return [...resolved.items]
+    .sort((left, right) => left.order - right.order)
+    .map((item) => {
+      const left = ratioValue(item, "left");
+      const right = ratioValue(item, "right");
+      return {
+        problemNumber: item.order,
+        statements: [
+          `${left.numerator}/${left.denominator} ? ${right.numerator}/${right.denominator}`
+        ]
+      };
+    });
+}
+
+function divisionGroupingProblemPreviews(
+  resolved: ResolvedActivity
+): RegisteredProblemPreview[] {
+  return [...resolved.items]
+    .sort((left, right) => left.order - right.order)
+    .map((item) => {
+      const questionText = item.values.questionText;
+      if (typeof questionText !== "string" || questionText.trim().length === 0) {
+        throw new Error(`division-question-preview-missing:${item.id}`);
+      }
+      return {
+        problemNumber: item.order,
+        statements: [questionText.trim()]
+      };
+    });
+}
+
+function multiplicationAppliedTeacherIntent(
+  resolved: ResolvedActivity
+): TeacherIntent | undefined {
+  const intent = resolved.recommendationSnapshot.teacherIntent;
+  if (!intent) return undefined;
+  if (intent.kind !== "multiplication-array-v1") {
+    throw new Error(`multiplication-teacher-intent-kind-mismatch:${intent.kind}`);
+  }
+  const firstItem = [...resolved.items].sort(
+    (left, right) => left.order - right.order
+  )[0];
+  if (
+    !firstItem ||
+    firstItem.values.each !== intent.itemsPerGroup ||
+    firstItem.values.groups !== intent.groupCount ||
+    firstItem.values.contextObjectId !== intent.contextObjectId ||
+    firstItem.values.misconceptionId !== intent.misconceptionId
+  ) {
+    throw new Error("multiplication-teacher-intent-application-mismatch");
+  }
+  return intent;
+}
+
+function divisionAppliedTeacherIntent(
+  resolved: ResolvedActivity
+): TeacherIntent | undefined {
+  const intent = resolved.recommendationSnapshot.teacherIntent;
+  if (!intent) return undefined;
+  if (intent.kind !== "division-grouping-v1") {
+    throw new Error(`division-teacher-intent-kind-mismatch:${intent.kind}`);
+  }
+  const firstItem = [...resolved.items].sort(
+    (left, right) => left.order - right.order
+  )[0];
+  if (
+    !firstItem ||
+    firstItem.values.countableTotal !== intent.totalCount ||
+    firstItem.values.countableGroupSize !== intent.groupSize ||
+    firstItem.values.contextObjectId !== intent.contextObjectId ||
+    firstItem.values.misconceptionId !== intent.misconceptionId
+  ) {
+    throw new Error("division-teacher-intent-application-mismatch");
+  }
+  return intent;
+}
+
+function fractionComparisonAppliedTeacherIntent(
+  resolved: ResolvedActivity
+): TeacherIntent | undefined {
+  const intent = resolved.recommendationSnapshot.teacherIntent;
+  if (!intent) return undefined;
+  if (intent.kind !== "fraction-comparison-v1") {
+    throw new Error(`fraction-teacher-intent-kind-mismatch:${intent.kind}`);
+  }
+  const firstItem = [...resolved.items].sort(
+    (left, right) => left.order - right.order
+  )[0];
+  if (!firstItem) {
+    throw new Error("fraction-teacher-intent-item-missing");
+  }
+  const left = ratioValue(firstItem, "left");
+  const right = ratioValue(firstItem, "right");
+  if (
+    left.numerator !== intent.numerator ||
+    left.denominator !== intent.leftDenominator ||
+    right.numerator !== intent.numerator ||
+    right.denominator !== intent.rightDenominator ||
+    firstItem.values.misconceptionId !== intent.misconceptionId
+  ) {
+    throw new Error("fraction-teacher-intent-application-mismatch");
+  }
+  return intent;
+}
+
 function probabilityBagComparisonAnswerKey(resolved: ResolvedActivity): RegisteredTeacherAnswer[] {
   return resolved.items.map((item) => {
     const left = ratioValue(item, "left");
@@ -1073,7 +1188,13 @@ const claimEvidenceRegistry = Object.fromEntries(
       prepare: generateClaimEvidenceActivity,
       supportState:
         getActivitySupportState(blueprint.id) ?? "verified",
-      answerKey: claimEvidenceAnswerKey
+      answerKey: claimEvidenceAnswerKey,
+      ...(blueprint.id === ACTIVITY_IDS.divisionRemainderClaim
+        ? {
+            problemPreviews: divisionGroupingProblemPreviews,
+            appliedTeacherIntent: divisionAppliedTeacherIntent
+          }
+        : {})
     } satisfies RegistryEntry
   ])
 ) as Readonly<Record<string, RegistryEntry>>;
@@ -1115,7 +1236,9 @@ const registry: Readonly<Record<string, RegistryEntry>> = {
     supportState:
       getActivitySupportState(fractionComparisonBlueprint.id) ??
       "verified",
-    answerKey: fractionComparisonAnswerKey
+    answerKey: fractionComparisonAnswerKey,
+    problemPreviews: fractionComparisonProblemPreviews,
+    appliedTeacherIntent: fractionComparisonAppliedTeacherIntent
   },
   [equivalentFractionBlueprint.id]: {
     blueprint: equivalentFractionBlueprint,
@@ -1237,7 +1360,8 @@ const registry: Readonly<Record<string, RegistryEntry>> = {
     prepare: generateMultiplicationArrayMeaningActivity,
     supportState: getActivitySupportState(multiplicationArrayMeaningBlueprint.id) ?? "verified",
     answerKey: multiplicationArrayMeaningAnswerKey,
-    problemPreviews: multiplicationArrayMeaningProblemPreviews
+    problemPreviews: multiplicationArrayMeaningProblemPreviews,
+    appliedTeacherIntent: multiplicationAppliedTeacherIntent
   },
   [probabilityBagComparisonBlueprint.id]: {
     blueprint: probabilityBagComparisonBlueprint,
@@ -1318,6 +1442,26 @@ export function buildRegisteredProblemPreviews(
     );
   }
   return entry.problemPreviews?.(resolved);
+}
+
+export function buildRegisteredAppliedTeacherIntent(
+  resolved: ResolvedActivity
+): TeacherIntent | undefined {
+  const requested = resolved.recommendationSnapshot.teacherIntent;
+  if (!requested) return undefined;
+  const entry = registry[resolved.binding.blueprintId];
+  if (!entry?.appliedTeacherIntent) {
+    throw new Error(
+      `teacher-intent-projector-unregistered:${resolved.binding.blueprintId}`
+    );
+  }
+  const applied = entry.appliedTeacherIntent(resolved);
+  if (!applied || JSON.stringify(applied) !== JSON.stringify(requested)) {
+    throw new Error(
+      `teacher-intent-projection-mismatch:${resolved.binding.blueprintId}`
+    );
+  }
+  return applied;
 }
 
 export function getRegisteredActivitySupportState(

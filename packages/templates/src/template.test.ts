@@ -15,6 +15,7 @@ import {
   CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION,
   generateClaimEvidenceItems,
   generateFractionComparisonActivity,
+  generateFractionPairItems,
   generateMultiplicationArrayMeaningItems,
   makeTenNumberCardsBlueprint,
   resolveRegisteredVariation
@@ -341,6 +342,81 @@ describe("분수 비교 템플릿", () => {
     expect(candidates.filter((candidate) => candidate === "6\\times4"))
       .toHaveLength(1);
     expect(items[1]?.values).toMatchObject({ each: 6, groups: 7 });
+  });
+
+  it("나눗셈 TeacherIntent를 포함제 문장·몫과 나머지·오개념 보기에 함께 반영한다", () => {
+    const [item] = generateClaimEvidenceItems(
+      {
+        profileId: "division-remainder",
+        difficulty: "normal",
+        problemCount: 1,
+        teacherIntent: {
+          kind: "division-grouping-v1",
+          totalCount: 23,
+          groupSize: 4,
+          contextObjectId: "candy",
+          misconceptionId: "quotient-remainder-meaning"
+        }
+      },
+      "division-teacher-intent-golden"
+    );
+    expect(item?.values).toMatchObject({
+      questionText:
+        "사탕 23개를 4개씩 묶으면 몇 묶음이고 몇 개가 남을까요?",
+      correctValueText: "5묶음, 3개",
+      answerExplanation: "4개씩 5묶음은 20개이고 3개가 남습니다.",
+      countableTotal: 23,
+      countableGroupSize: 4,
+      countableObjectName: "사탕",
+      contextObjectId: "candy",
+      misconceptionId: "quotient-remainder-meaning"
+    });
+    const candidates = Array.from(
+      { length: 5 },
+      (_, index) => String(item?.values[`candidate${index + 1}`])
+    );
+    expect(new Set(candidates).size).toBe(5);
+    expect(candidates.filter((value) => value === "5묶음, 3개"))
+      .toHaveLength(1);
+    expect(candidates).toContain("3묶음, 5개");
+    expect(candidates).toContain("4묶음, 7개");
+    expect(item?.provenance.generatorVersion).toBe("1.7.0");
+  });
+
+  it("분수 TeacherIntent를 첫 분수 쌍·관계·오개념 표식에 함께 반영한다", () => {
+    const items = generateFractionPairItems(
+      {
+        difficulty: "normal",
+        problemCount: 4,
+        denominatorRelation: "mixed",
+        teacherIntent: {
+          kind: "fraction-comparison-v1",
+          numerator: 3,
+          leftDenominator: 4,
+          rightDenominator: 5,
+          misconceptionId: "denominator-size-only"
+        }
+      },
+      "fraction-teacher-intent-golden"
+    );
+    expect(items).toHaveLength(4);
+    expect(items[0]?.values).toMatchObject({
+      left: { numerator: 3, denominator: 4 },
+      right: { numerator: 3, denominator: 5 },
+      correctRelation: ">",
+      misconceptionId: "denominator-size-only"
+    });
+    expect(
+      items.slice(1).some(
+        (item) =>
+          JSON.stringify(item.values.left) ===
+            JSON.stringify(items[0]?.values.left) &&
+          JSON.stringify(item.values.right) ===
+            JSON.stringify(items[0]?.values.right)
+      )
+    ).toBe(false);
+    expect(items.map((item) => item.provenance.generatorVersion))
+      .toEqual(["1.1.0", "1.1.0", "1.1.0", "1.1.0"]);
   });
 
   it.each(["easy", "normal", "hard"] as const)(

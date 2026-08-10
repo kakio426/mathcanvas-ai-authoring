@@ -1,10 +1,14 @@
 import {
   createSeededRandom,
+  type DivisionGroupingContextObjectId,
+  type DivisionGroupingTeacherIntent,
   type Difficulty,
-  type ResolvedItem
+  type ResolvedItem,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 import {
-  claimEvidenceActivityProfiles
+  claimEvidenceActivityProfiles,
+  type ClaimEvidenceItemSeed
 } from "@mathcanvas/curriculum";
 import { shuffled } from "./common-unit-pool.js";
 
@@ -13,7 +17,20 @@ export const CLAIM_EVIDENCE_GENERATOR_ID =
 export const CLAIM_EVIDENCE_GENERATOR_VERSION = "1.0.0" as const;
 export const CLAIM_EVIDENCE_DOT_GROUPING_GENERATOR_VERSION = "1.1.0" as const;
 export const CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION = "1.6.0" as const;
+export const CLAIM_EVIDENCE_TEACHER_INTENT_GENERATOR_VERSION = "1.7.0" as const;
 export const CLAIM_EVIDENCE_GENERATOR_V2_VERSION = "2.0.0" as const;
+
+const divisionContextCopy: Readonly<
+  Record<
+    DivisionGroupingContextObjectId,
+    { readonly objectName: string; readonly counter: string }
+  >
+> = {
+  candy: { objectName: "사탕", counter: "개" },
+  pencil: { objectName: "연필", counter: "자루" },
+  marble: { objectName: "구슬", counter: "개" },
+  "colored-paper": { objectName: "색종이", counter: "장" }
+};
 
 function hasFinalConsonant(value: string): boolean {
   const last = value.at(-1);
@@ -28,6 +45,10 @@ function withObjectParticle(value: string): string {
 
 function withAndParticle(value: string): string {
   return `${value}${hasFinalConsonant(value) ? "과" : "와"}`;
+}
+
+function withSubjectParticle(value: string): string {
+  return `${value}${hasFinalConsonant(value) ? "이" : "가"}`;
 }
 
 export function buildDivisionClassroomLanguage(input: {
@@ -67,11 +88,73 @@ export function makeUnresolvedDotField(total: number): string {
     .join("\n");
 }
 
+function divisionCandidateValues(input: {
+  readonly quotient: number;
+  readonly remainder: number;
+  readonly groupSize: number;
+  readonly counter: string;
+}): readonly [string, string, string, string, string] {
+  const candidate = (groups: number, remainder: number) =>
+    `${groups}묶음, ${remainder}${input.counter}`;
+  const values = [
+    candidate(input.quotient, input.remainder),
+    candidate(input.quotient - 1, input.remainder + input.groupSize),
+    candidate(input.quotient, input.groupSize),
+    candidate(input.groupSize, input.remainder),
+    candidate(input.remainder, input.quotient),
+    candidate(input.quotient + 1, input.remainder),
+    candidate(input.quotient - 1, input.remainder)
+  ].filter((value, index, all) => all.indexOf(value) === index);
+  if (values.length < 5) {
+    throw new Error("division-teacher-intent-candidate-capacity");
+  }
+  return [values[0]!, values[1]!, values[2]!, values[3]!, values[4]!];
+}
+
+function buildDivisionTeacherIntentItem(
+  intent: DivisionGroupingTeacherIntent
+): ClaimEvidenceItemSeed {
+  const context = divisionContextCopy[intent.contextObjectId];
+  const quotient = Math.floor(intent.totalCount / intent.groupSize);
+  const remainder = intent.totalCount % intent.groupSize;
+  const totalQuantity = `${intent.totalCount}${context.counter}`;
+  const groupQuantity = `${intent.groupSize}${context.counter}`;
+  return {
+    questionText:
+      `${context.objectName} ${withObjectParticle(totalQuantity)} ` +
+      `${groupQuantity}씩 묶으면 몇 묶음이고 ` +
+      `${withSubjectParticle(`몇 ${context.counter}`)} 남을까요?`,
+    evidenceLabelText:
+      `${context.objectName} ${totalQuantity}로 ${groupQuantity}짜리 묶음 만들기`,
+    evidenceText:
+      `${withObjectParticle(context.objectName)} ${groupQuantity}씩 묶고 남은 ` +
+      `${withObjectParticle(context.objectName)} 세어 보세요.`,
+    correctValueText: `${quotient}묶음, ${remainder}${context.counter}`,
+    candidates: divisionCandidateValues({
+      quotient,
+      remainder,
+      groupSize: intent.groupSize,
+      counter: context.counter
+    }),
+    answerExplanation:
+      `${groupQuantity}씩 ${quotient}묶음은 ` +
+      `${intent.groupSize * quotient}${context.counter}이고 ` +
+      `${remainder}${context.counter}가 남습니다.`,
+    countableTotal: intent.totalCount,
+    countableGroupSize: intent.groupSize,
+    countableObjectName: context.objectName,
+    countableCounter: context.counter,
+    countableGroupName: "묶음",
+    countableGroupLaneLabelText: `${groupQuantity}씩 만든 묶음`
+  };
+}
+
 export function generateClaimEvidenceItems(
   parameters: {
     readonly difficulty: Difficulty;
     readonly problemCount: number;
     readonly profileId?: string;
+    readonly teacherIntent?: TeacherIntent;
   },
   seed: string
 ): ResolvedItem[] {
@@ -96,8 +179,20 @@ export function generateClaimEvidenceItems(
   const random = createSeededRandom(
     `${seed}:claim-evidence:${parameters.profileId}`
   );
-  return shuffled([...profile.items], random)
-    .slice(0, parameters.problemCount)
+  const teacherIntent = parameters.teacherIntent;
+  if (
+    teacherIntent &&
+    (teacherIntent.kind !== "division-grouping-v1" ||
+      profile.profileId !== "division-remainder")
+  ) {
+    throw new Error(
+      `claim-evidence-teacher-intent-mismatch:${profile.profileId}:${teacherIntent.kind}`
+    );
+  }
+  const sourceItems = teacherIntent
+    ? [buildDivisionTeacherIntentItem(teacherIntent)]
+    : shuffled([...profile.items], random).slice(0, parameters.problemCount);
+  return sourceItems
     .map((item, index) => {
       const candidates = shuffled([...item.candidates], random);
       return {
@@ -152,6 +247,12 @@ export function generateClaimEvidenceItems(
                 };
               })()
             : {}),
+          ...(teacherIntent && index === 0
+            ? {
+                contextObjectId: teacherIntent.contextObjectId,
+                misconceptionId: teacherIntent.misconceptionId
+              }
+            : {}),
           ...(item.targetAngleDegrees !== undefined
             ? { targetAngleDegrees: item.targetAngleDegrees }
             : {}),
@@ -169,7 +270,9 @@ export function generateClaimEvidenceItems(
         provenance: {
           generatorId: CLAIM_EVIDENCE_GENERATOR_ID,
           generatorVersion:
-            profile.profileId === "division-remainder"
+            teacherIntent
+              ? CLAIM_EVIDENCE_TEACHER_INTENT_GENERATOR_VERSION
+              : profile.profileId === "division-remainder"
               ? CLAIM_EVIDENCE_NATIVE_GROUPING_GENERATOR_VERSION
               : profile.presentation
                 ? CLAIM_EVIDENCE_GENERATOR_V2_VERSION

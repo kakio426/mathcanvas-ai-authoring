@@ -218,6 +218,97 @@ describe("MCP 서비스 흐름", () => {
       answer: "4\\times6",
       explanation: expect.stringContaining("4개")
     });
+    expect(result.activitySummary?.appliedTeacherIntent).toEqual(
+      teacherIntent
+    );
+  });
+
+  it("나눗셈 TeacherIntent를 23개를 4개씩 묶는 실제 문항과 정답에 반영한다", () => {
+    const teacherIntent = {
+      kind: "division-grouping-v1",
+      totalCount: 23,
+      groupSize: 4,
+      contextObjectId: "candy",
+      misconceptionId: "quotient-remainder-meaning"
+    } as const;
+    const result = createService().recommend({
+      prompt: "사탕 23개를 4개씩 묶는 몫과 나머지 활동을 만들어 주세요.",
+      requestedStandardCode: "[4수01-06]",
+      requestedGrade: 3,
+      manipulation: "claim-evidence-revision-drag",
+      teacherIntent
+    });
+    expect(result.supported).toBe(true);
+    expect(result.recommendation).toMatchObject({
+      problemCount: 1,
+      teacherIntent
+    });
+    expect(result.activitySummary?.appliedTeacherIntent).toEqual(
+      teacherIntent
+    );
+    expect(result.activitySummary?.problemPreviews[0]).toEqual({
+      problemNumber: 1,
+      statements: [
+        "사탕 23개를 4개씩 묶으면 몇 묶음이고 몇 개가 남을까요?"
+      ],
+      statementSource: "learner-instructions"
+    });
+    expect(result.teacherAnswerKey?.[0]).toMatchObject({
+      answer: "5묶음, 3개",
+      explanation: "4개씩 5묶음은 20개이고 3개가 남습니다."
+    });
+  });
+
+  it("4명에게 똑같이 나누기를 4개씩 묶기로 침묵 변환하지 않는다", () => {
+    expect(() =>
+      createService().recommend({
+        prompt: "사탕 23개를 4명에게 똑같이 나누게 해 주세요.",
+        teacherIntent: {
+          kind: "division-grouping-v1",
+          totalCount: 23,
+          groupSize: 4,
+          contextObjectId: "candy",
+          misconceptionId: "quotient-remainder-meaning"
+        }
+      })
+    ).toThrowError(
+      expect.objectContaining({
+        code: "teacher-intent-confirmation-required"
+      })
+    );
+  });
+
+  it("분수 TeacherIntent를 실제 분수 쌍·정답·exact preview에 반영한다", () => {
+    const teacherIntent = {
+      kind: "fraction-comparison-v1",
+      numerator: 3,
+      leftDenominator: 4,
+      rightDenominator: 5,
+      misconceptionId: "denominator-size-only"
+    } as const;
+    const result = createService().recommend({
+      prompt: "3/4과 3/5의 크기를 분수 띠로 비교하게 해 주세요.",
+      requestedStandardCode: "[6수01-07]",
+      requestedGrade: 5,
+      manipulation: "fraction-strip-common-start-drag",
+      denominatorRelation: "mixed",
+      teacherIntent
+    });
+    expect(result.supported).toBe(true);
+    expect(result.recommendation).toMatchObject({
+      problemCount: 4,
+      denominatorRelation: "mixed",
+      teacherIntent
+    });
+    expect(result.activitySummary?.appliedTeacherIntent).toEqual(
+      teacherIntent
+    );
+    expect(result.activitySummary?.problemPreviews[0]).toEqual({
+      problemNumber: 1,
+      statements: ["3/4 ? 3/5"],
+      statementSource: "learner-instructions"
+    });
+    expect(result.teacherAnswerKey?.[0]?.answer).toBe("3/4 > 3/5");
   });
 
   it("몫과 나머지 추천 요약도 선택된 이야기의 학생용 지시문을 그대로 보여 준다", () => {

@@ -2,8 +2,8 @@ import {
   createSeededRandom,
   type Difficulty,
   type MultiplicationArrayContextObjectId,
-  type MultiplicationArrayTeacherIntent,
-  type ResolvedItem
+  type ResolvedItem,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 import { shuffled } from "./common-unit-pool.js";
 
@@ -53,7 +53,7 @@ export function generateMultiplicationArrayMeaningItems(
   parameters: {
     readonly difficulty: Difficulty;
     readonly problemCount: number;
-    readonly teacherIntent?: MultiplicationArrayTeacherIntent;
+    readonly teacherIntent?: TeacherIntent;
   },
   seed: string
 ): ResolvedItem[] {
@@ -62,6 +62,14 @@ export function generateMultiplicationArrayMeaningItems(
   }
   const random = createSeededRandom(`${seed}:multiplication-array-meaning`);
   const selectedConfigurations = [...configurations];
+  if (
+    parameters.teacherIntent &&
+    parameters.teacherIntent.kind !== "multiplication-array-v1"
+  ) {
+    throw new Error(
+      `multiplication-teacher-intent-kind-mismatch:${parameters.teacherIntent.kind}`
+    );
+  }
   if (parameters.teacherIntent) {
     const context = contextCopy[parameters.teacherIntent.contextObjectId];
     selectedConfigurations[0] = {

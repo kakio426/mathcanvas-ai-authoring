@@ -5,6 +5,7 @@ import {
   VERIFIED_TEMPLATE_ID,
   generationRequestSchema,
   getActivitySupportState,
+  getTeacherIntentCapability,
   recommendationSchema,
   type GenerationRequest,
   type Recommendation
@@ -538,53 +539,81 @@ export function recommendActivity(input: unknown): Recommendation {
     );
   }
   const request: GenerationRequest = parsed.data;
+  const teacherIntentCapability = request.teacherIntent
+    ? getTeacherIntentCapability(request.teacherIntent.kind)
+    : undefined;
+  const blockedPrompt = teacherIntentCapability?.promptGuards?.find((guard) =>
+    new RegExp(guard.pattern, "u").test(request.prompt)
+  );
+  if (blockedPrompt) {
+    throw new PlanningError(
+      "teacher-intent-confirmation-required",
+      blockedPrompt.message
+    );
+  }
   if (
-    request.teacherIntent &&
+    teacherIntentCapability &&
     request.manipulation !== undefined &&
-    request.manipulation !== "multiplication-array-choice-drag"
+    request.manipulation !== teacherIntentCapability.manipulation
   ) {
     throw new PlanningError(
       "teacher-intent-confirmation-required",
-      "지정한 수와 맥락은 곱셈 배열 활동에서만 정확히 반영할 수 있습니다. 이 조건을 빼고 만들거나 곱셈 배열 활동으로 바꿔 주세요."
+      `지정한 조건은 ${teacherIntentCapability.title}에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 해당 활동으로 바꿔 주세요.`
     );
   }
   if (
-    request.teacherIntent &&
+    teacherIntentCapability &&
     request.requestedStandardCode !== undefined &&
-    request.requestedStandardCode !== "[2수01-10]"
+    request.requestedStandardCode !== teacherIntentCapability.standardCode
   ) {
     throw new PlanningError(
       "teacher-intent-confirmation-required",
-      "지정한 곱셈 조건은 성취기준 [2수01-10] 활동에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 성취기준을 다시 골라 주세요."
+      `지정한 조건은 성취기준 ${teacherIntentCapability.standardCode} 활동에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 성취기준을 다시 골라 주세요.`
     );
   }
-  const routedRequest: GenerationRequest = request.teacherIntent
+  const routedRequest: GenerationRequest = teacherIntentCapability
     ? {
         ...request,
-        manipulation: "multiplication-array-choice-drag"
+        manipulation:
+          teacherIntentCapability.manipulation as NonNullable<
+            Recommendation["manipulation"]
+          >
       }
     : request;
-  const candidate = routedRequest.manipulation
-    ? verifiedCandidate(routedRequest)
-    : makeTenPatterns.some((pattern) => pattern.test(request.prompt))
+  const candidate = teacherIntentCapability
+    ? {
+        templateId: teacherIntentCapability.templateId,
+        standardCode: teacherIntentCapability.standardCode,
+        manipulation:
+          teacherIntentCapability.manipulation as NonNullable<
+            Recommendation["manipulation"]
+          >,
+        grade: teacherIntentCapability.recommendedGrade,
+        gradeRange: teacherIntentCapability.gradeRange,
+        maximumProblemCount: teacherIntentCapability.maximumProblemCount
+      }
+    : routedRequest.manipulation
       ? verifiedCandidate(routedRequest)
-      : hasSupportedIntent(request.prompt)
-        ? undefined
-        : verifiedCandidate(routedRequest);
+      : makeTenPatterns.some((pattern) => pattern.test(request.prompt))
+        ? verifiedCandidate(routedRequest)
+        : hasSupportedIntent(request.prompt)
+          ? undefined
+          : verifiedCandidate(routedRequest);
   if (candidate) {
     if (
-      request.teacherIntent &&
-      candidate.templateId !== ACTIVITY_IDS.multiplicationArrayMeaning
+      teacherIntentCapability &&
+      candidate.templateId !== teacherIntentCapability.templateId
     ) {
       throw new PlanningError(
         "teacher-intent-confirmation-required",
-        "지정한 곱셈 조건을 선택한 활동에서 정확히 지킬 수 없습니다. 조건을 빼고 만들거나 취소해 주세요."
+        "지정한 조건을 선택한 활동에서 정확히 지킬 수 없습니다. 조건을 빼고 만들거나 취소해 주세요."
       );
     }
     const curriculum = resolveCurriculum(candidate.standardCode);
     const supportState = getActivitySupportState(candidate.templateId);
     const problemCount =
       request.problemCount ??
+      teacherIntentCapability?.defaultProblemCount ??
       Math.min(4, candidate.maximumProblemCount);
     const difficulty = request.difficulty ?? "normal";
     const unsupportedRequests = [
@@ -598,8 +627,13 @@ export function recommendActivity(input: unknown): Recommendation {
             "이 활동의 난이도 선택은 아직 수학적 차이를 만들지 않아 기본값만 지원합니다."
           ]
         : []),
-      ...(request.denominatorRelation !== undefined
-        ? ["분모 관계 선택은 분수 크기 비교 활동에서만 지원합니다."]
+      ...(request.denominatorRelation !== undefined &&
+      request.denominatorRelation !== teacherIntentCapability?.denominatorRelation
+        ? [
+            teacherIntentCapability
+              ? "이 맞춤 활동에서는 선택한 분모 관계를 지원하지 않습니다."
+              : "분모 관계 선택은 분수 크기 비교 활동에서만 지원합니다."
+          ]
         : []),
       ...(request.requestedGrade !== undefined &&
       (request.requestedGrade < candidate.gradeRange[0] ||
@@ -626,6 +660,9 @@ export function recommendActivity(input: unknown): Recommendation {
       prerequisites: curriculum.record.prerequisites,
       problemCount,
       difficulty,
+      ...(teacherIntentCapability?.denominatorRelation
+        ? { denominatorRelation: teacherIntentCapability.denominatorRelation }
+        : {}),
       manipulation: candidate.manipulation,
       ...(request.teacherIntent === undefined
         ? {}

@@ -3,12 +3,14 @@ import {
   createSeededRandom,
   type DenominatorRelation,
   type Difficulty,
-  type ResolvedItem
+  type ResolvedItem,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 
 export const FRACTION_PAIR_GENERATOR_ID =
   "fraction-pair.unlike-denominators" as const;
 export const FRACTION_PAIR_GENERATOR_VERSION = "1.0.0" as const;
+export const FRACTION_PAIR_TEACHER_INTENT_GENERATOR_VERSION = "1.1.0" as const;
 
 type FractionPair = readonly [
   leftNumerator: number,
@@ -95,6 +97,7 @@ export interface FractionPairGeneratorParameters {
   readonly difficulty: Difficulty;
   readonly problemCount: number;
   readonly denominatorRelation?: DenominatorRelation;
+  readonly teacherIntent?: TeacherIntent;
 }
 
 function gcd(left: number, right: number): number {
@@ -239,12 +242,46 @@ export function generateFractionPairItems(
 ): ResolvedItem[] {
   const denominatorRelation =
     parameters.denominatorRelation ?? "mixed";
-  return shuffledPairs(
+  const teacherIntent = parameters.teacherIntent;
+  if (teacherIntent && teacherIntent.kind !== "fraction-comparison-v1") {
+    throw new Error(
+      `fraction-comparison-teacher-intent-kind-mismatch:${teacherIntent.kind}`
+    );
+  }
+  if (
+    teacherIntent &&
+    (parameters.difficulty !== "normal" || denominatorRelation !== "mixed")
+  ) {
+    throw new RangeError(
+      "분수 비교 첫 문항 맞춤은 기본 난이도와 혼합 분모 관계에서만 지원합니다."
+    );
+  }
+  const generatedPairs = shuffledPairs(
     parameters.difficulty,
     parameters.problemCount,
     seed,
     denominatorRelation
-  ).map((pair, index) => {
+  );
+  const teacherPair: FractionPair | undefined = teacherIntent
+    ? [
+        teacherIntent.numerator,
+        teacherIntent.leftDenominator,
+        teacherIntent.numerator,
+        teacherIntent.rightDenominator
+      ]
+    : undefined;
+  const pairs = teacherPair
+    ? [
+        teacherPair,
+        ...generatedPairs
+          .filter((pair) => uniquePairKey(pair) !== uniquePairKey(teacherPair))
+          .slice(0, parameters.problemCount - 1)
+      ]
+    : generatedPairs;
+  if (pairs.length !== parameters.problemCount) {
+    throw new Error("fraction-pair-teacher-intent-capacity");
+  }
+  return pairs.map((pair, index) => {
     const [
       leftNumerator,
       leftDenominator,
@@ -285,11 +322,16 @@ export function generateFractionPairItems(
         orderLabel: `${order}번`,
         prompt:
           `\\frac{${leftNumerator}}{${leftDenominator}} \\; ? \\; ` +
-          `\\frac{${rightNumerator}}{${rightDenominator}}`
+          `\\frac{${rightNumerator}}{${rightDenominator}}`,
+        ...(teacherIntent && index === 0
+          ? { misconceptionId: teacherIntent.misconceptionId }
+          : {})
       },
       provenance: {
         generatorId: FRACTION_PAIR_GENERATOR_ID,
-        generatorVersion: FRACTION_PAIR_GENERATOR_VERSION,
+        generatorVersion: teacherIntent
+          ? FRACTION_PAIR_TEACHER_INTENT_GENERATOR_VERSION
+          : FRACTION_PAIR_GENERATOR_VERSION,
         seed
       }
     };

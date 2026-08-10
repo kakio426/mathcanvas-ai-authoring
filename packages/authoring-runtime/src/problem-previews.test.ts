@@ -203,7 +203,6 @@ describe("문항 미리보기 프로젝션", () => {
       "measure.angle.turn-size.claim-evidence-v1",
       "geometry.triangle.classification.claim-evidence-v1",
       "geometry.symmetry.equal-distance.claim-evidence-v1",
-      "fraction.compare.unlike-denominators.visual-v1",
       "fraction.equivalent.same-whole.visual-v1",
       "number.make-10.cards-v1",
       "relation.equal-sign.balanced-equation.cards-v1",

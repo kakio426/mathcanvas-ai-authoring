@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { multiplicationArrayTeacherIntentSchema } from "./teacher-intent.js";
+import { teacherIntentSchema } from "./teacher-intent.js";
 
 export const CONTRACT_SCHEMA_VERSION = "1.0.0" as const;
 export const ACTIVITY_SPEC_SCHEMA_VERSION = "1.0.0" as const;
@@ -123,7 +123,7 @@ export const generationRequestSchema = z
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
-    teacherIntent: multiplicationArrayTeacherIntentSchema.optional(),
+    teacherIntent: teacherIntentSchema.optional(),
     createdAt: z.string().datetime()
   })
   .strict();
@@ -143,7 +143,7 @@ export const recommendationSchema = z
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
     manipulation: manipulationSchema.optional(),
-    teacherIntent: multiplicationArrayTeacherIntentSchema.optional(),
+    teacherIntent: teacherIntentSchema.optional(),
     rationale: z.array(z.string().min(1).max(500)).min(1).max(8),
     confidence: z.number().min(0).max(1),
     caveats: z.array(z.string().min(1).max(1000)).max(12),

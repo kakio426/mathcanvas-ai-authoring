@@ -17,9 +17,9 @@ import {
   resolvedActivitySchema,
   sha256Hex,
   verifyApprovalReceipt,
-  type MultiplicationArrayTeacherIntent,
   type Recommendation,
-  type ResolvedActivity
+  type ResolvedActivity,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 import {
   CreationJobStore,
@@ -33,6 +33,7 @@ import {
 } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
 import {
+  buildRegisteredAppliedTeacherIntent,
   buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
   getRegisteredBlueprintContentHash,
@@ -79,7 +80,7 @@ export interface RecommendationSummary {
     Recommendation["denominatorRelation"]
   >;
   manipulation?: NonNullable<Recommendation["manipulation"]>;
-  teacherIntent?: MultiplicationArrayTeacherIntent;
+  teacherIntent?: TeacherIntent;
   rationale: string[];
   caveats: string[];
   blockingReasons: string[];
@@ -282,25 +283,15 @@ export function projectProblemPreviews(
 
 export function projectAppliedTeacherIntent(
   resolved: ResolvedActivity
-): MultiplicationArrayTeacherIntent | undefined {
-  const teacherIntent = resolved.recommendationSnapshot.teacherIntent;
-  if (!teacherIntent) return undefined;
-  const firstItem = [...resolved.items].sort(
-    (left, right) => left.order - right.order
-  )[0];
-  if (
-    !firstItem ||
-    firstItem.values.each !== teacherIntent.itemsPerGroup ||
-    firstItem.values.groups !== teacherIntent.groupCount ||
-    firstItem.values.contextObjectId !== teacherIntent.contextObjectId ||
-    firstItem.values.misconceptionId !== teacherIntent.misconceptionId
-  ) {
+): TeacherIntent | undefined {
+  try {
+    return buildRegisteredAppliedTeacherIntent(resolved);
+  } catch {
     throw new AuthoringServiceError(
       "validation-failed",
       "요청한 첫 문항 조건과 실제 생성값이 달라 안전하게 멈췄습니다. 조건을 다시 확인해 주세요."
     );
   }
-  return teacherIntent;
 }
 
 /**
@@ -584,7 +575,7 @@ export class MathCanvasAuthoringService {
       Recommendation["denominatorRelation"]
     >;
     manipulation?: NonNullable<Recommendation["manipulation"]>;
-    teacherIntent?: MultiplicationArrayTeacherIntent;
+    teacherIntent?: TeacherIntent;
   }): {
     supported: boolean;
     recommendation: RecommendationSummary;
@@ -595,7 +586,7 @@ export class MathCanvasAuthoringService {
       title: string;
       studentInstructions: string[];
       problemPreviews: ProblemPreview[];
-      appliedTeacherIntent?: MultiplicationArrayTeacherIntent;
+      appliedTeacherIntent?: TeacherIntent;
       minimumVisualDifferencePercent?: number;
     };
     teacherAnswerKey?: TeacherAnswer[];

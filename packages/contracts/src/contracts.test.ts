@@ -2,8 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
   SensitiveDataError,
+  TEACHER_INTENT_CAPABILITIES,
+  assertTeacherIntentCapabilityRegistry,
   canonicalJson,
   createSeededRandom,
+  divisionGroupingTeacherIntentSchema,
+  fractionComparisonTeacherIntentSchema,
   generationRequestSchema,
   multiplicationArrayTeacherIntentSchema,
   redactSensitiveText,
@@ -119,6 +123,76 @@ describe("공통 계약", () => {
         groupCount: 6
       }).success
     ).toBe(false);
+  });
+
+  it("TeacherIntent capability registry의 세 경로와 기본값이 서로 충돌하지 않는다", () => {
+    expect(() => assertTeacherIntentCapabilityRegistry()).not.toThrow();
+    expect(TEACHER_INTENT_CAPABILITIES).toHaveLength(3);
+    expect(
+      new Set(
+        TEACHER_INTENT_CAPABILITIES.map(
+          (capability) =>
+            `${capability.manipulation}:${capability.standardCode}`
+        )
+      ).size
+    ).toBe(3);
+    expect(
+      TEACHER_INTENT_CAPABILITIES.map((capability) => capability.kind)
+    ).toEqual([
+      "multiplication-array-v1",
+      "division-grouping-v1",
+      "fraction-comparison-v1"
+    ]);
+  });
+
+  it("나눗셈 TeacherIntent는 몇 개씩 묶는 포함제와 나머지 조건을 검증한다", () => {
+    const golden = {
+      kind: "division-grouping-v1",
+      totalCount: 23,
+      groupSize: 4,
+      contextObjectId: "candy",
+      misconceptionId: "quotient-remainder-meaning"
+    };
+    expect(divisionGroupingTeacherIntentSchema.parse(golden)).toEqual(golden);
+    for (const invalid of [
+      { ...golden, totalCount: 24 },
+      { ...golden, totalCount: 7, groupSize: 4 },
+      { ...golden, totalCount: 41, groupSize: 5 },
+      { ...golden, contextObjectId: "student" }
+    ]) {
+      expect(divisionGroupingTeacherIntentSchema.safeParse(invalid).success)
+        .toBe(false);
+    }
+  });
+
+  it("분수 비교 TeacherIntent는 서로 다른 분모의 구별 가능한 두 진분수만 받는다", () => {
+    const golden = {
+      kind: "fraction-comparison-v1",
+      numerator: 3,
+      leftDenominator: 4,
+      rightDenominator: 5,
+      misconceptionId: "denominator-size-only"
+    };
+    expect(fractionComparisonTeacherIntentSchema.parse(golden)).toEqual(golden);
+    for (const invalid of [
+      { ...golden, numerator: 4 },
+      { ...golden, rightDenominator: 4 },
+      {
+        ...golden,
+        numerator: 1,
+        leftDenominator: 3,
+        rightDenominator: 4
+      },
+      {
+        ...golden,
+        numerator: 1,
+        leftDenominator: 2,
+        rightDenominator: 6
+      }
+    ]) {
+      expect(fractionComparisonTeacherIntentSchema.safeParse(invalid).success)
+        .toBe(false);
+    }
   });
 
   it("로그 문자열에서 JWT와 Authorization 값을 가린다", () => {

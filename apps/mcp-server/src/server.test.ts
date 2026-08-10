@@ -85,6 +85,16 @@ describe("MCP 도구 seam", () => {
     expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
       "teacherIntent"
     );
+    for (const kind of [
+      "multiplication-array-v1",
+      "division-grouping-v1",
+      "fraction-comparison-v1"
+    ]) {
+      expect(JSON.stringify(recommendTool?.inputSchema)).toContain(kind);
+    }
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "사람 수가 아닙니다"
+    );
     expect(JSON.stringify(tools)).not.toMatch(
       /rawPayload|contentsJson|absoluteCoordinates|nativeToolId|toolKey/
     );
@@ -263,6 +273,54 @@ describe("MCP 도구 seam", () => {
       ok: false,
       errorCode: "teacher-intent-confirmation-required"
     });
+  });
+
+  it("MCP의 공통 TeacherIntent 스키마가 나눗셈과 분수 capability도 그대로 전달한다", async () => {
+    const client = await connectedClient();
+    for (const scenario of [
+      {
+        prompt: "사탕 23개를 4개씩 묶는 활동을 만들어 주세요.",
+        manipulation: "claim-evidence-revision-drag",
+        teacherIntent: {
+          kind: "division-grouping-v1",
+          totalCount: 23,
+          groupSize: 4,
+          contextObjectId: "candy",
+          misconceptionId: "quotient-remainder-meaning"
+        },
+        expectedPreview: "사탕 23개를 4개씩 묶으면"
+      },
+      {
+        prompt: "3/4과 3/5를 분수 띠로 비교하게 해 주세요.",
+        manipulation: "fraction-strip-common-start-drag",
+        teacherIntent: {
+          kind: "fraction-comparison-v1",
+          numerator: 3,
+          leftDenominator: 4,
+          rightDenominator: 5,
+          misconceptionId: "denominator-size-only"
+        },
+        expectedPreview: "3/4 ? 3/5"
+      }
+    ] as const) {
+      const result = await client.callTool({
+        name: "mathcanvas_recommend_activity",
+        arguments: {
+          prompt: scenario.prompt,
+          manipulation: scenario.manipulation,
+          teacherIntent: scenario.teacherIntent
+        }
+      });
+      expect(result.isError, scenario.teacherIntent.kind).not.toBe(true);
+      expect(result.structuredContent).toMatchObject({
+        ok: true,
+        supported: true,
+        recommendation: { teacherIntent: scenario.teacherIntent }
+      });
+      expect(JSON.stringify(result.structuredContent)).toContain(
+        scenario.expectedPreview
+      );
+    }
   });
 
   it("teacherConfirmed가 없으면 MCP 스키마 단계에서 쓰기를 막는다", async () => {
