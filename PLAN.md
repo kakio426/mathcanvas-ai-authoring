@@ -2,13 +2,14 @@
 
 ## Status
 
-- **현재 정본(CANONICAL)** — 2026-08-08 committed plan
+- **현재 정본(CANONICAL)** — 2026-08-09 committed-plan delta
 - 정확한 canonical model `claude-opus-5`, effort `xhigh`, read-only 재심의 최종
   판정은 **READY**, blocking P0/P1 0건이다. 초기 ITERATE의 P0 2·P1 10과
   2차 잔여 P1 2건은 `CHECKLIST.md` Planning gate에 해소 근거를 남겼다.
-- 아래 `Ask planning state`와 `30개 pilot 실행 구조`가 교육 범위와 완료 기준에
-  관한 최신 결정이다. 뒤쪽의 2026-07-30 P0–P3 계획은 이미 구축된 안전·구조
-  기반과 역사적 근거로 유지하되, 새 작업의 범위·순서는 이 상위 계획을 따른다.
+- 아래 `Ask planning delta — 2026-08-09`가 HTML30 기본 하네스·100% 화면·학생
+  문장에 관한 최신 결정이다. 기존 `Ask planning state`와 `30개 pilot 실행 구조`는
+  장기 교육 범위와 이미 구축한 기반으로 유지하되, HTML30의 다음 작업 순서는
+  H0–H7을 따른다.
 - 2026-07-30 기반에는 Kiro CLI `claude-opus-5` 검토와 대안 제안을 반영했다.
 - 새 30개 pilot은 `CHECKLIST.md`의 R1부터 순서대로 진행하며 각 GO 조건을 통과하기
   전에는 다음 의존 단계를 시작하지 않는다.
@@ -19,6 +20,355 @@
   create-only·명시 승인·fail-closed 불변조건은 계속 유효하다. Legacy의 W2–W5
   실행 순서와 132개 테스트 상한은 이 wave에서 대체된다. 현재 test budget은
   회귀 방지 **하한**이며 새 계획은 test file 증가와 distinct failure branch를 제한한다.
+
+## Ask planning delta — 2026-08-09 · HTML30 기본 하네스 재설계
+
+### Planning outcome
+
+- **경로:** `ask-deep + ask-educator + ask-visual + ask-risk → ask-architecture`
+  committed path.
+- **결론:** 기존 공통 validator와 one-screen resolver를 더 많이 실행하는 것만으로는
+  해결되지 않는다. 현재 HTML30 생성기가 `scripts/contract-lab/create-eduitit-html30-projects.mjs`
+  안에서 문구·상자·네이티브 객체·좌표를 직접 조립해 canonical compiler/validator를
+  우회하는 것이 반복 결함의 주원인이다.
+- **기본 방침:** HTML30만의 별도 품질 우회로를 보강하지 않는다. `학생 활동 명세 →
+  교실 문장 → 100% one-screen 배치 → 실제 native adapter → payload → background
+  canary`의 단일 경로를 만들고, 어느 단계든 실패하면 MathCanvas 저장과 Eduitit 링크
+  승격을 막는다.
+- 이 계획이 승인되기 전에는 현재 30개 프로젝트를 `released`로 간주하지 않는다.
+  프로젝트와 링크는 진단용 초안이며, 100% 줌·학생 문장·실제 조작 게이트를 통과한
+  항목만 교체한다.
+
+### Confirmed decisions
+
+- 표준 학생 화면은 MathCanvas 편집 화면 `1280×800 CSS px`, 사이드바 펼침,
+  **MathCanvas 줌 100%**다. 현재 bundle 기준 내부 `canvasOption.scale=3`이 100%이며,
+  `scale=5`는 60%이므로 새 활동의 one-screen 증거로 사용할 수 없다.
+- 100% 통과는 저장된 숫자만 보는 검사가 아니다. fresh reopen에서 실제 UI가 100%를
+  표시하고, 질문·안내·보기·선택적 답 위치·native visual box·선택 chrome·조작 후 envelope가
+  네 fixed chrome의 8px guard 안에 모두 있어야 한다.
+- 한 활동은 기본 한 문제다. 100% 화면에서 두 문제를 넣기 위해 글자를 줄이거나
+  native 요소를 임의 축소하지 않는다.
+- HTML30 기본 연습의 화면 순서는 `문제 → 큰 native 활동 → 필요한 경우의 짧은 답`이다.
+  별도 예상 칸·처음 답 칸·수정 칸·까닭 쓰기 칸과 상단 ①②③ 안내문은 두지 않는다.
+  조작 결과 자체가 답을 분명히 보여 주면 별도 답 칸도 만들지 않고, 숫자나 식을
+  확정해야 하는 문제에만 작은 답 위치 하나를 둔다.
+- 시각 방향은 사용자가 이미 선택한 **큰 교과서형 글자 + 넓은 의미 간격 +
+  중앙의 native workbench**다. 작은 대시보드형 밀도, 장식 카드 중심 화면,
+  경계에 붙인 native 요소는 사용하지 않는다.
+- 학생 문구는 LLM 자유문장을 그대로 화면에 넣지 않는다. 학년군에 맞게 검토한
+  family 문장 틀과 item별 구체 명사·수·단위를 결합하고, `문제`, workbench 옆의
+  짧은 조작 문장, 필요한 경우의 `답` 문구를 exact hash로 release evidence에
+  결속한다. 화면 안에 서술형 까닭 문장을 생성하지 않는다.
+- 지시문은 한 문장에 하나의 보이는 행동을 두고 `대상 → 행동 → 화면의 위치/버튼
+  또는 끝나는 조건`을 직접 말한다. 학생이 화면에서 찾을 수 없는 점·버튼·칸,
+  또는 실제 도구에 없는 복사·그룹·드래그 행동을 말하면 실패한다.
+- 내부 용어와 AI식 교사 문장은 학생 화면에서 금지한다. 예: `후보`, `검증`,
+  `불변량`, `영역`, `구성`, `근거로 설명하세요`, `부분곱을 더해 설명하세요`처럼
+  학생이 무엇을 보고 무엇을 쓰는지 빠진 문장은 통과시키지 않는다.
+- 보기 글자는 상자의 실제 glyph/line box 기준 수평·수직 중앙이어야 한다.
+  제목·안내·문제처럼 성질이 다른 묶음 사이 간격은 같은 묶음의 행 간격보다 커야 한다.
+- native workbench는 화면에서 가장 큰 semantic region이어야 한다. provisional
+  100% budget은 질문·제목 10–15%, workbench 70–80%, 필요한 답 영역 0–10%이며,
+  상단 설명문·별도 예상 카드 bank가 workbench 면적을 빼앗으면 실패한다.
+- 활동의 핵심 모형은 MathCanvas 왼쪽 도구 메뉴에 실제 등록된 native 도구여야 한다.
+  도구 이름·category·variant·생성 factory·학생이 쓰는 실제 조절점/버튼을 확인하고,
+  그 조작이 배열의 행·열, 묶음 membership, 자릿값 합치기/쪼개기, 같은 크기 분할,
+  그래프의 범례와 수량처럼 수학 상태를 바꾸어 학생이 관계를 발견하게 해야 한다.
+  rectangle/text/dot을 조합해 native 도구처럼 보이게 만든 모형은 핵심 활동으로
+  인정하지 않는다.
+- `핵심 도구 1개`는 화면에 native 객체가 물리적으로 하나뿐이라는 뜻이 아니다.
+  하나의 수학적 결정을 공유하는 `core affordance family` 하나를 뜻한다. 수 카드
+  0–9처럼 같은 도구 인스턴스 여러 개를 고르고 조합하는 활동은 하나의 핵심
+  affordance로 인정하며, 필요한 경우 연산 기호 카드처럼 보조 affordance family를
+  최대 하나까지 함께 쓸 수 있다.
+- 조합 활동은 같은 큰 workbench 안을 `재료판(source tray)`과 `만드는 곳
+  (construction surface)`으로 나누는 전용 variant를 쓴다. 재료판은 별도 학습지
+  문장/응답 상자가 아니라 학생이 실제 native 요소를 꺼내 쓰는 workbench의 일부다.
+  재료판의 모든 행은 가운데·등간격이고, 라벨과 모든 도구가 같은 container 안에
+  있어야 하며, construction surface로 향하는 전체 drag envelope도 workbench 안에
+  있어야 한다.
+- 학생이 하나로 인식하고 옮겨야 하는 복합 요소는 제작기가 미리 하나의 native
+  movable unit으로 만든다. 예를 들어 숫자와 카드 상자가 따로 생성되는 경우에는
+  canonical native group으로 묶어, 학생이 카드 어느 곳을 끌어도 숫자와 상자가 함께
+  움직이게 한다. 학생에게 `Shift` 다중 선택이나 사전 그룹 만들기를 요구하지 않는다.
+  이미 하나의 native object로 제공되는 도구는 불필요하게 다시 묶지 않는다.
+- 활동과 관계없는 왼쪽 메뉴 전체를 재료판에 복사하지 않는다. 학생이 판단해야 할
+  수와 연산만 제공한다. `더해서 7 만들기`에서 연산 선택이 목표가 아니면 `+`는 식
+  rail에 고정하고 수 카드만 고르게 한다. 연산 선택 자체가 목표일 때만 `+ − × ÷`
+  카드를 재료판에 둔다. 같은 카드를 여러 번 써야 하면 실제 copy 동작을 가정하지
+  않고 필요한 인스턴스 수를 계약에 명시한다.
+- workbench 상자는 native 도구보다 먼저 정하지 않는다. 실제 native의 initial
+  `visualBox`, selected `chromeBox`, task-relevant manipulated `taskEnvelope`의 합집합에
+  내부 여백을 더해 `reserveBox`를 만든 다음 workbench 크기와 layout variant를 정한다.
+  기본 배치는 measured reserve의 중심을 workbench inner rect 중심에 맞추며, side tray
+  등이 필요한 명시적 variant만 검증된 정렬 규칙을 사용한다.
+- 화면에는 기능이 있는 큰 workbench 하나와 필요한 경우의 작은 답 위치만 남기고
+  장식 상자와 자유 서술 칸을 최소화한다. workbench를 표시할 때는
+  initial/selected/manipulated 모든 상태에서
+  reserve 주위 최소 24 CSS px 내부 여백을 유지한다.
+- native 요소는 sanitized evidence 객체를 복사해 만들지 않는다. 실제 module/category/
+  variant identity를 가진 canonical adapter/factory만 생성에 사용할 수 있다.
+- 검증 비용은 `전 항목 offline 1회 → actual update 1 batch → reopen/capture 1 batch →
+  Sol 최종 시각 검토 1회`를 기본 상한으로 한다. 실패 항목만 다시 실행하고, 성공한
+  30개를 매 수정마다 전부 재검증하지 않는다.
+- Codex 지침만으로 writer 경계를 보호하지 않는다. project-level `PreToolUse` hook은
+  기존 HTML30 직접 creator·직접 link sync·직접 project API write를 실행 전에 차단한다.
+  최종 canonical writer도 명령 이름만 allowlist하지 않고, source/copy/native/layout의
+  pinned hash와 offline gate 결과를 가진 immutable release attestation을 재검증해야 한다.
+
+### Education and language contract
+
+HTML30 기본 연습은 일반 진단 활동의 `prediction → confirmation → explanation →
+revision` UI를 그대로 복제하지 않는다. 핵심 흐름은 `native로 직접 만들어 보기 →
+조작 결과를 보고 필요한 답만 확정하기`다. 수학적 이유의 증거는 학생이 완성한 배열,
+묶음, 수식, 분수 조각, 그래프 상태 자체에 남긴다. 서술형 까닭 입력은 화면에 두지
+않으며, 교사가 필요하면 완성된 모형을 가리키며 말로 설명하게 한다.
+
+각 활동은 다음 질문에 학생이 혼자 답할 수 있어야 한다.
+
+1. **무엇을 구하나요?** 문제 문장 하나만 읽어도 대상·수·단위·질문이 분명하다.
+2. **어떤 모형을 어떻게 움직이나요?** 화면에 실제로 보이는 물건·조절점·버튼·칸을
+   그 화면의 이름으로 부른다.
+3. **언제 멈추나요?** 반복 조작이면 묶음 크기, 남은 수, 목표 모양 등 종료 조건을
+   말한다.
+4. **조작을 끝냈다는 것을 어떻게 아나요?** 완성된 모형 자체 또는 작은 답 위치의
+   숫자·식이 문제의 답을 분명히 보여 준다. 별도 까닭 쓰기 칸은 요구하지 않는다.
+
+문장 gate는 단순 금칙어 regex가 아니라 다음을 결속한다.
+
+- `LearnerSentencePlan`: `role`, `gradeBand`, `visibleObjectRef`, `action`,
+  `targetOrControlRef`, `completionCondition`, `mathematicalEvidenceRef`. HTML30에서
+  허용되는 문장 role은 question, workbench-action, optional-answer-label이다.
+- `VettedClassroomCopy`: 문제·짧은 조작 문장·필요한 답 라벨·보기의 최종 문자열과 canonical story tuple,
+  허용된 교과서 동사, item 값, 조사, 단위, 정답/오개념 선택지.
+- `ToolLanguageBinding`: 화면 문구의 물건·버튼·조절점 이름이 실제 native contract의
+  visible control/operation과 exact 일치한다.
+- 자동 gate 뒤 30개 문장을 한 번에 소리 내어 읽는 `read-aloud review` 체크리스트를
+  적용한다. 이 검토는 새로운 문장을 매 실행마다 다시 쓰는 AI 호출이 아니라,
+  승인된 copy registry를 version/hash로 고정하는 일회성 콘텐츠 심의다.
+
+### 100% one-screen contract
+
+새 profile `student-one-screen-100-v1`은 기존 60% geometry 값을 비례 계산해 만들지
+않고, 인증된 background editor에서 100% 상태를 read-only로 관측해 pin한다.
+
+- 환경: 1280×800, DPR·sidebar·surface mode·app asset fingerprint 고정.
+- 줌: UI tooltip/상태 `100%`, persisted `canvasOption.scale=3`, 실제 viewBox/CTM/inverse
+  세 값이 서로 일치해야 한다.
+- 안전 영역: top/left/right/bottom chrome을 실제 bounds로 읽고 각각 8 CSS px를
+  더한 교차하지 않는 fixed-safe rect를 파생한다.
+- learner task envelope: 문제, 필요한 짧은 안내와 보기, 선택적인 답 위치, native panel,
+  native visual box, selected chrome, manipulated bounds의 합집합이다. 문서 scroll이
+  없다는 사실만으로 통과시키지 않는다.
+- 배치 resolver는 CSS px로 먼저 예산을 계산하고 pinned CTM으로 canvas units를 만든다.
+  `x/y` 수동 보정, 전체 pan, 60% fallback, 글자 하한 위반, native 임의 축소는 금지한다.
+- 실제 캡처 gate는 DOM/SVG line box와 custom native bounds를 다시 측정해 offline
+  plan과 비교한다. 실제 글리프 잘림과 시각 중심은 screenshot review에 남긴다.
+
+### Architecture backbone
+
+| Unit | Depth | Responsibility |
+|---|---|---|
+| `Html30LearnerActivitySpec` | core | source lesson·수학 판단·오개념·문제·필요한 보기·optional answer·native operation을 구조화하며 자유 좌표를 받지 않는다. |
+| `VettedClassroomCopyRegistry` | core | 30개 문제·workbench-action·선택적 답 라벨과 family별 문장 틀, 학년군, item 값, tool-language binding, copy hash를 소유한다. |
+| `StudentOneScreen100Profile` | core | actual 100% CTM/chrome/safe rect, typography minima, semantic gaps, card padding을 pin한다. |
+| `NativeActivityAdapterRegistry` | core | 실제 생성 가능한 module/category/variant와 initial/selected/manipulated semantic state, visible controls, reserve bounds를 제공한다. sanitized evidence는 입력으로 거부한다. |
+| `NativeInsightContract` | core | left-menu tool, intended operation, before/after mathematical state, 학생이 관찰할 관계, 완성된 조작 상태가 남기는 evidence를 1:1로 결속한다. |
+| `NativeMovableUnitContract` | core | 학생이 한 덩어리로 인식하는 복합 요소를 생성 단계에서 canonical group으로 묶고, 전체 drag target·selected chrome·save/reopen group identity를 검증한다. Shift 다중 선택은 허용하지 않는다. |
+| `Html30LayoutResolver` | core | native reserve를 먼저 놓고 문제·큰 workbench·선택적 답 위치를 safe rect 안에 deterministic하게 배치한다. |
+| `CompositionWorkbenchVariant` | core | 같은 core tool의 여러 인스턴스를 source tray에 가운데·등간격으로 놓고 construction surface·식 rail·drag envelope와 함께 한 reserve로 계산한다. |
+| `Html30PayloadCompiler` | core | 위 네 registry의 version/hash가 맞는 resolved plan만 MathCanvas payload로 만든다. 직접 `rawTemplate()`/손 좌표 경로는 제거한다. |
+| `Html30HarnessAttestation` | core | source/copy/native/layout/compiler hash, exact 30-entry offline 결과, 100% profile ID를 묶는다. canonical writer가 current repository state에서 다시 계산해 일치할 때만 외부 쓰기 capability를 연다. |
+| `Html30WriteBoundary` | core | attestation을 받은 payload batch만 MathCanvas에 쓰고, save/reopen evidence가 있는 release manifest만 Eduitit link promoter에 전달한다. raw payload와 URL 배열은 받지 않는다. |
+| `Html30OfflineGate` | core | 30 entry를 table-driven 한 번에 검사한다: story/copy, interaction flow, movable-unit identity, tool-language, text fit, real bounds, overlap, center, 100% budget. |
+| `Html30LiveCanary` | core | background session에서 100% 강제 확인, save/reopen, actual task envelope, 조작 semantic 변화, screenshot SHA를 기록한다. |
+| 범용 한국어 자유생성기 | scaffold | 이번 30개에서는 사용하지 않는다. 이후 새 단원은 vetted template seam 뒤에 붙인다. |
+| 다른 viewport·두 문제 layout | scaffold | 1280×800 100% 한 문제 완료 뒤 별도 profile로만 추가한다. |
+
+Data flow는 다음 한 방향만 허용한다.
+
+`Eduitit HTML + curriculum entry → Html30LearnerActivitySpec → vetted copy + canonical
+native adapter → 100% resolved layout → offline PASS → payload → background save/reopen
++ semantic/visual evidence → released project URL → Eduitit link`
+
+live payload, 좌표, 문구 또는 tool identity에서 registry hash가 달라지면 자동 재해석하지
+않고 stale/fail-closed한다.
+
+### Risk ledger
+
+| Risk | Severity | Required closure |
+|---|---:|---|
+| `scale=5`(60%)를 한 화면 증거로 사용 | P0 | 100% UI + scale=3 + CTM/viewBox exact binding, 60% fallback 거부 |
+| page scroll만 0이고 SVG 내용은 잘림 | P0 | 실제 learner task envelope와 네 chrome guard 교차 검사 |
+| sanitized native 객체가 보이지만 조작되지 않음 | P0 | canonical factory identity와 semantic operation probe 없으면 생성 차단 |
+| native 모형이 장식이고 수학 관계는 바뀌지 않음 | P0 | `NativeInsightContract`의 before/after semantic hash와 observable insight가 없으면 차단 |
+| 지시문이 없는 버튼·점·칸을 가리킴 | P0 | `ToolLanguageBinding`과 visible control exact binding |
+| 문법상 맞지만 초등학생이 이해 못 하는 AI 문장 | P0 | 구조화 sentence plan + vetted copy registry + read-aloud review + exact story binding |
+| native가 workbench 경계나 toolbar에 붙음 | P0 | initial/selected/manipulated visual union을 reserve 안에서 center/clearance 검사 |
+| native anchor를 visible top-left로 오인 | P0 | 실제 DOM visual/chrome bounds를 placement anchor에 resolve하고 reserve 중심으로 배치 |
+| 재료 카드가 많아 tray 밖으로 넘치거나 서로 겹침 | P0 | member 수·행 분할·실제 bounds·행 중심·gap·label·drag envelope를 resolver가 재계산 |
+| 문제와 관계없는 도구를 모두 꺼내 인지 부담 증가 | P1 | item의 mathematical decision에 필요한 candidate/tool set만 허용하고 보조 family는 최대 하나 |
+| 질문·workbench·선택적 답 순서 또는 의미 간격이 뒤바뀜 | P0 | role order와 semantic-group gap을 actual bounds에서 재계산 |
+| 숫자와 카드 상자처럼 한 요소가 따로 움직임 | P0 | native single object 또는 canonical pre-group만 movable unit으로 허용하고 drag/save/reopen에서 group identity 재검증 |
+| 학생에게 Shift 다중 선택이나 사전 그룹 만들기를 요구 | P0 | keyboard modifier를 learner contract에서 거부하고 제작 단계 pre-group을 강제 |
+| 보기 글자가 하단/좌측으로 치우침 | P1 | DOM line box center + screenshot glyph review, key/value self-report 금지 |
+| 생성기가 공통 compiler/validator를 다시 우회 | P0 | 저장 API는 compiled release candidate만 받고 raw creator helper를 금지 |
+| 에이전트가 새 임시 스크립트나 직접 API 호출로 harness를 우회 | P0 | Codex PreToolUse hook + canonical writer attestation 재검증 + repository policy test의 3중 경계 |
+| 검증을 반복해 30개 생성보다 오래 걸림 | P1 | batch/cost gate와 failed-sequence-only 재실행, family semantic probe dedupe |
+| 검증 전 Eduitit 링크가 학생에게 노출 | P0 | released evidence가 없는 URL은 draft 상태, link sync는 최종 단계만 허용 |
+
+### Risk change log
+
+- `60%에서 한 화면` → `실제 MathCanvas 100%에서 한 화면` (addresses: 잘림과 pan 의존)
+- `문서 scroll=0` → `전체 learner task envelope가 four-chrome safe rect 안` (addresses: SVG 내부 잘림)
+- `raw native evidence 복사` → `실제 factory identity를 가진 canonical adapter만 생성` (addresses: 보이지만 조작 불가)
+- `금칙어·길이 중심 문장 검사` → `visible object/action/control/evidence + vetted copy exact binding` (addresses: 문법은 맞지만 학생이 이해 못 하는 문장)
+- `직접 상자·좌표 조립` → `native reserve-first 100% resolver 결과만 payload compile` (addresses: 경계 부착·겹침·중앙 정렬 실패)
+- `학생이 Shift로 여러 조각을 선택` → `제작기가 의미 단위별 canonical group을 미리 생성` (addresses: 숨은 조작·부분 이동·그룹 유실)
+- `답과 까닭을 모두 쓰기` → `조작 결과를 evidence로 보존하고 필요한 답만 짧게 확정` (addresses: 좁은 화면·펜/서술 부담)
+- `AGENTS.md 지침에만 의존` → `PreToolUse 차단 + writer attestation + link promotion gate` (addresses: 에이전트의 우회 실행)
+- `수정할 때마다 30개 재검증` → `offline 1회, live batch 1회, 실패 sequence만 재실행` (addresses: 검증 비용 폭증)
+
+### Implementation sequence and gates
+
+#### H0 — 현재 결과 격리
+
+- 기존 30 URL과 캡처는 삭제하지 않고 diagnostic draft로 표시하며 개별 수정을 중단한다.
+- 현재 Eduitit 링크 manifest는 보존하되, 새 release manifest와 분리한다.
+- project-level Codex `PreToolUse` hook으로 기존 직접 creator, 직접 link sync, 직접
+  `/api/project` write를 차단한다. hook을 끄지 않아도 offline harness·tests·compiler
+  구현은 계속할 수 있어야 한다.
+- 30개 전부를 새 harness의 동일 compiler 경로로 다시 만들고, 완료된 새 release
+  manifest로 Eduitit 링크 30개를 한 번에 교체한다. 기존 payload의 손 좌표·문구를
+  이어서 고치는 방식은 금지한다.
+- GO: 어떤 URL이 draft/released인지 기계적으로 구분된다.
+
+#### H1 — 학생 문장 정본
+
+- 30개 문제·짧은 workbench 조작 문장·필요한 답 prompt·보기와 라벨을 초등
+  3학년 교실 말로 일괄 재작성한다. 별도 예상·처음 답·수정·까닭 문구와 상단
+  ①②③ 안내는 생성하지 않는다.
+- family 문장 틀과 item slot을 분리하고 exact canonical copy tests를 둔다.
+- 모형에서 실제로 할 수 없는 행동은 문장 수정으로 숨기지 않고 native blocker로 보낸다.
+- GO: 30/30 read-aloud checklist, story consistency, tool-language precheck PASS.
+
+#### H2 — 100% geometry/profile
+
+- background editor에서 100% actual profile을 한 번 관측한다.
+- `student-one-screen-100-v1`과 typography/spacing contract를 만들고 기존 60% profile과
+  ID/version을 분리한다.
+- GO: 100% UI/store/CTM, four-chrome safe rect, mutation tests PASS.
+
+#### H3 — canonical native adapter 경로
+
+- 7 affordance family에서 실제 생성 가능한 factory와 학생 조작을 결속한다.
+- 각 family에 `왼쪽 메뉴 도구 → 제작 시 pre-group 단위 → 학생 조작 → 변하는 수학
+  상태 → 학생이 알아낼 관계 → 완성 상태에 남는 증거` 한 줄을 필수로 기록한다.
+  이 중 하나라도 비면 해당 family는 blocked다.
+- 그림그래프처럼 sanitized category identity만 있는 도구는 official factory를 확보하기
+  전까지 종속 entry를 blocked로 둔다.
+- GO: family별 initial→selected→manipulated semantic change와 visible-control vocabulary PASS.
+
+#### H4 — resolver/compiler 통합
+
+- HTML30 creator의 직접 text/rectangle/raw native/좌표 조립을 제거하고 H1–H3 registry를
+  소비하는 resolver/compiler로 교체한다.
+- compound movable unit은 compiler가 native group으로 미리 만들며, child 일부만
+  선택·이동되는 payload와 keyboard modifier를 요구하는 activity spec은 거부한다.
+- one-screen resolver가 native reserve를 먼저 확보하고 100%에서 한 문제만 배치한다.
+- resolver는 measured reserve 중심과 workbench inner rect 중심 오차, 24px 내부 여백,
+  optional answer/chrome과의 비겹침을 직접 계산한다. native raw `x/y`를 visual corner로 사용하지 않는다.
+- layout variant는 `single-native-workbench`와 `composition-workbench`를 최소 core로
+  제공한다. composition variant는 실제 native reserve를 먼저 계산한 뒤 `source-left`와
+  `source-above` 중 맞는 방향을 선택하고, construction surface를 source tray보다 크게
+  유지한다. source와 construction 각각의 initial/selected/manipulated envelope에는
+  최소 24 CSS px 내부 여백을 둔다. readable minimum에서 모든 재료가 맞지 않으면
+  관련 재료 수를 줄이거나 fail-closed하며, 고정 비율 상자에 억지로 축소하지 않는다.
+- GO: 30개 offline compile이 수동 nudge 없이 PASS하며 하나라도 넘치면 write 0.
+
+#### H5 — 단일 offline 품질 게이트
+
+- 한 명령으로 30개의 문장, story, interaction→optional-answer flow, text fit, hierarchy,
+  semantic gaps, card center,
+  overlap, containment, native reserve center/clearance, left-menu tool identity,
+  semantic insight, 100% budget을 table-driven 검증한다.
+- 기존 `visual.*`, `language.classroom-korean`, `one-screen` 구현을 재사용하되 self-reported
+  boolean이 아니라 resolved 값을 다시 계산한다.
+- 30/30 PASS 뒤 source/copy/native/layout/compiler/profile hash를 가진
+  `Html30HarnessAttestation`을 deterministic하게 만든다. 같은 명령이 current tree에서
+  이를 재계산해 exact 일치시키지 못하면 writer는 write 0으로 종료한다.
+- GO: targeted tests와 30-entry verifier 한 번 PASS.
+
+#### H6 — 한 번의 actual 생성·재열기
+
+- offline 30/30 PASS attestation 뒤에만 canonical writer가 authenticated background
+  create/update batch를 실행한다. 기존 직접 creator 경로는 계속 차단한다.
+- 30개를 100%로 한 번 reopen/capture하고, family별 대표에서 실제 핵심 조작을 한 번만
+  확인한다. 실패 sequence만 재생성·재캡처한다.
+- GO: 30/30 actual task envelope/typography/load PASS, 7 family semantic representative PASS.
+
+#### H7 — 최종 검토와 링크 승격
+
+- 30개 contact sheet와 위험 최대 원본만 Sol xhigh가 한 번 검토한다.
+- P0/P1 0이면 release manifest를 고정하고, link promoter가 attestation·URL·save/reopen
+  evidence SHA를 다시 확인한 뒤 Eduitit 링크를 새 URL과 동기화한다. 기존 직접 sync
+  스크립트는 사용하지 않는다.
+- 마지막에 targeted tests, full workspace build, diff check를 각 한 번 실행하고 commit/push한다.
+
+### Definition of 100%
+
+개별 활동은 아래 7개 gate가 **모두** 참일 때만 100%다.
+
+1. source/curriculum/story exact binding
+2. 초등학생용 vetted question·workbench action·필요한 경우의 짧은 answer copy
+3. 실제 작동하는 native mathematical operation
+4. 1280×800 MathCanvas 100%에서 fixed-safe one-screen PASS
+5. actual glyph/spacing/centering/overlap PASS
+6. save → reopen 뒤 payload·semantic state·화면 보존
+7. release evidence와 Eduitit link exact binding
+
+`seriesCompletion = released entries / 30`으로만 계산한다. 프로젝트가 생성됐거나 URL이
+존재한다는 이유로 분자에 넣지 않는다. 별도로 `harnessReadiness`는 H0–H7 gate 완료 수로
+보고해, 하네스 구축 진척과 30개 실제 완성도를 섞지 않는다.
+
+### Assumptions
+
+- 이번 변경의 학습자 화면은 초등 3학년 30개이며, 장기 1–6학년 확장은 같은 schema와
+  grade-band copy registry를 추가하는 방식으로 진행한다.
+- 첫 release interaction profile은 1280×800 desktop의 mouse+keyboard다. touch/tablet은
+  같은 결과를 자동 주장하지 않고 별도 interaction profile에서 검증한다.
+- `여러 가지 경우` 활동은 item spec에 순서 구분 여부, 카드 재사용 여부, 찾아야 할
+  해의 수를 명시한다. resolver가 문장만 보고 이를 추측하지 않는다.
+- 실제 조작 가능한 official native adapter를 확보하지 못한 항목은 그림으로 대체하지
+  않는다. 같은 수학적 깨달음을 보존하는 다른 official native tool/variant를 먼저
+  검토하고, 동등한 경로가 없으면 blocked로 남긴다.
+- 교사 자유 프롬프트는 vetted copy와 수학/도구/layout contract를 바꿀 수 없다.
+- 자동채점·정오 피드백·답 수집, 펜 입력, 서술형 까닭 쓰기는 이번 HTML30의 기능이
+  아니다. 조작 완료 상태가 학생 사고의 주된 흔적이며, 필요한 문제만 짧은 답을 남긴다.
+
+### Resolved risk decisions — 2026-08-09
+
+- 제작기가 문제에 필요한 native 도구와 인스턴스를 미리 배치한다. 학생이 왼쪽 메뉴에서
+  도구를 찾는 행동은 이번 30개의 학습 과제가 아니다.
+- 학생 조작은 직접 drag/click과 화면에 나타나는 native control만 사용한다. `Shift`를
+  포함한 keyboard modifier로 여러 child를 선택하게 하지 않는다. 하나로 옮겨야 하는
+  숫자 카드·기호 카드·복합 모형은 제작기가 canonical native group으로 미리 묶는다.
+- 펜과 서술형 까닭 칸은 사용하지 않는다. 조작 상태가 수학적 evidence를 보여 주게
+  설계하고, 답의 별도 기록이 꼭 필요한 경우에만 작은 native 입력/선택 위치를 둔다.
+- 기존 30개를 화면별로 계속 보정하지 않는다. 새 harness가 완성되면 30개 전부를
+  같은 compiler로 다시 생성·재열기하고, 통과한 release manifest의 링크로 수업꾸러미를
+  일괄 교체한다.
+
+### Non-goals
+
+- 60%에서만 맞는 화면을 100% 완료로 부르지 않는다.
+- 한 화면을 맞추려고 글자·조작점을 작게 줄이지 않는다.
+- LLM 문체 점수만으로 학생 이해 가능성을 주장하지 않는다.
+- 모든 30개에 서로 다른 layout/validator/test 파일을 만들지 않는다.
+- 자동채점·단계 강제·조작 튜토리얼을 MathCanvas가 제공한다고 과장하지 않는다.
+- Shift 다중 선택, 펜 입력, 화면 안 서술형 까닭 쓰기를 기본 학생 흐름에 넣지 않는다.
+- 현재 dirty worktree의 다른 R5 작업을 되돌리거나 HTML30 수정에 섞지 않는다.
 
 ## Ask planning state — 2026-08-08
 

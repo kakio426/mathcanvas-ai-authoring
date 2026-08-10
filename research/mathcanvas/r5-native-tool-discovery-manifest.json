@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "r5-native-tool-discovery-pinned-v1",
+  "evidence": {
+    "path": "research/mathcanvas/r5-native-tool-discovery.json",
+    "fileSha256": "c287e720f2f3fa3adf8dd45cfde8d7ba89bbb801f134426626f5ac72581e4a16",
+    "contentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+    "observedAt": "2026-08-09T08:55:35.709Z"
+  },
+  "raw": {
+    "path": ".mathcanvas-contract-lab/raw/r5-native-tool-discovery.raw.json",
+    "fileSha256": "045d332d8b9ebf52d27026e4c690fc9f8137dd29f3b6dfdc0b2dbc002f46c1e0"
+  },
+  "sources": [
+    {
+      "path": "research/mathcanvas/tool-catalog.snapshot.json",
+      "fileSha256": "549a6862f9aeebeae6b0665379e95bf3befdcdf9b03b5d9f0681bb80b6f833e7",
+      "records": [
+        {
+          "moduleKey": "DP03PG",
+          "recordHash": "70d4c9f76dc88e8ac06a299d6538ac698e178a7bbf22f4f97808d1698974ecb8"
+        },
+        {
+          "moduleKey": "NO04NG",
+          "recordHash": "6c2fd35ec62cb2b42df2111526a9bb917cb2bab6d3334a55edc652be1398ee46"
+        },
+        {
+          "moduleKey": "NO03FM",
+          "recordHash": "b3ab73cb0228b430747ef945a3f893bb4173b17cbd7fd673162b4b1ed705f443"
+        },
+        {
+          "moduleKey": "SM07CS",
+          "recordHash": "a3e683fa6bc0617be6080b0712efb9b53822c9b2eaaeaaad58ace78dff837f28"
+        }
+      ]
+    },
+    {
+      "path": "research/mathcanvas/bundle-contract.snapshot.json",
+      "fileSha256": "eaabe392a291978bc145895aeb1010a69a8a3271592ea2681544ead7eeaabc3c",
+      "records": [
+        {
+          "moduleKey": "DP03PG",
+          "recordHash": "0c21d851ff936c387e78c0e0895d35c008b14255d35c37aebfa8d113dab83707"
+        },
+        {
+          "moduleKey": "NO04NG",
+          "recordHash": "ff07b4dd65c61c37946cc82a935a79cc93a3a0b7e78726d372ba5213d0867310"
+        },
+        {
+          "moduleKey": "NO03FM",
+          "recordHash": "2c54790b36332019f7df8218bff4cd8a913f3d3a06297444e9c451eba85a9794"
+        },
+        {
+          "moduleKey": "SM07CS",
+          "recordHash": "0143ed155236bbcbed47e48bc103bfe1e3a832961056d27fcc852ee15cf24395"
+        }
+      ]
+    }
+  ],
+  "releaseQualified": false
+}

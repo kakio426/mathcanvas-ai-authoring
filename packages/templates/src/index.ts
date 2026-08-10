@@ -56,6 +56,7 @@ export {
   prepareWorksheetV2ForContractLab,
   type PrepareWorksheetV2Options
 } from "./worksheet-v2.js";
+export { buildR5VerticalSliceSpecs } from "./r5-vertical-slices.js";
 export {
   buildEduititHtml30ActivitySpecsV2,
   type EduititHtml30PromptHarnessEntryInput,

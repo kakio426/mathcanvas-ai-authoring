@@ -1,0 +1,854 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditId": "eduitit-html30-single-reopen-batch-v1",
+  "auditedAt": "2026-08-09T10:01:12.572Z",
+  "requestedCount": 30,
+  "reopenedCount": 30,
+  "basicLoadPassCount": 30,
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "observations": [
+    {
+      "sequence": 1,
+      "projectId": "53xBgM",
+      "url": "https://mathcanvas.vivasam.com/ko/view/53xBgM",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/01.png",
+      "screenshotSha256": "7114de5342f807aebed1035199a2fc0e3bb2d5d825a483e142e05f1c1f64cd52",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-01] 그림 하나에 숨은 수",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 2,
+      "projectId": "OThL8D",
+      "url": "https://mathcanvas.vivasam.com/ko/view/OThL8D",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/02.png",
+      "screenshotSha256": "70b3797f40207d1e83a58779cf89b02962346073dc2706339260de52a7001c85",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-02] 같은 묶음은 곱셈으로",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 3,
+      "projectId": "u3rRF1",
+      "url": "https://mathcanvas.vivasam.com/ko/view/u3rRF1",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/03.png",
+      "screenshotSha256": "4f3f1d20b73fd679f31e1cfa9723d9e7455c1f15c628077e9c651aa4243a360e",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-03] 줄과 칸으로 전체 수 찾기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 4,
+      "projectId": "GtMgcW",
+      "url": "https://mathcanvas.vivasam.com/ko/view/GtMgcW",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/04.png",
+      "screenshotSha256": "e50be76ca66763b6736ad3f669bd74ba5638757b555603e18f3f9fcf99fb2111",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-04] 34×2를 두 부분으로",
+      "persistedContentCount": 33,
+      "renderedProjectObjectCount": 40,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 5,
+      "projectId": "dCSwrF",
+      "url": "https://mathcanvas.vivasam.com/ko/view/dCSwrF",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/05.png",
+      "screenshotSha256": "c132c913408ca4453d005cfce88f550a06be362c1642d20394c5f1ddce7f560d",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-05] 상자 수를 자릿값으로 곱하기",
+      "persistedContentCount": 32,
+      "renderedProjectObjectCount": 36,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 6,
+      "projectId": "FWvobj",
+      "url": "https://mathcanvas.vivasam.com/ko/view/FWvobj",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/06.png",
+      "screenshotSha256": "40f9ea09156d61d6921d42e869f7d5433d52a62b42e35691b3f1507d437812ea",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-06] 18개를 똑같이 나누면",
+      "persistedContentCount": 48,
+      "renderedProjectObjectCount": 48,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 7,
+      "projectId": "I9yd4J",
+      "url": "https://mathcanvas.vivasam.com/ko/view/I9yd4J",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/07.png",
+      "screenshotSha256": "a7582471c1e758fc2607a79924b02cd0caa38ed9eab2e400e7ca9cb047fae16c",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-07] 곱셈의 빈칸으로 몫 찾기",
+      "persistedContentCount": 53,
+      "renderedProjectObjectCount": 53,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 8,
+      "projectId": "L8UbHR",
+      "url": "https://mathcanvas.vivasam.com/ko/view/L8UbHR",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/08.png",
+      "screenshotSha256": "b72daedd1136223cbb9d2132082f7cab908339489cf357857937c512a9e814df",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-08] 한 곱셈식에서 두 나눗셈식",
+      "persistedContentCount": 50,
+      "renderedProjectObjectCount": 50,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 9,
+      "projectId": "MXMzhA",
+      "url": "https://mathcanvas.vivasam.com/ko/view/MXMzhA",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/09.png",
+      "screenshotSha256": "9f720a6fbae9a7f0205b109d26d658607be2b28dbb903caed2dc95362dbae44d",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-09] 몇 묶음인지 곱셈으로 확인하기",
+      "persistedContentCount": 60,
+      "renderedProjectObjectCount": 60,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 10,
+      "projectId": "9ckyxH",
+      "url": "https://mathcanvas.vivasam.com/ko/view/9ckyxH",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/10.png",
+      "screenshotSha256": "94cc95820a32ff4aa7baf55f6bcd986acd2a6d511b69c41d4851fc163d938644",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-10] 분수의 첫 조건, 똑같이",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 11,
+      "projectId": "XlkGtW",
+      "url": "https://mathcanvas.vivasam.com/ko/view/XlkGtW",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/11.png",
+      "screenshotSha256": "81f7709208e636cfd31207edd524d1670879b74e82387226b629008e37014893",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-11] 같지 않은 조각을 고쳐 나누기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 12,
+      "projectId": "epzDGH",
+      "url": "https://mathcanvas.vivasam.com/ko/view/epzDGH",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/12.png",
+      "screenshotSha256": "e8b10f7e685b987af9ee77c9a8ee1c0264779a4e7941f3192a86f3823a519bc4",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-12] 전체와 부분을 분수로 읽기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 13,
+      "projectId": "2bFhv3",
+      "url": "https://mathcanvas.vivasam.com/ko/view/2bFhv3",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/13.png",
+      "screenshotSha256": "4514c03a2a432e9a810e216933034ee6e16d5811f06c37f847ec8816a996ed9d",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-13] 피자에서 분모와 분자 찾기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 14,
+      "projectId": "l7ZIXH",
+      "url": "https://mathcanvas.vivasam.com/ko/view/l7ZIXH",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/14.png",
+      "screenshotSha256": "9f9a1a07286130d2d809181a5b27ef46adb0cf7abb849f92280ced1a8637e59c",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-14] 연필에는 cm, 문에는 m",
+      "persistedContentCount": 23,
+      "renderedProjectObjectCount": 23,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 15,
+      "projectId": "ShY4az",
+      "url": "https://mathcanvas.vivasam.com/ko/view/ShY4az",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/15.png",
+      "screenshotSha256": "a64f9bc34c6d12a5aea9d8934a251b07d6f5670b4b89d153b7420399e7c1f9f0",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-15] 크기에 맞는 길이 단위",
+      "persistedContentCount": 22,
+      "renderedProjectObjectCount": 22,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 16,
+      "projectId": "Mg0wvC",
+      "url": "https://mathcanvas.vivasam.com/ko/view/Mg0wvC",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/16.png",
+      "screenshotSha256": "0ffdde6a23dbb588befd74221d5a934aadd207bdae47bf6140d66968fcf5aa2e",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-16] m·cm, km·m 연결하기",
+      "persistedContentCount": 23,
+      "renderedProjectObjectCount": 23,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 17,
+      "projectId": "Xn-NOz",
+      "url": "https://mathcanvas.vivasam.com/ko/view/Xn-NOz",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/17.png",
+      "screenshotSha256": "19d5e32916d4cec971fbaacaa512bc4bd826b908fb80fea10ef2206fc0282803",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-17] 자릿값을 살려 먼저 곱하기",
+      "persistedContentCount": 35,
+      "renderedProjectObjectCount": 42,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 18,
+      "projectId": "RN592e",
+      "url": "https://mathcanvas.vivasam.com/ko/view/RN592e",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/18.png",
+      "screenshotSha256": "121f33998e4e90051382f2f5af1955dcaaf3621edbd6d5add5dfe9bcb67f19f2",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-18] 부분곱을 빠짐없이 더하기",
+      "persistedContentCount": 34,
+      "renderedProjectObjectCount": 40,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 19,
+      "projectId": "RZXatG",
+      "url": "https://mathcanvas.vivasam.com/ko/view/RZXatG",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/19.png",
+      "screenshotSha256": "835e3f2c730e111330bb1e0f9d7bbb8f7f665cb5a3703fbda445ad47801c142a",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-19] 두 자리 수를 나누어 곱하기",
+      "persistedContentCount": 32,
+      "renderedProjectObjectCount": 37,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 20,
+      "projectId": "dQH0pA",
+      "url": "https://mathcanvas.vivasam.com/ko/view/dQH0pA",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/20.png",
+      "screenshotSha256": "fcf8e3f5472fc6bfe1548c37cff5367eb5528be23c75401307cd1a5c9874ba97",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-20] 나눗셈이 묻는 두 가지",
+      "persistedContentCount": 46,
+      "renderedProjectObjectCount": 46,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 21,
+      "projectId": "miSrDQ",
+      "url": "https://mathcanvas.vivasam.com/ko/view/miSrDQ",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/21.png",
+      "screenshotSha256": "2e6bc4a0bebfdb7dcd32243b58ff397cf7a0fc5e410c65c7b66815c95c5e2542",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-21] 먼저 나누고 남은 수 찾기",
+      "persistedContentCount": 35,
+      "renderedProjectObjectCount": 35,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 22,
+      "projectId": "E0r1Fb",
+      "url": "https://mathcanvas.vivasam.com/ko/view/E0r1Fb",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/22.png",
+      "screenshotSha256": "f560516f200fce684d569dacaa2b52dcdef5235f57d682f70d5063d099bdfe2e",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-22] 몫과 나머지로 처음 수 확인하기",
+      "persistedContentCount": 56,
+      "renderedProjectObjectCount": 56,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 23,
+      "projectId": "OrOAOu",
+      "url": "https://mathcanvas.vivasam.com/ko/view/OrOAOu",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/23.png",
+      "screenshotSha256": "1857cb03661aef13993d446c44d81e7072f5c13687c58f63754e28ab04117449",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-23] 원의 중심과 반지름 찾기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 24,
+      "projectId": "PJLu6O",
+      "url": "https://mathcanvas.vivasam.com/ko/view/PJLu6O",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/24.png",
+      "screenshotSha256": "ff2672aaffe8033eb883c29cb642fcd7e2b4af508aaa4c4de7e50470a54d28ed",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-24] 반지름 두 개가 만드는 지름",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 25,
+      "projectId": "ZRO8Y6",
+      "url": "https://mathcanvas.vivasam.com/ko/view/ZRO8Y6",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/25.png",
+      "screenshotSha256": "0d7c1b3c59f1c2ebb74d8426b161ee5f615979e70e9ddb8b47f055a056dec16c",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-25] 색칠한 부분을 분수로",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 26,
+      "projectId": "P8o2rx",
+      "url": "https://mathcanvas.vivasam.com/ko/view/P8o2rx",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/26.png",
+      "screenshotSha256": "434e33a4c5afa2408bbc21001a5ab6f83569c353d94c70a28cba3efb2045fca7",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-26] 가분수를 대분수로 바꾸기",
+      "persistedContentCount": 21,
+      "renderedProjectObjectCount": 21,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 27,
+      "projectId": "djPgtW",
+      "url": "https://mathcanvas.vivasam.com/ko/view/djPgtW",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/27.png",
+      "screenshotSha256": "a5684f5f1f08bc983ce64cb2f63fd934bcbc9d6edad67e48d4a9847c754dac0e",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-27] 분모가 같은 분수 비교하기",
+      "persistedContentCount": 20,
+      "renderedProjectObjectCount": 20,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 28,
+      "projectId": "RET523",
+      "url": "https://mathcanvas.vivasam.com/ko/view/RET523",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/28.png",
+      "screenshotSha256": "651d5bb39bbde9bc74a71cdbd151d6c42c2e1d541364698811fd3d4c949d12b2",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-28] L를 mL로 정확히 바꾸기",
+      "persistedContentCount": 25,
+      "renderedProjectObjectCount": 25,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 29,
+      "projectId": "0xoRoz",
+      "url": "https://mathcanvas.vivasam.com/ko/view/0xoRoz",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/29.png",
+      "screenshotSha256": "842af213742b73af9bb65ac50a777c20b6015be7822108c513852bdd245820f1",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-29] kg을 g으로 정확히 바꾸기",
+      "persistedContentCount": 25,
+      "renderedProjectObjectCount": 25,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    },
+    {
+      "sequence": 30,
+      "projectId": "Fo3kN6",
+      "url": "https://mathcanvas.vivasam.com/ko/view/Fo3kN6",
+      "screenshotPath": "/Users/yubyeongju/Documents/mathcanvas-ai/mathcanvas-ai-authoring/.mathcanvas-contract-lab/previews/eduitit-html30/30.png",
+      "screenshotSha256": "983d47f1b2a7b1d1fbdfd7866e26b9e848a2de0ea711d8d702e054d16a79a9d7",
+      "responseStatus": 200,
+      "projectTitle": "[EDUITIT-MC30-30] 그림그래프의 실제 차이 구하기",
+      "persistedContentCount": 19,
+      "renderedProjectObjectCount": 19,
+      "canvasRootVisible": true,
+      "canvasRootBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 800
+      },
+      "fixedChromeVisible": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "bodyScroll": {
+        "width": 1280,
+        "height": 800
+      },
+      "reopened": true
+    }
+  ]
+}

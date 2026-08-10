@@ -5,6 +5,8 @@ export * from "./catalog/evidence-reference.js";
 export * from "./catalog/native-spatial-gates.js";
 export * from "./catalog/native-spatial-harness.js";
 export * from "./catalog/one-screen-layout-registry.js";
+export * from "./catalog/r5-native-tool-discovery.js";
+export * from "./catalog/r5-vertical-slice.js";
 export * from "./catalog/tool-manifest.js";
 export * from "./catalog/variation-envelope.js";
 export * from "./catalog/pilot-ledger.js";

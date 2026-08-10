@@ -1,0 +1,765 @@
+{
+  "contentSha256": "bf41f71b1947c5a3f1061aa11c36bb60b56c5baefa2af10b766b04e4bbf5db7d",
+  "entries": [
+    {
+      "blockers": [
+        "activity-specific interaction evidence is not registered",
+        "actual save/reopen lifecycle is pending",
+        "fresh glyph and chrome canary is pending"
+      ],
+      "candidateState": "offline-design-candidate",
+      "catalogEntryId": "grade3-basic-practice-ppt-01",
+      "catalogSnapshotSha256": "8f4ecc96b76929678a4c17229e35c0702b252a937545b748956fb41459cd8892",
+      "families": {
+        "affordance": {
+          "id": "native-picture-graph-v1",
+          "rationale": "범례와 그림의 개수를 연결해 실제 수량을 읽고 비교한다.",
+          "version": "1.0.0"
+        },
+        "blueprint": {
+          "id": "picture-graph-interpretation-v1",
+          "rationale": "범례 단위와 그림 수를 곱해 실제 수량의 차이를 해석하는 판단을 공유한다.",
+          "version": "1.0.0"
+        },
+        "layout": {
+          "id": "one-screen-data-workbench-v1",
+          "rationale": "범례·그림그래프 native 영역과 수량 해석·설명 영역을 한 화면에 배치한다.",
+          "version": "1.0.0"
+        },
+        "variation": {
+          "id": "picture-graph-count-basic-v1",
+          "rationale": "30개 기본 연습의 한 화면 변형: 그림 수와 범례 중 무엇을 먼저 적용해 실제 수량을 비교할지 결정한다.",
+          "version": "1.0.0"
+        }
+      },
+      "learnerTask": {
+        "candidates": [
+          {
+            "candidateId": "add-one-picture",
+            "interpretation": "3×5=15에서 5권 한 묶음을 한 번 더한다.",
+            "text": "1개 더"
+          },
+          {
+            "candidateId": "repeat-visible-three",
+            "interpretation": "현재 보이는 그림 수 3을 그대로 더 놓을 수로 쓴다.",
+            "text": "3개 더"
+          },
+          {
+            "candidateId": "repeat-target-four",
+            "interpretation": "목표에 필요한 전체 그림 수 4를 추가 그림 수와 혼동한다.",
+            "text": "4개 더"
+          }
+        ],
+        "correctCandidateId": "add-one-picture",
+        "explanationEvidence": "학생이 만든 그림 4개, 범례 1개=5권, 식 4×5=20을 함께 사용한다.",
+        "initialAnswerComplete": false,
+        "instructions": {
+          "explanation": "그림 수와 한 개의 값을 곱한 식으로 설명하세요.",
+          "mathematicalConfirmation": "‘책’ 칸의 +를 눌러 20권이 되게 그림을 더하세요.",
+          "prediction": "먼저 답 카드를 하나 골라 예상 칸에 놓으세요.",
+          "revision": "처음 고른 답과 다르면 답 카드를 바꾸세요."
+        },
+        "phaseSequence": [
+          "prediction",
+          "mathematical-confirmation",
+          "explanation",
+          "revision"
+        ],
+        "question": "20권이 되려면 그림을 몇 개 더 놓을까요?"
+      },
+      "mathematicalDecision": "그림 한 개가 뜻하는 5권을 그림 수에 적용해 20권까지 더 필요한 그림 수를 결정한다.",
+      "misconception": {
+        "misconceptionId": "picture-count-as-additional-count",
+        "rejectedByObservedEvidence": "그림 3개는 15권이고 그림 한 개를 더한 4개에서 20권이 되는 native graph state가 두 답을 구별한다.",
+        "statement": "지금 보이는 그림 3개나 목표의 전체 그림 4개를 더 놓을 그림 수로 답한다."
+      },
+      "native": {
+        "configuredInitialState": {
+          "interpretedBookCount": 15,
+          "legend": "그림 1개 = 책 5권",
+          "requiredAdditionalPictureCount": null,
+          "targetBookCount": 20,
+          "visiblePictureCount": 3
+        },
+        "discoveryEvidenceContentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+        "discoveryEvidenceId": "r5-native-tool-discovery-v1",
+        "initialObjectSha256": "acb71608d2935718b705f95339f31f911175b3b5c2c8fdb8018e92740b7af402",
+        "initialScreenshotSha256": "3ea0a2a47ae80ca06f8a3035fed7e87362c64b0ab7e06a2efbe55a4dd6da64ab",
+        "initialTargetAnswerVisible": false,
+        "invariant": "그림 수 × 그림 한 개가 뜻하는 5권 = 실제 책 수",
+        "manipulatedObjectSha256": "990a7fc8bbe8b0f6ab5e99508e9d8c7cb11271063f17bd8db965d805a36d8e3a",
+        "manipulatedScreenshotSha256": "212ec0af25bdb80b7401326b5c51d9dd1a6dee155e5c9bb0634eb0e7d8420064",
+        "operation": "select-picture-graph-column-and-add-one-unit",
+        "primaryMathematicalStateChanged": true,
+        "targetState": {
+          "interpretedBookCount": 20,
+          "legend": "그림 1개 = 책 5권",
+          "requiredAdditionalPictureCount": 1,
+          "visiblePictureCount": 4
+        },
+        "toolKey": "DP03PG",
+        "variantId": "DP03PG-01"
+      },
+      "releaseQualified": false,
+      "schemaVersion": "1.0.0",
+      "sequence": 1,
+      "sliceId": "r5-ppt-01-v1",
+      "sliceVersion": "1.0.0",
+      "spatialPreflight": {
+        "actualInteractionEvidencePending": true,
+        "maximumNativeReserveCssHeight": 211.6,
+        "nativeScale": 0.78,
+        "oneScreenBudgetPass": true,
+        "predictedStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 205.83342,
+              "width": 302.43018,
+              "x": 1.35408,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 207.1875,
+              "width": 305.13912,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 207.1875,
+              "width": 323.19456,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "manipulated"
+          }
+        ],
+        "predictedUnionCss": {
+          "height": 207.1875,
+          "width": 323.19456,
+          "x": 0,
+          "y": 0
+        },
+        "problemCount": 1,
+        "profileContentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38",
+        "profileId": "student-one-screen-large-v1",
+        "profileVersion": "1.0.0",
+        "sourceStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 263.889,
+              "width": 387.731,
+              "x": 447.292,
+              "y": 227.546
+            },
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 265.625,
+              "width": 391.204,
+              "x": 445.556,
+              "y": 227.546
+            },
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 265.625,
+              "width": 414.352,
+              "x": 445.556,
+              "y": 227.546
+            },
+            "state": "manipulated"
+          }
+        ]
+      },
+      "title": "그림 하나에 숨은 수"
+    },
+    {
+      "blockers": [
+        "activity-specific interaction evidence is not registered",
+        "actual save/reopen lifecycle is pending",
+        "fresh glyph and chrome canary is pending"
+      ],
+      "candidateState": "offline-design-candidate",
+      "catalogEntryId": "grade3-basic-practice-ppt-02",
+      "catalogSnapshotSha256": "4a78eb818fd4191e281c5d56152f3395cf32b04a0c25d1ef5d912f2f02bb9e9c",
+      "families": {
+        "affordance": {
+          "id": "native-array-model-v1",
+          "rationale": "배열의 행·열 구조를 바꾸거나 선택해 전체 수를 확인한다.",
+          "version": "1.0.0"
+        },
+        "blueprint": {
+          "id": "discrete-array-meaning-v1",
+          "rationale": "행·열 또는 같은 묶음 구조를 곱셈식과 연결하는 판단을 공유한다.",
+          "version": "1.0.0"
+        },
+        "layout": {
+          "id": "one-screen-array-workbench-v1",
+          "rationale": "배열·묶음 native 모형과 예상·설명 영역을 한 화면에 함께 배치한다.",
+          "version": "1.0.0"
+        },
+        "variation": {
+          "id": "array-group-basic-v1",
+          "rationale": "30개 기본 연습의 한 화면 변형: 같은 수씩 묶인 배열을 어떤 곱셈식으로 나타낼지 결정한다.",
+          "version": "1.0.0"
+        }
+      },
+      "learnerTask": {
+        "candidates": [
+          {
+            "candidateId": "sum-factors-ten",
+            "interpretation": "4와 6을 더한다.",
+            "text": "10개"
+          },
+          {
+            "candidateId": "initial-table-twenty",
+            "interpretation": "초기 5칸 표의 4×5 값을 목표 답으로 오해한다.",
+            "text": "20개"
+          },
+          {
+            "candidateId": "four-by-six-twenty-four",
+            "interpretation": "6개씩 4줄을 4×6으로 나타낸다.",
+            "text": "24개"
+          }
+        ],
+        "correctCandidateId": "four-by-six-twenty-four",
+        "explanationEvidence": "학생이 만든 4줄×6칸 배열, 교차 칸 24, 식 4×6=24를 함께 사용한다.",
+        "initialAnswerComplete": false,
+        "instructions": {
+          "explanation": "표에서 4와 6이 만난 칸의 수를 곱셈식으로 써서 설명하세요.",
+          "mathematicalConfirmation": "표의 끝점을 끌어 가로 6칸, 세로 4줄로 바꾸세요.",
+          "prediction": "먼저 답 카드를 하나 골라 예상 칸에 놓으세요.",
+          "revision": "처음 고른 답과 다르면 답 카드를 바꾸세요."
+        },
+        "phaseSequence": [
+          "prediction",
+          "mathematical-confirmation",
+          "explanation",
+          "revision"
+        ],
+        "question": "6개씩 4줄이면 모두 몇 개일까요?"
+      },
+      "mathematicalDecision": "한 줄의 6개와 4줄을 배열의 두 방향에 대응시켜 전체를 4×6으로 결정한다.",
+      "misconception": {
+        "misconceptionId": "multiply-factors-as-addends",
+        "rejectedByObservedEvidence": "4줄 6칸의 교차 칸에 24가 나타나는 native multiplication table이 덧셈 10과 초기 4×5의 20을 구별한다.",
+        "statement": "4와 6을 같은 묶음 구조로 보지 않고 4+6=10으로 계산한다."
+      },
+      "native": {
+        "configuredInitialState": {
+          "targetColumn": 6,
+          "targetProduct": null,
+          "targetRow": 4,
+          "visibleColumns": 5,
+          "visibleRows": 5
+        },
+        "discoveryEvidenceContentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+        "discoveryEvidenceId": "r5-native-tool-discovery-v1",
+        "initialObjectSha256": "d84b0e943ece98320cb37a3cb6845b33899596136e96dae42260ba64f188f165",
+        "initialScreenshotSha256": "48ad257e7f70758194406bd0a9882568a0325d73c169a1a7728038fbdfffdf08",
+        "initialTargetAnswerVisible": false,
+        "invariant": "한 줄의 수 × 줄 수 = 배열의 전체 수",
+        "manipulatedObjectSha256": "a2acef0a0472ecfad6cd882901fea2d9cdcbefed20fc282becbe50f08c224f06",
+        "manipulatedScreenshotSha256": "c3b16eba2180902b369d0415d4ddb546550ace9d8a3948c3b551bae24431dd32",
+        "operation": "make-four-rows-by-six-columns-to-reveal-target-product",
+        "primaryMathematicalStateChanged": true,
+        "targetState": {
+          "targetColumn": 6,
+          "targetProduct": 24,
+          "targetRow": 4,
+          "visibleColumns": 6,
+          "visibleRows": 4
+        },
+        "toolKey": "NO04NG",
+        "variantId": "NO04NG-03"
+      },
+      "releaseQualified": false,
+      "schemaVersion": "1.0.0",
+      "sequence": 2,
+      "sliceId": "r5-ppt-02-v1",
+      "sliceVersion": "1.0.0",
+      "spatialPreflight": {
+        "actualInteractionEvidencePending": true,
+        "maximumNativeReserveCssHeight": 211.6,
+        "nativeScale": 0.65,
+        "oneScreenBudgetPass": true,
+        "predictedStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 180.5557,
+              "width": 180.5557,
+              "x": 1.12905,
+              "y": 21.0652
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 208.3913,
+              "width": 188.45515,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 178.2989,
+              "width": 218.54755,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "manipulated"
+          }
+        ],
+        "predictedUnionCss": {
+          "height": 208.3913,
+          "width": 218.54755,
+          "x": 0,
+          "y": 0
+        },
+        "problemCount": 1,
+        "profileContentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38",
+        "profileId": "student-one-screen-large-v1",
+        "profileVersion": "1.0.0",
+        "sourceStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 277.778,
+              "width": 277.778,
+              "x": 498.218,
+              "y": 242.593
+            },
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 320.602,
+              "width": 289.931,
+              "x": 496.481,
+              "y": 210.185
+            },
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 274.306,
+              "width": 336.227,
+              "x": 496.481,
+              "y": 210.185
+            },
+            "state": "manipulated"
+          }
+        ]
+      },
+      "title": "같은 묶음은 곱셈으로"
+    },
+    {
+      "blockers": [
+        "activity-specific interaction evidence is not registered",
+        "actual save/reopen lifecycle is pending",
+        "fresh glyph and chrome canary is pending"
+      ],
+      "candidateState": "offline-design-candidate",
+      "catalogEntryId": "grade3-basic-practice-ppt-10",
+      "catalogSnapshotSha256": "eaf7bd42c43d325fcfbd5af1778f3c27ee055e6544bec5372772c8e3e27ff556",
+      "families": {
+        "affordance": {
+          "id": "native-fraction-model-v1",
+          "rationale": "같은 전체를 일정한 조각으로 나누고 색칠한 조각 수를 비교한다.",
+          "version": "1.0.0"
+        },
+        "blueprint": {
+          "id": "fraction-part-whole-v1",
+          "rationale": "같은 전체를 똑같이 나눈 조각과 부분의 수를 분수로 연결하는 판단을 공유한다.",
+          "version": "1.0.0"
+        },
+        "layout": {
+          "id": "one-screen-fraction-workbench-v1",
+          "rationale": "분수 native 모형의 전체·조각 reserve를 먼저 확보하고 설명 영역을 배치한다.",
+          "version": "1.0.0"
+        },
+        "variation": {
+          "id": "fraction-part-whole-10-basic-v1",
+          "rationale": "30개 기본 연습의 한 화면 변형: 분수로 나타내려는 전체를 똑같이 나누었는지 결정한다.",
+          "version": "1.0.0"
+        }
+      },
+      "learnerTask": {
+        "candidates": [
+          {
+            "candidateId": "three-quarter-parts",
+            "interpretation": "조각 사이 경계선의 수를 조각 수로 센다.",
+            "text": "3개"
+          },
+          {
+            "candidateId": "four-quarter-parts",
+            "interpretation": "같은 1/4 조각 네 개가 4/4, 즉 전체 1을 이룬다.",
+            "text": "4개"
+          },
+          {
+            "candidateId": "five-quarter-parts",
+            "interpretation": "전체 1을 넘는 5/4까지 한 조각 더 붙인다.",
+            "text": "5개"
+          }
+        ],
+        "correctCandidateId": "four-quarter-parts",
+        "explanationEvidence": "학생이 늘린 1/4 조각 네 개와 4/4=1 관계를 사용한다.",
+        "initialAnswerComplete": false,
+        "instructions": {
+          "explanation": "똑같은 1/4 조각이 몇 개 모여 전체 1이 되었는지 쓰세요.",
+          "mathematicalConfirmation": "띠의 끝점을 끌어 1/4 조각 4개로 만드세요.",
+          "prediction": "먼저 답 카드를 하나 골라 예상 칸에 놓으세요.",
+          "revision": "처음 고른 답과 다르면 답 카드를 바꾸세요."
+        },
+        "phaseSequence": [
+          "prediction",
+          "mathematical-confirmation",
+          "explanation",
+          "revision"
+        ],
+        "question": "1/4 조각 몇 개가 모이면 1일까요?"
+      },
+      "mathematicalDecision": "같은 전체 1을 이루려면 똑같은 1/4 조각이 정확히 네 개 필요하다고 결정한다.",
+      "misconception": {
+        "misconceptionId": "fraction-boundaries-as-parts",
+        "rejectedByObservedEvidence": "native fraction strip을 1/4 한 조각에서 4/4까지 늘리면 선이 아니라 같은 조각 네 개가 전체 1을 이룸이 보인다.",
+        "statement": "조각 사이의 선 세 개를 세어 1/4 조각이 세 개 필요하다고 답한다."
+      },
+      "native": {
+        "configuredInitialState": {
+          "divider": 4,
+          "equalPartCount": 1,
+          "fraction": "1/4",
+          "wholeComplete": false
+        },
+        "discoveryEvidenceContentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+        "discoveryEvidenceId": "r5-native-tool-discovery-v1",
+        "initialObjectSha256": "9dfab3c91c5de4bd694459822ce7a74b2daee4f13b4f35b50682a9c1b44891ee",
+        "initialScreenshotSha256": "3c92f1576a7ecdfc90e262eb14af60d9efbf05779f9a04c7cbbe8e7f6df68a0e",
+        "initialTargetAnswerVisible": false,
+        "invariant": "전체 1은 똑같은 1/4 조각 네 개로 이루어진다.",
+        "manipulatedObjectSha256": "5d0594b9f7ff60fa6ccd1899b781966e62b56736722ebad60cfc14545c2535b9",
+        "manipulatedScreenshotSha256": "4fc108f3d5c2c46ce6d9f74ac5b61b014d29b6f8dc75ab8f957fa26a0d9a7bd2",
+        "operation": "extend-equal-fraction-parts",
+        "primaryMathematicalStateChanged": true,
+        "targetState": {
+          "divider": 4,
+          "equalPartCount": 4,
+          "fraction": "4/4",
+          "wholeComplete": true
+        },
+        "toolKey": "NO03FM",
+        "variantId": "NO03FM-07"
+      },
+      "releaseQualified": false,
+      "schemaVersion": "1.0.0",
+      "sequence": 10,
+      "sliceId": "r5-ppt-10-v1",
+      "sliceVersion": "1.0.0",
+      "spatialPreflight": {
+        "actualInteractionEvidencePending": true,
+        "maximumNativeReserveCssHeight": 211.6,
+        "nativeScale": 1,
+        "oneScreenBudgetPass": true,
+        "predictedStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 46.296,
+              "width": 92.593,
+              "x": 1.158,
+              "y": 31.25
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 78.704,
+              "width": 104.167,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 78.704,
+              "width": 381.944,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "manipulated"
+          }
+        ],
+        "predictedUnionCss": {
+          "height": 78.704,
+          "width": 381.944,
+          "x": 0,
+          "y": 0
+        },
+        "problemCount": 1,
+        "profileContentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38",
+        "profileId": "student-one-screen-large-v1",
+        "profileVersion": "1.0.0",
+        "sourceStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 46.296,
+              "width": 92.593,
+              "x": 593.704,
+              "y": 376.852
+            },
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 78.704,
+              "width": 104.167,
+              "x": 592.546,
+              "y": 345.602
+            },
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 78.704,
+              "width": 381.944,
+              "x": 592.546,
+              "y": 345.602
+            },
+            "state": "manipulated"
+          }
+        ]
+      },
+      "title": "분수의 첫 조건, 똑같이"
+    },
+    {
+      "blockers": [
+        "activity-specific interaction evidence is not registered",
+        "actual save/reopen lifecycle is pending",
+        "fresh glyph and chrome canary is pending"
+      ],
+      "candidateState": "offline-design-candidate",
+      "catalogEntryId": "grade3-basic-practice-ppt-23",
+      "catalogSnapshotSha256": "8ed8ebe9a29b0b29c61b5c2c7829c7e370793f75d2f0b56bb7d23d037ab85386",
+      "families": {
+        "affordance": {
+          "id": "native-circle-model-v1",
+          "rationale": "원의 중심에서 원 위 점까지 선을 조작해 반지름·지름을 확인한다.",
+          "version": "1.0.0"
+        },
+        "blueprint": {
+          "id": "circle-components-v1",
+          "rationale": "원의 중심·반지름·지름 관계를 native 원 모형으로 확인하는 판단을 공유한다.",
+          "version": "1.0.0"
+        },
+        "layout": {
+          "id": "one-screen-circle-workbench-v1",
+          "rationale": "원 native 요소의 중심·반지름·지름 reserve를 중심으로 설명과 수정 영역을 배치한다.",
+          "version": "1.0.0"
+        },
+        "variation": {
+          "id": "circle-components-23-basic-v1",
+          "rationale": "30개 기본 연습의 한 화면 변형: 원에서 중심과 반지름을 나타내는 점·선을 선택한다.",
+          "version": "1.0.0"
+        }
+      },
+      "learnerTask": {
+        "candidates": [
+          {
+            "candidateId": "circle-radius",
+            "interpretation": "원의 중심과 원 위의 한 점을 이은 선분이다.",
+            "text": "반지름"
+          },
+          {
+            "candidateId": "circle-diameter",
+            "interpretation": "중심을 지나 원 위의 두 점을 잇는 선분과 혼동한다.",
+            "text": "지름"
+          },
+          {
+            "candidateId": "circle-circumference",
+            "interpretation": "원의 경계 전체와 중심에서 경계까지의 선분을 혼동한다.",
+            "text": "원의 둘레"
+          }
+        ],
+        "correctCandidateId": "circle-radius",
+        "explanationEvidence": "중심 O의 고정, 원 위 검은 점, 바뀐 반지름 길이를 함께 사용한다.",
+        "initialAnswerComplete": false,
+        "instructions": {
+          "explanation": "O에서 원 위까지 이은 선분을 보고 설명하세요.",
+          "mathematicalConfirmation": "중심 O는 그대로 두고 검은 점을 끌어 원의 크기를 바꾸세요.",
+          "prediction": "먼저 답 카드를 하나 골라 예상 칸에 놓으세요.",
+          "revision": "처음 고른 답과 다르면 답 카드를 바꾸세요."
+        },
+        "phaseSequence": [
+          "prediction",
+          "mathematical-confirmation",
+          "explanation",
+          "revision"
+        ],
+        "question": "O에서 원 위까지 이은 선분은 무엇일까요?"
+      },
+      "mathematicalDecision": "원의 크기가 바뀌어도 중심 O에서 원 위까지 이은 선분은 반지름이라고 결정한다.",
+      "misconception": {
+        "misconceptionId": "center-to-circle-segment-as-diameter",
+        "rejectedByObservedEvidence": "중심 O를 고정하고 원의 크기를 바꾸면 중심에서 원 위까지의 한쪽 길이만 변하며, 원을 가로지르는 지름과 구별된다.",
+        "statement": "중심에서 원 위 한 점까지만 이은 선분을 지름이라고 답한다."
+      },
+      "native": {
+        "configuredInitialState": {
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "centerLabel": "O",
+          "radius": 200,
+          "relationName": null
+        },
+        "discoveryEvidenceContentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+        "discoveryEvidenceId": "r5-native-tool-discovery-v1",
+        "initialObjectSha256": "f71864bb56e4b2345a3f7593b5395ea7b295e91d9a3b5e42d0612dc5909a0e3d",
+        "initialScreenshotSha256": "f062361cbfe313b4a8f9eb6fc40f76ad4c2a454ecc8d176c54b2a0c3f17835aa",
+        "initialTargetAnswerVisible": false,
+        "invariant": "원의 중심과 원 위의 한 점을 이은 선분은 반지름이다.",
+        "manipulatedObjectSha256": "13c2d8d5c51f203732ef16dcbd229a0c0cf0fff3a02fdd82c45ce87d6b9f1e44",
+        "manipulatedScreenshotSha256": "2ae64c4cbe22be7de3ed9fe0f62b9efab1c17572854cc1ccd9fb3e1ad10e8d25",
+        "operation": "change-circle-radius",
+        "primaryMathematicalStateChanged": true,
+        "targetState": {
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "centerLabel": "O",
+          "radius": 80,
+          "relationName": "반지름"
+        },
+        "toolKey": "SM07CS",
+        "variantId": "SM07CS-01"
+      },
+      "releaseQualified": false,
+      "schemaVersion": "1.0.0",
+      "sequence": 23,
+      "sliceId": "r5-ppt-23-v1",
+      "sliceVersion": "1.0.0",
+      "spatialPreflight": {
+        "actualInteractionEvidencePending": true,
+        "maximumNativeReserveCssHeight": 211.6,
+        "nativeScale": 0.82,
+        "oneScreenBudgetPass": true,
+        "predictedStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 189.81442,
+              "width": 189.81524,
+              "x": 3.32182,
+              "y": 3.32182
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 205.53218,
+              "width": 205.53218,
+              "x": 0,
+              "y": 0
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 90.63624,
+              "width": 90.63624,
+              "x": 56.9449,
+              "y": 56.9449
+            },
+            "relativeTo": "native-union-top-left",
+            "state": "manipulated"
+          }
+        ],
+        "predictedUnionCss": {
+          "height": 205.53218,
+          "width": 205.53218,
+          "x": 0,
+          "y": 0
+        },
+        "problemCount": 1,
+        "profileContentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38",
+        "profileId": "student-one-screen-large-v1",
+        "profileVersion": "1.0.0",
+        "sourceStateEnvelopesCss": [
+          {
+            "bounds": {
+              "height": 231.481,
+              "width": 231.482,
+              "x": 524.259,
+              "y": 284.259
+            },
+            "state": "initial"
+          },
+          {
+            "bounds": {
+              "height": 250.649,
+              "width": 250.649,
+              "x": 520.208,
+              "y": 280.208
+            },
+            "state": "selected"
+          },
+          {
+            "bounds": {
+              "height": 110.532,
+              "width": 110.532,
+              "x": 589.653,
+              "y": 349.653
+            },
+            "state": "manipulated"
+          }
+        ]
+      },
+      "title": "원의 중심과 반지름 찾기"
+    }
+  ],
+  "generatedAt": "2026-08-09T08:55:35.709Z",
+  "releaseQualified": false,
+  "schemaVersion": "1.0.0",
+  "setId": "r5-four-representation-vertical-slices-v1",
+  "setVersion": "1.0.0",
+  "sourceBindings": {
+    "nativeDiscovery": {
+      "contentSha256": "7f14338049d0050691e26073e07c3c121cea08da2674c7d57c11665f05adfed5",
+      "fileSha256": "c287e720f2f3fa3adf8dd45cfde8d7ba89bbb801f134426626f5ac72581e4a16",
+      "path": "research/mathcanvas/r5-native-tool-discovery.json"
+    },
+    "oneScreenProfile": {
+      "contentSha256": "fe508889c50657b7d0a4e29db171aa3d581e6c7c0fcf1d5ec984b31db05e5b38",
+      "fileSha256": "78eb7f79b27ac46c30ab81ff71467ede0f6f9feedec7232dbb3805f0804b9580",
+      "path": "research/mathcanvas/student-one-screen-large-v1.json"
+    },
+    "promptHarness": {
+      "contentSha256": "98024ab7fb6ec0a29285a86e131850468b2b2559c849e06a8342315e922c4fcd",
+      "fileSha256": "0c682f4e6eabc68e7e04e470a437011ab3c7bf04d69933e92ff20edb768fc935",
+      "path": "research/mathcanvas/eduitit-html30-prompt-harness.json"
+    }
+  },
+  "status": "offline-four-slice-review-ready"
+}
