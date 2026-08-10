@@ -1,5 +1,10 @@
 # 곱셈 TeacherIntent v1 — 구현 핸드오프
 
+> 기록 상태(2026-08-11): 이 문서는 완료된 곱셈 v1의 원 사양이다. 현재 공통화·
+> 나눗셈·분수 확장 상태는 `TEACHER_INTENT_PLAN.md`와
+> `TEACHER_INTENT_CHECKLIST.md`의 R7~R10을 기준으로 한다. 새 Codex 핸드오프를
+> 요구하지 않으며, 현재 구현은 이 저장소에서 직접 이어 간다.
+
 > 빌더 시작 안내: 먼저 `AGENTS.md`와 `TEACHER_INTENT_PLAN.md`를 끝까지 읽으세요.
 > 그다음 `TEACHER_INTENT_CHECKLIST.md`를 R1부터 순서대로 진행하고 상태와 검증 결과를
 > 직접 갱신하세요. 이 문서가 구현 사양이고 체크리스트가 진행 기록입니다. 저장소의
@@ -279,4 +284,3 @@ pnpm check
 - MCP·웹 기존 흐름 호환, 승인/create-only 안전장치 무파손.
 - `pnpm check` 녹색과 골든 QA 보고서 생성.
 - 남은 사람 확인은 제작자의 화면 1회와 (원할 때만) 외부 실생성 1회로 명확히 분리.
-
