@@ -14,9 +14,7 @@ import {
 } from "@mathcanvas/authoring-runtime";
 import {
   findTeacherCurriculumStandard,
-  findTeacherTextbookUnit,
-  teacherCurriculumCatalog,
-  teacherTextbookUnits
+  findTeacherTextbookUnit
 } from "@mathcanvas/curriculum";
 import type {
   ApiErrorBody,
@@ -32,10 +30,12 @@ import {
 } from "./session.js";
 import { buildInputReflections } from "./input-reflections.js";
 import {
-  multiplicationArrayTeacherIntentSchema,
-  type MultiplicationArrayTeacherIntent
+  findTeacherIntentCapabilityForRoute,
+  teacherIntentSchema,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 import { appendTeacherInputLog } from "./teacher-input-log.js";
+import { buildCurriculumCatalogResponse } from "./curriculum-catalog.js";
 
 const currentDirectory = dirname(fileURLToPath(import.meta.url));
 const staticDirectory = join(currentDirectory, "..", "web");
@@ -163,7 +163,7 @@ function toPublicActivity(
     >;
     learningNeedLabel: string;
     contextNote: string;
-    teacherIntent?: MultiplicationArrayTeacherIntent;
+    teacherIntent?: TeacherIntent;
   }
 ): PublicActivity {
   const recommendation = result.recommendation;
@@ -307,44 +307,8 @@ async function handleApi(
   }
 
   if (request.method === "GET" && url.pathname === "/api/curriculum") {
-    const body: CurriculumCatalogResponse = {
-      units: teacherTextbookUnits.map((unit) => ({
-        id: unit.id,
-        curriculumVersion: unit.curriculumVersion,
-        publisher: unit.publisher,
-        grade: unit.grade,
-        semester: unit.semester,
-        unitNumber: unit.unitNumber,
-        title: unit.title,
-        sourceUrl: unit.sourceUrl,
-        standardCodes: [...unit.standardCodes],
-        activityIds: [...unit.activityIds]
-      })),
-      standards: teacherCurriculumCatalog.map((standard) => ({
-        standardCode: standard.standardCode,
-        gradeBand: standard.gradeBand,
-        domain: standard.domain,
-        focusLabel: standard.focusLabel,
-        standardSummary: standard.standardSummary,
-        summaryKind: standard.summaryKind,
-        activities: standard.activities.map((activity) => ({
-          id: activity.id,
-          label: activity.label,
-          description: activity.description,
-          defaultProblemCount: activity.defaultProblemCount,
-          availableProblemCounts: [...activity.availableProblemCounts],
-          availability: activity.availability,
-          ...(activity.manipulation === "multiplication-array-choice-drag"
-            ? { teacherIntentCapability: "multiplication-array-v1" as const }
-            : {}),
-          learningNeeds: activity.learningNeeds.map((need) => ({
-            id: need.id,
-            label: need.label,
-            description: need.description
-          }))
-        }))
-      }))
-    };
+    const body: CurriculumCatalogResponse =
+      buildCurriculumCatalogResponse();
     json(response, 200, body as unknown as Record<string, unknown>);
     return;
   }
@@ -391,7 +355,7 @@ async function handleApi(
     const teacherIntentResult =
       body.teacherIntent === undefined
         ? undefined
-        : multiplicationArrayTeacherIntentSchema.safeParse(
+        : teacherIntentSchema.safeParse(
             body.teacherIntent
           );
     const unit = findTeacherTextbookUnit(unitId);
@@ -424,15 +388,16 @@ async function handleApi(
       return;
     }
     const teacherIntent = teacherIntentResult?.data;
-    if (
-      teacherIntent &&
-      activityOption.manipulation !== "multiplication-array-choice-drag"
-    ) {
+    const teacherIntentCapability = findTeacherIntentCapabilityForRoute({
+      manipulation: activityOption.manipulation,
+      standardCode: standard.standardCode
+    });
+    if (teacherIntent && teacherIntentCapability?.kind !== teacherIntent.kind) {
       error(
         response,
         400,
         "teacher_intent_confirmation_required",
-        "첫 문항 맞춤 조건은 곱셈 배열 활동에서만 사용할 수 있습니다."
+        "선택한 활동과 첫 문항 맞춤 조건의 종류가 다릅니다. 조건을 다시 골라 주세요."
       );
       return;
     }

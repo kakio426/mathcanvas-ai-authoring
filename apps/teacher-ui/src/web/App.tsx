@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState, type FormEvent } from "react";
 import {
-  MULTIPLICATION_ARRAY_CONTEXT_LABELS,
-  MULTIPLICATION_ARRAY_CONTEXT_OBJECT_IDS,
-  MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE,
-  MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE,
-  multiplicationArrayTeacherIntentSchema,
+  TEACHER_INTENT_CAPABILITIES,
+  createDefaultTeacherIntent,
+  getTeacherIntentCapability,
+  teacherIntentSchema,
   type ApiErrorBody,
   type CreationStatus,
   type CurriculumActivityOption,
@@ -12,7 +11,8 @@ import {
   type CurriculumStandardOption,
   type CurriculumUnitOption,
   type InputReflectionStatus,
-  type MultiplicationArrayTeacherIntent,
+  type TeacherIntent,
+  type TeacherIntentFieldDefinition,
   type PreviewResponse,
   type PublicActivity,
   type SessionResponse
@@ -30,7 +30,7 @@ interface LessonForm {
   contextNote: string;
   problemCount: 1 | 2 | 4 | 6;
   teacherIntentEnabled: boolean;
-  teacherIntent: MultiplicationArrayTeacherIntent;
+  teacherIntent: TeacherIntent;
 }
 
 class ApiClientError extends Error {
@@ -89,6 +89,11 @@ function formForStandard(
       teacherIntentEnabled: false
     };
   }
+  const teacherIntentCapability = activity.teacherIntentCapability
+    ? getTeacherIntentCapability(activity.teacherIntentCapability)
+    : undefined;
+  const preservesTeacherIntent =
+    teacherIntentCapability?.kind === current.teacherIntent.kind;
   return {
     ...current,
     standardCode: standard.standardCode,
@@ -96,10 +101,34 @@ function formForStandard(
     learningNeedId: learningNeed.id,
     problemCount: activity.defaultProblemCount,
     teacherIntentEnabled:
-      activity.teacherIntentCapability === "multiplication-array-v1"
-        ? current.teacherIntentEnabled
-        : false
+      preservesTeacherIntent && current.teacherIntentEnabled,
+    teacherIntent: teacherIntentCapability
+      ? current.teacherIntent.kind === teacherIntentCapability.kind
+        ? current.teacherIntent
+        : createDefaultTeacherIntent(teacherIntentCapability.kind)
+      : current.teacherIntent
   };
+}
+
+function teacherIntentFieldValue(
+  intent: TeacherIntent,
+  field: TeacherIntentFieldDefinition
+): string | number {
+  const value = (intent as unknown as Readonly<Record<string, unknown>>)[
+    field.key
+  ];
+  return typeof value === "number" || typeof value === "string" ? value : "";
+}
+
+function withTeacherIntentField(
+  intent: TeacherIntent,
+  field: TeacherIntentFieldDefinition,
+  rawValue: string
+): TeacherIntent {
+  return {
+    ...intent,
+    [field.key]: field.control === "number" ? Number(rawValue) : rawValue
+  } as TeacherIntent;
 }
 
 function StepDots({ step }: { step: number }) {
@@ -218,13 +247,9 @@ export function App() {
     contextNote: "",
     problemCount: 4,
     teacherIntentEnabled: false,
-    teacherIntent: {
-      kind: "multiplication-array-v1",
-      itemsPerGroup: 4,
-      groupCount: 6,
-      contextObjectId: "ice-cream",
-      misconceptionId: "groups-size-order"
-    }
+    teacherIntent: createDefaultTeacherIntent(
+      TEACHER_INTENT_CAPABILITIES[0]!.kind
+    )
   });
   const [catalog, setCatalog] = useState<CurriculumCatalogResponse>();
   const [recommending, setRecommending] = useState(false);
@@ -348,13 +373,13 @@ export function App() {
     }
     if (
       form.teacherIntentEnabled &&
-      selectedActivity?.teacherIntentCapability !== "multiplication-array-v1"
+      selectedActivity?.teacherIntentCapability !== form.teacherIntent.kind
     ) {
-      setMessage("첫 문항 맞춤은 곱셈 배열 활동에서만 사용할 수 있어요.");
+      setMessage("선택한 활동과 첫 문항 맞춤 조건이 달라요. 활동을 다시 골라 주세요.");
       return;
     }
     const parsedTeacherIntent = form.teacherIntentEnabled
-      ? multiplicationArrayTeacherIntentSchema.safeParse(form.teacherIntent)
+      ? teacherIntentSchema.safeParse(form.teacherIntent)
       : undefined;
     if (parsedTeacherIntent && !parsedTeacherIntent.success) {
       setMessage("첫 문항에 사용할 수와 맥락을 다시 확인해 주세요.");
@@ -444,6 +469,9 @@ export function App() {
   const selectedActivity = selectedStandard?.activities.find(
     (activityOption) => activityOption.id === form.activityId
   );
+  const selectedIntentCapability = selectedActivity?.teacherIntentCapability
+    ? getTeacherIntentCapability(selectedActivity.teacherIntentCapability)
+    : undefined;
   const selectedLearningNeed = selectedActivity?.learningNeeds.find(
     (need) => need.id === form.learningNeedId
   );
@@ -678,7 +706,7 @@ export function App() {
                     options={selectedActivity.availableProblemCounts.map((value) => ({ value, label: `${value}문항` }))}
                     onChange={(problemCount) => setForm({ ...form, problemCount })}
                   />
-                  {selectedActivity.teacherIntentCapability === "multiplication-array-v1" ? (
+                  {selectedIntentCapability ? (
                     <div className="teacher-intent-settings">
                       <label className="intent-toggle">
                         <input
@@ -692,88 +720,74 @@ export function App() {
                           }
                         />
                         <span>
-                          <strong>첫 문항 직접 맞추기</strong>
-                          <small>수의 뜻과 사물 맥락을 실제 첫 문제에 넣습니다.</small>
+                          <strong>{selectedIntentCapability.title}</strong>
+                          <small>검증된 조건만 실제 첫 문제에 넣습니다.</small>
                         </span>
                       </label>
                       {form.teacherIntentEnabled ? (
                         <div className="intent-controls">
-                          <div className="intent-equation" aria-label="첫 문항 곱셈 상황">
-                            <label>
-                              <span>한 묶음의 수</span>
-                              <span className="number-control">
-                                <input
-                                  type="number"
-                                  min={MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE.min}
-                                  max={MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE.max}
-                                  value={form.teacherIntent.itemsPerGroup}
-                                  onChange={(event) =>
-                                    setForm((current) => ({
-                                      ...current,
-                                      teacherIntent: {
-                                        ...current.teacherIntent,
-                                        itemsPerGroup: Number(event.target.value)
-                                      }
-                                    }))
-                                  }
-                                />
-                                <em>개씩</em>
-                              </span>
-                            </label>
-                            <span className="intent-times" aria-hidden="true">×</span>
-                            <label>
-                              <span>묶음 수</span>
-                              <span className="number-control">
-                                <input
-                                  type="number"
-                                  min={MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE.min}
-                                  max={MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE.max}
-                                  value={form.teacherIntent.groupCount}
-                                  onChange={(event) =>
-                                    setForm((current) => ({
-                                      ...current,
-                                      teacherIntent: {
-                                        ...current.teacherIntent,
-                                        groupCount: Number(event.target.value)
-                                      }
-                                    }))
-                                  }
-                                />
-                                <em>묶음</em>
-                              </span>
-                            </label>
-                          </div>
-                          <div className="intent-select-grid">
-                            <label className="select-field">
-                              <span>사물 맥락</span>
-                              <select
-                                value={form.teacherIntent.contextObjectId}
-                                onChange={(event) =>
-                                  setForm((current) => ({
-                                    ...current,
-                                    teacherIntent: {
-                                      ...current.teacherIntent,
-                                      contextObjectId: event.target.value as MultiplicationArrayTeacherIntent["contextObjectId"]
-                                    }
-                                  }))
-                                }
-                              >
-                                {MULTIPLICATION_ARRAY_CONTEXT_OBJECT_IDS.map((contextObjectId) => (
-                                  <option key={contextObjectId} value={contextObjectId}>
-                                    {MULTIPLICATION_ARRAY_CONTEXT_LABELS[contextObjectId]}
-                                  </option>
-                                ))}
-                              </select>
-                            </label>
-                            <label className="select-field">
-                              <span>확인할 오개념</span>
-                              <select value={form.teacherIntent.misconceptionId} disabled>
-                                <option value="groups-size-order">두 수의 뜻 바꾸기</option>
-                              </select>
-                            </label>
-                          </div>
+                          {(["수학 조건", "맥락과 오개념"] as const).map((section) => {
+                            const fields = selectedIntentCapability.fields.filter(
+                              (field) => field.section === section
+                            );
+                            if (fields.length === 0) return null;
+                            return (
+                              <fieldset className="intent-section" key={section}>
+                                <legend>{section}</legend>
+                                <div className="intent-field-grid">
+                                  {fields.map((field) => (
+                                    <label className="select-field" key={field.key}>
+                                      <span>{field.inputLabel}</span>
+                                      {field.control === "number" ? (
+                                        <span className="number-control">
+                                          <input
+                                            type="number"
+                                            min={field.min}
+                                            max={field.max}
+                                            value={teacherIntentFieldValue(form.teacherIntent, field)}
+                                            onChange={(event) =>
+                                              setForm((current) => ({
+                                                ...current,
+                                                teacherIntent: withTeacherIntentField(
+                                                  current.teacherIntent,
+                                                  field,
+                                                  event.target.value
+                                                )
+                                              }))
+                                            }
+                                          />
+                                          {field.unit ? <em>{field.unit}</em> : null}
+                                        </span>
+                                      ) : (
+                                        <select
+                                          value={teacherIntentFieldValue(form.teacherIntent, field)}
+                                          disabled={field.control === "fixed"}
+                                          onChange={(event) =>
+                                            setForm((current) => ({
+                                              ...current,
+                                              teacherIntent: withTeacherIntentField(
+                                                current.teacherIntent,
+                                                field,
+                                                event.target.value
+                                              )
+                                            }))
+                                          }
+                                        >
+                                          {field.options?.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                              {option.label}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      )}
+                                    </label>
+                                  ))}
+                                </div>
+                              </fieldset>
+                            );
+                          })}
                           <p className="intent-help">
-                            맞춤 조건은 첫 문항에만 적용합니다. 나머지 문항은 검증된 기본 구성으로 이어집니다.
+                            {selectedIntentCapability.scopeNote}
                           </p>
                         </div>
                       ) : null}

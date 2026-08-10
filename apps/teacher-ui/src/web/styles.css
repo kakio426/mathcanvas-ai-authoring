@@ -214,13 +214,14 @@ h2 { margin: 0; color: var(--mc-ink); font-size: 21px; line-height: 1.4; letter-
 .intent-toggle strong { color: var(--mc-ink); font-size: 15px; }
 .intent-toggle small { color: var(--mc-copy); font-size: 12px; line-height: 1.5; }
 .intent-controls { margin-top: 15px; padding: 18px; border: 1px solid #bdddff; border-radius: 14px; background: linear-gradient(135deg, #f1f8ff, #fbfdff); }
-.intent-equation { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 14px; }
-.intent-equation label { display: flex; flex-direction: column; gap: 7px; color: var(--mc-ink); font-size: 13px; font-weight: 800; }
+.intent-section { margin: 0; padding: 0; border: 0; }
+.intent-section + .intent-section { margin-top: 17px; padding-top: 16px; border-top: 1px solid #d4e6f7; }
+.intent-section legend { margin-bottom: 10px; color: var(--mc-blue-dark); font-size: 12px; font-weight: 850; }
+.intent-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.intent-field-grid .select-field { min-width: 0; }
 .number-control { min-height: 52px; display: flex; align-items: center; border: 1px solid #b9cee2; border-radius: 12px; overflow: hidden; background: white; }
 .number-control input { width: 100%; min-width: 0; height: 50px; padding: 0 10px 0 14px; border: 0; color: var(--mc-blue-dark); background: transparent; font-size: 20px; font-weight: 850; }
 .number-control em { padding-right: 14px; color: var(--mc-copy); font-size: 13px; font-style: normal; white-space: nowrap; }
-.intent-times { padding-bottom: 13px; color: var(--mc-violet); font-family: "Arial Rounded MT Bold", Arial, sans-serif; font-size: 25px; font-weight: 900; }
-.intent-select-grid { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .intent-help { margin: 13px 0 0; color: var(--mc-copy); font-size: 12px; line-height: 1.55; }
 .form-footer { margin-top: 34px; padding-top: 24px; display: flex; justify-content: flex-end; align-items: center; gap: 20px; border-top: 1px solid var(--mc-line); }
 .working-note { flex: 1; display: flex; align-items: center; gap: 14px; color: var(--mc-copy); font-size: 14px; line-height: 1.5; }
@@ -335,9 +336,7 @@ h2 { margin: 0; color: var(--mc-ink); font-size: 21px; line-height: 1.4; letter-
   .standard-card code { position: static; display: block; margin-top: 11px; }
   .detail-settings { margin-left: 0; }
   .detail-settings .choice-grid { grid-template-columns: repeat(3, 1fr); }
-  .intent-equation { grid-template-columns: 1fr; gap: 10px; }
-  .intent-times { display: none; }
-  .intent-select-grid { grid-template-columns: 1fr; }
+  .intent-field-grid { grid-template-columns: 1fr; }
   .context-field small { flex-direction: column; gap: 3px; }
   .form-footer { align-items: stretch; flex-direction: column; }
   .form-footer .button { width: 100%; }

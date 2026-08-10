@@ -74,7 +74,7 @@ export interface CurriculumActivityOption {
   availableProblemCounts: Array<1 | 2 | 4 | 6>;
   learningNeeds: CurriculumLearningNeedOption[];
   availability: "verified" | "released";
-  teacherIntentCapability?: "multiplication-array-v1";
+  teacherIntentCapability?: import("@mathcanvas/contracts/teacher-intent").TeacherIntentKind;
 }
 
 export interface CurriculumStandardOption {
@@ -123,10 +123,12 @@ export interface ApiErrorBody {
   hints?: string[];
 }
 export {
-  MULTIPLICATION_ARRAY_CONTEXT_LABELS,
-  MULTIPLICATION_ARRAY_CONTEXT_OBJECT_IDS,
-  MULTIPLICATION_ARRAY_GROUP_COUNT_RANGE,
-  MULTIPLICATION_ARRAY_ITEMS_PER_GROUP_RANGE,
-  multiplicationArrayTeacherIntentSchema,
-  type MultiplicationArrayTeacherIntent
+  TEACHER_INTENT_CAPABILITIES,
+  createDefaultTeacherIntent,
+  formatTeacherIntentFieldValue,
+  getTeacherIntentCapability,
+  teacherIntentSchema,
+  type TeacherIntent,
+  type TeacherIntentFieldDefinition,
+  type TeacherIntentKind
 } from "@mathcanvas/contracts/teacher-intent";

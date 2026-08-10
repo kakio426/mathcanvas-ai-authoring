@@ -1,6 +1,6 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
-import type { MultiplicationArrayTeacherIntent } from "@mathcanvas/contracts";
+import type { TeacherIntent } from "@mathcanvas/contracts";
 
 export interface TeacherInputLogEntry {
   at: string;
@@ -10,7 +10,7 @@ export interface TeacherInputLogEntry {
   learningNeedId: string;
   problemCount: number;
   contextNote: string;
-  teacherIntent?: MultiplicationArrayTeacherIntent;
+  teacherIntent?: TeacherIntent;
   supported: boolean;
 }
 

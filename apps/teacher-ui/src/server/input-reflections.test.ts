@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { RecommendationSummary } from "@mathcanvas/authoring-runtime";
+import type { TeacherIntent } from "@mathcanvas/contracts";
 import {
   buildInputReflections,
   type TeacherRecommendationInput
@@ -152,4 +153,57 @@ describe("교사 입력 반영 상태", () => {
       reflections.find(({ inputLabel }) => inputLabel === "묶음 수")
     ).toMatchObject({ status: "applied" });
   });
+
+  it.each([
+    [
+      "나눗셈",
+      {
+        kind: "division-grouping-v1",
+        totalCount: 23,
+        groupSize: 4,
+        contextObjectId: "candy",
+        misconceptionId: "quotient-remainder-meaning"
+      },
+      "[4수01-06]",
+      "claim-evidence-revision-drag",
+      ["23개", "4개씩", "사탕", "몫과 나머지의 뜻"]
+    ],
+    [
+      "분수",
+      {
+        kind: "fraction-comparison-v1",
+        numerator: 3,
+        leftDenominator: 4,
+        rightDenominator: 5,
+        misconceptionId: "denominator-size-only"
+      },
+      "[6수01-07]",
+      "fraction-strip-common-start-drag",
+      ["3", "4", "5", "분모가 크면 분수도 크다"]
+    ]
+  ] as const)(
+    "%s TeacherIntent도 같은 선언형 반영표에서 실제 적용값까지 대조한다",
+    (_name, intent, standardCode, manipulation, expectedValues) => {
+      const teacherIntent = intent as TeacherIntent;
+      const reflections = buildInputReflections(
+        {
+          ...input,
+          standardCode,
+          manipulation,
+          teacherIntent,
+          appliedTeacherIntent: teacherIntent
+        },
+        {
+          ...recommendation,
+          standardCode,
+          manipulation,
+          teacherIntent
+        }
+      );
+      const intentRows = reflections.slice(-expectedValues.length);
+      expect(intentRows.map(({ value }) => value)).toEqual(expectedValues);
+      expect(intentRows.every(({ status }) => status === "applied")).toBe(true);
+      expect(intentRows.every(({ note }) => note.includes("첫 문항"))).toBe(true);
+    }
+  );
 });

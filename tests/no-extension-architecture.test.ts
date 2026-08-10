@@ -78,4 +78,21 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
       /method:\s*["'](?:PUT|PATCH|DELETE)["']/
     );
   });
+
+  it("TeacherIntent 중앙 소비자는 capability kind별 분기 없이 registry 계약만 사용한다", () => {
+    const consumers = [
+      read("packages/planner/src/index.ts"),
+      read("apps/mcp-server/src/server.ts"),
+      read("apps/teacher-ui/src/server/main.ts"),
+      read("apps/teacher-ui/src/server/curriculum-catalog.ts"),
+      read("apps/teacher-ui/src/server/input-reflections.ts"),
+      read("apps/teacher-ui/src/web/App.tsx")
+    ].join("\n");
+    expect(consumers).not.toMatch(
+      /multiplication-array-v1|division-grouping-v1|fraction-comparison-v1/
+    );
+    expect(consumers).toContain("getTeacherIntentCapability");
+    expect(consumers).toContain("teacherIntentSchema");
+    expect(consumers).toContain("findTeacherIntentCapabilityForRoute");
+  });
 });

@@ -1,7 +1,8 @@
 import type { RecommendationSummary } from "@mathcanvas/authoring-runtime";
 import {
-  MULTIPLICATION_ARRAY_CONTEXT_LABELS,
-  type MultiplicationArrayTeacherIntent
+  formatTeacherIntentFieldValue,
+  getTeacherIntentCapability,
+  type TeacherIntent
 } from "@mathcanvas/contracts";
 import type { InputReflection } from "../shared/contract.js";
 
@@ -15,8 +16,8 @@ export interface TeacherRecommendationInput {
   learningNeedLabel: string;
   contextNote: string;
   problemCount: number;
-  teacherIntent?: MultiplicationArrayTeacherIntent;
-  appliedTeacherIntent?: MultiplicationArrayTeacherIntent;
+  teacherIntent?: TeacherIntent;
+  appliedTeacherIntent?: TeacherIntent;
 }
 
 function memoSummary(value: string): string {
@@ -115,49 +116,30 @@ export function buildInputReflections(
   if (input.teacherIntent) {
     const applied = input.appliedTeacherIntent;
     const recommendationIntent = recommendation.teacherIntent;
-    const valuesMatch = (
-      field: keyof Omit<MultiplicationArrayTeacherIntent, "kind">
-    ) =>
-      recommendationIntent?.[field] === input.teacherIntent?.[field] &&
-      applied?.[field] === input.teacherIntent?.[field];
-    const firstProblemNote =
-      "요청한 값을 실제 첫 문항에 반영했습니다. 나머지 문항은 검증된 기본 구성입니다.";
-    const intentRows: Array<{
-      inputLabel: string;
-      value: string;
-      field: keyof Omit<MultiplicationArrayTeacherIntent, "kind">;
-    }> = [
-      {
-        inputLabel: "한 묶음의 수",
-        value: `${input.teacherIntent.itemsPerGroup}개씩`,
-        field: "itemsPerGroup"
-      },
-      {
-        inputLabel: "묶음 수",
-        value: `${input.teacherIntent.groupCount}묶음`,
-        field: "groupCount"
-      },
-      {
-        inputLabel: "사물 맥락",
-        value:
-          MULTIPLICATION_ARRAY_CONTEXT_LABELS[
-            input.teacherIntent.contextObjectId
-          ],
-        field: "contextObjectId"
-      },
-      {
-        inputLabel: "확인할 오개념",
-        value: "두 수의 뜻 바꾸기",
-        field: "misconceptionId"
-      }
-    ];
+    const capability = getTeacherIntentCapability(input.teacherIntent.kind);
+    const requestedValues = input.teacherIntent as unknown as Readonly<
+      Record<string, unknown>
+    >;
+    const recommendationValues = recommendationIntent as unknown as
+      | Readonly<Record<string, unknown>>
+      | undefined;
+    const appliedValues = applied as unknown as
+      | Readonly<Record<string, unknown>>
+      | undefined;
+    const valuesMatch = (field: string) =>
+      recommendationIntent?.kind === input.teacherIntent?.kind &&
+      applied?.kind === input.teacherIntent?.kind &&
+      recommendationValues?.[field] === requestedValues[field] &&
+      appliedValues?.[field] === requestedValues[field];
     reflections.push(
-      ...intentRows.map(({ inputLabel, value, field }) => ({
-        inputLabel,
-        value,
-        status: valuesMatch(field) ? "applied" as const : "needs-review" as const,
-        note: valuesMatch(field)
-          ? firstProblemNote
+      ...capability.fields.map((field) => ({
+        inputLabel: field.inputLabel,
+        value: formatTeacherIntentFieldValue(input.teacherIntent!, field),
+        status: valuesMatch(field.key)
+          ? "applied" as const
+          : "needs-review" as const,
+        note: valuesMatch(field.key)
+          ? capability.scopeNote
           : "요청한 값과 추천 또는 실제 첫 문항이 달라 다시 확인해 주세요."
       }))
     );
