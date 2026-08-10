@@ -30,10 +30,13 @@ import {
   TeacherSessionStore,
   type TeacherSession
 } from "./session.js";
+import { buildInputReflections } from "./input-reflections.js";
+import { appendTeacherInputLog } from "./teacher-input-log.js";
 
 const currentDirectory = dirname(fileURLToPath(import.meta.url));
 const staticDirectory = join(currentDirectory, "..", "web");
 const repositoryRoot = normalize(join(currentDirectory, "..", "..", "..", ".."));
+const teacherInputLogPath = join(repositoryRoot, "reports", "teacher-input-log.jsonl");
 const sessions = new TeacherSessionStore();
 const bootKey = randomBytes(32).toString("base64url");
 let bootKeyUsed = false;
@@ -149,13 +152,29 @@ function toPublicActivity(
     problemCount: number;
     unitTitle: string;
     standardCode: string;
+    activityId: string;
     activityLabel: string;
+    manipulation: NonNullable<
+      ReturnType<MathCanvasAuthoringService["recommend"]>["recommendation"]["manipulation"]
+    >;
     learningNeedLabel: string;
+    contextNote: string;
   }
 ): PublicActivity {
   const recommendation = result.recommendation;
   const learningGoal =
     recommendation.learningGoal ?? "수학적 관계를 직접 조작하고 근거를 설명하기";
+  const problemPreviews = result.activitySummary?.problemPreviews;
+  const teacherAnswerKey = result.teacherAnswerKey;
+  const expectedProblemCount = recommendation.problemCount ?? fallback.problemCount;
+  if (
+    !problemPreviews ||
+    !teacherAnswerKey ||
+    problemPreviews.length !== expectedProblemCount ||
+    teacherAnswerKey.length !== expectedProblemCount
+  ) {
+    throw new Error("honest-preview-incomplete");
+  }
   return {
     cardId: randomUUID(),
     title: result.activitySummary?.title ?? "MathCanvas 탐구 활동",
@@ -169,6 +188,22 @@ function toPublicActivity(
     summary:
       `${fallback.learningNeedLabel}라는 어려움을 드러내고, 직접 조작한 결과로 생각을 확인한 뒤 수학적 까닭을 설명하도록 구성했습니다.`,
     studentInstructions: result.activitySummary?.studentInstructions ?? [],
+    problemPreviews,
+    teacherAnswerKey,
+    inputReflections: buildInputReflections(
+      {
+        requestedGrade: fallback.grade,
+        unitTitle: fallback.unitTitle,
+        standardCode: fallback.standardCode,
+        activityId: fallback.activityId,
+        activityLabel: fallback.activityLabel,
+        manipulation: fallback.manipulation,
+        learningNeedLabel: fallback.learningNeedLabel,
+        contextNote: fallback.contextNote,
+        problemCount: fallback.problemCount
+      },
+      recommendation
+    ),
     teacherChecks: [
       `학생이 ‘${fallback.learningNeedLabel}’와 관련된 생각을 조작 전에 드러내는지 살펴보세요.`,
       "조작 결과가 처음 생각과 다를 때, 수나 식 또는 길이의 관계를 근거로 설명하는지 살펴보세요.",
@@ -372,6 +407,16 @@ async function handleApi(
       problemCount,
       manipulation: activityOption.manipulation
     });
+    await appendTeacherInputLog(teacherInputLogPath, {
+      at: new Date().toISOString(),
+      unitId,
+      standardCode,
+      activityId,
+      learningNeedId,
+      problemCount,
+      contextNote,
+      supported: result.supported
+    });
     if (
       !result.supported ||
       !result.draftId ||
@@ -392,8 +437,11 @@ async function handleApi(
       problemCount,
       unitTitle: `${unit.semester}학기 ${unit.unitNumber}. ${unit.title}`,
       standardCode: standard.standardCode,
+      activityId: activityOption.id,
       activityLabel: activityOption.label,
-      learningNeedLabel: learningNeed.label
+      manipulation: activityOption.manipulation,
+      learningNeedLabel: learningNeed.label,
+      contextNote
     });
     sessions.addCard(session, {
       activity,

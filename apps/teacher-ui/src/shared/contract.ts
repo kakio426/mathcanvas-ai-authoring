@@ -16,6 +16,31 @@ export interface LearningFlowStep {
   description: string;
 }
 
+export interface ProblemPreview {
+  problemNumber: number;
+  /** 학생에게 보이는 문항 내용. 도출 불가 시 정답 해설 기반 요약으로 대체 */
+  statements: string[];
+  statementSource: "learner-instructions" | "answer-explanation";
+}
+
+export interface TeacherAnswerPreview {
+  problemNumber: number;
+  answer: string;
+  explanation: string;
+}
+
+export type InputReflectionStatus =
+  | "applied"
+  | "reference-only"
+  | "needs-review";
+
+export interface InputReflection {
+  inputLabel: string;
+  value: string;
+  status: InputReflectionStatus;
+  note: string;
+}
+
 export interface PublicActivity {
   cardId: string;
   title: string;
@@ -30,6 +55,9 @@ export interface PublicActivity {
   studentInstructions: string[];
   teacherChecks: string[];
   flow: LearningFlowStep[];
+  problemPreviews: ProblemPreview[];
+  teacherAnswerKey: TeacherAnswerPreview[];
+  inputReflections: InputReflection[];
 }
 
 export interface CurriculumLearningNeedOption {

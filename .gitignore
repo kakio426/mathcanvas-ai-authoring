@@ -9,3 +9,4 @@ coverage/
 .kiro/
 research/mathcanvas/wave1-released-baseline.artifacts.json
 research/mathcanvas/wave1-released-baseline.roundtrip.json
+reports/teacher-input-log.jsonl

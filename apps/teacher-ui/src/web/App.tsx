@@ -8,7 +8,8 @@ import type {
   CurriculumUnitOption,
   PreviewResponse,
   PublicActivity,
-  SessionResponse
+  SessionResponse,
+  InputReflectionStatus
 } from "../shared/contract";
 
 type View = "desk" | "compose" | "preview" | "creating" | "done" | "failed";
@@ -52,6 +53,12 @@ const progressMessages = [
   "학생이 확인할 수학적 기준을 연결하고 있어요.",
   "마지막으로 활동이 잘 작동하는지 확인하고 있어요."
 ];
+
+const reflectionStatusLabels: Readonly<Record<InputReflectionStatus, string>> = {
+  applied: "반영됨",
+  "reference-only": "참고용(미반영)",
+  "needs-review": "확인 필요"
+};
 
 function formForStandard(
   current: LessonForm,
@@ -609,9 +616,9 @@ export function App() {
                     </div>
                   </fieldset>
                   <label className="context-field">
-                    <span>우리 반 상황 더하기 <em>선택</em></span>
-                    <textarea value={form.contextNote} maxLength={500} onChange={(event) => setForm({ ...form, contextNote: event.target.value })} placeholder="예) 계산은 할 수 있지만 친구에게 왜 그런지 설명하는 것을 어려워해요." aria-describedby="context-help" />
-                    <small id="context-help"><span>선택한 내용에 덧붙일 말이 있을 때만 적어 주세요.</span><span>{form.contextNote.length}/500</span></small>
+                    <span>수업 메모 <em>선택</em></span>
+                    <textarea value={form.contextNote} maxLength={500} onChange={(event) => setForm({ ...form, contextNote: event.target.value })} placeholder="예) 계산은 되는데 이유 설명을 어려워해요." aria-describedby="context-help" />
+                    <small id="context-help"><span>적어 주신 내용은 기록으로 남지만, 아직 문항 내용에는 반영되지 않습니다.</span><span>{form.contextNote.length}/500</span></small>
                   </label>
                 </section>
               ) : null}
@@ -696,6 +703,64 @@ export function App() {
                 </ul>
               </section>
             </div>
+
+            <section className="preview-section" aria-labelledby="problem-preview-title">
+              <div className="section-label"><span>04</span><h2 id="problem-preview-title">실제 문항</h2></div>
+              <ol className="problem-preview-list">
+                {activity.problemPreviews.map((problem) => (
+                  <li key={problem.problemNumber}>
+                    <h3>{problem.problemNumber}번 문항</h3>
+                    <ul>
+                      {problem.statements.map((statement, index) => (
+                        <li key={`${problem.problemNumber}-${index}`}>{statement}</li>
+                      ))}
+                    </ul>
+                    {problem.statementSource === "answer-explanation" ? (
+                      <p className="preview-source-note">이 유형은 문항 화면의 안내 문구를 미리 가져오지 못해 정답 해설을 바탕으로 요약했습니다. 실제 문구는 생성 후 활동에서 확인해 주세요.</p>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            <section className="preview-section" aria-labelledby="teacher-answer-title">
+              <div className="section-label"><span>05</span><h2 id="teacher-answer-title">교사용 정답·해설</h2></div>
+              <details className="answer-details">
+                <summary>교사용 정답 보기 <span>{activity.teacherAnswerKey.length}문항</span></summary>
+                <ol className="answer-preview-list">
+                  {activity.teacherAnswerKey.map((answer) => (
+                    <li key={answer.problemNumber}>
+                      <h3>{answer.problemNumber}번 문항</h3>
+                      <p><strong>정답</strong><span>{answer.answer}</span></p>
+                      <p><strong>해설</strong><span>{answer.explanation}</span></p>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            </section>
+
+            <section className="preview-section" aria-labelledby="input-reflection-title">
+              <div className="section-label"><span>06</span><h2 id="input-reflection-title">내 입력이 어떻게 쓰였나요</h2></div>
+              <p className="reflection-intro">승인하기 전에 선택한 내용이 어디까지 반영됐는지 확인해 주세요.</p>
+              <div className="reflection-table-wrap">
+                <table className="reflection-table">
+                  <caption className="sr-only">교사 입력별 반영 상태</caption>
+                  <thead>
+                    <tr><th scope="col">입력 항목</th><th scope="col">선택·입력값</th><th scope="col">상태</th><th scope="col">안내</th></tr>
+                  </thead>
+                  <tbody>
+                    {activity.inputReflections.map((reflection, index) => (
+                      <tr key={`${reflection.inputLabel}-${index}`}>
+                        <th scope="row">{reflection.inputLabel}</th>
+                        <td>{reflection.value}</td>
+                        <td><span className={`reflection-badge reflection-${reflection.status}`}>{reflectionStatusLabels[reflection.status]}</span></td>
+                        <td>{reflection.note}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
             <div className="preview-footer">
               <p><strong>안심하세요.</strong> 새 활동만 만들며, 지금 있는 활동은 바꾸지 않습니다.</p>
               <button className="button primary" type="button" onClick={() => setShowConfirm(true)}>이 활동으로 만들기</button>

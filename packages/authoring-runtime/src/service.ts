@@ -59,6 +59,12 @@ export interface TeacherAnswer {
   explanation: string;
 }
 
+export interface ProblemPreview {
+  problemNumber: number;
+  statements: string[];
+  statementSource: "learner-instructions" | "answer-explanation";
+}
+
 export interface RecommendationSummary {
   supported: boolean;
   templateId?: string;
@@ -197,6 +203,50 @@ export function projectLearnerFacingInstructions(
     return text.trim();
   });
   return instructions;
+}
+
+export function projectProblemPreviews(
+  resolved: ResolvedActivity,
+  answerKey: readonly TeacherAnswer[]
+): ProblemPreview[] {
+  const answerByProblemNumber = new Map(
+    answerKey.map((answer) => [answer.problemNumber, answer])
+  );
+  return [...resolved.items]
+    .sort((left, right) => left.order - right.order)
+    .map((item) => {
+      const statements = learnerInstructionRoles.map((role) => {
+        const matches = resolved.emissions.filter(
+          (emission) => emission.itemId === item.id && emission.role === role
+        );
+        const text = matches[0]?.toolIntent.properties.text;
+        return matches.length === 1 &&
+          typeof text === "string" &&
+          text.trim().length > 0
+          ? text.trim()
+          : undefined;
+      });
+      if (statements.every((statement) => statement !== undefined)) {
+        return {
+          problemNumber: item.order,
+          statements,
+          statementSource: "learner-instructions" as const
+        };
+      }
+
+      const answer = answerByProblemNumber.get(item.order);
+      if (!answer || answer.explanation.trim().length === 0) {
+        throw new AuthoringServiceError(
+          "validation-failed",
+          `${item.order}번 문항의 미리보기 문구를 확인할 수 없어 생성하지 않았습니다.`
+        );
+      }
+      return {
+        problemNumber: item.order,
+        statements: [answer.explanation.trim()],
+        statementSource: "answer-explanation" as const
+      };
+    });
 }
 
 /**
@@ -488,6 +538,7 @@ export class MathCanvasAuthoringService {
     activitySummary?: {
       title: string;
       studentInstructions: string[];
+      problemPreviews: ProblemPreview[];
       minimumVisualDifferencePercent?: number;
     };
     teacherAnswerKey?: TeacherAnswer[];
@@ -552,6 +603,8 @@ export class MathCanvasAuthoringService {
     const resolved = resolveActivity(plan);
     const spec = projectRegisteredApprovalView(resolved);
     const activitySpecHash = sha256Hex(spec);
+    const teacherAnswerKey = buildRegisteredTeacherAnswerKey(resolved);
+    const problemPreviews = projectProblemPreviews(resolved, teacherAnswerKey);
     this.#drafts.set(draftId, {
       draftSchemaVersion: 3,
       draftId,
@@ -572,6 +625,7 @@ export class MathCanvasAuthoringService {
       activitySummary: {
         title: resolved.title,
         studentInstructions: projectLearnerFacingInstructions(resolved),
+        problemPreviews,
         ...(recommendation.denominatorRelation === undefined
           ? {}
           : {
@@ -579,7 +633,7 @@ export class MathCanvasAuthoringService {
                 MIN_VISUAL_FRACTION_DIFFERENCE_RATIO * 100
             })
       },
-      teacherAnswerKey: buildRegisteredTeacherAnswerKey(resolved),
+      teacherAnswerKey,
       approvalPrompt:
         "추천한 학년, 문제 수, 난이도와 조작 방식을 확인한 뒤 ‘이대로 만들어줘’라고 승인해 주세요."
     };
