@@ -264,6 +264,44 @@
           "family source는 두 target ID를 모두 등록하지만 cognitive manifest의 learningMap은 representation topic과 그 일반 표현 증거만 결속한다. explain-usefulness target의 application topic, representation 선수 관계, 자료의 개수·비교에 근거한 observable evidence와 prompt를 manifest에 함께 반영하고 두 target 결속을 테스트로 고정해야 한다.",
           "focused 테스트 2파일·8/8과 native serialization validator는 통과했다. 그러나 현재 테스트는 첫 문항의 잠긴 [1,1,1]과 숨은 correctTableValues [3,1,2], 첫 범주 답 3개를 기대하므로 구조적 유효성은 증명해도 첫 target의 교육적 완전성은 증명하지 않는다. 위 수정 뒤 같은 4개 context envelope에서 완전 표 결정·전체 수 불변량·정확한 미리보기·결정성을 다시 검증해야 한다."
         ]
+      },
+      {
+        "reviewId": "W001-FAMILY_TRACK-SOL-A2",
+        "workItemId": "W001",
+        "standardCode": "[2수04-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 2,
+        "candidateCommit": "826a05e4c0222e9b7a9c3aed71f71bee87b5fde2",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+          "reports/problem-family-registry/latest.json"
+        ],
+        "supersedesReviewId": "W001-FAMILY_TRACK-SOL-A1",
+        "checkedAt": "2026-08-11T12:00:12.000Z",
+        "evidenceRefs": [
+          "git:826a05e4c0222e9b7a9c3aed71f71bee87b5fde2",
+          "scripts/curriculum/sol-review-board.json#W001-FAMILY_TRACK-SOL-A1",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+          "scripts/curriculum/no-family-plan.json#D01A",
+          "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+          "fixtures/pedagogy/learning-map.used.json",
+          "reports/problem-family-registry/latest.json",
+          "reports/curriculum-execution/no-family-plan.json"
+        ],
+        "findings": [
+          "A1의 단일 스칼라 결함은 부분 해소됐다. 첫 문항의 학생 선택이 세 범주 전체의 3,1,2 묶음으로 확장됐고, 정답·해설에는 범주 이름·합계 6과 3+1+2=6이 있으며, 표를 직접 고친다는 지시도 제거됐다. 둘째 target의 application topic과 representation 선수 관계도 pinned learning-map evidence에 결속됐다.",
+          "수정 요청: 학생 화면의 designated verification object인 DP02TG는 첫 문항 끝까지 locked [1,1,1]이고, 올바른 3,1,2는 범주 이름이 없는 text card로 prediction box에 남는다. 따라서 화면에는 target outline이 요구한 ‘완성한 표의 범주·개수’가 하나의 명시적 최종 수학 상태로 존재하지 않으며, cognitive verification invariant의 ‘표의 각 범주 개수는 원자료를 센 결과와 같다’는 verification role 자체에는 성립하지 않는다.",
+          "A3의 최소 수정은 DP02TG 편집을 새로 주장하는 것이 아니다. 잠긴 [1,1,1] 표를 ‘고쳐야 할 표’ 또는 반례로 명확히 구분하고, 학생이 저장하는 선택을 각 범주 이름과 세 개의 개수가 직접 결속된 완전한 표 매핑으로 표시해야 한다. cognitive verification·revision 문구도 이 선택된 최종 매핑과 원자료를 대조하도록 맞추고, 학생 지시에서 세 수의 합이 전체 자료 수와 같은지도 확인하게 하라.",
+          "4개 context의 category 이름과 raw-data 순서는 다르지만 counts가 모두 [3,1,2]라 첫 문항의 수학적 상태·정답·합계가 전 envelope에서 동일하다. 현재 context 변경 테스트는 질문과 payload hash 변화만 확인해 표면 명사 교체를 수학적 variation으로 통과시킨다. 최소 두 개 이상의 서로 다른 유효 count distribution을 사용하고, context 변경이 올바른 전체 매핑도 바꾸며 모든 후보가 유일하고 합계 불변량을 보존하는지 테스트해야 한다.",
+          "cognitive manifest에는 representation·application topic과 두 evidence 묶음이 들어왔지만 family 회귀 테스트는 mathematicalDecision에 ‘원자료’가 있는지만 확인한다. 두 target ID, 두 topic, concept·representation prerequisite, application evidence/prompt가 실제로 유지되는지 명시적으로 고정해야 A1의 learning-map 보완이 재퇴행하지 않는다.",
+          "둘째 문항의 올바른 표, 개수 비교 대안, 장식성·전체 수 중심 오개념, 설명 영역은 여전히 둘째 AssessmentTarget을 충족하므로 유지 가능하다. 새 native edit contract나 family 재분리는 필요하지 않아 blocked가 아니라 changes-requested로 판정한다.",
+          "독립 재검증에서 focused 2파일·8/8, pnpm cognitive:verify, pnpm curriculum:no-family-plan이 통과했다. 이 녹색 결과는 현재 schema·serialization·hash 결속을 증명하지만, 테스트가 네 context 모두 같은 3,1,2 정답이고 최종 DP02TG가 [1,1,1]인 상태를 허용하므로 위 교육적 관찰 증거 결함을 해소하지 않는다."
+        ]
       }
     ]
   },
@@ -420,9 +458,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 2,
+      "totalRecords": 3,
       "approved": 1,
-      "changesRequested": 1,
+      "changesRequested": 2,
       "blocked": 0,
       "pendingRequiredReviews": 192
     },
@@ -478,7 +516,7 @@
         "targetSet": "approved",
         "familyTrack": "changes-requested",
         "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A1"
+        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A2"
       }
     },
     "nextLiveEvidenceWork": null
@@ -2710,7 +2748,7 @@
         "targetSet": "approved",
         "familyTrack": "changes-requested",
         "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A1"
+        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A2"
       }
     },
     {
