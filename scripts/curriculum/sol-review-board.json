@@ -1877,6 +1877,76 @@
         "P0 후보 QA: focused suite는 cognitive/validator 29개를 포함해 45/46이었고 `tests/sol-review-status.test.ts`의 engine-core projection 테스트가 실패했다. v5 승인 전에는 W002가 nextReplanWork라 current.nextOfflineWork가 W003/null contract가 되기 때문이다. 테스트를 candidate와 post-approval 양쪽 상태에서 성립하도록 W002 work-item 또는 current.nextReplanWork projection을 직접 검증하게 수정해야 하며, 승인 기록을 먼저 넣어 테스트를 녹색으로 만드는 순환 의존은 허용하지 않는다.",
         "통과한 항목: typecheck와 curriculum:no-family-plan(97 standards/24 engines/84 tracks)은 통과했고 subwork cursor는 AFFORDANCE_DISCOVERY 완료 후 ENGINE_CORE로 정직하게 되감겼다. 그러나 위 P0 두 건 때문에 승인·소비 또는 FAMILY_TRACK 진입은 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A15",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 15,
+      "candidateCommit": "f4983fa9736a0e8b5c9c386958f6f9998d699660",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A14",
+      "checkedAt": "2026-08-11T19:16:19.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "af27c8777bcbc66b137d5391dcc178d9b7152c0d543dbda4fab0c53500a03f70",
+      "supersedesBlockedReviewId": "W002-TARGET_SET-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v5",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:f4983fa9736a0e8b5c9c386958f6f9998d699660",
+        "git:bb1ff608f6fcb73bfd8b6b2497745f0b1d17effe",
+        "git:dc063f73c66b46693682eac5c67ea483d1e799ba",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A14",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A3",
+        "W002_REPLAN.md#v5-ENGINE_CORE-범위",
+        "packages/contracts/src/catalog/cognitive-demand.ts#constructRuleDecisionSchema",
+        "packages/validator/src/predicates/registry.ts#cognitive.rule-state-contract",
+        "packages/templates/src/cognitive/registry.test.ts#construct-rule",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "command:independent implementation hash check (6/6 current)",
+        "command:independent capacity check P(3,2)=6 >= minimumValidStates+minimumSurplus=3",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts packages/contracts/src/catalog/cognitive-demand.test.ts packages/templates/src/cognitive/registry.test.ts packages/validator/src/validator.test.ts (46/46)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm check (80 files/490 tests; candidate full gates PASS)",
+        "command:git diff --check bb1ff60..f4983fa"
+      ],
+      "findings": [
+        "승인: candidate f4983fa는 parent bb1ff60 위 exact 6-file SOL_REPLAN v5 보정 후보이며 모든 변경이 SOL_REPLAN allowedFiles 안에 있다. target source·outline·family generator·compiler·planner·MCP·teacher-ui는 변경하지 않았다. 선행 ENGINE_CORE 보정 dc063f7·bb1ff60도 각 operation 허용 범위 안에서 독립 검토했다.",
+        "A14 capacity P0 해소: construct-rule schema와 runtime predicate는 variant role을 최소 3개 요구하고 C01 source·runtime projection도 세 role로 일치한다. 두 slot에 대한 token-identity ordered capacity는 P(3,2)=6으로 최소 valid 2+surplus 1=3을 충족하며, builder가 이 부등식을 fail-closed로 검증한다. 실제 variant 값 중복과 각 valid/surplus state의 multiset 조합 가능성은 runtime validator가 계속 검증한다.",
+        "A14 문서 P1 해소: W002_REPLAN은 constraint ID를 구현과 동일한 `${decisionConstraintId}-${index + 1}:${itemId}` 형식으로 고정하고 ruleSlotRoles 순서, exact source set·target, initial unsatisfied 조건을 그대로 설명한다.",
+        "A14 QA P0 해소: projection test는 W002가 승인 전 nextReplanWork에 있거나 승인 후 nextOfflineWork에 있는 두 상태 모두에서 같은 engineCoreContract를 직접 찾는다. 현재 pre-approval 상태에서 focused 46/46, typecheck, no-family plan이 통과했고 후보 전체 check도 80 files/490 tests와 모든 gate PASS다. 승인 후 파생 report 재생성 뒤에도 같은 test를 다시 실행한다.",
+        "완료 증거 정합성: ENGINE_CORE artifact의 six implementation-file SHA-256은 현재 코드와 6/6 일치하고 focused 29/29·full 80/490 증거가 기록되어 있다. W002 cursor는 AFFORDANCE_DISCOVERY만 완료한 채 ENGINE_CORE로 되감겨 있어 Sol 승인 기록만으로 core 완료나 FAMILY_TRACK 승격을 주장하지 않는다.",
+        "범위 한계: 이 승인은 v5 governance와 공통 construct-rule core를 실행 가능한 상태로 결속할 뿐이다. 다음 ENGINE_CORE 실행에서 artifact currentness를 소비하고 cursor를 전진시켜야 하며, 세 concrete family의 generator·native layout·exact preview·StudentRuleStateEvidence/responseHash·save/reopen은 각각 별도 FAMILY_TRACK/LIVE_EVIDENCE 증거 없이는 승인되지 않는다."
+      ]
     }
   ]
 }
