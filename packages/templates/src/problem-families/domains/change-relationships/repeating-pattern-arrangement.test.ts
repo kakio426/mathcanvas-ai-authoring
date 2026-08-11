@@ -74,7 +74,7 @@ function resolveEnvelope(contextId: RepeatingPatternArrangementContextId) {
 }
 
 describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () => {
-  it("repeat envelope에서 규칙 후보·수정·다섯 칸 구성·정답 미리보기를 생성한다", () => {
+  it("repeat envelope에서 규칙 선언·수정·두 칸 구성·정답 미리보기를 생성한다", () => {
     const result = resolveEnvelope("repeat-colors");
     expect(result.recommendation).toMatchObject({
       supported: false,
@@ -113,15 +113,16 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     const applied = buildRegisteredAppliedProblemParameters(result.resolved);
     expect(answers).toHaveLength(2);
     expect(answers[0]).toMatchObject({
-      answer: expect.stringContaining("노-파"),
-      explanation: expect.stringContaining("노랑-파랑")
+      answer: expect.stringContaining("초-주"),
+      explanation: expect.stringContaining("초록-주황")
     });
     expect(previews?.[0]?.statements).toEqual([
       expect.stringContaining("어긋난 블록"),
-      "처음 패턴 블록: 노란 육각형 → 노란 육각형 → 노란 육각형",
-      "관찰 안내: 노랑 → □ → 노랑",
+      "처음 패턴 블록: 초록 삼각형 → 초록 삼각형 → 초록 삼각형",
+      "관찰 안내: 초록 → □ → 초록",
       "수정 자리: 두 번째 블록(처음에는 어긋난 조각)",
-      "채울 자리: 앞의 빈 칸 3곳 → 다음 칸 2곳",
+      "이후 표시: ⋯ ⋯ ⋯ (생략)",
+      "채울 자리: 고칠 자리 → 다음 칸 2곳",
       expect.stringContaining("규칙 후보:"),
       expect.stringContaining("조각 바구니:"),
       "활동 단계: 어긋난 조각 고치기"
@@ -132,20 +133,11 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
       values: { contextId: "repeat-colors" }
     });
     expect(result.resolved.items[0]?.values.ruleKind).toBe("repeat");
-    expect(result.resolved.items[0]?.values.correctNext).toEqual([
-      2,
-      1
-    ]);
+    expect(result.resolved.items[0]?.values.correctNext).toEqual([5, 4]);
     expect(result.resolved.items[0]?.values.phase).toBe("repair");
-    expect(result.resolved.items[0]?.values.initialSequence).toEqual([1, 1, 1]);
-    expect(result.resolved.items[1]?.values.correctSequence).toEqual([1, 2, 1]);
-    expect(result.resolved.items[0]?.values.correctContinuation).toEqual([
-      2,
-      1,
-      2,
-      1,
-      2
-    ]);
+    expect(result.resolved.items[0]?.values.initialSequence).toEqual([4, 4, 4]);
+    expect(result.resolved.items[1]?.values.correctSequence).toEqual([4, 5, 4]);
+    expect(result.resolved.items[0]?.values.correctContinuation).toEqual([5, 4]);
     expect(
       result.resolved.constraints.some((constraint) =>
         constraint.id.startsWith("remove-misaligned-arrangement:")
@@ -157,13 +149,7 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
       )
     ).toBe(true);
     expect(
-      [
-        "sequence-block-4",
-        "sequence-block-5",
-        "sequence-block-6",
-        "next-slot-1",
-        "next-slot-2"
-      ].every((role) =>
+      ["next-slot-1", "next-slot-2"].every((role) =>
         result.resolved.constraints.some(
           (constraint) =>
             constraint.id === `complete-arrangement-${role}:${result.resolved.items[0]?.id}`
@@ -178,6 +164,21 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     );
     expect(sequenceTwo).toMatchObject({ locked: true, movable: false });
     expect(misaligned).toMatchObject({ locked: false, movable: true });
+    const ellipsis = result.resolved.emissions.find(
+      (emission) => emission.role === "sequence-block-4"
+    );
+    expect(ellipsis).toMatchObject({
+      locked: true,
+      movable: false,
+      toolIntent: { toolKey: "common.text", properties: { text: "⋯" } }
+    });
+    const explanation = result.resolved.emissions.find(
+      (emission) => emission.role === "explanation-box"
+    );
+    expect(explanation).toMatchObject({
+      locked: true,
+      toolIntent: { toolKey: "common.text", properties: { text: "" } }
+    });
     expect(
       result.resolved.constraints
         .filter((constraint) =>
@@ -185,7 +186,7 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
           constraint.id.endsWith(`:${result.resolved.items[0]?.id}`)
         )
         .every((constraint) =>
-          constraint.sourceIds.includes(misaligned?.id ?? "")
+          !constraint.sourceIds.includes(misaligned?.id ?? "")
         )
     ).toBe(true);
     expect(
@@ -196,7 +197,7 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     expect(repeatingPatternArrangementProblemFamilyModule.capability?.promptGuards).toEqual([]);
   });
 
-  it("repeat/change 4개 context envelope를 모두 생성하고 수학 관계가 바뀐다", () => {
+  it("두 repeat context envelope를 모두 생성하고 방향이 바뀐다", () => {
     const outputs = REPEATING_PATTERN_ARRANGEMENT_CONTEXT_IDS.map((contextId) =>
       resolveEnvelope(contextId)
     );
@@ -205,28 +206,24 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     );
     expect(outputs.map((output) => output.resolved.items[0]?.values.ruleKind)).toEqual([
       "repeat",
-      "repeat",
-      "change",
-      "change"
+      "repeat"
     ]);
     expect(
       outputs.map((output) => String(output.resolved.items[0]?.values.correctAnswerText))
     ).toEqual([
-      "노-파; 이어지는 다섯 칸: 파란 마름모, 노란 육각형, 파란 마름모, 노란 육각형, 파란 마름모",
-      "노-파-빨; 이어지는 다섯 칸: 노란 육각형, 파란 마름모, 빨간 사다리꼴, 노란 육각형, 파란 마름모",
-      "1칸↑; 이어지는 다섯 칸: 초록 삼각형, 주황 정사각형, 보라 마름모, 노란 육각형, 파란 마름모",
-      "2칸↑; 이어지는 다섯 칸: 파란 마름모, 초록 삼각형, 보라 마름모, 파란 마름모, 초록 삼각형"
+      "초-주; 이어지는 두 칸: 주황 정사각형, 초록 삼각형",
+      "주-초; 이어지는 두 칸: 초록 삼각형, 주황 정사각형"
     ]);
     expect(
       outputs.map((output) => output.resolved.items[0]?.values.relationId)
-    ).toEqual(["repeat-2", "repeat-3", "step-1", "step-2"]);
-    expect(new Set(outputs.map((output) => output.compiled.payloadHash)).size).toBe(4);
+    ).toEqual(["repeat-2", "repeat-2"]);
+    expect(new Set(outputs.map((output) => output.compiled.payloadHash)).size).toBe(2);
   });
 
   it("같은 입력은 결정적이고 context 변경은 문항과 payload hash를 바꾼다", () => {
-    const sameA = resolveEnvelope("change-odd-numbers");
-    const sameB = resolveEnvelope("change-odd-numbers");
-    const changed = resolveEnvelope("change-even-numbers");
+    const sameA = resolveEnvelope("repeat-colors");
+    const sameB = resolveEnvelope("repeat-colors");
+    const changed = resolveEnvelope("repeat-shapes");
     expect(sameA.resolved.items).toEqual(sameB.resolved.items);
     expect(sameA.compiled.payloadHash).toBe(sameB.compiled.payloadHash);
     expect(changed.resolved.items[0]?.values.correctContinuation).not.toEqual(
