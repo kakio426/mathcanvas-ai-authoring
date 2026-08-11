@@ -74,36 +74,36 @@ const CONTEXTS: Readonly<Record<DataTableContextId, Context>> = {
     title: "우리 반이 좋아하는 장난감",
     categoryLabel: "장난감",
     categories: ["공", "인형", "블록"],
-    rawData: ["블록", "공", "공", "인형", "블록", "공"],
-    counts: [3, 1, 2]
+    rawData: ["블록", "인형", "공", "인형", "공", "인형"],
+    counts: [2, 3, 1]
   },
   vehicles: {
     title: "우리 반이 타고 싶은 탈것",
     categoryLabel: "탈것",
     categories: ["버스", "자전거", "기차"],
-    rawData: ["기차", "버스", "자전거", "버스", "버스", "기차"],
-    counts: [3, 1, 2]
+    rawData: ["기차", "버스", "자전거", "기차", "자전거", "기차", "기차"],
+    counts: [1, 2, 4]
   },
   "school-supplies": {
     title: "교실에서 찾은 학용품",
     categoryLabel: "학용품",
     categories: ["연필", "지우개", "자"],
-    rawData: ["자", "연필", "지우개", "연필", "연필", "자"],
-    counts: [3, 1, 2]
+    rawData: ["자", "연필", "지우개", "연필", "지우개", "자", "지우개"],
+    counts: [2, 3, 2]
   }
 };
 
 const instructions = [
-  "① 원자료를 하나씩 세어 범주 순서별 개수 묶음을 골라 놓으세요.",
-  "② 고른 세 개의 개수와 원자료를 다시 비교해 틀린 곳을 찾으세요.",
+  "① 원자료를 하나씩 세어 범주 이름과 개수를 함께 나타낸 표 답을 골라 놓으세요.",
+  "② 고른 표 답의 세 개수를 더해 원자료 전체 수와 같은지 확인하세요.",
   "③ 표로 나타내면 무엇이 편리한지 한 문장으로 써 보세요."
 ] as const;
 
 const baseScaffold = makeChoiceExplanationScaffoldRoles({
   instructions,
   instructionalIntents: [
-    "원자료를 범주별로 세어 세 범주의 개수 묶음을 결정하게 합니다.",
-    "선택한 세 개의 개수와 원자료를 대응해 스스로 검산하게 합니다.",
+    "원자료를 범주별로 세어 범주 이름과 개수가 함께 있는 표 답을 결정하게 합니다.",
+    "선택한 표 답의 세 개수 합과 원자료 전체 수를 대응해 스스로 검산하게 합니다.",
     "표가 비교와 집계에 편리한 까닭을 자료에 근거해 설명하게 합니다."
   ],
   questionIntent:
@@ -195,10 +195,10 @@ export const dataTableOrganizeBlueprint = defineActivityBlueprint(
         locked: true,
         movable: false,
         instructionalIntent:
-          "범주와 현재 개수가 있는 표입니다. 원자료와 고른 개수 묶음을 비교합니다.",
+          "고쳐야 할 임시 표입니다. 원자료와 선택한 완전한 표 답을 비교합니다.",
         properties: {},
         bindings: {
-          title: "item.contextText",
+          title: "item.tableTitleText",
           categories: "item.categories",
           values: "item.tableValues",
           categoryAxisName: "item.categoryLabelText",
@@ -260,7 +260,7 @@ export const dataTableOrganizeBlueprint = defineActivityBlueprint(
           correctValuePath: "correctValueText",
           predictionRole: "prediction-box",
           explanationRole: "explanation-box",
-          verificationRoles: ["data-table", "raw-data"]
+          verificationRoles: ["data-table", "raw-data", "prediction-box"]
         }
       },
       {
@@ -357,12 +357,16 @@ function shuffle<T>(values: readonly T[], random: () => number): T[] {
 function candidateValues(context: Context, index: number): string[] {
   if (index === 0) {
     const [first, second, third] = context.counts;
+    const formatMapping = (counts: readonly [number, number, number]) =>
+      context.categories
+        .map((category, categoryIndex) => `${category}${counts[categoryIndex]}개`)
+        .join("\n");
     return [
-      `${first},${second},${third}`,
-      `${first + second + third},0,0`,
-      `${second},${first},${third}`,
-      `${first},${third},${second}`,
-      `${first + 1},${second},${third - 1}`
+      formatMapping([first, second, third]),
+      formatMapping([first + second + third, 0, 0]),
+      formatMapping([second, first, third]),
+      formatMapping([first, third, second]),
+      formatMapping([first + 1, second, third - 1])
     ];
   }
   return [
@@ -392,12 +396,28 @@ export function generateDataTableOrganizeItems(
     );
   }
   const context = CONTEXTS[parameters.contextId];
+  const total = context.counts.reduce((sum, value) => sum + value, 0);
+  const formatMapping = (counts: readonly [number, number, number]) =>
+    context.categories
+      .map((category, categoryIndex) => `${category}${counts[categoryIndex]}개`)
+      .join("\n");
+  const formatAnswerMapping = (counts: readonly [number, number, number]) =>
+    context.categories
+      .map((category, categoryIndex) => `${category} ${counts[categoryIndex]}개`)
+      .join(", ");
+  const formatRawData = (rawData: readonly string[]) => {
+    const lines: string[] = [];
+    for (let index = 0; index < rawData.length; index += 3) {
+      lines.push(rawData.slice(index, index + 3).join("·"));
+    }
+    return `${rawData.length}개: ${lines.join("\n")}`;
+  };
   const random = createSeededRandom(`${seed}:data-table-organize:${parameters.contextId}`);
   return Array.from({ length: parameters.problemCount }, (_, index) => {
     const candidates = shuffle(candidateValues(context, index), random);
     const isOrganize = index === 0;
     const correctValueText = isOrganize
-      ? context.counts.join(",")
+      ? formatMapping(context.counts)
       : "개수 비교";
     const tableValues = isOrganize ? [1, 1, 1] : [...context.counts];
     return {
@@ -408,20 +428,23 @@ export function generateDataTableOrganizeItems(
         contextId: parameters.contextId,
         orderLabel: `${index + 1}번`,
         contextText: context.title,
+        tableTitleText: isOrganize
+          ? `${context.title} (고쳐야 할 표)`
+          : `${context.title} (완성한 표)`,
         categoryLabelText: context.categoryLabel,
         valueColumnName: "개수(개)",
         categories: [...context.categories],
         tableValues,
-        rawDataText: `${context.rawData.length}개: ${context.rawData.join("·")}`,
+        rawDataText: formatRawData(context.rawData),
         questionText: isOrganize
-          ? `${context.categoryLabel} 자료입니다. 범주 순서별 개수 묶음은 무엇인가요?`
+          ? `${context.categoryLabel} 자료의 표 답은 무엇인가요?`
           : "표로 나타내면 무엇이 편리한가요?",
         correctValueText,
         correctAnswerText: isOrganize
-          ? `${context.categories[0]} ${context.counts[0]}개, ${context.categories[1]} ${context.counts[1]}개, ${context.categories[2]} ${context.counts[2]}개 (합계 ${context.counts.reduce((sum, value) => sum + value, 0)}개)`
+          ? `${formatAnswerMapping(context.counts)} (합계 ${total}개)`
           : correctValueText,
         answerExplanation: isOrganize
-          ? `범주 순서 ${context.categories.join(", ")}에 맞춰 ${correctValueText}로 세면 ${context.counts[0]}+${context.counts[1]}+${context.counts[2]}=${context.counts.reduce((sum, value) => sum + value, 0)}입니다. 원자료의 여섯 항목을 빠짐없이 한 번씩 세었습니다.`
+          ? `원자료를 범주 순서 ${context.categories.join(", ")}에 맞춰 세면 ${correctValueText}입니다. ${context.counts[0]}+${context.counts[1]}+${context.counts[2]}=${total}이고 원자료 ${context.rawData.length}개를 빠짐없이 한 번씩 세었습니다. 고쳐야 할 표의 임시 개수와 비교해 완성한 표 답을 확인합니다.`
           : "표에서는 같은 범주의 개수를 모아 보여 주므로 범주별 개수와 차이를 한눈에 비교하기 쉽습니다.",
         misconceptionIds: isOrganize
           ? [
@@ -583,6 +606,7 @@ function problemPreviews(resolved: ResolvedActivity): RegisteredProblemPreview[]
       String(item.values.questionText),
       String(item.values.rawDataText),
       `표 범주: ${(item.values.categories as string[]).join(", ")}`,
+      `표 상태: ${item.order === 1 ? "고쳐야 할 표" : "완성한 표"}`,
       `현재 표 개수: ${(item.values.tableValues as number[]).join(", ")}`,
       `선택: ${[1, 2, 3, 4, 5].map((index) => String(item.values[`candidate${index}`])).join(", ")}`
     ]
@@ -635,7 +659,7 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   blueprintVersion: dataTableOrganizeBlueprint.version,
   blueprintContentHash: dataTableOrganizeBlueprint.contentHash,
   mathematicalDecision:
-    "학생은 원자료의 각 항목을 범주 순서별 개수 묶음으로 정확히 세어 합계가 전체 자료 수와 같은지 확인하고, 표가 범주별 개수와 차이를 비교하기 편리한 까닭을 결정한다.",
+    "학생은 고쳐야 할 표를 원자료와 대조해 범주명과 개수가 결속된 완전한 표 매핑을 선택하고, 세 개수의 합이 전체 자료 수와 같은지 확인한 뒤 표가 범주별 개수와 차이를 비교하기 편리한 까닭을 결정한다.",
   misconceptionConflict:
     "전체 개수를 범주별 개수로 쓰거나 표를 꾸미기일 뿐이라고 생각하는 답을 원자료·표의 실제 개수와 충돌시킨다.",
   learningMap: {
@@ -679,13 +703,13 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   prediction: { regionRole: "prediction-box" },
   verification: {
     kind: "data-representation",
-    roles: ["data-table", "raw-data"],
+    roles: ["data-table", "raw-data", "prediction-box"],
     invariant:
-      "표의 각 범주 개수는 원자료에서 같은 범주를 센 결과와 같고, 표를 사용하면 범주별 개수와 차이를 빠르게 비교할 수 있다."
+      "학생이 선택한 완전한 표 매핑의 각 범주 개수는 원자료에서 같은 범주를 센 결과와 같고, 세 개수의 합은 원자료 전체 수와 같으며, 표를 사용하면 범주별 개수와 차이를 빠르게 비교할 수 있다."
   },
   explanation: { regionRole: "explanation-box" },
   revisionPath:
-    "다섯 생각 카드는 계속 움직일 수 있고, 학생은 원자료와 현재 표를 다시 비교한 뒤 개수 묶음 선택과 설명을 고친다.",
+    "다섯 표 답 카드는 계속 움직일 수 있고, 학생은 고쳐야 할 표·원자료·세 개수의 합을 다시 비교한 뒤 범주명과 개수가 결속된 최종 표 매핑 선택과 설명을 고친다.",
   limitations: { autoGrading: "none-by-design", phaseOrder: "teacher-guided" }
 });
 

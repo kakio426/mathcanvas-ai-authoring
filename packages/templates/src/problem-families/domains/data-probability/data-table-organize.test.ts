@@ -19,6 +19,7 @@ import {
   DATA_TABLE_ORGANIZE_FAMILY_ID,
   DATA_TABLE_ORGANIZE_MANIPULATION,
   dataTableOrganizeBlueprint,
+  dataTableOrganizeProblemFamilyModule,
   generateDataTableOrganizeItems,
   type DataTableContextId
 } from "./data-table-organize.js";
@@ -91,13 +92,35 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     expect(result.compiled.payload.categoryId).toBe(
       MATHCANVAS_PROJECT_CATEGORIES["자료와 가능성"].categoryId
     );
-    expect(assertCognitiveManifestBound(dataTableOrganizeBlueprint)).toMatchObject({
+    const manifest = assertCognitiveManifestBound(dataTableOrganizeBlueprint);
+    expect(manifest).toMatchObject({
       mathematicalDecision: expect.stringContaining("원자료"),
       limitations: {
         autoGrading: "none-by-design",
         phaseOrder: "teacher-guided"
       }
     });
+    expect(dataTableOrganizeProblemFamilyModule.source.assessmentTargetIds).toEqual([
+      "data.table.organize-classified-data-v1",
+      "data.table.explain-usefulness-v1"
+    ]);
+    expect(manifest.learningMap.topicIds).toEqual([
+      "kr.mt.math.data-probability.g1-2.s2-04-02.representation",
+      "kr.mt.math.data-probability.g1-2.s2-04-02.application"
+    ]);
+    expect(manifest.learningMap.prerequisiteTopicIds).toEqual([
+      "kr.mt.math.data-probability.g1-2.s2-04-02.concept",
+      "kr.mt.math.data-probability.g1-2.s2-04-02.representation"
+    ]);
+    expect(manifest.learningMap.observableEvidence).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("적용과 설명"),
+        expect.stringContaining("다음 시도")
+      ])
+    );
+    expect(manifest.learningMap.assessmentPrompt).toContain("답의 타당성");
+    expect(manifest.verification.roles).toContain("prediction-box");
+    expect(manifest.verification.invariant).toContain("세 개수의 합");
 
     const answers = buildRegisteredTeacherAnswerKey(result.resolved);
     const previews = buildRegisteredProblemPreviews(result.resolved);
@@ -113,8 +136,9 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     });
     expect(previews?.[0]?.statements).toEqual([
       expect.stringContaining("과일 자료"),
-      "6개: 사과·포도·사과·바나나·사과·포도",
+      "6개: 사과·포도·사과\n바나나·사과·포도",
       "표 범주: 사과, 바나나, 포도",
+      "표 상태: 고쳐야 할 표",
       "현재 표 개수: 1, 1, 1",
       expect.stringContaining("선택:")
     ]);
@@ -125,12 +149,14 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     });
 
     expect(result.resolved.items[0]?.values.tableValues).toEqual([1, 1, 1]);
-    expect(result.resolved.items[0]?.values.correctValueText).toBe("3,1,2");
+    expect(result.resolved.items[0]?.values.correctValueText).toBe(
+      "사과3개\n바나나1개\n포도2개"
+    );
     expect(result.resolved.items[0]?.values.correctAnswerText).toContain(
       "사과 3개"
     );
     expect(result.resolved.items[0]?.values.answerExplanation).toContain(
-      "원자료의 여섯 항목을 빠짐없이 한 번씩 세었습니다"
+      "원자료 6개를 빠짐없이 한 번씩 세었습니다"
     );
     expect(result.resolved.items[1]?.values.tableValues).toEqual([3, 1, 2]);
     expect(result.resolved.items[0]?.values.rawDataText).toContain("사과");
@@ -144,10 +170,17 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     const firstCandidates = [1, 2, 3, 4, 5].map((index) =>
       String(result.resolved.items[0]?.values[`candidate${index}`])
     );
-    expect(firstCandidates).toContain("3,1,2");
-    expect(firstCandidates.every((candidate) => candidate.split(",").length === 3)).toBe(
-      true
-    );
+    expect(firstCandidates).toContain("사과3개\n바나나1개\n포도2개");
+    expect(new Set(firstCandidates).size).toBe(5);
+    expect(
+      firstCandidates.every((candidate) => {
+        const counts = candidate
+          .split("\n")
+          .map((line) => Number(line.match(/(\d+)개$/)?.[1]));
+        return counts.length === 3 && counts.every(Number.isInteger) &&
+          counts.reduce((sum, value) => sum + value, 0) === 6;
+      })
+    ).toBe(true);
   });
 
   it("등록한 4개 자료 맥락 envelope를 모두 생성·컴파일·검증한다", () => {
@@ -157,6 +190,24 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
       expect(result.resolved.items).toHaveLength(2);
       expect(
         result.resolved.items.every((item) => item.values.contextId === contextId)
+      ).toBe(true);
+      const firstItem = result.resolved.items[0]!;
+      const total = Number(
+        String(firstItem.values.correctAnswerText).match(/합계 (\d+)개/)?.[1]
+      );
+      const candidateTexts = [1, 2, 3, 4, 5].map((index) =>
+        String(firstItem.values[`candidate${index}`])
+      );
+      expect(new Set(candidateTexts).size, contextId).toBe(5);
+      expect(
+        candidateTexts.every((candidate) => {
+          const counts = candidate
+            .split("\n")
+            .map((line) => Number(line.match(/(\d+)개$/)?.[1]));
+          return counts.length === 3 && counts.every(Number.isInteger) &&
+            counts.reduce((sum, value) => sum + value, 0) === total;
+        }),
+        contextId
       ).toBe(true);
     }
   });
@@ -170,6 +221,12 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     expect(sameA.compiled.payloadHash).toBe(sameB.compiled.payloadHash);
     expect(changed.resolved.items[0]?.values.questionText).not.toBe(
       sameA.resolved.items[0]?.values.questionText
+    );
+    expect(changed.resolved.items[0]?.values.correctValueText).not.toBe(
+      sameA.resolved.items[0]?.values.correctValueText
+    );
+    expect(changed.resolved.items[0]?.values.rawDataText).not.toBe(
+      sameA.resolved.items[0]?.values.rawDataText
     );
     expect(changed.compiled.payloadHash).not.toBe(sameA.compiled.payloadHash);
   });
