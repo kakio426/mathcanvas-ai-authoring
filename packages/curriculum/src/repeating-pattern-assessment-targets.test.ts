@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS,
   REPEATING_PATTERN_ASSESSMENT_TARGET_IDS,
   assessmentTargetSets,
   assessmentTargets,
@@ -70,5 +71,38 @@ describe("[2수02-01] reviewed AssessmentTarget set", () => {
     });
     expect(assessmentTargetSets).toHaveLength(4);
     expect(assessmentTargets).toHaveLength(11);
+  });
+});
+
+describe("[2수02-02] replan-approved AssessmentTarget set", () => {
+  it("keeps repeat construction, repeat repair, and change construction as distinct targets", () => {
+    expect(
+      findOfficialElementaryStandard("[2수02-02]")?.officialGoal
+    ).toBe("자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.");
+    const set = findAssessmentTargetSet("[2수02-02]");
+    const targets = assessmentTargets.filter(
+      (target) => target.standardCode === "[2수02-02]"
+    );
+    expect(set).toMatchObject({
+      completeness: "reviewed-complete",
+      targetIds: Object.values(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS
+      )
+    });
+    expect(targets).toHaveLength(3);
+    expect(targets.every((target) => target.required)).toBe(true);
+    expect(new Set(targets.map((target) => target.targetId))).toEqual(
+      new Set(set?.targetIds)
+    );
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatRule
+      )?.scopeNote
+    ).toContain("repeat-only family");
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructChangeArrangement
+      )?.statement
+    ).toContain("시작값·변화량·방향");
   });
 });
