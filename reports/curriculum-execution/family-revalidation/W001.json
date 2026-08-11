@@ -12,7 +12,7 @@
   ],
   "domain": "자료와 가능성",
   "blueprintContentHash": "4f800f9747d04c3e119710cacd60f60039b0ca864e5229bb1a9f7c397e070659",
-  "replanContractRevision": "W001-SOL-REPLAN-v1",
+  "replanContractRevision": "W001-SOL-REPLAN-v2",
   "learningMapUsageSnapshotSha256": null,
   "implementationFiles": {
     "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts": "d8e6890dd925873d7a91170b17bf0bd2d336f07d3cfbb60d5dda53f810b4972b",
@@ -140,5 +140,5 @@
       }
     }
   ],
-  "fingerprintSha256": "9fa62d11488796110fd08199de85e9a5016010fcede346caf21b2fc07837024e"
+  "fingerprintSha256": "1c5b4d9ae82b64b3507db0a7f76ac6f0ea825bd57523240b25ebc90524cc5f10"
 }
