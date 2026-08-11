@@ -115,9 +115,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
@@ -207,9 +205,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ]
     }
   },
@@ -1123,9 +1119,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -1218,7 +1212,8 @@
           "nextOperation": "AFFORDANCE_DISCOVERY",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         },
         {
           "workItemId": "W002-FAMILY_TRACK-repeat-repair",
@@ -1244,7 +1239,8 @@
           "nextOperation": "ENGINE_CORE",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         },
         {
           "workItemId": "W002-FAMILY_TRACK-change-rule",
@@ -1270,7 +1266,8 @@
           "nextOperation": "ENGINE_CORE",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         }
       ],
       "nextFamilySubWork": null,
@@ -1307,7 +1304,7 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "6e37f6cfe26cea878735f35147e568a6182b776fe03e431a147f7951e1c4d20b",
+      "targetOutlineSha256": "61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
@@ -1325,9 +1322,9 @@
         },
         {
           "key": "construct-change-arrangement-following-rule",
-          "studentDecision": "스스로 선언한 변화 관계에 맞도록 다음 항목을 배열하고 어긋난 항목을 고친다.",
-          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 같은 변화 관계를 만족한다.",
-          "observableEvidence": "연속 항의 관계와 수정된 항을 화면에서 대조하고 다음 항을 예측할 수 있다.",
+          "studentDecision": "수 배열에 적용할 시작값·변화량·방향을 스스로 정하고 선언한 뒤, 그 관계로 다음 항을 배열하고 어긋난 항을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 시작값·변화량·방향의 같은 관계를 만족한다.",
+          "observableEvidence": "학생이 구성·선언한 시작값·변화량·방향과 연속 항의 관계를 화면에서 대조하고 다음 항을 예측한다.",
           "misconceptionClass": "change-step-or-direction-mismatch"
         }
       ],
@@ -3668,9 +3665,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -3763,7 +3758,8 @@
           "nextOperation": "AFFORDANCE_DISCOVERY",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         },
         {
           "workItemId": "W002-FAMILY_TRACK-repeat-repair",
@@ -3789,7 +3785,8 @@
           "nextOperation": "ENGINE_CORE",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         },
         {
           "workItemId": "W002-FAMILY_TRACK-change-rule",
@@ -3815,7 +3812,8 @@
           "nextOperation": "ENGINE_CORE",
           "completedOperations": [],
           "reviewStatus": "pending",
-          "reviewId": null
+          "reviewId": null,
+          "retryingFamilyTrack": false
         }
       ],
       "nextFamilySubWork": null,
@@ -3852,7 +3850,7 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "6e37f6cfe26cea878735f35147e568a6182b776fe03e431a147f7951e1c4d20b",
+      "targetOutlineSha256": "61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
@@ -3870,9 +3868,9 @@
         },
         {
           "key": "construct-change-arrangement-following-rule",
-          "studentDecision": "스스로 선언한 변화 관계에 맞도록 다음 항목을 배열하고 어긋난 항목을 고친다.",
-          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 같은 변화 관계를 만족한다.",
-          "observableEvidence": "연속 항의 관계와 수정된 항을 화면에서 대조하고 다음 항을 예측할 수 있다.",
+          "studentDecision": "수 배열에 적용할 시작값·변화량·방향을 스스로 정하고 선언한 뒤, 그 관계로 다음 항을 배열하고 어긋난 항을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 시작값·변화량·방향의 같은 관계를 만족한다.",
+          "observableEvidence": "학생이 구성·선언한 시작값·변화량·방향과 연속 항의 관계를 화면에서 대조하고 다음 항을 예측한다.",
           "misconceptionClass": "change-step-or-direction-mismatch"
         }
       ],

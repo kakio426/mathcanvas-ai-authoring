@@ -58,6 +58,35 @@ export function reviewScopeMatches(review, expectedScope = null) {
   );
 }
 
+export function validateOperationCursor(
+  operationSequence,
+  completedOperations,
+  nextOperation
+) {
+  return (
+    Array.isArray(operationSequence) &&
+    Array.isArray(completedOperations) &&
+    completedOperations.length < operationSequence.length &&
+    completedOperations.every(
+      (operation, index) => operation === operationSequence[index]
+    ) &&
+    operationSequence[completedOperations.length] === nextOperation
+  );
+}
+
+export function familyRevalidationSupersedes(
+  revalidationReview,
+  familyTrackReview
+) {
+  return (
+    revalidationReview?.operation === "FAMILY_REVALIDATION" &&
+    revalidationReview.supersedesReviewId === null &&
+    typeof revalidationReview.supersedesFamilyTrackReviewId === "string" &&
+    revalidationReview.supersedesFamilyTrackReviewId ===
+      (familyTrackReview?.reviewId ?? null)
+  );
+}
+
 function defaultGit(args) {
   return execFileSync("git", args, {
     cwd: root,
@@ -223,8 +252,7 @@ export function nativeFamilyReviewStatus(
           legacyReview?.decision === "approved" &&
           !candidateChecker(legacyReview) &&
           revalidation?.decision === "approved" &&
-          revalidation.supersedesReviewId === null &&
-          revalidation.supersedesFamilyTrackReviewId === legacyReview.reviewId &&
+          familyRevalidationSupersedes(revalidation, legacyReview) &&
           candidateChecker(revalidation) &&
           familyRevalidationArtifactIsCurrent(revalidation)
         ) {
@@ -239,7 +267,7 @@ export function nativeFamilyReviewStatus(
       ) {
         if (
           revalidation?.decision === "approved" &&
-          revalidation.supersedesReviewId === review.reviewId &&
+          familyRevalidationSupersedes(revalidation, review) &&
           candidateChecker(revalidation) &&
           familyRevalidationArtifactIsCurrent(revalidation)
         ) {

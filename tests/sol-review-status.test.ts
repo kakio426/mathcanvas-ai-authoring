@@ -4,10 +4,12 @@ import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
 
 const {
   effectiveFamilyLifecycleStage,
+  familyRevalidationSupersedes,
   nativeFamilyReviewStatus,
   reviewCandidateIsCurrent,
   reviewImplementationFiles,
-  reviewScopeMatches
+  reviewScopeMatches,
+  validateOperationCursor
 } = solReviewStatus;
 
 const candidateCommit = "a".repeat(40);
@@ -109,5 +111,43 @@ describe("Sol review candidate and scope gates", () => {
     expect(effectiveFamilyLifecycleStage(manifest(scope), board, stale)).toBe(
       "generatable"
     );
+  });
+
+  it("requires a contiguous sub-work phase cursor", () => {
+    const sequence = ["AFFORDANCE_DISCOVERY", "ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"];
+    expect(validateOperationCursor(sequence, [], "AFFORDANCE_DISCOVERY")).toBe(true);
+    expect(
+      validateOperationCursor(sequence, ["AFFORDANCE_DISCOVERY"], "ENGINE_CORE")
+    ).toBe(true);
+    expect(
+      validateOperationCursor(sequence, ["AFFORDANCE_DISCOVERY", "FAMILY_TRACK"], "SOL_REVIEW")
+    ).toBe(false);
+    expect(
+      validateOperationCursor(sequence, ["AFFORDANCE_DISCOVERY", "ENGINE_CORE"], "SOL_REVIEW")
+    ).toBe(false);
+  });
+
+  it("links a first revalidation attempt to a legacy family review separately", () => {
+    const familyReview = review({ reviewId: "W001-FAMILY_TRACK-SOL-A3" });
+    expect(
+      familyRevalidationSupersedes(
+        {
+          operation: "FAMILY_REVALIDATION",
+          supersedesReviewId: null,
+          supersedesFamilyTrackReviewId: "W001-FAMILY_TRACK-SOL-A3"
+        },
+        familyReview
+      )
+    ).toBe(true);
+    expect(
+      familyRevalidationSupersedes(
+        {
+          operation: "FAMILY_REVALIDATION",
+          supersedesReviewId: "W001-FAMILY_TRACK-SOL-A3",
+          supersedesFamilyTrackReviewId: "W001-FAMILY_TRACK-SOL-A3"
+        },
+        familyReview
+      )
+    ).toBe(false);
   });
 });

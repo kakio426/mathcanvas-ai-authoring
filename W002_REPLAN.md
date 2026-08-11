@@ -33,7 +33,7 @@ W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한�
 |---|---|---|
 | repeat rule 구성·선언 | 물체·무늬의 반복 단위 성분과 순서를 직접 정하고 선언 | `pattern.repeat-unit.construct-v1` |
 | repeat 배열 구성·수정 | 선언한 반복 단위로 다음 항을 만들고 어긋난 항을 교체 | `pattern.declared-repeat.repair-v1` |
-| change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 정하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | `pattern.change-rule.construct-v1` |
+| change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 구성·선언하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | `pattern.change-rule.construct-v1` |
 
 각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 세 slice를 모두 등록하는
 방식은 금지한다. TargetSet 재검토가 이 분해를 승인하기 전에는 어떤 family도 W002 완료를 주장하지 않는다.
@@ -83,7 +83,9 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 
 각 offline 단계가 끝나면 Luna는 해당 candidate에 phase-state JSON과 파생 report를 함께 기록하고,
 다음 실행은 report가 계산한 `nextFamilySubWork`/`operationWorkItemId`만 사용한다. cursor가 없거나
-sequence와 맞지 않으면 구현을 계속하지 않고 `blocked-needs-sol-replan`으로 멈춘다.
+sequence의 앞부분과 정확히 일치하지 않으면 구현을 계속하지 않고 `blocked-needs-sol-replan`으로 멈춘다.
+FAMILY_TRACK review가 `changes-requested`이면 cursor는 해당 구현 단계로 되돌아가고, 같은
+`SOL_REVIEW`를 반복하지 않는다. `blocked`이면 새 SOL_REPLAN으로 승격한다.
 
 이 재계획과 별도로 **검증 상태 정합성 작업**을 먼저 승인한다. 현재 W002는 Sol board에서
 `blocked`인데 `reports/curriculum-coverage/latest.json`과

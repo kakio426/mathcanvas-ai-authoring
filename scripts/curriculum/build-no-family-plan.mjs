@@ -4,7 +4,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   familyRevalidationArtifactIsCurrent,
-  reviewCandidateIsCurrent
+  familyRevalidationSupersedes,
+  reviewCandidateIsCurrent,
+  validateOperationCursor
 } from "./sol-review-status.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -143,12 +145,33 @@ function readSubWorkState(contract) {
       `no-family-plan-subwork-state-path-outside-root:${contract.subWorkStatePath}`
     );
     const state = readJson(absolutePath);
+    const plannedItems = contract.subWorkItems ?? [];
+    const plannedIds = plannedItems.map((item) => item.workItemId);
+    const stateIds = (state.items ?? []).map((item) => item.workItemId);
     assert(
       state.schemaVersion === "1.0.0" &&
         state.contractRevision === contract.replanContractRevision &&
-        Array.isArray(state.items),
+        state.workItemId === plannedIds[0]?.match(/^W\d+/)?.[0] &&
+        Array.isArray(state.items) &&
+        state.items.length === plannedItems.length &&
+        new Set(stateIds).size === stateIds.length &&
+        plannedIds.every((workItemId) => stateIds.includes(workItemId)),
       `no-family-plan-subwork-state-schema:${contract.subWorkStatePath}`
     );
+    for (const item of state.items) {
+      const planned = plannedItems.find(
+        (plannedItem) => plannedItem.workItemId === item.workItemId
+      );
+      assert(
+        planned &&
+          validateOperationCursor(
+            planned.operationSequence,
+            item.completedOperations,
+            item.nextOperation
+          ),
+        `no-family-plan-subwork-state-item:${item.workItemId}`
+      );
+    }
     return new Map(
       state.items.map((item) => [
         item.workItemId,
@@ -424,14 +447,19 @@ function buildReport() {
           ) &&
           new Set(subWorkItem.completedOperations).size ===
             subWorkItem.completedOperations.length &&
-          subWorkItem.completedOperations.length <
-            subWorkItem.operationSequence.length,
+          validateOperationCursor(
+            subWorkItem.operationSequence,
+            subWorkItem.completedOperations,
+            subWorkItem.nextOperation
+          ),
         `no-family-plan-subwork-shape:${archetypeId}:${subWorkItem.workItemId}`
       );
       assert(
-        subWorkItem.operationSequence[
-          subWorkItem.completedOperations.length
-        ] === subWorkItem.nextOperation,
+        validateOperationCursor(
+          subWorkItem.operationSequence,
+          subWorkItem.completedOperations,
+          subWorkItem.nextOperation
+        ),
         `no-family-plan-subwork-phase-cursor:${archetypeId}:${subWorkItem.workItemId}`
       );
       if (typeof contract.subWorkStatePath === "string") {
@@ -905,10 +933,11 @@ function buildReport() {
         nextOperation: state.nextOperation ?? subWorkItem.nextOperation
       };
       assert(
-        Array.isArray(phase.completedOperations) &&
-          phase.completedOperations.length < phase.operationSequence.length &&
-          phase.operationSequence[phase.completedOperations.length] ===
-            phase.nextOperation,
+        validateOperationCursor(
+          phase.operationSequence,
+          phase.completedOperations,
+          phase.nextOperation
+        ),
         `no-family-plan-subwork-state-cursor:${code}:${subWorkItem.workItemId}`
       );
       const review = solReviewByKey.get(
@@ -919,10 +948,25 @@ function buildReport() {
           phase.scopeId
         )
       );
+      const reviewStatus = review?.decision ?? "pending";
+      const retryingFamilyTrack =
+        reviewStatus === "changes-requested" &&
+        phase.completedOperations.includes("FAMILY_TRACK");
+      const effectivePhase = retryingFamilyTrack
+        ? {
+            ...phase,
+            completedOperations: phase.operationSequence.slice(
+              0,
+              phase.operationSequence.indexOf("FAMILY_TRACK")
+            ),
+            nextOperation: "FAMILY_TRACK"
+          }
+        : phase;
       return {
-        ...phase,
-        reviewStatus: review?.decision ?? "pending",
-        reviewId: review?.reviewId ?? null
+        ...effectivePhase,
+        reviewStatus,
+        reviewId: review?.reviewId ?? null,
+        retryingFamilyTrack
       };
     });
     const nextSubWork = subWorkStatuses.find(
@@ -981,7 +1025,6 @@ function buildReport() {
               review.artifactPath !==
                 `reports/curriculum-execution/family-revalidation/${baseWorkItemId}.json` ||
               review.fingerprintSha256 !== revalidationArtifact.fingerprintSha256 ||
-              review.supersedesReviewId !== null ||
               !familyRevalidationArtifactIsCurrent(review)
             ) {
               return false;
@@ -996,11 +1039,7 @@ function buildReport() {
             );
             const linkedFamilyReview =
               scopedFamilyReview ?? legacyFamilyTrackReview;
-            return (
-              typeof review.supersedesFamilyTrackReviewId === "string" &&
-              review.supersedesFamilyTrackReviewId ===
-                (linkedFamilyReview?.reviewId ?? null)
-            );
+            return familyRevalidationSupersedes(review, linkedFamilyReview);
           })()
       );
     const familyTrackStatusForFlow = revalidationApproved
@@ -1022,7 +1061,8 @@ function buildReport() {
         : targetSetReviewStatus === "blocked"
           ? "TARGET_SET"
           : null;
-    const blockedBySolReplan = blockedReviewGate !== null && !replanApproved;
+    const blockedBySolReplan =
+      blockedReviewGate !== null && (!replanApproved || replanConsumed);
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";
       operation = "SOL_REPLAN";

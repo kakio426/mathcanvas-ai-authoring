@@ -167,9 +167,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
     "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
@@ -259,9 +257,7 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/build-family-revalidation.mjs"
+        "reports/curriculum-execution/no-family-plan.md"
       ]
     }
   },

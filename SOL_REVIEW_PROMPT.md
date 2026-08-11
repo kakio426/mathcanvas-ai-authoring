@@ -35,6 +35,8 @@
 - 구현이 기존 released hash와 공통 planner·MCP·teacher-ui 계약을 깨지 않는다.
 - unsupported 조건을 조용히 무시하지 않는다.
 - Luna가 제시한 테스트·preview·정답·해설·semantic state 증거가 서로 일치한다.
+- exact preview는 compile-time RuleStateEnvelope와 조건부 rubric만 증명한다. 실제 학생
+  `StudentRuleStateEvidence`·save/reopen은 별도 responseHash evidence 없이는 승인 근거로 삼지 않는다.
 
 ## 금지
 

@@ -79,6 +79,9 @@ legacy 무범위 FAMILY_TRACK record를 새 scoped 승인으로 재사용하지 
 재계획으로 concrete sub-work가 생긴 standard는 generated `familySubWorkItems`와
 `subWorkStatePath`의 cursor를 따른다. cursor가 지시한 `operationSequence`의 한 단계만 실행하고,
 phase-state·파생 report가 갱신되지 않은 상태에서 같은 단계를 다시 실행하지 않는다.
+`FAMILY_TRACK` review가 `changes-requested`이면 cursor를 구현 단계로 되돌려 새 candidate를 만들고,
+`blocked`이면 새 `SOL_REPLAN`으로 승격한다. `completedOperations`는 operation sequence의
+정확한 prefix여야 하며 누락·중복·순서 변경은 게이트 오류다.
 
 `TARGET_SET`, `FAMILY_TRACK`, `SOL_REPLAN`, `FAMILY_REVALIDATION`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
 focused QA를 수행한 뒤 **아직 push하지 않은 local candidate commit**을 만들고
