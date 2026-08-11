@@ -63,12 +63,14 @@ type PatternItemSpec = Readonly<{
   pieces: readonly [number, number, number, number, number];
   correctSequence: readonly [number, number, number];
   correctNext: readonly [number, number];
-  phase: "declare" | "repair";
+  correctContinuation: readonly [number, number, number, number, number];
+  phase: "repair";
   relationId: "repeat-2" | "repeat-3" | "step-1" | "step-2";
-  repairIndex?: 2;
+  repairIndex: 2;
   correctRuleText: string;
   candidates: readonly [string, string, string, string, string];
   questionText: string;
+  observationText: string;
   explanation: string;
 }>;
 
@@ -86,12 +88,14 @@ const CONTEXTS: Readonly<
     ruleKind: "repeat",
     items: [
       {
-        sequence: [1, 2, 1],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [1, 1, 1],
+        pieces: [1, 2, 2, 2, 2],
         correctSequence: [1, 2, 1],
         correctNext: [2, 1],
-        phase: "declare",
+        correctContinuation: [2, 1, 2, 1, 2],
+        phase: "repair",
         relationId: "repeat-2",
+        repairIndex: 2,
         correctRuleText: "노-파",
         candidates: [
           "노-파",
@@ -101,15 +105,17 @@ const CONTEXTS: Readonly<
           "끝 복사"
         ],
         questionText:
-          "패턴 블록을 세 칸 놓았습니다. 반복 단위를 직접 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 반복 단위를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "노랑 → □ → 노랑",
         explanation:
-          "노란 육각형과 파란 마름모가 두 조각 단위로 되풀이됩니다. 그래서 다음은 파란 마름모, 노란 육각형입니다."
+          "두 번째 블록을 파란 마름모로 고치면 노랑-파랑이 되풀이됩니다. 뒤의 다섯 칸은 파랑, 노랑, 파랑, 노랑, 파랑입니다."
       },
       {
-        sequence: [1, 4, 1],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [1, 1, 1],
+        pieces: [1, 2, 2, 2, 2],
         correctSequence: [1, 2, 1],
         correctNext: [2, 1],
+        correctContinuation: [2, 1, 2, 1, 2],
         phase: "repair",
         relationId: "repeat-2",
         repairIndex: 2,
@@ -122,9 +128,10 @@ const CONTEXTS: Readonly<
           "끝 복사"
         ],
         questionText:
-          "패턴 블록 배열에서 어긋난 조각을 고친 뒤 반복 단위를 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 반복 단위를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "노랑 → □ → 노랑",
         explanation:
-          "두 번째 조각을 파란 마름모로 고치면 노란 육각형-파란 마름모가 되풀이됩니다. 다음은 파란 마름모, 노란 육각형입니다."
+          "두 번째 블록을 파란 마름모로 고치면 노랑-파랑이 되풀이됩니다. 뒤의 다섯 칸은 파랑, 노랑, 파랑, 노랑, 파랑입니다."
       }
     ]
   },
@@ -133,12 +140,14 @@ const CONTEXTS: Readonly<
     ruleKind: "repeat",
     items: [
       {
-        sequence: [1, 2, 3],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [1, 1, 3],
+        pieces: [1, 2, 2, 3, 5],
         correctSequence: [1, 2, 3],
         correctNext: [1, 2],
-        phase: "declare",
+        correctContinuation: [1, 2, 3, 1, 2],
+        phase: "repair",
         relationId: "repeat-3",
+        repairIndex: 2,
         correctRuleText: "노-파-빨",
         candidates: [
           "노-파-빨",
@@ -148,15 +157,17 @@ const CONTEXTS: Readonly<
           "끝복사"
         ],
         questionText:
-          "패턴 블록을 세 칸 놓았습니다. 가장 짧은 반복 단위를 직접 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 세 조각의 반복 단위를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "노랑 → □ → 빨강",
         explanation:
-          "노란 육각형-파란 마름모-빨간 사다리꼴이 세 조각 단위로 되풀이됩니다. 다음은 노란 육각형, 파란 마름모입니다."
+          "두 번째 블록을 파란 마름모로 고치면 노랑-파랑-빨강이 되풀이됩니다. 뒤의 다섯 칸은 노랑, 파랑, 빨강, 노랑, 파랑입니다."
       },
       {
-        sequence: [1, 5, 3],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [1, 1, 3],
+        pieces: [1, 2, 2, 3, 5],
         correctSequence: [1, 2, 3],
         correctNext: [1, 2],
+        correctContinuation: [1, 2, 3, 1, 2],
         phase: "repair",
         relationId: "repeat-3",
         repairIndex: 2,
@@ -169,9 +180,10 @@ const CONTEXTS: Readonly<
           "끝복사"
         ],
         questionText:
-          "패턴 블록 배열에서 어긋난 조각을 고친 뒤 세 조각의 반복 단위를 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 세 조각의 반복 단위를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "노랑 → □ → 빨강",
         explanation:
-          "세 번째 조각을 빨간 사다리꼴로 고치면 세 조각이 같은 순서로 되풀이됩니다. 다음은 노란 육각형, 파란 마름모입니다."
+          "두 번째 블록을 파란 마름모로 고치면 노랑-파랑-빨강이 되풀이됩니다. 뒤의 다섯 칸은 노랑, 파랑, 빨강, 노랑, 파랑입니다."
       }
     ]
   },
@@ -180,30 +192,11 @@ const CONTEXTS: Readonly<
     ruleKind: "change",
     items: [
       {
-        sequence: [1, 2, 3],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [1, 1, 3],
+        pieces: [1, 2, 4, 5, 6],
         correctSequence: [1, 2, 3],
         correctNext: [4, 5],
-        phase: "declare",
-        relationId: "step-1",
-        correctRuleText: "1칸↑",
-        candidates: [
-          "1칸↑",
-          "2칸↑",
-          "1칸↓",
-          "같은",
-          "끝 복사"
-        ],
-        questionText:
-          "패턴 블록을 한 칸씩 앞으로 옮기는 변화 관계를 직접 정하고 다음 두 칸을 어떻게 놓을까요?",
-        explanation:
-          "노란 육각형에서 파란 마름모, 빨간 사다리꼴로 한 칸씩 앞으로 바뀝니다. 다음은 초록 삼각형, 주황 정사각형입니다."
-      },
-      {
-        sequence: [1, 5, 3],
-        pieces: [1, 2, 3, 4, 5],
-        correctSequence: [1, 2, 3],
-        correctNext: [4, 5],
+        correctContinuation: [4, 5, 6, 1, 2],
         phase: "repair",
         relationId: "step-1",
         repairIndex: 2,
@@ -216,9 +209,33 @@ const CONTEXTS: Readonly<
           "끝 복사"
         ],
         questionText:
-          "패턴 블록 배열에서 어긋난 조각을 고친 뒤 한 칸씩 앞으로 바뀌는 관계를 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 한 칸씩 앞으로 바뀌는 관계를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "수 1 → □ → 3",
         explanation:
-          "세 번째 조각을 빨간 사다리꼴로 고치면 한 칸씩 앞으로 바뀌는 관계가 이어집니다. 다음은 초록 삼각형, 주황 정사각형입니다."
+          "두 번째 블록을 파란 마름모로 고치면 한 칸씩 앞으로 바뀝니다. 뒤의 다섯 칸은 초록, 주황, 보라, 노랑, 파랑입니다."
+      },
+      {
+        sequence: [1, 1, 3],
+        pieces: [1, 2, 4, 5, 6],
+        correctSequence: [1, 2, 3],
+        correctNext: [4, 5],
+        correctContinuation: [4, 5, 6, 1, 2],
+        phase: "repair",
+        relationId: "step-1",
+        repairIndex: 2,
+        correctRuleText: "1칸↑",
+        candidates: [
+          "1칸↑",
+          "2칸↑",
+          "1칸↓",
+          "같은",
+          "끝 복사"
+        ],
+        questionText:
+          "어긋난 블록을 빼고 한 칸씩 앞으로 바뀌는 관계를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "수 1 → □ → 3",
+        explanation:
+          "두 번째 블록을 파란 마름모로 고치면 한 칸씩 앞으로 바뀝니다. 뒤의 다섯 칸은 초록, 주황, 보라, 노랑, 파랑입니다."
       }
     ]
   },
@@ -227,30 +244,11 @@ const CONTEXTS: Readonly<
     ruleKind: "change",
     items: [
       {
-        sequence: [2, 4, 6],
-        pieces: [1, 2, 3, 4, 5],
+        sequence: [2, 2, 6],
+        pieces: [2, 4, 4, 6, 3],
         correctSequence: [2, 4, 6],
         correctNext: [2, 4],
-        phase: "declare",
-        relationId: "step-2",
-        correctRuleText: "2칸↑",
-        candidates: [
-          "2칸↑",
-          "1칸↑",
-          "2칸↓",
-          "같은",
-          "끝 복사"
-        ],
-        questionText:
-          "패턴 블록을 두 칸씩 건너뛰는 변화 관계를 직접 정하고 다음 두 칸을 어떻게 놓을까요?",
-        explanation:
-          "파란 마름모에서 초록 삼각형, 보라 마름모로 두 칸씩 건너뜁니다. 다음은 파란 마름모, 초록 삼각형입니다."
-      },
-      {
-        sequence: [2, 1, 6],
-        pieces: [1, 2, 3, 4, 5],
-        correctSequence: [2, 4, 6],
-        correctNext: [2, 4],
+        correctContinuation: [2, 4, 6, 2, 4],
         phase: "repair",
         relationId: "step-2",
         repairIndex: 2,
@@ -263,29 +261,53 @@ const CONTEXTS: Readonly<
           "끝 복사"
         ],
         questionText:
-          "패턴 블록 배열에서 어긋난 조각을 고친 뒤 두 칸씩 건너뛰는 관계를 정하고 다음 두 칸을 어떻게 놓을까요?",
+          "어긋난 블록을 빼고 두 칸씩 건너뛰는 관계를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "수 2 → □ → 6",
         explanation:
-          "두 번째 조각을 초록 삼각형으로 고치면 두 칸씩 건너뛰는 관계가 이어집니다. 다음은 파란 마름모, 초록 삼각형입니다."
+          "두 번째 블록을 초록 삼각형으로 고치면 두 칸씩 건너뜁니다. 뒤의 다섯 칸은 파랑, 초록, 보라, 파랑, 초록입니다."
+      },
+      {
+        sequence: [2, 2, 6],
+        pieces: [2, 4, 4, 6, 3],
+        correctSequence: [2, 4, 6],
+        correctNext: [2, 4],
+        correctContinuation: [2, 4, 6, 2, 4],
+        phase: "repair",
+        relationId: "step-2",
+        repairIndex: 2,
+        correctRuleText: "2칸↑",
+        candidates: [
+          "2칸↑",
+          "1칸↑",
+          "2칸↓",
+          "같은",
+          "끝 복사"
+        ],
+        questionText:
+          "어긋난 블록을 빼고 두 칸씩 건너뛰는 관계를 정한 뒤 빈 다섯 칸을 어떻게 채울까요?",
+        observationText: "수 2 → □ → 6",
+        explanation:
+          "두 번째 블록을 초록 삼각형으로 고치면 두 칸씩 건너뜁니다. 뒤의 다섯 칸은 파랑, 초록, 보라, 파랑, 초록입니다."
       }
     ]
   }
 };
 
 const instructions = [
-  "① 앞의 배열을 보고 반복 단위나 변화 관계를 직접 정하고 규칙 카드를 고르세요.",
-  "② 정한 규칙에 맞는 조각을 다음 두 칸에 놓고 모든 위치를 다시 확인하세요.",
-  "③ 어긋난 조각을 고친 뒤 규칙과 배열이 맞는 까닭을 쓰세요."
+  "① 어긋난 블록을 빼고 처음 세 블록에서 규칙을 정해 카드를 고르세요.",
+  "② 정한 규칙에 맞는 조각을 앞의 빈 칸 세 곳과 다음 두 칸에 놓으세요.",
+  "③ 다섯 칸까지 모든 위치를 살펴보고 규칙과 배열이 맞는 까닭을 쓰세요."
 ] as const;
 
 const scaffoldBase = makeChoiceExplanationScaffoldRoles({
   instructions,
   instructionalIntents: [
-    "학생이 완성된 규칙을 받지 않고 배열에서 반복 단위나 변화 관계를 직접 선언하게 합니다.",
-    "선언한 규칙에 맞는 조각을 빈 칸에 놓고 모든 위치에 적용되는지 확인하게 합니다.",
-    "어긋난 조각을 되돌리고 규칙과 배열의 관계를 말하게 합니다."
+    "학생이 어긋난 블록을 빼고 처음 세 블록에서 반복 단위나 변화 관계를 선언하게 합니다.",
+    "선언한 규칙에 맞는 다섯 조각을 빈 칸에 놓고 모든 위치에 적용되는지 확인하게 합니다.",
+    "고친 블록과 다섯 조각의 관계를 설명하고 다시 바꿀 수 있게 합니다."
   ],
   questionIntent:
-    "앞의 배열에서 학생이 정한 규칙을 선언하고 다음 두 항을 구성하게 합니다.",
+    "학생이 어긋난 블록을 고치고 자신의 규칙으로 다섯 칸을 구성하게 합니다.",
   predictionLabel: "정한 규칙",
   poolLabel: "규칙 카드",
   explanationLabel: "확인한 까닭",
@@ -327,7 +349,7 @@ const patternRoles = [
     intentKind: "draw-rectangle",
     locked: true,
     movable: false,
-    instructionalIntent: "앞의 배열과 다음 두 빈 칸을 한 줄로 묶습니다.",
+    instructionalIntent: "처음 세 블록과 고칠 자리, 뒤의 다섯 빈 칸을 한 줄로 묶습니다.",
     properties: { fill: "#F8FAFC", stroke: "#8291A7" },
     bindings: {},
     containerRole: "work-panel"
@@ -341,12 +363,17 @@ const patternRoles = [
     intentKind: "text",
     locked: true,
     movable: false,
-    instructionalIntent: "앞의 배열을 살펴볼 범위를 알려 줍니다.",
-    properties: { text: "앞의 배열", fontSize: 23 },
-    bindings: {},
+    instructionalIntent: "어긋난 조각을 뺀 뒤 보이는 두 항의 관계를 살펴보게 합니다.",
+    properties: { text: "", fontSize: 16 },
+    bindings: { text: "item.observationText" },
     containerRole: "pattern-track"
   },
-  ...sequenceRoles.slice(0, 3).map((role, index) => ({
+  ...sequenceRoles
+    .filter((role) => role !== "sequence-block-2")
+    .slice(0, 2)
+    .map((role) => {
+      const index = sequenceRoles.indexOf(role);
+      return {
     role,
     scope: "each-item" as const,
     layoutRole: role,
@@ -355,14 +382,40 @@ const patternRoles = [
     intentKind: "pattern-block" as const,
     locked: true,
     movable: false,
-    instructionalIntent:
-      index === 1
-        ? "어긋난 조각을 바꿀 자리로 삼아 배열의 관계를 다시 확인하는 패턴 블록입니다."
-        : "규칙을 정할 때 근거로 살펴보는 패턴 블록입니다.",
+    instructionalIntent: "규칙을 정할 때 근거로 살펴보는 고정 패턴 블록입니다.",
     properties: {},
     bindings: { variant: `item.sequenceVariant${index + 1}` },
     containerRole: "pattern-track"
-  })),
+      };
+    }),
+  {
+    role: "sequence-block-2",
+    scope: "each-item" as const,
+    layoutRole: "sequence-block-2",
+    idRole: "sequence-block-2",
+    toolKey: "common.rectangle",
+    intentKind: "draw-rectangle" as const,
+    locked: true,
+    movable: false,
+    instructionalIntent: "어긋난 블록을 빼고 알맞은 블록을 놓는 고정 자리입니다.",
+    properties: { fill: "#FFF8F0", stroke: "#D9792B", strokeDashArray: "8 6" },
+    bindings: {},
+    containerRole: "pattern-track"
+  },
+  {
+    role: "misaligned-block",
+    scope: "each-item" as const,
+    layoutRole: "sequence-block-2",
+    idRole: "misaligned-block",
+    toolKey: "SM02PB",
+    intentKind: "pattern-block" as const,
+    locked: false,
+    movable: true,
+    instructionalIntent: "처음부터 어긋나 있어 먼저 조각 바구니로 빼야 하는 패턴 블록입니다.",
+    properties: {},
+    bindings: { variant: "item.sequenceVariant2" },
+    containerRole: "pattern-track"
+  },
   ...sequenceRoles.slice(3).map((role) => ({
     role,
     scope: "each-item" as const,
@@ -400,7 +453,7 @@ const patternRoles = [
     intentKind: "draw-rectangle",
     locked: true,
     movable: false,
-    instructionalIntent: "정한 규칙에 맞는 조각과 어긋나는 조각을 함께 제공합니다.",
+    instructionalIntent: "어긋난 조각을 되돌리고 정한 규칙에 맞는 다섯 조각을 놓는 바구니입니다.",
     properties: { fill: "#F5FBFF", stroke: "#4AA9D8" },
     bindings: {},
     containerRole: "work-panel"
@@ -415,7 +468,7 @@ const patternRoles = [
     locked: true,
     movable: false,
     instructionalIntent: "빈 칸에 놓을 조각을 고르게 합니다.",
-    properties: { text: "다음 조각 고르기", fontSize: 22 },
+    properties: { text: "조각 바구니", fontSize: 22 },
     bindings: {},
     containerRole: "piece-bank"
   },
@@ -517,10 +570,10 @@ export const repeatingPatternArrangementBlueprint = defineActivityBlueprint(
         parameters: {},
         requiresStudentAction: true
       },
-      ...slotRoles.map((role) => ({
-        id: `complete-arrangement-${role.slice(-1)}`,
+      ...[...sequenceRoles.slice(3), ...slotRoles].map((role) => ({
+        id: `complete-arrangement-${role}`,
         kind: "fill-from-pool",
-        sources: completionRoles.map((piece) => ({
+        sources: [...completionRoles, "misaligned-block"].map((piece) => ({
           scope: "each-item" as const,
           role: piece
         })),
@@ -529,6 +582,17 @@ export const repeatingPatternArrangementBlueprint = defineActivityBlueprint(
         requiresStudentAction: true
       })),
       {
+        id: "remove-misaligned-arrangement",
+        kind: "place-in",
+        sources: [{
+          scope: "each-item" as const,
+          role: "misaligned-block"
+        }],
+        target: { scope: "each-item", role: "piece-bank" },
+        parameters: {},
+        requiresStudentAction: true
+      },
+      {
         id: "repair-misaligned-arrangement",
         kind: "fill-from-pool",
         sources: completionRoles.map((piece) => ({
@@ -536,10 +600,7 @@ export const repeatingPatternArrangementBlueprint = defineActivityBlueprint(
           role: piece
         })),
         target: { scope: "each-item", role: "sequence-block-2" },
-        parameters: {
-          repairIndexPath: "repairIndex",
-          phasePath: "phase"
-        },
+        parameters: {},
         requiresStudentAction: true
       }
     ],
@@ -557,7 +618,8 @@ export const repeatingPatternArrangementBlueprint = defineActivityBlueprint(
           verificationRoles: [
             "pattern-track",
             ...sequenceRoles,
-            ...slotRoles
+            ...slotRoles,
+            "misaligned-block"
           ]
         }
       },
@@ -648,7 +710,12 @@ export const repeatingPatternArrangementBlueprint = defineActivityBlueprint(
     }
   }, {
     questionFontSize: 20,
-    compactGlyphRoles: [...sequenceRoles, ...completionRoles, ...CHOICE_CARD_ROLES],
+    compactGlyphRoles: [
+      "pattern-label",
+      ...sequenceRoles,
+      ...completionRoles,
+      ...CHOICE_CARD_ROLES
+    ],
     compactGlyphMinimumFontSize: 16
   })
 );
@@ -721,17 +788,19 @@ export function generateRepeatingPatternArrangementItems(
           ? {}
           : { repairIndex: spec.repairIndex }),
         questionText: spec.questionText,
+        observationText: spec.observationText,
         correctRuleText: spec.correctRuleText,
         initialSequence: [...spec.sequence],
         correctSequence: [...spec.correctSequence],
         correctNext: [...spec.correctNext],
+        correctContinuation: [...spec.correctContinuation],
         correctAnswerText:
-          `${spec.correctRuleText}; 다음: ${spec.correctNext
+          `${spec.correctRuleText}; 이어지는 다섯 칸: ${spec.correctContinuation
             .map(patternBlockLabel)
             .join(", ")}`,
         answerExplanation: spec.explanation,
         verificationText:
-          "고친 조각과 다음 두 칸을 앞의 배열과 이어 보며 모든 위치에 같은 규칙이 적용되는지 확인하세요.",
+          "어긋난 조각을 뺀 뒤 앞의 세 블록과 이어지는 다섯 칸에 같은 규칙이 적용되는지 확인하세요.",
         misconceptionIds: [
           "change.pattern.rule-changes-mid-sequence-v1",
           "change.pattern.rule-boundary-mismatch-v1"
@@ -838,7 +907,7 @@ export const repeatingPatternArrangementCapability: ProblemFamilyCapabilityExten
   unsupportedParameterPolicy: "clarification-required",
   title: "정한 규칙으로 배열 만들고 고치기",
   scopeNote:
-    "현재 공개 envelope는 패턴 블록의 repeat-2·repeat-3·step-1·step-2 관계입니다. 학생은 규칙 카드를 자신의 규칙으로 선언하고, 빈 칸을 구성하며, 처음부터 어긋난 조각을 되돌려 고칩니다. 물체·수 표현은 별도 envelope에서 추가해야 하며 이 family가 대신한다고 주장하지 않습니다.",
+    "현재 공개 envelope는 패턴 블록의 repeat-2·repeat-3·step-1·step-2 관계입니다. 모든 문항에서 학생은 처음 세 블록을 근거로 규칙 카드를 자신의 규칙으로 선언하고, 어긋난 블록을 바구니로 빼고, 앞의 빈 세 칸과 다음 두 칸을 채웁니다. 물체·수 표현은 별도 envelope에서 추가해야 하며 이 family가 대신한다고 주장하지 않습니다.",
   parseParameters: parseProblemParameters
 };
 
@@ -913,16 +982,19 @@ function problemPreviews(
       problemNumber: item.order,
       statements: [
         String(item.values.questionText),
-        `앞의 패턴 블록: ${sequenceRoles
-          .map((_, index) => {
-            const value = item.values[`sequenceVariant${index + 1}`];
-            return value === undefined ? "빈 칸" : patternBlockLabel(value);
-          })
+        `처음 패턴 블록: ${sequenceRoles
+          .slice(0, 3)
+          .map((_, index) =>
+            patternBlockLabel(item.values[`sequenceVariant${index + 1}`])
+          )
           .join(" → ")}`,
+        `관찰 안내: ${String(item.values.observationText)}`,
+        "수정 자리: 두 번째 블록(처음에는 어긋난 조각)",
+        "채울 자리: 앞의 빈 칸 3곳 → 다음 칸 2곳",
         `규칙 후보: ${CHOICE_CARD_ROLES.map((_, index) =>
           String(item.values[`candidate${index + 1}`])
         ).join(" | ")}`,
-        `다음 조각: ${completionRoles
+        `조각 바구니: ${completionRoles
           .map((_, index) =>
             patternBlockLabel(item.values[`completionVariant${index + 1}`])
           )
@@ -979,9 +1051,9 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   blueprintVersion: repeatingPatternArrangementBlueprint.version,
   blueprintContentHash: repeatingPatternArrangementBlueprint.contentHash,
   mathematicalDecision:
-    "학생은 앞의 물체·무늬·수 배열에서 반복 단위 또는 변화 관계를 직접 정해 규칙 후보를 선언하고, 그 규칙에 맞는 다음 두 항을 구성한 뒤 어긋난 항을 고친다.",
+    "학생은 처음 세 패턴 블록에서 반복 단위 또는 변화 관계를 직접 정해 규칙 카드를 선언하고, 어긋난 블록을 빼서 고친 뒤 다섯 칸을 구성한다.",
   misconceptionConflict:
-    "마지막 항 복사, 규칙의 중간 변경, 반복 단위의 경계를 잘못 잡아 일부 위치만 맞는 배열을 정답으로 보는 생각을 배열 전체의 위치별 관계와 충돌시킨다.",
+    "마지막 항 복사, 변화의 간격·방향 변경, 반복 단위의 경계 오류로 일부 위치만 맞는 배열을 정답으로 보는 생각을 배열 전체의 위치별 관계와 충돌시킨다.",
   learningMap: {
     repository: "DECK6/korean-elementary-learning-map",
     commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
@@ -1016,25 +1088,25 @@ const cognitiveManifest = defineCognitiveDemandManifest({
       {
         predicateKind: "cognitive.release-contract",
         misconception:
-          "마지막 항을 복사하거나 규칙의 일부만 맞추어도 배열 전체가 완성되었다고 생각한다."
+          "마지막 항을 복사하거나 변화의 간격을 한 번 바꾸어도 배열 전체가 완성되었다고 생각한다."
       },
       {
         predicateKind: "cognitive.release-contract",
         misconception:
-          "반복 단위의 시작과 끝을 잘못 정해 중간부터 규칙을 바꾼다."
+          "반복 단위의 경계나 변화의 방향을 잘못 정해 중간부터 규칙을 바꾼다."
       }
     ]
   },
   prediction: { regionRole: "prediction-box" },
   verification: {
     kind: "data-representation",
-    roles: ["pattern-track", ...sequenceRoles, ...slotRoles],
+    roles: ["pattern-track", ...sequenceRoles, ...slotRoles, "misaligned-block"],
     invariant:
-      "정한 반복 단위 또는 변화 관계가 앞의 모든 위치와 다음 두 칸에 일관되게 적용되고, 어긋난 조각은 다시 고칠 수 있다."
+      "어긋난 블록을 빼고 고친 뒤, 정한 반복 단위 또는 변화 관계가 앞의 세 블록과 뒤의 다섯 칸에 일관되게 적용되어야 한다."
   },
   explanation: { regionRole: "explanation-box" },
   revisionPath:
-    "규칙 후보와 다섯 조각은 계속 되돌릴 수 있으며, 다음 두 칸을 놓은 뒤 배열 전체의 관계가 어긋나면 다른 규칙이나 조각으로 고치고 까닭을 기록한다.",
+    "어긋난 블록을 조각 바구니로 되돌리고, 규칙 카드와 다섯 조각을 계속 바꾸어 배열 전체의 관계를 확인한 뒤 까닭을 기록한다.",
   limitations: { autoGrading: "none-by-design", phaseOrder: "teacher-guided" }
 });
 

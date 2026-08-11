@@ -74,7 +74,7 @@ function resolveEnvelope(contextId: RepeatingPatternArrangementContextId) {
 }
 
 describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () => {
-  it("repeat envelope에서 규칙 후보·두 칸 구성·정답 미리보기를 생성한다", () => {
+  it("repeat envelope에서 규칙 후보·수정·다섯 칸 구성·정답 미리보기를 생성한다", () => {
     const result = resolveEnvelope("repeat-colors");
     expect(result.recommendation).toMatchObject({
       supported: false,
@@ -114,14 +114,17 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     expect(answers).toHaveLength(2);
     expect(answers[0]).toMatchObject({
       answer: expect.stringContaining("노-파"),
-      explanation: expect.stringContaining("노란 육각형")
+      explanation: expect.stringContaining("노랑-파랑")
     });
     expect(previews?.[0]?.statements).toEqual([
-      expect.stringContaining("패턴 블록"),
-      "앞의 패턴 블록: 노란 육각형 → 파란 마름모 → 노란 육각형 → 빈 칸 → 빈 칸 → 빈 칸",
+      expect.stringContaining("어긋난 블록"),
+      "처음 패턴 블록: 노란 육각형 → 노란 육각형 → 노란 육각형",
+      "관찰 안내: 노랑 → □ → 노랑",
+      "수정 자리: 두 번째 블록(처음에는 어긋난 조각)",
+      "채울 자리: 앞의 빈 칸 3곳 → 다음 칸 2곳",
       expect.stringContaining("규칙 후보:"),
-      expect.stringContaining("다음 조각:"),
-      "활동 단계: 규칙 정하고 배열 구성하기"
+      expect.stringContaining("조각 바구니:"),
+      "활동 단계: 어긋난 조각 고치기"
     ]);
     expect(applied).toEqual({
       schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
@@ -133,13 +136,57 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
       2,
       1
     ]);
-    expect(result.resolved.items[1]?.values.phase).toBe("repair");
-    expect(result.resolved.items[1]?.values.initialSequence).toEqual([1, 4, 1]);
+    expect(result.resolved.items[0]?.values.phase).toBe("repair");
+    expect(result.resolved.items[0]?.values.initialSequence).toEqual([1, 1, 1]);
     expect(result.resolved.items[1]?.values.correctSequence).toEqual([1, 2, 1]);
+    expect(result.resolved.items[0]?.values.correctContinuation).toEqual([
+      2,
+      1,
+      2,
+      1,
+      2
+    ]);
+    expect(
+      result.resolved.constraints.some((constraint) =>
+        constraint.id.startsWith("remove-misaligned-arrangement:")
+      )
+    ).toBe(true);
     expect(
       result.resolved.constraints.some((constraint) =>
         constraint.id.startsWith("repair-misaligned-arrangement:")
       )
+    ).toBe(true);
+    expect(
+      [
+        "sequence-block-4",
+        "sequence-block-5",
+        "sequence-block-6",
+        "next-slot-1",
+        "next-slot-2"
+      ].every((role) =>
+        result.resolved.constraints.some(
+          (constraint) =>
+            constraint.id === `complete-arrangement-${role}:${result.resolved.items[0]?.id}`
+        )
+      )
+    ).toBe(true);
+    const sequenceTwo = result.resolved.emissions.find(
+      (emission) => emission.role === "sequence-block-2"
+    );
+    const misaligned = result.resolved.emissions.find(
+      (emission) => emission.role === "misaligned-block"
+    );
+    expect(sequenceTwo).toMatchObject({ locked: true, movable: false });
+    expect(misaligned).toMatchObject({ locked: false, movable: true });
+    expect(
+      result.resolved.constraints
+        .filter((constraint) =>
+          constraint.id.startsWith("complete-arrangement-") &&
+          constraint.id.endsWith(`:${result.resolved.items[0]?.id}`)
+        )
+        .every((constraint) =>
+          constraint.sourceIds.includes(misaligned?.id ?? "")
+        )
     ).toBe(true);
     expect(
       result.resolved.emissions.some(
@@ -165,10 +212,10 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     expect(
       outputs.map((output) => String(output.resolved.items[0]?.values.correctAnswerText))
     ).toEqual([
-      "노-파; 다음: 파란 마름모, 노란 육각형",
-      "노-파-빨; 다음: 노란 육각형, 파란 마름모",
-      "1칸↑; 다음: 초록 삼각형, 주황 정사각형",
-      "2칸↑; 다음: 파란 마름모, 초록 삼각형"
+      "노-파; 이어지는 다섯 칸: 파란 마름모, 노란 육각형, 파란 마름모, 노란 육각형, 파란 마름모",
+      "노-파-빨; 이어지는 다섯 칸: 노란 육각형, 파란 마름모, 빨간 사다리꼴, 노란 육각형, 파란 마름모",
+      "1칸↑; 이어지는 다섯 칸: 초록 삼각형, 주황 정사각형, 보라 마름모, 노란 육각형, 파란 마름모",
+      "2칸↑; 이어지는 다섯 칸: 파란 마름모, 초록 삼각형, 보라 마름모, 파란 마름모, 초록 삼각형"
     ]);
     expect(
       outputs.map((output) => output.resolved.items[0]?.values.relationId)
@@ -182,8 +229,8 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     const changed = resolveEnvelope("change-even-numbers");
     expect(sameA.resolved.items).toEqual(sameB.resolved.items);
     expect(sameA.compiled.payloadHash).toBe(sameB.compiled.payloadHash);
-    expect(changed.resolved.items[0]?.values.sequenceVariant1).not.toBe(
-      sameA.resolved.items[0]?.values.sequenceVariant1
+    expect(changed.resolved.items[0]?.values.correctContinuation).not.toEqual(
+      sameA.resolved.items[0]?.values.correctContinuation
     );
     expect(changed.compiled.payloadHash).not.toBe(sameA.compiled.payloadHash);
   });

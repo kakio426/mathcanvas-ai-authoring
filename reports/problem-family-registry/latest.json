@@ -649,7 +649,7 @@
       "renderRecipeKind": "native-render-recipe",
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
-      "blueprintContentHash": "1a2fe447d692af75e8e9fb7853764057ad154211d301d0d000fff4986696e3b8",
+      "blueprintContentHash": "663832d215be4c158623367ae352bc4cffb1667c3d489ab52c49fb062bb277ae",
       "assessmentTargetIds": [
         "change.pattern.choose-own-arrangement-rule-v1",
         "change.pattern.construct-arrangement-following-rule-v1"
