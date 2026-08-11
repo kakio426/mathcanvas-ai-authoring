@@ -2466,6 +2466,47 @@
         "승인 경계: v8은 repeat-rule ENGINE_CORE completion evidence governance와 그 다음 FAMILY_TRACK work item 생성만 승인한다. repeat-repair/change-rule은 서로 다른 교육적 결정이므로 현재 repeat-rule artifact identity를 재사용하지 않고 각 cursor에서 별도 artifact contract/replan을 받아야 한다. family generator·native layout·exact preview·responseHash·save/reopen·canary는 아직 승인되지 않았다.",
         "QA: focused pre/post approval 19/19, typecheck, no-family plan, exact diff가 통과했고 full pnpm check 81 files/511 tests와 모든 audit gate PASS가 보고됐다. reviewer 파생 report는 W002를 next ENGINE_CORE로 유지하고 nextReplanWork를 제거한다."
       ]
+    },
+    {
+      "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "FAMILY_TRACK",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 2,
+      "candidateCommit": "d6e42c991e5a4e1c1cea230dad8f2c6d4fcfc36d",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-preflight-blocker.json"
+      ],
+      "familyTrackId": "pattern.repeat-unit.construct-v1",
+      "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+      "supersedesReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+      "checkedAt": "2026-08-11T22:28:30.000Z",
+      "evidenceRefs": [
+        "git:d6e42c991e5a4e1c1cea230dad8f2c6d4fcfc36d",
+        "git:97037c07afc22f312eddd4d73d03c6ab0207b867",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-preflight-blocker.json",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract",
+        "packages/contracts/src/vocabulary/constraints.ts#interactionConstraintSchema",
+        "packages/contracts/src/vocabulary/constraints.ts#resolvedConstraintSchema",
+        "packages/mathcanvas-compiler/src/layout-presets/wave16-repeating-pattern-v1.ts",
+        "packages/mathcanvas-compiler/src/adapters/native-pattern-block-contract.ts",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "command:git diff-tree --no-commit-id --name-only -r d6e42c991e5a4e1c1cea230dad8f2c6d4fcfc36d (exact 1 allowed report file)",
+        "command:node schema probe against packages/contracts/dist/vocabulary/constraints.js (9 sources/sourceIds both Zod too_big maximum 8)",
+        "command:node native bounds probe (SM02PB variants 1,2,3,6 exceed 120; all 1-6 fit 188)",
+        "command:pnpm exec vitest run packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts at candidate (3/3 PASS; artifact command is historical dry-run, not current-tree reproduction)",
+        "command:git diff --check 97037c07..d6e42c9"
+      ],
+      "findings": [
+        "BLOCKED CONTRACT_CAPACITY: current authority requires nine physical rule-variant roles and exact nine-source fill-from-pool bindings, while both interactionConstraintSchema.sources and resolvedConstraintSchema.sourceIds are bounded at eight. An independent current-build schema probe rejects both nine-element arrays with Zod too_big maximum 8, so the approved contract cannot be instantiated or resolved.",
+        "Forbidden workaround boundary: reducing to eight sources violates the no-clone simultaneous capacity invariant, splitting one target across partial source pools violates the exact-source constraint binding, and assuming clone/reuse lacks observed native evidence. A bounded shared-contract amendment is required before FAMILY_TRACK can resume.",
+        "BLOCKED LAYOUT_CAPACITY: the authority requires two rule slots plus four visible continuation targets simultaneously. wave16-repeating-pattern-v1 exposes only two 188x188 next-slot targets; its 120x120 sequence/completion tokens cannot safely substitute because native SM02PB rendered bounds for variants 1 (160x138.564), 2 (80x138.564), 3 (160x69.282), and 6 (41.516x154.942) exceed 120. All six variants fit the existing 188x188 target scale, so a new scoped non-overlapping 9-source/2-rule/4-continuation preset is required and wave16 must remain unchanged.",
+        "Scope and lineage are valid for recording the hard stop: candidate d6e42c9 is a direct child of the verified ENGINE_CORE transition 97037c0, changes exactly one reports/curriculum-execution/subwork-state/** artifact allowed by FAMILY_TRACK, and modifies no family source, shared schema, layout preset, coverage, or release state.",
+        "Evidence caveat: the artifact commands entry describing repeat-rule-construction.test as failing refers to a transient dry-run that is not present in this candidate; the same command at d6e42c9 passes 3/3 against the legacy five-source family. It must not be cited as current-tree reproduction. The independently reproducible schema probe, static authority comparison, and native-bounds probe are sufficient to establish both P0 blockers; v9 should correct or supersede the historical command wording.",
+        "Required re-entry: do not implement or push FAMILY_TRACK. Create W002-SOL-REPLAN-v9 that supersedes this review ID, preserves the approved three-target source/hash, rewinds repeat-rule to ENGINE_CORE without completion evidence, raises the paired declarative/resolved source bound to a tested finite 12, refreshes the architecture baseline, and authorizes a new scoped compiler layout preset with exact capacity and containment tests."
+      ]
     }
   ]
 }
