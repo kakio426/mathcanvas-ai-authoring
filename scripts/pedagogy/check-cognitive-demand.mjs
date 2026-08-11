@@ -111,6 +111,95 @@ const itemBindingValue = (item, binding) => {
 const isLearnerTextProperty = (property) =>
   /(?:text|latex|label|title|expression)$/iu.test(property);
 
+const visibleTextStrings = (value, output = []) => {
+  if (typeof value === "string") {
+    output.push(value);
+    return output;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry) => visibleTextStrings(entry, output));
+    return output;
+  }
+  if (value && typeof value === "object") {
+    Object.entries(value).forEach(([key, entry]) => {
+      if (/(?:text|latex|label|title|expression)$/iu.test(key) ||
+          (entry && typeof entry === "object")) {
+        visibleTextStrings(entry, output);
+      }
+    });
+  }
+  return output;
+};
+
+const containsVisibleOrderedRuleState = (value, state) => {
+  if (sameValue(value, state)) return true;
+  return visibleTextStrings(value).some((text) => {
+    let cursor = -1;
+    return state.every((entry) => {
+      const normalized = text.normalize("NFKC");
+      const token = String(entry).normalize("NFKC");
+      const next = normalized.indexOf(token, cursor + 1);
+      if (next < 0) return false;
+      cursor = next;
+      return true;
+    });
+  });
+};
+
+const orderedStateList = (value) =>
+  Array.isArray(value) &&
+  value.every((state) => Array.isArray(state) && state.length >= 2)
+    ? value
+    : undefined;
+
+const canComposeOrderedState = (state, sourceValues) => {
+  const remaining = [...sourceValues];
+  return state.every((entry) => {
+    const index = remaining.findIndex((candidate) =>
+      sameValue(candidate, entry)
+    );
+    if (index < 0) return false;
+    remaining.splice(index, 1);
+    return true;
+  });
+};
+
+const distinctOrderedValueCount = (state) =>
+  state.filter(
+    (value, index) =>
+      state.findIndex((candidate) => sameValue(candidate, value)) ===
+      index
+  ).length;
+
+const containsConcreteInitialState = (properties) =>
+  Object.entries(properties).some(
+    ([key, value]) =>
+      /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
+        key
+      ) &&
+      value !== undefined &&
+      value !== null &&
+      value !== ""
+  );
+
+const containsVisibleOrderedRuleStateAcrossProperties = (
+  properties,
+  state
+) => {
+  const values = [];
+  const collect = (value) => {
+    if (typeof value === "string") {
+      values.push(value);
+    } else if (Array.isArray(value)) {
+      value.forEach(collect);
+    } else if (value && typeof value === "object") {
+      Object.values(value).forEach(collect);
+    }
+  };
+  collect(properties);
+  return containsVisibleOrderedRuleState(values.join(" "), state);
+};
+
 for (const gateId of COGNITIVE_GATE_IDS) {
   const docs = await readFile(
     new URL("../../docs/COGNITIVE_DEMAND_GATES.md", import.meta.url),
@@ -483,6 +572,206 @@ for (const manifest of manifests) {
       failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
       failures.push(`G4_NO_TRIVIAL_PATH:${blueprint.id}`);
     }
+
+    if (manifest.decision.mode === "construct-rule" &&
+        manifest.decision.constructionMode === "student-constructed") {
+      const decision = manifest.decision;
+      const construction = decision.stateConstruction;
+      const application = decision.application;
+      const expectedVerificationRoles = [
+        ...decision.ruleSlotRoles,
+        ...(application?.continuationTargetRoles ?? [])
+      ];
+      const constructionContractValid =
+        decision.answerMode === "conditional-rubric" &&
+        construction?.kind ===
+          "ordered-distinct-subset-from-pool" &&
+        sameSet(construction.sourceRoles, decision.variantRoles) &&
+        sameSet(construction.slotRoles, decision.ruleSlotRoles) &&
+        construction.slotCount === construction.slotRoles.length &&
+        construction.minimumDistinctValues >= 2 &&
+        construction.minimumDistinctValues <= construction.slotCount &&
+        construction.allowsAnyOrderedSelection === true &&
+        construction.initialState === "empty" &&
+        application?.ruleStatePath === decision.ruleStatePath &&
+        application.period === decision.ruleSlotRoles.length &&
+        application.minimumTargetCount >= 4 &&
+        application.continuationTargetRoles.length >=
+          application.minimumTargetCount &&
+        application.requiresVisibleComparison === true &&
+        application.evidenceMode === "student-state-dependent" &&
+        JSON.stringify(manifest.verification.roles) ===
+          JSON.stringify(expectedVerificationRoles) &&
+        decision.minimumSurplus >= 2 &&
+        decision.distractors.length >= 2;
+      const continuationRoles = application?.continuationTargetRoles ?? [];
+      const continuationConstraints = continuationRoles.map((role) =>
+        blueprint.constraints.find(
+          (constraint) =>
+            constraint.kind === "fill-from-pool" &&
+            constraint.target.role === role
+        )
+      );
+      const continuationContractValid = continuationRoles.every(
+        (role, index) => {
+          const entry = roleByName.get(role);
+          const constraint = continuationConstraints[index];
+          return (
+            entry !== undefined &&
+            entry.scope === "each-item" &&
+            entry.locked &&
+            !entry.movable &&
+            entry.toolKey !== "common.text" &&
+            !containsConcreteInitialState(entry.properties) &&
+            constraint !== undefined &&
+            constraint.requiresStudentAction &&
+            sameSet(
+              constraint.sources.map((source) => source.role),
+              decision.variantRoles
+            ) &&
+            constraint.parameters.ruleStatePath ===
+              decision.ruleStatePath
+          );
+        }
+      );
+      itemDecisionConstraints.push(...continuationConstraints);
+      if (
+        !constructionContractValid ||
+        !continuationContractValid
+      ) {
+        failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
+        failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
+      }
+
+      const roleBoundValue = (role, item, property) => {
+        const binding = role?.bindings?.[property];
+        return binding
+          ? itemBindingValue(item, binding)
+          : role?.properties?.[property];
+      };
+      const resolvedRoleProperties = (role, item) => ({
+        ...(role?.properties ?? {}),
+        ...Object.fromEntries(
+          Object.entries(role?.bindings ?? {}).map(
+            ([property, binding]) => [
+              property,
+              itemBindingValue(item, binding)
+            ]
+          )
+        )
+      });
+      let studentConstructedEnvelopeInvalid = false;
+      let studentConstructedAnswerVisible = false;
+      enumerateRegisteredVariationEnvelope(blueprint.id).forEach(
+        (variation, variationIndex) => {
+          const items = generateRegisteredBlueprintItems(
+            blueprint,
+            `cognitive-student-constructed-${blueprint.id}-${variationIndex + 1}`,
+            variation
+          );
+          items.forEach((item) => {
+            if (
+              !construction ||
+              !application ||
+              typeof construction.minimumDistinctValues !== "number" ||
+              typeof construction.slotCount !== "number"
+            ) {
+              studentConstructedEnvelopeInvalid = true;
+              return;
+            }
+            const currentState = item.values[decision.ruleStatePath];
+            const validStates = orderedStateList(
+              item.values[decision.validRuleStatesPath]
+            );
+            const surplusStates = orderedStateList(
+              item.values[decision.surplusPath]
+            );
+            const sourceValues = decision.variantRoles.map((role) =>
+              roleBoundValue(roleByName.get(role), item, decision.variantProperty)
+            );
+            const distinctSourceValues = sourceValues.filter(
+              (value, index) =>
+                sourceValues.findIndex((candidate) =>
+                  sameValue(candidate, value)
+                ) === index
+            );
+            const validKeys = validStates?.map((state) => JSON.stringify(state));
+            const distinctValid =
+              validKeys && new Set(validKeys).size === validKeys.length;
+            const surplusKeys = surplusStates?.map((state) =>
+              JSON.stringify(state)
+            );
+            const surplusRejectable = surplusStates?.every(
+              (state) =>
+                canComposeOrderedState(state, sourceValues) &&
+                distinctOrderedValueCount(state) <
+                  construction.minimumDistinctValues &&
+                !validStates?.some((valid) => sameValue(valid, state))
+            );
+            const examplesValid =
+              Array.isArray(currentState) &&
+              currentState.length === 0 &&
+              validStates !== undefined &&
+              validStates.length >= decision.minimumValidStates &&
+              distinctValid === true &&
+              surplusStates !== undefined &&
+              surplusStates.length >= decision.minimumSurplus &&
+              surplusRejectable === true &&
+              surplusKeys !== undefined &&
+              new Set(surplusKeys).size === surplusKeys.length &&
+              sourceValues.every((value) => value !== undefined) &&
+              distinctSourceValues.length >=
+                construction.minimumDistinctValues &&
+              validStates.every(
+                (state) =>
+                  state.length === construction.slotCount &&
+                  new Set(state.map((entry) => JSON.stringify(entry))).size >=
+                    construction.minimumDistinctValues &&
+                  canComposeOrderedState(state, sourceValues)
+              ) &&
+              surplusStates.every(
+                (state) =>
+                  state.length === construction.slotCount &&
+                  distinctOrderedValueCount(state) <
+                    construction.minimumDistinctValues &&
+                  canComposeOrderedState(state, sourceValues)
+              );
+            if (!examplesValid) studentConstructedEnvelopeInvalid = true;
+            if (
+              validStates?.some((state) =>
+                blueprint.toolRoles.some((role) =>
+                  role.locked &&
+                  containsVisibleOrderedRuleState(
+                    resolvedRoleProperties(role, item),
+                    state
+                  )
+                )
+              )
+            ) {
+              studentConstructedAnswerVisible = true;
+            }
+            if (
+              validStates?.some((state) =>
+                containsVisibleOrderedRuleStateAcrossProperties(
+                  continuationRoles.map((role) =>
+                    resolvedRoleProperties(roleByName.get(role), item)
+                  ),
+                  state
+                )
+              )
+            ) {
+              studentConstructedAnswerVisible = true;
+            }
+          });
+        }
+      );
+      if (studentConstructedEnvelopeInvalid) {
+        failures.push(`G2_DISTRACTOR_SURPLUS:${blueprint.id}`);
+      }
+      if (studentConstructedAnswerVisible) {
+        failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
+      }
+    }
   }
 
   if (
@@ -511,14 +800,19 @@ for (const manifest of manifests) {
     failures.push(`G4_NO_TRIVIAL_PATH:${blueprint.id}`);
   }
 
-  const answerPath =
-    manifest.decision.mode === "select-one"
+  const studentConstructedManifest =
+    manifest.decision.mode === "construct-rule" &&
+    manifest.decision.constructionMode === "student-constructed";
+  const answerPath = studentConstructedManifest
+    ? undefined
+    : manifest.decision.mode === "select-one"
       ? manifest.decision.correctValuePath
       : manifest.decision.mode === "construct-rule"
         ? manifest.decision.ruleStatePath
         : manifest.decision.solutionSetPath;
   const boundAnswer = blueprint.toolRoles.some(
     (role) =>
+      answerPath !== undefined &&
       role.locked &&
       Object.values(role.bindings).includes(
         `item.${answerPath}`
@@ -528,32 +822,33 @@ for (const manifest of manifests) {
     failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
   }
   const decisionRoles = new Set(decisionMemberRoles);
-  const resolvedAnswerVisible =
-    enumerateRegisteredVariationEnvelope(blueprint.id).some(
-      (variation, variationIndex) =>
-        generateRegisteredBlueprintItems(
-          blueprint,
-          `cognitive-answer-${blueprint.id}-${variationIndex + 1}`,
-          variation
-        ).some((item) => {
-          const answer = item.values[answerPath];
-          if (answer === undefined) return true;
-          return blueprint.toolRoles.some(
-            (role) =>
-              role.locked &&
-              !decisionRoles.has(role.role) &&
-              (sameValue(role.properties.text, answer) ||
-                Object.entries(role.bindings).some(
-                  ([property, binding]) =>
-                    isLearnerTextProperty(property) &&
-                    containsVisibleAnswer(
-                      itemBindingValue(item, binding),
-                      answer
-                    )
-                ))
-          );
-        })
-    );
+  const resolvedAnswerVisible = studentConstructedManifest
+    ? false
+    : enumerateRegisteredVariationEnvelope(blueprint.id).some(
+        (variation, variationIndex) =>
+          generateRegisteredBlueprintItems(
+            blueprint,
+            `cognitive-answer-${blueprint.id}-${variationIndex + 1}`,
+            variation
+          ).some((item) => {
+            const answer = item.values[answerPath];
+            if (answer === undefined) return true;
+            return blueprint.toolRoles.some(
+              (role) =>
+                role.locked &&
+                !decisionRoles.has(role.role) &&
+                (sameValue(role.properties.text, answer) ||
+                  Object.entries(role.bindings).some(
+                    ([property, binding]) =>
+                      isLearnerTextProperty(property) &&
+                      containsVisibleAnswer(
+                        itemBindingValue(item, binding),
+                        answer
+                      )
+                  ))
+            );
+          })
+      );
   if (resolvedAnswerVisible) {
     failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
   }
