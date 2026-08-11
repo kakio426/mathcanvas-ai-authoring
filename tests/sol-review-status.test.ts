@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 // @ts-ignore Sol review gate is a repository-side ESM utility.
 import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
+// @ts-ignore Semantic revalidation helper is a repository-side ESM utility.
+import * as semanticSlices from "../scripts/curriculum/revalidation-semantic-slice.mjs";
 
 const {
   effectiveFamilyLifecycleStage,
@@ -12,6 +14,8 @@ const {
   reviewScopeMatches,
   validateOperationCursor
 } = solReviewStatus;
+const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
+  semanticSlices;
 
 const candidateCommit = "a".repeat(40);
 
@@ -177,5 +181,63 @@ describe("Sol review candidate and scope gates", () => {
     expect(
       rewindFamilyTrackForRetry(sequence, ["AFFORDANCE_DISCOVERY"], "changes-requested")
     ).toBe(null);
+  });
+
+  it("fingerprints only the selected standard learning-map slice", () => {
+    const descriptor = {
+      kind: "learning-map",
+      path: "fixtures/pedagogy/learning-map.used.json",
+      standardCode: "[2수04-02]"
+    };
+    const slice = buildSemanticSlice(process.cwd(), descriptor);
+    expect(slice.topics).toHaveLength(3);
+    expect(JSON.stringify(slice)).not.toContain("[2수02-02]");
+    const fingerprint = {
+      ...descriptor,
+      sha256: semanticSliceHash(process.cwd(), descriptor)
+    };
+    expect(semanticSliceIsCurrent(process.cwd(), fingerprint)).toBe(true);
+    expect(
+      semanticSliceIsCurrent(process.cwd(), { ...fingerprint, sha256: "0".repeat(64) })
+    ).toBe(false);
+  });
+
+  it("binds the native data-table handler without hashing the whole registry", () => {
+    const descriptor = {
+      kind: "source-module",
+      path: "packages/validator/src/native/registry.ts",
+      standardCode: "[2수04-02]",
+      startMarker: "function dataTableHandler(",
+      endMarker: "function pointLineHandler("
+    };
+    const fingerprint = {
+      ...descriptor,
+      sha256: semanticSliceHash(process.cwd(), descriptor)
+    };
+    expect(semanticSliceIsCurrent(process.cwd(), fingerprint)).toBe(true);
+    expect(buildSemanticSlice(process.cwd(), descriptor).contentSha256).toMatch(
+      /^[a-f0-9]{64}$/
+    );
+  });
+
+  it("binds the resolved family registry record by family id", () => {
+    const descriptor = {
+      kind: "registry-family",
+      path: "reports/problem-family-registry/latest.json",
+      standardCode: "[2수04-02]",
+      familyId: "data.early-table.organize-v1"
+    };
+    const slice = buildSemanticSlice(process.cwd(), descriptor);
+    expect(slice.family.familyId).toBe(descriptor.familyId);
+    expect(slice.family.assessmentTargetIds).toEqual([
+      "data.table.organize-classified-data-v1",
+      "data.table.explain-usefulness-v1"
+    ]);
+    expect(
+      semanticSliceIsCurrent(process.cwd(), {
+        ...descriptor,
+        sha256: semanticSliceHash(process.cwd(), descriptor)
+      })
+    ).toBe(true);
   });
 });

@@ -129,6 +129,13 @@ if (operation === "FAMILY_REVALIDATION") {
   ) {
     fail("family-revalidation-evidence-missing");
   }
+  if (
+    review.decision === "approved" &&
+    workItem.replanContractRevision &&
+    review.replanContractRevision !== workItem.replanContractRevision
+  ) {
+    fail("family-revalidation-contract-revision-mismatch");
+  }
 }
 if (
   !review.reviewId ||

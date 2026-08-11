@@ -2,6 +2,10 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildSemanticSlice,
+  semanticSliceHash
+} from "./revalidation-semantic-slice.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const planPath = resolve(root, "scripts/curriculum/no-family-plan.json");
@@ -54,7 +58,11 @@ const workItem = execution.workItems.find(
 );
 if (!workItem) throw new Error(`family-revalidation-work-item-unknown:${workItemId}`);
 const contract = plan.trackContracts[workItem.archetypeId];
-if (!contract?.revalidationFiles?.length) {
+if (
+  !contract ||
+  (!contract.revalidationFiles?.length &&
+    !contract.revalidationSemanticSlices?.length)
+) {
   throw new Error(`family-revalidation-files-not-planned:${workItem.archetypeId}`);
 }
 const scopeId = arg("--scope-id");
@@ -75,18 +83,29 @@ if (!family) {
 }
 
 const implementationFiles = Object.fromEntries(
-  [...contract.revalidationFiles].sort().map((relativePath) => [
+  [...(contract.revalidationFiles ?? [])].sort().map((relativePath) => [
     relativePath,
     sha256File(relativePath)
   ])
 );
 const learningMapHashes = new Set();
-for (const relativePath of contract.revalidationFiles) {
+for (const relativePath of contract.revalidationFiles ?? []) {
   const text = readFileSync(resolve(root, relativePath), "utf8");
   for (const match of text.matchAll(/usageSnapshotSha256\s*[:=][^\n]*?([a-f0-9]{64})/g)) {
     learningMapHashes.add(match[1]);
   }
 }
+const semanticSlices = (contract.revalidationSemanticSlices ?? [])
+  .map((descriptor) => ({
+    ...descriptor,
+    sha256: semanticSliceHash(root, descriptor),
+    value: buildSemanticSlice(root, descriptor)
+  }))
+  .sort((left, right) =>
+    `${left.kind}:${left.path}:${left.standardCode}`.localeCompare(
+      `${right.kind}:${right.path}:${right.standardCode}`
+    )
+  );
 
 const fingerprintPayload = {
   schemaVersion: "1.0.0",
@@ -100,9 +119,11 @@ const fingerprintPayload = {
   gradeBand: family.gradeBand,
   domain: family.domain,
   blueprintContentHash: family.blueprintContentHash,
+  replanContractRevision: contract.replanContractRevision ?? null,
   learningMapUsageSnapshotSha256:
     learningMapHashes.size === 1 ? [...learningMapHashes][0] : null,
-  implementationFiles
+  implementationFiles,
+  semanticSlices
 };
 const artifact = {
   ...fingerprintPayload,

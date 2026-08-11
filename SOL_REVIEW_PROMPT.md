@@ -90,6 +90,10 @@ scope와 다르면 다른 family의 승인으로 재사용할 수 없다. pre-sc
 `supersedesReviewId`는 null이어야 하며, legacy 무범위 FAMILY_TRACK과 연결할 때는
 `supersedesFamilyTrackReviewId`를 별도로 기록한다. `artifactPath`와
 `fingerprintSha256`가 현재 artifact·implementation hashes와 일치하지 않으면 승인하지 않는다.
+artifact가 전역 파일 전체 hash를 잡아 무관한 표준 추가만으로 stale될 수 있으면
+`changes-requested` 또는 `blocked`로 판정하고 semantic slice/module fingerprint와
+재개 조건을 `SOL_REPLAN`으로 분리한다. 같은 `FAMILY_REVALIDATION` attempt를
+반복 승인하지 않는다.
 `SOL_REPLAN`은 blocked standard의 재개 계약만 검토하며 별도 `operationWorkItemId`와
 candidate/allowedFiles를 사용한다. 기존 `FAMILY_TRACK` attempt를 재사용하거나 A5로
 기록하지 않는다.

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { semanticSliceIsCurrent } from "./revalidation-semantic-slice.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultBoardPath = resolve(
@@ -210,8 +211,22 @@ export function familyRevalidationArtifactIsCurrent(review) {
     ) {
       return false;
     }
+    if (
+      typeof review.replanContractRevision === "string" &&
+      artifact.replanContractRevision !== review.replanContractRevision
+    ) {
+      return false;
+    }
     const { fingerprintSha256, ...fingerprintPayload } = artifact;
     if (sha256Json(fingerprintPayload) !== fingerprintSha256) return false;
+    if (
+      !Array.isArray(artifact.semanticSlices) ||
+      !artifact.semanticSlices.every((slice) =>
+        semanticSliceIsCurrent(root, slice)
+      )
+    ) {
+      return false;
+    }
     return Object.entries(artifact.implementationFiles ?? {}).every(
       ([relativePath, expectedHash]) => {
         const implementationPath = resolve(root, relativePath);

@@ -9,6 +9,7 @@ import {
   reviewCandidateIsCurrent,
   validateOperationCursor
 } from "./sol-review-status.mjs";
+import { semanticSliceIsCurrent } from "./revalidation-semantic-slice.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const sourcePath = resolve(root, "scripts/curriculum/no-family-plan.json");
@@ -105,7 +106,8 @@ function readCurrentFamilyRevalidationArtifact(
   baseWorkItemId,
   standardCode,
   reviewScopes,
-  familyId
+  familyId,
+  contract
 ) {
   try {
     const artifact = readJson(familyRevalidationArtifactPath(baseWorkItemId));
@@ -115,6 +117,8 @@ function readCurrentFamilyRevalidationArtifact(
       artifact.workItemId !== baseWorkItemId ||
       artifact.standardCode !== standardCode ||
       artifact.familyId !== familyId ||
+      artifact.replanContractRevision !==
+        (contract.replanContractRevision ?? null) ||
       !reviewScopes.some(
         (scope) =>
           scope.familyTrackId === artifact.familyTrackId &&
@@ -126,6 +130,32 @@ function readCurrentFamilyRevalidationArtifact(
     }
     const { fingerprintSha256, ...fingerprintPayload } = artifact;
     if (jsonHash(fingerprintPayload) !== fingerprintSha256) return null;
+    const expectedImplementationFiles = [...(contract.revalidationFiles ?? [])].sort();
+    const actualImplementationFiles = Object.keys(
+      artifact.implementationFiles ?? {}
+    ).sort();
+    if (
+      JSON.stringify(actualImplementationFiles) !==
+      JSON.stringify(expectedImplementationFiles)
+    ) {
+      return null;
+    }
+    const expectedSemanticSlices = contract.revalidationSemanticSlices ?? [];
+    if (
+      !Array.isArray(artifact.semanticSlices) ||
+      artifact.semanticSlices.length !== expectedSemanticSlices.length ||
+      !expectedSemanticSlices.every((descriptor) => {
+        const slice = artifact.semanticSlices.find(
+          (candidate) =>
+            candidate.kind === descriptor.kind &&
+            candidate.path === descriptor.path &&
+            candidate.standardCode === descriptor.standardCode
+        );
+        return slice && semanticSliceIsCurrent(root, slice);
+      })
+    ) {
+      return null;
+    }
     for (const [relativePath, expectedHash] of Object.entries(
       artifact.implementationFiles ?? {}
     )) {
@@ -418,6 +448,34 @@ function buildReport() {
   );
   for (const [archetypeId, contract] of Object.entries(source.trackContracts)) {
     const subWorkItems = contract.subWorkItems ?? [];
+    if (contract.revalidationSemanticSlices) {
+      assert(
+        typeof contract.standardCode === "string" &&
+          typeof contract.replanDocumentPath === "string" &&
+          typeof contract.replanContractRevision === "string" &&
+          Array.isArray(contract.revalidationSemanticSlices) &&
+          contract.revalidationSemanticSlices.length > 0,
+        `no-family-plan-revalidation-contract:${archetypeId}`
+      );
+      assert(
+        contract.revalidationSemanticSlices.every(
+          (slice) =>
+            typeof slice.path === "string" &&
+            slice.standardCode === contract.standardCode &&
+            ((slice.kind === "learning-map" &&
+              !slice.startMarker &&
+              !slice.endMarker) ||
+              (slice.kind === "source-module" &&
+                (slice.startMarker === undefined ||
+                  typeof slice.startMarker === "string") &&
+                (slice.endMarker === undefined ||
+                  typeof slice.endMarker === "string")) ||
+              (slice.kind === "registry-family" &&
+                typeof slice.familyId === "string"))
+        ),
+        `no-family-plan-revalidation-semantic-slice:${archetypeId}`
+      );
+    }
     if (subWorkItems.length > 0) {
       assert(
         typeof contract.standardCode === "string",
@@ -613,9 +671,27 @@ function buildReport() {
         `no-family-plan-sol-revalidation-record:${review.reviewId}`
       );
     }
+    const reviewArchetype = source.archetypes.find((archetype) =>
+      archetype.standardCodes.includes(review.standardCode)
+    );
+    const reviewContract = reviewArchetype
+      ? source.trackContracts[reviewArchetype.archetypeId]
+      : null;
+    if (
+      review.operation === "FAMILY_REVALIDATION" &&
+      review.decision === "approved" &&
+      typeof reviewContract?.replanContractRevision === "string"
+    ) {
+      assert(
+        review.replanContractRevision ===
+          reviewContract.replanContractRevision,
+        `no-family-plan-sol-revalidation-revision:${review.reviewId}`
+      );
+    }
     if (review.operation === "SOL_REPLAN") {
       assert(
-        /^[a-f0-9]{64}$/.test(review.replanDocumentSha256 ?? "") &&
+        typeof review.replanDocumentPath === "string" &&
+          /^[a-f0-9]{64}$/.test(review.replanDocumentSha256 ?? "") &&
           typeof review.supersedesBlockedReviewId === "string" &&
           review.supersedesBlockedReviewId.trim().length > 0 &&
           review.replanOwner === "Luna" &&
@@ -917,24 +993,37 @@ function buildReport() {
       (legacyFamilyTrackReview?.decision === "blocked"
         ? legacyFamilyTrackReview
         : null);
+    const latestFamilyRevalidationReview =
+      scopedFamilyRevalidationReviews
+        .filter(Boolean)
+        .sort((left, right) => right.attempt - left.attempt)[0] ?? null;
+    const replanTriggerReview =
+      latestFamilyRevalidationReview &&
+      ["changes-requested", "blocked"].includes(
+        latestFamilyRevalidationReview.decision
+      )
+        ? latestFamilyRevalidationReview
+        : blockedFamilyTrackReview;
     const replanApproved =
       replanReview?.decision === "approved" &&
       typeof replanDocumentPath === "string" &&
       replanReview.replanDocumentPath === replanDocumentPath &&
       replanReview.replanDocumentSha256 === sha256File(replanDocumentPath) &&
       replanReview.supersedesBlockedReviewId ===
-        blockedFamilyTrackReview?.reviewId &&
+        replanTriggerReview?.reviewId &&
       JSON.stringify(replanReview.replanScopes ?? []) ===
         JSON.stringify(reviewScopes) &&
       replanReview.replanContractRevision === contract.replanContractRevision;
     const targetOutlineHash = jsonHash(expectedTargetOutline);
     const replanConsumed =
       replanApproved &&
-      targetSetReview?.decision === "approved" &&
-      targetSetReview.supersedesReplanReviewId === replanReview?.reviewId &&
-      targetSetReview.replanContractRevision ===
-        contract.replanContractRevision &&
-      targetSetReview.targetOutlineSha256 === targetOutlineHash;
+      (contract.replanTargetSetRequired === false
+        ? true
+        : targetSetReview?.decision === "approved" &&
+          targetSetReview.supersedesReplanReviewId === replanReview?.reviewId &&
+          targetSetReview.replanContractRevision ===
+            contract.replanContractRevision &&
+          targetSetReview.targetOutlineSha256 === targetOutlineHash);
     const subWorkStatuses = subWorkItems.map((subWorkItem) => {
       const state = subWorkState.get(subWorkItem.workItemId) ?? {};
       const phase = {
@@ -995,9 +1084,11 @@ function buildReport() {
       }
       return "pending";
     })();
-    const familyTrackStatusBeforeRevalidation = replanConsumed
-      ? scopedFamilyTrackStatus
-      : familyTrackReviewStatus;
+    const hasScopedFamilyTrackReview = scopedFamilyTrackReviews.some(Boolean);
+    const familyTrackStatusBeforeRevalidation =
+      replanConsumed && hasScopedFamilyTrackReview
+        ? scopedFamilyTrackStatus
+        : familyTrackReviewStatus;
     const familyRevalidationStatus = (() => {
       const decisions = scopedFamilyRevalidationReviews
         .filter(Boolean)
@@ -1019,7 +1110,8 @@ function buildReport() {
             baseWorkItemId,
             code,
             reviewScopes,
-            contract.familyId
+            contract.familyId,
+            contract
           )
         : null;
     const revalidationApproved =
@@ -1062,14 +1154,11 @@ function buildReport() {
       (current?.releasedFamilyIds?.length ?? 0) > 0;
     let operation;
     let reviewGate = null;
-    const blockedReviewGate =
-      familyTrackStatusForFlow === "blocked"
-        ? "FAMILY_TRACK"
-        : targetSetReviewStatus === "blocked"
-          ? "TARGET_SET"
-          : null;
+    const revalidationNeedsReplan =
+      replanTriggerReview?.operation === "FAMILY_REVALIDATION";
     const blockedBySolReplan =
-      blockedReviewGate !== null && (!replanApproved || replanConsumed);
+      replanTriggerReview !== null &&
+      (!replanApproved || (!revalidationNeedsReplan && replanConsumed));
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";
       operation = "SOL_REPLAN";

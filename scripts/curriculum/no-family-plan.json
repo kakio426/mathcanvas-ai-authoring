@@ -141,6 +141,7 @@
         "reports/curriculum-execution/subwork-state/**"
       ],
       "SOL_REPLAN": [
+        "W001_REPLAN.md",
         "W002_REPLAN.md",
         "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
         "SOL_REVIEW_PROMPT.md",
@@ -149,6 +150,7 @@
         "scripts/curriculum/build-no-family-plan.mjs",
         "scripts/curriculum/build-family-revalidation.mjs",
         "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/revalidation-semantic-slice.mjs",
         "scripts/curriculum/verify-sol-review-gate.mjs",
         "scripts/curriculum/sol-review-board.json",
         "packages/contracts/src/problem-family.ts",
@@ -231,6 +233,7 @@
         "reports/curriculum-execution/no-family-plan.md"
       ],
       "SOL_REPLAN": [
+        "W001_REPLAN.md",
         "W002_REPLAN.md",
         "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
         "SOL_REVIEW_PROMPT.md",
@@ -510,13 +513,39 @@
     "D01A": {
       "familyId": "data.early-table.organize-v1",
       "engineClassIds": ["R22"],
+      "standardCode": "[2수04-02]",
+      "replanDocumentPath": "W001_REPLAN.md",
+      "replanContractRevision": "W001-SOL-REPLAN-v1",
+      "replanTargetSetRequired": false,
       "revalidationFiles": [
-        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
         "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
-        "packages/templates/src/cognitive/registry.ts",
-        "packages/validator/src/native/registry.ts",
-        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
-        "fixtures/pedagogy/learning-map.used.json"
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts"
+      ],
+      "revalidationSemanticSlices": [
+        {
+          "kind": "source-module",
+          "path": "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+          "standardCode": "[2수04-02]",
+          "normalization": "ignore-learning-map-snapshot"
+        },
+        {
+          "kind": "source-module",
+          "path": "packages/validator/src/native/registry.ts",
+          "standardCode": "[2수04-02]",
+          "startMarker": "function dataTableHandler(",
+          "endMarker": "function pointLineHandler("
+        },
+        {
+          "kind": "registry-family",
+          "path": "reports/problem-family-registry/latest.json",
+          "standardCode": "[2수04-02]",
+          "familyId": "data.early-table.organize-v1"
+        },
+        {
+          "kind": "learning-map",
+          "path": "fixtures/pedagogy/learning-map.used.json",
+          "standardCode": "[2수04-02]"
+        }
       ],
       "reviewScopes": [
         {

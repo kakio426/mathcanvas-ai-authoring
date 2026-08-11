@@ -75,6 +75,10 @@ AFFORDANCE_DISCOVERY/ENGINE_CORE → FAMILY_TRACK → SOL_REVIEW → STANDARD_BI
 legacy 무범위 FAMILY_TRACK record를 새 scoped 승인으로 재사용하지 않으며, revalidation record는
 별도 review key의 첫 attempt이므로 `supersedesReviewId`는 null이고 legacy 연결은
 `supersedesFamilyTrackReviewId` 필드로 기록한다.
+`FAMILY_REVALIDATION`이 `changes-requested` 또는 `blocked`이면 같은 artifact를 반복 제출하지
+않고 `SOL_REPLAN`으로 승격한다. semantic slice를 사용하는 표준은 전역 registry·fixture
+전체 hash가 아니라 해당 standard record와 family module만 fingerprint에 포함해야 하며,
+재계획 승인 뒤에만 새 artifact를 생성한다.
 
 재계획으로 concrete sub-work가 생긴 standard는 generated `familySubWorkItems`와
 `subWorkStatePath`의 cursor를 따른다. cursor가 지시한 `operationSequence`의 한 단계만 실행하고,
