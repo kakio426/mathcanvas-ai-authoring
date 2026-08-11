@@ -21,7 +21,9 @@ ENGINE_CORE의 명시적 차단 조건으로 포함한다. 이 재계획은 targ
 ## 0. v6 ENGINE_CORE 후보의 독립 검토 결과와 v7의 hard-stop
 
 후보 `e1d2c30`은 `pnpm check`(81 files / 501 tests)를 통과했지만 Sol 독립
-검토에서 **BLOCKED** 되었다. 이 결과는 기술 녹색을 교육적 승인으로 오인하지
+검토에서 **CHANGES_REQUESTED** 되었다. ENGINE_CORE는 당시 formal board
+review operation이 아니었으므로 이 후보에 가짜 board record를 만들지 않았고,
+승인되지 않은 코드는 revert했다. 이 결과는 기술 녹색을 교육적 승인으로 오인하지
 않도록 v7의 선행 조건으로 고정한다.
 
 1. `validRuleStates`가 `[A,B]`와 `[B,A]`로 미리 고정되고 answer key가 `[A,B]`
@@ -38,13 +40,11 @@ ENGINE_CORE의 명시적 차단 조건으로 포함한다. 이 재계획은 targ
    distinct duplicate surplus state를 동시에 보장할 수 없고, rule slot 2개와
    continuation 4개를 clone 없이 동시에 채울 물리 조각도 부족하다.
 
-이 후보의 exact changedFiles는 숨기지 않는다. operation manifest 밖의 파일을
-포함한 후보는 `SCOPE_VIOLATION` finding을 가진 **blocked review**로만 board에
-기록할 수 있고, 승인·post-approval 파생 커밋으로는 통과할 수 없다. 이 예외는
-실패 후보의 증거를 보존하기 위한 것이며, 다음 구현 후보의 허용 범위를 넓히는
-근거가 아니다.
-이 전역 예외의 동일한 키워드·승인 불가·post-approval 불가 조건은
-`SOL_REVIEW_PROMPT.md`에도 고정한다.
+별도의 과거 family 후보 `f195e3a`는 공통 audit script를 FAMILY_TRACK에 섞은
+`SCOPE_VIOLATION`으로 blocked 보존된 기록이며, e1 ENGINE_CORE 후보와 동일한
+사건으로 합치지 않는다. operation manifest 밖의 exact changedFiles는 승인·
+post-approval 권한을 넓히지 않으며, 이 전역 예외의 동일한 키워드·승인 불가·
+post-approval 불가 조건은 `SOL_REVIEW_PROMPT.md`에 고정한다.
 
 따라서 v7의 완료 정의는 “고정된 예시 두 개를 통과시킨다”가 아니라
 **임의로 선택 가능한 ordered state의 구조·눈에 보이는 적용·조건부 rubric을
@@ -389,7 +389,9 @@ ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui �
 - repeat/ change 각각 임의 선택을 허용하는 state-construction domain, 최소 두 개의 예시 state와
   두 개의 rejectable misconception state가 있다. 예시 state가 가능한 전체 선택을 대신하지 않는다.
   권위 repeat contract는 9 physical source role, 최소 3 distinct pool values, 각 3 copy,
-  `move-once-no-clone`이며 valid state와 continuation 전체 multiset의 capacity를 검증한다.
+  `move-once-no-clone`이며 `continuationTargetRoles.length === minimumTargetCount`,
+  `length % period === 0`, `minimumCopiesPerDistinctValue >= 1 + length / period`를
+  만족해야 valid state와 continuation 전체 multiset의 capacity를 검증할 수 있다.
 - repeat family는 최소 네 개의 visible continuation target을 같은 studentRuleState에 결속하고,
   초기 empty → 학생 선택 → 적용 결과의 세 상태를 preview와 interaction contract에서 구분한다.
 - repair 전후 semantic state와 최종 배열의 불변량을 테스트하며, 모든 native rendered bounds가 target 안에 들어간다.

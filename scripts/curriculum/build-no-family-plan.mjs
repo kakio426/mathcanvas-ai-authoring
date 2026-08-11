@@ -160,9 +160,9 @@ export function assertEngineCoreContract(contract, archetypeId) {
     value.period === 2 &&
     Number.isInteger(value.minimumTargetCount) &&
     value.minimumTargetCount >= 4 &&
-    value.continuationTargetRoles.length >= value.minimumTargetCount &&
+    value.continuationTargetRoles.length === value.minimumTargetCount &&
     value.period === ruleSlotRoles.length &&
-    value.minimumTargetCount % value.period === 0 &&
+    value.continuationTargetRoles.length % value.period === 0 &&
     value.requiresVisibleComparison === true &&
     value.requiresSimultaneousRuleAndContinuation === true &&
     value.ruleStateIndexMode === "index-mod-period" &&
@@ -190,6 +190,15 @@ export function assertEngineCoreContract(contract, archetypeId) {
       decision.variantRoles.length >=
         (decision.stateConstruction?.minimumDistinctPoolValues ?? 0) *
           (decision.stateConstruction?.minimumCopiesPerDistinctValue ?? 0) &&
+      Number.isInteger(
+        decision.stateConstruction?.minimumCopiesPerDistinctValue
+      ) &&
+      Number.isInteger(decision.application?.period) &&
+      Array.isArray(decision.application?.continuationTargetRoles) &&
+      decision.stateConstruction.minimumCopiesPerDistinctValue >=
+        1 +
+          decision.application.continuationTargetRoles.length /
+            decision.application.period &&
       orderedCapacity(
         decision.variantRoles.length,
         decision.ruleSlotRoles.length

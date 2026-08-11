@@ -116,6 +116,24 @@ describe("Sol review candidate and scope gates", () => {
     expect(() => assertEngineCoreContract(insufficientPhysicalPool, "C01")).toThrow(
       "no-family-plan-engine-core-manifest-invalid:C01"
     );
+
+    const tooManyContinuationTargets = base();
+    tooManyContinuationTargets.engineCoreContract.manifestDecision.application.continuationTargetRoles.push(
+      "continuation-slot-5",
+      "continuation-slot-6"
+    );
+    tooManyContinuationTargets.engineCoreContract.manifestDecision.application.minimumTargetCount = 6;
+    expect(() => assertEngineCoreContract(tooManyContinuationTargets, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
+
+    const nonPeriodicContinuationTargets = base();
+    nonPeriodicContinuationTargets.engineCoreContract.manifestDecision.application.continuationTargetRoles.push(
+      "continuation-slot-5"
+    );
+    expect(() => assertEngineCoreContract(nonPeriodicContinuationTargets, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
   });
 
   it("projects the W002 engine-core contract into the generated loop work item", () => {
