@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "programId": "kr-2022-elementary-math-full-coverage",
+  "executionMode": "continuous-autonomous",
+  "batchSize": 4,
+  "reviewPolicy": "repository-qa-only-no-fable",
+  "rules": [
+    "대표 셀이나 성취기준 하나가 끝날 때마다 사용자에게 다음 항목을 묻지 않는다.",
+    "offline 제작 레인과 외부 MathCanvas live-evidence 레인을 분리해 한쪽 차단이 다른 쪽을 멈추지 않게 한다.",
+    "가능하면 네 영역을 한 항목씩 포함한 4개 성취기준을 한 배치로 처리한다.",
+    "각 배치는 보고서 갱신, pnpm check, 원자적 main 커밋과 push까지 닫고 다음 배치로 이어진다.",
+    "Fable CLI를 호출하지 않는다.",
+    "현재 해시의 canary가 없으면 live-released로 승격하지 않는다."
+  ],
+  "representativeCells": [
+    {
+      "sequence": 1,
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "standardCode": "[2수04-01]",
+      "familyId": "data.classification.given-criterion-count-v1",
+      "selectionReason": "첫 native family와 offline-to-live 경로를 검증한다."
+    },
+    {
+      "sequence": 2,
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "standardCode": "[2수02-01]",
+      "familyId": "pattern.repeat-unit.pattern-blocks-v1",
+      "selectionReason": "released legacy family의 target-authority strangler 이관을 검증한다."
+    },
+    {
+      "sequence": 3,
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "standardCode": "[4수03-09]",
+      "familyId": "geometry.triangle.classification.claim-evidence-v1",
+      "selectionReason": "각의 종류에 따른 삼각형 분류와 주장-근거형 도형 판단을 검증한다."
+    },
+    {
+      "sequence": 4,
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "standardCode": "[6수01-06]",
+      "familyId": "fraction.equivalent.same-whole.visual-v1",
+      "selectionReason": "고학년 분수의 같은 전체와 동치 관계를 검증한다."
+    },
+    {
+      "sequence": 5,
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "standardCode": "[2수03-10]",
+      "familyId": "measure.length.unit-iteration.ruler-v1",
+      "selectionReason": "1 cm 단위 반복과 어긋난 자 읽기의 측정 불변량을 검증한다."
+    },
+    {
+      "sequence": 6,
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "standardCode": "[4수04-01]",
+      "familyId": "data.bar-graph.scale-unit.read-v1",
+      "selectionReason": "막대그래프 눈금 단위 판단과 자료 읽기 경로를 검증한다."
+    },
+    {
+      "sequence": 7,
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "standardCode": "[6수02-02]",
+      "familyId": "relation.ratio.same-unit.claim-evidence-v1",
+      "selectionReason": "offline family의 고학년 비 관계와 live 승격 경로를 검증한다."
+    },
+    {
+      "sequence": 8,
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "standardCode": "[2수01-04]",
+      "familyId": "number.make-10.cards-v1",
+      "selectionReason": "수 카드 구성과 10의 보수 관계를 검증한다."
+    },
+    {
+      "sequence": 9,
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "standardCode": "[4수02-03]",
+      "familyId": "relation.equal-sign.balance-scale.sum-card-v1",
+      "selectionReason": "등호의 관계적 의미와 저울 불변량을 검증한다."
+    },
+    {
+      "sequence": 10,
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "standardCode": "[6수04-04]",
+      "familyId": "probability.compare.bag-ratios-v1",
+      "selectionReason": "비율에 근거한 가능성 비교를 검증한다."
+    },
+    {
+      "sequence": 11,
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "standardCode": "[4수01-06]",
+      "familyId": "number.division.quotient-remainder.claim-evidence-v1",
+      "selectionReason": "몫과 나머지의 의미와 native 묶기 증거를 검증한다."
+    },
+    {
+      "sequence": 12,
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "standardCode": "[6수03-02]",
+      "familyId": "geometry.symmetry.equal-distance.claim-evidence-v1",
+      "selectionReason": "선대칭의 대응점과 대칭축까지의 거리 불변량을 검증한다."
+    }
+  ]
+}

@@ -1,0 +1,3046 @@
+{
+  "schemaVersion": "1.0.0",
+  "programId": "kr-2022-elementary-math-full-coverage",
+  "executionMode": "continuous-autonomous",
+  "batchSize": 4,
+  "reviewPolicy": "repository-qa-only-no-fable",
+  "rules": [
+    "대표 셀이나 성취기준 하나가 끝날 때마다 사용자에게 다음 항목을 묻지 않는다.",
+    "offline 제작 레인과 외부 MathCanvas live-evidence 레인을 분리해 한쪽 차단이 다른 쪽을 멈추지 않게 한다.",
+    "가능하면 네 영역을 한 항목씩 포함한 4개 성취기준을 한 배치로 처리한다.",
+    "각 배치는 보고서 갱신, pnpm check, 원자적 main 커밋과 push까지 닫고 다음 배치로 이어진다.",
+    "Fable CLI를 호출하지 않는다.",
+    "현재 해시의 canary가 없으면 live-released로 승격하지 않는다."
+  ],
+  "source": {
+    "authorityReviewedAt": "2026-08-11T01:50:00.000Z",
+    "officialStandardCount": 121,
+    "problemFamilyRegistrySchemaVersion": "1.0.0"
+  },
+  "current": {
+    "officialStandards": 121,
+    "reviewedTargetSets": 2,
+    "reviewedTargets": 6,
+    "offlineReviewedTargets": 5,
+    "liveReviewedTargets": 2,
+    "fullyLiveStandards": 1,
+    "representativeCellsProven": 1,
+    "representativeCellTotal": 12,
+    "canonicalFamilies": 30,
+    "releasedFamilies": 21,
+    "commonParameterFamilies": 4,
+    "globalTargetCoverageStatus": "unavailable"
+  },
+  "phases": [
+    {
+      "phase": "0",
+      "name": "공식 분모와 카탈로그 권위",
+      "status": "complete",
+      "progress": "121/121"
+    },
+    {
+      "phase": "1",
+      "name": "공통 ProblemFamily 기반",
+      "status": "complete",
+      "progress": "30 canonical / 21 released"
+    },
+    {
+      "phase": "2",
+      "name": "학년군×영역 대표 격자",
+      "status": "in-progress",
+      "progress": "1/12 pipeline-proven"
+    },
+    {
+      "phase": "3A",
+      "name": "121개 AssessmentTargetSet 완전 분해",
+      "status": "in-progress",
+      "progress": "2/121"
+    },
+    {
+      "phase": "3B",
+      "name": "필수 target family·offline 검증",
+      "status": "in-progress",
+      "progress": "5/6 reviewed targets; global denominator incomplete"
+    },
+    {
+      "phase": "3C",
+      "name": "현재 해시 live create·저장·재열기",
+      "status": "in-progress",
+      "progress": "2/6 reviewed targets; global denominator incomplete"
+    },
+    {
+      "phase": "4",
+      "name": "전 범위 TeacherRequest·반영 표·실제 미리보기",
+      "status": "queued-after-phase-2",
+      "progress": "4/30 common-parameter families"
+    },
+    {
+      "phase": "5",
+      "name": "문항 단위 수정·최종 제품 릴리스",
+      "status": "queued",
+      "progress": "not globally measured"
+    }
+  ],
+  "currentWork": {
+    "offlineLane": {
+      "sequence": 3,
+      "standardCode": "[4수03-09]",
+      "familyId": "geometry.triangle.classification.claim-evidence-v1",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    "liveEvidenceLane": {
+      "sequence": 1,
+      "standardCode": "[2수04-01]",
+      "familyId": "data.classification.given-criterion-count-v1",
+      "nextAction": "capture-current-hash-live-evidence"
+    },
+    "breadthLaneAfterRepresentativeGrid": {
+      "queueIndex": 1,
+      "rotation": 1,
+      "code": "[2수04-01]",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "officialGoal": "여러 가지 사물을 정해진 기준 또는 자신이 정한 기준으로 분류하여 개수를 세어 보고, 기준에 따른 결과를 말할 수 있다.",
+      "targetSetReviewed": true,
+      "targetCoverage": {
+        "status": "available",
+        "numerator": 0,
+        "denominator": 4,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+      },
+      "linkedFamilyIds": [
+        "data.classification.given-criterion-count-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "data.classification.given-criterion-count-v1"
+      ],
+      "offlineCoveredTargetCount": 3,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "cover-unbound-reviewed-targets"
+    }
+  },
+  "representativeStatusCounts": {
+    "pipeline-proven": 1,
+    "target-bound-offline": 1,
+    "released-candidate-needs-target-review": 9,
+    "offline-candidate-needs-target-review": 1,
+    "candidate-needs-implementation": 0
+  },
+  "representativeCells": [
+    {
+      "sequence": 1,
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "standardCode": "[2수04-01]",
+      "familyId": "data.classification.given-criterion-count-v1",
+      "selectionReason": "첫 native family와 offline-to-live 경로를 검증한다.",
+      "officialGoal": "여러 가지 사물을 정해진 기준 또는 자신이 정한 기준으로 분류하여 개수를 세어 보고, 기준에 따른 결과를 말할 수 있다.",
+      "familyLifecycleStage": "offline-validated",
+      "familySupportState": "verified",
+      "assessmentTargetBindingCount": 3,
+      "evidencePaths": [
+        "packages/templates/src/problem-families/domains/data-probability/classification-given-criterion-count.test.ts"
+      ],
+      "standardTargetCoverage": {
+        "status": "available",
+        "numerator": 0,
+        "denominator": 4,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+      },
+      "status": "target-bound-offline",
+      "nextAction": "capture-current-hash-live-evidence"
+    },
+    {
+      "sequence": 2,
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "standardCode": "[2수02-01]",
+      "familyId": "pattern.repeat-unit.pattern-blocks-v1",
+      "selectionReason": "released legacy family의 target-authority strangler 이관을 검증한다.",
+      "officialGoal": "물체, 무늬, 수 등의 배열에서 규칙을 찾아 여러 가지 방법으로 표현할 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 2,
+      "evidencePaths": [
+        "research/mathcanvas/wave16-pattern-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "available",
+        "numerator": 2,
+        "denominator": 2,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다."
+      },
+      "status": "pipeline-proven",
+      "nextAction": "maintain-current-hash-evidence"
+    },
+    {
+      "sequence": 3,
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "standardCode": "[4수03-09]",
+      "familyId": "geometry.triangle.classification.claim-evidence-v1",
+      "selectionReason": "각의 종류에 따른 삼각형 분류와 주장-근거형 도형 판단을 검증한다.",
+      "officialGoal": "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 직각삼각형, 예각삼각형, 둔각삼각형을 이해한다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave18-triangle-classification-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 4,
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "standardCode": "[6수01-06]",
+      "familyId": "fraction.equivalent.same-whole.visual-v1",
+      "selectionReason": "고학년 분수의 같은 전체와 동치 관계를 검증한다.",
+      "officialGoal": "크기가 같은 분수를 만드는 방법을 이해하고, 분수를 약분, 통분할 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/p3-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 5,
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "standardCode": "[2수03-10]",
+      "familyId": "measure.length.unit-iteration.ruler-v1",
+      "selectionReason": "1 cm 단위 반복과 어긋난 자 읽기의 측정 불변량을 검증한다.",
+      "officialGoal": "길이 단위 1cm와 1m를 알고, 이를 이용하여 주변 사물의 길이를 측정할 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave13-broken-ruler-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 6,
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "standardCode": "[4수04-01]",
+      "familyId": "data.bar-graph.scale-unit.read-v1",
+      "selectionReason": "막대그래프 눈금 단위 판단과 자료 읽기 경로를 검증한다.",
+      "officialGoal": "자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave12-bar-graph-scale-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 7,
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "standardCode": "[6수02-02]",
+      "familyId": "relation.ratio.same-unit.claim-evidence-v1",
+      "selectionReason": "offline family의 고학년 비 관계와 live 승격 경로를 검증한다.",
+      "officialGoal": "두 양의 크기를 비교하는 상황을 통해 비의 개념을 이해하고, 두 양의 관계를 비로 나타낼 수 있다.",
+      "familyLifecycleStage": "offline-validated",
+      "familySupportState": "verified",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave18-ratio-same-unit-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "offline-candidate-needs-target-review",
+      "nextAction": "review-target-set-validate-offline-family"
+    },
+    {
+      "sequence": 8,
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "standardCode": "[2수01-04]",
+      "familyId": "number.make-10.cards-v1",
+      "selectionReason": "수 카드 구성과 10의 보수 관계를 검증한다.",
+      "officialGoal": "하나의 수를 두 수로 분해하고 두 수를 하나의 수로 합성하는 활동을 통하여 수 감각을 기른다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/p3-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 9,
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "standardCode": "[4수02-03]",
+      "familyId": "relation.equal-sign.balance-scale.sum-card-v1",
+      "selectionReason": "등호의 관계적 의미와 저울 불변량을 검증한다.",
+      "officialGoal": "등호를 사용하여 크기가 같은 두 양의 관계를 식으로 나타낼 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave5-balance-scale-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 10,
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "standardCode": "[6수04-04]",
+      "familyId": "probability.compare.bag-ratios-v1",
+      "selectionReason": "비율에 근거한 가능성 비교를 검증한다.",
+      "officialGoal": "사건이 일어날 가능성을 말로 표현하고 비교할 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave17-probability-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 11,
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "standardCode": "[4수01-06]",
+      "familyId": "number.division.quotient-remainder.claim-evidence-v1",
+      "selectionReason": "몫과 나머지의 의미와 native 묶기 증거를 검증한다.",
+      "officialGoal": "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/division-counting-group-31-by-6-canary.json",
+        "research/mathcanvas/division-counting-group-29-by-7-canary.json",
+        "research/mathcanvas/division-counting-group-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    },
+    {
+      "sequence": 12,
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "standardCode": "[6수03-02]",
+      "familyId": "geometry.symmetry.equal-distance.claim-evidence-v1",
+      "selectionReason": "선대칭의 대응점과 대칭축까지의 거리 불변량을 검증한다.",
+      "officialGoal": "실생활과 연결하여 선대칭도형과 점대칭도형을 이해하고 그릴 수 있다.",
+      "familyLifecycleStage": "live-released",
+      "familySupportState": "released",
+      "assessmentTargetBindingCount": 0,
+      "evidencePaths": [
+        "research/mathcanvas/wave18-line-symmetry-distance-release-canary.json"
+      ],
+      "standardTargetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "status": "released-candidate-needs-target-review",
+      "nextAction": "review-target-set-bind-released-family"
+    }
+  ],
+  "standardActionSummary": {
+    "complete": 1,
+    "cover-unbound-reviewed-targets": 1,
+    "review-target-set-and-bind-released-family": 17,
+    "review-target-set-and-close-offline-family": 5,
+    "review-target-set-and-design-family": 97
+  },
+  "remainingStandardCount": 120,
+  "breadthQueue": [
+    {
+      "queueIndex": 1,
+      "rotation": 1,
+      "code": "[2수04-01]",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "officialGoal": "여러 가지 사물을 정해진 기준 또는 자신이 정한 기준으로 분류하여 개수를 세어 보고, 기준에 따른 결과를 말할 수 있다.",
+      "targetSetReviewed": true,
+      "targetCoverage": {
+        "status": "available",
+        "numerator": 0,
+        "denominator": 4,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+      },
+      "linkedFamilyIds": [
+        "data.classification.given-criterion-count-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "data.classification.given-criterion-count-v1"
+      ],
+      "offlineCoveredTargetCount": 3,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "cover-unbound-reviewed-targets"
+    },
+    {
+      "queueIndex": 2,
+      "rotation": 1,
+      "code": "[4수03-09]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 직각삼각형, 예각삼각형, 둔각삼각형을 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "geometry.triangle.classification.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [
+        "geometry.triangle.classification.claim-evidence-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 3,
+      "rotation": 1,
+      "code": "[6수01-06]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "크기가 같은 분수를 만드는 방법을 이해하고, 분수를 약분, 통분할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "fraction.equivalent.same-whole.visual-v1"
+      ],
+      "releasedFamilyIds": [
+        "fraction.equivalent.same-whole.visual-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 4,
+      "rotation": 1,
+      "code": "[2수03-10]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "길이 단위 1cm와 1m를 알고, 이를 이용하여 주변 사물의 길이를 측정할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "measure.length.unit-iteration.ruler-v1"
+      ],
+      "releasedFamilyIds": [
+        "measure.length.unit-iteration.ruler-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 5,
+      "rotation": 1,
+      "code": "[4수04-01]",
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 수집하여 그림그래프나 막대그래프로 나타내고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "data.bar-graph.represent-from-table-v1",
+        "data.bar-graph.scale-unit.read-v1",
+        "data.picture-graph.key.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [
+        "data.bar-graph.scale-unit.read-v1"
+      ],
+      "offlineFamilyIds": [
+        "data.bar-graph.represent-from-table-v1",
+        "data.picture-graph.key.claim-evidence-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 6,
+      "rotation": 1,
+      "code": "[6수02-02]",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "officialGoal": "두 양의 크기를 비교하는 상황을 통해 비의 개념을 이해하고, 두 양의 관계를 비로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "relation.ratio.same-unit.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "relation.ratio.same-unit.claim-evidence-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-close-offline-family"
+    },
+    {
+      "queueIndex": 7,
+      "rotation": 1,
+      "code": "[2수01-04]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "하나의 수를 두 수로 분해하고 두 수를 하나의 수로 합성하는 활동을 통하여 수 감각을 기른다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.make-10.cards-v1"
+      ],
+      "releasedFamilyIds": [
+        "number.make-10.cards-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 8,
+      "rotation": 1,
+      "code": "[4수02-03]",
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "officialGoal": "등호를 사용하여 크기가 같은 두 양의 관계를 식으로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "relation.equal-sign.balance-scale.sum-card-v1",
+        "relation.equal-sign.balanced-equation.cards-v1"
+      ],
+      "releasedFamilyIds": [
+        "relation.equal-sign.balance-scale.sum-card-v1",
+        "relation.equal-sign.balanced-equation.cards-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 9,
+      "rotation": 1,
+      "code": "[6수04-04]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "사건이 일어날 가능성을 말로 표현하고 비교할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "probability.compare.bag-ratios-v1"
+      ],
+      "releasedFamilyIds": [
+        "probability.compare.bag-ratios-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 10,
+      "rotation": 1,
+      "code": "[4수01-06]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "나누는 수가 한 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있으며, 나눗셈에서 몫과 나머지의 의미를 안다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.division.partial-quotients.construction-v1",
+        "number.division.quotient-remainder.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [
+        "number.division.quotient-remainder.claim-evidence-v1"
+      ],
+      "offlineFamilyIds": [
+        "number.division.partial-quotients.construction-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 11,
+      "rotation": 1,
+      "code": "[6수03-02]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활과 연결하여 선대칭도형과 점대칭도형을 이해하고 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "geometry.symmetry.equal-distance.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [
+        "geometry.symmetry.equal-distance.claim-evidence-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 12,
+      "rotation": 2,
+      "code": "[2수04-02]",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 분류하여 표로 나타내고, 자료를 표로 나타내면 편리한 점을 말할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 13,
+      "rotation": 2,
+      "code": "[2수02-02]",
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "officialGoal": "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 14,
+      "rotation": 2,
+      "code": "[4수03-01]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "직선, 선분, 반직선을 이해하고 구별할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 15,
+      "rotation": 2,
+      "code": "[6수01-01]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "덧셈, 뺄셈, 곱셈, 나눗셈의 혼합 계산에서 계산하는 순서를 알고, 혼합 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.mixed-calculation.order.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "number.mixed-calculation.order.claim-evidence-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-close-offline-family"
+    },
+    {
+      "queueIndex": 16,
+      "rotation": 2,
+      "code": "[2수03-01]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 직육면체, 원기둥, 구의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 17,
+      "rotation": 2,
+      "code": "[4수04-02]",
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 수집하여 꺾은선그래프로 나타내고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 18,
+      "rotation": 2,
+      "code": "[6수02-01]",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "officialGoal": "한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 19,
+      "rotation": 2,
+      "code": "[2수01-01]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "수의 필요성을 인식하면서 0과 100까지의 수 개념을 이해하고, 수를 세고 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 20,
+      "rotation": 2,
+      "code": "[4수02-01]",
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "officialGoal": "다양한 변화 규칙을 찾아 설명하고, 그 규칙을 수나 식으로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 21,
+      "rotation": 2,
+      "code": "[6수04-01]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "평균의 의미를 알고, 자료를 수집하여 평균을 구하고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 22,
+      "rotation": 2,
+      "code": "[4수01-01]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "큰 수의 필요성을 인식하면서 10000 이상의 큰 수에 대한 자릿값과 위치적 기수법을 이해하고, 수를 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 23,
+      "rotation": 2,
+      "code": "[6수03-01]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 24,
+      "rotation": 3,
+      "code": "[2수04-03]",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 분류하여 ○, ×, / 등을 이용한 그래프로 나타내고, 자료를 그래프로 나타내면 편리한 점을 말할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 25,
+      "rotation": 3,
+      "code": "[4수03-02]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "각과 직각을 이해하고, 직각과 비교하는 활동을 통하여 예각과 둔각을 구별할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 26,
+      "rotation": 3,
+      "code": "[6수01-02]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "실생활과 연결하여 이상, 이하, 초과, 미만의 의미와 쓰임을 알고, 이를 활용하여 수의 범위를 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 27,
+      "rotation": 3,
+      "code": "[2수03-02]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "쌓기나무를 이용하여 여러 가지 입체도형의 모양을 만들고, 그 모양에 대해 위치나 방향을 이용하여 말할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 28,
+      "rotation": 3,
+      "code": "[4수04-03]",
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "officialGoal": "탐구 문제를 해결하기 위해 자료를 수집, 정리하여 막대그래프나 꺾은선그래프로 나타내고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 29,
+      "rotation": 3,
+      "code": "[6수02-03]",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "officialGoal": "비율을 이해하고, 비율을 분수, 소수, 백분율로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 30,
+      "rotation": 3,
+      "code": "[2수01-02]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "일, 십, 백, 천의 자릿값과 위치적 기수법을 이해하고, 네 자리 이하의 수를 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.place-value.regroup-ten-bundles-v1"
+      ],
+      "releasedFamilyIds": [
+        "number.place-value.regroup-ten-bundles-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 31,
+      "rotation": 3,
+      "code": "[4수02-02]",
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "officialGoal": "계산식의 배열에서 규칙을 찾고, 계산 결과를 추측할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 32,
+      "rotation": 3,
+      "code": "[6수04-02]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 수집하여 띠그래프나 원그래프로 나타내고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 33,
+      "rotation": 3,
+      "code": "[4수01-02]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 34,
+      "rotation": 3,
+      "code": "[6수03-03]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "직육면체와 정육면체를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 35,
+      "rotation": 4,
+      "code": "[4수03-03]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "직선의 수직 관계와 평행 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 36,
+      "rotation": 4,
+      "code": "[6수01-03]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "어림값을 구하기 위한 방법으로 올림, 버림, 반올림의 의미와 필요성을 알고, 이를 실생활에 활용함으로써 수학의 유용성을 인식할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 37,
+      "rotation": 4,
+      "code": "[2수03-03]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 삼각형, 사각형, 원의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 38,
+      "rotation": 4,
+      "code": "[6수02-04]",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "officialGoal": "비례식을 알고, 그 성질을 이해하며, 이를 활용하여 간단한 비례식을 풀 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 39,
+      "rotation": 4,
+      "code": "[2수01-03]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "네 자리 이하의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 40,
+      "rotation": 4,
+      "code": "[6수04-03]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "탐구 문제를 설정하고, 그에 맞는 자료를 수집, 정리하여 적절한 그래프로 나타내고 해석할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "data.graph.purpose.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "data.graph.purpose.claim-evidence-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-close-offline-family"
+    },
+    {
+      "queueIndex": 41,
+      "rotation": 4,
+      "code": "[4수01-03]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "세 자리 수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 42,
+      "rotation": 4,
+      "code": "[6수03-04]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "직육면체와 정육면체의 겨냥도와 전개도를 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 43,
+      "rotation": 5,
+      "code": "[4수03-04]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "구체물이나 평면도형의 밀기, 뒤집기, 돌리기 활동을 통하여 그 변화를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 44,
+      "rotation": 5,
+      "code": "[6수01-04]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "약수, 공약수, 최대공약수를 이해하고 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.factor-pairs.array-construction-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "number.factor-pairs.array-construction-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-close-offline-family"
+    },
+    {
+      "queueIndex": 45,
+      "rotation": 5,
+      "code": "[2수03-04]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "삼각형, 사각형, 원을 직관적으로 이해하고, 그 모양을 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 46,
+      "rotation": 5,
+      "code": "[6수02-05]",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "officialGoal": "비례배분을 알고, 주어진 양을 비례배분 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 47,
+      "rotation": 5,
+      "code": "[2수01-05]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "덧셈과 뺄셈이 이루어지는 실생활 상황과 연결하여 덧셈과 뺄셈의 의미를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 48,
+      "rotation": 5,
+      "code": "[6수04-05]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "사건이 일어날 가능성을 수로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 49,
+      "rotation": 5,
+      "code": "[4수01-04]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "곱하는 수가 한 자리 수 또는 두 자리 수인 곱셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.multiplication.partial-products.construction-v1"
+      ],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [
+        "number.multiplication.partial-products.construction-v1"
+      ],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-close-offline-family"
+    },
+    {
+      "queueIndex": 50,
+      "rotation": 5,
+      "code": "[6수03-05]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 51,
+      "rotation": 6,
+      "code": "[4수03-05]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "평면에서 점의 이동에 대해 위치와 방향을 이용하여 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 52,
+      "rotation": 6,
+      "code": "[6수01-05]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "배수, 공배수, 최소공배수를 이해하고 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 53,
+      "rotation": 6,
+      "code": "[2수03-05]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "삼각형, 사각형에서 각각의 공통점을 찾아 말할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 54,
+      "rotation": 6,
+      "code": "[2수01-06]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "두 자리 수의 범위에서 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 55,
+      "rotation": 6,
+      "code": "[6수04-06]",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 이용하여 가능성을 예상하고, 가능성에 근거하여 적절한 판단을 내릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 56,
+      "rotation": 6,
+      "code": "[4수01-05]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "나눗셈이 이루어지는 실생활 상황과 연결하여 나눗셈의 의미를 알고, 곱셈과 나눗셈의 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 57,
+      "rotation": 6,
+      "code": "[6수03-06]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "각기둥의 전개도를 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 58,
+      "rotation": 7,
+      "code": "[4수03-06]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "원의 중심, 반지름, 지름을 이해하고, 그 성질을 안다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 59,
+      "rotation": 7,
+      "code": "[6수01-07]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "분모가 다른 분수의 크기를 비교하고 그 방법을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "fraction.compare.unlike-denominators.visual-v1"
+      ],
+      "releasedFamilyIds": [
+        "fraction.compare.unlike-denominators.visual-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 60,
+      "rotation": 7,
+      "code": "[2수03-06]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "구체물의 길이, 들이, 무게, 넓이를 비교하여 각각 ‘길다, 짧다’, ‘많다, 적다’, ‘무겁다, 가볍다’, ‘넓다, 좁다’ 등을 구별하여 말할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 61,
+      "rotation": 7,
+      "code": "[2수01-07]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "덧셈과 뺄셈의 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 62,
+      "rotation": 7,
+      "code": "[4수01-07]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "나누는 수가 두 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 63,
+      "rotation": 7,
+      "code": "[6수03-07]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "원기둥, 원뿔, 구를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 64,
+      "rotation": 8,
+      "code": "[4수03-07]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "컴퍼스를 이용하여 여러 가지 크기의 원을 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 65,
+      "rotation": 8,
+      "code": "[6수01-08]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "분모가 다른 분수의 덧셈과 뺄셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "fraction.add.unlike-denominators.common-unit-v1",
+        "fraction.subtract.unlike-denominators.common-unit-v1"
+      ],
+      "releasedFamilyIds": [
+        "fraction.add.unlike-denominators.common-unit-v1",
+        "fraction.subtract.unlike-denominators.common-unit-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 66,
+      "rotation": 8,
+      "code": "[2수03-07]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "시계를 보고 시각을 ‘몇 시 몇 분’까지 읽을 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "measure.time.clock.hour-hand-boundary-v1"
+      ],
+      "releasedFamilyIds": [
+        "measure.time.clock.hour-hand-boundary-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 67,
+      "rotation": 8,
+      "code": "[2수01-08]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "두 자리 수의 범위에서 세 수의 덧셈과 뺄셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 68,
+      "rotation": 8,
+      "code": "[4수01-08]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "자연수의 덧셈, 뺄셈, 곱셈, 나눗셈과 관련한 여러 가지 상황에서 어림셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 69,
+      "rotation": 8,
+      "code": "[6수03-08]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "원기둥의 전개도를 그릴 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 70,
+      "rotation": 9,
+      "code": "[4수03-08]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 이등변삼각형, 정삼각형을 이해하고, 그 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 71,
+      "rotation": 9,
+      "code": "[6수01-09]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "분수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 72,
+      "rotation": 9,
+      "code": "[2수03-08]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "1시간과 1분의 관계를 이해하고, 시간을 ‘시간’, ‘분’으로 표현할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "measure.time.elapsed.clock-pair-v1"
+      ],
+      "releasedFamilyIds": [
+        "measure.time.elapsed.clock-pair-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 73,
+      "rotation": 9,
+      "code": "[2수01-09]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "□가 사용된 덧셈식과 뺄셈식을 만들고, □의 값을 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 74,
+      "rotation": 9,
+      "code": "[4수01-09]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "양의 등분할을 통하여 분수의 필요성을 인식하고, 분수를 이해하고 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 75,
+      "rotation": 9,
+      "code": "[6수03-09]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "쌓기나무로 만든 입체도형을 보고 사용된 쌓기나무의 개수를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 76,
+      "rotation": 10,
+      "code": "[4수03-10]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 77,
+      "rotation": 10,
+      "code": "[6수01-10]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 분수로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 78,
+      "rotation": 10,
+      "code": "[2수03-09]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활 문제 상황과 연결하여 1분, 1시간, 1일, 1주일, 1개월, 1년 사이의 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 79,
+      "rotation": 10,
+      "code": "[2수01-10]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "곱셈이 이루어지는 실생활 상황과 연결하여 곱셈의 의미를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "number.multiplication.group-array-meaning-v1"
+      ],
+      "releasedFamilyIds": [
+        "number.multiplication.group-array-meaning-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 80,
+      "rotation": 10,
+      "code": "[4수01-10]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 81,
+      "rotation": 10,
+      "code": "[6수03-10]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "쌓기나무로 만든 입체도형의 위, 앞, 옆에서 본 모양을 표현할 수 있고, 이러한 표현을 보고 입체도형의 모양을 추측할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 82,
+      "rotation": 11,
+      "code": "[4수03-11]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "다각형과 정다각형을 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 83,
+      "rotation": 11,
+      "code": "[6수01-11]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "분수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 84,
+      "rotation": 11,
+      "code": "[2수03-11]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "1m와 1cm의 관계를 이해하고, 길이를 ‘몇 m 몇 cm’와 ‘몇 cm’로 표현할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 85,
+      "rotation": 11,
+      "code": "[2수01-11]",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "officialGoal": "곱셈구구를 이해하고, 한 자리 수의 곱셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 86,
+      "rotation": 11,
+      "code": "[4수01-11]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "분모가 같은 분수끼리, 단위분수끼리 크기를 비교하고 그 방법을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 87,
+      "rotation": 11,
+      "code": "[6수03-11]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "평면도형의 둘레를 이해하고, 기본적인 평면도형의 둘레를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 88,
+      "rotation": 12,
+      "code": "[4수03-12]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "주어진 도형을 이용하여 여러 가지 모양을 만들거나 채우고 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 89,
+      "rotation": 12,
+      "code": "[6수01-12]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "분수와 소수의 관계를 이해하고 크기를 비교하며 그 방법을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 90,
+      "rotation": 12,
+      "code": "[2수03-12]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 물건의 길이를 어림하고, 길이에 대한 양감을 기른다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 91,
+      "rotation": 12,
+      "code": "[4수01-12]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "분모가 10인 진분수와 연결하여 소수 한 자리 수를 이해하고 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 92,
+      "rotation": 12,
+      "code": "[6수03-12]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "넓이 단위 1cm², 1m², 1km²를 알며, 그 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 93,
+      "rotation": 13,
+      "code": "[4수03-13]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "1분과 1초의 관계를 이해하고, 초 단위까지 시각을 읽을 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 94,
+      "rotation": 13,
+      "code": "[6수01-13]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "소수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 95,
+      "rotation": 13,
+      "code": "[2수03-13]",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활 문제 상황과 연결하여 길이의 덧셈과 뺄셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 96,
+      "rotation": 13,
+      "code": "[4수01-13]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "자릿값의 원리를 바탕으로 소수 두 자리 수와 소수 세 자리 수를 이해하고 읽고 쓸 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 97,
+      "rotation": 13,
+      "code": "[6수03-13]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 98,
+      "rotation": 14,
+      "code": "[4수03-14]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활 문제 상황과 연결하여 초 단위까지의 시간의 덧셈과 뺄셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 99,
+      "rotation": 14,
+      "code": "[6수01-14]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 소수로 나타낼 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 100,
+      "rotation": 14,
+      "code": "[4수01-14]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "소수의 크기를 비교하고 그 방법을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 101,
+      "rotation": 14,
+      "code": "[6수03-14]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "평행사변형, 삼각형, 사다리꼴, 마름모의 넓이를 구하는 방법을 다양하게 추론하고, 이와 관련된 문제를 해결할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 102,
+      "rotation": 15,
+      "code": "[4수03-15]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "길이 단위 1mm와 1km를 알고, 이를 이용하여 길이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 103,
+      "rotation": 15,
+      "code": "[6수01-15]",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "officialGoal": "소수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 104,
+      "rotation": 15,
+      "code": "[4수01-15]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "분모가 같은 분수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "fraction.add.same-denominator.improper-sum-v1",
+        "fraction.add.same-denominator.strips-v1"
+      ],
+      "releasedFamilyIds": [
+        "fraction.add.same-denominator.improper-sum-v1",
+        "fraction.add.same-denominator.strips-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 105,
+      "rotation": 15,
+      "code": "[6수03-15]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 원 모양 물체의 원주와 지름을 측정하는 활동을 통하여, 원주율이 일정한 값임을 알고 그 근삿값을 사용할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 106,
+      "rotation": 16,
+      "code": "[4수03-16]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "1cm와 1mm, 1km와 1m의 관계를 이해하고, 길이를 ‘몇 cm 몇 mm’와 ‘몇 mm’, ‘몇 km 몇 m’와 ‘몇 m’로 다양하게 표현할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 107,
+      "rotation": 16,
+      "code": "[4수01-16]",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "officialGoal": "소수 두 자리 수의 범위에서 소수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 108,
+      "rotation": 16,
+      "code": "[6수03-16]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 109,
+      "rotation": 17,
+      "code": "[4수03-17]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "들이 단위 1L와 1mL를 알고, 이를 이용하여 들이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 110,
+      "rotation": 17,
+      "code": "[6수03-17]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "직육면체와 정육면체의 겉넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 111,
+      "rotation": 18,
+      "code": "[4수03-18]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "1L와 1mL의 관계를 이해하고, 들이를 ‘몇 L 몇 mL’와 ‘몇 mL’로 표현할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 112,
+      "rotation": 18,
+      "code": "[6수03-18]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "부피 단위 1cm³, 1m³를 알며, 그 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 113,
+      "rotation": 19,
+      "code": "[4수03-19]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활 문제 상황과 연결하여 들이의 덧셈과 뺄셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 114,
+      "rotation": 19,
+      "code": "[6수03-19]",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "officialGoal": "직육면체와 정육면체의 부피를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 115,
+      "rotation": 20,
+      "code": "[4수03-20]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활에서 무게를 나타낼 때 사용하는 단위 1g과 1kg을 알고, 이를 이용하여 무게를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 116,
+      "rotation": 21,
+      "code": "[4수03-21]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "1kg과 1g의 관계를 이해하고, 무게를 ‘몇 kg 몇 g’과 ‘몇 g’으로 표현할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 117,
+      "rotation": 22,
+      "code": "[4수03-22]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활에서 무게를 나타낼 때 사용하는 단위 1t을 알고, 1t과 1kg의 관계를 이해한다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 118,
+      "rotation": 23,
+      "code": "[4수03-23]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "실생활 문제 상황과 연결하여 무게의 덧셈과 뺄셈을 할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    },
+    {
+      "queueIndex": 119,
+      "rotation": 24,
+      "code": "[4수03-24]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "각의 크기의 단위인 1도(°)를 알고, 각도기를 이용하여 각의 크기를 측정하고 어림할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [
+        "measure.angle.turn-size.claim-evidence-v1"
+      ],
+      "releasedFamilyIds": [
+        "measure.angle.turn-size.claim-evidence-v1"
+      ],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-bind-released-family"
+    },
+    {
+      "queueIndex": 120,
+      "rotation": 25,
+      "code": "[4수03-25]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.",
+      "targetSetReviewed": false,
+      "targetCoverage": {
+        "status": "unavailable",
+        "numerator": null,
+        "denominator": null,
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+      },
+      "linkedFamilyIds": [],
+      "releasedFamilyIds": [],
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
+      "liveCoveredTargetCount": 0,
+      "nextAction": "review-target-set-and-design-family"
+    }
+  ]
+}

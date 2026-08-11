@@ -1,10 +1,48 @@
 # 2022 개정 초등 수학 전 범위 생성 계획
 
-상태: Phase 0·1 완료, Phase 2 대표 격자 진행 중 — reviewed target set 2/121, `[2수02-01]` live 2/2, `[2수04-01]` offline 3/4
+상태: Phase 0·1 완료, Phase 2 대표 격자 1/12 pipeline-proven, reviewed target set 2/121, 전체 120개 잔여 queue 자동 산출
 작성일: 2026-08-11  
 최우선 목표: 2022 개정 초등 수학의 모든 공식 성취기준에 대해 교사가 실제로 사용할 수 있는 MathCanvas 수업자료를 생성한다.
 
 이 계획은 `TEACHER_INTENT_PLAN.md`의 3개 사례 확장보다 우선한다. 기존 구현은 버리지 않고 기반으로 재사용하지만, 전체 교육과정 커버리지가 넓어지기 전에는 개별 사례 UI 마감과 TeacherIntent 세부 기능을 추가하지 않는다.
+
+## 0. 전체를 끊지 않고 실행하는 방법
+
+이 문서는 방향과 완료 정의를 고정하고, 실제 다음 작업은
+`reports/curriculum-execution/latest.md`가 저장소 상태에서 자동 산출한다. 대표 셀
+하나가 끝날 때마다 사용자에게 다음 항목을 묻지 않는다. 다음 명령 하나가 공식
+커버리지, ProblemFamily registry, 12개 대표 격자와 121개 전체 queue가 서로
+일치하는지 검증한다.
+
+```bash
+pnpm curriculum:program
+```
+
+전체 프로그램은 다음 여섯 단계다.
+
+| 단계 | 목적 | 현재 |
+|---|---|---|
+| 0 | 공식 121개 원문·카탈로그 권위 | 완료 121/121 |
+| 1 | 공통 ProblemFamily·검증·release 기반 | 완료, canonical 30 / released 21 |
+| 2 | 3개 학년군×4개 영역 대표 격자 | 진행 중, 1/12 pipeline-proven |
+| 3A | 121개 성취기준의 필수 AssessmentTarget 완전 분해 | 진행 중, 2/121 |
+| 3B | 모든 필수 target에 family 연결·offline 검증 | 검토된 6개 중 5개 offline, 전역 분모 미완성 |
+| 3C | 현재 해시 live create·저장·재열기 | 검토된 6개 중 2개 live, 전역 분모 미완성 |
+| 4 | 모든 released family의 TeacherRequest·반영 표·실제 미리보기 | Phase 2 뒤 병행, 현재 공통 파라미터 4/30 |
+| 5 | 문항 단위 수정·패키징·최종 릴리스 | 앞 단계 뒤 착수 |
+
+실행은 두 레인으로 나눈다.
+
+- **offline 제작 레인**: target 분해 → 기존 family 이관 또는 신규 family 구현 →
+  정답·해설·오개념·exact preview → 전체 envelope compile·validator → 보고서 갱신.
+- **live-evidence 레인**: offline 통과 항목만 canonical writer로 새 프로젝트를
+  생성하고 조작·되돌리기·저장·재열기를 현재 해시에 결속한다.
+
+MathCanvas 인증이나 플랫폼 상태 때문에 live 레인이 멈춰도 차단 항목을 queue에
+남기고 offline 레인은 다음 성취기준으로 계속 간다. 가능하면 네 영역을 하나씩
+포함한 4개 성취기준을 한 배치로 닫고, 배치마다 `pnpm check`·보고서·원자적
+`main` 커밋과 push까지 수행한 뒤 다음 배치로 이어진다. Fable CLI는 사용하지
+않는다.
 
 ## 1. 목표를 한 문장으로 고정
 
@@ -177,7 +215,8 @@ OfficialStandard
 
 ### Phase 1 — 공통 ProblemFamily 기반
 
-상태: **완료(2026-08-11)**. canonical 29개/released 21개, 기존 released
+상태: **완료(2026-08-11)**. Phase 1에서 legacy 29개를 canonical화했고 이후 native
+family 1개가 추가돼 현재 canonical 30개/released 21개다. 기존 released
 blueprint·layout·payload hash 21/21 불변, 전체 440/440 테스트와 품질 gate 통과.
 기계 판독 대응표는 `reports/problem-family-registry/latest.json`, 확장 규칙은
 `docs/PROBLEM_FAMILY_ARCHITECTURE.md`에 고정한다.
@@ -212,8 +251,9 @@ contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy ada
 
 상태: **진행 중**. reviewed AssessmentTarget 분해와 native family의 첫 실제
 사용에 더해, 기존 released family 한 개를 새 target 권위 계층으로 이관했다.
-현재 reviewed-complete set은 2/121뿐이며 Phase 1의 더미 인수 fixture를 출시
-family로 세지 않는다.
+현재 pipeline-proven 셀은 1/12, reviewed-complete set은 2/121뿐이며 Phase 1의
+더미 인수 fixture를 출시 family로 세지 않는다. 고정된 12개 대표와 실행 순서는
+`scripts/curriculum/elementary-execution-program.json`이 소유한다.
 
 목적: 수와 연산에 편중된 구조가 아닌지 전 범위 확장 전에 증명한다.
 
@@ -296,11 +336,14 @@ fail-closed로 대조한다. 교사용 preview는 실제 생성된 질문, 여�
 
 순서:
 
-1. 1~2학년군 전체
-2. 3~4학년군 전체
-3. 5~6학년군 전체
+1. 12개 대표 격자를 먼저 pipeline-proven으로 만든다.
+2. 같은 `학년군×영역`에서 다음 공식 성취기준을 하나씩 꺼내 12개 셀을 순환한다.
+3. 한 배치에는 가능하면 서로 다른 네 영역의 성취기준을 하나씩 넣는다.
+4. reviewed target gap → released family 재사용 → offline family 완성 → 신규 family 설계 순으로 같은 셀 안에서 가장 가까운 안전 경로를 택한다.
 
-각 학년군 안에서는 네 영역을 번갈아 진행한다. 한 영역을 완성할 때까지 다른 영역을 비워 두지 않는다.
+고정된 한 학년군을 끝낼 때까지 다른 학년군을 비워 두지 않는다. 전체 순서는
+`reports/curriculum-execution/latest.md`의 breadth queue가 산출하고, 현재 상태가
+바뀔 때마다 자동 재정렬한다.
 
 ProblemFamily는 성취기준 수만큼 무조건 만들지 않는다. 같은 수학 구조를 공유하면 하나의 family가 여러 AssessmentTarget을 안전하게 지원한다. 단, 넓은 성취기준의 일부만 다루면서 전체를 커버했다고 표시하지 않는다.
 
@@ -406,6 +449,8 @@ Phase 0 전체 QA를 통과하기 전에는 새 blueprint와 TeacherIntent를 �
 | 자잘한 마감으로 재이탈 | 커버리지가 늘지 않음 | Phase별 금지 작업과 종료 기준을 CI·체크리스트로 고정 |
 | canary 노후화 | MathCanvas 변경 뒤 과거 화면 증거를 계속 신뢰 | blueprint·generator·layout·platform contract hash 변경 시 즉시 무효화하고, 최종 릴리스 전에 90일이 지난 대표 canary를 다시 수행 |
 | 생성 문구 품질 편차 | 수학은 맞지만 교실에서 읽기 어려운 문항이 누적 | 가족별 고정 표본에 저자 검수 체크리스트와 `language.classroom-korean` 결과를 evidence로 기록 |
+| 다음 항목을 사람이 매번 선택 | 작은 완료마다 작업이 멈추고 전체 우선순위가 흔들림 | 12개 대표 manifest와 121개 generated queue를 `pnpm curriculum:program`으로 검증 |
+| 외부 canary 한 건 차단 | 인증·플랫폼 문제로 offline 확장까지 모두 멈춤 | offline 제작과 live-evidence를 독립 queue로 운영하고 차단 중에도 다음 offline 배치를 진행 |
 
 ## 8. 현재 비목표
 
@@ -428,6 +473,10 @@ Phase 0 전체 QA를 통과하기 전에는 새 blueprint와 TeacherIntent를 �
 - 미리보기와 compiled payload의 문제·정답 불일치
 - 현재 해시와 결속되지 않은 canary로 release 승격
 - 커버리지 수치가 분모 없이 제시됨
+
+위 hard stop이 아니면 개별 성취기준 완료 뒤 사용자에게 다음 작업을 묻지 않고
+execution board의 다음 항목으로 이동한다. Fable 또는 외부 교사 검수가 없다는
+이유만으로 진행을 멈추지 않으며, 저장소 QA와 제작자 1인 검수 기준을 사용한다.
 
 ## 10. 최종 완료 판정
 

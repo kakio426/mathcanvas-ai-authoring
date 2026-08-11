@@ -53,11 +53,12 @@ flowchart LR
 
 ## P3 출시 경계
 
-- 등록 활동 29종 중 21종이 현재 blueprint·layout hash에 결속된 canary를 갖춘 `released` 상태이며, released 21종의 93개 variation을 전수 컴파일·검증합니다.
+- canonical family 30종 중 21종이 현재 blueprint·layout hash에 결속된 canary를 갖춘 `released` 상태이며, released 21종의 93개 variation을 전수 컴파일·검증합니다.
 - 2022 개정 초등 수학 공식 분모는 HWP·PDF를 교차 확인한 121개 성취기준입니다. 카탈로그 매핑은 121/121이지만, released 활동이 닿는 성취기준은 18/121입니다.
-- 18/121은 활동 reach일 뿐 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다. `AssessmentTarget` 스키마는 생겼지만 공식 성취기준별 reviewed target 분해 전이므로 target coverage는 산정하지 않습니다.
-- 29개는 canonical FamilyId로 조회되며, 신규 family는 영역 index의 `source + capability + runtime` 단일 모듈로 등록합니다. 기존 29개의 수동 목록은 legacy adapter 전용으로 봉인했습니다.
+- 18/121은 활동 reach일 뿐 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다. 현재 reviewed-complete target set은 2/121, target은 6개이며 그중 live target은 2개라 전역 target coverage는 아직 산정하지 않습니다.
+- 30개는 canonical FamilyId로 조회되며, 신규 family는 영역 index의 `source + capability + runtime` 단일 모듈로 등록합니다. 기존 29개의 수동 목록은 legacy adapter 전용으로 봉인했습니다.
 - 최신 분모·학년군·영역·단원별 상태는 `reports/curriculum-coverage/latest.md`가 기계 판독 JSON과 함께 고정합니다.
+- 12개 대표 격자와 121개 전체 작업 순서는 `reports/curriculum-execution/latest.md`가 자동 산출하며 offline 제작과 live-evidence queue를 분리합니다.
 - 고정 값이나 알 수 없는 key를 바꾸려 하면 fail-closed로 중단합니다.
 - 승인 해시는 blueprint 내용, generator 버전, seed, variation을 포함한 canonical binding에 연결됩니다.
 - public MCP는 6개를 유지하며 raw payload, 좌표, 내부 tool ID를 노출하지 않습니다.

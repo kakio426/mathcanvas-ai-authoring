@@ -15,6 +15,23 @@ target 2개에 이관돼 `live-released` 상태다. 현재 reviewed-complete set
 기존 29개는 결과를 바꾸지 않기 위해 `legacy-blueprint-adapter`로 감쌌다. 신규
 문제군은 `native-render-recipe`와 `ProblemFamilyNativeModule` 경로만 사용한다.
 
+## 연속 실행 orchestration
+
+`scripts/curriculum/elementary-execution-program.json`은 3개 학년군×4개 영역의
+대표 성취기준과 family를 정확히 하나씩 고정한다. 생성기
+`scripts/curriculum/build-execution-program.mjs`는 공식 커버리지와 canonical
+family 보고서를 조인해 다음 두 queue를 만든다.
+
+- offline queue: AssessmentTarget 완전 분해, released legacy 이관, offline family
+  완성, 신규 native family 구현
+- live-evidence queue: offline 통과 family의 현재 해시 create·조작·저장·재열기
+
+외부 MathCanvas 상태는 live queue만 막을 수 있고 offline queue의 다음 항목을
+막지 않는다. `reports/curriculum-execution/latest.md`가 12개 대표 셀과 121개
+성취기준의 현재 다음 동작을 전부 보여 주며, `pnpm check`가 stale report를
+거부한다. 이 orchestration은 family 구현의 권위가 아니라 기존 registry들을 읽는
+파생 계층이다.
+
 ## 단일 등록 단위
 
 신규 문제군 모듈은 다음 다섯 항목을 함께 내보낸다.
@@ -98,5 +115,6 @@ compiler·validator 통과, MathCanvas 저장·재열기와 현재 hash에 결�
 pnpm exec vitest run packages/templates/src/problem-families/registry.test.ts
 pnpm exec vitest run tests/problem-family-released-baseline.test.ts
 pnpm curriculum:coverage
+pnpm curriculum:program
 pnpm check
 ```

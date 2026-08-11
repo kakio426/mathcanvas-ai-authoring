@@ -1,8 +1,31 @@
 # 2022 개정 초등 수학 전 범위 생성 체크리스트
 
 기준 문서: `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`  
-현재 실행 범위: Phase 0·1 완료, Phase 2 대표 격자 진행 중 — reviewed target set 2/121
+현재 실행 범위: Phase 0·1 완료, Phase 2 대표 격자 1/12, reviewed target set 2/121, 연속 실행 queue 120개
 상태 표기: `[ ]` 미착수, `[-]` 진행 중, `[x]` 완료, `[!]` 차단
+
+## P-EXEC — 전체 연속 실행 프로그램
+
+- [x] 3개 학년군×4개 영역의 대표 성취기준과 family 12개를 중복 없이 고정한다.
+- [x] 대표 셀 상태를 pipeline-proven / target-bound-offline / released 후보 / offline 후보로 자동 분류한다.
+- [x] 121개 성취기준을 target gap / released 재사용 / offline 완성 / 신규 family 설계로 분류한다.
+- [x] 학년군과 영역을 순환하는 전체 breadth queue를 생성한다.
+- [x] offline 제작 레인과 외부 MathCanvas live-evidence 레인을 분리한다.
+- [x] `pnpm curriculum:program`과 `curriculum:program:update`를 추가한다.
+- [x] execution report가 stale이면 `pnpm check`를 실패시킨다.
+- [x] 대표 셀 완료마다 다음 항목을 사용자에게 묻지 않고 generated queue로 이동한다.
+- [x] Fable CLI를 실행 경로에서 제외한다.
+- [x] `pnpm curriculum:program`이 대표 격자 1/12, target set 2/121, 다음 offline `[4수03-09]`를 재현한다.
+- [x] `pnpm check` 전체 75파일·452/452 테스트, build, native/contract/cognitive/visual/quality gate를 통과한다.
+- [x] 실행 프로그램을 원자적 커밋으로 정리해 `main`에 push한다.
+
+현재 자동 선택:
+
+- offline 레인: `[4수03-09]` 삼각형 분류 target 완전 분해·released family 이관
+- live-evidence 레인: `[2수04-01]` 분류 native family 현재 해시 canary·저장·재열기
+- Phase 3 첫 coverage gap: `[2수04-01]` 자신이 정한 기준 분류 target family 추가
+
+전체 현황과 120개 잔여 순서는 `reports/curriculum-execution/latest.md`를 권위로 사용한다.
 
 ## P0-A — 계획 보정
 
@@ -216,7 +239,7 @@ Phase 1은 위 완료 기준이 모두 충족되기 전까지 완료로 표시�
 - [x] problem-family와 curriculum 보고서를 갱신하고 stale check를 통과한다.
 - [x] `pnpm check` 전체를 통과한다.
 - [x] Phase 1 released 21개 기준선이 불변인지 확인한다.
-- [!] Fable CLI는 2026-08-11 계정의 `Fable 5 requires usage credits`로 실행이 차단됐다. 통과로 표시하지 않고 크레딧 확보 뒤 재실행한다.
+- [!] Fable CLI는 2026-08-11 계정의 `Fable 5 requires usage credits`로 실행이 차단됐다. 과거 차단 이력만 보존하고 이후 단계에서는 재실행하지 않는다.
 - [x] 같은 읽기 전용 검수 프롬프트를 Claude Sonnet에 대체 실행해 `PASS`, P0 0건, P1 0건을 받았다.
 - [x] plan과 checklist 원문을 다시 읽고 누락을 대조한다.
 - [x] 구현을 원자적 커밋으로 정리해 `main`에 push한다.
