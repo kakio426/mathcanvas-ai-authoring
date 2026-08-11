@@ -6,7 +6,7 @@
   "standardCode": "[2수02-02]",
   "familyTrackId": "pattern.repeat-unit.construct-v1",
   "scopeId": "W002-FAMILY_TRACK-repeat-rule",
-  "replanContractRevision": "W002-SOL-REPLAN-v4",
+  "replanContractRevision": "W002-SOL-REPLAN-v5",
   "status": "implemented-pending-sol-review",
   "decisionMode": "construct-rule",
   "runtimePredicateKind": "cognitive.rule-state-contract",
@@ -14,21 +14,24 @@
     "construct-rule is distinct from select-one and numeric construct",
     "validRuleStatesPath contains at least two distinct ordered states",
     "surplusPath contains at least one rejectable state",
+    "ruleState is one ordered valid state and valid/surplus states are composable from variant multiset",
+    "decisionConstraintId and ordered ruleSlotRoles bind every slot to exact fill-from-pool sources and targets",
+    "rule slots are locked/non-movable and every variant role is unique, open, and movable",
     "continuationRuleStatePath and explanationRuleStatePath equal ruleStatePath",
     "distractors are bound to a predicate kind and misconception",
-    "student-action variant roles are open and answer states are not emitted"
+    "student-action variant roles are open and answer states are not emitted, including visible text"
   ],
   "implementationFiles": {
-    "packages/contracts/src/catalog/cognitive-demand.ts": "8b6545cb89ca60e5afd71668dce0c804f4d9ea149828cbe9d91c75ada8cd3715",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "1bfa2be681a142e6ee7af42383ba9908dfdf7b58376f7b376085e7edf4c53f3b",
-    "packages/validator/src/predicates/registry.ts": "62674bf1b7a092a75b8eb6f91c9f75d93e665f69e06666b28d9e7dd9be55df22",
-    "packages/validator/src/validator.test.ts": "ecf965d9568116776de6826ff92e06da909fceadf8f2ec44b623495bfcc42392",
-    "packages/templates/src/cognitive/registry.ts": "f5cf56902446468404b291baf52c89d05c061a0e56b29c7f70f26a92ff0e592f",
-    "packages/templates/src/cognitive/registry.test.ts": "83f125b71a36db6298c98c9b0f538c7312fcded6779f7118b149fb475c07727b"
+    "packages/contracts/src/catalog/cognitive-demand.ts": "6c182b8d24f23f1f454c698f587089c2b340db32b18fcbfaeea440209dfcdb07",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "4ba32c9dd79bb02d0bc5107e7c2695c41bce2b8199d46c657b61a633c5b9907a",
+    "packages/validator/src/predicates/registry.ts": "cad7da17ed94e373a56de55f4000d7f32e40338f80b50482b24dd8d901bcc084",
+    "packages/validator/src/validator.test.ts": "c0e5904fb586695592bd932a37ea6d5c247ab651dbcf6b71801f2c1ecdd78d9c",
+    "packages/templates/src/cognitive/registry.ts": "8aa8136d282db174e1fc37e54006d3f67c485f755d36f196592830c8e085d40b",
+    "packages/templates/src/cognitive/registry.test.ts": "37787231ffe1c715f632961342d38b02e5a9d2147bbcab158a0158f5db902458"
   },
   "verification": {
-    "focusedTests": "26/26",
-    "fullCheck": "80 files / 487 tests PASS",
+    "focusedTests": "29/29",
+    "fullCheck": "80 files / 490 tests PASS",
     "studentResponseLifecycle": "not claimed; FAMILY_TRACK/LIVE_EVIDENCE required"
   }
 }

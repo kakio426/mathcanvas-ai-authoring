@@ -1,11 +1,11 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v4)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v5)
 
-상태: **Sol max 재계획 검토 대기 — ENGINE_CORE 범위 확장**
+상태: **Sol max 재계획 검토 대기 — ENGINE_CORE 계약 보강**
 
-이번 v4는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
+이번 v5는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
 3-target source·adapter 결속·target-outline hash는 이미 현재 저장소에 설치되어 소비된
 상태이며, 이 후보는 재계획 계약·sub-work·ENGINE_CORE 허용 범위만 고정한다.
-따라서 v4를 소비하기 위해 새 TARGET_SET을 만들지 않는다.
+따라서 v5를 소비하기 위해 새 TARGET_SET을 만들지 않는다.
 
 v3 AFFORDANCE_DISCOVERY에서 `SM02PB`의 정적 variant·기존 배치 canary는
 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는 native 계약은
@@ -38,8 +38,8 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
-이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v4`이며, A3 TARGET_SET이
-승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v4를 승인·소비한
+이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v5`이며, A3 TARGET_SET이
+승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v5를 승인·소비한
 뒤에만 `ENGINE_CORE`가 이 revision과 core 허용 파일 범위에 결속되어 시작된다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
@@ -65,10 +65,10 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 ### TARGET_SET 경계
 
 A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
-slice 결속을 이미 승인했고, v4 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
-v4의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
-v4 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
-그중 하나라도 바꿔야 하면 현재 v4 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+slice 결속을 이미 승인했고, v5 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
+v5의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
+v5 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v5 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
 `TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서
@@ -81,14 +81,14 @@ v4 후보는 target source, target IDs, outline hash, coverage 분모를 변경�
    다음 독립 표준을 `nextOfflineWork`로 선택하며, familyTrackId/scopeId를 review·candidate·allowedFiles에
    결속한다. 이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
    `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다.
-2. `W002-REPLAN-TARGET_SET` — v4에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
+2. `W002-REPLAN-TARGET_SET` — v5에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
    slice의 statement·invariant·observable evidence·misconception·pinned learning-map
    결속과 outline hash를 고정했다. target 변경이 필요할 때만 새 SOL_REPLAN과
    `supersedesReplanReviewId`·`replanContractRevision`·`targetOutlineSha256`를 가진
    별도 TARGET_SET 후보를 만든다.
 3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 첫 repeat sub-work에서 완료됐다. `SM02PB` 정적
    variant·기존 배치 canary는 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는
-   native 계약은 찾지 못했으므로, 그 결과가 이 v4 `ENGINE_CORE` 재계획의 근거다.
+   native 계약은 찾지 못했으므로, 그 결과가 이 v5 `ENGINE_CORE` 재계획의 근거다.
 4. `W002-ENGINE_CORE` — 기존 numeric `construct`나 select-one의 `correctValuePath`를 재사용하지 않는
    별도 `construct-rule` decision과 `cognitive.rule-state-contract` predicate를 만든다.
    가능한 경우 기존 fill-from-pool·SM02PB·NO04NT native 조작을 재사용하고, 공통 compiler schema를
@@ -122,7 +122,7 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 각 family의 native/core 계약이 공통 compiler schema 변경을 요구하면 해당 단계는 즉시 종료하고,
 새 `ENGINE_CORE` work item과 Sol 재계획을 만든다. 기존 W002 후보에 schema 변경을 섞지 않는다.
 
-### v4 ENGINE_CORE 범위
+### v5 ENGINE_CORE 범위
 
 이번 AFFORDANCE_DISCOVERY의 결과는 새 native 도구를 추가하는 것이 아니라,
 기존 `SM02PB` 배치 위에 학생이 만든 규칙을 의미 상태로 보존하는 공통 core가
@@ -149,7 +149,9 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
   "decision": {
     "mode": "construct-rule",
     "ruleStatePath": "ruleState",
+    "decisionConstraintId": "construct-rule-slot",
     "variantRoles": ["rule-variant-1", "rule-variant-2"],
+    "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
     "variantProperty": "orderedValues",
     "validRuleStatesPath": "validRuleStates",
     "surplusPath": "surplusRuleStates",
@@ -167,15 +169,17 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
     "parameters": {
       "mode": "construct-rule",
       "ruleStatePath": "ruleState",
+      "decisionConstraintId": "construct-rule-slot",
       "validRuleStatesPath": "validRuleStates",
       "surplusPath": "surplusRuleStates",
       "variantRoles": ["rule-variant-1", "rule-variant-2"],
+      "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
       "variantProperty": "orderedValues",
       "continuationRuleStatePath": "ruleState",
       "explanationRuleStatePath": "ruleState",
       "predictionRole": "prediction-box",
       "explanationRole": "explanation-box",
-      "verificationRoles": ["rule-lane", "continuation-lane"],
+      "verificationRoles": ["rule-slot-1", "rule-slot-2", "continuation-lane"],
       "minimumValidStates": 2,
       "minimumSurplus": 1,
       "distractors": [
@@ -189,6 +193,13 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 }
 ```
 
+`decisionConstraintId`는 `${decisionConstraintId}-${index}` 규칙 슬롯 constraint의
+공통 prefix이고, `ruleSlotRoles`의 순서가 학생이 구성하는 ordered state의 슬롯 순서다.
+각 슬롯은 모든 variant source를 가진, 처음에는 충족되지 않은 `fill-from-pool` constraint와
+정확히 결속되어야 한다. `ruleState`는 하나의 ordered state이며 `validRuleStatesPath`의
+상태 중 하나여야 하고, valid/surplus 상태 모두 variant pool의 실제 수량으로 구성 가능해야
+한다. 완성된 ordered state를 variant property나 visible text로 내보내는 구현은 차단한다.
+
 `continuationRuleStatePath`와 `explanationRuleStatePath`는 반드시
 `ruleStatePath`와 같아야 한다. `validRuleStatesPath`에는 순서가 있는 유효
 규칙 상태가 두 개 이상, `surplusPath`에는 화면에서 거부할 수 있는 상태가
@@ -197,7 +208,7 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 별도 lifecycle 증거다.
 
 ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
-요구하면 이 v4 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
+요구하면 이 v5 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
 그 경우 `pattern.repeat-unit.construct-v1` 구현을 partial release로 올리지 않는다.
 
 ## 4. 구현 불변량

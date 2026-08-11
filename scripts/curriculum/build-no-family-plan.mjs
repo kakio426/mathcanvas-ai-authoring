@@ -124,7 +124,9 @@ function assertEngineCoreContract(contract, archetypeId) {
     decision &&
       decision.mode === "construct-rule" &&
       stableId(decision.ruleStatePath) &&
+      stableId(decision.decisionConstraintId) &&
       stringList(decision.variantRoles, 2) &&
+      stringList(decision.ruleSlotRoles, 2) &&
       stableId(decision.variantProperty) &&
       stableId(decision.validRuleStatesPath) &&
       stableId(decision.surplusPath) &&
@@ -146,10 +148,13 @@ function assertEngineCoreContract(contract, archetypeId) {
   assert(
     parameters.mode === decision.mode &&
       parameters.ruleStatePath === decision.ruleStatePath &&
+      parameters.decisionConstraintId === decision.decisionConstraintId &&
       parameters.validRuleStatesPath === decision.validRuleStatesPath &&
       parameters.surplusPath === decision.surplusPath &&
       JSON.stringify(parameters.variantRoles) ===
         JSON.stringify(decision.variantRoles) &&
+      JSON.stringify(parameters.ruleSlotRoles) ===
+        JSON.stringify(decision.ruleSlotRoles) &&
       parameters.variantProperty === decision.variantProperty &&
       parameters.continuationRuleStatePath === decision.ruleStatePath &&
       parameters.explanationRuleStatePath === decision.ruleStatePath &&
@@ -166,6 +171,9 @@ function assertEngineCoreContract(contract, archetypeId) {
     binding &&
       binding.manifestDecisionMode === decision.mode &&
       binding.predicateKind === runtime.kind &&
+      binding.decisionConstraintId === decision.decisionConstraintId &&
+      JSON.stringify(binding.ruleSlotRoles) ===
+        JSON.stringify(decision.ruleSlotRoles) &&
       binding.continuationRuleStatePath === decision.ruleStatePath &&
       binding.explanationRuleStatePath === decision.ruleStatePath,
     `no-family-plan-engine-core-binding-invalid:${archetypeId}`

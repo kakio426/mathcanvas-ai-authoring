@@ -445,13 +445,15 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v4",
+      "replanContractRevision": "W002-SOL-REPLAN-v5",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "manifestDecision": {
           "mode": "construct-rule",
           "ruleStatePath": "ruleState",
+          "decisionConstraintId": "construct-rule-slot",
           "variantRoles": ["rule-variant-1", "rule-variant-2"],
+          "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
           "variantProperty": "orderedValues",
           "validRuleStatesPath": "validRuleStates",
           "surplusPath": "surplusRuleStates",
@@ -469,15 +471,17 @@
           "parameters": {
             "mode": "construct-rule",
             "ruleStatePath": "ruleState",
+            "decisionConstraintId": "construct-rule-slot",
             "validRuleStatesPath": "validRuleStates",
             "surplusPath": "surplusRuleStates",
             "variantRoles": ["rule-variant-1", "rule-variant-2"],
+            "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
             "variantProperty": "orderedValues",
             "continuationRuleStatePath": "ruleState",
             "explanationRuleStatePath": "ruleState",
             "predictionRole": "prediction-box",
             "explanationRole": "explanation-box",
-            "verificationRoles": ["rule-lane", "continuation-lane"],
+            "verificationRoles": ["rule-slot-1", "rule-slot-2", "continuation-lane"],
             "minimumValidStates": 2,
             "minimumSurplus": 1,
             "distractors": [
@@ -491,6 +495,8 @@
         "binding": {
           "manifestDecisionMode": "construct-rule",
           "predicateKind": "cognitive.rule-state-contract",
+          "decisionConstraintId": "construct-rule-slot",
+          "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
           "continuationRuleStatePath": "ruleState",
           "explanationRuleStatePath": "ruleState"
         }
