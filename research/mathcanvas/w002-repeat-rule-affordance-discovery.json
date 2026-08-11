@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "w002-repeat-rule-affordance-discovery-v1",
+  "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+  "standardCode": "[2수02-02]",
+  "operation": "AFFORDANCE_DISCOVERY",
+  "familyTrackId": "pattern.repeat-unit.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+  "observedAt": "2026-08-12T03:15:00.000Z",
+  "mode": "bounded-static-read-with-prior-pattern-canary",
+  "decision": "conditional-go-to-engine-core",
+  "releaseQualified": false,
+  "candidateNativeTool": {
+    "toolKey": "SM02PB",
+    "observedName": "패턴블록",
+    "categoryId": "Unit03",
+    "supportState": "captured",
+    "variantIds": [
+      "SM02PB-01",
+      "SM02PB-02",
+      "SM02PB-03",
+      "SM02PB-04",
+      "SM02PB-05",
+      "SM02PB-06"
+    ],
+    "paramsExpression": "Wl(1)..Wl(6)",
+    "staticCluster": "cluster:7c225c829a5e6d61",
+    "availableOperations": [
+      "render-variant",
+      "place-movable-block",
+      "lock-preauthored-block"
+    ],
+    "notEstablished": [
+      "factory parameter meaning to persisted variant identity",
+      "saved native svgId equivalence",
+      "server normalization and wire field types",
+      "semantic persistence of a student-defined rule"
+    ]
+  },
+  "evidenceRefs": [
+    {
+      "path": "research/mathcanvas/module-variant-contract.static.json",
+      "locator": "moduleKey=SM02PB",
+      "sha256": "074d0af84a040d6769569c0346e7480749ac2c6b164df3f65fdc1cdfbe5fdde4"
+    },
+    {
+      "path": "research/mathcanvas/tool-catalog.snapshot.json",
+      "locator": "moduleKey=SM02PB",
+      "sha256": "549a6862f9aeebeae6b0665379e95bf3befdcdf9b03b5d9f0681bb80b6f833e7"
+    },
+    {
+      "path": "research/mathcanvas/wave16-pattern-release-canary.json",
+      "locator": "probeId=wave16-pattern-release-canary-v1",
+      "sha256": "3b24ea6f6882f04b5bedb3ede55b160f10904b2f478c315e16d3a4af0fa8de16"
+    },
+    {
+      "path": "packages/templates/src/blueprints/repeating-pattern-unit.ts",
+      "locator": "toolRoles:SM02PB, constraints:select-repeat-length",
+      "sha256": "4bbb0f40e2da9515dec7b9f5dbfd99af2da16f858fdf3185d8f2421f8bbb2752"
+    },
+    {
+      "path": "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+      "locator": "targetId=change.pattern.repeat-rule.construct-v1",
+      "sha256": "d894eb6dcf2ff9bc173de6157b70e53d06523228121503562822eee2ac5a437e"
+    }
+  ],
+  "priorCanary": {
+    "evidenceId": "wave16-pattern-release-canary-v1",
+    "status": "pass",
+    "proven": [
+      "SM02PB renders six static variants",
+      "preauthored pattern blocks can be moved into continuation targets",
+      "transient placement has positive spatial and no-overlap evidence",
+      "existing pattern activity has a save/reopen shape"
+    ],
+    "notProvenForThisTrack": [
+      "student chooses and stores an ordered repeat-unit state",
+      "continuation is computed from the stored student rule",
+      "rule state survives save/reopen as a semantic response field"
+    ]
+  },
+  "engineCoreContractRequired": {
+    "decision": "construct-repeat-rule",
+    "ruleState": {
+      "unitVariantIds": "ordered non-empty SM02PB variant list",
+      "unitLength": "derived from unitVariantIds",
+      "declarationText": "student-authored explanation bound to the same rule state"
+    },
+    "invariants": [
+      "the declared unit is not a single preauthored correctValuePath choice",
+      "at least two distinct valid unit states exist in the envelope",
+      "continuation and explanation read the same declared rule state",
+      "student response evidence is separate from compile-time activitySpecHash"
+    ],
+    "reuse": [
+      "SM02PB rendering and placement",
+      "existing pattern-block spatial layout substrate",
+      "common.text explanation input only as a declaration surface"
+    ],
+    "doNotClaim": [
+      "native semantic rule persistence",
+      "live save/reopen for the new family",
+      "offline-validated or released coverage"
+    ]
+  },
+  "unknownsRequiringLaterEvidence": [
+    "SM02PB factory argument to saved object identity",
+    "student-created rule state in response/save payload",
+    "server normalization of ordered variant lists",
+    "reopen equivalence for rule state and declaration text"
+  ],
+  "nextOperation": "ENGINE_CORE"
+}

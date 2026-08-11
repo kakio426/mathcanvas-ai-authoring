@@ -6,8 +6,9 @@
   "items": [
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-      "completedOperations": [],
-      "nextOperation": "AFFORDANCE_DISCOVERY"
+      "completedOperations": ["AFFORDANCE_DISCOVERY"],
+      "nextOperation": "ENGINE_CORE",
+      "completionEvidence": "research/mathcanvas/w002-repeat-rule-affordance-discovery.json"
     },
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-repair",
