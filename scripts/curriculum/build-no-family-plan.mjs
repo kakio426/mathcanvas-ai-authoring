@@ -127,6 +127,9 @@ function fileMatches(pattern, file) {
 
 function actionClass(nextAction) {
   if (nextAction === "complete") return "complete";
+  if (nextAction === "sol-replan-required") {
+    return "blocked-needs-sol-replan";
+  }
   if (nextAction === "capture-current-hash-live-evidence") {
     return "live-evidence";
   }
@@ -495,7 +498,7 @@ function buildReport() {
     assert(batch, `no-family-plan-code-batch-missing:${code}`);
     const contract = source.trackContracts[archetype.archetypeId];
     const current = executionByCode.get(code);
-    const nextAction = current?.nextAction ?? "complete";
+    let nextAction = current?.nextAction ?? "complete";
     const expectedTargetOutline =
       targetOutlineByCode.get(code).expectedTargetOutline;
     const targetSetReview = solReviewByKey.get(reviewKey(code, "TARGET_SET"));
@@ -513,7 +516,18 @@ function buildReport() {
       (current?.releasedFamilyIds?.length ?? 0) > 0;
     let operation;
     let reviewGate = null;
-    if (!learningMapBound) {
+    const blockedReviewGate =
+      familyTrackReviewStatus === "blocked"
+        ? "FAMILY_TRACK"
+        : targetSetReviewStatus === "blocked"
+          ? "TARGET_SET"
+          : null;
+    const blockedBySolReplan = blockedReviewGate !== null;
+    if (blockedBySolReplan) {
+      nextAction = "sol-replan-required";
+      operation = "SOL_REVIEW";
+      reviewGate = blockedReviewGate;
+    } else if (!learningMapBound) {
       operation = "LEARNING_MAP_BINDING";
     } else if (!targetSetReady) {
       operation = "TARGET_SET";
@@ -572,7 +586,11 @@ function buildReport() {
         code === archetype.anchorStandardCode ? "anchor" : "extension",
       splitRisk: archetype.splitRisk,
       nextAction,
-      actionClass: operation === "SOL_REVIEW" ? "sol-review-required" : actionClass(nextAction),
+      actionClass: blockedBySolReplan
+        ? "blocked-needs-sol-replan"
+        : operation === "SOL_REVIEW"
+          ? "sol-review-required"
+          : actionClass(nextAction),
       solReview: {
         targetSet: targetSetReviewStatus,
         familyTrack: familyTrackReviewStatus,
@@ -593,6 +611,7 @@ function buildReport() {
       "planned-no-family",
       "offline-in-progress",
       "sol-review-required",
+      "blocked-needs-sol-replan",
       "live-evidence",
       "complete"
     ].map((status) => [
@@ -604,6 +623,9 @@ function buildReport() {
     ["planned-no-family", "offline-in-progress", "sol-review-required"].includes(
       item.actionClass
     )
+  );
+  const nextReplanWork = workItems.find(
+    (item) => item.actionClass === "blocked-needs-sol-replan"
   );
   const nextLiveEvidenceWork = workItems.find(
     (item) => item.actionClass === "live-evidence"
@@ -677,6 +699,7 @@ function buildReport() {
       actionClassCounts,
       solReviewSummary,
       nextOfflineWork: nextOfflineWork ?? null,
+      nextReplanWork: nextReplanWork ?? null,
       nextLiveEvidenceWork: nextLiveEvidenceWork ?? null
     },
     batches: source.batches.map((batch) => ({
@@ -731,6 +754,7 @@ function markdown(report) {
     "## 지금 선택된 작업",
     "",
     `- offline: ${report.current.nextOfflineWork ? `${report.current.nextOfflineWork.standardCode} · ${report.current.nextOfflineWork.archetypeId} · ${report.current.nextOfflineWork.nextAction}` : "없음"}`,
+    `- Sol 재계획: ${report.current.nextReplanWork ? `${report.current.nextReplanWork.standardCode} · ${report.current.nextReplanWork.archetypeId} · ${report.current.nextReplanWork.nextAction}` : "없음"}`,
     `- live evidence: ${report.current.nextLiveEvidenceWork ? `${report.current.nextLiveEvidenceWork.standardCode} · ${report.current.nextLiveEvidenceWork.archetypeId}` : "없음"}`,
     "",
     "## Sol 독립 검토 게이트",
@@ -833,7 +857,7 @@ if (shouldWrite) {
       "no-family plan report is stale; run pnpm curriculum:no-family-plan:update"
     );
   }
-  console.log(
-    `no-family plan PASS: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks; next ${report.current.nextOfflineWork?.standardCode ?? "none"}`
+console.log(
+    `no-family plan PASS: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks; next ${report.current.nextOfflineWork?.standardCode ?? "none"}; replan ${report.current.nextReplanWork?.standardCode ?? "none"}`
   );
 }

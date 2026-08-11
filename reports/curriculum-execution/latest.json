@@ -21,7 +21,7 @@
     "officialStandards": 121,
     "reviewedTargetSets": 4,
     "reviewedTargets": 10,
-    "offlineReviewedTargets": 9,
+    "offlineReviewedTargets": 4,
     "liveReviewedTargets": 2,
     "fullyLiveStandards": 1,
     "representativeCellsProven": 1,
@@ -60,7 +60,7 @@
       "phase": "3B",
       "name": "필수 target family·offline 검증",
       "status": "in-progress",
-      "progress": "9/10 reviewed targets; global denominator incomplete"
+      "progress": "4/10 reviewed targets; global denominator incomplete"
     },
     {
       "phase": "3C",
@@ -83,17 +83,12 @@
   ],
   "currentWork": {
     "offlineLane": {
-      "sequence": 3,
-      "standardCode": "[4수03-09]",
-      "familyId": "geometry.triangle.classification.claim-evidence-v1",
-      "nextAction": "review-target-set-bind-released-family"
-    },
-    "liveEvidenceLane": {
       "sequence": 1,
       "standardCode": "[2수04-01]",
       "familyId": "data.classification.given-criterion-count-v1",
-      "nextAction": "capture-current-hash-live-evidence"
+      "nextAction": "design-and-validate-family"
     },
+    "liveEvidenceLane": null,
     "breadthLaneAfterRepresentativeGrid": {
       "queueIndex": 1,
       "rotation": 1,
@@ -106,26 +101,24 @@
         "status": "available",
         "numerator": 0,
         "denominator": 4,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다."
       },
       "linkedFamilyIds": [
         "data.classification.given-criterion-count-v1"
       ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [
-        "data.classification.given-criterion-count-v1"
-      ],
-      "offlineCoveredTargetCount": 3,
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
       "nextAction": "cover-unbound-reviewed-targets"
     }
   },
   "representativeStatusCounts": {
     "pipeline-proven": 1,
-    "target-bound-offline": 1,
+    "target-bound-offline": 0,
     "released-candidate-needs-target-review": 9,
     "offline-candidate-needs-target-review": 1,
-    "candidate-needs-implementation": 0
+    "candidate-needs-implementation": 1
   },
   "representativeCells": [
     {
@@ -136,7 +129,7 @@
       "familyId": "data.classification.given-criterion-count-v1",
       "selectionReason": "첫 native family와 offline-to-live 경로를 검증한다.",
       "officialGoal": "여러 가지 사물을 정해진 기준 또는 자신이 정한 기준으로 분류하여 개수를 세어 보고, 기준에 따른 결과를 말할 수 있다.",
-      "familyLifecycleStage": "offline-validated",
+      "familyLifecycleStage": "generatable",
       "familySupportState": "verified",
       "assessmentTargetBindingCount": 3,
       "evidencePaths": [
@@ -146,10 +139,10 @@
         "status": "available",
         "numerator": 0,
         "denominator": 4,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다."
       },
-      "status": "target-bound-offline",
-      "nextAction": "capture-current-hash-live-evidence"
+      "status": "candidate-needs-implementation",
+      "nextAction": "design-and-validate-family"
     },
     {
       "sequence": 2,
@@ -408,9 +401,10 @@
     }
   ],
   "standardActionSummary": {
-    "capture-current-hash-live-evidence": 2,
+    "capture-current-hash-live-evidence": 1,
     "complete": 1,
     "cover-unbound-reviewed-targets": 1,
+    "finish-offline-validation": 1,
     "review-target-set-and-bind-released-family": 17,
     "review-target-set-and-close-offline-family": 5,
     "review-target-set-and-design-family": 95
@@ -429,16 +423,14 @@
         "status": "available",
         "numerator": 0,
         "denominator": 4,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다."
       },
       "linkedFamilyIds": [
         "data.classification.given-criterion-count-v1"
       ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [
-        "data.classification.given-criterion-count-v1"
-      ],
-      "offlineCoveredTargetCount": 3,
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
       "nextAction": "cover-unbound-reviewed-targets"
     },
@@ -739,18 +731,16 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
       },
       "linkedFamilyIds": [
         "pattern.create-repeat-unit-explain-v1"
       ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [
-        "pattern.create-repeat-unit-explain-v1"
-      ],
-      "offlineCoveredTargetCount": 2,
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "capture-current-hash-live-evidence"
+      "nextAction": "finish-offline-validation"
     },
     {
       "queueIndex": 14,

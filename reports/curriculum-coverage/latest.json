@@ -478,7 +478,7 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "offline-validated",
+      "activityStage": "generatable",
       "activityIds": [
         "pattern.create-repeat-unit-explain-v1"
       ],
@@ -491,7 +491,7 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -869,7 +869,7 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "offline-validated",
+      "activityStage": "generatable",
       "activityIds": [
         "data.classification.given-criterion-count-v1"
       ],
@@ -882,7 +882,7 @@
         "status": "available",
         "numerator": 0,
         "denominator": 4,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",

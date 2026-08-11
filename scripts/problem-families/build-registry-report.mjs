@@ -5,6 +5,10 @@ import {
   listProblemFamilyManifests,
   listRegisteredBlueprints
 } from "../../packages/templates/dist/index.js";
+import {
+  effectiveFamilyRecord,
+  readSolReviewBoard
+} from "../curriculum/sol-review-status.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const jsonPath = resolve(root, "reports/problem-family-registry/latest.json");
@@ -23,6 +27,7 @@ function buildReport() {
     listRegisteredBlueprints().map((blueprint) => [blueprint.id, blueprint])
   );
   const baseline = JSON.parse(readFileSync(baselinePath, "utf8"));
+  const solReviewBoard = readSolReviewBoard();
   const baselineByFamily = new Map(
     baseline.rows.map((family) => [family.familyId, family])
   );
@@ -65,7 +70,9 @@ function buildReport() {
       (manifest) => manifest.renderRecipe.kind === "native-render-recipe"
     ).length,
     releasedPayloadBaselineCount: baseline.rows.length,
-    families: manifests.map((manifest) => ({
+    families: manifests.map((manifest) => {
+      const effective = effectiveFamilyRecord(manifest, solReviewBoard);
+      return {
       familyId: manifest.familyId,
       activityId: manifest.activityId,
       templateId: manifest.templateId,
@@ -75,7 +82,8 @@ function buildReport() {
       generator: manifest.generator,
       renderRecipeKind: manifest.renderRecipe.kind,
       supportState: manifest.releaseEvidence.supportState,
-      lifecycleStage: manifest.releaseEvidence.lifecycleStage,
+      lifecycleStage: effective.lifecycleStage,
+      solReviewStatus: effective.reviewStatus,
       blueprintContentHash:
         manifest.releaseEvidence.blueprintContentHash,
       assessmentTargetIds: manifest.assessmentTargetIds,
@@ -83,7 +91,8 @@ function buildReport() {
         (field) => field.key
       ),
       evidencePaths: manifest.releaseEvidence.evidencePaths
-    }))
+      };
+    })
   };
 }
 

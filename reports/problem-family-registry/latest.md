@@ -12,7 +12,7 @@
 |---|---|---|---|---|---|
 | data.bar-graph.represent-from-table-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
 | data.bar-graph.scale-unit.read-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | live-released | - |
-| data.classification.given-criterion-count-v1 | 자료와 가능성 | [2수04-01] | native-render-recipe | offline-validated | classificationSetId, matchingCount |
+| data.classification.given-criterion-count-v1 | 자료와 가능성 | [2수04-01] | native-render-recipe | generatable | classificationSetId, matchingCount |
 | data.early-table.organize-v1 | 자료와 가능성 | [2수04-02] | native-render-recipe | offline-validated | contextId |
 | data.graph.purpose.claim-evidence-v1 | 자료와 가능성 | [6수04-03] | legacy-blueprint-adapter | offline-validated | - |
 | data.picture-graph.key.claim-evidence-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
@@ -36,7 +36,7 @@
 | number.multiplication.group-array-meaning-v1 | 수와 연산 | [2수01-10] | legacy-blueprint-adapter | live-released | itemsPerGroup, groupCount, contextObjectId, misconceptionId |
 | number.multiplication.partial-products.construction-v1 | 수와 연산 | [4수01-04] | legacy-blueprint-adapter | offline-validated | - |
 | number.place-value.regroup-ten-bundles-v1 | 수와 연산 | [2수01-02] | legacy-blueprint-adapter | live-released | - |
-| pattern.create-repeat-unit-explain-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | offline-validated | contextId |
+| pattern.create-repeat-unit-explain-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | generatable | contextId |
 | pattern.repeat-unit.pattern-blocks-v1 | 변화와 관계 | [2수02-01] | legacy-blueprint-adapter | live-released | - |
 | probability.compare.bag-ratios-v1 | 자료와 가능성 | [6수04-04] | legacy-blueprint-adapter | live-released | - |
 | relation.equal-sign.balance-scale.sum-card-v1 | 변화와 관계 | [4수02-03] | legacy-blueprint-adapter | live-released | - |

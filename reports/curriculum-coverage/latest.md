@@ -17,8 +17,8 @@
 |---|---:|
 | unmapped | 0 |
 | mapped | 95 |
-| generatable | 0 |
-| offline-validated | 8 |
+| generatable | 2 |
+| offline-validated | 6 |
 | live-released | 18 |
 
 ## 학년군별
@@ -62,7 +62,7 @@
 | [2수01-10] | 1-2 | 수와 연산 | live-released | - | number.multiplication.group-array-meaning-v1 | number.multiplication.group-array-meaning-v1 | 2-1-6 |
 | [2수01-11] | 1-2 | 수와 연산 | mapped | - | - | - | 2-2-2 |
 | [2수02-01] | 1-2 | 변화와 관계 | live-released | live 2/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다. | pattern.repeat-unit.pattern-blocks-v1 | pattern.repeat-unit.pattern-blocks-v1 | 1-2-5, 2-2-6 |
-| [2수02-02] | 1-2 | 변화와 관계 | offline-validated | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다. | pattern.create-repeat-unit-explain-v1 | - | 1-2-5, 2-2-6 |
+| [2수02-02] | 1-2 | 변화와 관계 | generatable | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다. | pattern.create-repeat-unit-explain-v1 | - | 1-2-5, 2-2-6 |
 | [2수03-01] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-2-3, 2-1-2 |
 | [2수03-02] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-2 |
 | [2수03-03] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-1-2, 1-2-3, 2-1-2 |
@@ -76,7 +76,7 @@
 | [2수03-11] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수03-12] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수03-13] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
-| [2수04-01] | 1-2 | 자료와 가능성 | offline-validated | live 0/4; reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다. | data.classification.given-criterion-count-v1 | - | 2-1-5, 2-2-5 |
+| [2수04-01] | 1-2 | 자료와 가능성 | generatable | live 0/4; reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다. | data.classification.given-criterion-count-v1 | - | 2-1-5, 2-2-5 |
 | [2수04-02] | 1-2 | 자료와 가능성 | offline-validated | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다. | data.early-table.organize-v1 | - | 2-2-5 |
 | [2수04-03] | 1-2 | 자료와 가능성 | mapped | - | - | - | 2-2-5 |
 | [4수01-01] | 3-4 | 수와 연산 | mapped | - | - | - | 4-1-1 |

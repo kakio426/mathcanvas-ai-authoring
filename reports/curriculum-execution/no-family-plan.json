@@ -738,7 +738,8 @@
     "actionClassCounts": {
       "planned-no-family": 95,
       "offline-in-progress": 0,
-      "sol-review-required": 1,
+      "sol-review-required": 0,
+      "blocked-needs-sol-replan": 1,
       "live-evidence": 1,
       "complete": 0
     },
@@ -750,6 +751,69 @@
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
+      "sequence": 3,
+      "workItemId": "W003",
+      "batchId": "B08",
+      "wave": 2,
+      "standardCode": "[4수03-01]",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "officialGoal": "직선, 선분, 반직선을 이해하고 구별할 수 있다.",
+      "archetypeId": "G01",
+      "plannedFamilyId": "geometry.line-extent.classify-v1",
+      "engineClassIds": [
+        "R11"
+      ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8acfb50ecf520d819097576f4373e3d368e5003661c8021d6f11e8d270727c77",
+      "expectedTargetOutline": [
+        {
+          "key": "identify-line-ray-segment-properties",
+          "studentDecision": "끝점의 수와 뻗는 방향을 근거로 직선·선분·반직선의 성질을 정한다.",
+          "invariant": "직선은 양쪽, 반직선은 한쪽으로 계속 뻗고 선분은 두 끝점 사이로 한정된다.",
+          "observableEvidence": "끝점과 연장 방향을 표시한 그림에 알맞은 이름을 대응한다.",
+          "misconceptionClass": "line-type-judged-by-drawn-length"
+        },
+        {
+          "key": "distinguish-line-ray-segment-examples",
+          "studentDecision": "방향이나 길이가 달라진 사례에서도 직선·선분·반직선을 구별한다.",
+          "invariant": "그림의 위치·방향·보이는 길이는 도형의 종류를 바꾸지 않는다.",
+          "observableEvidence": "여러 방향의 사례를 분류하고 끝점·연장 표시로 근거를 남긴다.",
+          "misconceptionClass": "orientation-dependent-line-classification"
+        }
+      ],
+      "expectedTargetCount": 2,
+      "archetypeRole": "anchor",
+      "splitRisk": "low",
+      "nextAction": "review-target-set-and-design-family",
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
+    },
+    "nextReplanWork": {
       "sequence": 2,
       "workItemId": "W002",
       "batchId": "B01",
@@ -795,8 +859,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "capture-current-hash-live-evidence",
-      "actionClass": "sol-review-required",
+      "nextAction": "sol-replan-required",
+      "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "blocked",
@@ -3130,8 +3194,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "capture-current-hash-live-evidence",
-      "actionClass": "sol-review-required",
+      "nextAction": "sol-replan-required",
+      "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "blocked",

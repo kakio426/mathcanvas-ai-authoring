@@ -15,6 +15,10 @@ import {
   listProblemFamilyManifests,
   listRegisteredBlueprints
 } from "../../packages/templates/dist/index.js";
+import {
+  effectiveFamilyLifecycleStage,
+  readSolReviewBoard
+} from "./sol-review-status.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const jsonPath = resolve(root, "reports/curriculum-coverage/latest.json");
@@ -29,18 +33,21 @@ function available(numerator, denominator, note) {
   return { status: "available", numerator, denominator, note };
 }
 
-function stageFor(standard, families) {
+function stageFor(standard, families, solReviewBoard) {
   if (!standard) return "unmapped";
   if (families.length === 0) return "mapped";
   const order = ["mapped", "generatable", "offline-validated", "live-released"];
   return families
-    .map((family) => family.releaseEvidence.lifecycleStage)
+    .map((family) => effectiveFamilyLifecycleStage(family, solReviewBoard))
     .sort((left, right) => order.indexOf(right) - order.indexOf(left))[0];
 }
 
 function buildReport() {
   const { source, standards } = officialElementaryStandardsFixture;
   const families = listProblemFamilyManifests();
+  const solReviewBoard = readSolReviewBoard();
+  const lifecycleStage = (family) =>
+    effectiveFamilyLifecycleStage(family, solReviewBoard);
   const targetSetByStandard = new Map(
     assessmentTargetSets.map((set) => [set.standardCode, set])
   );
@@ -133,7 +140,7 @@ function buildReport() {
       registeredFamilies
         .filter(
           (family) =>
-            family.releaseEvidence.lifecycleStage === "live-released"
+            lifecycleStage(family) === "live-released"
         )
         .flatMap((family) => family.assessmentTargetIds)
     );
@@ -141,8 +148,8 @@ function buildReport() {
       registeredFamilies
         .filter(
           (family) =>
-            family.releaseEvidence.lifecycleStage === "offline-validated" ||
-            family.releaseEvidence.lifecycleStage === "live-released"
+            lifecycleStage(family) === "offline-validated" ||
+            lifecycleStage(family) === "live-released"
         )
         .flatMap((family) => family.assessmentTargetIds)
     );
@@ -161,7 +168,7 @@ function buildReport() {
       catalogSummaryKind: catalog?.summaryKind ?? null,
       catalogGoalMatchesOfficial:
         catalog === undefined ? null : catalog.standardSummary === official.officialGoal,
-      activityStage: stageFor(catalog, registeredFamilies),
+      activityStage: stageFor(catalog, registeredFamilies, solReviewBoard),
       activityIds,
       releasedActivityIds,
       unitIds: unitsByStandard.get(official.code) ?? [],
@@ -236,7 +243,7 @@ function buildReport() {
   const releasedCoveredReviewedTargetIds = new Set(
     families
       .filter(
-        (family) => family.releaseEvidence.lifecycleStage === "live-released"
+        (family) => lifecycleStage(family) === "live-released"
       )
       .flatMap((family) => family.assessmentTargetIds)
   );
