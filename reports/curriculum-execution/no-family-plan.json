@@ -143,10 +143,11 @@
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
         "packages/templates/src/cognitive/registry.test.ts",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts",
-        "reports/curriculum-execution/subwork-state/**"
+        "reports/curriculum-execution/subwork-state/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "FAMILY_TRACK": [
         "fixtures/pedagogy/learning-map.used.json",
@@ -198,8 +199,6 @@
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
         "packages/templates/src/cognitive/registry.test.ts",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
         "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
@@ -4381,6 +4380,51 @@
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v4",
       "replanTargetSetRequired": false,
+      "engineCoreContract": {
+        "manifestDecision": {
+          "mode": "construct-rule",
+          "ruleStatePath": "ruleState",
+          "variantRoles": [
+            "rule-variant-1",
+            "rule-variant-2"
+          ],
+          "variantProperty": "orderedValues",
+          "validRuleStatesPath": "validRuleStates",
+          "surplusPath": "surplusRuleStates",
+          "minimumValidStates": 2,
+          "minimumSurplus": 1
+        },
+        "runtimePredicate": {
+          "kind": "cognitive.rule-state-contract",
+          "parameters": {
+            "mode": "construct-rule",
+            "ruleStatePath": "ruleState",
+            "validRuleStatesPath": "validRuleStates",
+            "surplusPath": "surplusRuleStates",
+            "variantRoles": [
+              "rule-variant-1",
+              "rule-variant-2"
+            ],
+            "variantProperty": "orderedValues",
+            "continuationRuleStatePath": "ruleState",
+            "explanationRuleStatePath": "ruleState",
+            "predictionRole": "prediction-box",
+            "explanationRole": "explanation-box",
+            "verificationRoles": [
+              "rule-lane",
+              "continuation-lane"
+            ],
+            "minimumValidStates": 2,
+            "minimumSurplus": 1
+          }
+        },
+        "binding": {
+          "manifestDecisionMode": "construct-rule",
+          "predicateKind": "cognitive.rule-state-contract",
+          "continuationRuleStatePath": "ruleState",
+          "explanationRuleStatePath": "ruleState"
+        }
+      },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "reviewScopes": [
         {

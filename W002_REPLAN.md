@@ -2,10 +2,10 @@
 
 상태: **Sol max 재계획 검토 대기 — ENGINE_CORE 범위 확장**
 
-이번 v4는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. 다만 이 커밋은 재계획
-계약·sub-work·허용 범위만 고정한다. 새 3-target source와 기존 adapter의
-target 결속 변경은 이 단계에서 설치하지 않으며, 후속 TARGET_SET 후보가
-두 변경과 파생 보고서를 하나의 원자적 후보로 제출한다.
+이번 v4는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
+3-target source·adapter 결속·target-outline hash는 이미 현재 저장소에 설치되어 소비된
+상태이며, 이 후보는 재계획 계약·sub-work·ENGINE_CORE 허용 범위만 고정한다.
+따라서 v4를 소비하기 위해 새 TARGET_SET을 만들지 않는다.
 
 v3 AFFORDANCE_DISCOVERY에서 `SM02PB`의 정적 variant·기존 배치 canary는
 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는 native 계약은
@@ -64,14 +64,12 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 
 ### TARGET_SET 경계
 
-현재 저장소의 기존 2-target source와 adapter는 이 재계획 후보에서 그대로
-유지한다. 따라서 W002는 아직 기존 TARGET_SET 승인만 가진 상태로 남고,
-새 3-target 분해를 `reviewed-complete` 또는 coverage 분모로 주장하지 않는다.
-후속 `W002-REPLAN-TARGET_SET` 후보가 target source 2→3, target 테스트,
-기존 adapter의 자기 slice 결속, 그리고 coverage·execution·registry 파생
-보고서를 함께 변경한다. 그 후보는 `supersedesReplanReviewId`,
-`replanContractRevision`, `targetOutlineSha256`를 가진 별도 TARGET_SET
-승인을 받아야 한다.
+A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
+slice 결속을 이미 승인했고, v4 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
+v4의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
+v4 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v4 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+`TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서
 
@@ -85,9 +83,11 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
    이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
    `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다. 허용 파일은 이 문서,
    no-family plan/target outline, board와 파생 execution report로 제한한다.
-2. `W002-REPLAN-TARGET_SET` — 세 target slice의 statement·invariant·observable evidence·misconception과
-   pinned learning-map 결속을 갱신하고 target-outline hash를 재생성한다. 이 단계의 TARGET_SET 승인 기록은
-   `supersedesReplanReviewId`, `replanContractRevision`, `targetOutlineSha256`를 모두 기록해야 재계획을 소비한다.
+2. `W002-REPLAN-TARGET_SET` — v4에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
+   slice의 statement·invariant·observable evidence·misconception·pinned learning-map
+   결속과 outline hash를 고정했다. target 변경이 필요할 때만 새 SOL_REPLAN과
+   `supersedesReplanReviewId`·`replanContractRevision`·`targetOutlineSha256`를 가진
+   별도 TARGET_SET 후보를 만든다.
 3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 수 변화 family에 필요한 number/state native affordance가
    현재 catalog에 있는지 bounded read/canary로 확인한다. 없으면 새 native tool을 family 안에 몰래 추가하지 않고
    `ENGINE_CORE` 재계획으로 멈춘다.
@@ -142,6 +142,49 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 4. 공통 compiler payload와 `activitySpecHash`는 변경하지 않는다. 학생의 선언은
    별도 `StudentRuleStateEvidence`/`responseHash`로 다루며, save/reopen 증거는
    FAMILY_TRACK 또는 LIVE_EVIDENCE에서 별도로 수집한다.
+
+ENGINE_CORE가 소비할 계약은 다음 JSON shape로 고정한다. 실제 family가 어떤
+role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 않는다.
+
+```json
+{
+  "decision": {
+    "mode": "construct-rule",
+    "ruleStatePath": "ruleState",
+    "variantRoles": ["rule-variant-1", "rule-variant-2"],
+    "variantProperty": "orderedValues",
+    "validRuleStatesPath": "validRuleStates",
+    "surplusPath": "surplusRuleStates",
+    "minimumValidStates": 2,
+    "minimumSurplus": 1
+  },
+  "runtimePredicate": {
+    "kind": "cognitive.rule-state-contract",
+    "parameters": {
+      "mode": "construct-rule",
+      "ruleStatePath": "ruleState",
+      "validRuleStatesPath": "validRuleStates",
+      "surplusPath": "surplusRuleStates",
+      "variantRoles": ["rule-variant-1", "rule-variant-2"],
+      "variantProperty": "orderedValues",
+      "continuationRuleStatePath": "ruleState",
+      "explanationRuleStatePath": "ruleState",
+      "predictionRole": "prediction-box",
+      "explanationRole": "explanation-box",
+      "verificationRoles": ["rule-lane", "continuation-lane"],
+      "minimumValidStates": 2,
+      "minimumSurplus": 1
+    }
+  }
+}
+```
+
+`continuationRuleStatePath`와 `explanationRuleStatePath`는 반드시
+`ruleStatePath`와 같아야 한다. `validRuleStatesPath`에는 순서가 있는 유효
+규칙 상태가 두 개 이상, `surplusPath`에는 화면에서 거부할 수 있는 상태가
+하나 이상 있어야 한다. 이 계약은 compile-time envelope를 검증하는 것이며,
+학생이 실제로 만든 상태와 `responseHash`는 FAMILY_TRACK/LIVE_EVIDENCE의
+별도 lifecycle 증거다.
 
 ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
 요구하면 이 v4 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
