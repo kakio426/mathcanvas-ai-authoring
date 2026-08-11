@@ -1497,6 +1497,68 @@
         "권고 판정은 consumed 후 scoped FAMILY_TRACK blocked만 새 family trigger로 선택하고 changes-requested는 제외하며, FAMILY_REVALIDATION trigger는 current replan의 supersedesBlockedReviewId와 같은 과거 review면 무시하고 다른 새 failure면 SOL_REPLAN으로 보내는 것이다. blockedBySolReplan에서 operation 종류로 새 FAMREV를 억제하는 현재 예외는 제거하거나 reviewed trigger identity 비교로 대체해야 한다.",
         "독립 QA에서 14/14 tests, typecheck, no-family plan은 통과했다. 그러나 추가 테스트가 helper 객체 반환만 검증하고 실제 operation 결과를 검증하지 않아 두 상반된 P0를 놓치므로 changes-requested로 판정한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A10",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 10,
+      "candidateCommit": "13c9d08d16a887d150bf508fa2f50a990de31534",
+      "changedFiles": [
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A9",
+      "checkedAt": "2026-08-11T18:03:13.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "80efcaccc8a030fbc0593fb0738f3582679063ed1f1231d6795f1a15a59df036",
+      "supersedesBlockedReviewId": "W002-TARGET_SET-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v3",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:13c9d08d16a887d150bf508fa2f50a990de31534",
+        "git:14681d6e7a975c8f98712096aa20474bada308a1",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A9",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A2",
+        "W002_REPLAN.md#재개-작업-순서",
+        "scripts/curriculum/sol-review-status.mjs#replanTriggerForFlow",
+        "scripts/curriculum/sol-review-status.mjs#resolveFlowOperation",
+        "scripts/curriculum/build-no-family-plan.mjs#flowOperation",
+        "tests/sol-review-status.test.ts#complete-consumed-and-unconsumed-operation-transitions",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (15/15)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:manual same-identity projection: superseded FAMILY_REVALIDATION→SOL_REPLAN; superseded scoped FAMILY_TRACK blocked→SOL_REPLAN",
+        "command:pnpm check (78 files/477 tests; candidate pre-review all gates PASS)",
+        "command:git diff --check 14681d6..13c9d08"
+      ],
+      "findings": [
+        "후보 범위 확인: candidate 13c9d08은 parent 14681d6 위 exact 3-file SOL_REPLAN governance commit이며 모든 파일이 SOL_REPLAN allowedFiles 안에 있고 target source·adapter·coverage·W002_REPLAN 문서를 수정하지 않는다.",
+        "A9 두 전이 개선 확인: consumed 상태의 scoped FAMILY_TRACK changes-requested는 flow trigger에서 제외되어 nextSubWorkOperation=FAMILY_TRACK으로 rewind되고, scoped blocked와 FAMILY_REVALIDATION failure는 resolveFlowOperation에서 SOL_REPLAN으로 간다. helper 반환뿐 아니라 TARGET_SET·AFFORDANCE_DISCOVERY·FAMILY_TRACK·SOL_REPLAN 최종 operation을 테스트한다.",
+        "P0 identity 수정 요청: consumed 상태에서 현재 replan이 이미 supersedesBlockedReviewId로 소비한 동일 review가 latestFamilyRevalidationReview 또는 scopedFamilyTrackReviews에 남아 있으면 replanTriggerForFlow가 그 review를 다시 반환한다. 독립 재현에서 rawTrigger와 같은 reviewId의 FAMILY_REVALIDATION blocked와 scoped FAMILY_TRACK blocked가 모두 즉시 SOL_REPLAN으로 돌아갔다.",
+        "이 결함은 replan이 새 blocker를 고치고 소비된 직후에도 그 blocker의 최신 board record가 교체되기 전까지 계속 존재하므로, W001형 FAMILY_REVALIDATION 재계획과 향후 W002 scoped blocked 재계획을 무한 반복시킨다. legacy A4만 historical로 버리고 scoped/revalidation blocker identity는 비교하지 않는 현재 구현으로는 일반 루프가 닫히지 않는다.",
+        "최소 수정은 consumed 상태에서 candidate replan의 rawTrigger.reviewId와 같은 FAMILY_REVALIDATION/scoped FAMILY_TRACK review를 historical로 제외하고, 다른 reviewId의 changes-requested/blocked만 새 trigger로 인정하는 것이다. scoped FAMILY_TRACK changes-requested는 identity와 무관하게 계속 rewind 대상이고 blocked만 재계획 대상이다.",
+        "회귀 테스트는 rawTrigger와 동일한 superseded FAMREV failure→다음 artifact/revalidation 단계, 동일한 superseded scoped blocked→해당 subWork 시작 단계, 서로 다른 새 FAMREV failure→SOL_REPLAN, 서로 다른 새 scoped blocked→SOL_REPLAN을 final resolveFlowOperation 결과로 검증해야 한다.",
+        "독립 QA는 15/15 tests, typecheck, no-family plan, candidate diff-check를 통과했다. 하지만 테스트가 superseded same-review identity와 new-review identity를 구분하지 않아 P0를 놓치므로 changes-requested로 판정한다."
+      ]
     }
   ]
 }
