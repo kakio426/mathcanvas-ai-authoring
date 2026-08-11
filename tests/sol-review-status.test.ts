@@ -177,28 +177,13 @@ describe("Sol review candidate and scope gates", () => {
       );
     } else {
       expect(report.current.nextOfflineWork?.workItemId).toBe("W002");
-      const nextOffline = report.current.nextOfflineWork;
-      expect(["ENGINE_CORE", "FAMILY_TRACK"]).toContain(
-        nextOffline?.operation
+      expect(report.current.nextOfflineWork?.operation).toBe("ENGINE_CORE");
+      expect(report.current.nextOfflineWork?.operationWorkItemId).toBe(
+        "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
       );
-      if (nextOffline?.operation === "ENGINE_CORE") {
-        expect(nextOffline.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
-        );
-        expect(nextOffline.nextFamilySubWork?.nextOperation).toBe(
-          "ENGINE_CORE"
-        );
-      } else {
-        expect(nextOffline?.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK"
-        );
-        expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
-          "FAMILY_TRACK"
-        );
-        expect(
-          nextOffline?.nextFamilySubWork?.completedOperations
-        ).toEqual(["AFFORDANCE_DISCOVERY", "ENGINE_CORE"]);
-      }
+      expect(
+        report.current.nextOfflineWork?.nextFamilySubWork?.nextOperation
+      ).toBe("ENGINE_CORE");
       expect(report.current.nextOfflineWork?.solReview.replanApproved).toBe(
         true
       );
