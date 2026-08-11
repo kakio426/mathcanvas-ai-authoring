@@ -761,6 +761,82 @@
           "W001 stale 판정은 정당하다. 승인 후보 ea286d5 이후 e3004b9가 data-table-organize.ts의 learning-map usage snapshot hash를 변경했고 824d188이 scope metadata도 추가했다. 다만 W001은 의미 없는 source 수정 없이 fingerprint artifact를 만든 뒤 독립 scoped revalidation review를 통과시키는 경로가 위 계약 수정 후에만 실행 가능하다.",
           "문서의 activitySpecHash와 responseHash 분리는 바로잡혔지만 exact preview가 아직 미래의 학생 저장 state 자체를 표시한다고 읽히는 문장이 남아 있다. 승인 전 preview는 compile-time RuleStateEnvelope와 조건부 rubric만 표시하고 실제 StudentRuleStateEvidence는 조작 후 save/reopen 증거에서만 표시한다고 명시해야 한다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A2",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 2,
+        "candidateCommit": "4cfa9a9a694cf46c97192ccf2e13dce57c8deaba",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md",
+          "scripts/curriculum/build-no-family-plan.mjs",
+          "scripts/curriculum/no-family-plan.json",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+          "scripts/curriculum/sol-review-status.mjs",
+          "scripts/curriculum/verify-sol-review-gate.mjs"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A1",
+        "checkedAt": "2026-08-11T15:12:59.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "69056d13c533a04bee16696aeea6e73e6e110c13cb9868bb3f4c269abc93948e",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v2",
+        "targetOutlineSha256": "ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:4cfa9a9a694cf46c97192ccf2e13dce57c8deaba",
+          "git:824d188884ffd27b6defaeae49534e013afda122",
+          "git:07b2701b3d1c3213b064d87e0b2aee1df9b13de2",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A1",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A4",
+          "W002_REPLAN.md",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+          "scripts/curriculum/no-family-plan.json#C01",
+          "scripts/curriculum/build-no-family-plan.mjs#replanConsumed",
+          "scripts/curriculum/build-no-family-plan.mjs#subWorkItems",
+          "scripts/curriculum/build-no-family-plan.mjs#revalidationApproved",
+          "scripts/curriculum/sol-review-status.mjs#familyRevalidationArtifactIsCurrent",
+          "scripts/curriculum/verify-sol-review-gate.mjs#FAMILY_REVALIDATION",
+          "reports/curriculum-execution/no-family-plan.json#W001",
+          "reports/curriculum-execution/no-family-plan.json#W002",
+          "command:pnpm check (candidate author report: 78 files / 467 tests)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts",
+          "command:pnpm typecheck",
+          "command:pnpm curriculum:no-family-plan",
+          "command:pnpm curriculum:program",
+          "command:git diff --check 4cfa9a9^ 4cfa9a9"
+        ],
+        "findings": [
+          "개선 확인: candidate exact diff 8개는 W002 SOL_REPLAN allowedFiles에 모두 포함된다. 권위 outline은 W002 3개·전체 97 standards/237 targets로 갱신됐고 report expectedTargetCount=3, targetOutlineSha256=ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e로 일치한다. replanContractRevision, supersedesReplanReviewId, targetOutlineSha256 소비 조건과 세 scoped subWorkItem 출력도 추가됐으며 SOL_REPLAN 지속 승인은 global candidate-currentness에서 분리됐다.",
+          "교육적 수정 요청: 첫 outline choose-own-arrangement-rule은 아직 물체·무늬·수의 반복 또는 변화 규칙을 모두 스스로 정한다고 쓰지만 repeat-rule subWorkItem 하나가 독점한다. 반면 change subWorkItem의 outline은 이미 선언한 변화 관계를 적용·수정하는 결정만 있어 시작값·간격·방향을 스스로 정하는 target이 사라진다. 첫 target을 repeat-unit 구성으로 좁히고 change target에 변화 관계 구성·적용·수정을 모두 명시해 W002_REPLAN.md의 세 target과 정확히 맞춰야 한다.",
+          "구조적 수정 요청: replanConsumed 뒤 nextSubWork가 pending이면 operation을 언제나 그 subWorkItem의 고정 preparationOperation으로 설정한다. AFFORDANCE_DISCOVERY 또는 ENGINE_CORE 완료를 기록·소비하는 상태가 없고 FAMILY_TRACK candidate와 scoped SOL_REVIEW로 전환하는 branch도 없어 첫 repeat-rule은 AFFORDANCE_DISCOVERY를 영구 반복한다. subWorkItem별 ordered phase와 completion evidence를 만들고 AFFORDANCE_DISCOVERY→ENGINE_CORE(필요 시)→FAMILY_TRACK→SOL_REVIEW가 한 단계씩 전진하도록 해야 한다.",
+          "의존성 수정 요청: repeat-rule subWorkItem dependencies가 비어 있어 승인된 SOL_REPLAN과 새 TARGET_SET review가 report dependency에 나타나지 않고, repeat-repair/change-rule은 repeat family workItem 하나만 의존한다. 각 subWork phase가 W002-SOL_REPLAN, 새 W002-SOL-REVIEW-TARGET_SET, 필요한 shared ENGINE_CORE와 선행 family 승인에 명시적으로 결속돼야 한다.",
+          "FAMILY_REVALIDATION 수정 요청: board attempt ordering은 FAMILY_REVALIDATION을 별도 operation/scope key로 보므로 첫 review는 attempt=1·supersedesReviewId=null이어야 한다. 그러나 nativeFamilyReviewStatus는 revalidation.supersedesReviewId가 stale FAMILY_TRACK reviewId와 같아야 승인한다. 두 조건은 동시에 성립할 수 없다. supersedesFamilyTrackReviewId 같은 별도 필드로 원 FAMILY_TRACK을 결속하고 operation 자체의 supersedesReviewId는 동일 operation history에만 사용해야 한다.",
+          "W001 lifecycle 수정 요청: W001 manifest는 새 scoped key를 가지지만 기존 승인 A3는 unscoped이므로 nativeFamilyReviewStatus는 scoped FAMILY_TRACK review를 찾지 못해 pending으로 끝나며 revalidation lookup에도 도달하지 않는다. 실제 registry report도 W001을 pending/generatable로 표시한다. approved legacy review→현재 scope의 fingerprint revalidation을 허용하는 명시적 migration binding 또는 새 scoped FAMILY_TRACK baseline review가 필요하다.",
+          "FAMILY_REVALIDATION 실행 계약도 loop prompt에 operation·artifact 생성 명령·candidate/review invocation으로 노출되지 않았고, allowedFiles에는 authority plan과 generator script 자체까지 포함돼 revalidation 실행자가 fingerprint 규칙을 함께 바꿀 수 있다. 실행 candidate는 artifact와 필수 derived reports로 좁히고, builder/status 변경은 별도 gate candidate로 유지해야 한다.",
+          "preview 개선은 인정한다. 마지막 preview 절은 compile-time RuleStateEnvelope와 조건부 rubric, 조작 후 StudentRuleStateEvidence/responseHash를 정확히 분리한다. 다만 구현 불변량 첫 문장의 학생이 만든 rule state가 exact preview의 원천이라는 표현은 여전히 모순되므로 compile-time envelope가 preview의 원천이라고 통일해야 한다.",
+          "독립 QA는 candidate exact diff/allowedFiles 8/8, scope-status 5/5, typecheck, curriculum:no-family-plan, curriculum:program, visual audit 21/93·P0/P1 0을 통과했다. 그러나 기존 5개 status 테스트는 이번에 추가된 replanConsumed, three-subWork phase transition, legacy-to-scoped revalidation과 artifact invalidation 경로를 전혀 실행하지 않는다. 승인·소비·각 family phase·revalidation 성공/실패를 synthetic board fixture로 고정하는 회귀 테스트가 필요하다."
+        ]
       }
     ]
   },
@@ -920,9 +996,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 10,
+      "totalRecords": 11,
       "approved": 3,
-      "changesRequested": 6,
+      "changesRequested": 7,
       "blocked": 1,
       "pendingRequiredReviews": 190
     },
