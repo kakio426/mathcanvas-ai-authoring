@@ -90,4 +90,91 @@ describe("cognitive runtime predicate binding", () => {
       "correctValuePath" in expectedCognitiveRuntimePredicate(manifest).parameters
     ).toBe(false);
   });
+
+  it("projects the student-constructed rule contract without a fixed answer path", () => {
+    const studentManifest: CognitiveDemandManifest =
+      defineCognitiveDemandManifest({
+        ...manifest,
+        decision: {
+          ...manifest.decision,
+          constructionMode: "student-constructed",
+          answerMode: "conditional-rubric",
+          ruleStatePath: "studentRuleState",
+          validRuleStatesPath: "validRuleStateExamples",
+          surplusPath: "surplusRuleStateExamples",
+          minimumSurplus: 2,
+          stateConstruction: {
+            kind: "ordered-distinct-subset-from-pool",
+            sourceRoles: [
+              "rule-variant-1",
+              "rule-variant-2",
+              "rule-variant-3"
+            ],
+            slotRoles: ["rule-slot-1", "rule-slot-2"],
+            slotCount: 2,
+            minimumDistinctValues: 2,
+            allowsAnyOrderedSelection: true,
+            initialState: "empty"
+          },
+          application: {
+            ruleStatePath: "studentRuleState",
+            continuationTargetRoles: [
+              "continuation-slot-1",
+              "continuation-slot-2",
+              "continuation-slot-3",
+              "continuation-slot-4"
+            ],
+            period: 2,
+            minimumTargetCount: 4,
+            requiresVisibleComparison: true,
+            evidenceMode: "student-state-dependent"
+          },
+          distractors: [
+            {
+              predicateKind: "cognitive.rule-state-contract",
+              misconception: "같은 조각만 고른다."
+            },
+            {
+              predicateKind: "cognitive.rule-state-contract",
+              misconception: "순서를 중간에 바꾼다."
+            }
+          ]
+        } as never,
+        verification: {
+          kind: "data-representation",
+          roles: [
+            "rule-slot-1",
+            "rule-slot-2",
+            "continuation-slot-1",
+            "continuation-slot-2",
+            "continuation-slot-3",
+            "continuation-slot-4"
+          ],
+          invariant: "학생이 정한 규칙과 다음 배열이 일치한다."
+        },
+        explanation: { regionRole: "teacher-rubric" }
+      });
+    const projected = expectedCognitiveRuntimePredicate(
+      studentManifest
+    );
+    expect(projected.parameters).toMatchObject({
+      constructionMode: "student-constructed",
+      answerMode: "conditional-rubric",
+      ruleStatePath: "studentRuleState",
+      continuationRuleStatePath: "studentRuleState",
+      explanationRuleStatePath: "studentRuleState",
+      studentInputRoles: [],
+      stateConstruction: {
+        kind: "ordered-distinct-subset-from-pool",
+        initialState: "empty"
+      },
+      application: {
+        ruleStatePath: "studentRuleState",
+        period: 2
+      }
+    });
+    expect(projected.parameters).not.toHaveProperty(
+      "correctValuePath"
+    );
+  });
 });

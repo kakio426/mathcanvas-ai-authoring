@@ -1514,26 +1514,34 @@ export function expectedCognitiveRuntimePredicate(
   manifest: CognitiveDemandManifest
 ): { kind: string; parameters: Record<string, unknown> } {
   if (manifest.decision.mode === "construct-rule") {
+    const parameters: Record<string, unknown> = {
+      mode: manifest.decision.mode,
+      ruleStatePath: manifest.decision.ruleStatePath,
+      decisionConstraintId: manifest.decision.decisionConstraintId,
+      validRuleStatesPath: manifest.decision.validRuleStatesPath,
+      surplusPath: manifest.decision.surplusPath,
+      variantRoles: manifest.decision.variantRoles,
+      ruleSlotRoles: manifest.decision.ruleSlotRoles,
+      variantProperty: manifest.decision.variantProperty,
+      continuationRuleStatePath: manifest.decision.ruleStatePath,
+      explanationRuleStatePath: manifest.decision.ruleStatePath,
+      predictionRole: manifest.prediction.regionRole,
+      explanationRole: manifest.explanation.regionRole,
+      verificationRoles: manifest.verification.roles,
+      minimumValidStates: manifest.decision.minimumValidStates,
+      minimumSurplus: manifest.decision.minimumSurplus,
+      distractors: manifest.decision.distractors
+    };
+    if (manifest.decision.constructionMode !== undefined) {
+      parameters.constructionMode = manifest.decision.constructionMode;
+      parameters.answerMode = manifest.decision.answerMode;
+      parameters.studentInputRoles = [];
+      parameters.stateConstruction = manifest.decision.stateConstruction;
+      parameters.application = manifest.decision.application;
+    }
     return {
       kind: "cognitive.rule-state-contract",
-      parameters: {
-        mode: manifest.decision.mode,
-        ruleStatePath: manifest.decision.ruleStatePath,
-        decisionConstraintId: manifest.decision.decisionConstraintId,
-        validRuleStatesPath: manifest.decision.validRuleStatesPath,
-        surplusPath: manifest.decision.surplusPath,
-        variantRoles: manifest.decision.variantRoles,
-        ruleSlotRoles: manifest.decision.ruleSlotRoles,
-        variantProperty: manifest.decision.variantProperty,
-        continuationRuleStatePath: manifest.decision.ruleStatePath,
-        explanationRuleStatePath: manifest.decision.ruleStatePath,
-        predictionRole: manifest.prediction.regionRole,
-        explanationRole: manifest.explanation.regionRole,
-        verificationRoles: manifest.verification.roles,
-        minimumValidStates: manifest.decision.minimumValidStates,
-        minimumSurplus: manifest.decision.minimumSurplus,
-        distractors: manifest.decision.distractors
-      }
+      parameters
     };
   }
   return {

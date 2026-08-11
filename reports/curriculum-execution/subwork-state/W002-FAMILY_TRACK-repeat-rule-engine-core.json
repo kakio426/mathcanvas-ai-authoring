@@ -6,33 +6,38 @@
   "standardCode": "[2수02-02]",
   "familyTrackId": "pattern.repeat-unit.construct-v1",
   "scopeId": "W002-FAMILY_TRACK-repeat-rule",
-  "replanContractRevision": "W002-SOL-REPLAN-v5",
+  "replanContractRevision": "W002-SOL-REPLAN-v6",
   "status": "implemented-verified-pending-family-track",
   "decisionMode": "construct-rule",
   "runtimePredicateKind": "cognitive.rule-state-contract",
   "contractInvariants": [
-    "construct-rule is distinct from select-one and numeric construct",
-    "validRuleStatesPath contains at least two distinct ordered states",
-    "surplusPath contains at least one rejectable state",
-    "ruleState is one ordered valid state and valid/surplus states are composable from variant multiset",
-    "at least three unique variant roles provide enough ordered capacity for minimum valid plus surplus states",
+    "student-constructed is distinct from select-one and fixed-answer construct",
+    "constructionMode is student-constructed and answerMode is conditional-rubric",
+    "studentRuleState starts empty and is not replaced by a fixed current answer",
+    "stateConstruction permits any ordered distinct subset of the variant pool",
+    "validRuleStateExamples contains at least two distinct composable ordered states",
+    "surplusRuleStateExamples contains at least two distinct reachable states that violate the distinct-selection rule",
     "decisionConstraintId and ordered ruleSlotRoles bind every slot to exact fill-from-pool sources and targets",
     "rule slots are locked/non-movable and every variant role is unique, open, and movable",
-    "continuationRuleStatePath and explanationRuleStatePath equal ruleStatePath",
-    "distractors are bound to a predicate kind and misconception",
-    "student-action variant roles are open and answer states are not emitted, including visible text"
+    "application uses the same studentRuleState path and at least four visible unresolved continuation targets with open state-bound constraints",
+    "verificationRoles exactly cover the rule slots followed by continuation targets",
+    "studentInputRoles is empty; the core does not claim unsupported text input or response persistence, and split visible answer sequences are rejected",
+    "distractors are bound to the rule-state predicate and remain at least two distinct misconception records"
   ],
   "implementationFiles": {
-    "packages/contracts/src/catalog/cognitive-demand.ts": "24fd18da9b11ef5639fa2b122dfbedd33d16d8087ddcefbc76e5e0e8946e6e0a",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "390efd1712ebe6269374971a9a2da4d229bd5ffa72edfcbe0c869213d5fa233a",
-    "packages/validator/src/predicates/registry.ts": "7f67ada55e51ee5ffeb0847c45a0f3e0d0fe641142cfd2e71d3e33f503f78bff",
-    "packages/validator/src/validator.test.ts": "c0e5904fb586695592bd932a37ea6d5c247ab651dbcf6b71801f2c1ecdd78d9c",
-    "packages/templates/src/cognitive/registry.ts": "8aa8136d282db174e1fc37e54006d3f67c485f755d36f196592830c8e085d40b",
-    "packages/templates/src/cognitive/registry.test.ts": "4890f3ed35a691a40a0034c65e1af798b01ae1b9df52216fb3bb0d92a82c4d6d"
+    "packages/contracts/src/catalog/cognitive-demand.ts": "71d184a0ff0079295677debee2eac021cc6fcb6003db3f6142c3bbbc3fab235e",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "9dff1f508cb585caef5947dde5cb1a0376843c67b4b4ac1e17d6fd5a212f7fce",
+    "packages/validator/src/predicates/registry.ts": "b015505ae8d3ecc57f01b8a4e51e39ca5bf181ae716f0a908e20983910015b52",
+    "packages/validator/src/validator.test.ts": "65ffaaf33054844b15aee84aba439d923605cfbc0933b4ec15b17ec58678307f",
+    "packages/templates/src/cognitive/registry.ts": "6127bfc98d259fcf7f4469b0c2d6ad2aa88a4282d8368fdbb091813441452184",
+    "packages/templates/src/cognitive/registry.test.ts": "cc468215bb91f4b4474259e8817b85b4a1b6f5512040aabc3446f0a7aada5aa3",
+    "scripts/pedagogy/check-cognitive-demand.mjs": "ad8fe33848ecccbce33cc7dec31f385221155638002c200d965ad1ae43527d5a"
   },
   "verification": {
-    "focusedTests": "29/29",
-    "fullCheck": "80 files / 490 tests PASS",
+    "focusedTests": "36/36",
+    "fullCheck": "81 files / 501 tests PASS",
+    "typecheck": "PASS",
+    "cognitiveAudit": "PASS (21 released / 32 manifest / 33 registered)",
     "studentResponseLifecycle": "not claimed; FAMILY_TRACK/LIVE_EVIDENCE required"
   }
 }

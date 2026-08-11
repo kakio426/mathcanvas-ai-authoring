@@ -258,6 +258,37 @@ function containsVisibleOrderedRuleState(
   });
 }
 
+function containsVisibleOrderedRuleStateAcrossProperties(
+  properties: readonly Record<string, unknown>[],
+  state: readonly unknown[]
+): boolean {
+  const visible = properties
+    .flatMap((value) => {
+      const values: string[] = [];
+      const collect = (entry: unknown) => {
+        if (typeof entry === "string") {
+          values.push(entry);
+        } else if (Array.isArray(entry)) {
+          entry.forEach(collect);
+        } else if (entry && typeof entry === "object") {
+          Object.values(entry).forEach(collect);
+        }
+      };
+      collect(value);
+      return values;
+    })
+    .join(" ")
+    .normalize("NFKC");
+  let cursor = -1;
+  return state.every((entry) => {
+    const token = String(entry).normalize("NFKC");
+    const next = visible.indexOf(token, cursor + 1);
+    if (next < 0) return false;
+    cursor = next;
+    return true;
+  });
+}
+
 type NumericPair = readonly [number, number];
 
 function numericPairList(value: unknown): NumericPair[] | undefined {
@@ -3156,6 +3187,95 @@ const handlers: Record<string, Handler> = {
       "minimumSurplus"
     );
     const distractors = parameter(predicate, "distractors");
+    const constructionMode = parameter(
+      predicate,
+      "constructionMode"
+    );
+    const answerMode = parameter(predicate, "answerMode");
+    const studentInputRoles = parameter(
+      predicate,
+      "studentInputRoles"
+    );
+    const stateConstruction = parameter(
+      predicate,
+      "stateConstruction"
+    );
+    const application = parameter(predicate, "application");
+    const studentConstructed = constructionMode !== undefined;
+    const record = (
+      value: unknown
+    ): Record<string, unknown> | undefined =>
+      value && typeof value === "object" && !Array.isArray(value)
+        ? (value as Record<string, unknown>)
+        : undefined;
+    const stableStringList = (
+      value: unknown,
+      minimum: number
+    ): value is string[] =>
+      Array.isArray(value) &&
+      value.length >= minimum &&
+      value.every((entry) => typeof entry === "string") &&
+      new Set(value).size === value.length;
+    const construction = record(stateConstruction);
+    const applicationRecord = record(application);
+    const constructionMinimumDistinctValues =
+      typeof construction?.minimumDistinctValues === "number"
+        ? construction.minimumDistinctValues
+        : undefined;
+    const applicationContinuationTargetRolesValue =
+      applicationRecord?.continuationTargetRoles;
+    const applicationContinuationTargetRoles = Array.isArray(
+      applicationContinuationTargetRolesValue
+    )
+      ? applicationContinuationTargetRolesValue.filter(
+          (role): role is string => typeof role === "string"
+        )
+      : undefined;
+    const applicationContinuationTargetRolesValid =
+      stableStringList(
+        applicationContinuationTargetRolesValue,
+        4
+      );
+    const applicationMinimumTargetCount =
+      typeof applicationRecord?.minimumTargetCount === "number"
+        ? applicationRecord.minimumTargetCount
+        : undefined;
+    const constructionValid =
+      !studentConstructed ||
+      (constructionMode === "student-constructed" &&
+        answerMode === "conditional-rubric" &&
+        Array.isArray(studentInputRoles) &&
+        studentInputRoles.length === 0 &&
+        construction !== undefined &&
+        construction.kind ===
+          "ordered-distinct-subset-from-pool" &&
+        stableStringList(construction.sourceRoles, 3) &&
+        stableStringList(construction.slotRoles, 2) &&
+        construction.slotCount === construction.slotRoles.length &&
+        Number.isInteger(constructionMinimumDistinctValues) &&
+        constructionMinimumDistinctValues !== undefined &&
+        constructionMinimumDistinctValues >= 2 &&
+        typeof construction.slotCount === "number" &&
+        constructionMinimumDistinctValues <= construction.slotCount &&
+        construction.allowsAnyOrderedSelection === true &&
+        construction.initialState === "empty" &&
+        JSON.stringify(construction.sourceRoles) ===
+          JSON.stringify(variantRoles) &&
+        JSON.stringify(construction.slotRoles) ===
+          JSON.stringify(ruleSlotRoles) &&
+        applicationRecord !== undefined &&
+        applicationRecord.ruleStatePath === ruleStatePath &&
+        applicationContinuationTargetRolesValid &&
+        Number.isInteger(applicationRecord.period) &&
+        applicationRecord.period === ruleSlotRoles.length &&
+        Number.isInteger(applicationMinimumTargetCount) &&
+        applicationMinimumTargetCount !== undefined &&
+        applicationMinimumTargetCount >= 4 &&
+        applicationMinimumTargetCount <=
+          (applicationContinuationTargetRoles?.length ?? -1) &&
+        applicationRecord.requiresVisibleComparison === true &&
+        applicationRecord.evidenceMode ===
+          "student-state-dependent");
     if (
       mode !== "construct-rule" ||
       continuationRuleStatePath !== ruleStatePath ||
@@ -3169,9 +3289,21 @@ const handlers: Record<string, Handler> = {
       minimumValidStates < 2 ||
       typeof minimumSurplus !== "number" ||
       !Number.isInteger(minimumSurplus) ||
-      minimumSurplus < 1 ||
+      minimumSurplus < (studentConstructed ? 2 : 1) ||
+      (studentConstructed &&
+        (!constructionValid ||
+          !Array.isArray(studentInputRoles) ||
+          studentInputRoles.some(
+            (role) => typeof role !== "string"
+          ) ||
+          !applicationContinuationTargetRolesValid ||
+          JSON.stringify(verificationRoles) !==
+            JSON.stringify([
+              ...ruleSlotRoles,
+              ...(applicationContinuationTargetRoles ?? [])
+            ]))) ||
       !Array.isArray(distractors) ||
-      distractors.length < 1 ||
+      distractors.length < (studentConstructed ? 2 : 1) ||
       distractors.some(
         (entry) =>
           !entry ||
@@ -3210,6 +3342,7 @@ const handlers: Record<string, Handler> = {
       const currentRuleState = orderedRuleState(
         item.values[ruleStatePath]
       );
+      const initialStudentRuleState = item.values[ruleStatePath];
       const variantValues = variants
         .map((variant) => variant?.toolIntent.properties[variantProperty])
         .filter((value): value is unknown => value !== undefined);
@@ -3218,12 +3351,36 @@ const handlers: Record<string, Handler> = {
       );
       const distinctValidStates =
         validStateKeys && new Set(validStateKeys).size === validStateKeys.length;
-      const surplusIsRejectable = surplusRuleStates?.every(
-        (state) =>
-          !validRuleStates?.some((validState) =>
-            sameValue(validState, state)
-          )
+      const stateDistinctValueCount = (state: readonly unknown[]) =>
+        state.filter(
+          (value, index) =>
+            state.findIndex((candidate) =>
+              sameValue(candidate, value)
+            ) === index
+        ).length;
+      const studentStateIsAllowed = (state: readonly unknown[]) =>
+        state.length === ruleSlotRoles.length &&
+        stateDistinctValueCount(state) >=
+          (constructionMinimumDistinctValues ?? Number.POSITIVE_INFINITY) &&
+        canComposeRuleState(state, variantValues);
+      const surplusStateKeys = surplusRuleStates?.map((state) =>
+        JSON.stringify(state)
       );
+      const distinctSurplusStates =
+        surplusStateKeys &&
+        new Set(surplusStateKeys).size === surplusStateKeys.length;
+      const surplusIsRejectable = studentConstructed
+        ? surplusRuleStates?.every(
+            (state) =>
+              canComposeRuleState(state, variantValues) &&
+              !studentStateIsAllowed(state)
+          ) && distinctSurplusStates
+        : surplusRuleStates?.every(
+            (state) =>
+              !validRuleStates?.some((validState) =>
+                sameValue(validState, state)
+              )
+          );
       const slotEmissions = ruleSlotRoles.map((role) =>
         byRole(resolved, item.id, role)
       );
@@ -3281,26 +3438,142 @@ const handlers: Record<string, Handler> = {
         );
       }
 
-      const envelopeInvalid =
-        !currentRuleState ||
-        !validRuleStates ||
-        !distinctValidStates ||
-        validRuleStates.length < minimumValidStates ||
-        !surplusRuleStates ||
-        surplusRuleStates.length < minimumSurplus ||
-        !surplusIsRejectable ||
-        !validRuleStates.some((state) => sameValue(state, currentRuleState)) ||
-        ruleSlotRoles.length !== currentRuleState?.length ||
-        validRuleStates.some(
-          (state) =>
-            state.length !== ruleSlotRoles.length ||
-            !canComposeRuleState(state, variantValues)
-        ) ||
-        surplusRuleStates.some(
-          (state) =>
-            state.length !== ruleSlotRoles.length ||
-            !canComposeRuleState(state, variantValues)
+      const continuationTargetRoles = studentConstructed
+        ? applicationRecord?.continuationTargetRoles
+        : undefined;
+      const continuationTargets = Array.isArray(
+        continuationTargetRoles
+      )
+        ? continuationTargetRoles.map((role) =>
+            typeof role === "string"
+              ? byRole(resolved, item.id, role)
+              : undefined
+          )
+        : [];
+      const continuationConstraints = continuationTargets.map(
+        (target) =>
+          target &&
+          resolved.constraints.find(
+            (constraint) => constraint.targetId === target.id
+          )
+      );
+      const hasConcreteInitialState = (
+        target: ResolvedEmission | undefined
+      ) =>
+        target
+          ? Object.entries(target.toolIntent.properties).some(
+              ([key, value]) =>
+                /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
+                  key
+                ) &&
+                value !== undefined &&
+                value !== null &&
+                value !== ""
+            )
+          : true;
+      const hasStudentStateBoundContinuation =
+        studentConstructed &&
+        continuationTargets.length > 0 &&
+        continuationTargets.every(
+          (target, index) => {
+            const constraint = continuationConstraints[index];
+            return (
+              target !== undefined &&
+              target.locked &&
+              !target.movable &&
+              !hasConcreteInitialState(target) &&
+              constraint !== undefined &&
+              constraint.kind === "fill-from-pool" &&
+              constraint.requiresStudentAction &&
+              !constraint.satisfiedInitially &&
+              constraint.targetId === target.id &&
+              constraint.sourceIds.length === variantIds.length &&
+              new Set(constraint.sourceIds).size === variantIds.length &&
+              constraint.sourceIds.every((id) => sourceIdSet.has(id)) &&
+              constraint.parameters.ruleStatePath === ruleStatePath
+            );
+          }
         );
+      const continuationTargetsInvalid =
+        studentConstructed &&
+        (!Array.isArray(continuationTargetRoles) ||
+          continuationTargets.length !==
+            continuationTargetRoles.length ||
+          continuationTargets.some(
+            (target) =>
+              !target ||
+              target.toolIntent.toolKey === "common.text"
+          ) ||
+          !hasStudentStateBoundContinuation);
+      if (continuationTargetsInvalid) {
+        issue(
+          issues,
+          "cognitive-rule-state-application-missing",
+          "pedagogy",
+          `${item.id}에 학생 규칙을 눈에 보이는 다음 배열에 적용·대조할 대상이 없습니다.`
+        );
+      }
+
+      const hasEmptyInitialStudentState =
+        studentConstructed &&
+        Array.isArray(initialStudentRuleState) &&
+        initialStudentRuleState.length === 0;
+      const distinctVariantValues = variantValues.filter(
+        (value, index) =>
+          variantValues.findIndex((candidate) =>
+            sameValue(candidate, value)
+          ) === index
+      );
+      const validExamplesAreComposable = (states: unknown[][] | undefined) =>
+        states?.every(
+          (state) =>
+            state.length === ruleSlotRoles.length &&
+            stateDistinctValueCount(state) >=
+              (constructionMinimumDistinctValues as number) &&
+            canComposeRuleState(state, variantValues)
+        ) ?? false;
+      const surplusExamplesAreReachableRejectable = (
+        states: unknown[][] | undefined
+      ) =>
+        states?.every(
+          (state) =>
+            state.length === ruleSlotRoles.length &&
+            canComposeRuleState(state, variantValues) &&
+            stateDistinctValueCount(state) <
+              (constructionMinimumDistinctValues as number)
+        ) ?? false;
+
+      const envelopeInvalid = studentConstructed
+        ? !hasEmptyInitialStudentState ||
+          !validRuleStates ||
+          !distinctValidStates ||
+          validRuleStates.length < minimumValidStates ||
+          !surplusRuleStates ||
+          surplusRuleStates.length < minimumSurplus ||
+          !surplusIsRejectable ||
+          !validExamplesAreComposable(validRuleStates) ||
+          !surplusExamplesAreReachableRejectable(surplusRuleStates) ||
+          distinctVariantValues.length <
+            (construction?.minimumDistinctValues as number)
+        : !currentRuleState ||
+          !validRuleStates ||
+          !distinctValidStates ||
+          validRuleStates.length < minimumValidStates ||
+          !surplusRuleStates ||
+          surplusRuleStates.length < minimumSurplus ||
+          !surplusIsRejectable ||
+          !validRuleStates.some((state) => sameValue(state, currentRuleState)) ||
+          ruleSlotRoles.length !== currentRuleState?.length ||
+          validRuleStates.some(
+            (state) =>
+              state.length !== ruleSlotRoles.length ||
+              !canComposeRuleState(state, variantValues)
+          ) ||
+          surplusRuleStates.some(
+            (state) =>
+              state.length !== ruleSlotRoles.length ||
+              !canComposeRuleState(state, variantValues)
+          );
       if (envelopeInvalid) {
         issue(
           issues,
@@ -3322,7 +3595,20 @@ const handlers: Record<string, Handler> = {
               )
           )
         ) ?? true;
-      if (answerLeak) {
+      const continuationSequenceLeak =
+        studentConstructed &&
+        validRuleStates?.some((state) =>
+          containsVisibleOrderedRuleStateAcrossProperties(
+            continuationTargets
+              .filter(
+                (target): target is ResolvedEmission =>
+                  target !== undefined
+              )
+              .map((target) => target.toolIntent.properties),
+            state
+          )
+        );
+      if (answerLeak || continuationSequenceLeak) {
         issue(
           issues,
           "cognitive-rule-state-answer-visible",
