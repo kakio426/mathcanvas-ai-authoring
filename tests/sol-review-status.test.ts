@@ -10,6 +10,7 @@ const {
   nativeFamilyReviewStatus,
   replanTriggerForFlow,
   replanTriggerReview,
+  resolveFlowOperation,
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
   reviewImplementationFiles,
@@ -224,7 +225,7 @@ describe("Sol review candidate and scope gates", () => {
     ).toBe(blockedRevalidation);
   });
 
-  it("does not resurrect a consumed legacy blocker, but routes new scoped blockers", () => {
+  it("does not resurrect a consumed legacy blocker and rewinds scoped changes", () => {
     const legacyBlocked = review({
       reviewId: "W002-FAMILY_TRACK-SOL-A4",
       decision: "blocked"
@@ -256,7 +257,31 @@ describe("Sol review candidate and scope gates", () => {
         replanConsumed: true,
         scopedFamilyTrackReviews: [scopedChanges]
       })
-    ).toBe(scopedChanges);
+    ).toBe(null);
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: null,
+        replanApproved: true,
+        replanConsumed: true,
+        nextSubWorkOperation: "FAMILY_TRACK"
+      })
+    ).toBe("FAMILY_TRACK");
+
+    const scopedBlocked = { ...scopedChanges, decision: "blocked" };
+    const blockedTrigger = replanTriggerForFlow({
+      rawTrigger: legacyBlocked,
+      replanConsumed: true,
+      scopedFamilyTrackReviews: [scopedBlocked]
+    });
+    expect(blockedTrigger).toBe(scopedBlocked);
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: blockedTrigger,
+        replanApproved: true,
+        replanConsumed: true,
+        nextSubWorkOperation: "FAMILY_TRACK"
+      })
+    ).toBe("SOL_REPLAN");
   });
 
   it("routes a new family revalidation blocker after replan consumption", () => {
@@ -265,13 +290,46 @@ describe("Sol review candidate and scope gates", () => {
       operation: "FAMILY_REVALIDATION",
       decision: "blocked"
     });
+    const trigger = replanTriggerForFlow({
+      rawTrigger: review({ decision: "blocked" }),
+      replanConsumed: true,
+      latestFamilyRevalidationReview: revalidation
+    });
+    expect(trigger).toBe(revalidation);
     expect(
-      replanTriggerForFlow({
-        rawTrigger: review({ decision: "blocked" }),
+      resolveFlowOperation({
+        flowReplanTrigger: trigger,
+        replanApproved: true,
         replanConsumed: true,
-        latestFamilyRevalidationReview: revalidation
+        nextSubWorkOperation: "FAMILY_TRACK"
       })
-    ).toBe(revalidation);
+    ).toBe("SOL_REPLAN");
+  });
+
+  it("resolves the complete consumed and unconsumed operation transitions", () => {
+    const legacyTrigger = review({ decision: "blocked" });
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: legacyTrigger,
+        replanApproved: false,
+        replanConsumed: false
+      })
+    ).toBe("SOL_REPLAN");
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: legacyTrigger,
+        replanApproved: true,
+        replanConsumed: false
+      })
+    ).toBe("TARGET_SET");
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: null,
+        replanApproved: true,
+        replanConsumed: true,
+        nextSubWorkOperation: "AFFORDANCE_DISCOVERY"
+      })
+    ).toBe("AFFORDANCE_DISCOVERY");
   });
 
   it("fingerprints only the selected standard learning-map slice", () => {

@@ -155,10 +155,30 @@ export function replanTriggerForFlow({
     return latestFamilyRevalidationReview;
   }
   return (
-    scopedFamilyTrackReviews.find((review) =>
-      ["changes-requested", "blocked"].includes(review?.decision)
-    ) ?? null
+    scopedFamilyTrackReviews.find((review) => review?.decision === "blocked") ??
+    null
   );
+}
+
+/**
+ * Resolve the first operation in the cursor after the replan trigger has
+ * been classified. A consumed replan only blocks on a new hard blocker
+ * (scoped FAMILY_TRACK=blocked or a failing FAMILY_REVALIDATION); a scoped
+ * FAMILY_TRACK=changes-requested is handled by the normal implementation
+ * rewind path and must not create another SOL_REPLAN.
+ */
+export function resolveFlowOperation({
+  flowReplanTrigger,
+  replanApproved,
+  replanConsumed,
+  nextSubWorkOperation = null
+}) {
+  const blockedBySolReplan =
+    flowReplanTrigger !== null && (!replanApproved || replanConsumed);
+  if (blockedBySolReplan) return "SOL_REPLAN";
+  if (replanApproved && !replanConsumed) return "TARGET_SET";
+  if (replanConsumed && nextSubWorkOperation) return nextSubWorkOperation;
+  return null;
 }
 
 function defaultGit(args) {

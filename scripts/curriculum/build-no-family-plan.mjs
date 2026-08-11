@@ -8,6 +8,7 @@ import {
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
   replanTriggerForFlow,
+  resolveFlowOperation,
   validateOperationCursor,
   replanTriggerReview
 } from "./sol-review-status.mjs";
@@ -1162,16 +1163,20 @@ function buildReport() {
       latestFamilyRevalidationReview,
       scopedFamilyTrackReviews
     });
-    const revalidationNeedsReplan =
-      flowReplanTrigger?.operation === "FAMILY_REVALIDATION";
-    const blockedBySolReplan =
-      flowReplanTrigger !== null &&
-      (!replanApproved || (!revalidationNeedsReplan && replanConsumed));
+    const flowOperation = resolveFlowOperation({
+      flowReplanTrigger,
+      replanApproved,
+      replanConsumed,
+      nextSubWorkOperation: replanConsumed
+        ? nextSubWork?.nextOperation ?? null
+        : null
+    });
+    const blockedBySolReplan = flowOperation === "SOL_REPLAN";
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";
       operation = "SOL_REPLAN";
       reviewGate = null;
-    } else if (replanApproved && !replanConsumed) {
+    } else if (flowOperation === "TARGET_SET") {
       nextAction = "review-target-set-and-design-family";
       operation = "TARGET_SET";
     } else if (
@@ -1195,7 +1200,7 @@ function buildReport() {
       operation = "SOL_REVIEW";
       reviewGate = "FAMILY_REVALIDATION";
     } else if (replanConsumed && nextSubWork) {
-      operation = nextSubWork.nextOperation;
+      operation = flowOperation ?? nextSubWork.nextOperation;
       if (operation === "SOL_REVIEW") {
         reviewGate = "FAMILY_TRACK";
       }
