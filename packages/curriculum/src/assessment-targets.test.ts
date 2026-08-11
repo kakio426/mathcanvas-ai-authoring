@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { LEARNING_MAP_COMMIT } from "./data.js";
 import {
   CLASSIFICATION_ASSESSMENT_TARGET_IDS,
+  DATA_TABLE_ASSESSMENT_TARGET_IDS,
   assessmentTargetSets,
   assessmentTargets,
   findAssessmentTarget,
@@ -26,12 +27,26 @@ type LearningMapUsage = {
 };
 
 function learningMapUsage(): LearningMapUsage {
-  return JSON.parse(
+  const base = JSON.parse(
     readFileSync(
       resolve(process.cwd(), "fixtures/pedagogy/learning-map.used.json"),
       "utf8"
     )
   ) as LearningMapUsage;
+  const noFamily = JSON.parse(
+    readFileSync(
+      resolve(
+        process.cwd(),
+        "fixtures/pedagogy/no-family-learning-map.used.json"
+      ),
+      "utf8"
+    )
+  ) as LearningMapUsage;
+  return {
+    ...base,
+    topics: [...base.topics, ...noFamily.topics],
+    dependencies: [...base.dependencies, ...noFamily.dependencies]
+  };
 }
 
 describe("reviewed AssessmentTarget registry", () => {
@@ -111,5 +126,30 @@ describe("reviewed AssessmentTarget registry", () => {
         ).toBe(true);
       }
     }
+  });
+
+  it("[2수04-02] 표로 정리하기의 두 필수 목표를 완전 집합으로 고정한다", () => {
+    const standard = findOfficialElementaryStandard("[2수04-02]");
+    expect(standard?.officialGoal).toBe(
+      "자료를 분류하여 표로 나타내고, 자료를 표로 나타내면 편리한 점을 말할 수 있다."
+    );
+    const set = findAssessmentTargetSet("[2수04-02]");
+    const targets = assessmentTargets.filter(
+      (target) => target.standardCode === "[2수04-02]"
+    );
+    expect(set).toMatchObject({
+      completeness: "reviewed-complete",
+      targetIds: Object.values(DATA_TABLE_ASSESSMENT_TARGET_IDS)
+    });
+    expect(targets).toHaveLength(2);
+    expect(
+      targets.every(
+        (target) =>
+          target.required && target.reviewStatus === "reviewed" &&
+          target.learningMap.commit === LEARNING_MAP_COMMIT
+      )
+    ).toBe(true);
+    expect(targets[0]?.statement).toContain("표");
+    expect(targets[1]?.statement).toContain("편리한 점");
   });
 });

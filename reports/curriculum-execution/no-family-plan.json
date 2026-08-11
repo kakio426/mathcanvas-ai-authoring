@@ -8,8 +8,8 @@
     "expectedStandardCount": 97,
     "standardCodeSha256": "04a9f033a5968b1c5dc3a7886de28e3981c20b606fed4a0966a7728e069a66a3",
     "standardWorkOrderSha256": "5e7a7e97a7fa0899776e6a13f3bb62afae1babb1eb5ad03be20a96b9224b6c5d",
-    "currentMatchesBaseline": true,
-    "currentNoFamilyCount": 97,
+    "currentMatchesBaseline": false,
+    "currentNoFamilyCount": 96,
     "currentUnplannedNoFamilyCount": 0
   },
   "modelPolicy": {
@@ -320,9 +320,9 @@
     "expectedTargetCount": 236,
     "batchCount": 21,
     "actionClassCounts": {
-      "planned-no-family": 97,
+      "planned-no-family": 96,
       "offline-in-progress": 0,
-      "sol-review-required": 0,
+      "sol-review-required": 1,
       "live-evidence": 0,
       "complete": 0
     },
@@ -347,23 +347,17 @@
       "engineClassIds": [
         "R22"
       ],
-      "operation": "TARGET_SET",
-      "operationWorkItemId": "W001-TARGET_SET",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W001-SOL_REVIEW-TARGET_SET",
       "dependencyWorkItemIds": [
-        "W001-LEARNING_MAP_BINDING"
+        "W001-TARGET_SET"
       ],
       "allowedFiles": [
-        "packages/curriculum/src/assessment-targets/**",
-        "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
-        "reports/curriculum-coverage/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
       ],
-      "reviewGate": null,
+      "reviewGate": "TARGET_SET",
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -385,8 +379,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family",
+      "nextAction": "cover-unbound-reviewed-targets",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "pending",
         "familyTrack": "pending",
@@ -2585,23 +2579,17 @@
       "engineClassIds": [
         "R22"
       ],
-      "operation": "TARGET_SET",
-      "operationWorkItemId": "W001-TARGET_SET",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W001-SOL_REVIEW-TARGET_SET",
       "dependencyWorkItemIds": [
-        "W001-LEARNING_MAP_BINDING"
+        "W001-TARGET_SET"
       ],
       "allowedFiles": [
-        "packages/curriculum/src/assessment-targets/**",
-        "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
-        "reports/curriculum-coverage/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
       ],
-      "reviewGate": null,
+      "reviewGate": "TARGET_SET",
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -2623,8 +2611,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family",
+      "nextAction": "cover-unbound-reviewed-targets",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "pending",
         "familyTrack": "pending",

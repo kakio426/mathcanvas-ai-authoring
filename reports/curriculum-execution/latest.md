@@ -3,8 +3,8 @@
 - 실행 모드: **continuous-autonomous**
 - 공식 분모: **121개 성취기준**
 - 대표 격자: **1/12 pipeline-proven**
-- reviewed target set: **2/121**
-- 현재 검토된 target: **6개 · offline 5 · live 2**
+- reviewed target set: **3/121**
+- 현재 검토된 target: **8개 · offline 5 · live 2**
 - 전역 target coverage: **unavailable**
 - 남은 성취기준 작업 queue: **120개**
 
@@ -26,9 +26,9 @@
 | 0 | 공식 분모와 카탈로그 권위 | complete | 121/121 |
 | 1 | 공통 ProblemFamily 기반 | complete | 30 canonical / 21 released |
 | 2 | 학년군×영역 대표 격자 | in-progress | 1/12 pipeline-proven |
-| 3A | 121개 AssessmentTargetSet 완전 분해 | in-progress | 2/121 |
-| 3B | 필수 target family·offline 검증 | in-progress | 5/6 reviewed targets; global denominator incomplete |
-| 3C | 현재 해시 live create·저장·재열기 | in-progress | 2/6 reviewed targets; global denominator incomplete |
+| 3A | 121개 AssessmentTargetSet 완전 분해 | in-progress | 3/121 |
+| 3B | 필수 target family·offline 검증 | in-progress | 5/8 reviewed targets; global denominator incomplete |
+| 3C | 현재 해시 live create·저장·재열기 | in-progress | 2/8 reviewed targets; global denominator incomplete |
 | 4 | 전 범위 TeacherRequest·반영 표·실제 미리보기 | queued-after-phase-2 | 4/30 common-parameter families |
 | 5 | 문항 단위 수정·최종 제품 릴리스 | queued | not globally measured |
 
@@ -60,10 +60,10 @@
 | 작업 | 성취기준 수 |
 |---|---:|
 | 완료 | 1 |
-| 미지원 reviewed target family 추가 | 1 |
+| 미지원 reviewed target family 추가 | 2 |
 | target 완전 분해 → released family 결속 | 17 |
 | target 완전 분해 → offline family 검증·출시 | 5 |
-| target 완전 분해 → 새 family 설계 | 97 |
+| target 완전 분해 → 새 family 설계 | 96 |
 
 새 family 설계가 필요한 기준선은 `reports/curriculum-execution/no-family-plan.md`의 24 engine · 84 grade-band-safe track · W001~W097 계획을 사용한다.
 
@@ -84,7 +84,7 @@
 | 9 | 1 | [6수04-04] | 5-6 | 자료와 가능성 | target 완전 분해 → released family 결속 | probability.compare.bag-ratios-v1 |
 | 10 | 1 | [4수01-06] | 3-4 | 수와 연산 | target 완전 분해 → released family 결속 | number.division.partial-quotients.construction-v1, number.division.quotient-remainder.claim-evidence-v1 |
 | 11 | 1 | [6수03-02] | 5-6 | 도형과 측정 | target 완전 분해 → released family 결속 | geometry.symmetry.equal-distance.claim-evidence-v1 |
-| 12 | 2 | [2수04-02] | 1-2 | 자료와 가능성 | target 완전 분해 → 새 family 설계 | 새 family 필요 |
+| 12 | 2 | [2수04-02] | 1-2 | 자료와 가능성 | 미지원 reviewed target family 추가 | 새 family 필요 |
 | 13 | 2 | [2수02-02] | 1-2 | 변화와 관계 | target 완전 분해 → 새 family 설계 | 새 family 필요 |
 | 14 | 2 | [4수03-01] | 3-4 | 도형과 측정 | target 완전 분해 → 새 family 설계 | 새 family 필요 |
 | 15 | 2 | [6수01-01] | 5-6 | 수와 연산 | target 완전 분해 → offline family 검증·출시 | number.mixed-calculation.order.claim-evidence-v1 |

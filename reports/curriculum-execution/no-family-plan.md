@@ -6,8 +6,8 @@
 - 영역별 track: **수와 연산 28 · 변화와 관계 7 · 도형과 측정 41 · 자료와 가능성 8**
 - Sol expected AssessmentTarget outline: **236개 / 97 standards**
 - 실행 batch: **21개**
-- 현재 no-family: **97개**
-- 초기 집합 일치: **PASS**
+- 현재 no-family: **96개**
+- 초기 집합 일치: **진행으로 감소**
 - 누락된 현재 no-family: **0개**
 
 - 최종 concrete family 계획 범위: **92-110개**
@@ -33,7 +33,7 @@
 
 ## 지금 선택된 작업
 
-- offline: [2수04-02] · D01A · review-target-set-and-design-family
+- offline: [2수04-02] · D01A · cover-unbound-reviewed-targets
 - live evidence: 없음
 
 ## Sol 독립 검토 게이트
@@ -49,9 +49,9 @@
 
 | 상태 | 성취기준 수 |
 |---|---:|
-| planned-no-family | 97 |
+| planned-no-family | 96 |
 | offline-in-progress | 0 |
-| sol-review-required | 0 |
+| sol-review-required | 1 |
 | live-evidence | 0 |
 | complete | 0 |
 
@@ -205,7 +205,7 @@
 
 | work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| W001-TARGET_SET | TARGET_SET | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W001-SOL_REVIEW-TARGET_SET | SOL_REVIEW | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target pending / family pending | SOL_REVIEW |
 | W002-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | bff0cd112afd (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |

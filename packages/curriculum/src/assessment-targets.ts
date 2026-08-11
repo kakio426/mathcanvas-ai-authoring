@@ -14,19 +14,27 @@ import {
   repeatingPatternAssessmentTargetSet,
   repeatingPatternAssessmentTargets
 } from "./assessment-targets/repeating-pattern-2su02-01.js";
+import {
+  DATA_TABLE_ASSESSMENT_TARGET_IDS,
+  dataTableAssessmentTargetSet,
+  dataTableAssessmentTargets
+} from "./assessment-targets/data-table-2su04-02.js";
 
 export {
   CLASSIFICATION_ASSESSMENT_TARGET_IDS,
-  REPEATING_PATTERN_ASSESSMENT_TARGET_IDS
+  REPEATING_PATTERN_ASSESSMENT_TARGET_IDS,
+  DATA_TABLE_ASSESSMENT_TARGET_IDS
 };
 
 const rawTargets: readonly AssessmentTarget[] = [
   ...classificationAssessmentTargets,
-  ...repeatingPatternAssessmentTargets
+  ...repeatingPatternAssessmentTargets,
+  ...dataTableAssessmentTargets
 ];
 const rawSets: readonly AssessmentTargetSet[] = [
   classificationAssessmentTargetSet,
-  repeatingPatternAssessmentTargetSet
+  repeatingPatternAssessmentTargetSet,
+  dataTableAssessmentTargetSet
 ];
 
 function assertRegistryIntegrity(): void {
