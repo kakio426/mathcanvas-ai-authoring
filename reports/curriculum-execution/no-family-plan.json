@@ -2244,6 +2244,120 @@
           "완료 증거 정합성: ENGINE_CORE artifact의 six implementation-file SHA-256은 현재 코드와 6/6 일치하고 focused 29/29·full 80/490 증거가 기록되어 있다. W002 cursor는 AFFORDANCE_DISCOVERY만 완료한 채 ENGINE_CORE로 되감겨 있어 Sol 승인 기록만으로 core 완료나 FAMILY_TRACK 승격을 주장하지 않는다.",
           "범위 한계: 이 승인은 v5 governance와 공통 construct-rule core를 실행 가능한 상태로 결속할 뿐이다. 다음 ENGINE_CORE 실행에서 artifact currentness를 소비하고 cursor를 전진시켜야 하며, 세 concrete family의 generator·native layout·exact preview·StudentRuleStateEvidence/responseHash·save/reopen은 각각 별도 FAMILY_TRACK/LIVE_EVIDENCE 증거 없이는 승인되지 않는다."
         ]
+      },
+      {
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "blocked",
+        "attempt": 1,
+        "candidateCommit": "f195e3a56932c8c85bd0ccfa53fa8fd20b097503",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts",
+          "packages/templates/src/problem-families/registry.test.ts",
+          "reports/curriculum-coverage/latest.json",
+          "reports/curriculum-coverage/latest.md",
+          "reports/curriculum-execution/latest.json",
+          "reports/curriculum-execution/latest.md",
+          "reports/problem-family-registry/latest.json",
+          "reports/problem-family-registry/latest.md",
+          "scripts/pedagogy/check-cognitive-demand.mjs"
+        ],
+        "familyTrackId": "pattern.repeat-unit.construct-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "supersedesReviewId": null,
+        "checkedAt": "2026-08-11T19:59:12.000Z",
+        "evidenceRefs": [
+          "git:f195e3a56932c8c85bd0ccfa53fa8fd20b097503",
+          "git:d17c8654f07616f27219c69d38a6552886f05a67",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts#change.pattern.repeat-rule.construct-v1",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#CONTEXTS",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#problemPreviews",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#cognitiveManifest",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "scripts/pedagogy/check-cognitive-demand.mjs",
+          "command:git diff-tree --root --no-commit-id --name-only -r f195e3a (exact 11 files)",
+          "command:pnpm check at f195e3a lineage (81 files/493 tests; all technical gates PASS)",
+          "command:git diff --check d17c865..f195e3a"
+        ],
+        "findings": [
+          "BLOCKED SCOPE_VIOLATION: candidate f195e3a의 exact 11 changedFiles 중 scripts/pedagogy/check-cognitive-demand.mjs는 FAMILY_TRACK allowedFiles 밖이다. 공통 cognitive audit mode 확장은 family 구현에 섞어 승인할 수 없으며 별도 ENGINE_CORE 또는 SOL_REPLAN 권한이 필요하다.",
+          "교육적 차단: 각 item은 ruleState와 validRuleStates를 [A,B]/[B,A]로 미리 고정하고 teacher answer는 A→B 한 상태를 정답으로 제시한다. 다섯 source 중 다른 두 조각이나 다른 순서를 학생이 정해도 자신의 규칙으로 인정되는 조건부 rubric이 아니므로 ‘반복 단위의 성분과 순서를 스스로 정한다’는 target을 수행하지 못한다.",
+          "관찰 증거 차단: continuation-lane은 ‘같은 순서로 계속’이라는 잠긴 common.text 한 줄뿐이고 학생이 선언한 상태에 따라 채워지는 다음 배열 target이 없다. 따라서 선언한 반복 단위가 네 칸 이상의 후속 배열에 동일하게 적용되는 불변량을 화면에서 대조할 수 없다.",
+          "응답 계약 차단: 빈 explanation-box는 locked common.text이고 학생 입력·저장·responseHash 근거가 없는데 manifest와 지시문은 학생이 규칙과 까닭을 글로 남긴다고 주장한다. compile-time envelope가 실제 학생 response를 대신할 수 없다.",
+          "기술 QA의 build·validator·cognitive·visual·quality 통과는 확인했지만, 이는 고정된 compile-time ruleState의 자기 일관성만 증명한다. 실제 학생 정의 상태, 조건부 정답, 적용 배열, save/reopen 증거가 없으므로 FAMILY_TRACK 승인·coverage 승격·main push를 금지하고 SOL_REPLAN으로 보낸다."
+        ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A16",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 16,
+        "candidateCommit": "76cca3d5fb170a734b46482ab814e22e0c70f373",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "scripts/curriculum/build-no-family-plan.mjs",
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A15",
+        "checkedAt": "2026-08-11T19:59:12.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "259a40b690c6786981c800c744732b25c2cb559fce8906031f74439384ccee97",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v6",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:76cca3d5fb170a734b46482ab814e22e0c70f373",
+          "git:f18951e92b5139d7fe95eda03604101fd52ef26a",
+          "git:f195e3a56932c8c85bd0ccfa53fa8fd20b097503",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A15",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+          "W002_REPLAN.md",
+          "scripts/curriculum/no-family-plan.json#operationPolicy.allowedFilesByOperation.ENGINE_CORE",
+          "scripts/curriculum/no-family-plan.json#operationPolicy.postApprovalFilesByOperation.ENGINE_CORE",
+          "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract",
+          "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+          "tests/sol-review-status.test.ts#fails-closed-for-incomplete-student-constructed-rule-contracts",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "reports/curriculum-execution/no-family-plan.json#current.nextReplanWork",
+          "command:git diff-tree --root --no-commit-id --name-only -r 76cca3d (exact 3 files)",
+          "command:git diff --name-only f195e3a..76cca3d (cumulative 7 files)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts (18/18)",
+          "command:pnpm typecheck",
+          "command:pnpm curriculum:no-family-plan",
+          "command:pnpm check (81 files/494 tests; all technical gates PASS)",
+          "command:git diff --check f195e3a..76cca3d"
+        ],
+        "findings": [
+          "개선 확인: v6 문서와 C01 contract는 A3의 세 target·outline hash를 바꾸지 않고 repeat-rule cursor를 AFFORDANCE_DISCOVERY 완료 후 ENGINE_CORE로 되감는다. student-constructed, conditional-rubric, empty ordered-distinct subset, 네 continuation target, studentInputRoles=[] 경계와 f195 scoped blocker ID 결속 방향은 타당하다.",
+          "개선 확인: assertEngineCoreContract는 minimumDistinctValues<=slotCount, continuationTargetRoles.length>=minimumTargetCount, period=ruleSlotRoles.length, verificationRoles=rule slots+continuation targets의 exact ordered union을 fail-closed로 검증하며 네 negative fixture가 각각 실패를 고정한다. focused 18/18, typecheck, no-family와 전체 check가 통과했다.",
+          "P0 실행 권한 불일치: 현재 candidate tree의 ENGINE_CORE allowedFiles에는 scripts/pedagogy/check-cognitive-demand.mjs가 없고 postApprovalFiles에만 있다. f195의 SCOPE_VIOLATION을 다음 ENGINE_CORE에서 분리해 고치려 해도 candidate 단계에서 같은 audit script 변경이 다시 차단된다. allowedFiles와 postApprovalFiles 양쪽에 exact path를 대칭 추가해야 한다.",
+          "P0 candidate 원자성: 76cca3d의 direct exact changedFiles는 W002_REPLAN.md, build-no-family-plan.mjs, sol-review-status.test.ts 세 개뿐이다. revision v6, operation manifest, subwork cursor와 generated reports를 바꾼 미검토 parent f18951e의 여섯 파일은 이 review record의 changedFiles/currentness 결속 밖에 남는다. f195e3a 또는 승인된 reviewer base 위에서 v6 누적 7-file 변경을 하나의 atomic replacement/squash candidate로 제출해야 한다.",
+          "P1 권위 문서: SCOPE_VIOLATION blocked-review 예외는 모든 standard의 board parser에 적용되는 전역 정책인데 W002_REPLAN.md에만 적혀 있다. SOL_REVIEW_PROMPT.md에 승인 불가·post-approval 불가·exact disallowed files 명시 의무를 같은 용어로 고정하고, 새 atomic 후보의 allowedFiles에 포함해야 한다.",
+          "판정: 새 scoped blocker는 감사 가능한 선행 증거로 기록됐고 이 A16 record는 supersedesBlockedReviewId로 정확히 참조한다. 그러나 위 P0 두 건이 닫히기 전에는 replanApproved/replanConsumed, ENGINE_CORE 재실행, FAMILY_TRACK 재진입 또는 main push를 승인할 수 없다."
+        ]
       }
     ]
   },
@@ -2403,10 +2517,10 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 32,
+      "totalRecords": 34,
       "approved": 14,
-      "changesRequested": 17,
-      "blocked": 1,
+      "changesRequested": 18,
+      "blocked": 2,
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
@@ -2690,8 +2804,8 @@
           "completedOperations": [
             "AFFORDANCE_DISCOVERY"
           ],
-          "reviewStatus": "pending",
-          "reviewId": null,
+          "reviewStatus": "blocked",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
           "retryingFamilyTrack": false
         },
         {
@@ -2823,9 +2937,11 @@
         "targetSet": "approved",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
-        "familyTrackReviewIds": [],
-        "replan": "approved",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "familyTrackReviewIds": [
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A1"
+        ],
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
@@ -5638,8 +5754,8 @@
           "completedOperations": [
             "AFFORDANCE_DISCOVERY"
           ],
-          "reviewStatus": "pending",
-          "reviewId": null,
+          "reviewStatus": "blocked",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
           "retryingFamilyTrack": false
         },
         {
@@ -5771,9 +5887,11 @@
         "targetSet": "approved",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
-        "familyTrackReviewIds": [],
-        "replan": "approved",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "familyTrackReviewIds": [
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A1"
+        ],
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
