@@ -988,6 +988,63 @@
         "교육 범위는 변하지 않는다. 공식 [2수04-02]의 원자료→범주별 완전 매핑·전체 합 불변량과 표의 개수·차이에 근거한 편리함 설명, 오개념 대안, 수정 경로, pinned learning-map 결속은 기존 A3 hash를 유지한다. 이번 승인은 offline orchestration만 다루며 fresh canary·조작·save/reopen·live release를 주장하지 않는다.",
         "독립 QA는 focused 12/12, typecheck, no-family 97 standards/24 engines/84 tracks, curriculum program, 전체 pnpm check 474 tests·build·native/contract/cognitive·visual/quality P0/P1 0, candidate diff-check를 통과했다."
       ]
+    },
+    {
+      "reviewId": "W001-FAMILY_REVALIDATION-SOL-A2",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "FAMILY_REVALIDATION",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 2,
+      "candidateCommit": "0ec947b4cc3f37128539fad73eccd5271008a032",
+      "changedFiles": [
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "familyTrackId": "data.early-table.organize-v1",
+      "scopeId": "W001-FAMILY_TRACK-data-table-organize",
+      "artifactPath": "reports/curriculum-execution/family-revalidation/W001.json",
+      "fingerprintSha256": "1c5b4d9ae82b64b3507db0a7f76ac6f0ea825bd57523240b25ebc90524cc5f10",
+      "supersedesReviewId": "W001-FAMILY_REVALIDATION-SOL-A1",
+      "supersedesFamilyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
+      "checkedAt": "2026-08-11T16:45:08.000Z",
+      "evidenceRefs": [
+        "git:0ec947b4cc3f37128539fad73eccd5271008a032",
+        "git:e96d1c40cac4d5f640ee067b7dee575a944f1789",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_REVALIDATION-SOL-A1",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_TRACK-SOL-A3",
+        "scripts/curriculum/sol-review-board.json#W001-SOL_REPLAN-SOL-A2",
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "W001_REPLAN.md#변경-불변량-6",
+        "scripts/curriculum/no-family-plan.json#FAMILY_REVALIDATION",
+        "scripts/curriculum/build-coverage-report.mjs#lifecycleStage",
+        "scripts/curriculum/verify-sol-review-gate.mjs#postApprovalPatterns",
+        "scripts/curriculum/revalidation-semantic-slice.mjs#buildSemanticSlice",
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "packages/validator/src/native/registry.ts#dataTableHandler",
+        "fixtures/pedagogy/learning-map.used.json#[2수04-02]",
+        "reports/problem-family-registry/latest.json#data.early-table.organize-v1",
+        "command:independent artifact fingerprint/implementation/semantic-slice recomputation",
+        "command:pnpm curriculum:family-revalidation -- --work-item W001",
+        "command:pnpm exec vitest run data-table-organize.test.ts assessment-targets.test.ts sol-review-status.test.ts (20/20)",
+        "command:pnpm cognitive:verify",
+        "command:pnpm problem-family:verify",
+        "command:pnpm curriculum:no-family-plan",
+        "command:git diff --check e96d1c4..0ec947b"
+      ],
+      "findings": [
+        "artifact 자체는 통과했다. candidate 0ec947b는 exact 3-file FAMILY_REVALIDATION commit이고 후보 이후 구현 변경이 없다. payload 독립 SHA-256은 1c5b4d9ae82b64b3507db0a7f76ac6f0ea825bd57523240b25ebc90524cc5f10과 일치하며 W001/[2수04-02], family/scope, W001-SOL-REPLAN-v2 revision, implementationFiles 2/2, semanticSlices 4/4의 현재 hash와 저장 value가 모두 일치한다.",
+        "교육 증거도 유지된다. 학생은 원자료를 범주명·개수의 완전한 표 매핑에 대응하고 세 개수 합=전체 수를 확인한 뒤, 범주별 개수·차이를 근거로 표의 편리함을 고른다. 전체 수를 한 범주 수로 쓰기와 표를 장식으로만 보기라는 오개념 대안, 선택 수정 경로, 공식 [2수04-02] 및 pinned concept→representation→application 결속은 A3 hash와 동일하다.",
+        "P0 수정 요청: FAMILY_REVALIDATION 승인으로 problem-family registry의 W001 lifecycle이 generatable에서 offline-validated로 바뀌면 build-coverage-report가 stage·reviewed target coverage를 다시 계산하므로 reports/curriculum-coverage/latest.json과 latest.md가 실제로 함께 변경된다. 그러나 FAMILY_REVALIDATION allowedFilesByOperation과 postApprovalFilesByOperation에는 registry·execution·no-family만 있고 curriculum-coverage 두 파일이 누락되어 있다.",
+        "현재 verify-sol-review-gate는 operation manifest 뒤에 무조건 reports/**를 덧붙여 coverage 누락을 통과시킨다. 이는 plan의 allowedPostApprovalFilesAreManifestBound=true, no silent scope changes, W001_REPLAN v2의 registry/coverage 동시 갱신 불변량과 모순이다. 전역 reports/** fallback으로 숨기지 말고 FAMILY_REVALIDATION manifest에 reports/curriculum-coverage/latest.json과 latest.md를 명시하고, 승인 후 registry→coverage→execution→no-family 전체 파생 체인이 `pnpm check`에서 current임을 회귀로 고정해야 한다.",
+        "이 결함은 artifact JSON만 고쳐 해결할 수 없고 operation/gate manifest 변경이 필요하므로, 같은 FAMILY_REVALIDATION artifact A3를 반복하기 전에 새 SOL_REPLAN revision으로 승격해야 한다. 기존 v2 artifact는 교육·semantic 증거로 재사용 가능한 입력이지만 새 revision 소비 여부는 재계획 계약이 결정해야 한다.",
+        "독립 QA는 artifact verify, focused 20/20, cognitive-demand, problem-family registry, no-family 97 standards/24 engines/84 tracks, candidate diff-check를 통과했다. 구현 현재성은 녹색이지만 승인 후 파생 보고서 소유권 계약이 닫히지 않아 changes-requested로 판정한다."
+      ]
     }
   ]
 }
