@@ -646,7 +646,10 @@ describe("생성 전 검증", () => {
     const distractors = predicate.parameters.distractors as Array<
       Record<string, unknown>
     >;
-    distractors[1] = { ...distractors[0] };
+    distractors[1] = {
+      role: "rule-slot-1",
+      misconception: distractors[0]!.misconception
+    };
     expect(() => validateRegisteredPredicates(resolved, [])).toThrow(
       "predicate-parameter-invalid:cognitive.rule-state-contract"
     );
@@ -699,6 +702,59 @@ describe("생성 전 검증", () => {
           kind: "text",
           toolKey: "common.text",
           properties: { text: "blue" }
+        }
+      } as never
+    );
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-answer-visible"
+    );
+  });
+
+  it("student-constructed construct-rule은 native 숫자 속성으로 분할한 정답도 거부한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    resolved.items[0]!.values.validRuleStateExamples = [
+      [2, 3],
+      [3, 2]
+    ];
+    resolved.items[0]!.values.surplusRuleStateExamples = [
+      [2, 2],
+      [3, 3]
+    ];
+    resolved.emissions
+      .filter((emission) => emission.role.startsWith("rule-variant-"))
+      .forEach((emission, index) => {
+        emission.toolIntent.properties.orderedValues =
+          index < 3 ? 2 : index < 6 ? 3 : 4;
+      });
+    resolved.emissions.push(
+      {
+        id: "item-1-locked-native-hint-2",
+        role: "locked-native-hint-2",
+        itemId: "item-1",
+        bounds: { x: 0, y: 0, width: 40, height: 40 },
+        locked: true,
+        movable: false,
+        instructionalIntent: "검증용 잠긴 native 안내",
+        toolIntent: {
+          kind: "pattern-block",
+          toolKey: "SM02PB",
+          properties: { variant: 2 }
+        }
+      },
+      {
+        id: "item-1-locked-native-hint-3",
+        role: "locked-native-hint-3",
+        itemId: "item-1",
+        bounds: { x: 0, y: 0, width: 40, height: 40 },
+        locked: true,
+        movable: false,
+        instructionalIntent: "검증용 잠긴 native 안내",
+        toolIntent: {
+          kind: "pattern-block",
+          toolKey: "SM02PB",
+          properties: { variant: 3 }
         }
       } as never
     );

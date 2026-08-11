@@ -216,13 +216,7 @@ export const cognitiveDemandManifestSchema = z
     const application = decision.application;
     const distinctDistractorKeys = new Set(
       decision.distractors.map((distractor) =>
-        JSON.stringify({
-          role: distractor.role ?? null,
-          predicateKind: distractor.predicateKind ?? null,
-          misconception: distractor.misconception
-            .normalize("NFKC")
-            .trim()
-        })
+        distractor.misconception.normalize("NFKC").trim()
       )
     );
     if (

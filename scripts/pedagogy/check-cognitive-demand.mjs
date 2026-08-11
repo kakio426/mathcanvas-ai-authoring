@@ -188,8 +188,8 @@ const containsVisibleOrderedRuleStateAcrossProperties = (
 ) => {
   const values = [];
   const collect = (value) => {
-    if (typeof value === "string") {
-      values.push(value);
+    if (typeof value === "string" || typeof value === "number") {
+      values.push(String(value));
     } else if (Array.isArray(value)) {
       value.forEach(collect);
     } else if (value && typeof value === "object") {
@@ -580,13 +580,7 @@ for (const manifest of manifests) {
       const application = decision.application;
       const distinctDistractorCount = new Set(
         decision.distractors.map((distractor) =>
-          JSON.stringify({
-            role: distractor.role ?? null,
-            predicateKind: distractor.predicateKind ?? null,
-            misconception: distractor.misconception
-              .normalize("NFKC")
-              .trim()
-          })
+          distractor.misconception.normalize("NFKC").trim()
         )
       ).size;
       const expectedVerificationRoles = [

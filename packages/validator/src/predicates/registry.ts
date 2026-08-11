@@ -266,8 +266,8 @@ function containsVisibleOrderedRuleStateAcrossProperties(
     .flatMap((value) => {
       const values: string[] = [];
       const collect = (entry: unknown) => {
-        if (typeof entry === "string") {
-          values.push(entry);
+        if (typeof entry === "string" || typeof entry === "number") {
+          values.push(String(entry));
         } else if (Array.isArray(entry)) {
           entry.forEach(collect);
         } else if (entry && typeof entry === "object") {
@@ -3237,14 +3237,9 @@ const handlers: Record<string, Handler> = {
       : [];
     const distractorIdentity = (entry: unknown): string => {
       const value = record(entry);
-      return JSON.stringify({
-        role: value?.role ?? null,
-        predicateKind: value?.predicateKind ?? null,
-        misconception:
-          typeof value?.misconception === "string"
-            ? value.misconception.normalize("NFKC").trim()
-            : null
-      });
+      return typeof value?.misconception === "string"
+        ? value.misconception.normalize("NFKC").trim()
+        : "";
     };
     const distinctDistractorCount = new Set(
       distractorEntries.map(distractorIdentity)
