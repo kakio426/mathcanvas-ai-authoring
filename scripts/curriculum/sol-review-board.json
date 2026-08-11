@@ -2273,6 +2273,67 @@
         "필수 최소 수정: projection test가 pre-approval nextReplanWork와 post-approval nextOfflineWork 중 현재 W002 projection을 찾고 동일 v7 engineCoreContract를 검증하도록 고친다. post-approval이면 operation=ENGINE_CORE, operationWorkItemId=W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE, nextFamilySubWork.nextOperation=ENGINE_CORE, replanApproved=true, replanConsumed=true, nextReplanWork=null을 명시적으로 검증해야 한다.",
         "판정: 용량 P0와 provenance P1은 해소됐고 candidate 사전 QA는 focused 18/18, typecheck, no-family plan, reported full check 81/494를 통과했다. 그러나 승인 후 생성될 실제 repository state에서 focused test가 실패하므로 v7 승인·ENGINE_CORE cursor 전진·main push를 허용할 수 없다. board는 changes-requested로 남기고 파생 report는 W002 blocked-needs-sol-replan/next offline W003 상태로 복구한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A20",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 20,
+      "candidateCommit": "06a92b20eaf52193741a9533374190c64751841d",
+      "changedFiles": [
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A19",
+      "checkedAt": "2026-08-11T21:10:15.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "afd84a0d9e93f7df3d76ff950025daadd18d677b7b768e29895f4415f9f5c869",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v7",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:06a92b20eaf52193741a9533374190c64751841d",
+        "git:4ccc1aa85e165649e4bc39d9afbdc76de74b6dcf",
+        "git:890169476018eeac1cf853047529e7cf7cb3380f",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A19",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A18",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "W002_REPLAN.md#v7-ENGINE_CORE-범위",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "command:git diff-tree --root --no-commit-id --name-only -r 06a92b2 (exact 1 file)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts before approval (18/18; W002 SOL_REPLAN projection)",
+        "command:review approval + build-no-family-plan --write + focused test (18/18; W002 ENGINE_CORE projection)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W002 ENGINE_CORE; replan none)",
+        "command:pnpm check (81 files/494 tests; candidate full gates PASS)",
+        "command:git diff --check 4ccc1aa..06a92b2"
+      ],
+      "findings": [
+        "승인: candidate 06a92b2는 A19 reviewer commit 4ccc1aa 위 direct exact 1-file SOL_REPLAN 수정 후보이고 tests/sol-review-status.test.ts는 SOL_REPLAN allowedFiles 안에 있다. 후보 이후 구현 변경은 없고 v7 권위 계약·문서·target source·scope·subwork state는 그대로 유지된다.",
+        "A19 post-approval P0 해소: projection test는 W002가 nextReplanWork에 있으면 SOL_REPLAN·revision v7·replanApproved/replanConsumed=false를 검증하고, 승인 소비 후 nextOfflineWork에 있으면 ENGINE_CORE·exact operationWorkItemId·nextFamilySubWork cursor·approved/consumed=true·nextReplanWork=null을 검증한다. 같은 engineCoreContract projection은 두 분기 모두에서 먼저 exact equality로 확인된다.",
+        "실제 양방향 검증: candidate의 승인 전 report에서 focused 18/18이 통과했고, 이 A20 approved record를 적용해 파생 report를 갱신한 뒤에도 focused 18/18이 통과했다. 후자의 report는 nextOfflineWork=W002, operation=ENGINE_CORE, operationWorkItemId=W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE, nextReplanWork=null을 정확히 산출한다.",
+        "A18 용량 계약 유지: 4 continuation/period 2/3 copies의 simultaneous move-once capacity와 actual count equality·period divisibility·1+count/period copy 하한은 builder에 남아 있다. 6-target/3-copy와 5-target 비주기 반례는 거부되고 e1 in-scope changes-requested와 f195 SCOPE_VIOLATION provenance도 분리된 채 유지된다.",
+        "승인 경계: 이 승인은 v7 재계획과 다음 ENGINE_CORE work item 생성만 허용한다. family generator, StudentRuleStateEvidence/responseHash, conditional answer, visible continuation application, save/reopen, exact preview 또는 current-hash canary는 별도 ENGINE_CORE/FAMILY_TRACK/LIVE_EVIDENCE 검증 없이는 승인하지 않는다.",
+        "QA: focused pre/post approval 18/18, no-family plan, candidate exact diff가 통과했고 full pnpm check 81 files/494 tests 및 모든 audit gate PASS가 보고됐다. reviewer 파생 report는 replanApproved/replanConsumed=true로 전이하고 W002를 숨기지 않은 채 다음 단일 작업을 ENGINE_CORE로 제한한다."
+      ]
     }
   ]
 }
