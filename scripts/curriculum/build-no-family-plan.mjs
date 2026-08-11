@@ -11,6 +11,11 @@ const targetOutlinePath = resolve(
   root,
   "scripts/curriculum/no-family-target-outlines.sol-draft.json"
 );
+const learningMapPath = resolve(root, "fixtures/pedagogy/learning-map.used.json");
+const solReviewBoardPath = resolve(
+  root,
+  "scripts/curriculum/sol-review-board.json"
+);
 const jsonPath = resolve(
   root,
   "reports/curriculum-execution/no-family-plan.json"
@@ -43,6 +48,80 @@ function codeOrderHash(codes) {
   return createHash("sha256").update(codes.join("\n")).digest("hex");
 }
 
+function reviewKey(standardCode, operation) {
+  return `${standardCode}:${operation}`;
+}
+
+function jsonHash(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+function hasLearningMapBinding(learningMap, standardCode) {
+  const prefix = `${standardCode} `;
+  const topics = learningMap.topics.filter((topic) =>
+    typeof topic.titleKorean === "string" && topic.titleKorean.startsWith(prefix)
+  );
+  const bySuffix = new Map(
+    topics.map((topic) => [topic.id.split(".").at(-1), topic.id])
+  );
+  if (
+    !["concept", "representation", "application"].every((suffix) =>
+      bySuffix.has(suffix)
+    )
+  ) {
+    return false;
+  }
+  const dependencyPairs = new Set(
+    learningMap.dependencies
+      .filter((dependency) => dependency.strength === "hard")
+      .map((dependency) => `${dependency.topicId}<-${dependency.prerequisiteId}`)
+  );
+  return (
+    dependencyPairs.has(
+      `${bySuffix.get("representation")}<-${bySuffix.get("concept")}`
+    ) &&
+    dependencyPairs.has(
+      `${bySuffix.get("application")}<-${bySuffix.get("representation")}`
+    )
+  );
+}
+
+function operationWorkItemId(baseWorkItemId, operation, reviewGate) {
+  return operation === "SOL_REVIEW"
+    ? `${baseWorkItemId}-SOL_REVIEW-${reviewGate}`
+    : `${baseWorkItemId}-${operation}`;
+}
+
+function operationDependencies(baseWorkItemId, operation, reviewGate) {
+  const map = `${baseWorkItemId}-LEARNING_MAP_BINDING`;
+  const target = `${baseWorkItemId}-TARGET_SET`;
+  const targetReview = `${baseWorkItemId}-SOL_REVIEW-TARGET_SET`;
+  const family = `${baseWorkItemId}-FAMILY_TRACK`;
+  if (operation === "LEARNING_MAP_BINDING") return [];
+  if (operation === "TARGET_SET") return [map];
+  if (operation === "SOL_REVIEW" && reviewGate === "TARGET_SET") {
+    return [target];
+  }
+  if (operation === "FAMILY_TRACK") return [map, target, targetReview];
+  if (operation === "SOL_REVIEW" && reviewGate === "FAMILY_TRACK") {
+    return [family];
+  }
+  return [];
+}
+
+function fileMatches(pattern, file) {
+  if (pattern === file) return true;
+  if (pattern.endsWith("/**")) return file.startsWith(pattern.slice(0, -2));
+  if (!pattern.includes("*")) return false;
+  const expression = new RegExp(
+    `^${pattern
+      .split("*")
+      .map((part) => part.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&"))
+      .join(".*")}$`
+  );
+  return expression.test(file);
+}
+
 function actionClass(nextAction) {
   if (nextAction === "complete") return "complete";
   if (nextAction === "capture-current-hash-live-evidence") {
@@ -59,6 +138,8 @@ function buildReport() {
   const coverage = readJson(coveragePath);
   const execution = readJson(executionPath);
   const targetOutlines = readJson(targetOutlinePath);
+  const learningMap = readJson(learningMapPath);
+  const solReviewBoard = readJson(solReviewBoardPath);
 
   assert(source.schemaVersion === "1.0.0", "no-family-plan-schema");
   assert(
@@ -74,9 +155,45 @@ function buildReport() {
     "no-family-plan-review-policy"
   );
   assert(
+    source.solReview?.boardPath ===
+      "scripts/curriculum/sol-review-board.json" &&
+      source.solReview.reviewerModel === "gpt-5.6-sol / max" &&
+      source.solReview.requiredAfter.includes("TARGET_SET") &&
+      source.solReview.requiredAfter.includes("FAMILY_TRACK") &&
+      source.solReview.transactionPolicy?.candidateOwner === "Luna" &&
+      source.solReview.transactionPolicy?.reviewOwner === "Sol" &&
+      source.solReview.transactionPolicy?.derivedReportCommitOwner === "Sol" &&
+      source.solReview.transactionPolicy?.reviewerPushes === false &&
+      source.solReview.transactionPolicy?.allowedPostApprovalFilesAreManifestBound ===
+        true,
+    "no-family-plan-sol-review-policy"
+  );
+  assert(
+    solReviewBoard.schemaVersion === "1.0.0" &&
+      solReviewBoard.boardId ===
+        "kr-2022-elementary-math-no-family-sol-review-board" &&
+      solReviewBoard.reviewer?.model === "gpt-5.6-sol / max" &&
+      solReviewBoard.policy?.oneStandardPerReview === true &&
+      solReviewBoard.policy?.reviewerMayEditImplementation === false &&
+      solReviewBoard.policy?.approvalBindsToCandidateCommit === true &&
+      solReviewBoard.policy?.latestAttemptWins === true &&
+      solReviewBoard.policy?.pushRequiresApprovedCandidate === true &&
+      solReviewBoard.policy?.reviewerOwnsBoardAndDerivedReportCommit === true &&
+      solReviewBoard.policy?.reviewerMustNotPush === true &&
+      solReviewBoard.policy?.postApprovalFilesMustBeManifestBound === true &&
+      Array.isArray(solReviewBoard.reviews),
+    "no-family-plan-sol-review-board-schema"
+  );
+  assert(
     targetOutlines.schemaVersion === "1.0.0" &&
       targetOutlines.status === "sol-max-planning-draft",
     "no-family-plan-target-outline-schema"
+  );
+  assert(
+    learningMap.schemaVersion === "1.0.0" &&
+      Array.isArray(learningMap.topics) &&
+      Array.isArray(learningMap.dependencies),
+    "no-family-plan-learning-map-schema"
   );
 
   const officialByCode = new Map(
@@ -148,6 +265,105 @@ function buildReport() {
         source.baseline.standardWorkOrderSha256,
     "no-family-plan-work-order"
   );
+  const workItemIdByCode = new Map(
+    source.standardWorkOrder.map((code, index) => [
+      code,
+      `W${String(index + 1).padStart(3, "0")}`
+    ])
+  );
+  assert(
+    source.operationPolicy?.firstOperation === "LEARNING_MAP_BINDING" &&
+      Array.isArray(source.operationPolicy.order) &&
+      source.operationPolicy.order[0] === "LEARNING_MAP_BINDING" &&
+      source.operationPolicy.order.includes("SOL_REVIEW") &&
+      Object.values(source.operationPolicy.allowedFilesByOperation).every(
+        (files) => Array.isArray(files) && files.length > 0
+      ) &&
+      Object.values(source.operationPolicy.postApprovalFilesByOperation ?? {}).every(
+        (files) => Array.isArray(files) && files.length > 0
+      ),
+    "no-family-plan-operation-manifest-policy"
+  );
+  const allowedSolDecisions = new Set(source.solReview.decisionValues);
+  const solReviewByKey = new Map();
+  const solReviewHistoryByKey = new Map();
+  const solReviewIds = new Set();
+  for (const review of solReviewBoard.reviews ?? []) {
+    assert(
+      source.solReview.artifactRequiredFields.every((field) =>
+        Object.prototype.hasOwnProperty.call(review, field)
+      ),
+      `no-family-plan-sol-review-field:${review.reviewId ?? "unknown"}`
+    );
+    assert(
+      plannedCodes.includes(review.standardCode),
+      `no-family-plan-sol-review-code:${review.standardCode}`
+    );
+    assert(
+      source.solReview.requiredAfter.includes(review.operation),
+      `no-family-plan-sol-review-operation:${review.operation}`
+    );
+    assert(
+      review.workItemId === workItemIdByCode.get(review.standardCode),
+      `no-family-plan-sol-review-work-item:${review.standardCode}`
+    );
+    assert(
+      typeof review.reviewId === "string" && review.reviewId.trim().length > 0 &&
+        review.reviewer === source.solReview.reviewerModel &&
+        allowedSolDecisions.has(review.decision) &&
+        Number.isInteger(review.attempt) &&
+        review.attempt >= 1 &&
+        /^[a-f0-9]{40}$/.test(review.candidateCommit) &&
+        Array.isArray(review.changedFiles) &&
+        review.changedFiles.length > 0 &&
+        new Set(review.changedFiles).size === review.changedFiles.length &&
+        review.changedFiles.every(
+          (file) => typeof file === "string" && file.trim().length > 0
+        ) &&
+        (review.supersedesReviewId === null ||
+          (typeof review.supersedesReviewId === "string" &&
+            review.supersedesReviewId.trim().length > 0)) &&
+        typeof review.checkedAt === "string" &&
+        Number.isFinite(Date.parse(review.checkedAt)) &&
+        Array.isArray(review.evidenceRefs) &&
+        review.evidenceRefs.length > 0 &&
+        review.evidenceRefs.every(
+          (evidence) => typeof evidence === "string" && evidence.trim().length > 0
+        ) &&
+        Array.isArray(review.findings) &&
+        review.findings.length > 0 &&
+        review.findings.every(
+          (finding) => typeof finding === "string" && finding.trim().length > 0
+        ),
+      `no-family-plan-sol-review-record:${review.reviewId}`
+    );
+    assert(
+      !solReviewIds.has(review.reviewId),
+      `no-family-plan-sol-review-id-duplicate:${review.reviewId}`
+    );
+    const reviewAllowedFiles =
+      source.operationPolicy.allowedFilesByOperation[review.operation];
+    assert(
+      review.changedFiles.every((file) =>
+        reviewAllowedFiles.some((pattern) => fileMatches(pattern, file))
+      ),
+      `no-family-plan-sol-review-file-not-allowed:${review.reviewId}`
+    );
+    solReviewIds.add(review.reviewId);
+    const key = reviewKey(review.standardCode, review.operation);
+    const previous = solReviewByKey.get(key);
+    assert(
+      previous
+        ? review.attempt === previous.attempt + 1 &&
+          review.supersedesReviewId === previous.reviewId
+        : review.attempt === 1 && review.supersedesReviewId === null,
+      `no-family-plan-sol-review-attempt-order:${key}`
+    );
+    const history = solReviewHistoryByKey.get(key) ?? [];
+    history.push(review);
+    solReviewHistoryByKey.set(key, history);
+    solReviewByKey.set(key, review);
+  }
   const targetOutlineCodes = targetOutlines.records.map(
     (record) => record.standardCode
   );
@@ -275,9 +491,60 @@ function buildReport() {
     const contract = source.trackContracts[archetype.archetypeId];
     const current = executionByCode.get(code);
     const nextAction = current?.nextAction ?? "complete";
+    const expectedTargetOutline =
+      targetOutlineByCode.get(code).expectedTargetOutline;
+    const targetSetReview = solReviewByKey.get(reviewKey(code, "TARGET_SET"));
+    const familyTrackReview = solReviewByKey.get(
+      reviewKey(code, "FAMILY_TRACK")
+    );
+    const targetSetReviewStatus = targetSetReview?.decision ?? "pending";
+    const familyTrackReviewStatus = familyTrackReview?.decision ?? "pending";
+    const baseWorkItemId = `W${String(index + 1).padStart(3, "0")}`;
+    const learningMapBound = hasLearningMapBinding(learningMap, code);
+    const targetSetReady = current?.targetSetReviewed === true;
+    const linkedFamily = (current?.linkedFamilyIds?.length ?? 0) > 0;
+    const familyValidated =
+      (current?.offlineFamilyIds?.length ?? 0) > 0 ||
+      (current?.releasedFamilyIds?.length ?? 0) > 0;
+    let operation;
+    let reviewGate = null;
+    if (!learningMapBound) {
+      operation = "LEARNING_MAP_BINDING";
+    } else if (!targetSetReady) {
+      operation = "TARGET_SET";
+    } else if (targetSetReviewStatus !== "approved") {
+      operation = "SOL_REVIEW";
+      reviewGate = "TARGET_SET";
+    } else if (!linkedFamily || !familyValidated) {
+      operation = "FAMILY_TRACK";
+    } else if (familyTrackReviewStatus !== "approved") {
+      operation = "SOL_REVIEW";
+      reviewGate = "FAMILY_TRACK";
+    } else if (nextAction === "capture-current-hash-live-evidence") {
+      operation = "LIVE_EVIDENCE";
+    } else if (nextAction === "complete") {
+      operation = "BATCH_CLOSEOUT";
+    } else {
+      operation = "STANDARD_BINDING";
+    }
+    const operationId = operationWorkItemId(
+      baseWorkItemId,
+      operation,
+      reviewGate
+    );
+    const dependencies = operationDependencies(
+      baseWorkItemId,
+      operation,
+      reviewGate
+    );
+    const allowedFiles = source.operationPolicy.allowedFilesByOperation[operation];
+    assert(
+      Array.isArray(allowedFiles) && allowedFiles.length > 0,
+      `no-family-plan-operation-allowed-files:${operation}`
+    );
     return {
       sequence: index + 1,
-      workItemId: `W${String(index + 1).padStart(3, "0")}`,
+      workItemId: baseWorkItemId,
       batchId: batch.batchId,
       wave: batch.wave,
       standardCode: code,
@@ -287,15 +554,26 @@ function buildReport() {
       archetypeId: archetype.archetypeId,
       plannedFamilyId: contract.familyId,
       engineClassIds: contract.engineClassIds,
-      expectedTargetOutline:
-        targetOutlineByCode.get(code).expectedTargetOutline,
-      expectedTargetCount:
-        targetOutlineByCode.get(code).expectedTargetOutline.length,
+      operation,
+      operationWorkItemId: operationId,
+      dependencyWorkItemIds: dependencies,
+      allowedFiles,
+      reviewGate,
+      learningMapBound,
+      targetOutlineSha256: jsonHash(expectedTargetOutline),
+      expectedTargetOutline,
+      expectedTargetCount: expectedTargetOutline.length,
       archetypeRole:
         code === archetype.anchorStandardCode ? "anchor" : "extension",
       splitRisk: archetype.splitRisk,
       nextAction,
-      actionClass: actionClass(nextAction)
+      actionClass: operation === "SOL_REVIEW" ? "sol-review-required" : actionClass(nextAction),
+      solReview: {
+        targetSet: targetSetReviewStatus,
+        familyTrack: familyTrackReviewStatus,
+        targetSetReviewId: targetSetReview?.reviewId ?? null,
+        familyTrackReviewId: familyTrackReview?.reviewId ?? null
+      }
     };
   });
   assert(workItems.length === plannedCodes.length, "no-family-plan-work-count");
@@ -309,6 +587,7 @@ function buildReport() {
     [
       "planned-no-family",
       "offline-in-progress",
+      "sol-review-required",
       "live-evidence",
       "complete"
     ].map((status) => [
@@ -317,7 +596,9 @@ function buildReport() {
     ])
   );
   const nextOfflineWork = workItems.find((item) =>
-    ["planned-no-family", "offline-in-progress"].includes(item.actionClass)
+    ["planned-no-family", "offline-in-progress", "sol-review-required"].includes(
+      item.actionClass
+    )
   );
   const nextLiveEvidenceWork = workItems.find(
     (item) => item.actionClass === "live-evidence"
@@ -327,6 +608,25 @@ function buildReport() {
     stableCodeHash(currentNoFamilyCodes) === source.baseline.standardCodeSha256 &&
     codeOrderHash(currentNoFamilyCodes) ===
       source.baseline.standardWorkOrderSha256;
+  const solReviewSummary = {
+    totalRecords: solReviewBoard.reviews.length,
+    approved: solReviewBoard.reviews.filter(
+      (review) => review.decision === "approved"
+    ).length,
+    changesRequested: solReviewBoard.reviews.filter(
+      (review) => review.decision === "changes-requested"
+    ).length,
+    blocked: solReviewBoard.reviews.filter(
+      (review) => review.decision === "blocked"
+    ).length,
+    pendingRequiredReviews: workItems.reduce(
+      (count, item) =>
+        count +
+        (item.solReview.targetSet === "pending" ? 1 : 0) +
+        (item.solReview.familyTrack === "pending" ? 1 : 0),
+      0
+    )
+  };
 
   return {
     schemaVersion: source.schemaVersion,
@@ -341,6 +641,12 @@ function buildReport() {
     modelPolicy: source.modelPolicy,
     loopPolicy: source.loopPolicy,
     foundation: source.foundation,
+    operationPolicy: source.operationPolicy,
+    solReview: {
+      ...source.solReview,
+      boardPath: source.solReview.boardPath,
+      records: solReviewBoard.reviews
+    },
     targetOutlineSource: targetOutlines.source,
     workItemTypes: source.workItemTypes,
     nativeDiscoveryBundles: source.nativeDiscoveryBundles,
@@ -364,6 +670,7 @@ function buildReport() {
       expectedTargetCount: targetKeys.length,
       batchCount: source.batches.length,
       actionClassCounts,
+      solReviewSummary,
       nextOfflineWork: nextOfflineWork ?? null,
       nextLiveEvidenceWork: nextLiveEvidenceWork ?? null
     },
@@ -404,6 +711,7 @@ function markdown(report) {
     "",
     `- 전체 계획·재계획: **${report.modelPolicy.planning}**`,
     `- 반복 구현: **${report.modelPolicy.execution}**`,
+    `- 독립 검토: **${report.modelPolicy.review}**`,
     `- 재계획 승격: **${report.modelPolicy.escalation}**`,
     `- 현재 환경 주의: ${report.modelPolicy.runtimeNote}`,
     "",
@@ -419,6 +727,15 @@ function markdown(report) {
     "",
     `- offline: ${report.current.nextOfflineWork ? `${report.current.nextOfflineWork.standardCode} · ${report.current.nextOfflineWork.archetypeId} · ${report.current.nextOfflineWork.nextAction}` : "없음"}`,
     `- live evidence: ${report.current.nextLiveEvidenceWork ? `${report.current.nextLiveEvidenceWork.standardCode} · ${report.current.nextLiveEvidenceWork.archetypeId}` : "없음"}`,
+    "",
+    "## Sol 독립 검토 게이트",
+    "",
+    `- reviewer: **${report.solReview.reviewerModel}**`,
+    `- required after: **${report.solReview.requiredAfter.join(" · ")}**`,
+    `- board: **${report.solReview.boardPath}**`,
+    `- 승인 기록: **${report.current.solReviewSummary.approved}개** · 수정 요청: **${report.current.solReviewSummary.changesRequested}개** · 차단: **${report.current.solReviewSummary.blocked}개** · pending: **${report.current.solReviewSummary.pendingRequiredReviews}개**`,
+    "- Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.",
+    "- 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.",
     "",
     "## 실행 상태",
     "",
@@ -459,11 +776,11 @@ function markdown(report) {
     "",
     "## 97개 표준 작업 카드",
     "",
-    "| work | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 | 역할 | 현재 동작 |",
-    "|---|---|---|---|---|---|---|---:|---|---|",
+    "| work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |",
+    "|---|---|---|---|---|---|---|---|---|---|---|---|",
     ...report.workItems.map(
       (item) =>
-        `| ${item.workItemId} | ${item.batchId} | ${item.standardCode} | ${item.gradeBand} | ${item.domain} | ${item.archetypeId} | ${item.engineClassIds.join("+")} | ${item.expectedTargetCount} | ${item.archetypeRole} | ${item.nextAction} |`
+        `| ${item.operationWorkItemId} | ${item.operation} | ${item.batchId} | ${item.standardCode} | ${item.gradeBand} | ${item.domain} | ${item.archetypeId} | ${item.engineClassIds.join("+")} | ${item.targetOutlineSha256.slice(0, 12)} (${item.expectedTargetCount}) | ${item.archetypeRole} | target ${item.solReview.targetSet} / family ${item.solReview.familyTrack} | ${item.actionClass === "sol-review-required" ? "SOL_REVIEW" : item.nextAction} |`
     ),
     "",
     "## Family acceptance gate",

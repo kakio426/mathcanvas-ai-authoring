@@ -39,6 +39,7 @@
   "modelPolicy": {
     "planning": "gpt-5.6-sol / max",
     "execution": "luna / max (operator-selected)",
+    "review": "gpt-5.6-sol / max (independent gate; one standard and one operation per review)",
     "escalation": "gpt-5.6-sol / max",
     "runtimeNote": "현재 Codex sub-agent catalog에는 Luna라는 모델명이 노출되지 않는다. 반복 계약은 모델 독립적으로 고정하고, Luna가 제공되는 운영 환경에서 Luna max를 선택한다."
   },
@@ -47,10 +48,134 @@
     "selection": "reports/curriculum-execution/no-family-plan.json의 nextOfflineWork를 사용한다.",
     "transition": "한 실행에서는 한 성취기준만 소유하고, 통과 가능한 lifecycle 단계까지 전진한다.",
     "concurrency": "single-writer-sequential",
-    "commitPolicy": "전체 QA 통과 뒤 원자적 main 커밋과 push",
+    "commitPolicy": "Luna offline QA → 로컬 candidate commit(아직 push하지 않음) → Sol required review → gate verify → main push",
     "liveWritePolicy": "offline queue와 분리하고 승인된 canonical create-only 경로만 사용",
     "retryPolicy": "같은 원인으로 두 번 실패하면 범위를 넓히지 말고 Sol max 재계획으로 승격",
-    "externalReview": "repository-qa-only-no-fable"
+    "externalReview": "repository-qa-only-no-fable",
+    "solReviewPolicy": "TARGET_SET·FAMILY_TRACK 뒤 승인된 SOL_REVIEW 기록이 없으면 reviewed-complete·offline-validated·live-released 승격과 main push를 금지",
+    "candidateCommitPolicy": "review record의 candidateCommit은 실제 local candidate commit과 일치해야 하며 changes-requested 뒤에는 새 attempt와 새 candidate commit을 만든다."
+  },
+  "solReview": {
+    "boardPath": "scripts/curriculum/sol-review-board.json",
+    "requiredAfter": ["TARGET_SET", "FAMILY_TRACK"],
+    "reviewBeforeStatus": ["reviewed-complete", "offline-validated", "live-released"],
+    "reviewerModel": "gpt-5.6-sol / max",
+    "transactionPolicy": {
+      "candidateOwner": "Luna",
+      "reviewOwner": "Sol",
+      "derivedReportCommitOwner": "Sol",
+      "reviewerPushes": false,
+      "allowedPostApprovalFilesAreManifestBound": true
+    },
+    "decisionValues": ["approved", "changes-requested", "blocked"],
+    "artifactRequiredFields": [
+      "reviewId",
+      "workItemId",
+      "standardCode",
+      "operation",
+      "reviewer",
+      "decision",
+      "attempt",
+      "candidateCommit",
+      "changedFiles",
+      "supersedesReviewId",
+      "checkedAt",
+      "evidenceRefs",
+      "findings"
+    ]
+  },
+  "operationPolicy": {
+    "firstOperation": "LEARNING_MAP_BINDING",
+    "order": [
+      "LEARNING_MAP_BINDING",
+      "TARGET_SET",
+      "SOL_REVIEW",
+      "AFFORDANCE_DISCOVERY",
+      "ENGINE_CORE",
+      "FAMILY_TRACK",
+      "STANDARD_BINDING",
+      "LIVE_EVIDENCE",
+      "BATCH_CLOSEOUT"
+    ],
+    "defaultDependencies": [],
+    "allowedFilesByOperation": {
+      "LEARNING_MAP_BINDING": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "TARGET_SET": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REVIEW": [
+        "scripts/curriculum/sol-review-board.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "AFFORDANCE_DISCOVERY": [
+        "research/mathcanvas/**",
+        "packages/contracts/src/catalog/**",
+        "packages/curriculum/src/native-affordance-*.ts"
+      ],
+      "ENGINE_CORE": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts"
+      ],
+      "FAMILY_TRACK": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "STANDARD_BINDING": [
+        "packages/templates/src/problem-families/**",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/templates/src/problem-families/registry.ts"
+      ],
+      "LIVE_EVIDENCE": [
+        "research/mathcanvas/**",
+        "reports/**"
+      ],
+      "BATCH_CLOSEOUT": [
+        "reports/curriculum-execution/**",
+        "scripts/curriculum/**"
+      ]
+    },
+    "postApprovalFilesByOperation": {
+      "TARGET_SET": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "FAMILY_TRACK": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ]
+    }
   },
   "estimate": {
     "standardWorkCards": 97,
@@ -80,6 +205,7 @@
     "ENGINE_CORE",
     "FAMILY_TRACK",
     "STANDARD_BINDING",
+    "SOL_REVIEW",
     "LIVE_EVIDENCE",
     "BATCH_CLOSEOUT"
   ],
@@ -126,6 +252,8 @@
     "같은 MathCanvas 화면이나 같은 선택형 shell을 쓴다는 이유만으로 family를 합치지 않는다.",
     "새 family 때문에 공통 planner, MCP schema, teacher-ui 활동별 분기, legacy 중앙 registry를 수정하지 않는다.",
     "정답·해설·오개념·exact preview·compile·validator가 함께 통과하기 전 offline-validated로 올리지 않는다.",
+    "TARGET_SET·FAMILY_TRACK 뒤에는 gpt-5.6-sol / max의 승인된 SOL_REVIEW 기록이 있어야 한다.",
+    "SOL_REVIEW 담당자는 구현 파일을 수정하지 않고, 승인·수정요청·차단 중 하나만 기록한다.",
     "현재 해시의 create·조작·저장·재열기 증거 없이 live-released로 올리지 않는다.",
     "MathCanvas live 경로가 막혀도 offline queue를 계속 진행한다.",
     "Fable CLI나 외부 교사 검수를 실행 조건으로 두지 않는다."

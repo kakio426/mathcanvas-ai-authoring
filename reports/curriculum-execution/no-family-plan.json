@@ -15,6 +15,7 @@
   "modelPolicy": {
     "planning": "gpt-5.6-sol / max",
     "execution": "luna / max (operator-selected)",
+    "review": "gpt-5.6-sol / max (independent gate; one standard and one operation per review)",
     "escalation": "gpt-5.6-sol / max",
     "runtimeNote": "현재 Codex sub-agent catalog에는 Luna라는 모델명이 노출되지 않는다. 반복 계약은 모델 독립적으로 고정하고, Luna가 제공되는 운영 환경에서 Luna max를 선택한다."
   },
@@ -23,10 +24,12 @@
     "selection": "reports/curriculum-execution/no-family-plan.json의 nextOfflineWork를 사용한다.",
     "transition": "한 실행에서는 한 성취기준만 소유하고, 통과 가능한 lifecycle 단계까지 전진한다.",
     "concurrency": "single-writer-sequential",
-    "commitPolicy": "전체 QA 통과 뒤 원자적 main 커밋과 push",
+    "commitPolicy": "Luna offline QA → 로컬 candidate commit(아직 push하지 않음) → Sol required review → gate verify → main push",
     "liveWritePolicy": "offline queue와 분리하고 승인된 canonical create-only 경로만 사용",
     "retryPolicy": "같은 원인으로 두 번 실패하면 범위를 넓히지 말고 Sol max 재계획으로 승격",
-    "externalReview": "repository-qa-only-no-fable"
+    "externalReview": "repository-qa-only-no-fable",
+    "solReviewPolicy": "TARGET_SET·FAMILY_TRACK 뒤 승인된 SOL_REVIEW 기록이 없으면 reviewed-complete·offline-validated·live-released 승격과 main push를 금지",
+    "candidateCommitPolicy": "review record의 candidateCommit은 실제 local candidate commit과 일치해야 하며 changes-requested 뒤에는 새 attempt와 새 candidate commit을 만든다."
   },
   "foundation": {
     "baselineCommit": "06b5fe17fc5ea3164bbd01d333743c2aa03a0041",
@@ -34,6 +37,140 @@
     "pilotInclusiveLearningMapRecordsForPlan": 9,
     "requiredPinnedLearningMapAdditions": 88,
     "rule": "FAMILY_TRACK 전에 각 standard의 pinned learning-map concept·representation·application·prerequisite record와 fixture hash가 존재해야 한다."
+  },
+  "operationPolicy": {
+    "firstOperation": "LEARNING_MAP_BINDING",
+    "order": [
+      "LEARNING_MAP_BINDING",
+      "TARGET_SET",
+      "SOL_REVIEW",
+      "AFFORDANCE_DISCOVERY",
+      "ENGINE_CORE",
+      "FAMILY_TRACK",
+      "STANDARD_BINDING",
+      "LIVE_EVIDENCE",
+      "BATCH_CLOSEOUT"
+    ],
+    "defaultDependencies": [],
+    "allowedFilesByOperation": {
+      "LEARNING_MAP_BINDING": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "TARGET_SET": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REVIEW": [
+        "scripts/curriculum/sol-review-board.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "AFFORDANCE_DISCOVERY": [
+        "research/mathcanvas/**",
+        "packages/contracts/src/catalog/**",
+        "packages/curriculum/src/native-affordance-*.ts"
+      ],
+      "ENGINE_CORE": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts"
+      ],
+      "FAMILY_TRACK": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "STANDARD_BINDING": [
+        "packages/templates/src/problem-families/**",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/templates/src/problem-families/registry.ts"
+      ],
+      "LIVE_EVIDENCE": [
+        "research/mathcanvas/**",
+        "reports/**"
+      ],
+      "BATCH_CLOSEOUT": [
+        "reports/curriculum-execution/**",
+        "scripts/curriculum/**"
+      ]
+    },
+    "postApprovalFilesByOperation": {
+      "TARGET_SET": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "FAMILY_TRACK": [
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ]
+    }
+  },
+  "solReview": {
+    "boardPath": "scripts/curriculum/sol-review-board.json",
+    "requiredAfter": [
+      "TARGET_SET",
+      "FAMILY_TRACK"
+    ],
+    "reviewBeforeStatus": [
+      "reviewed-complete",
+      "offline-validated",
+      "live-released"
+    ],
+    "reviewerModel": "gpt-5.6-sol / max",
+    "transactionPolicy": {
+      "candidateOwner": "Luna",
+      "reviewOwner": "Sol",
+      "derivedReportCommitOwner": "Sol",
+      "reviewerPushes": false,
+      "allowedPostApprovalFilesAreManifestBound": true
+    },
+    "decisionValues": [
+      "approved",
+      "changes-requested",
+      "blocked"
+    ],
+    "artifactRequiredFields": [
+      "reviewId",
+      "workItemId",
+      "standardCode",
+      "operation",
+      "reviewer",
+      "decision",
+      "attempt",
+      "candidateCommit",
+      "changedFiles",
+      "supersedesReviewId",
+      "checkedAt",
+      "evidenceRefs",
+      "findings"
+    ],
+    "records": []
   },
   "targetOutlineSource": {
     "executionReport": "reports/curriculum-execution/latest.json",
@@ -53,6 +190,7 @@
     "ENGINE_CORE",
     "FAMILY_TRACK",
     "STANDARD_BINDING",
+    "SOL_REVIEW",
     "LIVE_EVIDENCE",
     "BATCH_CLOSEOUT"
   ],
@@ -147,6 +285,8 @@
     "같은 MathCanvas 화면이나 같은 선택형 shell을 쓴다는 이유만으로 family를 합치지 않는다.",
     "새 family 때문에 공통 planner, MCP schema, teacher-ui 활동별 분기, legacy 중앙 registry를 수정하지 않는다.",
     "정답·해설·오개념·exact preview·compile·validator가 함께 통과하기 전 offline-validated로 올리지 않는다.",
+    "TARGET_SET·FAMILY_TRACK 뒤에는 gpt-5.6-sol / max의 승인된 SOL_REVIEW 기록이 있어야 한다.",
+    "SOL_REVIEW 담당자는 구현 파일을 수정하지 않고, 승인·수정요청·차단 중 하나만 기록한다.",
     "현재 해시의 create·조작·저장·재열기 증거 없이 live-released로 올리지 않는다.",
     "MathCanvas live 경로가 막혀도 offline queue를 계속 진행한다.",
     "Fable CLI나 외부 교사 검수를 실행 조건으로 두지 않는다."
@@ -180,8 +320,16 @@
     "actionClassCounts": {
       "planned-no-family": 97,
       "offline-in-progress": 0,
+      "sol-review-required": 0,
       "live-evidence": 0,
       "complete": 0
+    },
+    "solReviewSummary": {
+      "totalRecords": 0,
+      "approved": 0,
+      "changesRequested": 0,
+      "blocked": 0,
+      "pendingRequiredReviews": 194
     },
     "nextOfflineWork": {
       "sequence": 1,
@@ -197,6 +345,24 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W001-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W001-LEARNING_MAP_BINDING"
+      ],
+      "allowedFiles": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "reviewGate": null,
+      "learningMapBound": true,
+      "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
         {
           "key": "organize-classified-data-in-table",
@@ -217,7 +383,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     "nextLiveEvidenceWork": null
   },
@@ -2410,6 +2582,24 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W001-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W001-LEARNING_MAP_BINDING"
+      ],
+      "allowedFiles": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "reviewGate": null,
+      "learningMapBound": true,
+      "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
         {
           "key": "organize-classified-data-in-table",
@@ -2430,7 +2620,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 2,
@@ -2446,6 +2642,19 @@
       "engineClassIds": [
         "R08"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W002-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
@@ -2466,7 +2675,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 3,
@@ -2482,6 +2697,19 @@
       "engineClassIds": [
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8acfb50ecf520d819097576f4373e3d368e5003661c8021d6f11e8d270727c77",
       "expectedTargetOutline": [
         {
           "key": "identify-line-ray-segment-properties",
@@ -2502,7 +2730,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 4,
@@ -2518,6 +2752,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W004-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "1157cc20fa2c5e82005860348a47b22a659e7921577d69d095fc51f8f3cf0336",
       "expectedTargetOutline": [
         {
           "key": "match-everyday-objects-to-solid-shapes",
@@ -2538,7 +2785,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 5,
@@ -2554,6 +2807,19 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W005-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "4998a2001117d67bae32c8320d14a5400d4459cecfdd7c429644f1aa1951e75b",
       "expectedTargetOutline": [
         {
           "key": "collect-ordered-change-data",
@@ -2581,7 +2847,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 6,
@@ -2597,6 +2869,19 @@
       "engineClassIds": [
         "R09"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W006-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "9852d63a8cd1db5ea2a91c14567eea198c12bf4c97d8b5bb6abbcc278bd751e2",
       "expectedTargetOutline": [
         {
           "key": "find-covariation-rule-in-table",
@@ -2624,7 +2909,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 7,
@@ -2640,6 +2931,19 @@
       "engineClassIds": [
         "R01"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W007-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "b52f9592b56483535ab66e7318fc6c37a1c3d1fa0f53142971cf9553517375f8",
       "expectedTargetOutline": [
         {
           "key": "recognize-number-purpose-and-zero",
@@ -2667,7 +2971,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 8,
@@ -2683,6 +2993,19 @@
       "engineClassIds": [
         "R08"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W008-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "cc458f3b74a7b8b227a8b96cae2a9dbdefe54afe2bbc26da9979361f81063247",
       "expectedTargetOutline": [
         {
           "key": "find-change-rule",
@@ -2710,7 +3033,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 9,
@@ -2726,6 +3055,19 @@
       "engineClassIds": [
         "R23"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W009-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "4b980c5e08f838447c29f02b3af35e2fbc8cb4fd714d91f2d370ed8f6a06117b",
       "expectedTargetOutline": [
         {
           "key": "understand-mean-as-equal-share",
@@ -2760,7 +3102,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 10,
@@ -2776,6 +3124,19 @@
       "engineClassIds": [
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W010-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "b17d7fe014724f7b9622d1d101f3ebbf61ba1a774b3ca58bd1a1a6ec183e102b",
       "expectedTargetOutline": [
         {
           "key": "recognize-need-for-large-numbers",
@@ -2803,7 +3164,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 11,
@@ -2820,6 +3187,19 @@
         "R15",
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W011-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "1bf911c30d20bc74ec1139a9d81663102b87a210b85f2e917d56ea7957a63cf1",
       "expectedTargetOutline": [
         {
           "key": "identify-congruent-figures",
@@ -2847,7 +3227,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 12,
@@ -2863,6 +3249,19 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W012-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "90fdd347180fc20c071a4b3acfb6ce272d2d1d1ec266cc600be997163cd018d8",
       "expectedTargetOutline": [
         {
           "key": "represent-classified-data-with-symbol-graph",
@@ -2883,7 +3282,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 13,
@@ -2899,6 +3304,19 @@
       "engineClassIds": [
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W013-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2da26b3a493013effe8bc7527d8e064d7b621cef4da2e589ad710b0f8e2c0cbc",
       "expectedTargetOutline": [
         {
           "key": "understand-angle-and-right-angle",
@@ -2919,7 +3337,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 14,
@@ -2935,6 +3359,19 @@
       "engineClassIds": [
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W014-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "0757d20dd45735bc7e341c6dc9e59bd917e3f1b5fbabb7d98bb12cfbdf8be4bf",
       "expectedTargetOutline": [
         {
           "key": "distinguish-inclusive-exclusive-range-terms",
@@ -2962,7 +3399,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 15,
@@ -2978,6 +3421,19 @@
       "engineClassIds": [
         "R14"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W015-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "5aaffb9ae49980df76221f511c5633ee8de4a9d0fff6f4fb9c93cfe4b53d75f4",
       "expectedTargetOutline": [
         {
           "key": "construct-solid-with-cubes",
@@ -2998,7 +3454,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 16,
@@ -3014,6 +3476,19 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W016-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "08d95842859f0bf9b856effbc1d8deec1454bf8a03be66f9e7fdb5ee7d82c2d9",
       "expectedTargetOutline": [
         {
           "key": "collect-and-organize-data-for-inquiry",
@@ -3041,7 +3516,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 17,
@@ -3057,6 +3538,19 @@
       "engineClassIds": [
         "R09"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W017-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "79fca6d17d544f45193deca78290c3707fa9535919afa26c14de5416a93a0c7e",
       "expectedTargetOutline": [
         {
           "key": "understand-ratio-as-comparison-to-reference",
@@ -3077,7 +3571,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 18,
@@ -3093,6 +3593,19 @@
       "engineClassIds": [
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W018-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "82eb4aea72f23d9f165b400c6cdcef6873b180f41587d75d0ea5f0cbf8822c34",
       "expectedTargetOutline": [
         {
           "key": "find-rule-in-calculation-array",
@@ -3113,7 +3626,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 19,
@@ -3129,6 +3648,19 @@
       "engineClassIds": [
         "R22"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W019-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "5aaa0ae5999318edae5f8e4bf6437d12f62c18d1494c3fcb3ad25dff0206e8d7",
       "expectedTargetOutline": [
         {
           "key": "collect-and-organize-part-whole-data",
@@ -3156,7 +3688,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 20,
@@ -3173,6 +3711,19 @@
         "R02",
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W020-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "4a4ab8a2b59a594f126535567d89500888013413dcaca9bec7062926fe15045e",
       "expectedTargetOutline": [
         {
           "key": "understand-large-number-sequence",
@@ -3200,7 +3751,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 21,
@@ -3216,6 +3773,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W021-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2b729d7073747d989541edc4e2eafeb2f3ba5a4fda616ea5d45b1ba060a2e849",
       "expectedTargetOutline": [
         {
           "key": "identify-cuboid-and-cube",
@@ -3243,7 +3813,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 22,
@@ -3259,6 +3835,19 @@
       "engineClassIds": [
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W022-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "817f306b8b731e56e0f9b3f014bd16290a0fa02cc34ada9ba72c1ec17290860f",
       "expectedTargetOutline": [
         {
           "key": "identify-perpendicular-lines",
@@ -3279,7 +3868,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 23,
@@ -3295,6 +3890,19 @@
       "engineClassIds": [
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W023-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "0337f2a8ac2549a8c93aa751be26418c29e13ea71b549f5abbd915f5d0999fdd",
       "expectedTargetOutline": [
         {
           "key": "distinguish-rounding-methods-and-purpose",
@@ -3322,7 +3930,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 24,
@@ -3338,6 +3952,19 @@
       "engineClassIds": [
         "R21"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W024-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "5a5cadb88201696879ee92b223936d9533106e6ca9304d410f234dbe7bdeea3e",
       "expectedTargetOutline": [
         {
           "key": "match-everyday-objects-to-plane-shapes",
@@ -3358,7 +3985,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 25,
@@ -3374,6 +4007,19 @@
       "engineClassIds": [
         "R09"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W025-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "e297925f2347987bfcd205d608ceefd7260345ba1bc8d97701eea7d93c590a07",
       "expectedTargetOutline": [
         {
           "key": "recognize-proportion",
@@ -3401,7 +4047,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 26,
@@ -3418,6 +4070,19 @@
         "R02",
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W026-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8f724570e2de34e7f23e4a51d5a33c31e31f0b46a9e9f101a4904e53c6b27ba2",
       "expectedTargetOutline": [
         {
           "key": "understand-number-sequence-to-four-digits",
@@ -3438,7 +4103,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 27,
@@ -3454,6 +4125,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W027-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "ae459bf15e97488e44ae0ad7639a646c153a64b2cbf48ddc04918dd2b517515b",
       "expectedTargetOutline": [
         {
           "key": "understand-and-calculate-three-digit-addition",
@@ -3474,7 +4158,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 28,
@@ -3490,6 +4180,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W028-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "e75ebe975e42081f839c398615e51ba089908406bc2d1ee38669e39aef9276ef",
       "expectedTargetOutline": [
         {
           "key": "draw-oblique-view-of-cuboid",
@@ -3510,7 +4213,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 29,
@@ -3526,6 +4235,19 @@
       "engineClassIds": [
         "R15"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W029-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "6def048926575751e0894d4fb984693894c646cfa277aeb80e3918b19b6a3dfc",
       "expectedTargetOutline": [
         {
           "key": "understand-shape-translation",
@@ -3553,7 +4275,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 30,
@@ -3569,6 +4297,19 @@
       "engineClassIds": [
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W030-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8b5fbc2861ce43c93d823439e4fb245bc363194b920516b2a5df5070d994966f",
       "expectedTargetOutline": [
         {
           "key": "recognize-basic-plane-shapes-intuitively",
@@ -3589,7 +4330,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 31,
@@ -3605,6 +4352,19 @@
       "engineClassIds": [
         "R09"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W031-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "5ea8a2cbaff77d20ae1c60c800d8111c70a5a9b11bda09217835f2cfd6a312b7",
       "expectedTargetOutline": [
         {
           "key": "understand-proportional-allocation",
@@ -3625,7 +4385,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 32,
@@ -3641,6 +4407,19 @@
       "engineClassIds": [
         "R06"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W032-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "d03413ccb87c1123ba4b23b626ee52803839b92f3cddf21a21e8b610ab834100",
       "expectedTargetOutline": [
         {
           "key": "model-addition-situations",
@@ -3668,7 +4447,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 33,
@@ -3685,6 +4470,19 @@
         "R24",
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W033-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2ab626f83727f525cd728d63dff6620008f5bf07d2ca49cad7f2c46cde472651",
       "expectedTargetOutline": [
         {
           "key": "order-event-likelihood",
@@ -3705,7 +4503,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 34,
@@ -3721,6 +4525,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W034-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "9b5a158addac7a15b78bbfb52bfb39cdcf34394c5b752ff272ea4bae682aa70b",
       "expectedTargetOutline": [
         {
           "key": "distinguish-prisms-and-pyramids",
@@ -3748,7 +4565,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 35,
@@ -3764,6 +4587,19 @@
       "engineClassIds": [
         "R15"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W035-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8dccf792e2c9f14253263fc81c6019d1c2f0993e0a84ed3a328abef4c376393f",
       "expectedTargetOutline": [
         {
           "key": "locate-point-after-movement",
@@ -3784,7 +4620,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 36,
@@ -3800,6 +4642,19 @@
       "engineClassIds": [
         "R06"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W036-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "80910883ddfd6d345e80c716fbb6d9d2144c49ff691fdec1a811a2e49af7eb2d",
       "expectedTargetOutline": [
         {
           "key": "understand-and-find-multiples",
@@ -3827,7 +4682,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 37,
@@ -3843,6 +4704,19 @@
       "engineClassIds": [
         "R12"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W037-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "e8a1cbabd8ad2b1443989c7c1f7833eb88ea435179ef8ac4656d21cf3d23709b",
       "expectedTargetOutline": [
         {
           "key": "find-common-properties-of-triangles",
@@ -3863,7 +4737,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 38,
@@ -3879,6 +4759,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W038-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "84cf2be392cf23b1b7d869f1aad69fc74509a9ab5bdfa010364c3de56e8a8e18",
       "expectedTargetOutline": [
         {
           "key": "understand-and-calculate-two-digit-addition",
@@ -3899,7 +4792,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 39,
@@ -3916,6 +4815,19 @@
         "R24",
         "R22"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W039-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "32d5628e6205ae66dcb665440f08c7226ea57350210f98dec5ffe0119be2f6b2",
       "expectedTargetOutline": [
         {
           "key": "estimate-likelihood-from-data",
@@ -3936,7 +4848,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 40,
@@ -3952,6 +4870,19 @@
       "engineClassIds": [
         "R06"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W040-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "f1b0ce8094d3ed76dfcb8da7b4f3e8885a6eadb8812df0c73df11d6dc04ffb7d",
       "expectedTargetOutline": [
         {
           "key": "model-division-situations",
@@ -3972,7 +4903,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 41,
@@ -3988,6 +4925,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W041-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "709097d2fe504f28b26e72adf2298ced6e9d9ae9f57008988ca753def984e55d",
       "expectedTargetOutline": [
         {
           "key": "construct-valid-prism-net",
@@ -4008,7 +4958,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 42,
@@ -4024,6 +4980,19 @@
       "engineClassIds": [
         "R16"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W042-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "8b71df1f8b91000b56516f8574ecfa6e84bf1eb64f5e73ba941a87c3424f5e48",
       "expectedTargetOutline": [
         {
           "key": "identify-center-radius-diameter",
@@ -4044,7 +5013,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 43,
@@ -4060,6 +5035,19 @@
       "engineClassIds": [
         "R18"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W043-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "3be6b326acf2db82bc83e4e53d180a7b73cca2d2956fef623da7e414b23cc37e",
       "expectedTargetOutline": [
         {
           "key": "compare-object-lengths",
@@ -4094,7 +5082,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 44,
@@ -4110,6 +5104,19 @@
       "engineClassIds": [
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W044-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "702326dc8c44122687e6f834a1722addf1f695d0729452738da27acc979945f9",
       "expectedTargetOutline": [
         {
           "key": "construct-related-addition-subtraction-facts",
@@ -4130,7 +5137,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 45,
@@ -4146,6 +5159,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W045-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "dbe5c3d6fb50f298b252aa7c876c7ee01de1ab3e6de3013c2405f3eb2daf52b5",
       "expectedTargetOutline": [
         {
           "key": "understand-two-digit-divisor-division-principle",
@@ -4166,7 +5192,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 46,
@@ -4182,6 +5214,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W046-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "aec4b566bd8763666d89909dc4921d6f3f4602560296a16288ea7e55a83b48a9",
       "expectedTargetOutline": [
         {
           "key": "distinguish-cylinder-cone-sphere",
@@ -4209,7 +5254,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 47,
@@ -4225,6 +5276,19 @@
       "engineClassIds": [
         "R16"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W047-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "430ae70973c8ebc9478f4e6e87573ad3daf551180f540fe0cd2d8028cced5e30",
       "expectedTargetOutline": [
         {
           "key": "set-circle-center-and-radius-with-compass",
@@ -4245,7 +5309,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 48,
@@ -4261,6 +5331,19 @@
       "engineClassIds": [
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W048-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "4817d80b828181634733356dfd0118290a461e7e2843a26c2c28629e0ebc5b36",
       "expectedTargetOutline": [
         {
           "key": "calculate-addition-of-three-numbers",
@@ -4281,7 +5364,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 49,
@@ -4297,6 +5386,19 @@
       "engineClassIds": [
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W049-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "7b15ea56c4e38e39f56cdd4f22d5388c0bc09a850af3e71d7f2448bd5e5a18b5",
       "expectedTargetOutline": [
         {
           "key": "choose-estimation-strategy-for-operation",
@@ -4324,7 +5426,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 50,
@@ -4340,6 +5448,19 @@
       "engineClassIds": [
         "R13"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W050-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "d127bc26c87448810f8df9d7f7ede3e1c61bba89312c01ab66d64f99ede01798",
       "expectedTargetOutline": [
         {
           "key": "construct-cylinder-net",
@@ -4360,7 +5481,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 51,
@@ -4376,6 +5503,19 @@
       "engineClassIds": [
         "R12"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W051-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "ed4965762658e019c62eacc47cdc1b76fc961eba1e4ae576de1197bdbf9c43bc",
       "expectedTargetOutline": [
         {
           "key": "classify-isosceles-and-equilateral-triangles",
@@ -4396,7 +5536,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 52,
@@ -4412,6 +5558,19 @@
       "engineClassIds": [
         "R07"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W052-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "16b71cb54d9696d8f5203d538800d7a176b9216f06df6cbdff5bd25f7e64ac98",
       "expectedTargetOutline": [
         {
           "key": "model-fraction-multiplication-principle",
@@ -4432,7 +5591,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 53,
@@ -4448,6 +5613,19 @@
       "engineClassIds": [
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W053-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "cb8721f47f91e118297cf957438b6558814eb3b525c8d7dfd7ca1194a21f19bf",
       "expectedTargetOutline": [
         {
           "key": "construct-add-sub-equation-with-box",
@@ -4468,7 +5646,13 @@
       "archetypeRole": "extension",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 54,
@@ -4484,6 +5668,19 @@
       "engineClassIds": [
         "R07"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W054-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "ad521c78afe7869abfc4dc16024503f7d10d7f588973b3032afa427c0334b7ef",
       "expectedTargetOutline": [
         {
           "key": "recognize-need-for-fractions-through-equal-partition",
@@ -4511,7 +5708,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 55,
@@ -4527,6 +5730,19 @@
       "engineClassIds": [
         "R14"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W055-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "22873d4444327fd38b2af5dccd1ba53420d8d39a76cccf5f562016a2c8250ac1",
       "expectedTargetOutline": [
         {
           "key": "count-visible-and-hidden-cubes",
@@ -4547,7 +5763,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 56,
@@ -4563,6 +5785,19 @@
       "engineClassIds": [
         "R12"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W056-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "dd4940f411d947d842af9c3a02c43862b938f0fdc03387a02cb8265a3a9405de",
       "expectedTargetOutline": [
         {
           "key": "classify-special-quadrilaterals",
@@ -4590,7 +5825,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 57,
@@ -4608,6 +5849,19 @@
         "R07",
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W057-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "39ba467a8517a77e5d3376a9e8f0e519f2fa1021e9831d5e92d2fe8e1e5cacfa",
       "expectedTargetOutline": [
         {
           "key": "represent-natural-number-division-as-fraction",
@@ -4628,7 +5882,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 58,
@@ -4644,6 +5904,19 @@
       "engineClassIds": [
         "R17"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W058-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2ceb693322dbef2f1e5f56c7c85cbbaceb2ff5743dc704b8b316f1d35397835d",
       "expectedTargetOutline": [
         {
           "key": "understand-time-calendar-unit-relations",
@@ -4664,7 +5937,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 59,
@@ -4680,6 +5959,19 @@
       "engineClassIds": [
         "R07"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W059-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "ddf5cafc5bdf5c4070d271e2258892ee3932b6afe6a482f87ba7c917030ed45b",
       "expectedTargetOutline": [
         {
           "key": "identify-fraction-types",
@@ -4700,7 +5992,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 60,
@@ -4716,6 +6014,19 @@
       "engineClassIds": [
         "R14"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W060-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "0c5f3cd74c1c75b5311e9d0bab6d378b005e6bb027de9f15de2f6d46afb43e7c",
       "expectedTargetOutline": [
         {
           "key": "represent-orthographic-cube-views",
@@ -4736,7 +6047,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 61,
@@ -4752,6 +6069,19 @@
       "engineClassIds": [
         "R12"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W061-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "d6bf47cce96cfb9f8ceb36d4c655299b5c4aaa9e99c35064b355d0a88caf3a46",
       "expectedTargetOutline": [
         {
           "key": "identify-polygons-by-definition",
@@ -4772,7 +6102,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 62,
@@ -4788,6 +6124,19 @@
       "engineClassIds": [
         "R07"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W062-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "29af811e2e030bf3d3544e63e376aa9d7a8e956831939fb3556a59dc49f00658",
       "expectedTargetOutline": [
         {
           "key": "derive-fraction-divided-by-natural-principle",
@@ -4815,7 +6164,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 63,
@@ -4831,6 +6186,19 @@
       "engineClassIds": [
         "R19"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W063-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "45b8b4f727fa94d1f14bc941d5d5a685c0ef7e2133375276ce4acefdab10f938",
       "expectedTargetOutline": [
         {
           "key": "understand-meter-centimeter-relation",
@@ -4858,7 +6226,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 64,
@@ -4874,6 +6248,19 @@
       "engineClassIds": [
         "R06"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W064-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "9961bc789cb9b32dd03a13bf809fc22b5c95c4a8931dedb1ebf6d95faa13afb1",
       "expectedTargetOutline": [
         {
           "key": "construct-and-relate-multiplication-facts",
@@ -4894,7 +6281,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 65,
@@ -4910,6 +6303,19 @@
       "engineClassIds": [
         "R07"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W065-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2a9380af6f9eb743c2c6754f6912df3599a33468ae0e586f2de9d611d246e24c",
       "expectedTargetOutline": [
         {
           "key": "compare-fractions-with-common-denominator",
@@ -4937,7 +6343,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 66,
@@ -4954,6 +6366,19 @@
         "R18",
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W066-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "497eec7afa3376923cdb2cbc43ad64e431e6bf9864653b10eb920ffeaba00e61",
       "expectedTargetOutline": [
         {
           "key": "understand-perimeter-as-boundary-length",
@@ -4974,7 +6399,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 67,
@@ -4990,6 +6421,19 @@
       "engineClassIds": [
         "R21"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W067-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "90cd0be4d4dba7143fe7604fd1b6210c0734bb79dff2465a2c17d41216f540bc",
       "expectedTargetOutline": [
         {
           "key": "compose-shapes-from-given-pieces",
@@ -5017,7 +6461,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 68,
@@ -5034,6 +6484,19 @@
         "R07",
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W068-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "328403f95f28b5ae69ad507298144a0a937a1641051772e098f41d58c0cdc55f",
       "expectedTargetOutline": [
         {
           "key": "relate-fractions-and-decimals",
@@ -5061,7 +6524,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 69,
@@ -5077,6 +6546,19 @@
       "engineClassIds": [
         "R18"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W069-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "2abc0ae1fb3526ecfc38a10e5a1ac897f1dc8466fe9d717af5ef4c6c64d8c458",
       "expectedTargetOutline": [
         {
           "key": "estimate-length-with-benchmarks",
@@ -5097,7 +6579,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 70,
@@ -5113,6 +6601,19 @@
       "engineClassIds": [
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W070-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "1918fe15f1ce978ee2b8cb48c3e5068ba431edcf421b804f0c39c5a4cbeb6c71",
       "expectedTargetOutline": [
         {
           "key": "understand-tenths-through-fractions",
@@ -5133,7 +6634,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 71,
@@ -5149,6 +6656,19 @@
       "engineClassIds": [
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W071-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "a9a8da0933e020f7b8cdf8edadb979781c5573246e11625ede07012fe70f5898",
       "expectedTargetOutline": [
         {
           "key": "understand-square-area-units",
@@ -5169,7 +6689,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 72,
@@ -5185,6 +6711,19 @@
       "engineClassIds": [
         "R17"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W072-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "aeb5b621f8bf9af75512b39422c1bf805998685600ef2cd2bbbfb487b318211e",
       "expectedTargetOutline": [
         {
           "key": "understand-minute-second-relation",
@@ -5205,7 +6744,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 73,
@@ -5221,6 +6766,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W073-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "7c1b699d19a1113f1ebdfc849a05b017cdc05285cc1389651b00f190866fe841",
       "expectedTargetOutline": [
         {
           "key": "derive-decimal-times-natural-principle",
@@ -5248,7 +6806,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 74,
@@ -5265,6 +6829,19 @@
         "R19",
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W074-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "b6c239ad2e564195a0edec6876ea7dbded15f9970a26a0a62598b1e8e4851ac7",
       "expectedTargetOutline": [
         {
           "key": "add-lengths-in-context",
@@ -5285,7 +6862,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 75,
@@ -5301,6 +6884,19 @@
       "engineClassIds": [
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W075-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "30ae600623f19b3407f4dbc22b445e03f0cc7b50a6607ac9c76e2b3b6f0e4bf1",
       "expectedTargetOutline": [
         {
           "key": "understand-hundredths-and-thousandths-place-value",
@@ -5321,7 +6917,13 @@
       "archetypeRole": "extension",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 76,
@@ -5337,6 +6939,19 @@
       "engineClassIds": [
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W076-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "1705f47f3f19446a01d2bff379061680891637d5f211a887b0ff454c68fcea2a",
       "expectedTargetOutline": [
         {
           "key": "derive-rectangle-area-formula",
@@ -5364,7 +6979,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 77,
@@ -5381,6 +7002,19 @@
         "R19",
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W077-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "d0521e764601d86ba8fd81e4c7d0f735387c1cbad3b2af14d6a08de5dda12522",
       "expectedTargetOutline": [
         {
           "key": "add-times-to-seconds",
@@ -5401,7 +7035,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 78,
@@ -5419,6 +7059,19 @@
         "R07",
         "R02"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W078-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "03cb9e29970d901b1bee22ac8514baa18ec187b51e2eb02c7bc0b115bc672568",
       "expectedTargetOutline": [
         {
           "key": "represent-natural-number-division-as-decimal",
@@ -5439,7 +7092,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 79,
@@ -5456,6 +7115,19 @@
         "R02",
         "R03"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W079-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "b033f5b016a6434fe6c495858f06aafadb554f5005cd6798a7145d2b3ad46ceb",
       "expectedTargetOutline": [
         {
           "key": "compare-decimals-by-place-value",
@@ -5476,7 +7148,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 80,
@@ -5493,6 +7171,19 @@
         "R21",
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W080-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "91eedf0e5ff27a7b3d13cf3e91a752f888686f5a0632a2ad5ae3ce5978c87c67",
       "expectedTargetOutline": [
         {
           "key": "derive-parallelogram-area",
@@ -5534,7 +7225,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 81,
@@ -5550,6 +7247,19 @@
       "engineClassIds": [
         "R18"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W081-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "001072f6d6e8fc6353a95a940ce5f2e4a9d2f24d94650983881cfd3ed2abf4c3",
       "expectedTargetOutline": [
         {
           "key": "select-millimeter-and-kilometer-units",
@@ -5577,7 +7287,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 82,
@@ -5593,6 +7309,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W082-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "10d894d3b9f311d7b56779cb4e979442edc58ae20085fbddcb880cbd2147a4f6",
       "expectedTargetOutline": [
         {
           "key": "derive-decimal-divided-by-natural-principle",
@@ -5620,7 +7349,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 83,
@@ -5636,6 +7371,19 @@
       "engineClassIds": [
         "R16"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W083-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "add8df4eb207ed1500a90ab96afdbbcf7f8647f05e1ad0c9477686a7519b25e3",
       "expectedTargetOutline": [
         {
           "key": "measure-circumference-and-diameter",
@@ -5663,7 +7411,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 84,
@@ -5679,6 +7433,19 @@
       "engineClassIds": [
         "R19"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W084-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "41a4a34a83cde843614c0a71755702830e79c46f09ccb360edc96ccfb455a3bf",
       "expectedTargetOutline": [
         {
           "key": "relate-and-convert-centimeter-millimeter",
@@ -5699,7 +7466,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 85,
@@ -5715,6 +7488,19 @@
       "engineClassIds": [
         "R05"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W085-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "1d2388801ee3c6e9cc696045885343752f4c0e2098e4f2f679659dc79023ea71",
       "expectedTargetOutline": [
         {
           "key": "add-decimals-to-hundredths",
@@ -5735,7 +7521,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 86,
@@ -5752,6 +7544,19 @@
         "R16",
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W086-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "698b4cab8342d6a762055e30cd670fb8c8ff8a8b3db0d39cfe2bf7d7902e2c68",
       "expectedTargetOutline": [
         {
           "key": "derive-and-calculate-circumference",
@@ -5772,7 +7577,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 87,
@@ -5788,6 +7599,19 @@
       "engineClassIds": [
         "R18"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W087-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "73401deade9a3f8d3831ad326ff9b8ccf4d83ffa25a650dbf7c08d2e459d0879",
       "expectedTargetOutline": [
         {
           "key": "understand-and-select-liter-milliliter-units",
@@ -5815,7 +7639,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 88,
@@ -5832,6 +7662,19 @@
         "R13",
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W088-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "25c58d6c410f00c61e8d3ab541d683891b5a744bf3bbc7b5dcc26b1bec6b6258",
       "expectedTargetOutline": [
         {
           "key": "derive-surface-area-from-nets",
@@ -5852,7 +7695,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 89,
@@ -5868,6 +7717,19 @@
       "engineClassIds": [
         "R19"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W089-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "040754feb820be6dc3ebbfd1d9e677224857adf116ba5a4bf50edd8ec0b3d58a",
       "expectedTargetOutline": [
         {
           "key": "understand-liter-milliliter-relation",
@@ -5888,7 +7750,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 90,
@@ -5904,6 +7772,19 @@
       "engineClassIds": [
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W090-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "06d332842898302b272e7b0b5c311c2f8d1564660b814d05874f1afacb9ab373",
       "expectedTargetOutline": [
         {
           "key": "understand-cubic-volume-units",
@@ -5924,7 +7805,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 91,
@@ -5941,6 +7828,19 @@
         "R19",
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W091-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "22a0b358f25c0794ae265fa4673cd48bb82020cb7e95eb75893692fcd510b586",
       "expectedTargetOutline": [
         {
           "key": "add-capacities-in-context",
@@ -5961,7 +7861,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 92,
@@ -5978,6 +7884,19 @@
         "R14",
         "R20"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W092-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "5435d4901bfc2f021df2894523cc0f3d1ee55c029a77d12e32df8829e0d02f43",
       "expectedTargetOutline": [
         {
           "key": "derive-cuboid-volume-formula",
@@ -6005,7 +7924,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 93,
@@ -6021,6 +7946,19 @@
       "engineClassIds": [
         "R18"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W093-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "6308ba0210729823e982632d420651bd210ea2504e82ed6917b0114ba04d2ba9",
       "expectedTargetOutline": [
         {
           "key": "understand-and-select-gram-kilogram-units",
@@ -6048,7 +7986,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 94,
@@ -6064,6 +8008,19 @@
       "engineClassIds": [
         "R19"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W094-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "3a2f2b0ef83877e1dd30e3f8f5da275b28f754842a41afd925c88efc12b9c7c7",
       "expectedTargetOutline": [
         {
           "key": "understand-kilogram-gram-relation",
@@ -6091,7 +8048,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 95,
@@ -6107,6 +8070,19 @@
       "engineClassIds": [
         "R19"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W095-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "e1e13fa903138af9d32b9c8b0bb6b71061eae27e57dee218998b572f0b7eb908",
       "expectedTargetOutline": [
         {
           "key": "understand-and-select-tonne-unit",
@@ -6127,7 +8103,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 96,
@@ -6144,6 +8126,19 @@
         "R19",
         "R04"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W096-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "3187aa3f6a8829c2c12d63d5e74c42d7711575dd06e4b58f2411af8e0aa2f7a1",
       "expectedTargetOutline": [
         {
           "key": "add-masses-in-context",
@@ -6164,7 +8159,13 @@
       "archetypeRole": "extension",
       "splitRisk": "high",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     },
     {
       "sequence": 97,
@@ -6181,6 +8182,19 @@
         "R21",
         "R11"
       ],
+      "operation": "LEARNING_MAP_BINDING",
+      "operationWorkItemId": "W097-LEARNING_MAP_BINDING",
+      "dependencyWorkItemIds": [],
+      "allowedFiles": [
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/curriculum/src/data.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts"
+      ],
+      "reviewGate": null,
+      "learningMapBound": false,
+      "targetOutlineSha256": "163f1bf6f38602ecb683b9654074eccf0c1f2b745051b6457fd6ed4329540120",
       "expectedTargetOutline": [
         {
           "key": "infer-and-explain-triangle-angle-sum",
@@ -6201,7 +8215,13 @@
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family"
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "pending",
+        "familyTrack": "pending",
+        "targetSetReviewId": null,
+        "familyTrackReviewId": null
+      }
     }
   ]
 }

@@ -19,6 +19,7 @@
 
 - 전체 계획·재계획: **gpt-5.6-sol / max**
 - 반복 구현: **luna / max (operator-selected)**
+- 독립 검토: **gpt-5.6-sol / max (independent gate; one standard and one operation per review)**
 - 재계획 승격: **gpt-5.6-sol / max**
 - 현재 환경 주의: 현재 Codex sub-agent catalog에는 Luna라는 모델명이 노출되지 않는다. 반복 계약은 모델 독립적으로 고정하고, Luna가 제공되는 운영 환경에서 Luna max를 선택한다.
 
@@ -35,12 +36,22 @@
 - offline: [2수04-02] · D01A · review-target-set-and-design-family
 - live evidence: 없음
 
+## Sol 독립 검토 게이트
+
+- reviewer: **gpt-5.6-sol / max**
+- required after: **TARGET_SET · FAMILY_TRACK**
+- board: **scripts/curriculum/sol-review-board.json**
+- 승인 기록: **0개** · 수정 요청: **0개** · 차단: **0개** · pending: **194개**
+- Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.
+- 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.
+
 ## 실행 상태
 
 | 상태 | 성취기준 수 |
 |---|---:|
 | planned-no-family | 97 |
 | offline-in-progress | 0 |
+| sol-review-required | 0 |
 | live-evidence | 0 |
 | complete | 0 |
 
@@ -192,105 +203,105 @@
 
 ## 97개 표준 작업 카드
 
-| work | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 | 역할 | 현재 동작 |
-|---|---|---|---|---|---|---|---:|---|---|
-| W001 | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 2 | anchor | review-target-set-and-design-family |
-| W002 | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | 2 | anchor | review-target-set-and-design-family |
-| W003 | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 2 | anchor | review-target-set-and-design-family |
-| W004 | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 2 | anchor | review-target-set-and-design-family |
-| W005 | B03 | [4수04-02] | 3-4 | 자료와 가능성 | D02A | R22 | 3 | anchor | review-target-set-and-design-family |
-| W006 | B04 | [6수02-01] | 5-6 | 변화와 관계 | C02C | R09 | 3 | anchor | review-target-set-and-design-family |
-| W007 | B01 | [2수01-01] | 1-2 | 수와 연산 | N01A | R01 | 3 | anchor | review-target-set-and-design-family |
-| W008 | B02 | [4수02-01] | 3-4 | 변화와 관계 | C02A | R08 | 3 | anchor | review-target-set-and-design-family |
-| W009 | B05 | [6수04-01] | 5-6 | 자료와 가능성 | D03 | R23 | 4 | anchor | review-target-set-and-design-family |
-| W010 | B03 | [4수01-01] | 3-4 | 수와 연산 | N01B | R02 | 3 | anchor | review-target-set-and-design-family |
-| W011 | B05 | [6수03-01] | 5-6 | 도형과 측정 | G07 | R15+R11 | 3 | anchor | review-target-set-and-design-family |
-| W012 | B02 | [2수04-03] | 1-2 | 자료와 가능성 | D01B | R22 | 2 | anchor | review-target-set-and-design-family |
-| W013 | B09 | [4수03-02] | 3-4 | 도형과 측정 | G05 | R11 | 2 | anchor | review-target-set-and-design-family |
-| W014 | B05 | [6수01-02] | 5-6 | 수와 연산 | N03 | R03 | 3 | anchor | review-target-set-and-design-family |
-| W015 | B10 | [2수03-02] | 1-2 | 도형과 측정 | G08 | R14 | 2 | anchor | review-target-set-and-design-family |
-| W016 | B04 | [4수04-03] | 3-4 | 자료와 가능성 | D02B | R22 | 3 | anchor | review-target-set-and-design-family |
-| W017 | B05 | [6수02-03] | 5-6 | 변화와 관계 | C03 | R09 | 2 | anchor | review-target-set-and-design-family |
-| W018 | B03 | [4수02-02] | 3-4 | 변화와 관계 | C02B | R04 | 2 | anchor | review-target-set-and-design-family |
-| W019 | B06 | [6수04-02] | 5-6 | 자료와 가능성 | D04 | R22 | 3 | anchor | review-target-set-and-design-family |
-| W020 | B12 | [4수01-02] | 3-4 | 수와 연산 | N02A34 | R02+R03 | 3 | anchor | review-target-set-and-design-family |
-| W021 | B04 | [6수03-03] | 5-6 | 도형과 측정 | G09 | R13 | 3 | anchor | review-target-set-and-design-family |
-| W022 | B10 | [4수03-03] | 3-4 | 도형과 측정 | G06 | R11 | 2 | anchor | review-target-set-and-design-family |
-| W023 | B12 | [6수01-03] | 5-6 | 수와 연산 | N04 | R03 | 3 | anchor | review-target-set-and-design-family |
-| W024 | B01 | [2수03-03] | 1-2 | 도형과 측정 | G03A | R21 | 2 | anchor | review-target-set-and-design-family |
-| W025 | B06 | [6수02-04] | 5-6 | 변화와 관계 | C04 | R09 | 3 | anchor | review-target-set-and-design-family |
-| W026 | B08 | [2수01-03] | 1-2 | 수와 연산 | N02A12 | R02+R03 | 2 | anchor | review-target-set-and-design-family |
-| W027 | B13 | [4수01-03] | 3-4 | 수와 연산 | N05A34 | R05 | 2 | anchor | review-target-set-and-design-family |
-| W028 | B20 | [6수03-04] | 5-6 | 도형과 측정 | G10A | R13 | 2 | anchor | review-target-set-and-design-family |
-| W029 | B11 | [4수03-04] | 3-4 | 도형과 측정 | G11A | R15 | 3 | anchor | review-target-set-and-design-family |
-| W030 | B02 | [2수03-04] | 1-2 | 도형과 측정 | G03B | R11 | 2 | anchor | review-target-set-and-design-family |
-| W031 | B07 | [6수02-05] | 5-6 | 변화와 관계 | C05 | R09 | 2 | anchor | review-target-set-and-design-family |
-| W032 | B02 | [2수01-05] | 1-2 | 수와 연산 | N06 | R06 | 3 | anchor | review-target-set-and-design-family |
-| W033 | B07 | [6수04-05] | 5-6 | 자료와 가능성 | D05 | R24+R03 | 2 | anchor | review-target-set-and-design-family |
-| W034 | B04 | [6수03-05] | 5-6 | 도형과 측정 | G09 | R13 | 3 | extension | review-target-set-and-design-family |
-| W035 | B12 | [4수03-05] | 3-4 | 도형과 측정 | G11B | R15 | 2 | anchor | review-target-set-and-design-family |
-| W036 | B06 | [6수01-05] | 5-6 | 수와 연산 | N08 | R06 | 3 | anchor | review-target-set-and-design-family |
-| W037 | B03 | [2수03-05] | 1-2 | 도형과 측정 | G04A12 | R12 | 2 | anchor | review-target-set-and-design-family |
-| W038 | B07 | [2수01-06] | 1-2 | 수와 연산 | N05A12 | R05 | 2 | anchor | review-target-set-and-design-family |
-| W039 | B08 | [6수04-06] | 5-6 | 자료와 가능성 | D06 | R24+R22 | 2 | anchor | review-target-set-and-design-family |
-| W040 | B10 | [4수01-05] | 3-4 | 수와 연산 | N09 | R06 | 2 | anchor | review-target-set-and-design-family |
-| W041 | B20 | [6수03-06] | 5-6 | 도형과 측정 | G10B | R13 | 2 | anchor | review-target-set-and-design-family |
-| W042 | B11 | [4수03-06] | 3-4 | 도형과 측정 | G12A | R16 | 2 | anchor | review-target-set-and-design-family |
-| W043 | B09 | [2수03-06] | 1-2 | 도형과 측정 | G13 | R18 | 4 | anchor | review-target-set-and-design-family |
-| W044 | B09 | [2수01-07] | 1-2 | 수와 연산 | N07 | R04 | 2 | anchor | review-target-set-and-design-family |
-| W045 | B10 | [4수01-07] | 3-4 | 수와 연산 | N10 | R05 | 2 | anchor | review-target-set-and-design-family |
-| W046 | B04 | [6수03-07] | 5-6 | 도형과 측정 | G09 | R13 | 3 | extension | review-target-set-and-design-family |
-| W047 | B13 | [4수03-07] | 3-4 | 도형과 측정 | G12B | R16 | 2 | anchor | review-target-set-and-design-family |
-| W048 | B13 | [2수01-08] | 1-2 | 수와 연산 | N05B | R04 | 2 | anchor | review-target-set-and-design-family |
-| W049 | B14 | [4수01-08] | 3-4 | 수와 연산 | N11 | R04 | 3 | anchor | review-target-set-and-design-family |
-| W050 | B20 | [6수03-08] | 5-6 | 도형과 측정 | G10B | R13 | 2 | extension | review-target-set-and-design-family |
-| W051 | B17 | [4수03-08] | 3-4 | 도형과 측정 | G04B34 | R12 | 2 | anchor | review-target-set-and-design-family |
-| W052 | B16 | [6수01-09] | 5-6 | 수와 연산 | N17 | R07 | 2 | anchor | review-target-set-and-design-family |
-| W053 | B09 | [2수01-09] | 1-2 | 수와 연산 | N07 | R04 | 2 | extension | review-target-set-and-design-family |
-| W054 | B04 | [4수01-09] | 3-4 | 수와 연산 | N13A | R07 | 3 | anchor | review-target-set-and-design-family |
-| W055 | B20 | [6수03-09] | 5-6 | 도형과 측정 | G14 | R14 | 2 | anchor | review-target-set-and-design-family |
-| W056 | B17 | [4수03-10] | 3-4 | 도형과 측정 | G04B34 | R12 | 3 | extension | review-target-set-and-design-family |
-| W057 | B16 | [6수01-10] | 5-6 | 수와 연산 | N16 | R06+R07+R02 | 2 | anchor | review-target-set-and-design-family |
-| W058 | B06 | [2수03-09] | 1-2 | 도형과 측정 | G17 | R17 | 2 | anchor | review-target-set-and-design-family |
-| W059 | B11 | [4수01-10] | 3-4 | 수와 연산 | N13B | R07 | 2 | anchor | review-target-set-and-design-family |
-| W060 | B20 | [6수03-10] | 5-6 | 도형과 측정 | G15 | R14 | 2 | anchor | review-target-set-and-design-family |
-| W061 | B17 | [4수03-11] | 3-4 | 도형과 측정 | G04B34 | R12 | 2 | extension | review-target-set-and-design-family |
-| W062 | B17 | [6수01-11] | 5-6 | 수와 연산 | N18 | R07 | 3 | anchor | review-target-set-and-design-family |
-| W063 | B12 | [2수03-11] | 1-2 | 도형과 측정 | G19A12 | R19 | 3 | anchor | review-target-set-and-design-family |
-| W064 | B09 | [2수01-11] | 1-2 | 수와 연산 | N12 | R06 | 2 | anchor | review-target-set-and-design-family |
-| W065 | B15 | [4수01-11] | 3-4 | 수와 연산 | N14 | R07 | 3 | anchor | review-target-set-and-design-family |
-| W066 | B18 | [6수03-11] | 5-6 | 도형과 측정 | G22 | R18+R11 | 2 | anchor | review-target-set-and-design-family |
-| W067 | B17 | [4수03-12] | 3-4 | 도형과 측정 | G16 | R21 | 3 | anchor | review-target-set-and-design-family |
-| W068 | B15 | [6수01-12] | 5-6 | 수와 연산 | N15 | R07+R02 | 3 | anchor | review-target-set-and-design-family |
-| W069 | B13 | [2수03-12] | 1-2 | 도형과 측정 | G20A12 | R18 | 2 | anchor | review-target-set-and-design-family |
-| W070 | B11 | [4수01-12] | 3-4 | 수와 연산 | N01C | R02 | 2 | anchor | review-target-set-and-design-family |
-| W071 | B18 | [6수03-12] | 5-6 | 도형과 측정 | G23A | R20 | 2 | anchor | review-target-set-and-design-family |
-| W072 | B07 | [4수03-13] | 3-4 | 도형과 측정 | G18 | R17 | 2 | anchor | review-target-set-and-design-family |
-| W073 | B17 | [6수01-13] | 5-6 | 수와 연산 | N19 | R05 | 3 | anchor | review-target-set-and-design-family |
-| W074 | B16 | [2수03-13] | 1-2 | 도형과 측정 | G21A12 | R19+R04 | 2 | anchor | review-target-set-and-design-family |
-| W075 | B11 | [4수01-13] | 3-4 | 수와 연산 | N01C | R02 | 2 | extension | review-target-set-and-design-family |
-| W076 | B19 | [6수03-13] | 5-6 | 도형과 측정 | G24 | R20 | 3 | anchor | review-target-set-and-design-family |
-| W077 | B16 | [4수03-14] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | 2 | anchor | review-target-set-and-design-family |
-| W078 | B16 | [6수01-14] | 5-6 | 수와 연산 | N16 | R06+R07+R02 | 2 | extension | review-target-set-and-design-family |
-| W079 | B18 | [4수01-14] | 3-4 | 수와 연산 | N02B | R02+R03 | 2 | anchor | review-target-set-and-design-family |
-| W080 | B19 | [6수03-14] | 5-6 | 도형과 측정 | G25 | R21+R20 | 5 | anchor | review-target-set-and-design-family |
-| W081 | B14 | [4수03-15] | 3-4 | 도형과 측정 | G20A34 | R18 | 3 | anchor | review-target-set-and-design-family |
-| W082 | B18 | [6수01-15] | 5-6 | 수와 연산 | N20 | R05 | 3 | anchor | review-target-set-and-design-family |
-| W083 | B19 | [6수03-15] | 5-6 | 도형과 측정 | G26 | R16 | 3 | anchor | review-target-set-and-design-family |
-| W084 | B15 | [4수03-16] | 3-4 | 도형과 측정 | G19B34 | R19 | 2 | anchor | review-target-set-and-design-family |
-| W085 | B14 | [4수01-16] | 3-4 | 수와 연산 | N05C | R05 | 2 | anchor | review-target-set-and-design-family |
-| W086 | B21 | [6수03-16] | 5-6 | 도형과 측정 | G27 | R16+R20 | 2 | anchor | review-target-set-and-design-family |
-| W087 | B14 | [4수03-17] | 3-4 | 도형과 측정 | G20B | R18 | 3 | anchor | review-target-set-and-design-family |
-| W088 | B21 | [6수03-17] | 5-6 | 도형과 측정 | G28 | R13+R20 | 2 | anchor | review-target-set-and-design-family |
-| W089 | B15 | [4수03-18] | 3-4 | 도형과 측정 | G19B34 | R19 | 2 | extension | review-target-set-and-design-family |
-| W090 | B19 | [6수03-18] | 5-6 | 도형과 측정 | G23B | R20 | 2 | anchor | review-target-set-and-design-family |
-| W091 | B16 | [4수03-19] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | 2 | extension | review-target-set-and-design-family |
-| W092 | B21 | [6수03-19] | 5-6 | 도형과 측정 | G29 | R14+R20 | 3 | anchor | review-target-set-and-design-family |
-| W093 | B15 | [4수03-20] | 3-4 | 도형과 측정 | G20C | R18 | 3 | anchor | review-target-set-and-design-family |
-| W094 | B15 | [4수03-21] | 3-4 | 도형과 측정 | G19B34 | R19 | 3 | extension | review-target-set-and-design-family |
-| W095 | B15 | [4수03-22] | 3-4 | 도형과 측정 | G19B34 | R19 | 2 | extension | review-target-set-and-design-family |
-| W096 | B16 | [4수03-23] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | 2 | extension | review-target-set-and-design-family |
-| W097 | B21 | [4수03-25] | 3-4 | 도형과 측정 | G30 | R21+R11 | 2 | anchor | review-target-set-and-design-family |
+| work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| W001-TARGET_SET | TARGET_SET | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W002-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | bff0cd112afd (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W005-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [4수04-02] | 3-4 | 자료와 가능성 | D02A | R22 | 4998a2001117 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W006-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [6수02-01] | 5-6 | 변화와 관계 | C02C | R09 | 9852d63a8cd1 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W007-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B01 | [2수01-01] | 1-2 | 수와 연산 | N01A | R01 | b52f9592b564 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W008-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B02 | [4수02-01] | 3-4 | 변화와 관계 | C02A | R08 | cc458f3b74a7 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W009-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B05 | [6수04-01] | 5-6 | 자료와 가능성 | D03 | R23 | 4b980c5e08f8 (4) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W010-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [4수01-01] | 3-4 | 수와 연산 | N01B | R02 | b17d7fe01472 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W011-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B05 | [6수03-01] | 5-6 | 도형과 측정 | G07 | R15+R11 | 1bf911c30d20 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W012-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B02 | [2수04-03] | 1-2 | 자료와 가능성 | D01B | R22 | 90fdd347180f (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W013-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B09 | [4수03-02] | 3-4 | 도형과 측정 | G05 | R11 | 2da26b3a4930 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W014-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B05 | [6수01-02] | 5-6 | 수와 연산 | N03 | R03 | 0757d20dd457 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W015-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B10 | [2수03-02] | 1-2 | 도형과 측정 | G08 | R14 | 5aaffb9ae499 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W016-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [4수04-03] | 3-4 | 자료와 가능성 | D02B | R22 | 08d95842859f (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W017-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B05 | [6수02-03] | 5-6 | 변화와 관계 | C03 | R09 | 79fca6d17d54 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W018-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [4수02-02] | 3-4 | 변화와 관계 | C02B | R04 | 82eb4aea72f2 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W019-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B06 | [6수04-02] | 5-6 | 자료와 가능성 | D04 | R22 | 5aaa0ae59993 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W020-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B12 | [4수01-02] | 3-4 | 수와 연산 | N02A34 | R02+R03 | 4a4ab8a2b59a (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W021-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [6수03-03] | 5-6 | 도형과 측정 | G09 | R13 | 2b729d707374 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W022-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B10 | [4수03-03] | 3-4 | 도형과 측정 | G06 | R11 | 817f306b8b73 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W023-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B12 | [6수01-03] | 5-6 | 수와 연산 | N04 | R03 | 0337f2a8ac25 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W024-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B01 | [2수03-03] | 1-2 | 도형과 측정 | G03A | R21 | 5a5cadb88201 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W025-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B06 | [6수02-04] | 5-6 | 변화와 관계 | C04 | R09 | e297925f2347 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W026-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수01-03] | 1-2 | 수와 연산 | N02A12 | R02+R03 | 8f724570e2de (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W027-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B13 | [4수01-03] | 3-4 | 수와 연산 | N05A34 | R05 | ae459bf15e97 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W028-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B20 | [6수03-04] | 5-6 | 도형과 측정 | G10A | R13 | e75ebe975e42 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W029-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B11 | [4수03-04] | 3-4 | 도형과 측정 | G11A | R15 | 6def04892657 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W030-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B02 | [2수03-04] | 1-2 | 도형과 측정 | G03B | R11 | 8b5fbc2861ce (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W031-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B07 | [6수02-05] | 5-6 | 변화와 관계 | C05 | R09 | 5ea8a2cbaff7 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W032-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B02 | [2수01-05] | 1-2 | 수와 연산 | N06 | R06 | d03413ccb87c (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W033-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B07 | [6수04-05] | 5-6 | 자료와 가능성 | D05 | R24+R03 | 2ab626f83727 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W034-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [6수03-05] | 5-6 | 도형과 측정 | G09 | R13 | 9b5a158addac (3) | extension | target pending / family pending | review-target-set-and-design-family |
+| W035-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B12 | [4수03-05] | 3-4 | 도형과 측정 | G11B | R15 | 8dccf792e2c9 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W036-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B06 | [6수01-05] | 5-6 | 수와 연산 | N08 | R06 | 80910883ddfd (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W037-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [2수03-05] | 1-2 | 도형과 측정 | G04A12 | R12 | e8a1cbabd8ad (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W038-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B07 | [2수01-06] | 1-2 | 수와 연산 | N05A12 | R05 | 84cf2be392cf (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W039-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [6수04-06] | 5-6 | 자료와 가능성 | D06 | R24+R22 | 32d5628e6205 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W040-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B10 | [4수01-05] | 3-4 | 수와 연산 | N09 | R06 | f1b0ce8094d3 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W041-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B20 | [6수03-06] | 5-6 | 도형과 측정 | G10B | R13 | 709097d2fe50 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W042-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B11 | [4수03-06] | 3-4 | 도형과 측정 | G12A | R16 | 8b71df1f8b91 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W043-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B09 | [2수03-06] | 1-2 | 도형과 측정 | G13 | R18 | 3be6b326acf2 (4) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W044-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B09 | [2수01-07] | 1-2 | 수와 연산 | N07 | R04 | 702326dc8c44 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W045-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B10 | [4수01-07] | 3-4 | 수와 연산 | N10 | R05 | dbe5c3d6fb50 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W046-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [6수03-07] | 5-6 | 도형과 측정 | G09 | R13 | aec4b566bd87 (3) | extension | target pending / family pending | review-target-set-and-design-family |
+| W047-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B13 | [4수03-07] | 3-4 | 도형과 측정 | G12B | R16 | 430ae70973c8 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W048-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B13 | [2수01-08] | 1-2 | 수와 연산 | N05B | R04 | 4817d80b8281 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W049-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B14 | [4수01-08] | 3-4 | 수와 연산 | N11 | R04 | 7b15ea56c4e3 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W050-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B20 | [6수03-08] | 5-6 | 도형과 측정 | G10B | R13 | d127bc26c874 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W051-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [4수03-08] | 3-4 | 도형과 측정 | G04B34 | R12 | ed4965762658 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W052-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [6수01-09] | 5-6 | 수와 연산 | N17 | R07 | 16b71cb54d96 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W053-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B09 | [2수01-09] | 1-2 | 수와 연산 | N07 | R04 | cb8721f47f91 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W054-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B04 | [4수01-09] | 3-4 | 수와 연산 | N13A | R07 | ad521c78afe7 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W055-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B20 | [6수03-09] | 5-6 | 도형과 측정 | G14 | R14 | 22873d444432 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W056-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [4수03-10] | 3-4 | 도형과 측정 | G04B34 | R12 | dd4940f411d9 (3) | extension | target pending / family pending | review-target-set-and-design-family |
+| W057-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [6수01-10] | 5-6 | 수와 연산 | N16 | R06+R07+R02 | 39ba467a8517 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W058-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B06 | [2수03-09] | 1-2 | 도형과 측정 | G17 | R17 | 2ceb693322db (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W059-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B11 | [4수01-10] | 3-4 | 수와 연산 | N13B | R07 | ddf5cafc5bdf (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W060-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B20 | [6수03-10] | 5-6 | 도형과 측정 | G15 | R14 | 0c5f3cd74c1c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W061-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [4수03-11] | 3-4 | 도형과 측정 | G04B34 | R12 | d6bf47cce96c (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W062-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [6수01-11] | 5-6 | 수와 연산 | N18 | R07 | 29af811e2e03 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W063-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B12 | [2수03-11] | 1-2 | 도형과 측정 | G19A12 | R19 | 45b8b4f727fa (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W064-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B09 | [2수01-11] | 1-2 | 수와 연산 | N12 | R06 | 9961bc789cb9 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W065-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수01-11] | 3-4 | 수와 연산 | N14 | R07 | 2a9380af6f9e (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W066-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B18 | [6수03-11] | 5-6 | 도형과 측정 | G22 | R18+R11 | 497eec7afa33 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W067-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [4수03-12] | 3-4 | 도형과 측정 | G16 | R21 | 90cd0be4d4db (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W068-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [6수01-12] | 5-6 | 수와 연산 | N15 | R07+R02 | 328403f95f28 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W069-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B13 | [2수03-12] | 1-2 | 도형과 측정 | G20A12 | R18 | 2abc0ae1fb35 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W070-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B11 | [4수01-12] | 3-4 | 수와 연산 | N01C | R02 | 1918fe15f1ce (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W071-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B18 | [6수03-12] | 5-6 | 도형과 측정 | G23A | R20 | a9a8da0933e0 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W072-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B07 | [4수03-13] | 3-4 | 도형과 측정 | G18 | R17 | aeb5b621f8bf (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W073-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B17 | [6수01-13] | 5-6 | 수와 연산 | N19 | R05 | 7c1b699d19a1 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W074-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [2수03-13] | 1-2 | 도형과 측정 | G21A12 | R19+R04 | b6c239ad2e56 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W075-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B11 | [4수01-13] | 3-4 | 수와 연산 | N01C | R02 | 30ae600623f1 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W076-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B19 | [6수03-13] | 5-6 | 도형과 측정 | G24 | R20 | 1705f47f3f19 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W077-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [4수03-14] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | d0521e764601 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W078-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [6수01-14] | 5-6 | 수와 연산 | N16 | R06+R07+R02 | 03cb9e29970d (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W079-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B18 | [4수01-14] | 3-4 | 수와 연산 | N02B | R02+R03 | b033f5b016a6 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W080-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B19 | [6수03-14] | 5-6 | 도형과 측정 | G25 | R21+R20 | 91eedf0e5ff2 (5) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W081-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B14 | [4수03-15] | 3-4 | 도형과 측정 | G20A34 | R18 | 001072f6d6e8 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W082-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B18 | [6수01-15] | 5-6 | 수와 연산 | N20 | R05 | 10d894d3b9f3 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W083-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B19 | [6수03-15] | 5-6 | 도형과 측정 | G26 | R16 | add8df4eb207 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W084-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수03-16] | 3-4 | 도형과 측정 | G19B34 | R19 | 41a4a34a83cd (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W085-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B14 | [4수01-16] | 3-4 | 수와 연산 | N05C | R05 | 1d2388801ee3 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W086-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B21 | [6수03-16] | 5-6 | 도형과 측정 | G27 | R16+R20 | 698b4cab8342 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W087-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B14 | [4수03-17] | 3-4 | 도형과 측정 | G20B | R18 | 73401deade9a (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W088-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B21 | [6수03-17] | 5-6 | 도형과 측정 | G28 | R13+R20 | 25c58d6c410f (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W089-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수03-18] | 3-4 | 도형과 측정 | G19B34 | R19 | 040754feb820 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W090-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B19 | [6수03-18] | 5-6 | 도형과 측정 | G23B | R20 | 06d332842898 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W091-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [4수03-19] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | 22a0b358f25c (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W092-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B21 | [6수03-19] | 5-6 | 도형과 측정 | G29 | R14+R20 | 5435d4901bfc (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W093-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수03-20] | 3-4 | 도형과 측정 | G20C | R18 | 6308ba021072 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
+| W094-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수03-21] | 3-4 | 도형과 측정 | G19B34 | R19 | 3a2f2b0ef838 (3) | extension | target pending / family pending | review-target-set-and-design-family |
+| W095-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B15 | [4수03-22] | 3-4 | 도형과 측정 | G19B34 | R19 | e1e13fa90313 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W096-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B16 | [4수03-23] | 3-4 | 도형과 측정 | G21B34 | R19+R04 | 3187aa3f6a88 (2) | extension | target pending / family pending | review-target-set-and-design-family |
+| W097-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B21 | [4수03-25] | 3-4 | 도형과 측정 | G30 | R21+R11 | 163f1bf6f386 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 
 ## Family acceptance gate
 
@@ -338,6 +349,8 @@
 - 같은 MathCanvas 화면이나 같은 선택형 shell을 쓴다는 이유만으로 family를 합치지 않는다.
 - 새 family 때문에 공통 planner, MCP schema, teacher-ui 활동별 분기, legacy 중앙 registry를 수정하지 않는다.
 - 정답·해설·오개념·exact preview·compile·validator가 함께 통과하기 전 offline-validated로 올리지 않는다.
+- TARGET_SET·FAMILY_TRACK 뒤에는 gpt-5.6-sol / max의 승인된 SOL_REVIEW 기록이 있어야 한다.
+- SOL_REVIEW 담당자는 구현 파일을 수정하지 않고, 승인·수정요청·차단 중 하나만 기록한다.
 - 현재 해시의 create·조작·저장·재열기 증거 없이 live-released로 올리지 않는다.
 - MathCanvas live 경로가 막혀도 offline queue를 계속 진행한다.
 - Fable CLI나 외부 교사 검수를 실행 조건으로 두지 않는다.

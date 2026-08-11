@@ -39,13 +39,16 @@
 - [x] 계획 source와 현재 execution state를 조인하는 JSON·Markdown report builder를 추가한다.
 - [x] stale·누락·중복·grade-band 혼합·unknown engine·unbatched track을 `pnpm check` hard gate로 만든다.
 - [x] Sol max planning / Luna max one-work-item execution / Sol replan 역할을 고정한다.
+- [x] `TARGET_SET`·`FAMILY_TRACK` 뒤 Sol max `SOL_REVIEW` 독립 승인 게이트와 review board를 고정한다.
+- [x] candidate commit hash·attempt·changed files·재검토 이력을 Sol review record에 결속한다.
+- [x] generated work item에 operation·dependencies·allowed files·target outline hash를 투영한다.
 - [x] Luna 계약에 허용 파일·금지 파일·retry 2회·live write 분리·commit/push·hard-stop을 명시한다.
 - [x] family acceptance gate 18개와 bounded native discovery 9개 필수·3개 조건부를 계획에 기록한다.
 - [x] 97개 standard별 Sol expected AssessmentTarget outline 236개를 기계 판독 fixture로 고정하고 officialGoal·순서·필수 필드·누락·중복을 검증한다.
 - [ ] pinned learning-map record가 없는 88개 standard의 concept·representation·application·prerequisite fixture를 추가한다.
 - [ ] 필수 native discovery 9개를 bounded work item으로 닫는다.
 - [ ] generated work item manifest에 operation·dependencies·allowed files·target outline hash를 투영한다.
-- [ ] Luna loop를 W001부터 순차 실행하고 매 항목 full QA·원자적 main commit·push로 닫는다.
+- [ ] Luna loop를 W001부터 순차 실행하고, Luna full QA → Sol `SOL_REVIEW` 승인 → 원자적 main commit·push 순서로 닫는다.
 - [ ] 97개뿐 아니라 나머지 24개 경로까지 합쳐 121/121 standard의 모든 필수 target을 live-released로 만든다.
 
 권위 파일:

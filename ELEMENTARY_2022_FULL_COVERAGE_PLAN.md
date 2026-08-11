@@ -415,15 +415,24 @@ Sol max 계획 초안은 97개 officialGoal을 **236개 expected target outline*
 모델 역할은 고정한다.
 
 - **Sol max**: target outline, engine/family 경계, grade-band split, native affordance,
-  재계획과 architecture 결정
-- **Luna max**: 승인된 work item 하나의 구현·테스트·보고서·원자적 commit·push
+  재계획과 architecture 결정, 그리고 `TARGET_SET`·`FAMILY_TRACK` 결과의 독립 검토
+- **Luna max**: 승인된 work item 하나의 구현·테스트·보고서와 push 전 local candidate
+  commit. Sol `SOL_REVIEW` 승인 전에는 상태 승격과 main push를 하지 않음
 - 같은 deterministic 실패 2회, target 완전성 불명, 새로운 schema/native tool,
   결정·불변량·증거 분기는 `blocked-needs-sol-replan`
 
 현재 Codex sub-agent catalog에는 `Luna`라는 모델명이 노출되지 않으므로 저장소의
 실행 계약은 모델 독립적으로 고정한다. Luna가 제공되는 운영 환경에서 Luna max를
 선택한다. 전체 반복 계약은 `CURRICULUM_97_LUNA_LOOP_PROMPT.md`를 권위로 사용하며,
-Fable CLI는 사용하지 않는다.
+독립 검토 계약은 `SOL_REVIEW_PROMPT.md`와
+`scripts/curriculum/sol-review-board.json`을 사용한다. Fable CLI는 사용하지 않는다.
+
+각 standard의 첫 operation은 `LEARNING_MAP_BINDING`이다. 그 다음
+`TARGET_SET → SOL_REVIEW → (AFFORDANCE_DISCOVERY/ENGINE_CORE) → FAMILY_TRACK →
+SOL_REVIEW` 순으로 진행한다. generated work item에는 operation, dependencies,
+allowed files, target outline SHA-256을 함께 기록하며, Sol review record는 candidate
+commit hash와 changed files에 결속한다. `changes-requested`는 새 attempt·새 candidate
+commit으로만 재시도한다.
 
 중요하게, 이 97개를 닫는 것만으로 전체 완료가 아니다. 기존 family 재사용·offline
 완성·reviewed gap으로 분류된 나머지 24개를 합쳐 121/121 standard의 모든 필수

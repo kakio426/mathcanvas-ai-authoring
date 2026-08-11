@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "boardId": "kr-2022-elementary-math-no-family-sol-review-board",
+  "reviewer": {
+    "model": "gpt-5.6-sol / max",
+    "role": "independent educational and architecture gate"
+  },
+  "policy": {
+    "requiredAfter": ["TARGET_SET", "FAMILY_TRACK"],
+    "reviewBeforeStatus": ["reviewed-complete", "offline-validated", "live-released"],
+    "decisions": ["approved", "changes-requested", "blocked"],
+    "oneStandardPerReview": true,
+    "reviewerMayEditImplementation": false,
+    "approvalRequiresEvidence": true,
+    "approvalBindsToCandidateCommit": true,
+    "latestAttemptWins": true,
+    "pushRequiresApprovedCandidate": true,
+    "reviewerOwnsBoardAndDerivedReportCommit": true,
+    "reviewerMustNotPush": true,
+    "postApprovalFilesMustBeManifestBound": true
+  },
+  "reviews": []
+}

@@ -9,10 +9,14 @@
 - 공식 성취기준과 `DECK6/korean-elementary-learning-map`의 고정 topic·선수학습·관찰 증거·평가 질문을 manifest에 연결한다.
 - 2022 초등 전 범위 신규 family 작업은 `scripts/curriculum/no-family-plan.json`,
   `reports/curriculum-execution/no-family-plan.json`,
-  `CURRICULUM_97_LUNA_LOOP_PROMPT.md`를 권위로 사용한다. 한 실행은 standard 하나와
+  `CURRICULUM_97_LUNA_LOOP_PROMPT.md`, `SOL_REVIEW_PROMPT.md`,
+  `scripts/curriculum/sol-review-board.json`을 권위로 사용한다. 한 실행은 standard 하나와
   operation 하나만 소유하고, 서로 다른 gradeBand·학생 결정·불변량·관찰 증거를
-  한 concrete family로 합치지 않는다. planning drift는 Sol max 재계획으로
-  중단하며 Fable CLI를 호출하지 않는다.
+  한 concrete family로 합치지 않는다. Luna는 자체 QA를 수행하고, `TARGET_SET`·
+  `FAMILY_TRACK`은 Sol max의 독립 `SOL_REVIEW` 승인 없이는 상태 승격·main push를
+  하지 않는다. 해당 operation은 push하지 않은 candidate commit hash에 결속하며,
+  `pnpm curriculum:sol-review:verify` 통과 후에만 push한다. planning drift는 Sol max
+  재계획으로 중단하며 Fable CLI를 호출하지 않는다.
 - 정답이 처음부터 보이거나 모든 제공물을 명백한 칸에 옮기기만 하면 되는 활동은 출시하지 않는다.
 - 신규·변경 blueprint는 인지적 요구 manifest와 runtime predicate가 필요하다.
 - 학생 화면에는 `먼저 예상`, `세어 확인`, `근거와 수정`, `수 카드 모음`, `검증`, `불변량`, `후보` 같은 내부 설계 용어를 쓰지 않는다. 대상과 행동이 드러나는 교실 문장으로 바꾼다.
