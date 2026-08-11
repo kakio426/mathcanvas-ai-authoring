@@ -1,4 +1,4 @@
-# W001 semantic-slice revalidation replan (v2)
+# W001 semantic-slice revalidation replan (v3)
 
 ## 범위
 
@@ -28,6 +28,9 @@
 6. replan 승인 기록은 다음 FAMILY_REVALIDATION attempt와 독립적으로 유지된다.
    revalidation 승인 뒤에는 `familyValidated`와 registry/coverage 파생 보고서를 함께
    갱신하여 FAMILY_TRACK으로 되돌아가지 않는다.
+7. FAMILY_REVALIDATION 승인 후 파생 커밋은 registry, curriculum coverage, execution,
+   no-family plan을 모두 포함해야 하며, gate는 operation manifest 밖의 `reports/**`를
+   묵인하지 않는다.
 
 ## 검증 순서
 

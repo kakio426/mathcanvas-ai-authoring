@@ -94,6 +94,10 @@ artifact가 전역 파일 전체 hash를 잡아 무관한 표준 추가만으로
 `changes-requested` 또는 `blocked`로 판정하고 semantic slice/module fingerprint와
 재개 조건을 `SOL_REPLAN`으로 분리한다. 같은 `FAMILY_REVALIDATION` attempt를
 반복 승인하지 않는다.
+`FAMILY_REVALIDATION` 승인 후 파생 report는 registry, curriculum coverage,
+execution, no-family 순서로 모두 재생성해야 한다. Sol post-approval commit은
+해당 operation manifest에 열거된 파일만 포함하며, gate의 암묵적 전체
+`reports/**` 허용을 전제로 삼지 않는다.
 `SOL_REPLAN`은 blocked standard의 재개 계약만 검토하며 별도 `operationWorkItemId`와
 candidate/allowedFiles를 사용한다. 기존 `FAMILY_TRACK` attempt를 재사용하거나 A5로
 기록하지 않는다.

@@ -183,7 +183,6 @@ assertFilesAllowed(candidateFiles, operationPatterns, "candidate-file-not-allowe
 const postApprovalPatterns = [
   ...(report.operationPolicy?.postApprovalFilesByOperation?.[operation] ?? []),
   "scripts/curriculum/sol-review-board.json",
-  "reports/**"
 ];
 if (!postApprovalPatterns.length) fail(`post-approval-manifest-missing:${operation}`);
 const afterCandidateFiles = changedFilesAfter(candidateCommit);
