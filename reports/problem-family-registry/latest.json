@@ -98,7 +98,7 @@
       "renderRecipeKind": "native-render-recipe",
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
-      "blueprintContentHash": "aade83025d16504b5dc64b1a9e4a5a967d90a24aaee1da622d31ff82f0a249ca",
+      "blueprintContentHash": "df76d1436f02b05bf530b94489a8dba0c061cbd3670b495b7890acda1afab381",
       "assessmentTargetIds": [
         "data.table.organize-classified-data-v1",
         "data.table.explain-usefulness-v1"

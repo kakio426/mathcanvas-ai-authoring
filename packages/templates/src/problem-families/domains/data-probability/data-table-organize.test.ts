@@ -73,7 +73,7 @@ function resolveEnvelope(contextId: DataTableContextId) {
 }
 
 describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
-  it("원자료·임시 표·정답·교사용 미리보기를 offline 생성한다", () => {
+  it("원자료·전체 범주 개수 묶음·합계·교사용 미리보기를 offline 생성한다", () => {
     const result = resolveEnvelope("fruit");
 
     expect(result.recommendation).toMatchObject({
@@ -104,8 +104,8 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     const applied = buildRegisteredAppliedProblemParameters(result.resolved);
     expect(answers).toHaveLength(2);
     expect(answers[0]).toMatchObject({
-      answer: "3개",
-      explanation: expect.stringContaining("사과가 3번")
+      answer: "사과 3개, 바나나 1개, 포도 2개 (합계 6개)",
+      explanation: expect.stringContaining("3+1+2=6")
     });
     expect(answers[1]).toMatchObject({
       answer: "개수 비교",
@@ -113,8 +113,9 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     });
     expect(previews?.[0]?.statements).toEqual([
       expect.stringContaining("과일 자료"),
-      "사과·포도·사과·바나나·사과·포도",
+      "6개: 사과·포도·사과·바나나·사과·포도",
       "표 범주: 사과, 바나나, 포도",
+      "현재 표 개수: 1, 1, 1",
       expect.stringContaining("선택:")
     ]);
     expect(applied).toEqual({
@@ -124,7 +125,13 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
     });
 
     expect(result.resolved.items[0]?.values.tableValues).toEqual([1, 1, 1]);
-    expect(result.resolved.items[0]?.values.correctTableValues).toEqual([3, 1, 2]);
+    expect(result.resolved.items[0]?.values.correctValueText).toBe("3,1,2");
+    expect(result.resolved.items[0]?.values.correctAnswerText).toContain(
+      "사과 3개"
+    );
+    expect(result.resolved.items[0]?.values.answerExplanation).toContain(
+      "원자료의 여섯 항목을 빠짐없이 한 번씩 세었습니다"
+    );
     expect(result.resolved.items[1]?.values.tableValues).toEqual([3, 1, 2]);
     expect(result.resolved.items[0]?.values.rawDataText).toContain("사과");
     for (const item of result.resolved.items) {
@@ -134,6 +141,13 @@ describe("[2수04-02] 자료를 표로 정리하기 native family", () => {
         [1, 2, 3, 4, 5].map((index) => String(item.values[`candidate${index}`]))
       ).toHaveLength(5);
     }
+    const firstCandidates = [1, 2, 3, 4, 5].map((index) =>
+      String(result.resolved.items[0]?.values[`candidate${index}`])
+    );
+    expect(firstCandidates).toContain("3,1,2");
+    expect(firstCandidates.every((candidate) => candidate.split(",").length === 3)).toBe(
+      true
+    );
   });
 
   it("등록한 4개 자료 맥락 envelope를 모두 생성·컴파일·검증한다", () => {

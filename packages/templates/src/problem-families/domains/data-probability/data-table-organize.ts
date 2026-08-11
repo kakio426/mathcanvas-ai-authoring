@@ -94,16 +94,16 @@ const CONTEXTS: Readonly<Record<DataTableContextId, Context>> = {
 };
 
 const instructions = [
-  "① 원자료를 하나씩 세어 표의 각 범주에 알맞은 개수를 골라 놓으세요.",
-  "② 표의 개수와 원자료를 다시 비교해 틀린 곳을 고치세요.",
+  "① 원자료를 하나씩 세어 범주 순서별 개수 묶음을 골라 놓으세요.",
+  "② 고른 세 개의 개수와 원자료를 다시 비교해 틀린 곳을 찾으세요.",
   "③ 표로 나타내면 무엇이 편리한지 한 문장으로 써 보세요."
 ] as const;
 
 const baseScaffold = makeChoiceExplanationScaffoldRoles({
   instructions,
   instructionalIntents: [
-    "원자료를 범주별로 세기 전에 학생이 답을 예측하게 합니다.",
-    "표의 범주별 개수와 원자료를 대응해 스스로 검산하게 합니다.",
+    "원자료를 범주별로 세어 세 범주의 개수 묶음을 결정하게 합니다.",
+    "선택한 세 개의 개수와 원자료를 대응해 스스로 검산하게 합니다.",
     "표가 비교와 집계에 편리한 까닭을 자료에 근거해 설명하게 합니다."
   ],
   questionIntent:
@@ -195,7 +195,7 @@ export const dataTableOrganizeBlueprint = defineActivityBlueprint(
         locked: true,
         movable: false,
         instructionalIntent:
-          "범주와 임시 개수가 있는 표입니다. 원자료를 세어 표의 값을 고쳐 봅니다.",
+          "범주와 현재 개수가 있는 표입니다. 원자료와 고른 개수 묶음을 비교합니다.",
         properties: {},
         bindings: {
           title: "item.contextText",
@@ -356,8 +356,14 @@ function shuffle<T>(values: readonly T[], random: () => number): T[] {
 
 function candidateValues(context: Context, index: number): string[] {
   if (index === 0) {
-    const correct = context.counts[0]!;
-    return [`${correct}개`, "1개", "2개", "6개", "전체 6개"];
+    const [first, second, third] = context.counts;
+    return [
+      `${first},${second},${third}`,
+      `${first + second + third},0,0`,
+      `${second},${first},${third}`,
+      `${first},${third},${second}`,
+      `${first + 1},${second},${third - 1}`
+    ];
   }
   return [
     "개수 비교",
@@ -391,7 +397,7 @@ export function generateDataTableOrganizeItems(
     const candidates = shuffle(candidateValues(context, index), random);
     const isOrganize = index === 0;
     const correctValueText = isOrganize
-      ? `${context.counts[0]}개`
+      ? context.counts.join(",")
       : "개수 비교";
     const tableValues = isOrganize ? [1, 1, 1] : [...context.counts];
     return {
@@ -406,15 +412,16 @@ export function generateDataTableOrganizeItems(
         valueColumnName: "개수(개)",
         categories: [...context.categories],
         tableValues,
-        correctTableValues: [...context.counts],
-        rawDataText: context.rawData.join("·"),
+        rawDataText: `${context.rawData.length}개: ${context.rawData.join("·")}`,
         questionText: isOrganize
-          ? `${context.categoryLabel} 자료입니다. ${context.categories[0]}는 몇 개인가요? 표를 고쳐 보세요.`
+          ? `${context.categoryLabel} 자료입니다. 범주 순서별 개수 묶음은 무엇인가요?`
           : "표로 나타내면 무엇이 편리한가요?",
         correctValueText,
-        correctAnswerText: correctValueText,
+        correctAnswerText: isOrganize
+          ? `${context.categories[0]} ${context.counts[0]}개, ${context.categories[1]} ${context.counts[1]}개, ${context.categories[2]} ${context.counts[2]}개 (합계 ${context.counts.reduce((sum, value) => sum + value, 0)}개)`
+          : correctValueText,
         answerExplanation: isOrganize
-          ? `${context.categories[0]}가 ${context.rawData.filter((item) => item === context.categories[0]).length}번 나와서 ${correctValueText}입니다. 표의 임시 개수를 원자료와 비교해 고칩니다.`
+          ? `범주 순서 ${context.categories.join(", ")}에 맞춰 ${correctValueText}로 세면 ${context.counts[0]}+${context.counts[1]}+${context.counts[2]}=${context.counts.reduce((sum, value) => sum + value, 0)}입니다. 원자료의 여섯 항목을 빠짐없이 한 번씩 세었습니다.`
           : "표에서는 같은 범주의 개수를 모아 보여 주므로 범주별 개수와 차이를 한눈에 비교하기 쉽습니다.",
         misconceptionIds: isOrganize
           ? [
@@ -576,6 +583,7 @@ function problemPreviews(resolved: ResolvedActivity): RegisteredProblemPreview[]
       String(item.values.questionText),
       String(item.values.rawDataText),
       `표 범주: ${(item.values.categories as string[]).join(", ")}`,
+      `현재 표 개수: ${(item.values.tableValues as number[]).join(", ")}`,
       `선택: ${[1, 2, 3, 4, 5].map((index) => String(item.values[`candidate${index}`])).join(", ")}`
     ]
   }));
@@ -627,7 +635,7 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   blueprintVersion: dataTableOrganizeBlueprint.version,
   blueprintContentHash: dataTableOrganizeBlueprint.contentHash,
   mathematicalDecision:
-    "학생은 원자료를 범주별로 세어 표의 값을 고치고, 표가 범주별 개수와 차이를 비교하기 편리한 까닭을 결정한다.",
+    "학생은 원자료의 각 항목을 범주 순서별 개수 묶음으로 정확히 세어 합계가 전체 자료 수와 같은지 확인하고, 표가 범주별 개수와 차이를 비교하기 편리한 까닭을 결정한다.",
   misconceptionConflict:
     "전체 개수를 범주별 개수로 쓰거나 표를 꾸미기일 뿐이라고 생각하는 답을 원자료·표의 실제 개수와 충돌시킨다.",
   learningMap: {
@@ -636,17 +644,21 @@ const cognitiveManifest = defineCognitiveDemandManifest({
     usageSnapshotSha256: LEARNING_MAP_USAGE_SNAPSHOT_SHA256,
     standardCode: "[2수04-02]",
     topicIds: [
-      "kr.mt.math.data-probability.g1-2.s2-04-02.representation"
+      "kr.mt.math.data-probability.g1-2.s2-04-02.representation",
+      "kr.mt.math.data-probability.g1-2.s2-04-02.application"
     ],
     prerequisiteTopicIds: [
-      "kr.mt.math.data-probability.g1-2.s2-04-02.concept"
+      "kr.mt.math.data-probability.g1-2.s2-04-02.concept",
+      "kr.mt.math.data-probability.g1-2.s2-04-02.representation"
     ],
     observableEvidence: [
       "[2수04-02] 자료의 정리 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다.",
-      "자신의 표현물에서 자료와 가능성 내용과 근거가 드러나는 부분을 찾아 설명한다."
+      "자신의 표현물에서 자료와 가능성 내용과 근거가 드러나는 부분을 찾아 설명한다.",
+      "[2수04-02] 자료의 정리 - 적용과 설명을 수행하는 순서와 주의할 점을 말한 뒤 과제를 끝까지 실행한다.",
+      "수행 과정과 결과를 기록하고, [2수04-02] 자료의 정리 - 적용과 설명의 다음 시도에서 바꿀 점을 한 가지 제시한다."
     ],
     assessmentPrompt:
-      "'자료의 정리'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라.",
+      "'자료의 정리'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라.",
     caveat:
       "학습지도 저장소는 표현과 선수 관계 설계의 보조 자료이며 공식 교육과정 [2수04-02] 원문을 대신하지 않는다."
   },
@@ -673,7 +685,7 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   },
   explanation: { regionRole: "explanation-box" },
   revisionPath:
-    "다섯 생각 카드는 계속 움직일 수 있고, 학생은 원자료와 표를 다시 비교한 뒤 선택과 설명을 고친다.",
+    "다섯 생각 카드는 계속 움직일 수 있고, 학생은 원자료와 현재 표를 다시 비교한 뒤 개수 묶음 선택과 설명을 고친다.",
   limitations: { autoGrading: "none-by-design", phaseOrder: "teacher-guided" }
 });
 
