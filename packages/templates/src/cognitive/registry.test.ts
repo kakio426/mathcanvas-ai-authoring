@@ -100,6 +100,17 @@ describe("cognitive runtime predicate binding", () => {
           constructionMode: "student-constructed",
           answerMode: "conditional-rubric",
           ruleStatePath: "studentRuleState",
+          variantRoles: [
+            "rule-variant-1",
+            "rule-variant-2",
+            "rule-variant-3",
+            "rule-variant-4",
+            "rule-variant-5",
+            "rule-variant-6",
+            "rule-variant-7",
+            "rule-variant-8",
+            "rule-variant-9"
+          ],
           validRuleStatesPath: "validRuleStateExamples",
           surplusPath: "surplusRuleStateExamples",
           minimumSurplus: 2,
@@ -108,11 +119,20 @@ describe("cognitive runtime predicate binding", () => {
             sourceRoles: [
               "rule-variant-1",
               "rule-variant-2",
-              "rule-variant-3"
+              "rule-variant-3",
+              "rule-variant-4",
+              "rule-variant-5",
+              "rule-variant-6",
+              "rule-variant-7",
+              "rule-variant-8",
+              "rule-variant-9"
             ],
             slotRoles: ["rule-slot-1", "rule-slot-2"],
             slotCount: 2,
             minimumDistinctValues: 2,
+            minimumDistinctPoolValues: 3,
+            minimumCopiesPerDistinctValue: 3,
+            sourceUseMode: "move-once-no-clone",
             allowsAnyOrderedSelection: true,
             initialState: "empty"
           },
@@ -127,6 +147,8 @@ describe("cognitive runtime predicate binding", () => {
             period: 2,
             minimumTargetCount: 4,
             requiresVisibleComparison: true,
+            requiresSimultaneousRuleAndContinuation: true,
+            ruleStateIndexMode: "index-mod-period",
             evidenceMode: "student-state-dependent"
           },
           distractors: [

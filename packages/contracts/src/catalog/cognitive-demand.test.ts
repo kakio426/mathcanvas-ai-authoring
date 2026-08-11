@@ -67,6 +67,17 @@ const studentConstructedManifest = () => {
       constructionMode: "student-constructed" as const,
       answerMode: "conditional-rubric" as const,
       ruleStatePath: "studentRuleState",
+      variantRoles: [
+        "rule-variant-1",
+        "rule-variant-2",
+        "rule-variant-3",
+        "rule-variant-4",
+        "rule-variant-5",
+        "rule-variant-6",
+        "rule-variant-7",
+        "rule-variant-8",
+        "rule-variant-9"
+      ],
       validRuleStatesPath: "validRuleStateExamples",
       surplusPath: "surplusRuleStateExamples",
       minimumSurplus: 2,
@@ -75,11 +86,20 @@ const studentConstructedManifest = () => {
         sourceRoles: [
           "rule-variant-1",
           "rule-variant-2",
-          "rule-variant-3"
+          "rule-variant-3",
+          "rule-variant-4",
+          "rule-variant-5",
+          "rule-variant-6",
+          "rule-variant-7",
+          "rule-variant-8",
+          "rule-variant-9"
         ],
         slotRoles: ["rule-slot-1", "rule-slot-2"],
         slotCount: 2,
         minimumDistinctValues: 2,
+        minimumDistinctPoolValues: 3,
+        minimumCopiesPerDistinctValue: 3,
+        sourceUseMode: "move-once-no-clone" as const,
         allowsAnyOrderedSelection: true as const,
         initialState: "empty" as const
       },
@@ -94,6 +114,8 @@ const studentConstructedManifest = () => {
         period: 2,
         minimumTargetCount: 4,
         requiresVisibleComparison: true as const,
+        requiresSimultaneousRuleAndContinuation: true as const,
+        ruleStateIndexMode: "index-mod-period" as const,
         evidenceMode: "student-state-dependent" as const
       },
       distractors: [

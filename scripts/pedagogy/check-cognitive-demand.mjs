@@ -591,14 +591,28 @@ for (const manifest of manifests) {
         construction.slotCount === construction.slotRoles.length &&
         construction.minimumDistinctValues >= 2 &&
         construction.minimumDistinctValues <= construction.slotCount &&
+        construction.minimumDistinctValues === decision.ruleSlotRoles.length &&
+        construction.minimumDistinctPoolValues >= 3 &&
+        construction.minimumCopiesPerDistinctValue >= 3 &&
+        construction.sourceUseMode === "move-once-no-clone" &&
+        decision.variantRoles.length >=
+          construction.minimumDistinctPoolValues *
+            construction.minimumCopiesPerDistinctValue &&
         construction.allowsAnyOrderedSelection === true &&
         construction.initialState === "empty" &&
         application?.ruleStatePath === decision.ruleStatePath &&
         application.period === decision.ruleSlotRoles.length &&
         application.minimumTargetCount >= 4 &&
-        application.continuationTargetRoles.length >=
-          application.minimumTargetCount &&
+        application.minimumTargetCount ===
+          application.continuationTargetRoles.length &&
+        application.minimumTargetCount % application.period === 0 &&
         application.requiresVisibleComparison === true &&
+        application.requiresSimultaneousRuleAndContinuation === true &&
+        application.ruleStateIndexMode === "index-mod-period" &&
+        construction.minimumCopiesPerDistinctValue >=
+          1 +
+            application.continuationTargetRoles.length /
+              application.period &&
         application.evidenceMode === "student-state-dependent" &&
         JSON.stringify(manifest.verification.roles) ===
           JSON.stringify(expectedVerificationRoles) &&
@@ -625,12 +639,15 @@ for (const manifest of manifests) {
             !containsConcreteInitialState(entry.properties) &&
             constraint !== undefined &&
             constraint.requiresStudentAction &&
+            constraint.target.role === role &&
             sameSet(
               constraint.sources.map((source) => source.role),
               decision.variantRoles
             ) &&
-            constraint.parameters.ruleStatePath ===
-              decision.ruleStatePath
+            constraint.parameters?.ruleStatePath ===
+              decision.ruleStatePath &&
+            constraint.parameters?.ruleStateIndex ===
+              index % (application?.period ?? Number.MAX_SAFE_INTEGER)
           );
         }
       );
@@ -689,12 +706,6 @@ for (const manifest of manifests) {
             const sourceValues = decision.variantRoles.map((role) =>
               roleBoundValue(roleByName.get(role), item, decision.variantProperty)
             );
-            const distinctSourceValues = sourceValues.filter(
-              (value, index) =>
-                sourceValues.findIndex((candidate) =>
-                  sameValue(candidate, value)
-                ) === index
-            );
             const validKeys = validStates?.map((state) => JSON.stringify(state));
             const distinctValid =
               validKeys && new Set(validKeys).size === validKeys.length;
@@ -708,6 +719,45 @@ for (const manifest of manifests) {
                   construction.minimumDistinctValues &&
                 !validStates?.some((valid) => sameValue(valid, state))
             );
+            const canComposeApplicationState = (state) => {
+              if (
+                typeof application?.period !== "number" ||
+                typeof application?.minimumTargetCount !== "number" ||
+                state.length !== application.period ||
+                application.minimumTargetCount % application.period !== 0
+              ) {
+                return false;
+              }
+              return canComposeOrderedState(
+                [
+                  ...state,
+                  ...Array.from(
+                    { length: application.minimumTargetCount },
+                    (_, index) => state[index % application.period]
+                  )
+                ],
+                sourceValues
+              );
+            };
+            const distinctSourceValues = sourceValues.filter(
+              (value, index) =>
+                value !== undefined &&
+                sourceValues.findIndex((candidate) =>
+                  sameValue(candidate, value)
+                ) === index
+            );
+            const sourceCapacityValid =
+              sourceValues.length >=
+                decision.ruleSlotRoles.length +
+                  application.continuationTargetRoles.length &&
+              distinctSourceValues.length >=
+                construction.minimumDistinctPoolValues &&
+              distinctSourceValues.every(
+                (value) =>
+                  sourceValues.filter((candidate) =>
+                    sameValue(candidate, value)
+                  ).length >= construction.minimumCopiesPerDistinctValue
+              );
             const examplesValid =
               Array.isArray(currentState) &&
               currentState.length === 0 &&
@@ -722,12 +772,14 @@ for (const manifest of manifests) {
               sourceValues.every((value) => value !== undefined) &&
               distinctSourceValues.length >=
                 construction.minimumDistinctValues &&
+              sourceCapacityValid &&
               validStates.every(
                 (state) =>
                   state.length === construction.slotCount &&
                   new Set(state.map((entry) => JSON.stringify(entry))).size >=
                     construction.minimumDistinctValues &&
-                  canComposeOrderedState(state, sourceValues)
+                  canComposeOrderedState(state, sourceValues) &&
+                  canComposeApplicationState(state)
               ) &&
               surplusStates.every(
                 (state) =>

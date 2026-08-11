@@ -3201,7 +3201,21 @@ const handlers: Record<string, Handler> = {
       "stateConstruction"
     );
     const application = parameter(predicate, "application");
-    const studentConstructed = constructionMode !== undefined;
+    const extensionPresent = [
+      constructionMode,
+      answerMode,
+      studentInputRoles,
+      stateConstruction,
+      application
+    ].some((value) => value !== undefined);
+    const extensionComplete = [
+      constructionMode,
+      answerMode,
+      studentInputRoles,
+      stateConstruction,
+      application
+    ].every((value) => value !== undefined);
+    const studentConstructed = extensionPresent;
     const record = (
       value: unknown
     ): Record<string, unknown> | undefined =>
@@ -3222,6 +3236,14 @@ const handlers: Record<string, Handler> = {
       typeof construction?.minimumDistinctValues === "number"
         ? construction.minimumDistinctValues
         : undefined;
+    const constructionMinimumDistinctPoolValues =
+      typeof construction?.minimumDistinctPoolValues === "number"
+        ? construction.minimumDistinctPoolValues
+        : undefined;
+    const constructionMinimumCopiesPerDistinctValue =
+      typeof construction?.minimumCopiesPerDistinctValue === "number"
+        ? construction.minimumCopiesPerDistinctValue
+        : undefined;
     const applicationContinuationTargetRolesValue =
       applicationRecord?.continuationTargetRoles;
     const applicationContinuationTargetRoles = Array.isArray(
@@ -3240,6 +3262,10 @@ const handlers: Record<string, Handler> = {
       typeof applicationRecord?.minimumTargetCount === "number"
         ? applicationRecord.minimumTargetCount
         : undefined;
+    const applicationPeriod =
+      typeof applicationRecord?.period === "number"
+        ? applicationRecord.period
+        : undefined;
     const constructionValid =
       !studentConstructed ||
       (constructionMode === "student-constructed" &&
@@ -3257,6 +3283,17 @@ const handlers: Record<string, Handler> = {
         constructionMinimumDistinctValues >= 2 &&
         typeof construction.slotCount === "number" &&
         constructionMinimumDistinctValues <= construction.slotCount &&
+        Number.isInteger(constructionMinimumDistinctPoolValues) &&
+        constructionMinimumDistinctPoolValues !== undefined &&
+        constructionMinimumDistinctPoolValues >= 3 &&
+        Number.isInteger(constructionMinimumCopiesPerDistinctValue) &&
+        constructionMinimumCopiesPerDistinctValue !== undefined &&
+        constructionMinimumCopiesPerDistinctValue >= 3 &&
+        construction.sourceUseMode === "move-once-no-clone" &&
+        variantRoles.length >=
+          constructionMinimumDistinctPoolValues *
+            constructionMinimumCopiesPerDistinctValue &&
+        constructionMinimumDistinctValues === ruleSlotRoles.length &&
         construction.allowsAnyOrderedSelection === true &&
         construction.initialState === "empty" &&
         JSON.stringify(construction.sourceRoles) ===
@@ -3271,18 +3308,32 @@ const handlers: Record<string, Handler> = {
         Number.isInteger(applicationMinimumTargetCount) &&
         applicationMinimumTargetCount !== undefined &&
         applicationMinimumTargetCount >= 4 &&
-        applicationMinimumTargetCount <=
+        applicationMinimumTargetCount ===
           (applicationContinuationTargetRoles?.length ?? -1) &&
+        (applicationContinuationTargetRoles?.length ?? 0) > 0 &&
+        (applicationContinuationTargetRoles?.length ?? 0) %
+          applicationRecord.period ===
+          0 &&
+        constructionMinimumCopiesPerDistinctValue >=
+          1 +
+            (applicationContinuationTargetRoles?.length ?? 0) /
+              applicationRecord.period &&
         applicationRecord.requiresVisibleComparison === true &&
+        applicationRecord.requiresSimultaneousRuleAndContinuation === true &&
+        applicationRecord.ruleStateIndexMode === "index-mod-period" &&
         applicationRecord.evidenceMode ===
           "student-state-dependent");
     if (
       mode !== "construct-rule" ||
+      (studentConstructed &&
+        (!extensionComplete ||
+          constructionMode !== "student-constructed" ||
+          answerMode !== "conditional-rubric")) ||
       continuationRuleStatePath !== ruleStatePath ||
       explanationRuleStatePath !== ruleStatePath ||
       new Set(variantRoles).size !== variantRoles.length ||
       new Set(ruleSlotRoles).size !== ruleSlotRoles.length ||
-      variantRoles.length < 3 ||
+      variantRoles.length < (studentConstructed ? 9 : 3) ||
       ruleSlotRoles.length < 2 ||
       typeof minimumValidStates !== "number" ||
       !Number.isInteger(minimumValidStates) ||
@@ -3490,7 +3541,9 @@ const handlers: Record<string, Handler> = {
               constraint.sourceIds.length === variantIds.length &&
               new Set(constraint.sourceIds).size === variantIds.length &&
               constraint.sourceIds.every((id) => sourceIdSet.has(id)) &&
-              constraint.parameters.ruleStatePath === ruleStatePath
+              constraint.parameters.ruleStatePath === ruleStatePath &&
+              constraint.parameters.ruleStateIndex ===
+                index % (applicationPeriod ?? Number.MAX_SAFE_INTEGER)
             );
           }
         );
@@ -3524,13 +3577,51 @@ const handlers: Record<string, Handler> = {
             sameValue(candidate, value)
           ) === index
       );
+      const physicalPoolCapacityValid =
+        studentConstructed &&
+        constructionMinimumDistinctPoolValues !== undefined &&
+        constructionMinimumCopiesPerDistinctValue !== undefined &&
+        variantValues.length >=
+          ruleSlotRoles.length +
+            (applicationMinimumTargetCount ?? Number.POSITIVE_INFINITY) &&
+        distinctVariantValues.length >=
+          constructionMinimumDistinctPoolValues &&
+        distinctVariantValues.every(
+          (value) =>
+            variantValues.filter((candidate) =>
+              sameValue(candidate, value)
+            ).length >= constructionMinimumCopiesPerDistinctValue
+        );
+      const canComposeApplicationState = (state: unknown[]) => {
+        const period = applicationPeriod;
+        const targetCount = applicationMinimumTargetCount;
+        if (
+          typeof period !== "number" ||
+          typeof targetCount !== "number" ||
+          state.length !== period ||
+          targetCount % period !== 0
+        ) {
+          return false;
+        }
+        return canComposeRuleState(
+          [
+            ...state,
+            ...Array.from(
+              { length: targetCount },
+              (_, index) => state[index % period]
+            )
+          ],
+          variantValues
+        );
+      };
       const validExamplesAreComposable = (states: unknown[][] | undefined) =>
         states?.every(
           (state) =>
             state.length === ruleSlotRoles.length &&
             stateDistinctValueCount(state) >=
               (constructionMinimumDistinctValues as number) &&
-            canComposeRuleState(state, variantValues)
+            canComposeRuleState(state, variantValues) &&
+            (!studentConstructed || canComposeApplicationState(state))
         ) ?? false;
       const surplusExamplesAreReachableRejectable = (
         states: unknown[][] | undefined
@@ -3553,6 +3644,7 @@ const handlers: Record<string, Handler> = {
           !surplusIsRejectable ||
           !validExamplesAreComposable(validRuleStates) ||
           !surplusExamplesAreReachableRejectable(surplusRuleStates) ||
+          !physicalPoolCapacityValid ||
           distinctVariantValues.length <
             (construction?.minimumDistinctValues as number)
         : !currentRuleState ||

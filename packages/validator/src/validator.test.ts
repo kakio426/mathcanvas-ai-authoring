@@ -289,9 +289,16 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
     (emission) => emission.role === "rule-variant-3"
   )!.toolIntent.properties.orderedValues = "red";
   resolved.emissions.push(
-    {
-      id: "item-1-rule-variant-4",
-      role: "rule-variant-4",
+    ...[
+      [4, "green"],
+      [5, "green"],
+      [6, "green"],
+      [7, "red"],
+      [8, "blue"],
+      [9, "blue"]
+    ].map(([index, value]) => ({
+      id: `item-1-rule-variant-${index}`,
+      role: `rule-variant-${index}`,
       itemId: "item-1",
       bounds: { x: 0, y: 0, width: 40, height: 40 },
       locked: false,
@@ -300,23 +307,9 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
       toolIntent: {
         kind: "text",
         toolKey: "common.text",
-        properties: { orderedValues: "green" }
+        properties: { orderedValues: value }
       }
-    },
-    {
-      id: "item-1-rule-variant-5",
-      role: "rule-variant-5",
-      itemId: "item-1",
-      bounds: { x: 0, y: 0, width: 40, height: 40 },
-      locked: false,
-      movable: true,
-      instructionalIntent: "규칙 후보 조각",
-      toolIntent: {
-        kind: "text",
-        toolKey: "common.text",
-        properties: { orderedValues: "green" }
-      }
-    } as never
+    })) as never[]
   );
   resolved.emissions = resolved.emissions
     .filter((emission) => emission.role !== "explanation-box")
@@ -363,7 +356,11 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
       "rule-variant-2",
       "rule-variant-3",
       "rule-variant-4",
-      "rule-variant-5"
+      "rule-variant-5",
+      "rule-variant-6",
+      "rule-variant-7",
+      "rule-variant-8",
+      "rule-variant-9"
     ],
     ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
     variantProperty: "orderedValues",
@@ -389,11 +386,18 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
       "rule-variant-2",
       "rule-variant-3",
       "rule-variant-4",
-      "rule-variant-5"
+      "rule-variant-5",
+      "rule-variant-6",
+      "rule-variant-7",
+      "rule-variant-8",
+      "rule-variant-9"
       ],
       slotRoles: ["rule-slot-1", "rule-slot-2"],
       slotCount: 2,
       minimumDistinctValues: 2,
+      minimumDistinctPoolValues: 3,
+      minimumCopiesPerDistinctValue: 3,
+      sourceUseMode: "move-once-no-clone",
       allowsAnyOrderedSelection: true,
       initialState: "empty"
     },
@@ -408,6 +412,8 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
       period: 2,
       minimumTargetCount: 4,
       requiresVisibleComparison: true,
+      requiresSimultaneousRuleAndContinuation: true,
+      ruleStateIndexMode: "index-mod-period",
       evidenceMode: "student-state-dependent"
     },
     distractors: [
@@ -431,7 +437,11 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
         "item-1-rule-variant-2",
         "item-1-rule-variant-3",
         "item-1-rule-variant-4",
-        "item-1-rule-variant-5"
+        "item-1-rule-variant-5",
+        "item-1-rule-variant-6",
+        "item-1-rule-variant-7",
+        "item-1-rule-variant-8",
+        "item-1-rule-variant-9"
       ];
     });
   for (const index of [1, 2, 3, 4]) {
@@ -443,10 +453,17 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
         "item-1-rule-variant-2",
         "item-1-rule-variant-3",
         "item-1-rule-variant-4",
-        "item-1-rule-variant-5"
+        "item-1-rule-variant-5",
+        "item-1-rule-variant-6",
+        "item-1-rule-variant-7",
+        "item-1-rule-variant-8",
+        "item-1-rule-variant-9"
       ],
       targetId: `item-1-continuation-slot-${index}`,
-      parameters: { ruleStatePath: "studentRuleState" },
+      parameters: {
+        ruleStatePath: "studentRuleState",
+        ruleStateIndex: (index - 1) % 2
+      },
       requiresStudentAction: true,
       satisfiedInitially: false
     } as never);
@@ -555,6 +572,29 @@ describe("생성 전 검증", () => {
     expect(issues).toEqual([]);
   });
 
+  it("student-constructed 확장의 일부 필드는 legacy branch로 우회할 수 없다", () => {
+    for (const field of [
+      "constructionMode",
+      "answerMode",
+      "studentInputRoles",
+      "stateConstruction",
+      "application"
+    ]) {
+      const resolved = ruleStatePredicateFixture();
+      (resolved.valuePredicates[0]!.parameters as Record<string, unknown>)[
+        field
+      ] =
+        field === "constructionMode"
+          ? "student-constructed"
+          : field === "studentInputRoles"
+            ? []
+            : {};
+      expect(() => validateRegisteredPredicates(resolved, [])).toThrow(
+        "predicate-parameter-invalid:cognitive.rule-state-contract"
+      );
+    }
+  });
+
   it("student-constructed construct-rule은 고정된 현재 정답 상태를 거부한다", () => {
     const resolved = studentConstructedRuleStatePredicateFixture();
     resolved.items[0]!.values.studentRuleState = ["red", "blue"];
@@ -593,6 +633,44 @@ describe("생성 전 검증", () => {
         "cognitive-rule-state-application-missing",
         "cognitive-rule-state-answer-visible"
       ])
+    );
+  });
+
+  it("student-constructed construct-rule은 v7 물리적 pool 복제 수량을 검증한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    resolved.emissions.find(
+      (emission) => emission.role === "rule-variant-6"
+    )!.toolIntent.properties.orderedValues = "blue";
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-envelope-invalid"
+    );
+  });
+
+  it("student-constructed construct-rule은 continuation 수와 주기를 계약에 맞춰야 한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    (
+      resolved.valuePredicates[0]!.parameters.application as Record<
+        string,
+        unknown
+      >
+    ).minimumTargetCount = 6;
+    expect(() => validateRegisteredPredicates(resolved, [])).toThrow(
+      "predicate-parameter-invalid:cognitive.rule-state-contract"
+    );
+  });
+
+  it("student-constructed construct-rule은 continuation의 rule-state index 결속을 요구한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    const constraint = resolved.constraints.find((candidate) =>
+      candidate.id.startsWith("apply-rule-slot-1:")
+    )!;
+    delete (constraint.parameters as Record<string, unknown>).ruleStateIndex;
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-application-missing"
     );
   });
 

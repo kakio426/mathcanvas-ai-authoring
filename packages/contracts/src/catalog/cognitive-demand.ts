@@ -82,6 +82,9 @@ const constructRuleDecisionSchema = z
           .refine((values) => new Set(values).size === values.length),
         slotCount: z.number().int().min(2).max(12),
         minimumDistinctValues: z.number().int().min(2).max(12),
+        minimumDistinctPoolValues: z.number().int().min(3).max(12),
+        minimumCopiesPerDistinctValue: z.number().int().min(3).max(12),
+        sourceUseMode: z.literal("move-once-no-clone"),
         allowsAnyOrderedSelection: z.literal(true),
         initialState: z.literal("empty")
       })
@@ -98,6 +101,8 @@ const constructRuleDecisionSchema = z
         period: z.number().int().min(2).max(12),
         minimumTargetCount: z.number().int().min(4).max(24),
         requiresVisibleComparison: z.literal(true),
+        requiresSimultaneousRuleAndContinuation: z.literal(true),
+        ruleStateIndexMode: z.literal("index-mod-period"),
         evidenceMode: z.literal("student-state-dependent")
       })
       .strict()
@@ -218,10 +223,24 @@ export const cognitiveDemandManifestSchema = z
         JSON.stringify(decision.ruleSlotRoles) ||
       construction.slotCount !== construction.slotRoles.length ||
       construction.minimumDistinctValues > construction.slotCount ||
+      construction.minimumDistinctValues !== decision.ruleSlotRoles.length ||
+      construction.minimumDistinctPoolValues < 3 ||
+      construction.minimumCopiesPerDistinctValue < 3 ||
+      construction.sourceUseMode !== "move-once-no-clone" ||
+      decision.variantRoles.length <
+        construction.minimumDistinctPoolValues *
+          construction.minimumCopiesPerDistinctValue ||
       application.ruleStatePath !== decision.ruleStatePath ||
       application.period !== decision.ruleSlotRoles.length ||
-      application.minimumTargetCount >
+      application.minimumTargetCount !==
         application.continuationTargetRoles.length ||
+      application.minimumTargetCount % application.period !== 0 ||
+      !application.requiresSimultaneousRuleAndContinuation ||
+      application.ruleStateIndexMode !== "index-mod-period" ||
+      construction.minimumCopiesPerDistinctValue <
+        1 +
+          application.continuationTargetRoles.length /
+            application.period ||
       JSON.stringify(manifest.verification.roles) !==
         JSON.stringify([
           ...decision.ruleSlotRoles,
