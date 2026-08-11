@@ -13,7 +13,11 @@ export const interactionConstraintSchema = z
   .object({
     id: stableIdSchema,
     kind: stableIdSchema,
-    sources: z.array(roleReferenceSchema).min(1).max(8),
+    // The repeat-rule ENGINE_CORE contract needs nine physical source roles
+    // (three semantic values × three copies). Keep this declarative ceiling
+    // symmetric with resolvedConstraintSchema and leave headroom for future
+    // bounded pools without permitting unbounded payloads.
+    sources: z.array(roleReferenceSchema).min(1).max(12),
     target: roleReferenceSchema,
     parameters: jsonRecordSchema,
     requiresStudentAction: z.boolean()
@@ -31,7 +35,7 @@ export const resolvedConstraintSchema = z
   .object({
     id: stableIdSchema,
     kind: stableIdSchema,
-    sourceIds: z.array(stableIdSchema).min(1).max(8),
+    sourceIds: z.array(stableIdSchema).min(1).max(12),
     targetId: stableIdSchema,
     parameters: jsonRecordSchema,
     requiresStudentAction: z.boolean(),

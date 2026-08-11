@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0.0",
+  "operation": "ENGINE_CORE",
+  "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+  "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.repeat-unit.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+  "replanContractRevision": "W002-SOL-REPLAN-v9",
+  "status": "implemented-verified-pending-family-track",
+  "decisionMode": "construct-rule",
+  "runtimePredicateKind": "cognitive.rule-state-contract",
+  "constraintCapacity": {
+    "maxSources": 12,
+    "requiredSources": 9,
+    "resolvedSourceCapacityTest": "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts"
+  },
+  "layoutContract": {
+    "tokenSet": "w002-repeat-rule-construction-v1",
+    "sourceRoles": 9,
+    "ruleSlotRoles": 2,
+    "continuationTargetRoles": 4,
+    "minSlotWidth": 188,
+    "minSlotHeight": 188,
+    "allVisibleSimultaneously": true,
+    "containment": "native-rendered-bounds",
+    "wave16Unchanged": true
+  },
+  "contractInvariants": [
+    "student-constructed is distinct from select-one and fixed-answer construct",
+    "constructionMode is student-constructed and answerMode is conditional-rubric",
+    "studentRuleState starts empty and is not replaced by a fixed current answer",
+    "stateConstruction permits any ordered distinct subset of a three-value pool with three physical copies per value",
+    "sourceUseMode is move-once-no-clone and every valid rule plus four continuation targets is physically composable",
+    "validRuleStateExamples contains at least two distinct composable ordered states",
+    "surplusRuleStateExamples contains at least two distinct reachable states that violate the distinct-selection rule",
+    "decisionConstraintId and ordered ruleSlotRoles bind every slot to exact fill-from-pool sources and targets",
+    "rule slots are locked/non-movable and every variant role is unique, open, and movable",
+    "application uses the same studentRuleState path and exactly four visible unresolved continuation targets with open state-bound constraints indexed by position modulo period",
+    "continuation count is an exact period multiple and requires simultaneous rule-state and continuation evidence",
+    "verificationRoles exactly cover the rule slots followed by continuation targets",
+    "studentInputRoles is empty; the core does not claim unsupported text input or response persistence, and split visible answer sequences are rejected",
+    "distractors are bound to the rule-state predicate and remain at least two distinct misconception records",
+    "nine-source declarative and resolved constraint ceilings are symmetric and bounded at twelve",
+    "the dedicated layout contains all native SM02PB bounds in six simultaneous 188px landing surfaces without modifying wave16"
+  ],
+  "implementationFiles": {
+    "packages/contracts/src/vocabulary/constraints.ts": "90f792b310501079f1c327946e4894cb735795a8dcba602127483c3bbd108e88",
+    "packages/contracts/src/vocabulary/constraints.test.ts": "6369e7350f74d8523e951f5d9fcd6159c60621de366b099c4b6879c68f29dc2d",
+    "packages/contracts/src/catalog/cognitive-demand.ts": "8e338d275b8863b08a732c732f203b3c517c7cb5e40bbecf73d28598bb69249e",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "9d007448a564fb99f62f45908b7d98ab0bd5ca052406f42d04513d4101e68b26",
+    "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts": "5c653d0b19843393769fd3f83691a14ac2c890b1e3aa761db529428b471dca77",
+    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "9bcb99b94acd287e56becbbf675c764e83fe965038d2963f8b3def1ea4da9f07",
+    "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts": "792abed25ef91a7af5cea0f7adfe694796b642c0f4ee5fb90805363ea7bfa353",
+    "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts": "7a67c88625755627bdafb0ddf38f387c6efbb9bb9a1dfe9dbc3a956855e1dd98",
+    "packages/validator/src/predicates/registry.ts": "9b8ded4e5144bc2f838938a196a2f502c594d9a2e5f6fff49a0837d5c192360b",
+    "packages/validator/src/validator.test.ts": "005a0e1699bbfeeb2e2399f86537788e5bbae52b187ad6141502e73f6583f07b",
+    "packages/templates/src/cognitive/registry.ts": "6127bfc98d259fcf7f4469b0c2d6ad2aa88a4282d8368fdbb091813441452184",
+    "packages/templates/src/cognitive/registry.test.ts": "3e3899813dbb1076b3feb0539ad18c4a0368c7749bc9911dcef682b5d51faa1e",
+    "scripts/pedagogy/check-cognitive-demand.mjs": "9fb364b54e59bec4546fd08d272beb64a14ec9cd39c30799d979e8bf079492b5"
+  },
+  "verification": {
+    "engineCoreFocusedTests": "5/5",
+    "regressionBaseline": "45/45",
+    "fullCheck": "84 files / 516 tests PASS; build/typecheck/native/cognitive/visual/quality gates PASS",
+    "typecheck": "PASS",
+    "architectureBaseline": "PASS (32 protected files)",
+    "studentResponseLifecycle": "not claimed; FAMILY_TRACK/LIVE_EVIDENCE required"
+  }
+}

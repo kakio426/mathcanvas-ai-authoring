@@ -52,7 +52,7 @@
     },
     {
       "path": "packages/contracts/src/vocabulary/constraints.ts",
-      "sha256": "1921a0e8e73da67a79a635809ac82e128e358e82712b30dc048a8c51f6a964e9"
+      "sha256": "90f792b310501079f1c327946e4894cb735795a8dcba602127483c3bbd108e88"
     },
     {
       "path": "packages/contracts/src/vocabulary/ids.ts",
@@ -147,5 +147,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "a8a237bda09a8b0c48b8c252ec7b7ea57ad94210e7b2c184dcda5d351ac90a9c"
+  "manifestHash": "a38709a9fe8c0aa64b351ed080a80b177fb3e91d01427abe761277275f48ee2d"
 }
