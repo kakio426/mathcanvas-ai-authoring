@@ -113,13 +113,15 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     const applied = buildRegisteredAppliedProblemParameters(result.resolved);
     expect(answers).toHaveLength(2);
     expect(answers[0]).toMatchObject({
-      answer: expect.stringContaining("빨강파랑"),
-      explanation: expect.stringContaining("빨강, 파랑")
+      answer: expect.stringContaining("노-파"),
+      explanation: expect.stringContaining("노란 육각형")
     });
     expect(previews?.[0]?.statements).toEqual([
-      expect.stringContaining("색깔 구슬"),
-      "앞의 배열: 빨강 → 파랑 → 빨강 → 파랑 → 빨강 → 파랑",
-      expect.stringContaining("다음 조각 후보:")
+      expect.stringContaining("패턴 블록"),
+      "앞의 패턴 블록: 노란 육각형 → 파란 마름모 → 노란 육각형 → 빈 칸 → 빈 칸 → 빈 칸",
+      expect.stringContaining("규칙 후보:"),
+      expect.stringContaining("다음 조각:"),
+      "활동 단계: 규칙 정하고 배열 구성하기"
     ]);
     expect(applied).toEqual({
       schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
@@ -128,9 +130,23 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     });
     expect(result.resolved.items[0]?.values.ruleKind).toBe("repeat");
     expect(result.resolved.items[0]?.values.correctNext).toEqual([
-      "빨강",
-      "파랑"
+      2,
+      1
     ]);
+    expect(result.resolved.items[1]?.values.phase).toBe("repair");
+    expect(result.resolved.items[1]?.values.initialSequence).toEqual([1, 4, 1]);
+    expect(result.resolved.items[1]?.values.correctSequence).toEqual([1, 2, 1]);
+    expect(
+      result.resolved.constraints.some((constraint) =>
+        constraint.id.startsWith("repair-misaligned-arrangement:")
+      )
+    ).toBe(true);
+    expect(
+      result.resolved.emissions.some(
+        (emission) => emission.toolIntent.toolKey === "SM02PB"
+      )
+    ).toBe(true);
+    expect(repeatingPatternArrangementProblemFamilyModule.capability?.promptGuards).toEqual([]);
   });
 
   it("repeat/change 4개 context envelope를 모두 생성하고 수학 관계가 바뀐다", () => {
@@ -149,11 +165,14 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     expect(
       outputs.map((output) => String(output.resolved.items[0]?.values.correctAnswerText))
     ).toEqual([
-      "빨강파랑; 다음: 빨강, 파랑",
-      "원삼사; 다음: 원, 삼각형",
-      "2씩↑; 다음: 13, 15",
-      "2씩↑; 다음: 14, 16"
+      "노-파; 다음: 파란 마름모, 노란 육각형",
+      "노-파-빨; 다음: 노란 육각형, 파란 마름모",
+      "1칸↑; 다음: 초록 삼각형, 주황 정사각형",
+      "2칸↑; 다음: 파란 마름모, 초록 삼각형"
     ]);
+    expect(
+      outputs.map((output) => output.resolved.items[0]?.values.relationId)
+    ).toEqual(["repeat-2", "repeat-3", "step-1", "step-2"]);
     expect(new Set(outputs.map((output) => output.compiled.payloadHash)).size).toBe(4);
   });
 
