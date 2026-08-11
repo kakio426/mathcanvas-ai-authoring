@@ -1364,6 +1364,62 @@
           "교육 범위는 변하지 않는다. 공식 [2수04-02]의 두 target, family 구현, semantic-slice 범위와 live evidence 상태에는 변경이 없으며 이번 승인은 offline review orchestration만 다룬다. fresh canary·조작·save/reopen·live release를 주장하지 않는다.",
           "독립 QA는 sol-status 12/12, typecheck, no-family 97 standards/24 engines/84 tracks, curriculum program, 전체 pnpm check 78 files/474 tests·build·native/contract/cognitive·visual/quality P0/P1 0, candidate diff-check를 통과했다."
         ]
+      },
+      {
+        "reviewId": "W001-FAMILY_REVALIDATION-SOL-A3",
+        "workItemId": "W001",
+        "standardCode": "[2수04-02]",
+        "operation": "FAMILY_REVALIDATION",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "approved",
+        "attempt": 3,
+        "candidateCommit": "c5f8489e1285f35fc8cfff5b288696229bee652e",
+        "changedFiles": [
+          "reports/curriculum-execution/family-revalidation/W001.json",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md"
+        ],
+        "familyTrackId": "data.early-table.organize-v1",
+        "scopeId": "W001-FAMILY_TRACK-data-table-organize",
+        "artifactPath": "reports/curriculum-execution/family-revalidation/W001.json",
+        "fingerprintSha256": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1",
+        "supersedesReviewId": "W001-FAMILY_REVALIDATION-SOL-A2",
+        "supersedesFamilyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
+        "replanContractRevision": "W001-SOL-REPLAN-v3",
+        "checkedAt": "2026-08-11T16:55:14.000Z",
+        "evidenceRefs": [
+          "git:c5f8489e1285f35fc8cfff5b288696229bee652e",
+          "git:694b2236cfd50e4211baec5a5516879c7f60da4f",
+          "scripts/curriculum/sol-review-board.json#W001-FAMILY_REVALIDATION-SOL-A2",
+          "scripts/curriculum/sol-review-board.json#W001-FAMILY_TRACK-SOL-A3",
+          "scripts/curriculum/sol-review-board.json#W001-SOL_REPLAN-SOL-A3",
+          "reports/curriculum-execution/family-revalidation/W001.json",
+          "W001_REPLAN.md",
+          "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+          "packages/validator/src/native/registry.ts#dataTableHandler",
+          "fixtures/pedagogy/learning-map.used.json#[2수04-02]",
+          "reports/problem-family-registry/latest.json#data.early-table.organize-v1",
+          "command:pnpm curriculum:family-revalidation -- --work-item W001",
+          "command:independent SHA-256 recomputation=5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1",
+          "command:pnpm exec vitest run data-table-organize.test.ts assessment-targets.test.ts sol-review-status.test.ts (20/20)",
+          "command:pnpm cognitive:verify",
+          "command:pnpm problem-family:verify",
+          "command:pnpm curriculum:coverage",
+          "command:pnpm curriculum:program",
+          "command:pnpm curriculum:no-family-plan",
+          "command:pnpm check (78 files/474 tests; all gates PASS)",
+          "command:git diff --check 694b223..c5f8489"
+        ],
+        "findings": [
+          "승인: candidate c5f8489는 parent 694b223 위 exact 3-file FAMILY_REVALIDATION artifact commit이고 후보 이후 구현 변경이 없다. work item·standard·family/scope, attempt=3 chain, 원 FAMILY_TRACK review, W001-SOL-REPLAN-v3 revision이 모두 현재 계약과 일치한다.",
+          "artifact currentness 승인: 저장 fingerprint 5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1을 fingerprint payload에서 독립 재계산해 동일함을 확인했다. implementationFiles 2/2와 learning-map, registry-family, normalized family source, DP02TG validator handler semanticSlices 4/4가 현재 값과 일치한다.",
+          "교육 결속 승인: 공식 [2수04-02]의 두 reviewed-complete target이 그대로 유지된다. 첫 문항은 원자료 각 항목을 범주명+개수의 완전한 표 매핑에 대응하고 세 개수 합=전체 수로 검산하며, 두 번째 문항은 범주별 개수와 차이에 근거해 표의 편리함을 고른다. 전체 수를 한 범주 수로 쓰기와 표를 장식으로만 보기라는 오개념, 선택 수정 경로, exact preview·정답·해설이 현재 A3 구현과 결속된다.",
+          "안전·범위 승인: 같은 입력의 결정성, 4개 context의 answer-changing envelope, 미지원 문제 수·맥락·추가 조건의 명시 거부, compile/validator 및 cognitive manifest 결속을 focused 20/20으로 확인했다. locked 임시 표를 직접 편집한다고 주장하지 않으며 학생 증거는 완전 매핑 선택과 설명이다.",
+          "승인 후 registry→coverage→execution→no-family 전체 파생 report를 manifest-bound 범위로 갱신했고 registry lifecycleStage=offline-validated, coverage activityStage=offline-validated, execution offlineCoveredTargetCount=2/2, no-family nextLiveEvidenceWork=W001로 일치한다. nextOfflineWork는 W002로 이동했고 replan queue는 비었다.",
+          "release 한계: fresh current-hash canary의 initial/selected/manipulated/undo-or-reset/save/reopen 증거가 없으므로 live-released로 보지 않는다. 독립 QA는 artifact verify·focused 20/20·problem-family·coverage·program·전체 pnpm check 78 files/474 tests와 native/contract/cognitive/visual/quality P0/P1 0을 통과했다."
+        ]
       }
     ]
   },
@@ -1517,19 +1573,196 @@
     "actionClassCounts": {
       "planned-no-family": 96,
       "offline-in-progress": 0,
-      "sol-review-required": 1,
+      "sol-review-required": 0,
       "blocked-needs-sol-replan": 0,
-      "live-evidence": 0,
+      "live-evidence": 1,
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 19,
-      "approved": 7,
+      "totalRecords": 20,
+      "approved": 8,
       "changesRequested": 11,
       "blocked": 1,
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
+      "sequence": 2,
+      "workItemId": "W002",
+      "batchId": "B01",
+      "wave": 0,
+      "standardCode": "[2수02-02]",
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "officialGoal": "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.",
+      "archetypeId": "C01",
+      "plannedFamilyId": "pattern.create-repeat-unit-explain-v1",
+      "engineClassIds": [
+        "R08"
+      ],
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "familySubWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": [
+            "choose-own-arrangement-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.repeat-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET"
+          ],
+          "operationSequence": [
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": [
+            "construct-repeat-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.declared-repeat.repair-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
+          ],
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": [
+            "construct-change-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.change-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
+          ],
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        }
+      ],
+      "nextFamilySubWork": null,
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W002-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W002-LEARNING_MAP_BINDING"
+      ],
+      "allowedFiles": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "reviewGate": null,
+      "learningMapBound": true,
+      "targetOutlineSha256": "61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6",
+      "expectedTargetOutline": [
+        {
+          "key": "choose-own-arrangement-rule",
+          "studentDecision": "물체·무늬 배열에 적용할 반복 단위의 성분과 순서를 스스로 정하고 선언한다.",
+          "invariant": "정한 반복 단위가 배열의 모든 연속 위치에 같은 순서로 적용된다.",
+          "observableEvidence": "학생이 구성·선언한 반복 단위와 그 경계가 배열 시작 부분에 드러난다.",
+          "misconceptionClass": "repeat-unit-changes-mid-sequence"
+        },
+        {
+          "key": "construct-repeat-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 반복 단위에 맞도록 다음 항목들을 배열하고 어긋난 반복 항목을 고친다.",
+          "invariant": "반복 배열의 모든 항목은 학생이 선언한 동일한 반복 단위로 생성된다.",
+          "observableEvidence": "완성된 반복 배열에서 단위 경계·수정된 항목·반복 근거를 다시 추적할 수 있다.",
+          "misconceptionClass": "copy-last-item-instead-of-applying-repeat-rule"
+        },
+        {
+          "key": "construct-change-arrangement-following-rule",
+          "studentDecision": "수 배열에 적용할 시작값·변화량·방향을 스스로 정하고 선언한 뒤, 그 관계로 다음 항을 배열하고 어긋난 항을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 시작값·변화량·방향의 같은 관계를 만족한다.",
+          "observableEvidence": "학생이 구성·선언한 시작값·변화량·방향과 연속 항의 관계를 화면에서 대조하고 다음 항을 예측한다.",
+          "misconceptionClass": "change-step-or-direction-mismatch"
+        }
+      ],
+      "expectedTargetCount": 3,
+      "archetypeRole": "anchor",
+      "splitRisk": "medium",
+      "nextAction": "review-target-set-and-design-family",
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "approved",
+        "familyTrack": "blocked",
+        "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "familyTrackReviewIds": [],
+        "replan": "approved",
+        "replanApproved": true,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
+        "revalidationArtifact": null
+      }
+    },
+    "nextReplanWork": null,
+    "nextLiveEvidenceWork": {
       "sequence": 1,
       "workItemId": "W001",
       "batchId": "B01",
@@ -1554,19 +1787,14 @@
       "subWorkStatePath": null,
       "replanDocumentPath": "W001_REPLAN.md",
       "replanContractRevision": "W001-SOL-REPLAN-v3",
-      "operation": "SOL_REVIEW",
-      "operationWorkItemId": "W001-SOL_REVIEW-FAMILY_REVALIDATION",
-      "dependencyWorkItemIds": [
-        "W001-FAMILY_TRACK",
-        "W001-FAMILY_REVALIDATION"
-      ],
+      "operation": "LIVE_EVIDENCE",
+      "operationWorkItemId": "W001-LIVE_EVIDENCE",
+      "dependencyWorkItemIds": [],
       "allowedFiles": [
-        "scripts/curriculum/sol-review-board.json",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "reports/curriculum-execution/subwork-state/**"
+        "research/mathcanvas/**",
+        "reports/**"
       ],
-      "reviewGate": "FAMILY_REVALIDATION",
+      "reviewGate": null,
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -1588,24 +1816,22 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "finish-offline-validation",
-      "actionClass": "sol-review-required",
+      "nextAction": "capture-current-hash-live-evidence",
+      "actionClass": "live-evidence",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "stale",
+        "familyTrack": "approved",
         "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
         "familyTrackReviewIds": [],
         "replan": "approved",
         "replanApproved": true,
         "replanConsumed": true,
-        "familyRevalidation": "changes-requested",
-        "revalidationApproved": false,
+        "familyRevalidation": "approved",
+        "revalidationApproved": true,
         "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1"
       }
-    },
-    "nextReplanWork": null,
-    "nextLiveEvidenceWork": null
+    }
   },
   "batches": [
     {
@@ -3939,19 +4165,14 @@
       "subWorkStatePath": null,
       "replanDocumentPath": "W001_REPLAN.md",
       "replanContractRevision": "W001-SOL-REPLAN-v3",
-      "operation": "SOL_REVIEW",
-      "operationWorkItemId": "W001-SOL_REVIEW-FAMILY_REVALIDATION",
-      "dependencyWorkItemIds": [
-        "W001-FAMILY_TRACK",
-        "W001-FAMILY_REVALIDATION"
-      ],
+      "operation": "LIVE_EVIDENCE",
+      "operationWorkItemId": "W001-LIVE_EVIDENCE",
+      "dependencyWorkItemIds": [],
       "allowedFiles": [
-        "scripts/curriculum/sol-review-board.json",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "reports/curriculum-execution/subwork-state/**"
+        "research/mathcanvas/**",
+        "reports/**"
       ],
-      "reviewGate": "FAMILY_REVALIDATION",
+      "reviewGate": null,
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -3973,19 +4194,19 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "finish-offline-validation",
-      "actionClass": "sol-review-required",
+      "nextAction": "capture-current-hash-live-evidence",
+      "actionClass": "live-evidence",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "stale",
+        "familyTrack": "approved",
         "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
         "familyTrackReviewIds": [],
         "replan": "approved",
         "replanApproved": true,
         "replanConsumed": true,
-        "familyRevalidation": "changes-requested",
-        "revalidationApproved": false,
+        "familyRevalidation": "approved",
+        "revalidationApproved": true,
         "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1"
       }
     },
