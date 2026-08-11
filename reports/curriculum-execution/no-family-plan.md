@@ -41,7 +41,7 @@
 - reviewer: **gpt-5.6-sol / max**
 - required after: **TARGET_SET · FAMILY_TRACK**
 - board: **scripts/curriculum/sol-review-board.json**
-- 승인 기록: **0개** · 수정 요청: **0개** · 차단: **0개** · pending: **194개**
+- 승인 기록: **1개** · 수정 요청: **0개** · 차단: **0개** · pending: **193개**
 - Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.
 - 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.
 
@@ -50,8 +50,8 @@
 | 상태 | 성취기준 수 |
 |---|---:|
 | planned-no-family | 96 |
-| offline-in-progress | 0 |
-| sol-review-required | 1 |
+| offline-in-progress | 1 |
+| sol-review-required | 0 |
 | live-evidence | 0 |
 | complete | 0 |
 
@@ -205,7 +205,7 @@
 
 | work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| W001-SOL_REVIEW-TARGET_SET | SOL_REVIEW | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target pending / family pending | SOL_REVIEW |
+| W001-FAMILY_TRACK | FAMILY_TRACK | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target approved / family pending | cover-unbound-reviewed-targets |
 | W002-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | bff0cd112afd (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
