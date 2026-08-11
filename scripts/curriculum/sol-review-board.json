@@ -1559,6 +1559,66 @@
         "회귀 테스트는 rawTrigger와 동일한 superseded FAMREV failure→다음 artifact/revalidation 단계, 동일한 superseded scoped blocked→해당 subWork 시작 단계, 서로 다른 새 FAMREV failure→SOL_REPLAN, 서로 다른 새 scoped blocked→SOL_REPLAN을 final resolveFlowOperation 결과로 검증해야 한다.",
         "독립 QA는 15/15 tests, typecheck, no-family plan, candidate diff-check를 통과했다. 하지만 테스트가 superseded same-review identity와 new-review identity를 구분하지 않아 P0를 놓치므로 changes-requested로 판정한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A11",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 11,
+      "candidateCommit": "12cb7ec47c4e0012c2cf251f357d8e2bef3d0f3c",
+      "changedFiles": [
+        "scripts/curriculum/sol-review-status.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A10",
+      "checkedAt": "2026-08-11T18:06:37.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "80efcaccc8a030fbc0593fb0738f3582679063ed1f1231d6795f1a15a59df036",
+      "supersedesBlockedReviewId": "W002-TARGET_SET-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v3",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:12cb7ec47c4e0012c2cf251f357d8e2bef3d0f3c",
+        "git:d309c5c11156eae3612d004890d717d69f1e7b49",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A10",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A2",
+        "W002_REPLAN.md#재개-작업-순서",
+        "scripts/curriculum/sol-review-status.mjs#replanTriggerForFlow",
+        "scripts/curriculum/sol-review-status.mjs#resolveFlowOperation",
+        "tests/sol-review-status.test.ts#superseded-failure-identity",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (16/16)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:manual identity matrix: same FAMREV→AFFORDANCE_DISCOVERY; new FAMREV→SOL_REPLAN; same scoped→ENGINE_CORE; new scoped→SOL_REPLAN",
+        "command:pnpm check (78 files/478 tests; candidate pre-review all gates PASS)",
+        "command:git diff --check d309c5c..12cb7ec"
+      ],
+      "findings": [
+        "승인: candidate 12cb7ec은 parent d309c5c 위 exact 2-file SOL_REPLAN governance commit이고 두 파일 모두 SOL_REPLAN allowedFiles 안에 있으며 target source·adapter·coverage·W002_REPLAN 문서를 수정하지 않는다.",
+        "A10 identity P0 해소: consumed 상태에서 latest FAMILY_REVALIDATION 또는 scoped FAMILY_TRACK blocked review의 reviewId가 rawTrigger.reviewId와 같으면 historical로 제외한다. 이미 현재 replan이 supersede한 blocker를 즉시 새 blocker로 재사용하지 않는다.",
+        "새 blocker 보존: raw trigger와 다른 reviewId의 새 FAMILY_REVALIDATION changes-requested/blocked 또는 새 scoped FAMILY_TRACK blocked는 계속 flow trigger가 되어 SOL_REPLAN으로 간다. scoped FAMILY_TRACK changes-requested는 identity와 무관하게 trigger에서 제외되어 normal FAMILY_TRACK rewind를 유지한다.",
+        "최종 operation 독립 재현은 same FAMREV→AFFORDANCE_DISCOVERY, new FAMREV→SOL_REPLAN, same scoped blocker→ENGINE_CORE, new scoped blocker→SOL_REPLAN을 반환했다. legacy unconsumed→SOL_REPLAN, approved unconsumed→TARGET_SET, consumed no blocker→AFFORDANCE_DISCOVERY 회귀도 유지된다.",
+        "상태 계약상 이 A11은 W002-TARGET_SET-SOL-A2의 상태 머신 finding을 supersede하는 governance approval이다. latest target review는 여전히 changes-requested이므로 승인 후 replanApproved=true/replanConsumed=false, 다음 operation=TARGET_SET이어야 하며 새 TARGET_SET approval이 A11 reviewId·v3 revision·outline hash를 소비해야 한다.",
+        "범위 한계: 이번 승인은 queue/replan identity 분기만 다룬다. 3-target A2의 교육 내용은 통과했지만 아직 승인되지 않았고, 세 family 구현·native affordance·exact preview·compiler/validator·canary/save/reopen도 승인하지 않는다.",
+        "독립 QA는 status tests 16/16, typecheck, no-family plan, exact candidate/allowed manifest 대조와 identity matrix를 통과했다. candidate 사전 전체 QA도 78 files/478 tests와 모든 audit PASS로 기록돼 승인한다."
+      ]
     }
   ]
 }
