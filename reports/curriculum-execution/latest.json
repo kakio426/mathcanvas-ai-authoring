@@ -21,14 +21,14 @@
     "officialStandards": 121,
     "reviewedTargetSets": 3,
     "reviewedTargets": 8,
-    "offlineReviewedTargets": 5,
+    "offlineReviewedTargets": 7,
     "liveReviewedTargets": 2,
     "fullyLiveStandards": 1,
     "representativeCellsProven": 1,
     "representativeCellTotal": 12,
-    "canonicalFamilies": 30,
+    "canonicalFamilies": 31,
     "releasedFamilies": 21,
-    "commonParameterFamilies": 4,
+    "commonParameterFamilies": 5,
     "globalTargetCoverageStatus": "unavailable"
   },
   "phases": [
@@ -42,7 +42,7 @@
       "phase": "1",
       "name": "공통 ProblemFamily 기반",
       "status": "complete",
-      "progress": "30 canonical / 21 released"
+      "progress": "31 canonical / 21 released"
     },
     {
       "phase": "2",
@@ -60,7 +60,7 @@
       "phase": "3B",
       "name": "필수 target family·offline 검증",
       "status": "in-progress",
-      "progress": "5/8 reviewed targets; global denominator incomplete"
+      "progress": "7/8 reviewed targets; global denominator incomplete"
     },
     {
       "phase": "3C",
@@ -72,7 +72,7 @@
       "phase": "4",
       "name": "전 범위 TeacherRequest·반영 표·실제 미리보기",
       "status": "queued-after-phase-2",
-      "progress": "4/30 common-parameter families"
+      "progress": "5/31 common-parameter families"
     },
     {
       "phase": "5",
@@ -408,8 +408,9 @@
     }
   ],
   "standardActionSummary": {
+    "capture-current-hash-live-evidence": 1,
     "complete": 1,
-    "cover-unbound-reviewed-targets": 2,
+    "cover-unbound-reviewed-targets": 1,
     "review-target-set-and-bind-released-family": 17,
     "review-target-set-and-close-offline-family": 5,
     "review-target-set-and-design-family": 96
@@ -713,14 +714,18 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "data.early-table.organize-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
-      "offlineCoveredTargetCount": 0,
+      "offlineFamilyIds": [
+        "data.early-table.organize-v1"
+      ],
+      "offlineCoveredTargetCount": 2,
       "liveCoveredTargetCount": 0,
-      "nextAction": "cover-unbound-reviewed-targets"
+      "nextAction": "capture-current-hash-live-evidence"
     },
     {
       "queueIndex": 13,

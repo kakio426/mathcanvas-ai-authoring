@@ -424,6 +424,60 @@ function patternBlockHandler(
   }
 }
 
+function dataTableHandler(
+  _resolved: ResolvedActivity,
+  emission: ResolvedEmission,
+  native: NativeObject,
+  issues: ValidationIssue[]
+): void {
+  const properties = emission.toolIntent.properties;
+  const categories = properties.categories;
+  const values = properties.values;
+  const title = properties.title;
+  const categoryAxisName = properties.categoryAxisName;
+  const valueColumnName = properties.valueColumnName;
+  const validCategories =
+    Array.isArray(categories) &&
+    categories.length >= 3 &&
+    categories.length <= 6 &&
+    categories.every((value) => typeof value === "string" && value.length > 0);
+  const validValues =
+    Array.isArray(values) &&
+    validCategories &&
+    values.length === categories.length &&
+    values.every(
+      (value) =>
+        typeof value === "number" && Number.isFinite(value) && value >= 0
+    ) &&
+    values.some((value) => value > 0);
+  const nativeCategories = native.name;
+  const nativeValues = native.tableCell;
+  const nativeTitle = native.title;
+  const nativeCategoryAxis = native.nameTag;
+  const nativeValueColumn = native.countName;
+  const nativeMatches =
+    native.svgId === "DP02TG-02" &&
+    Array.isArray(nativeCategories) &&
+    JSON.stringify(nativeCategories) === JSON.stringify(categories) &&
+    Array.isArray(nativeValues) &&
+    JSON.stringify(nativeValues) ===
+      JSON.stringify((values as number[]).map(String)) &&
+    Array.isArray(nativeTitle) &&
+    JSON.stringify(nativeTitle) === JSON.stringify([title]) &&
+    Array.isArray(nativeCategoryAxis) &&
+    JSON.stringify(nativeCategoryAxis) === JSON.stringify([categoryAxisName]) &&
+    Array.isArray(nativeValueColumn) &&
+    JSON.stringify(nativeValueColumn) === JSON.stringify([valueColumnName]);
+  if (!validCategories || !validValues || !nativeMatches) {
+    issue(
+      issues,
+      "native-data-table-mismatch",
+      "api-contract",
+      `${emission.id}의 자료와 표 native 계약이 의미 입력과 다릅니다.`
+    );
+  }
+}
+
 function pointLineHandler(
   _resolved: ResolvedActivity,
   emission: ResolvedEmission,
@@ -623,6 +677,7 @@ const handlers: Readonly<Record<string, Handler | undefined>> = {
   "number-card": numberCardHandler,
   "place-value-model": placeValueModelHandler,
   "pattern-block": patternBlockHandler,
+  "data-table": dataTableHandler,
   "point-line": pointLineHandler,
   text: undefined,
   "draw-rectangle": undefined

@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "registeredFamilyCount": 30,
+  "registeredFamilyCount": 31,
   "releasedFamilyCount": 21,
-  "parameterizedFamilyCount": 4,
-  "nativeFamilyCount": 1,
+  "parameterizedFamilyCount": 5,
+  "nativeFamilyCount": 2,
   "releasedPayloadBaselineCount": 21,
   "families": [
     {
@@ -80,6 +80,34 @@
       ],
       "evidencePaths": [
         "packages/templates/src/problem-families/domains/data-probability/classification-given-criterion-count.test.ts"
+      ]
+    },
+    {
+      "familyId": "data.early-table.organize-v1",
+      "activityId": "data.early-table.organize-v1",
+      "templateId": "data.early-table.organize-v1",
+      "domain": "자료와 가능성",
+      "standardCodes": [
+        "[2수04-02]"
+      ],
+      "manipulation": "data-table-organize-choice-drag",
+      "generator": {
+        "id": "data.early-table.organize-items",
+        "version": "1.0.0"
+      },
+      "renderRecipeKind": "native-render-recipe",
+      "supportState": "verified",
+      "lifecycleStage": "offline-validated",
+      "blueprintContentHash": "aade83025d16504b5dc64b1a9e4a5a967d90a24aaee1da622d31ff82f0a249ca",
+      "assessmentTargetIds": [
+        "data.table.organize-classified-data-v1",
+        "data.table.explain-usefulness-v1"
+      ],
+      "parameterKeys": [
+        "contextId"
+      ],
+      "evidencePaths": [
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts"
       ]
     },
     {

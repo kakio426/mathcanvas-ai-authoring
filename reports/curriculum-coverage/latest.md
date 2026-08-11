@@ -16,16 +16,16 @@
 | 상태 | 성취기준 수 |
 |---|---:|
 | unmapped | 0 |
-| mapped | 97 |
+| mapped | 96 |
 | generatable | 0 |
-| offline-validated | 6 |
+| offline-validated | 7 |
 | live-released | 18 |
 
 ## 학년군별
 
 | 학년군 | 공식 | mapped | 활동 있음 | released reach |
 |---|---:|---:|---:|---:|
-| 1-2 | 29 | 29 | 8 | 7 |
+| 1-2 | 29 | 29 | 9 | 7 |
 | 3-4 | 47 | 47 | 7 | 6 |
 | 5-6 | 45 | 45 | 9 | 5 |
 
@@ -36,7 +36,7 @@
 | 수와 연산 | 42 | 42 | 11 | 8 |
 | 변화와 관계 | 10 | 10 | 3 | 2 |
 | 도형과 측정 | 57 | 57 | 6 | 6 |
-| 자료와 가능성 | 12 | 12 | 4 | 2 |
+| 자료와 가능성 | 12 | 12 | 5 | 2 |
 
 ## 교과서 단원 연결
 
@@ -77,7 +77,7 @@
 | [2수03-12] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수03-13] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수04-01] | 1-2 | 자료와 가능성 | offline-validated | live 0/4; reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다. | data.classification.given-criterion-count-v1 | - | 2-1-5, 2-2-5 |
-| [2수04-02] | 1-2 | 자료와 가능성 | mapped | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다. | - | - | 2-2-5 |
+| [2수04-02] | 1-2 | 자료와 가능성 | offline-validated | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다. | data.early-table.organize-v1 | - | 2-2-5 |
 | [2수04-03] | 1-2 | 자료와 가능성 | mapped | - | - | - | 2-2-5 |
 | [4수01-01] | 3-4 | 수와 연산 | mapped | - | - | - | 4-1-1 |
 | [4수01-02] | 3-4 | 수와 연산 | mapped | - | - | - | 4-1-1 |

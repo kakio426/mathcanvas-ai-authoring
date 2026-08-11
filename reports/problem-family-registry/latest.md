@@ -1,9 +1,9 @@
 # ProblemFamily registry 보고서
 
-- canonical family: **30개**
+- canonical family: **31개**
 - released family: **21개**
-- 공통 ProblemParameters 지원 family: **4개**
-- native module family: **1개**
+- 공통 ProblemParameters 지원 family: **5개**
+- native module family: **2개**
 - released payload hash 기준선: **21개**
 
 > family 수는 AssessmentTarget coverage가 아닙니다. reviewed target 분해 전까지 target coverage는 산정하지 않습니다.
@@ -13,6 +13,7 @@
 | data.bar-graph.represent-from-table-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
 | data.bar-graph.scale-unit.read-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | live-released | - |
 | data.classification.given-criterion-count-v1 | 자료와 가능성 | [2수04-01] | native-render-recipe | offline-validated | classificationSetId, matchingCount |
+| data.early-table.organize-v1 | 자료와 가능성 | [2수04-02] | native-render-recipe | offline-validated | contextId |
 | data.graph.purpose.claim-evidence-v1 | 자료와 가능성 | [6수04-03] | legacy-blueprint-adapter | offline-validated | - |
 | data.picture-graph.key.claim-evidence-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
 | fraction.add.same-denominator.improper-sum-v1 | 수와 연산 | [4수01-15] | legacy-blueprint-adapter | live-released | - |

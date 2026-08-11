@@ -61,7 +61,7 @@ const claimEvidenceManifests = Object.fromEntries(
           repository: "DECK6/korean-elementary-learning-map",
           commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
           usageSnapshotSha256:
-            "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+            "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
           standardCode: profile.standardCode,
           topicIds: [profile.learningMapTopicId],
           prerequisiteTopicIds: [],
@@ -122,7 +122,7 @@ const factorPairArrayManifest = defineCognitiveDemandManifest({
     repository: "DECK6/korean-elementary-learning-map",
     commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
     usageSnapshotSha256:
-      "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+      "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
     standardCode: factorPairActivityProfile.standardCode,
     topicIds: [factorPairActivityProfile.learningMapTopicId],
     prerequisiteTopicIds: [
@@ -198,7 +198,7 @@ const partialOperationManifests = Object.fromEntries(
           repository: "DECK6/korean-elementary-learning-map",
           commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
           usageSnapshotSha256:
-            "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+            "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
           standardCode: profile.standardCode,
           topicIds: [profile.learningMapTopicId],
           prerequisiteTopicIds: [
@@ -280,7 +280,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[6수01-07]",
         topicIds: [
           "kr.mt.math.number-operations.g5-6.s6-01-07.representation"
@@ -344,7 +344,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[6수01-06]",
         topicIds: [
           "kr.mt.math.number-operations.g5-6.s6-01-06.representation"
@@ -423,7 +423,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[4수02-03]",
         topicIds: [
           "kr.mt.math.change-relationships.g3-4.s4-02-03.representation",
@@ -504,7 +504,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[4수02-03]",
         topicIds: [
           "kr.mt.math.change-relationships.g3-4.s4-02-03.representation",
@@ -573,7 +573,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수03-07]",
         topicIds: [
           "kr.mt.math.geometry-measurement.g1-2.s2-03-07.representation"
@@ -646,7 +646,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수03-08]",
         topicIds: [
           "kr.mt.math.geometry-measurement.g1-2.s2-03-08.application"
@@ -719,7 +719,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[4수01-15]",
         topicIds: [
           "kr.mt.math.number-operations.g3-4.s4-01-15.application"
@@ -800,7 +800,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[4수01-15]",
         topicIds: [
           "kr.mt.math.number-operations.g3-4.s4-01-15.application"
@@ -880,7 +880,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[6수01-08]",
         topicIds: [
           "kr.mt.math.number-operations.g5-6.s6-01-08.application"
@@ -962,7 +962,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[6수01-08]",
         topicIds: [
           "kr.mt.math.number-operations.g5-6.s6-01-08.application"
@@ -1044,7 +1044,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         commit:
           "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[4수04-01]",
         topicIds: [
           "kr.mt.math.data-probability.g3-4.s4-04-01.application"
@@ -1128,7 +1128,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         commit:
           "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수03-10]",
         topicIds: [
           "kr.mt.math.geometry-measurement.g1-2.s2-03-10.application"
@@ -1210,7 +1210,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
         commit:
           "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
         usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수01-02]",
         topicIds: [
           "kr.mt.math.number-operations.g1-2.s2-01-02.application"
@@ -1296,7 +1296,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       repository: "DECK6/korean-elementary-learning-map",
       commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
       usageSnapshotSha256:
-          "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+          "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
       standardCode: "[2수01-04]",
       topicIds: [
         "kr.mt.math.number-operations.g1-2.s2-01-04.representation"
@@ -1379,7 +1379,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       learningMap: {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
-        usageSnapshotSha256: "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+        usageSnapshotSha256: "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수02-01]",
         topicIds: ["kr.mt.math.change-relationships.g1-2.s2-02-01.application"],
         prerequisiteTopicIds: ["kr.mt.math.change-relationships.g1-2.s2-02-01.representation", "kr.mt.math.change-relationships.g1-2.s2-02-01.concept"],
@@ -1416,7 +1416,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       learningMap: {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
-        usageSnapshotSha256: "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+        usageSnapshotSha256: "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[2수01-10]",
         topicIds: ["kr.mt.math.number-operations.g1-2.s2-01-10.representation"],
         prerequisiteTopicIds: ["kr.mt.math.number-operations.g1-2.s2-01-10.concept"],
@@ -1449,7 +1449,7 @@ const legacyManifests: Readonly<Record<string, CognitiveDemandManifest>> = {
       learningMap: {
         repository: "DECK6/korean-elementary-learning-map",
         commit: "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
-        usageSnapshotSha256: "148d9ae34ddfbd0eed5f3a90b5cde749bb079ae56cf3df8161b6005ba745bb45",
+        usageSnapshotSha256: "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4",
         standardCode: "[6수04-04]",
         topicIds: ["kr.mt.math.data-probability.g5-6.s6-04-04.representation"],
         prerequisiteTopicIds: ["kr.mt.math.data-probability.g5-6.s6-04-04.concept"],
