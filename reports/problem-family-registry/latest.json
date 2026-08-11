@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "registeredFamilyCount": 32,
+  "registeredFamilyCount": 33,
   "releasedFamilyCount": 21,
-  "parameterizedFamilyCount": 6,
-  "nativeFamilyCount": 3,
+  "parameterizedFamilyCount": 7,
+  "nativeFamilyCount": 4,
   "releasedPayloadBaselineCount": 21,
   "families": [
     {
@@ -685,6 +685,34 @@
       ],
       "evidencePaths": [
         "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts"
+      ]
+    },
+    {
+      "familyId": "pattern.repeat-unit.construct-v1",
+      "activityId": "pattern.repeat-unit.construct-v1",
+      "templateId": "pattern.repeat-unit.construct-v1",
+      "domain": "변화와 관계",
+      "standardCodes": [
+        "[2수02-02]"
+      ],
+      "manipulation": "pattern-repeat-rule-construction",
+      "generator": {
+        "id": "pattern.repeat-unit.construct-items",
+        "version": "1.0.0"
+      },
+      "renderRecipeKind": "native-render-recipe",
+      "supportState": "verified",
+      "lifecycleStage": "generatable",
+      "solReviewStatus": "pending",
+      "blueprintContentHash": "a4bf345c779c473038f107a6d625631a7baf2c4f0961469baedbfafdd3f6b4e6",
+      "assessmentTargetIds": [
+        "change.pattern.repeat-rule.construct-v1"
+      ],
+      "parameterKeys": [
+        "contextId"
+      ],
+      "evidencePaths": [
+        "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts"
       ]
     },
     {

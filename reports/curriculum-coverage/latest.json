@@ -480,7 +480,8 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "generatable",
       "activityIds": [
-        "pattern.create-repeat-unit-explain-v1"
+        "pattern.create-repeat-unit-explain-v1",
+        "pattern.repeat-unit.construct-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -495,7 +496,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 1,
+        "familyCount": 2,
         "releasedFamilyCount": 0
       }
     },

@@ -292,7 +292,9 @@ for (const manifest of manifests) {
   const decisionMemberRoles =
     manifest.decision.mode === "select-one"
       ? manifest.decision.candidateRoles
-      : manifest.decision.pieceRoles;
+      : manifest.decision.mode === "construct-rule"
+        ? manifest.decision.variantRoles
+        : manifest.decision.pieceRoles;
   const decisionMembers = decisionMemberRoles.map((role) =>
     roleByName.get(role)
   );
@@ -426,13 +428,25 @@ for (const manifest of manifests) {
       failures.push(`G4_NO_TRIVIAL_PATH:${blueprint.id}`);
     }
   } else {
-    const pieces = manifest.decision.pieceRoles.map((role) =>
+    const pieces = (
+      manifest.decision.mode === "construct-rule"
+        ? manifest.decision.variantRoles
+        : manifest.decision.pieceRoles
+    ).map((role) =>
       roleByName.get(role)
     );
-    const slots = manifest.decision.slotRoles.map((role) =>
+    const slotRoleList =
+      manifest.decision.mode === "construct-rule"
+        ? manifest.decision.ruleSlotRoles
+        : manifest.decision.slotRoles;
+    const pieceRoleList =
+      manifest.decision.mode === "construct-rule"
+        ? manifest.decision.variantRoles
+        : manifest.decision.pieceRoles;
+    const slots = slotRoleList.map((role) =>
       roleByName.get(role)
     );
-    itemDecisionConstraints = manifest.decision.slotRoles.map(
+    itemDecisionConstraints = slotRoleList.map(
       (slotRole) =>
         blueprint.constraints.find(
           (constraint) =>
@@ -441,7 +455,7 @@ for (const manifest of manifests) {
         )
     );
     if (
-      new Set(manifest.decision.pieceRoles).size < 3 ||
+      new Set(pieceRoleList).size < 3 ||
       pieces.some(
         (role) =>
           !role ||
@@ -459,11 +473,11 @@ for (const manifest of manifests) {
       itemDecisionConstraints.some(
         (constraint) =>
           !constraint ||
-          !constraint.requiresStudentAction ||
-          !sameSet(
-            constraint.sources.map((source) => source.role),
-            manifest.decision.pieceRoles
-          )
+            !constraint.requiresStudentAction ||
+            !sameSet(
+              constraint.sources.map((source) => source.role),
+            pieceRoleList
+            )
       )
     ) {
       failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
@@ -479,7 +493,9 @@ for (const manifest of manifests) {
         !(
           manifest.decision.mode === "select-one"
             ? manifest.decision.candidateRoles
-            : manifest.decision.pieceRoles
+            : manifest.decision.mode === "construct-rule"
+              ? manifest.decision.variantRoles
+              : manifest.decision.pieceRoles
         ).includes(distractor.role)
     ) ||
     manifest.decision.distractors.some(
@@ -498,7 +514,9 @@ for (const manifest of manifests) {
   const answerPath =
     manifest.decision.mode === "select-one"
       ? manifest.decision.correctValuePath
-      : manifest.decision.solutionSetPath;
+      : manifest.decision.mode === "construct-rule"
+        ? manifest.decision.ruleStatePath
+        : manifest.decision.solutionSetPath;
   const boundAnswer = blueprint.toolRoles.some(
     (role) =>
       role.locked &&
@@ -575,7 +593,8 @@ for (const manifest of manifests) {
   if (
     !blueprint.valuePredicates.some(
       (predicate) =>
-        predicate.kind === "cognitive.release-contract"
+        predicate.kind === "cognitive.release-contract" ||
+        predicate.kind === "cognitive.rule-state-contract"
     ) ||
     itemDecisionConstraints.length === 0 ||
     itemDecisionConstraints.some(

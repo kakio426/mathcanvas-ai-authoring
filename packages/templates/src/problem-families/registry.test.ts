@@ -27,6 +27,7 @@ import {
 } from "@mathcanvas/curriculum";
 import { CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID } from "./domains/data-probability/classification-given-criterion-count.js";
 import { DATA_TABLE_ORGANIZE_FAMILY_ID } from "./domains/data-probability/data-table-organize.js";
+import { REPEAT_RULE_CONSTRUCTION_FAMILY_ID } from "./domains/change-relationships/repeat-rule-construction.js";
 import { REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID } from "./domains/change-relationships/repeating-pattern-arrangement.js";
 import type {
   ProblemFamilyCapabilityExtension,
@@ -35,9 +36,9 @@ import type {
 } from "./types.js";
 
 describe("canonical ProblemFamily registry", () => {
-  it("기존 29개와 세 native family를 canonical ID로 정확히 한 번 감싼다", () => {
+  it("기존 29개와 네 native family를 canonical ID로 정확히 한 번 감싼다", () => {
     const manifests = listProblemFamilyManifests();
-    expect(manifests).toHaveLength(32);
+    expect(manifests).toHaveLength(33);
     expect(
       manifests.filter(
         (manifest) => manifest.releaseEvidence.supportState === "released"
@@ -48,6 +49,7 @@ describe("canonical ProblemFamily registry", () => {
         ...Object.values(ACTIVITY_IDS),
         CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
         DATA_TABLE_ORGANIZE_FAMILY_ID,
+        REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
         REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
       ])
     );
@@ -58,6 +60,7 @@ describe("canonical ProblemFamily registry", () => {
         ([
           CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
           DATA_TABLE_ORGANIZE_FAMILY_ID,
+          REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
           REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
         ] as readonly string[]).includes(manifest.familyId)
           ? "native-render-recipe"
