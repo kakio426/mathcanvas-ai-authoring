@@ -74,13 +74,33 @@ export function validateOperationCursor(
   );
 }
 
+export function rewindFamilyTrackForRetry(
+  operationSequence,
+  completedOperations,
+  reviewDecision
+) {
+  if (
+    reviewDecision !== "changes-requested" ||
+    !Array.isArray(operationSequence) ||
+    !Array.isArray(completedOperations) ||
+    !completedOperations.includes("FAMILY_TRACK")
+  ) {
+    return null;
+  }
+  const familyTrackIndex = operationSequence.indexOf("FAMILY_TRACK");
+  if (familyTrackIndex < 0) return null;
+  return {
+    completedOperations: operationSequence.slice(0, familyTrackIndex),
+    nextOperation: "FAMILY_TRACK"
+  };
+}
+
 export function familyRevalidationSupersedes(
   revalidationReview,
   familyTrackReview
 ) {
   return (
     revalidationReview?.operation === "FAMILY_REVALIDATION" &&
-    revalidationReview.supersedesReviewId === null &&
     typeof revalidationReview.supersedesFamilyTrackReviewId === "string" &&
     revalidationReview.supersedesFamilyTrackReviewId ===
       (familyTrackReview?.reviewId ?? null)

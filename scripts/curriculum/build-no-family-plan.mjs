@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import {
   familyRevalidationArtifactIsCurrent,
   familyRevalidationSupersedes,
+  rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
   validateOperationCursor
 } from "./sol-review-status.mjs";
@@ -149,7 +150,8 @@ function readSubWorkState(contract) {
     const plannedIds = plannedItems.map((item) => item.workItemId);
     const stateIds = (state.items ?? []).map((item) => item.workItemId);
     assert(
-      state.schemaVersion === "1.0.0" &&
+        state.schemaVersion === "1.0.0" &&
+        state.standardCode === contract.standardCode &&
         state.contractRevision === contract.replanContractRevision &&
         state.workItemId === plannedIds[0]?.match(/^W\d+/)?.[0] &&
         Array.isArray(state.items) &&
@@ -416,6 +418,12 @@ function buildReport() {
   );
   for (const [archetypeId, contract] of Object.entries(source.trackContracts)) {
     const subWorkItems = contract.subWorkItems ?? [];
+    if (subWorkItems.length > 0) {
+      assert(
+        typeof contract.standardCode === "string",
+        `no-family-plan-subwork-standard-code:${archetypeId}`
+      );
+    }
     assert(
       Array.isArray(subWorkItems) &&
         new Set(subWorkItems.map((item) => item.workItemId)).size ===
@@ -596,7 +604,10 @@ function buildReport() {
           typeof review.scopeId === "string" &&
           typeof review.artifactPath === "string" &&
           /^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "") &&
-          review.supersedesReviewId === null &&
+          (review.attempt === 1
+            ? review.supersedesReviewId === null
+            : typeof review.supersedesReviewId === "string" &&
+              review.supersedesReviewId.trim().length > 0) &&
           typeof review.supersedesFamilyTrackReviewId === "string" &&
           review.supersedesFamilyTrackReviewId.trim().length > 0,
         `no-family-plan-sol-revalidation-record:${review.reviewId}`
@@ -949,18 +960,14 @@ function buildReport() {
         )
       );
       const reviewStatus = review?.decision ?? "pending";
-      const retryingFamilyTrack =
-        reviewStatus === "changes-requested" &&
-        phase.completedOperations.includes("FAMILY_TRACK");
-      const effectivePhase = retryingFamilyTrack
-        ? {
-            ...phase,
-            completedOperations: phase.operationSequence.slice(
-              0,
-              phase.operationSequence.indexOf("FAMILY_TRACK")
-            ),
-            nextOperation: "FAMILY_TRACK"
-          }
+      const retryState = rewindFamilyTrackForRetry(
+        phase.operationSequence,
+        phase.completedOperations,
+        reviewStatus
+      );
+      const retryingFamilyTrack = retryState !== null;
+      const effectivePhase = retryState
+        ? { ...phase, ...retryState }
         : phase;
       return {
         ...effectivePhase,

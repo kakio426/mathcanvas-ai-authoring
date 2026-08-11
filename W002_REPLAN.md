@@ -72,7 +72,8 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
    바꾸지 않는다. predicate·cognitive schema·공통 adapter 변경이 더 필요하면 이 단계에서 다시 막고
    Sol 재계획을 받는다.
 5. `W002-REPEAT_RULE_CONSTRUCTION` — `pattern.repeat-unit.construct-v1`로 SM02PB rule lane에서 학생이 성분·순서를 직접 구성하고,
-   저장된 rule state가 이후 item·answer·preview를 결정하게 한다.
+   compile-time RuleStateEnvelope가 item·answer·exact preview의 조건을 결정하며, 학생의 실제 저장 rule state는
+   조작 후 response evidence에서만 확인한다.
 6. `W002-REPEAT_ARRANGEMENT_REPAIR` — `pattern.declared-repeat.repair-v1`로 이미 선언된 repeat rule을 적용하고, 별도의 잘못된 항을
    실제로 교체한 전후 상태를 저장·검증한다.
 7. `W002-CHANGE_RULE_CONSTRUCTION` — `pattern.change-rule.construct-v1`로 시작값·간격·방향이
@@ -100,8 +101,9 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 
 ## 4. 구현 불변량
 
-- 규칙은 보기 카드 하나를 고르는 것으로 끝나지 않는다. 학생이 만든 rule state(반복 단위 또는 시작값·간격·방향)가
-  저장되어야 하며, 그 state가 배열·정답·해설·exact preview의 원천이어야 한다.
+- 규칙은 보기 카드 하나를 고르는 것으로 끝나지 않는다. compile-time RuleStateEnvelope에는 허용된
+  반복 단위 또는 시작값·간격·방향의 envelope와 정답 조건이 들어가고, 학생이 만든 실제 rule state는
+  조작 후 StudentRuleStateEvidence로 저장되어 배열·정답·해설의 조건부 rubric과 대조된다.
 - `activitySpecHash`는 compile-time resolved spec의 hash이며 학생 조작으로 바뀌지 않는다. 학생이
   선언한 규칙은 별도 `RuleStateEnvelope`로 표현하고, 조작 후에는
   `StudentRuleStateEvidence`와 `responseHash`로 저장·검증한다. preview·answer는 컴파일된 envelope를

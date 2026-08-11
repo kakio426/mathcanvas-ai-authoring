@@ -6,6 +6,7 @@ const {
   effectiveFamilyLifecycleStage,
   familyRevalidationSupersedes,
   nativeFamilyReviewStatus,
+  rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
   reviewImplementationFiles,
   reviewScopeMatches,
@@ -143,11 +144,38 @@ describe("Sol review candidate and scope gates", () => {
       familyRevalidationSupersedes(
         {
           operation: "FAMILY_REVALIDATION",
-          supersedesReviewId: "W001-FAMILY_TRACK-SOL-A3",
+          supersedesReviewId: "W001-FAMILY_REVALIDATION-SOL-A1",
           supersedesFamilyTrackReviewId: "W001-FAMILY_TRACK-SOL-A3"
         },
         familyReview
       )
+    ).toBe(true);
+    expect(
+      familyRevalidationSupersedes(
+        {
+          operation: "FAMILY_REVALIDATION",
+          supersedesReviewId: null,
+          supersedesFamilyTrackReviewId: "W001-FAMILY_TRACK-SOL-A2"
+        },
+        familyReview
+      )
     ).toBe(false);
+  });
+
+  it("rewinds a changed family review to implementation instead of looping SOL_REVIEW", () => {
+    const sequence = ["AFFORDANCE_DISCOVERY", "ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"];
+    expect(
+      rewindFamilyTrackForRetry(
+        sequence,
+        ["AFFORDANCE_DISCOVERY", "ENGINE_CORE", "FAMILY_TRACK"],
+        "changes-requested"
+      )
+    ).toEqual({
+      completedOperations: ["AFFORDANCE_DISCOVERY", "ENGINE_CORE"],
+      nextOperation: "FAMILY_TRACK"
+    });
+    expect(
+      rewindFamilyTrackForRetry(sequence, ["AFFORDANCE_DISCOVERY"], "changes-requested")
+    ).toBe(null);
   });
 });
