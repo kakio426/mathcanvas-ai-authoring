@@ -2215,6 +2215,7 @@
       "engineClassIds": [
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -2291,6 +2292,63 @@
       "engineClassIds": [
         "R08"
       ],
+      "engineCoreContract": {
+        "manifestDecision": {
+          "mode": "construct-rule",
+          "ruleStatePath": "ruleState",
+          "variantRoles": [
+            "rule-variant-1",
+            "rule-variant-2"
+          ],
+          "variantProperty": "orderedValues",
+          "validRuleStatesPath": "validRuleStates",
+          "surplusPath": "surplusRuleStates",
+          "minimumValidStates": 2,
+          "minimumSurplus": 1,
+          "distractors": [
+            {
+              "predicateKind": "cognitive.rule-state-contract",
+              "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+            }
+          ]
+        },
+        "runtimePredicate": {
+          "kind": "cognitive.rule-state-contract",
+          "parameters": {
+            "mode": "construct-rule",
+            "ruleStatePath": "ruleState",
+            "validRuleStatesPath": "validRuleStates",
+            "surplusPath": "surplusRuleStates",
+            "variantRoles": [
+              "rule-variant-1",
+              "rule-variant-2"
+            ],
+            "variantProperty": "orderedValues",
+            "continuationRuleStatePath": "ruleState",
+            "explanationRuleStatePath": "ruleState",
+            "predictionRole": "prediction-box",
+            "explanationRole": "explanation-box",
+            "verificationRoles": [
+              "rule-lane",
+              "continuation-lane"
+            ],
+            "minimumValidStates": 2,
+            "minimumSurplus": 1,
+            "distractors": [
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+              }
+            ]
+          }
+        },
+        "binding": {
+          "manifestDecisionMode": "construct-rule",
+          "predicateKind": "cognitive.rule-state-contract",
+          "continuationRuleStatePath": "ruleState",
+          "explanationRuleStatePath": "ruleState"
+        }
+      },
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -2488,6 +2546,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [
         {
           "familyTrackId": "data.early-table.organize-v1",
@@ -4392,7 +4451,13 @@
           "validRuleStatesPath": "validRuleStates",
           "surplusPath": "surplusRuleStates",
           "minimumValidStates": 2,
-          "minimumSurplus": 1
+          "minimumSurplus": 1,
+          "distractors": [
+            {
+              "predicateKind": "cognitive.rule-state-contract",
+              "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+            }
+          ]
         },
         "runtimePredicate": {
           "kind": "cognitive.rule-state-contract",
@@ -4415,7 +4480,13 @@
               "continuation-lane"
             ],
             "minimumValidStates": 2,
-            "minimumSurplus": 1
+            "minimumSurplus": 1,
+            "distractors": [
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+              }
+            ]
           }
         },
         "binding": {
@@ -4912,6 +4983,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [
         {
           "familyTrackId": "data.early-table.organize-v1",
@@ -4982,6 +5054,63 @@
       "engineClassIds": [
         "R08"
       ],
+      "engineCoreContract": {
+        "manifestDecision": {
+          "mode": "construct-rule",
+          "ruleStatePath": "ruleState",
+          "variantRoles": [
+            "rule-variant-1",
+            "rule-variant-2"
+          ],
+          "variantProperty": "orderedValues",
+          "validRuleStatesPath": "validRuleStates",
+          "surplusPath": "surplusRuleStates",
+          "minimumValidStates": 2,
+          "minimumSurplus": 1,
+          "distractors": [
+            {
+              "predicateKind": "cognitive.rule-state-contract",
+              "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+            }
+          ]
+        },
+        "runtimePredicate": {
+          "kind": "cognitive.rule-state-contract",
+          "parameters": {
+            "mode": "construct-rule",
+            "ruleStatePath": "ruleState",
+            "validRuleStatesPath": "validRuleStates",
+            "surplusPath": "surplusRuleStates",
+            "variantRoles": [
+              "rule-variant-1",
+              "rule-variant-2"
+            ],
+            "variantProperty": "orderedValues",
+            "continuationRuleStatePath": "ruleState",
+            "explanationRuleStatePath": "ruleState",
+            "predictionRole": "prediction-box",
+            "explanationRole": "explanation-box",
+            "verificationRoles": [
+              "rule-lane",
+              "continuation-lane"
+            ],
+            "minimumValidStates": 2,
+            "minimumSurplus": 1,
+            "distractors": [
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+              }
+            ]
+          }
+        },
+        "binding": {
+          "manifestDecisionMode": "construct-rule",
+          "predicateKind": "cognitive.rule-state-contract",
+          "continuationRuleStatePath": "ruleState",
+          "explanationRuleStatePath": "ruleState"
+        }
+      },
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -5179,6 +5308,7 @@
       "engineClassIds": [
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5255,6 +5385,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5331,6 +5462,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5414,6 +5546,7 @@
       "engineClassIds": [
         "R09"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5497,6 +5630,7 @@
       "engineClassIds": [
         "R01"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5580,6 +5714,7 @@
       "engineClassIds": [
         "R08"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5663,6 +5798,7 @@
       "engineClassIds": [
         "R23"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5753,6 +5889,7 @@
       "engineClassIds": [
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5837,6 +5974,7 @@
         "R15",
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5920,6 +6058,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -5996,6 +6135,7 @@
       "engineClassIds": [
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6072,6 +6212,7 @@
       "engineClassIds": [
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6155,6 +6296,7 @@
       "engineClassIds": [
         "R14"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6231,6 +6373,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6314,6 +6457,7 @@
       "engineClassIds": [
         "R09"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6390,6 +6534,7 @@
       "engineClassIds": [
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6466,6 +6611,7 @@
       "engineClassIds": [
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6550,6 +6696,7 @@
         "R02",
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6633,6 +6780,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6716,6 +6864,7 @@
       "engineClassIds": [
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6792,6 +6941,7 @@
       "engineClassIds": [
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6875,6 +7025,7 @@
       "engineClassIds": [
         "R21"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -6951,6 +7102,7 @@
       "engineClassIds": [
         "R09"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7035,6 +7187,7 @@
         "R02",
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7111,6 +7264,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7187,6 +7341,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7263,6 +7418,7 @@
       "engineClassIds": [
         "R15"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7346,6 +7502,7 @@
       "engineClassIds": [
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7422,6 +7579,7 @@
       "engineClassIds": [
         "R09"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7498,6 +7656,7 @@
       "engineClassIds": [
         "R06"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7582,6 +7741,7 @@
         "R24",
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7658,6 +7818,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7741,6 +7902,7 @@
       "engineClassIds": [
         "R15"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7817,6 +7979,7 @@
       "engineClassIds": [
         "R06"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7900,6 +8063,7 @@
       "engineClassIds": [
         "R12"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -7976,6 +8140,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8053,6 +8218,7 @@
         "R24",
         "R22"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8129,6 +8295,7 @@
       "engineClassIds": [
         "R06"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8205,6 +8372,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8281,6 +8449,7 @@
       "engineClassIds": [
         "R16"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8357,6 +8526,7 @@
       "engineClassIds": [
         "R18"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8447,6 +8617,7 @@
       "engineClassIds": [
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8523,6 +8694,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8599,6 +8771,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8682,6 +8855,7 @@
       "engineClassIds": [
         "R16"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8758,6 +8932,7 @@
       "engineClassIds": [
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8834,6 +9009,7 @@
       "engineClassIds": [
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8917,6 +9093,7 @@
       "engineClassIds": [
         "R13"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -8993,6 +9170,7 @@
       "engineClassIds": [
         "R12"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9069,6 +9247,7 @@
       "engineClassIds": [
         "R07"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9145,6 +9324,7 @@
       "engineClassIds": [
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9221,6 +9401,7 @@
       "engineClassIds": [
         "R07"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9304,6 +9485,7 @@
       "engineClassIds": [
         "R14"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9380,6 +9562,7 @@
       "engineClassIds": [
         "R12"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9465,6 +9648,7 @@
         "R07",
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9541,6 +9725,7 @@
       "engineClassIds": [
         "R17"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9617,6 +9802,7 @@
       "engineClassIds": [
         "R07"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9693,6 +9879,7 @@
       "engineClassIds": [
         "R14"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9769,6 +9956,7 @@
       "engineClassIds": [
         "R12"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9845,6 +10033,7 @@
       "engineClassIds": [
         "R07"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -9928,6 +10117,7 @@
       "engineClassIds": [
         "R19"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10011,6 +10201,7 @@
       "engineClassIds": [
         "R06"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10087,6 +10278,7 @@
       "engineClassIds": [
         "R07"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10171,6 +10363,7 @@
         "R18",
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10247,6 +10440,7 @@
       "engineClassIds": [
         "R21"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10331,6 +10525,7 @@
         "R07",
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10414,6 +10609,7 @@
       "engineClassIds": [
         "R18"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10490,6 +10686,7 @@
       "engineClassIds": [
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10566,6 +10763,7 @@
       "engineClassIds": [
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10642,6 +10840,7 @@
       "engineClassIds": [
         "R17"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10718,6 +10917,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10802,6 +11002,7 @@
         "R19",
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10878,6 +11079,7 @@
       "engineClassIds": [
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -10954,6 +11156,7 @@
       "engineClassIds": [
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11038,6 +11241,7 @@
         "R19",
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11116,6 +11320,7 @@
         "R07",
         "R02"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11193,6 +11398,7 @@
         "R02",
         "R03"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11270,6 +11476,7 @@
         "R21",
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11367,6 +11574,7 @@
       "engineClassIds": [
         "R18"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11450,6 +11658,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11533,6 +11742,7 @@
       "engineClassIds": [
         "R16"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11616,6 +11826,7 @@
       "engineClassIds": [
         "R19"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11692,6 +11903,7 @@
       "engineClassIds": [
         "R05"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11769,6 +11981,7 @@
         "R16",
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11845,6 +12058,7 @@
       "engineClassIds": [
         "R18"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -11929,6 +12143,7 @@
         "R13",
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12005,6 +12220,7 @@
       "engineClassIds": [
         "R19"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12081,6 +12297,7 @@
       "engineClassIds": [
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12158,6 +12375,7 @@
         "R19",
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12235,6 +12453,7 @@
         "R14",
         "R20"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12318,6 +12537,7 @@
       "engineClassIds": [
         "R18"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12401,6 +12621,7 @@
       "engineClassIds": [
         "R19"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12484,6 +12705,7 @@
       "engineClassIds": [
         "R19"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12561,6 +12783,7 @@
         "R19",
         "R04"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
@@ -12638,6 +12861,7 @@
         "R21",
         "R11"
       ],
+      "engineCoreContract": null,
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,

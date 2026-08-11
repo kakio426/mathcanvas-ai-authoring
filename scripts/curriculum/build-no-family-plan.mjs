@@ -86,6 +86,92 @@ function jsonHash(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
+function assertEngineCoreContract(contract, archetypeId) {
+  const requiresEngineCore = (contract.subWorkItems ?? []).some((item) =>
+    item.operationSequence?.includes("ENGINE_CORE")
+  );
+  if (!requiresEngineCore) return;
+
+  const core = contract.engineCoreContract;
+  assert(
+    core && typeof core === "object",
+    `no-family-plan-engine-core-contract-missing:${archetypeId}`
+  );
+  const decision = core.manifestDecision;
+  const runtime = core.runtimePredicate;
+  const binding = core.binding;
+  const stableId = (value) =>
+    typeof value === "string" &&
+    /^[A-Za-z0-9._:-]+$/.test(value);
+  const stringList = (value, minimum = 1) =>
+    Array.isArray(value) &&
+    value.length >= minimum &&
+    new Set(value).size === value.length &&
+    value.every(stableId);
+  const distractorList = (value) =>
+    Array.isArray(value) &&
+    value.length >= 1 &&
+    value.length <= 7 &&
+    value.every(
+      (entry) =>
+        entry &&
+        typeof entry === "object" &&
+        typeof entry.misconception === "string" &&
+        entry.misconception.length > 0 &&
+        (stableId(entry.role) || stableId(entry.predicateKind))
+    );
+  assert(
+    decision &&
+      decision.mode === "construct-rule" &&
+      stableId(decision.ruleStatePath) &&
+      stringList(decision.variantRoles, 2) &&
+      stableId(decision.variantProperty) &&
+      stableId(decision.validRuleStatesPath) &&
+      stableId(decision.surplusPath) &&
+      Number.isInteger(decision.minimumValidStates) &&
+      decision.minimumValidStates >= 2 &&
+      Number.isInteger(decision.minimumSurplus) &&
+      decision.minimumSurplus >= 1 &&
+      distractorList(decision.distractors),
+    `no-family-plan-engine-core-manifest-invalid:${archetypeId}`
+  );
+  assert(
+    runtime &&
+      runtime.kind === "cognitive.rule-state-contract" &&
+      runtime.parameters &&
+      typeof runtime.parameters === "object",
+    `no-family-plan-engine-core-runtime-invalid:${archetypeId}`
+  );
+  const parameters = runtime.parameters;
+  assert(
+    parameters.mode === decision.mode &&
+      parameters.ruleStatePath === decision.ruleStatePath &&
+      parameters.validRuleStatesPath === decision.validRuleStatesPath &&
+      parameters.surplusPath === decision.surplusPath &&
+      JSON.stringify(parameters.variantRoles) ===
+        JSON.stringify(decision.variantRoles) &&
+      parameters.variantProperty === decision.variantProperty &&
+      parameters.continuationRuleStatePath === decision.ruleStatePath &&
+      parameters.explanationRuleStatePath === decision.ruleStatePath &&
+      stableId(parameters.predictionRole) &&
+      stableId(parameters.explanationRole) &&
+      stringList(parameters.verificationRoles, 1) &&
+      parameters.minimumValidStates === decision.minimumValidStates &&
+      parameters.minimumSurplus === decision.minimumSurplus &&
+      JSON.stringify(parameters.distractors) ===
+        JSON.stringify(decision.distractors),
+    `no-family-plan-engine-core-runtime-binding-invalid:${archetypeId}`
+  );
+  assert(
+    binding &&
+      binding.manifestDecisionMode === decision.mode &&
+      binding.predicateKind === runtime.kind &&
+      binding.continuationRuleStatePath === decision.ruleStatePath &&
+      binding.explanationRuleStatePath === decision.ruleStatePath,
+    `no-family-plan-engine-core-binding-invalid:${archetypeId}`
+  );
+}
+
 function familyRevalidationArtifactPath(baseWorkItemId) {
   return resolve(
     root,
@@ -877,6 +963,7 @@ function buildReport() {
     assert(batch, `no-family-plan-code-batch-missing:${code}`);
     const contract = source.trackContracts[archetype.archetypeId];
     assert(contract, `no-family-plan-track-contract-missing:${archetype.archetypeId}`);
+    assertEngineCoreContract(contract, archetype.archetypeId);
     const reviewScopes = contract.reviewScopes ?? [];
     const subWorkItems = contract.subWorkItems ?? [];
     const subWorkState = readSubWorkState(contract);
@@ -1246,6 +1333,7 @@ function buildReport() {
       archetypeId: archetype.archetypeId,
       plannedFamilyId: contract.familyId,
       engineClassIds: contract.engineClassIds,
+      engineCoreContract: contract.engineCoreContract ?? null,
       reviewScopes,
       familySubWorkItems: subWorkStatuses,
       nextFamilySubWork: replanConsumed ? nextSubWork : null,

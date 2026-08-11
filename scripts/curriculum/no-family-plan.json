@@ -456,7 +456,13 @@
           "validRuleStatesPath": "validRuleStates",
           "surplusPath": "surplusRuleStates",
           "minimumValidStates": 2,
-          "minimumSurplus": 1
+          "minimumSurplus": 1,
+          "distractors": [
+            {
+              "predicateKind": "cognitive.rule-state-contract",
+              "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+            }
+          ]
         },
         "runtimePredicate": {
           "kind": "cognitive.rule-state-contract",
@@ -473,7 +479,13 @@
             "explanationRole": "explanation-box",
             "verificationRoles": ["rule-lane", "continuation-lane"],
             "minimumValidStates": 2,
-            "minimumSurplus": 1
+            "minimumSurplus": 1,
+            "distractors": [
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+              }
+            ]
           }
         },
         "binding": {

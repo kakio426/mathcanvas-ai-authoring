@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 // @ts-ignore Sol review gate is a repository-side ESM utility.
 import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
 // @ts-ignore Semantic revalidation helper is a repository-side ESM utility.
@@ -45,6 +46,28 @@ function manifest(scope?: Record<string, string>) {
 }
 
 describe("Sol review candidate and scope gates", () => {
+  it("projects the W002 engine-core contract into the generated loop work item", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const report = JSON.parse(
+      readFileSync("reports/curriculum-execution/no-family-plan.json", "utf8")
+    );
+    const expected = source.trackContracts.C01.engineCoreContract;
+    const workItem = report.workItems.find(
+      (item: { workItemId: string }) => item.workItemId === "W002"
+    );
+    expect(expected).toBeDefined();
+    expect(workItem.engineCoreContract).toEqual(expected);
+    expect(
+      workItem.engineCoreContract.runtimePredicate.parameters
+        .continuationRuleStatePath
+    ).toBe(workItem.engineCoreContract.manifestDecision.ruleStatePath);
+    expect(
+      report.current.nextReplanWork?.engineCoreContract
+    ).toEqual(expected);
+  });
+
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
     const base = (args: string[]) => {
       if (args[0] === "diff-tree") {

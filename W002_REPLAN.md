@@ -37,11 +37,10 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 기본안은 **AssessmentTarget을 rule-kind별 concrete target으로 다시 분해하고, family가 자기 target만 등록하는 방식**이다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
-W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한다. 이 문서의 재계획 계약 revision은
-`W002-SOL-REPLAN-v4`이며, A3 TARGET_SET이 이미 승인한 target-outline hash를 유지한 채
-이 revision을 소비한다. Sol이 승인한 뒤에만 `ENGINE_CORE`가 이 revision과
-core 허용 파일 범위에 결속되어 시작된다.
-명시적으로 소비해야 한다.
+W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
+이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v4`이며, A3 TARGET_SET이
+승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v4를 승인·소비한
+뒤에만 `ENGINE_CORE`가 이 revision과 core 허용 파일 범위에 결속되어 시작된다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
 |---|---|---|
@@ -50,7 +49,8 @@ core 허용 파일 범위에 결속되어 시작된다.
 | change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 구성·선언하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | `pattern.change-rule.construct-v1` |
 
 각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 세 slice를 모두 등록하는
-방식은 금지한다. TargetSet 재검토가 이 분해를 승인하기 전에는 어떤 family도 W002 완료를 주장하지 않는다.
+방식은 금지한다. A3 승인 기록과 현재 source가 이 소유권을 고정하며, 어떤 family도
+자기 `FAMILY_TRACK` 승인 전에는 W002 완료를 주장하지 않는다.
 세 concrete sub-work는 `reports/curriculum-execution/subwork-state/W002.json`의 phase cursor를 사용한다.
 각 cursor는 자신의 `operationSequence`에서 아직 완료하지 않은 정확히 하나의 `nextOperation`만 가리키며,
 `AFFORDANCE_DISCOVERY → ENGINE_CORE → FAMILY_TRACK → SOL_REVIEW`를 건너뛰거나 같은 단계를 반복할 수 없다.
@@ -77,20 +77,18 @@ v4 후보는 target source, target IDs, outline hash, coverage 분모를 변경�
 다만 W002는 세 concrete family를 독립적으로 승인해야 하므로 review key를 표준+operation에서
 `standardCode + operation + familyTrackId/scopeId`로 확장하는 orchestrator 작업이 먼저다.
 
-1. `W002-ORCHESTRATOR-GATE` — blocked item을 `nextReplanWork`로 보존하면서 다음 독립 표준을
-   `nextOfflineWork`로 선택한다. blocked family는 모든 offline/live numerator와 전역 완료에서 제외한다.
-   동시에 familyTrackId/scopeId가 review·candidate·allowedFiles에 결속되는지 검증한다.
-   이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
-   `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다. 허용 파일은 이 문서,
-   no-family plan/target outline, board와 파생 execution report로 제한한다.
+1. `W002-ORCHESTRATOR-GATE` — 완료된 단계다. blocked item을 `nextReplanWork`로 보존하고
+   다음 독립 표준을 `nextOfflineWork`로 선택하며, familyTrackId/scopeId를 review·candidate·allowedFiles에
+   결속한다. 이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
+   `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다.
 2. `W002-REPLAN-TARGET_SET` — v4에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
    slice의 statement·invariant·observable evidence·misconception·pinned learning-map
    결속과 outline hash를 고정했다. target 변경이 필요할 때만 새 SOL_REPLAN과
    `supersedesReplanReviewId`·`replanContractRevision`·`targetOutlineSha256`를 가진
    별도 TARGET_SET 후보를 만든다.
-3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 수 변화 family에 필요한 number/state native affordance가
-   현재 catalog에 있는지 bounded read/canary로 확인한다. 없으면 새 native tool을 family 안에 몰래 추가하지 않고
-   `ENGINE_CORE` 재계획으로 멈춘다.
+3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 첫 repeat sub-work에서 완료됐다. `SM02PB` 정적
+   variant·기존 배치 canary는 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는
+   native 계약은 찾지 못했으므로, 그 결과가 이 v4 `ENGINE_CORE` 재계획의 근거다.
 4. `W002-ENGINE_CORE` — 기존 numeric `construct`나 select-one의 `correctValuePath`를 재사용하지 않는
    별도 `construct-rule` decision과 `cognitive.rule-state-contract` predicate를 만든다.
    가능한 경우 기존 fill-from-pool·SM02PB·NO04NT native 조작을 재사용하고, 공통 compiler schema를
@@ -156,7 +154,13 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
     "validRuleStatesPath": "validRuleStates",
     "surplusPath": "surplusRuleStates",
     "minimumValidStates": 2,
-    "minimumSurplus": 1
+    "minimumSurplus": 1,
+    "distractors": [
+      {
+        "predicateKind": "cognitive.rule-state-contract",
+        "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+      }
+    ]
   },
   "runtimePredicate": {
     "kind": "cognitive.rule-state-contract",
@@ -173,7 +177,13 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
       "explanationRole": "explanation-box",
       "verificationRoles": ["rule-lane", "continuation-lane"],
       "minimumValidStates": 2,
-      "minimumSurplus": 1
+      "minimumSurplus": 1,
+      "distractors": [
+        {
+          "predicateKind": "cognitive.rule-state-contract",
+          "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+        }
+      ]
     }
   }
 }
