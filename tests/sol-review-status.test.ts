@@ -252,21 +252,56 @@ describe("Sol review candidate and scope gates", () => {
         false
       );
     } else {
-      expect(report.current.nextOfflineWork?.workItemId).toBe("W002");
-      expect(report.current.nextOfflineWork?.operation).toBe("ENGINE_CORE");
-      expect(report.current.nextOfflineWork?.operationWorkItemId).toBe(
-        "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
+      const nextOffline = report.current.nextOfflineWork;
+      expect(nextOffline?.workItemId).toBe("W002");
+      expect(["ENGINE_CORE", "FAMILY_TRACK"]).toContain(
+        nextOffline?.operation
       );
-      expect(
-        report.current.nextOfflineWork?.nextFamilySubWork?.nextOperation
-      ).toBe("ENGINE_CORE");
-      expect(report.current.nextOfflineWork?.solReview.replanApproved).toBe(
-        true
-      );
-      expect(report.current.nextOfflineWork?.solReview.replanConsumed).toBe(
-        true
-      );
+      expect(nextOffline?.solReview.replanApproved).toBe(true);
+      expect(nextOffline?.solReview.replanConsumed).toBe(true);
       expect(report.current.nextReplanWork).toBeNull();
+
+      const state = JSON.parse(
+        readFileSync(
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "utf8"
+        )
+      );
+      const stateItem = state.items.find(
+        (item: { workItemId: string }) =>
+          item.workItemId === "W002-FAMILY_TRACK-repeat-rule"
+      );
+
+      if (nextOffline?.operation === "ENGINE_CORE") {
+        expect(nextOffline.operationWorkItemId).toBe(
+          "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
+        );
+        expect(nextOffline.nextFamilySubWork?.nextOperation).toBe(
+          "ENGINE_CORE"
+        );
+        expect(stateItem?.completionEvidenceByOperation).toBeUndefined();
+      } else {
+        expect(nextOffline?.operationWorkItemId).toBe(
+          "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK"
+        );
+        expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
+          "FAMILY_TRACK"
+        );
+        expect(stateItem?.completedOperations).toEqual([
+          "AFFORDANCE_DISCOVERY",
+          "ENGINE_CORE"
+        ]);
+        const evidence =
+          stateItem?.completionEvidenceByOperation?.ENGINE_CORE;
+        const artifactPath =
+          expected.artifactContract.artifactPath;
+        expect(evidence?.artifactPath).toBe(artifactPath);
+        expect(evidence?.artifactSha256).toBe(
+          createHash("sha256")
+            .update(readFileSync(artifactPath))
+            .digest("hex")
+        );
+      }
     }
   });
 
