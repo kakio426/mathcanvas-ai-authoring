@@ -1,9 +1,9 @@
 # ProblemFamily registry 보고서
 
-- canonical family: **31개**
+- canonical family: **32개**
 - released family: **21개**
-- 공통 ProblemParameters 지원 family: **5개**
-- native module family: **2개**
+- 공통 ProblemParameters 지원 family: **6개**
+- native module family: **3개**
 - released payload hash 기준선: **21개**
 
 > family 수는 AssessmentTarget coverage가 아닙니다. reviewed target 분해 전까지 target coverage는 산정하지 않습니다.
@@ -36,6 +36,7 @@
 | number.multiplication.group-array-meaning-v1 | 수와 연산 | [2수01-10] | legacy-blueprint-adapter | live-released | itemsPerGroup, groupCount, contextObjectId, misconceptionId |
 | number.multiplication.partial-products.construction-v1 | 수와 연산 | [4수01-04] | legacy-blueprint-adapter | offline-validated | - |
 | number.place-value.regroup-ten-bundles-v1 | 수와 연산 | [2수01-02] | legacy-blueprint-adapter | live-released | - |
+| pattern.create-repeat-unit-explain-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | offline-validated | contextId |
 | pattern.repeat-unit.pattern-blocks-v1 | 변화와 관계 | [2수02-01] | legacy-blueprint-adapter | live-released | - |
 | probability.compare.bag-ratios-v1 | 자료와 가능성 | [6수04-04] | legacy-blueprint-adapter | live-released | - |
 | relation.equal-sign.balance-scale.sum-card-v1 | 변화와 관계 | [4수02-03] | legacy-blueprint-adapter | live-released | - |

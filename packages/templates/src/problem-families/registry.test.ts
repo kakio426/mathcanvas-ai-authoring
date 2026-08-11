@@ -27,6 +27,7 @@ import {
 } from "@mathcanvas/curriculum";
 import { CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID } from "./domains/data-probability/classification-given-criterion-count.js";
 import { DATA_TABLE_ORGANIZE_FAMILY_ID } from "./domains/data-probability/data-table-organize.js";
+import { REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID } from "./domains/change-relationships/repeating-pattern-arrangement.js";
 import type {
   ProblemFamilyCapabilityExtension,
   ProblemFamilyNativeModule,
@@ -34,9 +35,9 @@ import type {
 } from "./types.js";
 
 describe("canonical ProblemFamily registry", () => {
-  it("기존 29개와 두 native family를 canonical ID로 정확히 한 번 감싼다", () => {
+  it("기존 29개와 세 native family를 canonical ID로 정확히 한 번 감싼다", () => {
     const manifests = listProblemFamilyManifests();
-    expect(manifests).toHaveLength(31);
+    expect(manifests).toHaveLength(32);
     expect(
       manifests.filter(
         (manifest) => manifest.releaseEvidence.supportState === "released"
@@ -46,7 +47,8 @@ describe("canonical ProblemFamily registry", () => {
       new Set([
         ...Object.values(ACTIVITY_IDS),
         CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
-        DATA_TABLE_ORGANIZE_FAMILY_ID
+        DATA_TABLE_ORGANIZE_FAMILY_ID,
+        REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
       ])
     );
     for (const manifest of manifests) {
@@ -55,7 +57,8 @@ describe("canonical ProblemFamily registry", () => {
       expect(manifest.renderRecipe.kind).toBe(
         ([
           CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
-          DATA_TABLE_ORGANIZE_FAMILY_ID
+          DATA_TABLE_ORGANIZE_FAMILY_ID,
+          REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
         ] as readonly string[]).includes(manifest.familyId)
           ? "native-render-recipe"
           : "legacy-blueprint-adapter"
@@ -86,6 +89,15 @@ describe("canonical ProblemFamily registry", () => {
           "research/mathcanvas/wave16-pattern-release-canary.json"
         ]
       }
+    });
+    expect(
+      getProblemFamilyManifest(REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID)
+    ).toMatchObject({
+      capability: {
+        supportedStandardCodes: ["[2수02-02]"]
+      },
+      assessmentTargetIds: expect.any(Array),
+      releaseEvidence: { supportState: "verified" }
     });
   });
 

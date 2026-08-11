@@ -16,16 +16,16 @@
 | 상태 | 성취기준 수 |
 |---|---:|
 | unmapped | 0 |
-| mapped | 96 |
+| mapped | 95 |
 | generatable | 0 |
-| offline-validated | 7 |
+| offline-validated | 8 |
 | live-released | 18 |
 
 ## 학년군별
 
 | 학년군 | 공식 | mapped | 활동 있음 | released reach |
 |---|---:|---:|---:|---:|
-| 1-2 | 29 | 29 | 9 | 7 |
+| 1-2 | 29 | 29 | 10 | 7 |
 | 3-4 | 47 | 47 | 7 | 6 |
 | 5-6 | 45 | 45 | 9 | 5 |
 
@@ -34,7 +34,7 @@
 | 영역 | 공식 | mapped | 활동 있음 | released reach |
 |---|---:|---:|---:|---:|
 | 수와 연산 | 42 | 42 | 11 | 8 |
-| 변화와 관계 | 10 | 10 | 3 | 2 |
+| 변화와 관계 | 10 | 10 | 4 | 2 |
 | 도형과 측정 | 57 | 57 | 6 | 6 |
 | 자료와 가능성 | 12 | 12 | 5 | 2 |
 
@@ -62,7 +62,7 @@
 | [2수01-10] | 1-2 | 수와 연산 | live-released | - | number.multiplication.group-array-meaning-v1 | number.multiplication.group-array-meaning-v1 | 2-1-6 |
 | [2수01-11] | 1-2 | 수와 연산 | mapped | - | - | - | 2-2-2 |
 | [2수02-01] | 1-2 | 변화와 관계 | live-released | live 2/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다. | pattern.repeat-unit.pattern-blocks-v1 | pattern.repeat-unit.pattern-blocks-v1 | 1-2-5, 2-2-6 |
-| [2수02-02] | 1-2 | 변화와 관계 | mapped | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다. | - | - | 1-2-5, 2-2-6 |
+| [2수02-02] | 1-2 | 변화와 관계 | offline-validated | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다. | pattern.create-repeat-unit-explain-v1 | - | 1-2-5, 2-2-6 |
 | [2수03-01] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-2-3, 2-1-2 |
 | [2수03-02] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-2 |
 | [2수03-03] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-1-2, 1-2-3, 2-1-2 |

@@ -19,7 +19,7 @@
   "officialStandardCount": 121,
   "catalogStandardCount": 121,
   "mappedStandardCount": 121,
-  "standardsWithAnyActivity": 25,
+  "standardsWithAnyActivity": 26,
   "standardsWithReleasedActivity": 18,
   "reviewedAssessmentTargetStandardCount": 4,
   "reviewedAssessmentTargetCount": 10,
@@ -61,7 +61,7 @@
       "gradeBand": "1-2",
       "official": 29,
       "mapped": 29,
-      "withActivity": 9,
+      "withActivity": 10,
       "withReleasedActivity": 7
     },
     {
@@ -91,7 +91,7 @@
       "domain": "변화와 관계",
       "official": 10,
       "mapped": 10,
-      "withActivity": 3,
+      "withActivity": 4,
       "withReleasedActivity": 2
     },
     {
@@ -478,8 +478,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "pattern.create-repeat-unit-explain-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-2-5",
@@ -489,11 +491,11 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },

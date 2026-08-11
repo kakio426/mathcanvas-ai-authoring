@@ -539,8 +539,8 @@
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 95,
-      "offline-in-progress": 1,
-      "sol-review-required": 0,
+      "offline-in-progress": 0,
+      "sol-review-required": 1,
       "live-evidence": 1,
       "complete": 0
     },
@@ -565,29 +565,17 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "FAMILY_TRACK",
-      "operationWorkItemId": "W002-FAMILY_TRACK",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W002-SOL_REVIEW-FAMILY_TRACK",
       "dependencyWorkItemIds": [
-        "W002-LEARNING_MAP_BINDING",
-        "W002-TARGET_SET",
-        "W002-SOL_REVIEW-TARGET_SET"
+        "W002-FAMILY_TRACK"
       ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts",
-        "packages/templates/src/cognitive/registry.ts",
-        "packages/validator/src/native/registry.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
       ],
-      "reviewGate": null,
+      "reviewGate": "FAMILY_TRACK",
       "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
@@ -609,8 +597,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "cover-unbound-reviewed-targets",
-      "actionClass": "offline-in-progress",
+      "nextAction": "capture-current-hash-live-evidence",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "pending",
@@ -2912,29 +2900,17 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "FAMILY_TRACK",
-      "operationWorkItemId": "W002-FAMILY_TRACK",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W002-SOL_REVIEW-FAMILY_TRACK",
       "dependencyWorkItemIds": [
-        "W002-LEARNING_MAP_BINDING",
-        "W002-TARGET_SET",
-        "W002-SOL_REVIEW-TARGET_SET"
+        "W002-FAMILY_TRACK"
       ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts",
-        "packages/templates/src/cognitive/registry.ts",
-        "packages/validator/src/native/registry.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
       ],
-      "reviewGate": null,
+      "reviewGate": "FAMILY_TRACK",
       "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
@@ -2956,8 +2932,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "cover-unbound-reviewed-targets",
-      "actionClass": "offline-in-progress",
+      "nextAction": "capture-current-hash-live-evidence",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "pending",

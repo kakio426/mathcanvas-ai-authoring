@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "registeredFamilyCount": 31,
+  "registeredFamilyCount": 32,
   "releasedFamilyCount": 21,
-  "parameterizedFamilyCount": 5,
-  "nativeFamilyCount": 2,
+  "parameterizedFamilyCount": 6,
+  "nativeFamilyCount": 3,
   "releasedPayloadBaselineCount": 21,
   "families": [
     {
@@ -631,6 +631,34 @@
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave14-place-value-release-canary.json"
+      ]
+    },
+    {
+      "familyId": "pattern.create-repeat-unit-explain-v1",
+      "activityId": "pattern.create-repeat-unit-explain-v1",
+      "templateId": "pattern.create-repeat-unit-explain-v1",
+      "domain": "변화와 관계",
+      "standardCodes": [
+        "[2수02-02]"
+      ],
+      "manipulation": "pattern-rule-arrangement-choice-drag",
+      "generator": {
+        "id": "pattern.create-repeat-unit-explain-items",
+        "version": "1.0.0"
+      },
+      "renderRecipeKind": "native-render-recipe",
+      "supportState": "verified",
+      "lifecycleStage": "offline-validated",
+      "blueprintContentHash": "9870dd9df3cc2a7d2a4233c0ac7feec717fb51f06a7977785bdea8a1586d9846",
+      "assessmentTargetIds": [
+        "change.pattern.choose-own-arrangement-rule-v1",
+        "change.pattern.construct-arrangement-following-rule-v1"
+      ],
+      "parameterKeys": [
+        "contextId"
+      ],
+      "evidencePaths": [
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts"
       ]
     },
     {
