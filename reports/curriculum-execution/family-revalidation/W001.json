@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "operation": "FAMILY_REVALIDATION",
+  "workItemId": "W001",
+  "standardCode": "[2수04-02]",
+  "familyId": "data.early-table.organize-v1",
+  "familyTrackId": "data.early-table.organize-v1",
+  "scopeId": "W001-FAMILY_TRACK-data-table-organize",
+  "assessmentTargetIds": [
+    "data.table.organize-classified-data-v1",
+    "data.table.explain-usefulness-v1"
+  ],
+  "domain": "자료와 가능성",
+  "blueprintContentHash": "4f800f9747d04c3e119710cacd60f60039b0ca864e5229bb1a9f7c397e070659",
+  "learningMapUsageSnapshotSha256": "bed940f1896d3991aeb12766dff49c84dd110465e38ed01625ed5f32b564b1d5",
+  "implementationFiles": {
+    "fixtures/pedagogy/learning-map.used.json": "be69ba2e071b143203a0e303b86931181dd904d8cec1e529ae19d55c1493e652",
+    "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts": "d8e6890dd925873d7a91170b17bf0bd2d336f07d3cfbb60d5dda53f810b4972b",
+    "packages/templates/src/cognitive/registry.ts": "47aa71482d036b4be81bad6a33e812dd903ad87d48d909e39cbe9d000c2a797c",
+    "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts": "b47db85baaa118a2c748dac0ff49ac3e84535640cdd65b35f7520e1306c8a3d5",
+    "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts": "ad2a4f36e556d892eb69dc7a51ce69689b1585b0fd096fbc9a46ff857b618bf8",
+    "packages/validator/src/native/registry.ts": "45e7c41518cb570c1a8c2edbc14ea461c658bbdedbd479b977a9ed0d11a88388"
+  },
+  "fingerprintSha256": "4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2"
+}

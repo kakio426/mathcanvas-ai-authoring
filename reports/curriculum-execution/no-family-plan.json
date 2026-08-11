@@ -1213,8 +1213,8 @@
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 96,
-      "offline-in-progress": 1,
-      "sol-review-required": 0,
+      "offline-in-progress": 0,
+      "sol-review-required": 1,
       "blocked-needs-sol-replan": 0,
       "live-evidence": 0,
       "complete": 0
@@ -1251,20 +1251,19 @@
       "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
-      "operation": "FAMILY_REVALIDATION",
-      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W001-SOL_REVIEW-FAMILY_REVALIDATION",
       "dependencyWorkItemIds": [
         "W001-FAMILY_TRACK",
-        "W001-SOL_REVIEW-FAMILY_TRACK"
+        "W001-FAMILY_REVALIDATION"
       ],
       "allowedFiles": [
-        "reports/curriculum-execution/family-revalidation/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
-      "reviewGate": null,
+      "reviewGate": "FAMILY_REVALIDATION",
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -1287,7 +1286,7 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "finish-offline-validation",
-      "actionClass": "offline-in-progress",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "stale",
@@ -1299,7 +1298,7 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": "4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2"
       }
     },
     "nextReplanWork": null,
@@ -3611,20 +3610,19 @@
       "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
-      "operation": "FAMILY_REVALIDATION",
-      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "operation": "SOL_REVIEW",
+      "operationWorkItemId": "W001-SOL_REVIEW-FAMILY_REVALIDATION",
       "dependencyWorkItemIds": [
         "W001-FAMILY_TRACK",
-        "W001-SOL_REVIEW-FAMILY_TRACK"
+        "W001-FAMILY_REVALIDATION"
       ],
       "allowedFiles": [
-        "reports/curriculum-execution/family-revalidation/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
+        "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
-      "reviewGate": null,
+      "reviewGate": "FAMILY_REVALIDATION",
       "learningMapBound": true,
       "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
@@ -3647,7 +3645,7 @@
       "archetypeRole": "anchor",
       "splitRisk": "low",
       "nextAction": "finish-offline-validation",
-      "actionClass": "offline-in-progress",
+      "actionClass": "sol-review-required",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "stale",
@@ -3659,7 +3657,7 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": "4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2"
       }
     },
     {
