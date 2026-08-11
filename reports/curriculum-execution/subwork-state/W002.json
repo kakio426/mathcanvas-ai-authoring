@@ -7,12 +7,8 @@
   "items": [
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-      "completedOperations": [
-        "AFFORDANCE_DISCOVERY",
-        "ENGINE_CORE"
-      ],
-      "nextOperation": "FAMILY_TRACK",
-      "completionEvidence": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json"
+      "completedOperations": ["AFFORDANCE_DISCOVERY"],
+      "nextOperation": "ENGINE_CORE"
     },
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-repair",

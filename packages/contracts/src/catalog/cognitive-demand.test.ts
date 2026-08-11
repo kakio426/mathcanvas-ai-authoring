@@ -58,70 +58,6 @@ const constructRuleManifest = () => ({
   }
 });
 
-const studentConstructedManifest = () => {
-  const base = constructRuleManifest();
-  return {
-    ...base,
-    decision: {
-      ...base.decision,
-      constructionMode: "student-constructed" as const,
-      answerMode: "conditional-rubric" as const,
-      ruleStatePath: "studentRuleState",
-      validRuleStatesPath: "validRuleStateExamples",
-      surplusPath: "surplusRuleStateExamples",
-      minimumSurplus: 2,
-      stateConstruction: {
-        kind: "ordered-distinct-subset-from-pool" as const,
-        sourceRoles: [
-          "rule-variant-1",
-          "rule-variant-2",
-          "rule-variant-3"
-        ],
-        slotRoles: ["rule-slot-1", "rule-slot-2"],
-        slotCount: 2,
-        minimumDistinctValues: 2,
-        allowsAnyOrderedSelection: true as const,
-        initialState: "empty" as const
-      },
-      application: {
-        ruleStatePath: "studentRuleState",
-        continuationTargetRoles: [
-          "continuation-slot-1",
-          "continuation-slot-2",
-          "continuation-slot-3",
-          "continuation-slot-4"
-        ],
-        period: 2,
-        minimumTargetCount: 4,
-        requiresVisibleComparison: true as const,
-        evidenceMode: "student-state-dependent" as const
-      },
-      distractors: [
-        {
-          predicateKind: "cognitive.rule-state-contract",
-          misconception: "같은 조각만 고른다."
-        },
-        {
-          predicateKind: "cognitive.rule-state-contract",
-          misconception: "순서를 중간에 바꾼다."
-        }
-      ]
-    },
-    verification: {
-      ...base.verification,
-      roles: [
-        "rule-slot-1",
-        "rule-slot-2",
-        "continuation-slot-1",
-        "continuation-slot-2",
-        "continuation-slot-3",
-        "continuation-slot-4"
-      ]
-    },
-    explanation: { regionRole: "teacher-rubric" }
-  };
-};
-
 describe("construct-rule cognitive decision contract", () => {
   it("accepts an ordered rule-state decision with bound distractors", () => {
     const manifest = constructRuleManifest();
@@ -154,31 +90,5 @@ describe("construct-rule cognitive decision contract", () => {
         }
       } as never)
     ).toThrow();
-  });
-
-  it("accepts the student-constructed conditional-rubric extension", () => {
-    const manifest = studentConstructedManifest();
-    expect(
-      defineCognitiveDemandManifest(manifest).decision
-    ).toMatchObject({
-      constructionMode: "student-constructed",
-      answerMode: "conditional-rubric",
-      ruleStatePath: "studentRuleState",
-      stateConstruction: {
-        kind: "ordered-distinct-subset-from-pool",
-        initialState: "empty"
-      },
-      application: {
-        ruleStatePath: "studentRuleState",
-        minimumTargetCount: 4
-      }
-    });
-  });
-
-  it("rejects a partial student-constructed extension instead of falling back to legacy", () => {
-    const manifest = studentConstructedManifest();
-    const partial = structuredClone(manifest);
-    delete (partial.decision as { answerMode?: unknown }).answerMode;
-    expect(() => defineCognitiveDemandManifest(partial)).toThrow();
   });
 });
