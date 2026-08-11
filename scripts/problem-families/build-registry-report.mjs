@@ -78,6 +78,7 @@ function buildReport() {
       lifecycleStage: manifest.releaseEvidence.lifecycleStage,
       blueprintContentHash:
         manifest.releaseEvidence.blueprintContentHash,
+      assessmentTargetIds: manifest.assessmentTargetIds,
       parameterKeys: manifest.capability.parameterFields.map(
         (field) => field.key
       ),
@@ -93,7 +94,7 @@ function markdown(report) {
     `- canonical family: **${report.registeredFamilyCount}개**`,
     `- released family: **${report.releasedFamilyCount}개**`,
     `- 공통 ProblemParameters 지원 family: **${report.parameterizedFamilyCount}개**`,
-    `- native module family: **${report.nativeFamilyCount}개** (Phase 1은 새 blueprint를 만들지 않음)`,
+    `- native module family: **${report.nativeFamilyCount}개**`,
     `- released payload hash 기준선: **${report.releasedPayloadBaselineCount}개**`,
     "",
     "> family 수는 AssessmentTarget coverage가 아닙니다. reviewed target 분해 전까지 target coverage는 산정하지 않습니다.",

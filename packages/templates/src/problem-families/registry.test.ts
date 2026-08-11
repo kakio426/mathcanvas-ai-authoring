@@ -3,13 +3,16 @@ import {
   ACTIVITY_IDS,
   PROBLEM_FAMILY_SCHEMA_VERSION,
   TEACHER_INTENT_CAPABILITIES,
+  defineVariationEnvelope,
   problemParametersSchema,
   type ProblemParameters
 } from "@mathcanvas/contracts";
 import {
   createProblemFamilyRegistry,
+  assertProblemFamilyAssessmentTargetBindings,
   findProblemFamilyByLegacyTeacherIntentKind,
   findProblemFamilyByRoute,
+  getProblemFamilyManifest,
   listProblemFamilyManifests,
   problemParametersFromTeacherIntent,
   teacherIntentFromProblemParameters,
@@ -17,6 +20,9 @@ import {
 } from "./registry.js";
 import { multiplicationArrayMeaningBlueprint } from "../blueprints/multiplication-array-meaning.js";
 import { createProblemFamilyRuntimeRegistry } from "./runtime-registry.js";
+import { getCognitiveDemandManifest } from "../cognitive/registry.js";
+import { CLASSIFICATION_ASSESSMENT_TARGET_IDS } from "@mathcanvas/curriculum";
+import { CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID } from "./domains/data-probability/classification-given-criterion-count.js";
 import type {
   ProblemFamilyCapabilityExtension,
   ProblemFamilyNativeModule,
@@ -24,25 +30,41 @@ import type {
 } from "./types.js";
 
 describe("canonical ProblemFamily registry", () => {
-  it("기존 29개와 released 21개를 canonical ID로 정확히 한 번 감싼다", () => {
+  it("기존 29개와 첫 native family를 canonical ID로 정확히 한 번 감싼다", () => {
     const manifests = listProblemFamilyManifests();
-    expect(manifests).toHaveLength(29);
+    expect(manifests).toHaveLength(30);
     expect(
       manifests.filter(
         (manifest) => manifest.releaseEvidence.supportState === "released"
       )
     ).toHaveLength(21);
     expect(new Set(manifests.map((manifest) => manifest.familyId))).toEqual(
-      new Set(Object.values(ACTIVITY_IDS))
+      new Set([
+        ...Object.values(ACTIVITY_IDS),
+        CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID
+      ])
     );
     for (const manifest of manifests) {
       expect(manifest.familyId).toBe(manifest.activityId);
       expect(manifest.familyId).toBe(manifest.templateId);
-      expect(manifest.renderRecipe.kind).toBe("legacy-blueprint-adapter");
+      expect(manifest.renderRecipe.kind).toBe(
+        manifest.familyId === CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID
+          ? "native-render-recipe"
+          : "legacy-blueprint-adapter"
+      );
       expect(manifest.releaseEvidence.blueprintContentHash).toMatch(
         /^[a-f0-9]{64}$/
       );
     }
+    expect(
+      getProblemFamilyManifest(
+        CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID
+      )?.assessmentTargetIds
+    ).toEqual([
+      CLASSIFICATION_ASSESSMENT_TARGET_IDS.givenCriterion,
+      CLASSIFICATION_ASSESSMENT_TARGET_IDS.countByClass,
+      CLASSIFICATION_ASSESSMENT_TARGET_IDS.describeResult
+    ]);
   });
 
   it("기존 세 TeacherIntent를 공통 ProblemParameters로 무손실 왕복한다", () => {
@@ -104,6 +126,7 @@ describe("canonical ProblemFamily registry", () => {
       gradeBand: "3-4",
       domain: "도형과 측정",
       learningGoal: "각을 회전한 양에 따라 분류한다.",
+      assessmentTargetIds: ["geometry.angle.sort-reviewed-v1"],
       manipulation: "angle-sort-card-drag",
       generator: { id: "geometry.angle.sort-items", version: "1.0.0" },
       blueprint: {
@@ -189,9 +212,25 @@ describe("canonical ProblemFamily registry", () => {
         prepare: () => {
           throw new Error("dummy-runtime-not-executed");
         },
+        generateItemsForVariation: () => [],
         answerKey: () => [],
         appliedProblemParameters: () => defaultParameters
-      }
+      },
+      cognitiveManifest: {
+        ...getCognitiveDemandManifest(
+          multiplicationArrayMeaningBlueprint.id
+        )!,
+        blueprintId: familyId,
+        blueprintVersion: dummyBlueprint.version,
+        blueprintContentHash: dummyBlueprint.contentHash
+      },
+      variationEnvelope: defineVariationEnvelope({
+        schemaVersion: "1.0.0",
+        blueprintId: familyId,
+        knobs: [],
+        pinned: { problemCount: 2, difficulty: "normal" },
+        expectedCombinationCount: 1
+      })
     };
     const registry = createProblemFamilyRegistry(
       [module.source],
@@ -222,5 +261,37 @@ describe("canonical ProblemFamily registry", () => {
     expect(registry.validateParameters(defaultParameters)).toEqual(
       defaultParameters
     );
+
+    expect(() =>
+      createProblemFamilyRuntimeRegistry([], [
+        {
+          ...module,
+          variationEnvelope: defineVariationEnvelope({
+            schemaVersion: "1.0.0",
+            blueprintId: familyId,
+            knobs: [],
+            pinned: { problemCount: 3, difficulty: "normal" },
+            expectedCombinationCount: 1
+          })
+        }
+      ])
+    ).toThrow("problem-family-native-variation-capability-mismatch");
+
+    const wrongTargetSource: ProblemFamilyRegistrySource = {
+      ...source,
+      assessmentTargetIds: [
+        CLASSIFICATION_ASSESSMENT_TARGET_IDS.givenCriterion
+      ]
+    };
+    const wrongTargetRegistry = createProblemFamilyRegistry(
+      [wrongTargetSource],
+      [extension]
+    );
+    expect(() =>
+      assertProblemFamilyAssessmentTargetBindings(
+        wrongTargetRegistry,
+        [wrongTargetSource]
+      )
+    ).toThrow("problem-family-assessment-target-standard-mismatch");
   });
 });

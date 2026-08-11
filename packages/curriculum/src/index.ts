@@ -225,6 +225,13 @@ export {
   officialElementaryStandardsFixture
 } from "./official-elementary-standards.js";
 export {
+  CLASSIFICATION_ASSESSMENT_TARGET_IDS,
+  assessmentTargetSets,
+  assessmentTargets,
+  findAssessmentTarget,
+  findAssessmentTargetSet
+} from "./assessment-targets.js";
+export {
   CLAIM_EVIDENCE_MANIPULATION,
   claimEvidenceActivityProfiles,
   findClaimEvidenceActivityProfile,

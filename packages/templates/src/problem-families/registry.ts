@@ -12,6 +12,10 @@ import {
 import { listRegisteredBlueprints } from "../registry.js";
 import { getVariationEnvelope } from "../variations/registry.js";
 import {
+  findAssessmentTarget,
+  findAssessmentTargetSet
+} from "@mathcanvas/curriculum";
+import {
   DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES,
   DOMAIN_PROBLEM_FAMILY_CAPABILITIES
 } from "./domains/index.js";
@@ -133,7 +137,7 @@ export function createProblemFamilyRegistry(
         templateId: source.templateId,
         domain: source.domain,
         learningGoal: source.learningGoal,
-        assessmentTargetIds: [],
+        assessmentTargetIds: [...(source.assessmentTargetIds ?? [])],
         manipulation: source.manipulation,
         generator: source.generator,
         capability,
@@ -328,6 +332,40 @@ function buildLegacySources(): ProblemFamilyRegistrySource[] {
 
 let canonicalRegistry: ProblemFamilyRegistry | undefined;
 
+export function assertProblemFamilyAssessmentTargetBindings(
+  value: ProblemFamilyRegistry,
+  nativeSources: readonly ProblemFamilyRegistrySource[] =
+    DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
+): void {
+  for (const source of nativeSources) {
+    const manifest = value.get(source.familyId);
+    if (!manifest || manifest.assessmentTargetIds.length < 1) {
+      throw new Error(
+        `problem-family-native-assessment-target-missing:${source.familyId}`
+      );
+    }
+    for (const targetId of manifest.assessmentTargetIds) {
+      const target = findAssessmentTarget(targetId);
+      if (!target || target.reviewStatus !== "reviewed") {
+        throw new Error(
+          `problem-family-assessment-target-unreviewed:${manifest.familyId}:${targetId}`
+        );
+      }
+      const targetSet = findAssessmentTargetSet(target.standardCode);
+      if (
+        !targetSet?.targetIds.includes(targetId) ||
+        !manifest.capability.supportedStandardCodes.includes(
+          target.standardCode
+        )
+      ) {
+        throw new Error(
+          `problem-family-assessment-target-standard-mismatch:${manifest.familyId}:${targetId}`
+        );
+      }
+    }
+  }
+}
+
 function registry(): ProblemFamilyRegistry {
   const nativeCapabilityExtensions = DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES
     .map((module) => module.capability)
@@ -335,16 +373,19 @@ function registry(): ProblemFamilyRegistry {
       (capability): capability is ProblemFamilyCapabilityExtension =>
         capability !== undefined
     );
-  canonicalRegistry ??= createProblemFamilyRegistry(
-    [
-      ...buildLegacySources(),
-      ...DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
-    ],
-    [
-      ...DOMAIN_PROBLEM_FAMILY_CAPABILITIES,
-      ...nativeCapabilityExtensions
-    ]
-  );
+  if (!canonicalRegistry) {
+    canonicalRegistry = createProblemFamilyRegistry(
+      [
+        ...buildLegacySources(),
+        ...DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
+      ],
+      [
+        ...DOMAIN_PROBLEM_FAMILY_CAPABILITIES,
+        ...nativeCapabilityExtensions
+      ]
+    );
+    assertProblemFamilyAssessmentTargetBindings(canonicalRegistry);
+  }
   return canonicalRegistry;
 }
 

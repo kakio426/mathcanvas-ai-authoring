@@ -1,6 +1,6 @@
 # 2022 개정 초등 수학 전 범위 생성 계획
 
-상태: Phase 0·1 완료, Phase 2 착수 대기
+상태: Phase 0·1 완료, Phase 2-A offline 검증 완료(live release 대기)
 작성일: 2026-08-11  
 최우선 목표: 2022 개정 초등 수학의 모든 공식 성취기준에 대해 교사가 실제로 사용할 수 있는 MathCanvas 수업자료를 생성한다.
 
@@ -52,19 +52,21 @@
 | 공식 성취기준 분모 | 121 | 121 유지(원본 변경 때 명시 갱신) |
 | `teacherCurriculumCatalog` 행 | 121 | 공식 원문과 항상 일치 |
 | 공식 원문 대조 완료 성취기준 | 121 | 121 |
-| 활동이 하나라도 연결된 성취기준 | 23 | 참고 지표 |
+| 활동이 하나라도 연결된 성취기준 | 24 | 참고 지표 |
 | released 활동이 연결된 성취기준 | 18 | 모든 필수 평가 목표가 released인 성취기준 100% |
-| canonical ProblemFamily | 29 | 목표 달성에 필요한 수만큼 |
+| canonical ProblemFamily | 30 | 목표 달성에 필요한 수만큼 |
 | released 활동 ID | 21 | 목표 달성에 필요한 수만큼 |
 | 교과서 단원 수 | 71 | 71 |
 | 활동이 하나라도 있는 단원 | 24/71 | 참고 지표 |
 | released 활동이 하나라도 있는 단원 | 16/71 | 모든 단원이 최소 하나 이상 + 해당 성취기준 완전 추적 |
-| 공통 ProblemParameters 지원 | 3/29 | 모든 released ProblemFamily가 공통 요청 계약 사용 |
+| 공통 ProblemParameters 지원 | 4/30 | 모든 released ProblemFamily가 공통 요청 계약 사용 |
+| reviewed-complete AssessmentTarget set | 1/121 (target 4개) | 121/121 |
+| `[2수04-01]` target coverage | offline 3/4 · live 0/4 | live 4/4 |
 
 주의:
 
 - Phase 0 전 catalog 99행과 공식 121개를 대조한 결과, 빠진 22개는 모두 1~2학년군이었다. 현재는 121개 모두 공식 fixture에서 카탈로그로 투영된다.
-- `getElementaryCurriculumCoverage()`의 `18/121`은 released 활동 reach다. `AssessmentTarget`이 아직 없으므로 `targetCoverage`는 계속 `unavailable`이다.
+- `getElementaryCurriculumCoverage()`의 `18/121`은 released 활동 reach다. `[2수04-01]`만 target set이 완성됐으므로 전역 `targetCoverage`는 계속 `unavailable`이다.
 - `familyVariety`는 Phase 1 canonical `FamilyId`를 사용하며 target coverage와 합치지 않는다.
 - 현재 16/71은 “released 활동이 하나라도 있음”일 뿐 단원 전체를 만들 수 있다는 뜻이 아니다.
 - 공식 source manifest와 121개 레코드는 `packages/curriculum/src/fixtures/kr-2022-elementary-math/official-standards.json`에 있고, 최신 숫자는 `reports/curriculum-coverage/latest.md`에서 확인한다.
@@ -194,7 +196,7 @@ blueprint·layout·payload hash 21/21 불변, 전체 440/440 테스트와 품질
 구현 메모: 과거 `ACTIVITY_IDS`, `ACTIVITY_SUPPORT`, 중앙 generator/variation 목록은
 contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy adapter input으로
 남겼다. 신규 family는 이 기록을 수정하지 않고 영역 index의
-`ProblemFamilyNativeModule(source + capability + runtime)`만 사용한다.
+`ProblemFamilyNativeModule(source + capability + runtime + cognitiveManifest + variationEnvelope)`만 사용한다.
 
 완료 기준:
 
@@ -206,7 +208,7 @@ contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy ada
 
 ### Phase 2 — 네 영역·세 학년군 대표 격자
 
-상태: **다음 실행 단계**. reviewed AssessmentTarget 분해와 native family의 첫 실제
+상태: **진행 중**. reviewed AssessmentTarget 분해와 native family의 첫 실제
 사용은 이 단계에서 시작한다. Phase 1의 더미 인수 fixture를 출시 family로 세지 않는다.
 
 목적: 수와 연산에 편중된 구조가 아닌지 전 범위 확장 전에 증명한다.
@@ -230,6 +232,33 @@ contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy ada
 - 대표 격자의 빈 셀 0개
 - 영역별 최소 하나의 실제 MathCanvas 새 프로젝트 생성·재열기 성공
 - 한 영역 전용 하드코딩이 공통 계층에 0건
+
+#### Phase 2-A — 1~2학년군 × 자료와 가능성 첫 세로 단면
+
+상태: **offline 검증 완료**. target 4개 중 주어진 기준 분류·개수 세기·결과
+설명의 3개를 다루며, 학생이 기준을 스스로 정하는 1개는 의도적으로 미지원이다.
+60개 variation 전수 compile·validator와 전체 회귀는 통과했지만 fresh canary와
+저장·재열기 전이므로 `verified/offline-validated`를 유지한다.
+
+첫 구현 대상은 공식 성취기준 `[2수04-01]`이다. 이 성취기준을 완전한
+`AssessmentTargetSet`으로 분해하고, 그중 정해진 기준으로 사물을 분류해 개수를
+세고 결과를 말하는 목표를 `data.classification.given-criterion-count-v1` native
+family로 구현한다. 자신이 정한 기준으로 다시 분류하는 목표는 별도 필수 target으로
+남기며, 첫 family 하나로 성취기준 전체를 커버했다고 표시하지 않는다.
+
+학생이 내려야 하는 판단은 “주어진 기준에 맞는 사물이 어느 것이며 모두 몇 개인지”다.
+학생은 다섯 개수 카드 중 하나를 먼저 고르고, 섞인 사물 목록을 기준에 따라 하나씩
+확인해 선택을 고치며, 기준에 맞는 사물 이름과 개수를 남긴다. 전체를 무조건 세는
+오개념과 기준 반대편을 세는 오개념을 실제 대안으로 포함한다.
+
+이 단위의 core 완료 기준:
+
+- `[2수04-01]`의 필수 target 분해가 완전성 review 상태로 등록됨
+- native family가 공통 planner·MCP·teacher-ui 분기 추가 없이 노출됨
+- 같은 seed·조건은 같은 문항과 hash, 조건 변경은 문항과 hash를 함께 바꿈
+- 최소·최대 matching count와 1·3문항 경계에서 문항·정답·exact preview·compile·validator 통과
+- cognitive manifest와 learning-map 고정 fixture가 blueprint hash에 결속됨
+- offline 통과 뒤에도 fresh canary·저장·재열기 전에는 `verified/offline-validated` 유지
 
 ### Phase 3 — 전 성취기준 breadth-first 확장
 

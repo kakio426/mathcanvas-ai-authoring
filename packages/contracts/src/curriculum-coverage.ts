@@ -175,6 +175,9 @@ export const elementaryCurriculumCoverageReportSchema = z
     mappedStandardCount: z.number().int().min(0),
     standardsWithAnyActivity: z.number().int().min(0),
     standardsWithReleasedActivity: z.number().int().min(0),
+    reviewedAssessmentTargetStandardCount: z.number().int().min(0),
+    reviewedAssessmentTargetCount: z.number().int().min(0),
+    reviewedRequiredAssessmentTargetCount: z.number().int().min(0),
     catalogDiff: z
       .object({
         missingOfficialCodes: z.array(z.string()),

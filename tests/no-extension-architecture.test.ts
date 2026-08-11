@@ -108,6 +108,15 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     const familyTypes = read(
       "packages/templates/src/problem-families/types.ts"
     );
+    const runtimeTypes = read(
+      "packages/templates/src/problem-families/runtime-types.ts"
+    );
+    const variationRegistry = read(
+      "packages/templates/src/variations/registry.ts"
+    );
+    const cognitiveRegistry = read(
+      "packages/templates/src/cognitive/registry.ts"
+    );
     const legacyManipulations = read(
       "packages/templates/src/problem-families/legacy-manipulations.ts"
     );
@@ -126,6 +135,33 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     expect(familyTypes).toContain("source:");
     expect(familyTypes).toContain("capability?:");
     expect(familyTypes).toContain("runtime:");
+    expect(familyTypes).toContain("cognitiveManifest:");
+    expect(familyTypes).toContain("variationEnvelope:");
+    expect(runtimeTypes).toContain("generateItemsForVariation?:");
+    expect(variationRegistry).toContain(
+      "DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map"
+    );
+    expect(cognitiveRegistry).toContain(
+      "DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map"
+    );
     expect(legacyManipulations).toContain("strangler adapter 전용 고정표");
+  });
+
+  it("첫 native family ID가 공통 planner·UI·감사 registry에 새 분기로 새지 않는다", () => {
+    const forbiddenCentralConsumers = [
+      "packages/planner/src/index.ts",
+      "apps/mcp-server/src/server.ts",
+      "apps/teacher-ui/src/server/main.ts",
+      "apps/teacher-ui/src/server/curriculum-catalog.ts",
+      "apps/teacher-ui/src/web/App.tsx",
+      "packages/templates/src/registry.ts",
+      "packages/templates/src/item-generators/registry.ts",
+      "packages/templates/src/variations/registry.ts",
+      "packages/templates/src/cognitive/registry.ts"
+    ].map(read).join("\n");
+
+    expect(forbiddenCentralConsumers).not.toContain(
+      "data.classification.given-criterion-count-v1"
+    );
   });
 });

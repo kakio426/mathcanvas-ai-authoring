@@ -1389,6 +1389,34 @@ export function listRegisteredBlueprints(): readonly ActivityBlueprint[] {
   return Object.values(registry).map((entry) => entry.blueprint);
 }
 
+/**
+ * variation/cognitive 감사용 문항 생성 경계. native family는 영역 모듈의 generator를,
+ * legacy blueprint는 기존 중앙 item-generator registry를 사용한다.
+ */
+export function generateRegisteredBlueprintItems(
+  blueprint: ActivityBlueprint,
+  seed: string,
+  variation: Readonly<Record<string, unknown>>,
+  teacherIntent?: TeacherIntent
+): ResolvedItem[] {
+  const entry = registry[blueprint.id];
+  if (!entry || entry.blueprint.contentHash !== blueprint.contentHash) {
+    throw new Error(`activity-handler-unregistered:${blueprint.id}`);
+  }
+  const resolvedVariation = resolveRegisteredVariation(
+    blueprint.id,
+    variation
+  );
+  return entry.generateItemsForVariation
+    ? entry.generateItemsForVariation(resolvedVariation, seed)
+    : generateBlueprintItems(
+        blueprint,
+        seed,
+        resolvedVariation,
+        teacherIntent
+      );
+}
+
 export function projectRegisteredApprovalView(
   resolved: ResolvedActivity
 ): Readonly<Record<string, unknown>> {
@@ -1454,9 +1482,20 @@ export function buildRegisteredAppliedProblemParameters(
     );
   }
   const applied = entry.appliedProblemParameters?.(resolved);
+  const normalized = (
+    parameters: import("@mathcanvas/contracts").ProblemParameters
+  ) =>
+    JSON.stringify({
+      ...parameters,
+      values: Object.fromEntries(
+        Object.entries(parameters.values).sort(([left], [right]) =>
+          left.localeCompare(right)
+        )
+      )
+    });
   if (
     applied !== undefined &&
-    JSON.stringify(applied) !== JSON.stringify(requested)
+    normalized(applied) !== normalized(requested)
   ) {
     throw new Error(
       `problem-parameters-projection-mismatch:${resolved.binding.blueprintId}`

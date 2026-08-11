@@ -1,7 +1,9 @@
 import type {
   CapabilityManifest,
+  CognitiveDemandManifest,
   ProblemParameters,
-  TeacherIntent
+  TeacherIntent,
+  VariationEnvelopeDeclaration
 } from "@mathcanvas/contracts";
 import type { ProblemFamilyRuntimeBinding } from "./runtime-types.js";
 
@@ -39,6 +41,7 @@ export interface ProblemFamilyRegistrySource {
     | "도형과 측정"
     | "자료와 가능성";
   readonly learningGoal: string;
+  readonly assessmentTargetIds?: readonly string[];
   readonly manipulation: string;
   readonly generator: {
     readonly id: string;
@@ -62,5 +65,10 @@ export interface ProblemFamilyRegistrySource {
 export type ProblemFamilyNativeModule = Readonly<{
   source: ProblemFamilyRegistrySource;
   capability?: ProblemFamilyCapabilityExtension;
-  runtime: ProblemFamilyRuntimeBinding;
+  runtime: ProblemFamilyRuntimeBinding &
+    Required<
+      Pick<ProblemFamilyRuntimeBinding, "generateItemsForVariation">
+    >;
+  cognitiveManifest: CognitiveDemandManifest;
+  variationEnvelope: VariationEnvelopeDeclaration;
 }>;

@@ -1,7 +1,7 @@
 # 2022 개정 초등 수학 전 범위 생성 체크리스트
 
 기준 문서: `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`  
-현재 실행 범위: Phase 0·1 완료, Phase 2 착수 대기
+현재 실행 범위: Phase 0·1 완료, Phase 2-A offline 검증 완료(live release 대기)
 상태 표기: `[ ]` 미착수, `[-]` 진행 중, `[x]` 완료, `[!]` 차단
 
 ## P0-A — 계획 보정
@@ -167,3 +167,69 @@
 - Fable CLI 수정 재검수: `PASS`, Phase 1 커밋 가능. 추가 권고인 ProblemParameters record key 순서 의존도 정규화 비교로 해소
 
 Phase 1은 위 완료 기준이 모두 충족되기 전까지 완료로 표시하지 않는다.
+
+## P2-A — `[2수04-01]` AssessmentTarget 권위
+
+- [x] `[2수04-01]`을 정해진 기준 분류 / 자신이 정한 기준 분류 / 분류별 개수 세기 / 기준에 따른 결과 말하기의 필수 target으로 완전 분해한다.
+- [x] target set의 완전성 상태·검토일·검토자를 기계 판독 가능하게 등록한다.
+- [x] 고정 learning-map commit의 concept / representation / application topic과 hard prerequisite를 최소 fixture에 결속한다.
+- [x] 존재하지 않는 공식 성취기준·topic·중복 target·불완전 target set을 테스트로 거부한다.
+- [x] 커버리지 보고서가 reviewed target 분해 진행률과 `[2수04-01]`의 released target coverage를 family 수와 분리해 표시한다.
+
+완료 기준:
+
+- [x] `[2수04-01]` target set은 reviewed-complete이며 필수 target 누락이 없다.
+- [x] 전체 121개 분해 전에는 전역 target coverage를 계속 `unavailable`로 정직하게 유지한다.
+
+## P2-B — native family 확장 seam
+
+- [x] native source가 하나 이상의 reviewed `AssessmentTarget`을 선언하도록 강제한다.
+- [x] target이 family의 공식 성취기준과 다르면 canonical registry 생성이 실패한다.
+- [x] native cognitive manifest가 영역 모듈에서 함께 등록되고 중앙 cognitive map 수정이 필요 없게 한다.
+- [x] 기존 29개 legacy family와 released payload hash를 보존한다.
+
+완료 기준:
+
+- [x] 다음 신규 family 등록은 family module + 영역 index + target registry + tests만으로 소비 경로와 감사 경로에 합쳐진다.
+- [x] planner·MCP·teacher-ui·중앙 generator/variation/cognitive 목록에 family 리터럴이 없다.
+
+## P2-C — `data.classification.given-criterion-count-v1`
+
+- [x] 공식 `[2수04-01]`과 세 개의 지원 target을 manifest에 연결한다.
+- [x] 분류 기준·맞는 사물 수를 공통 `ProblemParameters`로 받고 범위 밖·추가 필드를 fail-closed 처리한다.
+- [x] 같은 입력은 같은 문항, 의미 조건 변경은 문항·hash 동반 변경인 결정적 generator를 만든다.
+- [x] 전체·반대편·하나 빠뜨리기/더 세기 오개념을 다룬다. 양쪽이 4개로 같은 경우에는 개수 카드가 아니라 학생이 남기는 사물 이름으로 기준 반전을 구별한다.
+- [x] 정확한 문항 preview와 정답·해설·실제 적용 파라미터 projection을 제공한다.
+- [x] classroom Korean, text fit, labeled choice pool, no-overlap, cognitive release predicate를 등록한다.
+- [x] 1·3문항, matching count 2·6, 전체 분류 맥락 경계를 테스트한다.
+- [x] resolve → compile → validator가 error 0건으로 통과한다.
+
+완료 기준:
+
+- [x] 학생의 판단, 오개념 갈등, 화면에 남는 증거, 확인 구조, 수정 경로가 manifest와 실제 payload에 일치한다.
+- [x] fresh canary 전 상태는 `verified / offline-validated`이며 released로 과장하지 않는다.
+
+## P2-D — 회귀 QA와 종료 대조
+
+- [x] 관련 package·통합 테스트를 통과한다.
+- [x] `pnpm cognitive:verify`를 통과한다.
+- [x] problem-family와 curriculum 보고서를 갱신하고 stale check를 통과한다.
+- [x] `pnpm check` 전체를 통과한다.
+- [x] Phase 1 released 21개 기준선이 불변인지 확인한다.
+- [!] Fable CLI는 2026-08-11 계정의 `Fable 5 requires usage credits`로 실행이 차단됐다. 통과로 표시하지 않고 크레딧 확보 뒤 재실행한다.
+- [x] 같은 읽기 전용 검수 프롬프트를 Claude Sonnet에 대체 실행해 `PASS`, P0 0건, P1 0건을 받았다.
+- [x] plan과 checklist 원문을 다시 읽고 누락을 대조한다.
+- [x] 구현을 원자적 커밋으로 정리해 `main`에 push한다.
+
+Phase 2 전체는 12개 대표 격자의 빈 셀이 0개가 될 때만 완료다. Phase 2-A 하나를
+완료해도 “전 영역 생성 가능” 또는 “Phase 2 완료”라고 보고하지 않는다.
+
+## Phase 2-A offline 증거 — 2026-08-11
+
+- 권위 분해: `[2수04-01]` reviewed-complete target 4개, 필수 누락 0개
+- 구현 범위: native family 1개가 주어진 기준 분류·개수 세기·결과 설명 3개 target을 offline으로 다룸; 자신이 정한 기준 1개는 명시적 미지원
+- 유한 envelope: 분류 맥락 4 × 맞는 사물 수 5 × 문항 수 3 = 60조합 전수 resolve·compile·validator PASS
+- 확장 seam: native module이 source·capability·runtime·cognitive manifest·variation envelope를 함께 등록하며 공통 소비자에 family 리터럴 0건
+- 상태: canonical 30, released 21, `[2수04-01]` offline 3/4 · live 0/4, 전역 target coverage unavailable
+- 외부 MathCanvas 쓰기: 0건. fresh canary·저장·재열기 전이므로 `verified/offline-validated` 유지
+- 독립 검수: Fable 5는 usage credits로 차단; Claude Sonnet 대체 검수 `PASS`, P0/P1 0건

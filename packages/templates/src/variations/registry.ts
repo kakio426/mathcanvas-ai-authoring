@@ -26,8 +26,9 @@ import { claimEvidenceVariationEnvelopes } from "./claim-evidence.js";
 import { factorPairArrayVariationEnvelope } from "./factor-pair-array.js";
 import { barGraphRepresentFromTableVariationEnvelope } from "./bar-graph-represent-from-table.js";
 import { partialOperationDecompositionVariationEnvelopes } from "./partial-operation-decomposition.js";
+import { DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES } from "../problem-families/domains/index.js";
 
-export const REGISTERED_VARIATION_ENVELOPES = [
+export const LEGACY_VARIATION_ENVELOPES = [
   fractionComparisonVariationEnvelope,
   equivalentFractionVariationEnvelope,
   makeTenNumberCardsVariationEnvelope,
@@ -51,14 +52,31 @@ export const REGISTERED_VARIATION_ENVELOPES = [
   ...claimEvidenceVariationEnvelopes
 ] as const;
 
-export const REGISTERED_VARIATION_COMBINATION_COUNT =
-  assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
+export const LEGACY_VARIATION_COMBINATION_COUNT =
+  assertVariationSuiteLimit(LEGACY_VARIATION_ENVELOPES);
 
-if (REGISTERED_VARIATION_COMBINATION_COUNT !== 102) {
+if (LEGACY_VARIATION_COMBINATION_COUNT !== 102) {
   throw new Error(
-    `registered-variation-suite-drift:${REGISTERED_VARIATION_COMBINATION_COUNT}`
+    `legacy-variation-suite-drift:${LEGACY_VARIATION_COMBINATION_COUNT}`
   );
 }
+
+const nativeVariationEnvelopes =
+  DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map(
+    (module) => module.variationEnvelope
+  );
+
+/**
+ * 신규 family는 자기 영역 모듈에 envelope를 함께 등록한다. 이 파일에는 family ID나
+ * knob를 추가하지 않으므로 전체 수학 영역 확장 시 중앙 목록이 병목이 되지 않는다.
+ */
+export const REGISTERED_VARIATION_ENVELOPES: readonly VariationEnvelopeDeclaration[] = [
+  ...LEGACY_VARIATION_ENVELOPES,
+  ...nativeVariationEnvelopes
+];
+
+export const REGISTERED_VARIATION_COMBINATION_COUNT =
+  assertVariationSuiteLimit(REGISTERED_VARIATION_ENVELOPES);
 
 const byBlueprintId = new Map<
   string,

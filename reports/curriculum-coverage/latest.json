@@ -19,8 +19,11 @@
   "officialStandardCount": 121,
   "catalogStandardCount": 121,
   "mappedStandardCount": 121,
-  "standardsWithAnyActivity": 23,
+  "standardsWithAnyActivity": 24,
   "standardsWithReleasedActivity": 18,
+  "reviewedAssessmentTargetStandardCount": 1,
+  "reviewedAssessmentTargetCount": 4,
+  "reviewedRequiredAssessmentTargetCount": 4,
   "catalogDiff": {
     "missingOfficialCodes": [],
     "codesOutsideOfficialFixture": [],
@@ -44,7 +47,7 @@
     "status": "unavailable",
     "numerator": null,
     "denominator": null,
-    "note": "성취기준별 필수 AssessmentTarget을 정의하기 전에는 목표 충족률을 계산하지 않습니다."
+    "note": "1/121개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target 4개 중 live-released 0개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다."
   },
   "textbookUnitReach": {
     "totalUnits": 71,
@@ -58,7 +61,7 @@
       "gradeBand": "1-2",
       "official": 29,
       "mapped": 29,
-      "withActivity": 7,
+      "withActivity": 8,
       "withReleasedActivity": 7
     },
     {
@@ -102,7 +105,7 @@
       "domain": "자료와 가능성",
       "official": 12,
       "mapped": 12,
-      "withActivity": 3,
+      "withActivity": 4,
       "withReleasedActivity": 2
     }
   ],
@@ -127,7 +130,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -160,7 +163,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -191,7 +194,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -222,7 +225,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -252,7 +255,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -282,7 +285,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -312,7 +315,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -342,7 +345,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -372,7 +375,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -402,7 +405,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -428,7 +431,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -459,7 +462,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -486,7 +489,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -513,7 +516,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -539,7 +542,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -567,7 +570,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -595,7 +598,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -622,7 +625,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -649,7 +652,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -680,7 +683,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -710,7 +713,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -736,7 +739,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -767,7 +770,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -794,7 +797,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -821,7 +824,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -848,7 +851,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -864,22 +867,24 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "data.classification.given-criterion-count-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-1-5",
         "2-2-5"
       ],
       "targetCoverage": {
-        "status": "unavailable",
-        "numerator": null,
-        "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "status": "available",
+        "numerator": 0,
+        "denominator": 4,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 3/4, live-released는 0/4입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -901,7 +906,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -927,7 +932,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -953,7 +958,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -979,7 +984,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1005,7 +1010,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1035,7 +1040,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1063,7 +1068,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1095,7 +1100,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1122,7 +1127,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1148,7 +1153,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1175,7 +1180,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1202,7 +1207,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1228,7 +1233,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1255,7 +1260,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1282,7 +1287,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1308,7 +1313,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1340,7 +1345,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1366,7 +1371,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1392,7 +1397,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1418,7 +1423,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1450,7 +1455,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1476,7 +1481,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1502,7 +1507,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1528,7 +1533,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1554,7 +1559,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1580,7 +1585,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1606,7 +1611,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1632,7 +1637,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1658,7 +1663,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1688,7 +1693,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1714,7 +1719,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1740,7 +1745,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1766,7 +1771,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1792,7 +1797,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1818,7 +1823,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1844,7 +1849,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1870,7 +1875,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1896,7 +1901,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1922,7 +1927,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1948,7 +1953,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -1974,7 +1979,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2000,7 +2005,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2026,7 +2031,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2052,7 +2057,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2082,7 +2087,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2108,7 +2113,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2141,7 +2146,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2168,7 +2173,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2194,7 +2199,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2222,7 +2227,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2248,7 +2253,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2274,7 +2279,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2302,7 +2307,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2328,7 +2333,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2358,7 +2363,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2388,7 +2393,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2420,7 +2425,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2446,7 +2451,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2473,7 +2478,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2499,7 +2504,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2525,7 +2530,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2551,7 +2556,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2578,7 +2583,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2604,7 +2609,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2630,7 +2635,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2658,7 +2663,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2684,7 +2689,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2710,7 +2715,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2736,7 +2741,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2762,7 +2767,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2792,7 +2797,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2818,7 +2823,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2844,7 +2849,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2870,7 +2875,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2896,7 +2901,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2922,7 +2927,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2948,7 +2953,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -2974,7 +2979,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3000,7 +3005,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3026,7 +3031,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3052,7 +3057,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3078,7 +3083,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3104,7 +3109,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3130,7 +3135,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3156,7 +3161,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3182,7 +3187,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3208,7 +3213,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3234,7 +3239,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3260,7 +3265,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3286,7 +3291,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3314,7 +3319,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3344,7 +3349,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3370,7 +3375,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
@@ -3396,7 +3401,7 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
+        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",

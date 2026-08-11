@@ -12,7 +12,7 @@ import {
 import {
   assertCognitiveManifestBound,
   enumerateRegisteredVariationEnvelope,
-  generateBlueprintItems,
+  generateRegisteredBlueprintItems,
   listCognitiveDemandManifests,
   listRegisteredBlueprints
 } from "../../packages/templates/dist/index.js";
@@ -513,7 +513,7 @@ for (const manifest of manifests) {
   const resolvedAnswerVisible =
     enumerateRegisteredVariationEnvelope(blueprint.id).some(
       (variation, variationIndex) =>
-        generateBlueprintItems(
+        generateRegisteredBlueprintItems(
           blueprint,
           `cognitive-answer-${blueprint.id}-${variationIndex + 1}`,
           variation

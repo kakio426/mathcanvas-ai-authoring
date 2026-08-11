@@ -45,6 +45,7 @@ export {
   generatePartialOperationDecompositionActivity,
   getRegisteredBlueprintContentHash,
   getRegisteredActivitySupportState,
+  generateRegisteredBlueprintItems,
   makeTenNumberCardsTemplateDefinition,
   listRegisteredBlueprints,
   prepareRegisteredActivity,
@@ -254,6 +255,8 @@ export {
 } from "./item-generators/number-bond-ten.js";
 export { generateBlueprintItems } from "./item-generators/registry.js";
 export {
+  LEGACY_VARIATION_COMBINATION_COUNT,
+  LEGACY_VARIATION_ENVELOPES,
   REGISTERED_VARIATION_COMBINATION_COUNT,
   REGISTERED_VARIATION_ENVELOPES,
   enumerateRegisteredVariationEnvelope,

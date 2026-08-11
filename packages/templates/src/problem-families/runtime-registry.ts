@@ -1,8 +1,9 @@
+import { enumerateVariationEnvelope } from "@mathcanvas/contracts";
 import type { ProblemFamilyNativeModule } from "./types.js";
 import type { ProblemFamilyRuntimeBinding } from "./runtime-types.js";
 
 function assertNativeModuleConsistent(module: ProblemFamilyNativeModule): void {
-  const { source, runtime } = module;
+  const { source, runtime, cognitiveManifest, variationEnvelope } = module;
   if (
     runtime.familyId !== source.familyId ||
     runtime.blueprint.id !== source.familyId ||
@@ -35,6 +36,39 @@ function assertNativeModuleConsistent(module: ProblemFamilyNativeModule): void {
     throw new Error(
       `problem-family-native-support-mismatch:${source.familyId}`
     );
+  }
+  if ((source.assessmentTargetIds?.length ?? 0) < 1) {
+    throw new Error(
+      `problem-family-native-assessment-target-missing:${source.familyId}`
+    );
+  }
+  if (
+    cognitiveManifest.blueprintId !== source.familyId ||
+    cognitiveManifest.blueprintVersion !== runtime.blueprint.version ||
+    cognitiveManifest.blueprintContentHash !== runtime.blueprint.contentHash
+  ) {
+    throw new Error(
+      `problem-family-native-cognitive-manifest-mismatch:${source.familyId}`
+    );
+  }
+  if (variationEnvelope.blueprintId !== source.familyId) {
+    throw new Error(
+      `problem-family-native-variation-envelope-mismatch:${source.familyId}`
+    );
+  }
+  for (const variation of enumerateVariationEnvelope(variationEnvelope)) {
+    if (
+      !source.availableProblemCounts.includes(
+        variation.problemCount as number
+      ) ||
+      !source.supportedDifficulties.includes(
+        variation.difficulty as "easy" | "normal" | "hard"
+      )
+    ) {
+      throw new Error(
+        `problem-family-native-variation-capability-mismatch:${source.familyId}`
+      );
+    }
   }
   if (
     module.capability !== undefined &&

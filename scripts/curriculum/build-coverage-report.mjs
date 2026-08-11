@@ -5,6 +5,8 @@ import {
   elementaryCurriculumCoverageReportSchema
 } from "../../packages/contracts/dist/index.js";
 import {
+  assessmentTargetSets,
+  assessmentTargets,
   officialElementaryStandardsFixture,
   teacherCurriculumCatalog,
   teacherTextbookUnits
@@ -39,6 +41,12 @@ function stageFor(standard, families) {
 function buildReport() {
   const { source, standards } = officialElementaryStandardsFixture;
   const families = listProblemFamilyManifests();
+  const targetSetByStandard = new Map(
+    assessmentTargetSets.map((set) => [set.standardCode, set])
+  );
+  const targetById = new Map(
+    assessmentTargets.map((target) => [target.targetId, target])
+  );
   const officialCodes = new Set(standards.map((standard) => standard.code));
   const manifestIds = new Set(families.map((family) => family.familyId));
   const runtimeBlueprints = listRegisteredBlueprints();
@@ -108,6 +116,42 @@ function buildReport() {
     const releasedActivityIds = registeredFamilies
       .filter((family) => family.releaseEvidence.supportState === "released")
       .map((family) => family.familyId);
+    const targetSet = targetSetByStandard.get(official.code);
+    const reviewedTargets = targetSet
+      ? targetSet.targetIds.map((targetId) => {
+          const target = targetById.get(targetId);
+          if (!target) {
+            throw new Error(
+              `assessment-target-set-reference-missing:${official.code}:${targetId}`
+            );
+          }
+          return target;
+        })
+      : [];
+    const requiredTargets = reviewedTargets.filter((target) => target.required);
+    const releasedCoveredTargetIds = new Set(
+      registeredFamilies
+        .filter(
+          (family) =>
+            family.releaseEvidence.lifecycleStage === "live-released"
+        )
+        .flatMap((family) => family.assessmentTargetIds)
+    );
+    const offlineCoveredTargetIds = new Set(
+      registeredFamilies
+        .filter(
+          (family) =>
+            family.releaseEvidence.lifecycleStage === "offline-validated" ||
+            family.releaseEvidence.lifecycleStage === "live-released"
+        )
+        .flatMap((family) => family.assessmentTargetIds)
+    );
+    const releasedCoveredRequiredTargetCount = requiredTargets.filter(
+      (target) => releasedCoveredTargetIds.has(target.targetId)
+    ).length;
+    const offlineCoveredRequiredTargetCount = requiredTargets.filter(
+      (target) => offlineCoveredTargetIds.has(target.targetId)
+    ).length;
     return {
       code: official.code,
       gradeBand: official.gradeBand,
@@ -121,9 +165,15 @@ function buildReport() {
       activityIds,
       releasedActivityIds,
       unitIds: unitsByStandard.get(official.code) ?? [],
-      targetCoverage: unavailable(
-        "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
-      ),
+      targetCoverage: targetSet
+        ? available(
+            releasedCoveredRequiredTargetCount,
+            requiredTargets.length,
+            `reviewed-complete target set 기준입니다. offline-validated 이상은 ${offlineCoveredRequiredTargetCount}/${requiredTargets.length}, live-released는 ${releasedCoveredRequiredTargetCount}/${requiredTargets.length}입니다.`
+          )
+        : unavailable(
+            "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+          ),
       familyVariety: {
         basis: "canonical-problem-family-registry",
         familyCount: activityIds.length,
@@ -179,6 +229,20 @@ function buildReport() {
   ).length;
   const gradeBands = ["1-2", "3-4", "5-6"];
   const domains = ["수와 연산", "변화와 관계", "도형과 측정", "자료와 가능성"];
+  const reviewedRequiredTargets = assessmentTargets.filter(
+    (target) =>
+      target.required && targetSetByStandard.has(target.standardCode)
+  );
+  const releasedCoveredReviewedTargetIds = new Set(
+    families
+      .filter(
+        (family) => family.releaseEvidence.lifecycleStage === "live-released"
+      )
+      .flatMap((family) => family.assessmentTargetIds)
+  );
+  const releasedCoveredReviewedTargetCount = reviewedRequiredTargets.filter(
+    (target) => releasedCoveredReviewedTargetIds.has(target.targetId)
+  ).length;
   const summarize = (key, value) => {
     const selected = rows.filter((row) => row[key] === value);
     return {
@@ -201,6 +265,9 @@ function buildReport() {
     mappedStandardCount: mapped,
     standardsWithAnyActivity: withActivity,
     standardsWithReleasedActivity: withReleasedActivity,
+    reviewedAssessmentTargetStandardCount: assessmentTargetSets.length,
+    reviewedAssessmentTargetCount: assessmentTargets.length,
+    reviewedRequiredAssessmentTargetCount: reviewedRequiredTargets.length,
     catalogDiff: {
       missingOfficialCodes,
       codesOutsideOfficialFixture,
@@ -218,9 +285,16 @@ function buildReport() {
       standards.length,
       "released 활동이 하나 이상 연결된 성취기준 비율입니다. target coverage가 아닙니다."
     ),
-    targetCoverage: unavailable(
-      "성취기준별 필수 AssessmentTarget을 정의하기 전에는 목표 충족률을 계산하지 않습니다."
-    ),
+    targetCoverage:
+      assessmentTargetSets.length === standards.length
+        ? available(
+            releasedCoveredReviewedTargetCount,
+            reviewedRequiredTargets.length,
+            "모든 공식 성취기준의 reviewed-complete target set을 분모로 한 live-released coverage입니다."
+          )
+        : unavailable(
+            `${assessmentTargetSets.length}/${standards.length}개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target ${reviewedRequiredTargets.length}개 중 live-released ${releasedCoveredReviewedTargetCount}개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다.`
+          ),
     textbookUnitReach: {
       totalUnits: teacherTextbookUnits.length,
       unitsWithAnyActivity,
@@ -251,7 +325,8 @@ function markdown(report) {
     `- 공식 분모: **${report.officialStandardCount}개 성취기준** (교육부 HWP와 NCIC PDF 교차 확인)`,
     `- 카탈로그 매핑: **${report.mappedStandardCount}/${report.officialStandardCount}**`,
     `- released 활동 reach: **${report.standardsWithReleasedActivity}/${report.officialStandardCount} (${percent(report.standardsWithReleasedActivity, report.officialStandardCount)})**`,
-    "- target coverage: **산정하지 않음** — AssessmentTarget registry가 생기기 전에는 활동 수로 대신하지 않습니다.",
+    `- reviewed AssessmentTarget 분해: **${report.reviewedAssessmentTargetStandardCount}/${report.officialStandardCount}개 성취기준 · ${report.reviewedAssessmentTargetCount}개 target**`,
+    `- target coverage: **${report.targetCoverage.status === "available" ? `${report.targetCoverage.numerator}/${report.targetCoverage.denominator}` : "전역 산정하지 않음"}** — ${report.targetCoverage.note}`,
     "- family variety: canonical ProblemFamily registry의 FamilyId를 사용하며 target coverage와 합치지 않습니다.",
     `- catalog diff: 누락 ${report.catalogDiff.missingOfficialCodes.length}, fixture 밖 ${report.catalogDiff.codesOutsideOfficialFixture.length}, 문구 ${report.catalogDiff.officialGoalMismatches.length}, 학년군 ${report.catalogDiff.gradeBandMismatches.length}, 영역 ${report.catalogDiff.domainMismatches.length}`,
     "",
@@ -295,11 +370,11 @@ function markdown(report) {
     "",
     "## 성취기준별 상태",
     "",
-    "| 코드 | 학년군 | 영역 | 상태 | 활동 | released | 단원 |",
-    "|---|---|---|---|---|---|---|",
+    "| 코드 | 학년군 | 영역 | 상태 | target coverage | 활동 | released | 단원 |",
+    "|---|---|---|---|---|---|---|---|",
     ...report.rows.map(
       (row) =>
-        `| ${row.code} | ${row.gradeBand} | ${row.domain} | ${row.activityStage} | ${row.activityIds.join(", ") || "-"} | ${row.releasedActivityIds.join(", ") || "-"} | ${row.unitIds.join(", ") || "-"} |`
+        `| ${row.code} | ${row.gradeBand} | ${row.domain} | ${row.activityStage} | ${row.targetCoverage.status === "available" ? `live ${row.targetCoverage.numerator}/${row.targetCoverage.denominator}; ${row.targetCoverage.note}` : "-"} | ${row.activityIds.join(", ") || "-"} | ${row.releasedActivityIds.join(", ") || "-"} | ${row.unitIds.join(", ") || "-"} |`
     ),
     ""
   ];
@@ -327,5 +402,5 @@ if (shouldWrite) {
   if (existingJson !== json || existingMarkdown !== md) {
     throw new Error("curriculum coverage report is stale; run pnpm curriculum:coverage:update");
   }
-  console.log(`curriculum coverage PASS: ${report.standardsWithReleasedActivity}/${report.officialStandardCount} released activity reach; target coverage unavailable`);
+  console.log(`curriculum coverage PASS: ${report.standardsWithReleasedActivity}/${report.officialStandardCount} released activity reach; reviewed target sets ${report.reviewedAssessmentTargetStandardCount}/${report.officialStandardCount}`);
 }

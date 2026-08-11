@@ -88,11 +88,58 @@ export const assessmentTargetSchema = z
     standardCode: officialElementaryStandardSchema.shape.code,
     statement: z.string().trim().min(1).max(500),
     observableEvidence: z.array(z.string().trim().min(1).max(500)).min(1).max(12),
+    assessmentPrompt: z.string().trim().min(1).max(1000),
+    misconceptions: z
+      .array(
+        z
+          .object({
+            misconceptionId: familyIdSchema,
+            statement: z.string().trim().min(1).max(500)
+          })
+          .strict()
+      )
+      .min(1)
+      .max(12),
+    learningMap: z
+      .object({
+        repository: z.literal("DECK6/korean-elementary-learning-map"),
+        commit: z.string().regex(/^[a-f0-9]{40}$/),
+        topicIds: z.array(familyIdSchema).min(1).max(8),
+        prerequisiteTopicIds: z.array(familyIdSchema).max(8)
+      })
+      .strict(),
     required: z.boolean(),
     reviewStatus: z.enum(["draft", "reviewed"]),
-    scopeNote: z.string().trim().min(1).max(1000)
+    scopeNote: z.string().trim().min(1).max(1000),
+    reviewedAt: z.string().datetime(),
+    reviewer: z.string().trim().min(1).max(160)
   })
   .strict();
+
+/**
+ * 한 성취기준의 target 분해가 일부 초안인지, 필수 목표를 빠짐없이 검토한
+ * 완전 집합인지 구분한다. 이 레코드가 없으면 targetCoverage 분모를 만들지 않는다.
+ */
+export const assessmentTargetSetSchema = z
+  .object({
+    schemaVersion: z.literal(PROBLEM_FAMILY_SCHEMA_VERSION),
+    standardCode: officialElementaryStandardSchema.shape.code,
+    targetIds: z.array(familyIdSchema).min(1).max(32),
+    completeness: z.literal("reviewed-complete"),
+    scopeNote: z.string().trim().min(1).max(1000),
+    reviewedAt: z.string().datetime(),
+    reviewer: z.string().trim().min(1).max(160)
+  })
+  .strict()
+  .superRefine((set, context) => {
+    if (new Set(set.targetIds).size !== set.targetIds.length) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["targetIds"],
+        message: "AssessmentTargetSet의 target ID가 중복되었습니다."
+      });
+    }
+  });
 
 export const capabilityManifestSchema = z
   .object({
@@ -298,6 +345,7 @@ export type ProblemParameters = z.infer<typeof problemParametersSchema>;
 export type ProblemParameterValue = z.infer<typeof problemParameterValueSchema>;
 export type ProblemParameterField = z.infer<typeof problemParameterFieldSchema>;
 export type AssessmentTarget = z.infer<typeof assessmentTargetSchema>;
+export type AssessmentTargetSet = z.infer<typeof assessmentTargetSetSchema>;
 export type CapabilityManifest = z.infer<typeof capabilityManifestSchema>;
 export type RenderRecipe = z.infer<typeof renderRecipeSchema>;
 export type ReleaseEvidence = z.infer<typeof releaseEvidenceSchema>;

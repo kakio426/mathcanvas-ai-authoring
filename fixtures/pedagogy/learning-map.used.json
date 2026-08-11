@@ -287,6 +287,33 @@
       "assessmentPrompt": "'분수의 덧셈과 뺄셈'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라."
     },
     {
+      "id": "kr.mt.math.data-probability.g1-2.s2-04-01.concept",
+      "titleKorean": "[2수04-01] 자료의 정리 - 개념 확인",
+      "evidence": [
+        "[2수04-01] 자료의 정리 - 개념 확인을 이루는 핵심 요소 두 가지 이상을 찾아 자신의 말로 설명한다.",
+        "자료와 가능성 사례에서 [2수04-01] 자료의 정리 - 개념 확인이 드러나는 장면을 선택하고 판단 근거를 제시한다."
+      ],
+      "assessmentPrompt": "'자료의 정리'에 관한 짧은 상황을 제시하고, 학생이 공식 성취기준 [2수04-01]의 핵심 개념을 자신의 말과 간단한 예로 설명하게 하라."
+    },
+    {
+      "id": "kr.mt.math.data-probability.g1-2.s2-04-01.representation",
+      "titleKorean": "[2수04-01] 자료의 정리 - 표현과 연결",
+      "evidence": [
+        "[2수04-01] 자료의 정리 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다.",
+        "자신의 표현물에서 자료와 가능성 내용과 근거가 드러나는 부분을 찾아 설명한다."
+      ],
+      "assessmentPrompt": "'자료의 정리'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+    },
+    {
+      "id": "kr.mt.math.data-probability.g1-2.s2-04-01.application",
+      "titleKorean": "[2수04-01] 자료의 정리 - 적용과 설명",
+      "evidence": [
+        "[2수04-01] 자료의 정리 - 적용과 설명을 수행하는 순서와 주의할 점을 말한 뒤 과제를 끝까지 실행한다.",
+        "수행 과정과 결과를 기록하고, [2수04-01] 자료의 정리 - 적용과 설명의 다음 시도에서 바꿀 점을 한 가지 제시한다."
+      ],
+      "assessmentPrompt": "'자료의 정리'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라."
+    },
+    {
       "id": "kr.mt.math.data-probability.g3-4.s4-04-01.concept",
       "titleKorean": "[4수04-01] 자료의 수집과 정리 - 개념 확인",
       "evidence": [
@@ -554,6 +581,18 @@
       "prerequisiteId": "kr.mt.math.number-operations.g3-4.s4-01-15.representation",
       "strength": "hard",
       "reason": "[4수01-15] '분수의 덧셈과 뺄셈': 적용·설명 과제 전에 표현과 연결 활동이 필요하다."
+    },
+    {
+      "topicId": "kr.mt.math.data-probability.g1-2.s2-04-01.representation",
+      "prerequisiteId": "kr.mt.math.data-probability.g1-2.s2-04-01.concept",
+      "strength": "hard",
+      "reason": "[2수04-01] '자료의 정리': 표현 활동 전에 핵심 개념 확인이 필요하다."
+    },
+    {
+      "topicId": "kr.mt.math.data-probability.g1-2.s2-04-01.application",
+      "prerequisiteId": "kr.mt.math.data-probability.g1-2.s2-04-01.representation",
+      "strength": "hard",
+      "reason": "[2수04-01] '자료의 정리': 적용·설명 과제 전에 표현과 연결 활동이 필요하다."
     },
     {
       "topicId": "kr.mt.math.data-probability.g3-4.s4-04-01.representation",

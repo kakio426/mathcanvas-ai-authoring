@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
-  "registeredFamilyCount": 29,
+  "registeredFamilyCount": 30,
   "releasedFamilyCount": 21,
-  "parameterizedFamilyCount": 3,
-  "nativeFamilyCount": 0,
+  "parameterizedFamilyCount": 4,
+  "nativeFamilyCount": 1,
   "releasedPayloadBaselineCount": 21,
   "families": [
     {
@@ -23,6 +23,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "c1515bdaffecea013f8053b975b4e6d7631c650ca4e543763028db7a688f9b5a",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave22-bar-graph-represent-release-canary.json"
@@ -45,9 +46,40 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "9bcc0d94a1e2ac589e1b9fecb8dc375e48908572288c6b5e601f5f14323f06dd",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave12-bar-graph-scale-release-canary.json"
+      ]
+    },
+    {
+      "familyId": "data.classification.given-criterion-count-v1",
+      "activityId": "data.classification.given-criterion-count-v1",
+      "templateId": "data.classification.given-criterion-count-v1",
+      "domain": "자료와 가능성",
+      "standardCodes": [
+        "[2수04-01]"
+      ],
+      "manipulation": "classification-count-choice-drag",
+      "generator": {
+        "id": "data.classification.given-criterion-count-items",
+        "version": "1.0.0"
+      },
+      "renderRecipeKind": "native-render-recipe",
+      "supportState": "verified",
+      "lifecycleStage": "offline-validated",
+      "blueprintContentHash": "44a70132abb1be2c293bc22f555601cad00fff43da05ec50a1a545771270d22c",
+      "assessmentTargetIds": [
+        "data.classification.given-criterion-v1",
+        "data.classification.count-by-class-v1",
+        "data.classification.describe-result-v1"
+      ],
+      "parameterKeys": [
+        "classificationSetId",
+        "matchingCount"
+      ],
+      "evidencePaths": [
+        "packages/templates/src/problem-families/domains/data-probability/classification-given-criterion-count.test.ts"
       ]
     },
     {
@@ -67,6 +99,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "0a008e67eb67383341e6126fb79803d12393c9bfe4220244e7f6cd54de64e8f9",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-graph-purpose-release-canary.json"
@@ -89,6 +122,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "6cfbc4a620b7cddcef1187eff98307811ec00ac32c8fb2672e5074abd34709d9",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-picture-graph-key-release-canary.json"
@@ -111,6 +145,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "e040f891032e2f438422c96e135e62faeddff07815501694764f3240e0805f9c",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave9-improper-sum-release-canary.json"
@@ -133,6 +168,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "bd1e4b55fad240d4147c5b6c04880b30eb65afe540a035a5d48611bc729e04fb",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave8-fraction-sum-release-canary.json"
@@ -155,6 +191,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "55ce5573df8fa6fa63d5d1dd2541e3e37ff2844fc497dc62cb9c84063569f5d9",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave10-common-unit-release-canary.json"
@@ -177,6 +214,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "6b73ee591d8b1e9b45292182e032c7e096741471df6aeb481b8b2c7d89a007d0",
+      "assessmentTargetIds": [],
       "parameterKeys": [
         "numerator",
         "leftDenominator",
@@ -204,6 +242,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "1223118b4590fb5a45153e87b7205d899a09149f078ebfcd4131e4fe2ba2bf1f",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/p3-release-canary.json"
@@ -226,6 +265,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "e655d2d643d32a7eba0cd46d4e919876cc0017b705221b8241c2a6e5cec17de9",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave11-common-unit-difference-release-canary.json"
@@ -248,6 +288,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "37e755f914c7f75624422e9099cd00fd4fa63196b5c40a6e68acdb05564228e0",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-line-symmetry-distance-release-canary.json"
@@ -270,6 +311,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "123b00eae8ea4fca970e7d16950a60057de6fb72e3024edac11a073b4bf4bb98",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-triangle-classification-release-canary.json"
@@ -292,6 +334,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "e7b4b51bbb82aa863cad55387d640fe7431cc7c483f2b268cb92a2115a03cd38",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-angle-turn-release-canary.json"
@@ -314,6 +357,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "55d47ab35ba0f07787d13520d2ee0c8f0e2a3fcd6a11a05d38a6722b60aa5f94",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave13-broken-ruler-release-canary.json"
@@ -336,6 +380,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "e9c07031546265bcc669b2852e895d4314b90c75292de9f114373ffd46569691",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave6-clock-release-canary.json"
@@ -358,6 +403,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "6833430a0a16ba7ec4e9d089020c3eb23ea2d731aa57aa92333d50f8646a8e9d",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave7-elapsed-time-release-canary.json"
@@ -380,6 +426,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "8e1a238250a8dd5625b183edb572185668972dcfb465078c6b669b6a6bf272e8",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave20-partial-quotient-release-canary.json"
@@ -402,6 +449,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "2cf4eb96f66e0defd85f09f22cac95f99442bd6c52b790583c9e12df39a0a4cb",
+      "assessmentTargetIds": [],
       "parameterKeys": [
         "totalCount",
         "groupSize",
@@ -431,6 +479,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "792731554efbd0205d5df4e6a39ed3d4cb8d100056b524f917360ee8ef1e8477",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave19-factor-pair-release-canary.json"
@@ -453,6 +502,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "27082cd6541c915682e11d798ae96ba7a496354c1a6d1b890cc2e9357902b8b0",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/p3-release-canary.json"
@@ -475,6 +525,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "222bf251195e1b0a407578054b2d211ce009c3040b9ae4e4fb80a39bcd5063ef",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-mixed-calculation-order-release-canary.json"
@@ -497,6 +548,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "4102e64b7b440b80b57c93fc2ab05697e12c36453e2081f11ceee9033735485e",
+      "assessmentTargetIds": [],
       "parameterKeys": [
         "itemsPerGroup",
         "groupCount",
@@ -524,6 +576,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "3aff9c185783aed68172469550939204df43c66a183a69fd10af555d7e134a15",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave20-partial-product-release-canary.json"
@@ -546,6 +599,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "b7197bba084210107a5466f0656c1a4716f0ae9e3cb851348ce61e754aa88f83",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave14-place-value-release-canary.json"
@@ -568,6 +622,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "4143cea8a814cabbb474672c5836c4bfa664de287a53db22da4bbc15f82cc675",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave16-pattern-release-canary.json"
@@ -590,6 +645,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "e664b15c5123557259f782f56cfaf260686547f018dac81dabc1d2c82678ef0e",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave17-probability-release-canary.json"
@@ -612,6 +668,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "b96bd4498a69677e0e2c8f3f97f7c4aaf1600991672e667e4fbdd3a6483f6ff0",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave5-balance-scale-release-canary.json"
@@ -634,6 +691,7 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "eebf43825fa9503331d4cde53cd0fd789b78ce115f078b44cd89af0f278bbbb7",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave5-equality-release-canary.json"
@@ -656,6 +714,7 @@
       "supportState": "verified",
       "lifecycleStage": "offline-validated",
       "blueprintContentHash": "2827affacd53f49aff6f0c4b71f10dcb154800f54b2ffff84813f27981ae5909",
+      "assessmentTargetIds": [],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave18-ratio-same-unit-release-canary.json"
