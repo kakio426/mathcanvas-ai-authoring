@@ -44,7 +44,7 @@
     },
     {
       "path": "packages/contracts/src/catalog/worksheet-v2.ts",
-      "sha256": "c6f84297513414a3bb722ee54481eb39e241b4591d4531e0b7bc7b8d407e4ebc"
+      "sha256": "308dc4228fe9c3edd4a375952533aedcac18ee8104cb25903f7604f9a4886a82"
     },
     {
       "path": "packages/contracts/src/vocabulary/blueprint.ts",
@@ -147,5 +147,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "da2ec01769cc3ba2f6893fb590daf614d06c677a1c09c9d69acf9ee44b77612e"
+  "manifestHash": "a8a237bda09a8b0c48b8c252ec7b7ea57ad94210e7b2c184dcda5d351ac90a9c"
 }

@@ -1,4 +1,5 @@
 import {
+  ACTIVITY_IDS,
   getActivitySupportState,
   type ActivitySupportState,
   type CurriculumRecord,
@@ -36,6 +37,7 @@ import {
   PARTIAL_OPERATION_MANIPULATION,
   partialOperationActivityProfiles
 } from "./partial-operation-profile.js";
+import { officialElementaryStandards } from "./official-elementary-standards.js";
 
 export interface TeacherLearningNeed {
   id: string;
@@ -57,10 +59,11 @@ export interface TeacherActivityOption {
 }
 
 type TeacherActivityInput = Omit<TeacherActivityOption, "availability">;
+type RegisteredActivityId = (typeof ACTIVITY_IDS)[keyof typeof ACTIVITY_IDS];
 
 /**
- * 공식 원문과 대조하지 않고 소주제 묶음에서 파생한 위치 문자열임을 나타낸다.
- * `sourceLocator`가 이 접두어로 시작하면 검증된 출처 위치가 아니다.
+ * 과거 카탈로그의 원문 미대조 위치를 식별하기 위한 호환 상수다.
+ * 현재 canonical catalog는 이 접두어를 만들지 않는다.
  */
 export const UNVERIFIED_LOCATOR_PREFIX = "[원문 미대조]" as const;
 
@@ -71,10 +74,8 @@ export interface TeacherCurriculumStandard {
   focusLabel: string;
   standardSummary: string;
   /**
-   * `official-goal`: 사람이 공식 원문과 대조해 data.ts에 기록한 목표 문구.
-   * `activity-profile-goal`: 활동 프로필이 제공한 목표 문구. 아직 원문 미대조.
-   * `source-position`: 목표 문구 없이 소주제 위치만 아는 상태.
-   * 뒤의 두 상태는 `sourceLocator`가 `UNVERIFIED_LOCATOR_PREFIX`로 시작한다.
+   * 현재 canonical catalog는 `official-goal`만 만든다. 나머지 두 값은
+   * 과거 저장 데이터와 diff 보고를 읽기 위한 호환 상태다.
    */
   summaryKind: "official-goal" | "activity-profile-goal" | "source-position";
   sourceLocator: string;
@@ -124,8 +125,26 @@ function learningMapTopicId(
 
 function standard(
   record: CurriculumRecord,
-  activities: readonly TeacherActivityInput[]
+  activities: readonly TeacherActivityInput[],
+  activityIds: readonly RegisteredActivityId[] = []
 ): TeacherCurriculumStandard {
+  if (activities.length !== activityIds.length) {
+    throw new Error(
+      `교사용 활동과 canonical activity ID 수가 다릅니다: ${record.code}`
+    );
+  }
+  const catalogActivities = activities.map((activity, index) => {
+    const activityId = activityIds[index];
+    const availability = activityId
+      ? getActivitySupportState(activityId)
+      : undefined;
+    if (!availability) {
+      throw new Error(
+        `등록되지 않은 canonical activity ID입니다: ${record.code} ${activityId ?? "missing"}`
+      );
+    }
+    return { ...activity, availability };
+  });
   const locatorSegments = record.officialSource.locator
     .split(">")
     .map((segment) => segment.trim());
@@ -142,10 +161,7 @@ function standard(
       record.gradeBand,
       record.domain
     ),
-    activities: activities.map((activity) => ({
-      ...activity,
-      availability: "released"
-    }))
+    activities: catalogActivities
   };
 }
 
@@ -165,7 +181,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("model-number", "수 모형과 숫자를 연결하기 어려워요", "모형은 세지만 수로 나타낼 때 자릿값을 바꾸어 써요.", "수 모형의 묶음과 각 자리 숫자를 서로 연결해 설명하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.placeValueTenExchange]),
   standard(numberCompositionRecord, [
     {
       id: "make-ten",
@@ -181,7 +197,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("composition-expression", "수 카드와 덧셈식을 연결하기 어려워요", "두 수를 고를 수 있지만 가르기와 모으기 관계를 식으로 나타내지 못해요.", "고른 두 수를 덧셈식과 가르기 모형으로 함께 나타내게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.makeTenNumberCards]),
   standard(multiplicationMeaningRecord, [
     {
       id: "multiplication-array",
@@ -197,7 +213,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("array-expression", "배열을 보고 곱셈식을 만들기 어려워요", "전체 수만 세고 배열의 구조를 식에 사용하지 못해요.", "행과 열 중 한 기준을 정해 같은 수씩 묶어 곱셈식을 만들게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.multiplicationArrayMeaning]),
   standard(repeatingPatternRecord, [
     {
       id: "repeating-pattern-unit",
@@ -213,7 +229,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("position-rule", "멀리 있는 위치의 무늬를 찾기 어려워요", "처음부터 하나씩 세지 않으면 특정 위치의 무늬를 알지 못해요.", "반복 단위의 길이를 이용해 특정 위치의 무늬를 판단하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.repeatingPatternUnit]),
   standard(clockReadingRecord, [
     {
       id: "clock-hour-boundary",
@@ -229,7 +245,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("minute-scale", "분 눈금을 1분씩 세지 못해요", "숫자 사이의 작은 눈금과 5분 간격을 연결하기 어려워요.", "큰 숫자와 5분 간격을 이용해 분을 확인하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.clockHourHandBoundary]),
   standard(timeDurationRecord, [
     {
       id: "elapsed-time",
@@ -245,7 +261,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("time-vs-clock", "시각과 시간의 뜻을 섞어 써요", "몇 시인지와 얼마나 걸렸는지를 같은 말로 표현해요.", "시작·끝 시각과 그 사이에 걸린 시간을 서로 다른 단위로 말하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.elapsedTimeClockPair]),
   standard(lengthMeasurementRecord, [
     {
       id: "broken-ruler-length",
@@ -261,7 +277,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("unit-iteration", "1cm가 반복된다는 뜻을 이해하기 어려워요", "자를 읽을 수 있지만 길이 단위가 이어진다는 관계를 설명하지 못해요.", "1cm 조각을 빈틈없이 이어 붙여 측정값과 비교하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.brokenRulerLength]),
   standard(sameDenominatorFractionOperationsRecord, [
     {
       id: "same-denominator-sum",
@@ -291,6 +307,9 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("whole-unit", "전체가 바뀌면 분수의 크기도 같다고 생각해요", "분수 조각을 비교할 때 기준이 되는 전체를 확인하지 않아요.", "같은 전체를 기준으로 조각을 모아 1을 완성하게 한다.")
       ]
     }
+  ], [
+    ACTIVITY_IDS.sameDenominatorFractionSum,
+    ACTIVITY_IDS.sameDenominatorImproperSum
   ]),
   standard(equalityRelationRecord, [
     {
@@ -321,6 +340,9 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("missing-number", "등식의 빈칸을 계산 순서로만 구해요", "양쪽의 값을 비교하지 않고 보이는 순서대로 계산해요.", "한쪽 값을 먼저 정한 뒤 균형을 맞추는 수를 찾게 한다.")
       ]
     }
+  ], [
+    ACTIVITY_IDS.balancedEquationCards,
+    ACTIVITY_IDS.balanceScaleSum
   ]),
   standard(barGraphInterpretationRecord, [
     {
@@ -337,7 +359,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("scale-choice", "자료에 알맞은 눈금 간격을 고르기 어려워요", "눈금이 부족하거나 지나치게 큰 간격을 선택해요.", "가장 큰 자료가 그래프 안에 들어가고 차이가 드러나는 눈금을 비교하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.barGraphScaleUnit]),
   standard(equivalentFractionRecord, [
     {
       id: "equivalent-fraction",
@@ -353,7 +375,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("common-denominator", "통분한 뒤 원래 분수와 연결하지 못해요", "공통분모로 바꾼 수만 보고 같은 양이라는 점을 놓쳐요.", "통분 전후의 분수 띠 길이를 나란히 비교하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.equivalentFraction]),
   standard(unlikeDenominatorComparisonRecord, [
     {
       id: "unlike-denominator-comparison",
@@ -369,7 +391,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("different-whole", "서로 다른 전체를 기준으로 비교해요", "분수 모형의 전체 크기가 다른데도 색칠한 부분만 비교해요.", "같은 전체와 같은 시작점을 먼저 맞춘 뒤 크기를 판단하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.fractionComparison]),
   standard(unlikeDenominatorFractionOperationsRecord, [
     {
       id: "unlike-denominator-sum",
@@ -399,6 +421,9 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("difference-meaning", "두 분수의 차를 모형으로 나타내기 어려워요", "계산값은 구하지만 무엇이 남은 양인지 설명하지 못해요.", "큰 분수에서 작은 분수만큼을 덜어 낸 뒤 남은 조각을 식과 연결하게 한다.")
       ]
     }
+  ], [
+    ACTIVITY_IDS.unlikeDenominatorCommonUnitSum,
+    ACTIVITY_IDS.unlikeDenominatorCommonUnitDifference
   ]),
   standard(probabilityComparisonRecord, [
     {
@@ -415,7 +440,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
         learningNeed("language-order", "가능성을 말로 순서 지어 표현하기 어려워요", "더 가능하다와 덜 가능하다를 수학적 근거 없이 사용해요.", "가능성의 크기를 비교한 뒤 전체 중 원하는 경우의 비율을 까닭으로 말하게 한다.")
       ]
     }
-  ]),
+  ], [ACTIVITY_IDS.probabilityBagComparison]),
   standard(triangleClassificationRecord, []),
   standard(angleMeasurementRecord, []),
   standard(lineSymmetryRecord, []),
@@ -423,7 +448,7 @@ const supportedTeacherCurriculumCatalog: readonly TeacherCurriculumStandard[] = 
 ] as const;
 
 function standardRange(
-  bandNumber: 4 | 6,
+  bandNumber: 2 | 4 | 6,
   domainNumber: 1 | 2 | 3 | 4,
   first: number,
   last: number
@@ -435,35 +460,24 @@ function standardRange(
   );
 }
 
+interface CurriculumFocusReference {
+  standardCode: string;
+  focusLabel: string;
+}
+
 function referenceGroup(
-  gradeBand: "3-4" | "5-6",
-  domain: TeacherCurriculumStandard["domain"],
+  _gradeBand: "3-4" | "5-6",
+  _domain: TeacherCurriculumStandard["domain"],
   focusLabel: string,
   standardCodes: readonly string[]
-): TeacherCurriculumStandard[] {
+): CurriculumFocusReference[] {
   return standardCodes.map((standardCode) => ({
     standardCode,
-    gradeBand,
-    domain,
-    focusLabel,
-    standardSummary: `교육과정에서 ‘${focusLabel}’ 소주제에 배치된 성취기준입니다.`,
-    summaryKind: "source-position",
-    // 이 위치 문자열은 소주제 묶음에서 코드 규칙으로 파생한 것이고,
-    // 공식 PDF의 실제 쪽·항목과 대조한 결과가 아니다. 검증된 위치처럼
-    // 읽히지 않도록 접두어로 상태를 함께 적는다.
-    // 사람이 원문과 대조하면 data.ts의 CurriculumRecord로 옮기고
-    // 그때부터 officialSource.locator(실제 쪽수)가 쓰인다.
-    sourceLocator: `${UNVERIFIED_LOCATOR_PREFIX} 교육부 고시 제2022-33호 [별책 8] 수학과 교육과정 > 초등학교 ${gradeBand}학년군 > ${domain} > ${focusLabel} > ${standardCode}`,
-    learningMapTopicId: learningMapTopicId(
-      standardCode,
-      gradeBand,
-      domain
-    ),
-    activities: []
+    focusLabel
   }));
 }
 
-const curriculumReferences: readonly TeacherCurriculumStandard[] = [
+const curriculumReferences: readonly CurriculumFocusReference[] = [
   ...referenceGroup("3-4", "수와 연산", "다섯 자리 이상의 수", standardRange(4, 1, 1, 2)),
   ...referenceGroup("3-4", "수와 연산", "세 자리 수의 덧셈과 뺄셈", standardRange(4, 1, 3, 3)),
   ...referenceGroup("3-4", "수와 연산", "세 자리 수 범위의 곱셈", standardRange(4, 1, 4, 4)),
@@ -511,23 +525,28 @@ const curriculumReferences: readonly TeacherCurriculumStandard[] = [
 ] as const;
 
 export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
-  [
-    ...supportedTeacherCurriculumCatalog.filter(
-      (standard) => standard.gradeBand === "1-2"
-    ),
-    ...curriculumReferences.map((reference) => {
+  officialElementaryStandards.map((official) => {
+      const groupedReference = curriculumReferences.find(
+        (candidate) => candidate.standardCode === official.code
+      );
+      const reference: TeacherCurriculumStandard = {
+        standardCode: official.code,
+        gradeBand: official.gradeBand,
+        domain: official.domain,
+        focusLabel: groupedReference?.focusLabel ?? official.domain,
+        standardSummary: official.officialGoal,
+        summaryKind: "official-goal",
+        sourceLocator: official.sourceLocator,
+        learningMapTopicId: learningMapTopicId(
+          official.code,
+          official.gradeBand,
+          official.domain
+        ),
+        activities: []
+      };
       const legacySupported = supportedTeacherCurriculumCatalog.find(
         (candidate) => candidate.standardCode === reference.standardCode
       );
-      const pilotRecord = grade3PilotOfficialRecords.find(
-        (record) => record.code === reference.standardCode
-      );
-      // A pilot record owns the official locator, while any pre-existing
-      // activity options remain reusable. This prevents first-match legacy
-      // records from shadowing the independently reviewed pilot authority.
-      const supported = pilotRecord
-        ? standard(pilotRecord, legacySupported?.activities ?? [])
-        : legacySupported;
       const claimEvidenceProfile = claimEvidenceActivityProfiles.find(
         (candidate) => candidate.standardCode === reference.standardCode
       );
@@ -595,31 +614,14 @@ export const teacherCurriculumCatalog: readonly TeacherCurriculumStandard[] =
             ]
           : [])
       ];
-      const profileOfficialGoal =
-        claimEvidenceProfile?.officialGoal ??
-        factorPairProfile?.officialGoal ??
-        partialOperationProfile?.officialGoal;
-      return supported
-        ? {
-            ...reference,
-            ...supported,
-            focusLabel: reference.focusLabel,
-            // 사람이 원문과 대조해 data.ts에 기록한 목표 문구가 이미 있으면
-            // 활동 프로필의 미검증 문구로 덮어쓰지 않는다. 검토본이 우선이다.
-            activities: [...supported.activities, ...profileActivities]
-          }
-        : {
-            ...reference,
-            ...(profileOfficialGoal
-              ? {
-                  standardSummary: profileOfficialGoal,
-                  summaryKind: "activity-profile-goal" as const
-                }
-              : {}),
-            activities: profileActivities
-          };
-    })
-  ];
+      return {
+        ...reference,
+        activities: [
+          ...(legacySupported?.activities ?? []),
+          ...profileActivities
+        ]
+      };
+    });
 
 const textbookSources = {
   "1-1": "https://book.visang.com/books/info/5415",
@@ -659,33 +661,83 @@ function textbookUnit(
 }
 
 // 교과서의 실제 학년·학기·단원과 학년군 성취기준은 서로 다른 자료다.
-// 아래 목록은 비상교육 2022 개정 교재 목차를 기준으로 하며, standardCodes에는
-// standardCodes는 교육과정 연결, activityIds는 실제 생성까지 검증된 활동만 명시한다.
+// 아래 단원 제목은 비상교육 2022 개정 교재 목차를 기준으로 한다. standardCodes는
+// 단원 제목과 공식 성취기준을 저작용 탐색 인덱스로 교차 연결한 값이며 출판사가
+// 제공한 공식 대응표가 아니다. 중복 연결을 허용하고 커버리지 권위로 사용하지 않는다.
+// activityIds에는 실제 생성 경로가 있는 활동만 명시한다.
 export const teacherTextbookUnits: readonly TeacherTextbookUnit[] = [
-  textbookUnit(1, 1, 1, "9까지의 수"),
-  textbookUnit(1, 1, 2, "여러 가지 모양"),
-  textbookUnit(1, 1, 3, "덧셈과 뺄셈", ["[2수01-04]"], ["make-ten"]),
-  textbookUnit(1, 1, 4, "비교하기"),
-  textbookUnit(1, 1, 5, "50까지의 수"),
-  textbookUnit(1, 2, 1, "100까지의 수"),
-  textbookUnit(1, 2, 2, "덧셈과 뺄셈(1)"),
-  textbookUnit(1, 2, 3, "모양과 시각"),
-  textbookUnit(1, 2, 4, "덧셈과 뺄셈(2)"),
-  textbookUnit(1, 2, 5, "규칙 찾기", ["[2수02-01]"], ["repeating-pattern-unit"]),
-  textbookUnit(1, 2, 6, "덧셈과 뺄셈(3)"),
+  textbookUnit(1, 1, 1, "9까지의 수", [
+    "[2수01-01]",
+    "[2수01-03]",
+    "[2수01-04]"
+  ]),
+  textbookUnit(1, 1, 2, "여러 가지 모양", [
+    "[2수03-03]",
+    "[2수03-04]",
+    "[2수03-05]"
+  ]),
+  textbookUnit(
+    1,
+    1,
+    3,
+    "덧셈과 뺄셈",
+    standardRange(2, 1, 4, 9),
+    ["make-ten"]
+  ),
+  textbookUnit(1, 1, 4, "비교하기", ["[2수01-03]", "[2수03-06]"]),
+  textbookUnit(1, 1, 5, "50까지의 수", standardRange(2, 1, 1, 3)),
+  textbookUnit(1, 2, 1, "100까지의 수", standardRange(2, 1, 1, 3)),
+  textbookUnit(1, 2, 2, "덧셈과 뺄셈(1)", standardRange(2, 1, 5, 9)),
+  textbookUnit(1, 2, 3, "모양과 시각", [
+    "[2수03-01]",
+    "[2수03-03]",
+    "[2수03-04]",
+    "[2수03-07]"
+  ]),
+  textbookUnit(1, 2, 4, "덧셈과 뺄셈(2)", standardRange(2, 1, 5, 9)),
+  textbookUnit(
+    1,
+    2,
+    5,
+    "규칙 찾기",
+    standardRange(2, 2, 1, 2),
+    ["repeating-pattern-unit"]
+  ),
+  textbookUnit(1, 2, 6, "덧셈과 뺄셈(3)", standardRange(2, 1, 5, 9)),
 
-  textbookUnit(2, 1, 1, "세 자리 수", ["[2수01-02]"], ["place-value-exchange"]),
-  textbookUnit(2, 1, 2, "여러 가지 도형"),
-  textbookUnit(2, 1, 3, "덧셈과 뺄셈"),
-  textbookUnit(2, 1, 4, "길이 재기", ["[2수03-10]"], ["broken-ruler-length"]),
-  textbookUnit(2, 1, 5, "분류하기"),
+  textbookUnit(
+    2,
+    1,
+    1,
+    "세 자리 수",
+    ["[2수01-02]", "[2수01-03]"],
+    ["place-value-exchange"]
+  ),
+  textbookUnit(2, 1, 2, "여러 가지 도형", standardRange(2, 3, 1, 5)),
+  textbookUnit(2, 1, 3, "덧셈과 뺄셈", standardRange(2, 1, 5, 9)),
+  textbookUnit(
+    2,
+    1,
+    4,
+    "길이 재기",
+    ["[2수03-06]", ...standardRange(2, 3, 10, 13)],
+    ["broken-ruler-length"]
+  ),
+  textbookUnit(2, 1, 5, "분류하기", ["[2수04-01]"]),
   textbookUnit(2, 1, 6, "곱셈", ["[2수01-10]"], ["multiplication-array"]),
-  textbookUnit(2, 2, 1, "네 자리 수"),
-  textbookUnit(2, 2, 2, "곱셈구구"),
-  textbookUnit(2, 2, 3, "길이 재기"),
-  textbookUnit(2, 2, 4, "시각과 시간", ["[2수03-07]", "[2수03-08]"], ["clock-hour-boundary", "elapsed-time"]),
-  textbookUnit(2, 2, 5, "표와 그래프"),
-  textbookUnit(2, 2, 6, "규칙 찾기"),
+  textbookUnit(2, 2, 1, "네 자리 수", ["[2수01-02]", "[2수01-03]"]),
+  textbookUnit(2, 2, 2, "곱셈구구", ["[2수01-11]"]),
+  textbookUnit(2, 2, 3, "길이 재기", standardRange(2, 3, 10, 13)),
+  textbookUnit(
+    2,
+    2,
+    4,
+    "시각과 시간",
+    standardRange(2, 3, 7, 9),
+    ["clock-hour-boundary", "elapsed-time"]
+  ),
+  textbookUnit(2, 2, 5, "표와 그래프", standardRange(2, 4, 1, 3)),
+  textbookUnit(2, 2, 6, "규칙 찾기", standardRange(2, 2, 1, 2)),
 
   textbookUnit(3, 1, 1, "덧셈과 뺄셈", standardRange(4, 1, 3, 3)),
   textbookUnit(3, 1, 2, "평면도형", standardRange(4, 3, 1, 3)),
@@ -782,40 +834,41 @@ function assertTeacherTextbookCatalog(): void {
     }
   }
 
-  for (const grade of [3, 4, 5, 6] as const) {
+  for (const grade of [1, 2, 3, 4, 5, 6] as const) {
     for (const semester of [1, 2] as const) {
       const units = teacherTextbookUnits.filter(
         (unit) => unit.grade === grade && unit.semester === semester
       );
       const numbers = units.map((unit) => unit.unitNumber).sort((a, b) => a - b);
-      if (units.length !== 6 || numbers.join(",") !== "1,2,3,4,5,6") {
+      const expectedUnitCount = grade === 1 && semester === 1 ? 5 : 6;
+      const expectedNumbers = Array.from(
+        { length: expectedUnitCount },
+        (_, index) => index + 1
+      ).join(",");
+      if (
+        units.length !== expectedUnitCount ||
+        numbers.join(",") !== expectedNumbers
+      ) {
         throw new Error(`${grade}학년 ${semester}학기 단원 편성을 확인해 주세요.`);
       }
     }
   }
 
-  const expectedUpperGradeStandardCodes = new Set(
-    teacherCurriculumCatalog
-      .filter(
-        (standard) =>
-          standard.gradeBand === "3-4" || standard.gradeBand === "5-6"
-      )
-      .map((standard) => standard.standardCode)
+  const expectedOfficialStandardCodes = new Set(
+    teacherCurriculumCatalog.map((standard) => standard.standardCode)
   );
   const mappedStandardCodes = new Set(
-    teacherTextbookUnits
-      .filter((unit) => unit.grade >= 3)
-      .flatMap((unit) => unit.standardCodes)
+    teacherTextbookUnits.flatMap((unit) => unit.standardCodes)
   );
-  const unmapped = [...expectedUpperGradeStandardCodes].filter(
+  const unmapped = [...expectedOfficialStandardCodes].filter(
     (standardCode) => !mappedStandardCodes.has(standardCode)
   );
   const mappedOutsideAuthority = [...mappedStandardCodes].filter(
-    (standardCode) => !expectedUpperGradeStandardCodes.has(standardCode)
+    (standardCode) => !expectedOfficialStandardCodes.has(standardCode)
   );
   if (unmapped.length > 0 || mappedOutsideAuthority.length > 0) {
     throw new Error(
-      `3~6학년 성취기준 연결을 확인해 주세요: 누락 ${unmapped.join(", ")}; 권한 밖 연결 ${mappedOutsideAuthority.join(", ")}`
+      `1~6학년 성취기준 연결을 확인해 주세요: 누락 ${unmapped.join(", ")}; 권한 밖 연결 ${mappedOutsideAuthority.join(", ")}`
     );
   }
 }

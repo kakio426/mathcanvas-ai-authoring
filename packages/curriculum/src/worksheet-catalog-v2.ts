@@ -6,8 +6,10 @@ import {
 } from "@mathcanvas/contracts";
 import {
   findTeacherTextbookUnit,
+  teacherCurriculumCatalog,
   teacherTextbookUnits
 } from "./teacher-catalog.js";
+import { OFFICIAL_ELEMENTARY_STANDARD_COUNT } from "./official-elementary-standards.js";
 import {
   grade3PilotEntries,
   grade3PilotSourceManifest
@@ -185,6 +187,7 @@ export function getGrade3PilotWorksheetCoverage(): WorksheetCoverageReport {
   const summary = counts(grade3PilotWorksheetCatalog);
   return worksheetCoverageReportSchema.parse({
     coverageKind: "pilot",
+    metric: "pilot-entry-release",
     status: "available",
     numerator: summary.releasedEntries,
     denominator: summary.totalEntries,
@@ -194,14 +197,38 @@ export function getGrade3PilotWorksheetCoverage(): WorksheetCoverageReport {
 }
 
 export function getElementaryCurriculumCoverage(): WorksheetCoverageReport {
-  const summary = counts(grade3PilotWorksheetCatalog);
+  const summary = teacherCurriculumCatalog.reduce(
+    (result, standard) => {
+      result.totalEntries += 1;
+      if (
+        standard.activities.some(
+          (activity) => activity.availability === "released"
+        )
+      ) {
+        result.releasedEntries += 1;
+      } else if (standard.activities.length > 0) {
+        result.candidateEntries += 1;
+      } else {
+        result.blockedEntries += 1;
+      }
+      return result;
+    },
+    {
+      totalEntries: 0,
+      releasedEntries: 0,
+      candidateEntries: 0,
+      blockedEntries: 0,
+      unsupportedEntries: 0
+    }
+  );
   return worksheetCoverageReportSchema.parse({
     coverageKind: "curriculum",
-    status: "unavailable",
-    numerator: null,
-    denominator: null,
+    metric: "official-standard-released-activity-reach",
+    status: "available",
+    numerator: summary.releasedEntries,
+    denominator: OFFICIAL_ELEMENTARY_STANDARD_COUNT,
     ...summary,
-    note: "초등 1–6학년 전체 공식 성취기준 분모가 아직 완전하게 검증되지 않았으므로 curriculumCoverage 수치를 추정하지 않습니다."
+    note: "공식 HWP와 PDF를 교차 확인한 초등 수학 성취기준 121개 중 released 활동이 하나 이상 연결된 성취기준 수입니다. 이는 성취기준의 세부 평가목표를 모두 다루는 target coverage가 아니라 활동 reach입니다."
   });
 }
 

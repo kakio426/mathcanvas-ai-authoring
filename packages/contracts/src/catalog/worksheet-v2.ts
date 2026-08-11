@@ -616,6 +616,10 @@ export const worksheetPlanV2Schema = z
 export const worksheetCoverageReportSchema = z
   .object({
     coverageKind: z.enum(["pilot", "curriculum"]),
+    metric: z.enum([
+      "pilot-entry-release",
+      "official-standard-released-activity-reach"
+    ]),
     status: z.enum(["available", "unavailable"]),
     numerator: z.number().int().min(0).nullable(),
     denominator: z.number().int().min(0).nullable(),

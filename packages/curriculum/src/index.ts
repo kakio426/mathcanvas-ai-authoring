@@ -25,9 +25,7 @@ import {
   unlikeDenominatorComparisonRecord,
   unlikeDenominatorFractionOperationsRecord
 } from "./data.js";
-import {
-  findTeacherCurriculumStandard
-} from "./teacher-catalog.js";
+import { findOfficialElementaryStandard } from "./official-elementary-standards.js";
 import {
   findClaimEvidenceActivityProfile
 } from "./activity-profiles.js";
@@ -54,11 +52,59 @@ export interface CurriculumResolution {
   warnings: string[];
   auxiliarySnapshotSha: typeof LEARNING_MAP_COMMIT;
   /**
-   * `reviewed`는 사람이 공식 원문과 대조해 `data.ts`에 기록한 레코드다.
-   * `synthesized`는 활동 프로필과 카탈로그 위치만으로 코드가 조립한 레코드이며,
-   * 성취기준 문구를 공식 PDF와 대조한 기록이 없다. 출시 게이트는 이 값을 본다.
+   * 모든 반환 레코드는 공식 HWP와 PDF를 교차 확인한 fixture에 존재한다.
+   * 활동별로 더 자세한 선수학습을 가진 `data.ts` 레코드가 있으면 그 레코드를
+   * 우선하고, 없으면 같은 공식 fixture에서 완전한 기본 레코드를 만든다.
    */
-  provenance: "reviewed" | "synthesized";
+  provenance: "reviewed";
+}
+
+function officialFixtureRecord(
+  standardCode: string
+): CurriculumRecord | undefined {
+  const standard = findOfficialElementaryStandard(standardCode);
+  if (!standard) return undefined;
+
+  return curriculumRecordSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    key: `kr-2022-elem-math:${standard.code
+      .replaceAll("[", "")
+      .replaceAll("]", "")
+      .replace("수", "su")}`,
+    code: standard.code,
+    gradeBand: standard.gradeBand,
+    domain: standard.domain,
+    officialGoal: standard.officialGoal,
+    prerequisites: [],
+    officialSource: {
+      sourceId: "kr-moe-2022-33-annex-8-elementary-math",
+      sourceKind: "official",
+      title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
+      locator: standard.sourceLocator,
+      version: "교육부 고시 제2022-33호",
+      verificationStatus: "official-text-verified",
+      sourceTextIncluded: false,
+      caveat:
+        "저장소에는 교육과정 원문 전체를 재배포하지 않습니다. 성취기준 코드와 목표 문구는 교육부 HWP와 NCIC PDF를 교차 확인한 fixture입니다."
+    },
+    auxiliarySources: [
+      {
+        sourceId: "deck6-korean-elementary-learning-map",
+        sourceKind: "auxiliary",
+        title: "DECK6/korean-elementary-learning-map",
+        url: "https://github.com/DECK6/korean-elementary-learning-map",
+        locator: `${standard.code} / curriculum position and prerequisite design only`,
+        version: LEARNING_MAP_COMMIT,
+        verificationStatus: "auxiliary-pinned",
+        sourceTextIncluded: false,
+        caveat:
+          "학습지도는 표현과 선수 관계 설계에만 사용하며 공식 교육과정의 권위를 대신하지 않습니다."
+      }
+    ],
+    reviewedAt: standard.reviewedAt,
+    reviewer: standard.reviewer
+  });
 }
 
 export function resolveCurriculum(
@@ -95,59 +141,7 @@ export function resolveCurriculum(
       ? factorPairActivityProfile
       : undefined
   ].filter((candidate) => candidate !== undefined);
-  const profile = profileMatches[0];
-  const catalogStandard = findTeacherCurriculumStandard(standardCode);
-  const referenceRecord =
-    profile && catalogStandard
-      ? curriculumRecordSchema.parse({
-          schemaVersion: CONTRACT_SCHEMA_VERSION,
-          key: `kr-2022-elem-math:${standardCode
-            .replaceAll("[", "")
-            .replaceAll("]", "")
-            .replace("수", "su")}`,
-          code: standardCode,
-          gradeBand: catalogStandard.gradeBand,
-          domain: catalogStandard.domain,
-          officialGoal: profile.officialGoal,
-          prerequisites: [
-            "문제 상황에서 비교하거나 계산해야 할 양을 찾을 수 있다.",
-            "자신의 첫 생각을 수, 식, 그림 또는 말로 나타낼 수 있다."
-          ],
-          officialSource: {
-            sourceId: "kr-ncic-2022-elementary-math",
-            sourceKind: "official",
-            title: "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
-            url: "https://ncic.re.kr/inv/org/download.do?year=2022&seq=10003559&orgType=ogi4",
-            locator: catalogStandard.sourceLocator,
-            version: "교육부 고시 제2022-33호",
-            // 이 레코드는 활동 프로필과 카탈로그 위치만으로 조립한 것이다.
-            // 성취기준 문구를 공식 PDF와 대조한 기록이 없으므로
-            // `official-text-verified`를 자칭하지 않는다. 출시하려면
-            // data.ts에 사람이 검토한 CurriculumRecord를 먼저 추가해야 한다.
-            verificationStatus: "official-source-checked",
-            sourceTextIncluded: false,
-            caveat:
-              "성취기준 코드와 소주제 위치만 카탈로그에서 확인했습니다. 목표 문구는 아직 교육부 고시 제2022-33호 [별책 8] 원문과 대조하지 않았습니다."
-          },
-          auxiliarySources: [
-            {
-              sourceId: "deck6-korean-elementary-learning-map",
-              sourceKind: "auxiliary",
-              title: "DECK6/korean-elementary-learning-map",
-              url: "https://github.com/DECK6/korean-elementary-learning-map",
-              locator: `${catalogStandard.learningMapTopicId} / ${standardCode}`,
-              version: LEARNING_MAP_COMMIT,
-              verificationStatus: "auxiliary-pinned",
-              sourceTextIncluded: false,
-              caveat:
-                "학습지도는 표현과 선수 관계 설계에만 사용하며 공식 교육과정의 권위를 대신하지 않습니다."
-            }
-          ],
-          reviewedAt: "2026-08-02T00:00:00.000Z",
-          reviewer: "자동 합성 (사람 검토 없음)"
-        })
-      : undefined;
-  const record = records[standardCode] ?? referenceRecord;
+  const record = records[standardCode] ?? officialFixtureRecord(standardCode);
   if (!record) {
     throw new CurriculumResolutionError(
       "unsupported-standard",
@@ -167,17 +161,9 @@ export function resolveCurriculum(
     );
   }
 
-  const provenance =
-    records[standardCode] === undefined ? "synthesized" : "reviewed";
-
   const warnings: string[] = [];
   for (const source of record.auxiliarySources) {
     if (source.caveat) warnings.push(source.caveat);
-  }
-  if (provenance === "synthesized") {
-    warnings.push(
-      `${standardCode}의 교육과정 레코드는 활동 프로필에서 자동 합성한 것입니다. 출시 전에 공식 원문과 대조한 레코드를 curriculum/src/data.ts에 추가해야 합니다.`
-    );
   }
   if (profileMatches.length > 1) {
     warnings.push(
@@ -194,7 +180,7 @@ export function resolveCurriculum(
     record,
     warnings,
     auxiliarySnapshotSha: LEARNING_MAP_COMMIT,
-    provenance
+    provenance: "reviewed"
   };
 }
 
@@ -232,6 +218,12 @@ export {
   type TeacherLearningNeed,
   type TeacherTextbookUnit
 } from "./teacher-catalog.js";
+export {
+  OFFICIAL_ELEMENTARY_STANDARD_COUNT,
+  findOfficialElementaryStandard,
+  officialElementaryStandards,
+  officialElementaryStandardsFixture
+} from "./official-elementary-standards.js";
 export {
   CLAIM_EVIDENCE_MANIPULATION,
   claimEvidenceActivityProfiles,

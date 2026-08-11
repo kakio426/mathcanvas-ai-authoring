@@ -55,6 +55,7 @@ describe("Worksheet V2 catalog/request/plan", () => {
   it("pilotCoverage와 curriculumCoverage를 숫자 추정 없이 분리한다", () => {
     expect(getGrade3PilotWorksheetCoverage()).toMatchObject({
       coverageKind: "pilot",
+      metric: "pilot-entry-release",
       status: "available",
       numerator: 0,
       denominator: 30,
@@ -63,11 +64,15 @@ describe("Worksheet V2 catalog/request/plan", () => {
     });
     expect(getElementaryCurriculumCoverage()).toMatchObject({
       coverageKind: "curriculum",
-      status: "unavailable",
-      numerator: null,
-      denominator: null,
-      candidateEntries: 0,
-      blockedEntries: 30
+      metric: "official-standard-released-activity-reach",
+      status: "available",
+      numerator: 18,
+      denominator: 121,
+      totalEntries: 121,
+      releasedEntries: 18,
+      candidateEntries: 5,
+      blockedEntries: 98,
+      unsupportedEntries: 0
     });
   });
 
