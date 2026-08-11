@@ -95,6 +95,9 @@ describe("Sol review candidate and scope gates", () => {
     );
     expect(expected).toBeDefined();
     expect(workItem.engineCoreContract).toEqual(expected);
+    expect(source.planningGuardrails).toContain(
+      "operation manifest 밖의 exact changedFiles는 SCOPE_VIOLATION finding을 가진 blocked review로만 보존하며 승인·post-approval 권한을 넓히지 않는다."
+    );
     expect(
       workItem.engineCoreContract.runtimePredicate.parameters
         .continuationRuleStatePath

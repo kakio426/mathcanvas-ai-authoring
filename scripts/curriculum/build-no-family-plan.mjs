@@ -893,6 +893,7 @@ function buildReport() {
       // advance. Preserve its exact changedFiles even when the candidate
       // violated the operation manifest, but require an explicit finding so
       // the exception cannot silently become an approval or post-approval.
+      // The same SCOPE_VIOLATION rule is documented in SOL_REVIEW_PROMPT.md.
       assert(
         review.decision === "blocked" &&
           review.findings.some((finding) =>

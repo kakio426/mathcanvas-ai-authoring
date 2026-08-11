@@ -383,6 +383,7 @@
     "정답·해설·오개념·exact preview·compile·validator가 함께 통과하기 전 offline-validated로 올리지 않는다.",
     "TARGET_SET·FAMILY_TRACK 뒤에는 gpt-5.6-sol / max의 승인된 SOL_REVIEW 기록이 있어야 한다.",
     "SOL_REVIEW 담당자는 구현 파일을 수정하지 않고, 승인·수정요청·차단 중 하나만 기록한다.",
+    "operation manifest 밖의 exact changedFiles는 SCOPE_VIOLATION finding을 가진 blocked review로만 보존하며 승인·post-approval 권한을 넓히지 않는다.",
     "현재 해시의 create·조작·저장·재열기 증거 없이 live-released로 올리지 않는다.",
     "MathCanvas live 경로가 막혀도 offline queue를 계속 진행한다.",
     "Fable CLI나 외부 교사 검수를 실행 조건으로 두지 않는다."

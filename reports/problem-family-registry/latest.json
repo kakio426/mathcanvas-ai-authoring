@@ -703,7 +703,7 @@
       "renderRecipeKind": "native-render-recipe",
       "supportState": "verified",
       "lifecycleStage": "generatable",
-      "solReviewStatus": "pending",
+      "solReviewStatus": "blocked",
       "blueprintContentHash": "a4bf345c779c473038f107a6d625631a7baf2c4f0961469baedbfafdd3f6b4e6",
       "assessmentTargetIds": [
         "change.pattern.repeat-rule.construct-v1"
