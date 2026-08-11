@@ -140,6 +140,10 @@ describe("ProblemFamily 공통 계약", () => {
         blueprintId: familyId,
         layoutTokenSet: "multiplication-array-v1"
       },
+      solReviewScope: {
+        familyTrackId: familyId,
+        scopeId: "W002-FAMILY_TRACK-repeat-rule"
+      },
       releaseEvidence: {
         schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
         supportState: "released",
@@ -151,6 +155,15 @@ describe("ProblemFamily 공통 계약", () => {
       }
     } as const;
     expect(problemFamilyManifestSchema.parse(manifest)).toEqual(manifest);
+    expect(
+      problemFamilyManifestSchema.safeParse({
+        ...manifest,
+        solReviewScope: {
+          familyTrackId: familyId,
+          scopeId: "scope with spaces"
+        }
+      }).success
+    ).toBe(false);
     expect(
       problemFamilyManifestSchema.safeParse({
         ...manifest,

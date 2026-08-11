@@ -42,6 +42,10 @@ export interface ProblemFamilyRegistrySource {
     | "자료와 가능성";
   readonly learningGoal: string;
   readonly assessmentTargetIds?: readonly string[];
+  readonly solReviewScope?: Readonly<{
+    readonly familyTrackId: string;
+    readonly scopeId: string;
+  }>;
   readonly manipulation: string;
   readonly generator: {
     readonly id: string;

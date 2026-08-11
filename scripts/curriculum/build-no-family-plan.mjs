@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { reviewCandidateIsCurrent } from "./sol-review-status.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const sourcePath = resolve(root, "scripts/curriculum/no-family-plan.json");
@@ -51,12 +52,77 @@ function codeOrderHash(codes) {
   return createHash("sha256").update(codes.join("\n")).digest("hex");
 }
 
-function reviewKey(standardCode, operation) {
-  return `${standardCode}:${operation}`;
+function reviewKey(
+  standardCode,
+  operation,
+  familyTrackId = null,
+  scopeId = null
+) {
+  return `${standardCode}:${operation}:${familyTrackId ?? ""}:${scopeId ?? ""}`;
+}
+
+function effectiveReview(review) {
+  if (
+    review?.decision === "approved" &&
+    !reviewCandidateIsCurrent(review)
+  ) {
+    return { ...review, decision: "stale" };
+  }
+  return review;
 }
 
 function jsonHash(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+function familyRevalidationArtifactPath(baseWorkItemId) {
+  return resolve(
+    root,
+    "reports/curriculum-execution/family-revalidation",
+    `${baseWorkItemId}.json`
+  );
+}
+
+function sha256File(relativePath) {
+  return createHash("sha256")
+    .update(readFileSync(resolve(root, relativePath)))
+    .digest("hex");
+}
+
+function readCurrentFamilyRevalidationArtifact(
+  baseWorkItemId,
+  standardCode,
+  reviewScopes,
+  familyId
+) {
+  try {
+    const artifact = readJson(familyRevalidationArtifactPath(baseWorkItemId));
+    if (
+      artifact.schemaVersion !== "1.0.0" ||
+      artifact.operation !== "FAMILY_REVALIDATION" ||
+      artifact.workItemId !== baseWorkItemId ||
+      artifact.standardCode !== standardCode ||
+      artifact.familyId !== familyId ||
+      !reviewScopes.some(
+        (scope) =>
+          scope.familyTrackId === artifact.familyTrackId &&
+          scope.scopeId === artifact.scopeId
+      ) ||
+      typeof artifact.fingerprintSha256 !== "string"
+    ) {
+      return null;
+    }
+    const { fingerprintSha256, ...fingerprintPayload } = artifact;
+    if (jsonHash(fingerprintPayload) !== fingerprintSha256) return null;
+    for (const [relativePath, expectedHash] of Object.entries(
+      artifact.implementationFiles ?? {}
+    )) {
+      if (sha256File(relativePath) !== expectedHash) return null;
+    }
+    return artifact;
+  } catch {
+    return null;
+  }
 }
 
 function hasLearningMapBinding(learningMap, standardCode) {
@@ -90,12 +156,23 @@ function hasLearningMapBinding(learningMap, standardCode) {
 }
 
 function operationWorkItemId(baseWorkItemId, operation, reviewGate) {
+  if (operation === "SOL_REPLAN") {
+    return `${baseWorkItemId}-SOL_REPLAN`;
+  }
+  if (operation === "FAMILY_REVALIDATION") {
+    return `${baseWorkItemId}-FAMILY_REVALIDATION`;
+  }
   return operation === "SOL_REVIEW"
     ? `${baseWorkItemId}-SOL_REVIEW-${reviewGate}`
     : `${baseWorkItemId}-${operation}`;
 }
 
-function operationDependencies(baseWorkItemId, operation, reviewGate) {
+function operationDependencies(
+  baseWorkItemId,
+  operation,
+  reviewGate,
+  familyTrackReviewStatus = null
+) {
   const map = `${baseWorkItemId}-LEARNING_MAP_BINDING`;
   const target = `${baseWorkItemId}-TARGET_SET`;
   const targetReview = `${baseWorkItemId}-SOL_REVIEW-TARGET_SET`;
@@ -106,8 +183,16 @@ function operationDependencies(baseWorkItemId, operation, reviewGate) {
     return [target];
   }
   if (operation === "FAMILY_TRACK") return [map, target, targetReview];
+  if (operation === "SOL_REPLAN") {
+    return [family, `${baseWorkItemId}-SOL_REVIEW-FAMILY_TRACK`];
+  }
+  if (operation === "FAMILY_REVALIDATION") {
+    return [family, `${baseWorkItemId}-SOL_REVIEW-FAMILY_TRACK`];
+  }
   if (operation === "SOL_REVIEW" && reviewGate === "FAMILY_TRACK") {
-    return [family];
+    return familyTrackReviewStatus === "stale"
+      ? [family, `${baseWorkItemId}-FAMILY_REVALIDATION`]
+      : [family];
   }
   return [];
 }
@@ -166,12 +251,18 @@ function buildReport() {
       source.solReview.reviewerModel === "gpt-5.6-sol / max" &&
       source.solReview.requiredAfter.includes("TARGET_SET") &&
       source.solReview.requiredAfter.includes("FAMILY_TRACK") &&
+      source.solReview.reviewOperations.includes("SOL_REPLAN") &&
+      source.solReview.reviewOperations.includes("FAMILY_REVALIDATION") &&
       source.solReview.transactionPolicy?.candidateOwner === "Luna" &&
       source.solReview.transactionPolicy?.reviewOwner === "Sol" &&
       source.solReview.transactionPolicy?.derivedReportCommitOwner === "Sol" &&
       source.solReview.transactionPolicy?.reviewerPushes === false &&
       source.solReview.transactionPolicy?.allowedPostApprovalFilesAreManifestBound ===
-        true,
+        true &&
+      JSON.stringify(source.solReview.scopePolicy?.familyTrackRequires) ===
+        JSON.stringify(["familyTrackId", "scopeId"]) &&
+      JSON.stringify(source.solReview.scopePolicy?.scopeKey) ===
+        JSON.stringify(["standardCode", "operation", "familyTrackId", "scopeId"]),
     "no-family-plan-sol-review-policy"
   );
   assert(
@@ -293,6 +384,7 @@ function buildReport() {
     "no-family-plan-operation-manifest-policy"
   );
   const allowedSolDecisions = new Set(source.solReview.decisionValues);
+  const reviewOperations = new Set(source.solReview.reviewOperations);
   const solReviewByKey = new Map();
   const solReviewHistoryByKey = new Map();
   const solReviewIds = new Set();
@@ -308,7 +400,7 @@ function buildReport() {
       `no-family-plan-sol-review-code:${review.standardCode}`
     );
     assert(
-      source.solReview.requiredAfter.includes(review.operation),
+      reviewOperations.has(review.operation),
       `no-family-plan-sol-review-operation:${review.operation}`
     );
     assert(
@@ -345,6 +437,26 @@ function buildReport() {
         ),
       `no-family-plan-sol-review-record:${review.reviewId}`
     );
+    if (review.operation === "FAMILY_TRACK") {
+      if (review.familyTrackId !== undefined || review.scopeId !== undefined) {
+        assert(
+          typeof review.familyTrackId === "string" &&
+            typeof review.scopeId === "string",
+          `no-family-plan-sol-review-scope:${review.reviewId}`
+        );
+      }
+    }
+    if (review.operation === "SOL_REPLAN") {
+      assert(
+        /^[a-f0-9]{64}$/.test(review.replanDocumentSha256 ?? "") &&
+          typeof review.supersedesBlockedReviewId === "string" &&
+          review.supersedesBlockedReviewId.trim().length > 0 &&
+          review.replanOwner === "Luna" &&
+          Array.isArray(review.replanScopes) &&
+          review.replanScopes.length > 0,
+        `no-family-plan-sol-replan-record:${review.reviewId}`
+      );
+    }
     assert(
       !solReviewIds.has(review.reviewId),
       `no-family-plan-sol-review-id-duplicate:${review.reviewId}`
@@ -358,7 +470,12 @@ function buildReport() {
       `no-family-plan-sol-review-file-not-allowed:${review.reviewId}`
     );
     solReviewIds.add(review.reviewId);
-    const key = reviewKey(review.standardCode, review.operation);
+    const key = reviewKey(
+      review.standardCode,
+      review.operation,
+      review.familyTrackId ?? null,
+      review.scopeId ?? null
+    );
     const previous = solReviewByKey.get(key);
     assert(
       previous
@@ -370,7 +487,7 @@ function buildReport() {
     const history = solReviewHistoryByKey.get(key) ?? [];
     history.push(review);
     solReviewHistoryByKey.set(key, history);
-    solReviewByKey.set(key, review);
+    solReviewByKey.set(key, effectiveReview(review));
   }
   const targetOutlineCodes = targetOutlines.records.map(
     (record) => record.standardCode
@@ -497,19 +614,98 @@ function buildReport() {
     const batch = batchByArchetypeId.get(archetype.archetypeId);
     assert(batch, `no-family-plan-code-batch-missing:${code}`);
     const contract = source.trackContracts[archetype.archetypeId];
+    assert(contract, `no-family-plan-track-contract-missing:${archetype.archetypeId}`);
+    const reviewScopes = contract.reviewScopes ?? [];
+    assert(
+      reviewScopes.every(
+        (scope) =>
+          typeof scope.familyTrackId === "string" &&
+          typeof scope.scopeId === "string"
+      ),
+      `no-family-plan-review-scope-invalid:${archetype.archetypeId}`
+    );
+    const baseWorkItemId = `W${String(index + 1).padStart(3, "0")}`;
     const current = executionByCode.get(code);
     let nextAction = current?.nextAction ?? "complete";
     const expectedTargetOutline =
       targetOutlineByCode.get(code).expectedTargetOutline;
-    const targetSetReview = solReviewByKey.get(reviewKey(code, "TARGET_SET"));
-    const familyTrackReview = solReviewByKey.get(
+    const targetSetReview = solReviewByKey.get(
+      reviewKey(code, "TARGET_SET")
+    );
+    const legacyFamilyTrackReview = solReviewByKey.get(
       reviewKey(code, "FAMILY_TRACK")
     );
+    const scopedFamilyTrackReviews = reviewScopes.map((scope) =>
+      solReviewByKey.get(
+        reviewKey(
+          code,
+          "FAMILY_TRACK",
+          scope.familyTrackId,
+          scope.scopeId
+        )
+      )
+    );
+    const familyTrackReviews = reviewScopes.length
+      ? scopedFamilyTrackReviews
+      : [legacyFamilyTrackReview];
+    const familyTrackReview =
+      familyTrackReviews.find(Boolean) ?? legacyFamilyTrackReview ?? null;
     const targetSetReviewStatus = targetSetReview?.decision ?? "pending";
-    const familyTrackReviewStatus = familyTrackReview?.decision ?? "pending";
-    const baseWorkItemId = `W${String(index + 1).padStart(3, "0")}`;
+    const familyTrackReviewStatus = (() => {
+      const decisions = familyTrackReviews
+        .filter(Boolean)
+        .map((review) => review.decision);
+      if (decisions.includes("blocked")) return "blocked";
+      if (decisions.includes("changes-requested")) return "changes-requested";
+      if (decisions.includes("stale")) return "stale";
+      if (reviewScopes.length && legacyFamilyTrackReview?.decision === "blocked") {
+        return "blocked";
+      }
+      if (
+        reviewScopes.length &&
+        (legacyFamilyTrackReview?.decision === "approved" ||
+          legacyFamilyTrackReview?.decision === "stale")
+      ) {
+        return "stale";
+      }
+      if (
+        decisions.length > 0 &&
+        decisions.length === reviewScopes.length &&
+        decisions.every((decision) => decision === "approved")
+      ) {
+        return "approved";
+      }
+      return "pending";
+    })();
+    const replanReview = solReviewByKey.get(reviewKey(code, "SOL_REPLAN"));
+    const replanDocumentPath = contract.replanDocumentPath;
+    const blockedFamilyTrackReview =
+      familyTrackReviews.find((review) => review?.decision === "blocked") ??
+      (legacyFamilyTrackReview?.decision === "blocked"
+        ? legacyFamilyTrackReview
+        : null);
+    const replanApproved =
+      replanReview?.decision === "approved" &&
+      typeof replanDocumentPath === "string" &&
+      replanReview.replanDocumentPath === replanDocumentPath &&
+      replanReview.replanDocumentSha256 === sha256File(replanDocumentPath) &&
+      replanReview.supersedesBlockedReviewId ===
+        blockedFamilyTrackReview?.reviewId &&
+      JSON.stringify(replanReview.replanScopes ?? []) ===
+        JSON.stringify(reviewScopes) &&
+      reviewCandidateIsCurrent(replanReview);
+    const revalidationArtifact =
+      reviewScopes.length > 0
+        ? readCurrentFamilyRevalidationArtifact(
+            baseWorkItemId,
+            code,
+            reviewScopes,
+            contract.familyId
+          )
+        : null;
     const learningMapBound = hasLearningMapBinding(learningMap, code);
-    const targetSetReady = current?.targetSetReviewed === true;
+    const targetSetReady =
+      current?.targetSetReviewed === true && !replanApproved;
     const linkedFamily = (current?.linkedFamilyIds?.length ?? 0) > 0;
     const familyValidated =
       (current?.offlineFamilyIds?.length ?? 0) > 0 ||
@@ -522,11 +718,20 @@ function buildReport() {
         : targetSetReviewStatus === "blocked"
           ? "TARGET_SET"
           : null;
-    const blockedBySolReplan = blockedReviewGate !== null;
+    const blockedBySolReplan = blockedReviewGate !== null && !replanApproved;
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";
-      operation = "SOL_REVIEW";
-      reviewGate = blockedReviewGate;
+      operation = "SOL_REPLAN";
+      reviewGate = null;
+    } else if (replanApproved) {
+      nextAction = "review-target-set-and-design-family";
+      operation = "TARGET_SET";
+    } else if (
+      familyTrackReviewStatus === "stale" &&
+      !revalidationArtifact
+    ) {
+      operation = "FAMILY_REVALIDATION";
+      reviewGate = null;
     } else if (!learningMapBound) {
       operation = "LEARNING_MAP_BINDING";
     } else if (!targetSetReady) {
@@ -534,6 +739,9 @@ function buildReport() {
     } else if (targetSetReviewStatus !== "approved") {
       operation = "SOL_REVIEW";
       reviewGate = "TARGET_SET";
+    } else if (familyTrackReviewStatus === "stale" && revalidationArtifact) {
+      operation = "SOL_REVIEW";
+      reviewGate = "FAMILY_TRACK";
     } else if (!linkedFamily || !familyValidated) {
       operation = "FAMILY_TRACK";
     } else if (familyTrackReviewStatus !== "approved") {
@@ -554,7 +762,8 @@ function buildReport() {
     const dependencies = operationDependencies(
       baseWorkItemId,
       operation,
-      reviewGate
+      reviewGate,
+      familyTrackReviewStatus
     );
     const allowedFiles = source.operationPolicy.allowedFilesByOperation[operation];
     assert(
@@ -573,6 +782,8 @@ function buildReport() {
       archetypeId: archetype.archetypeId,
       plannedFamilyId: contract.familyId,
       engineClassIds: contract.engineClassIds,
+      reviewScopes,
+      replanDocumentPath: contract.replanDocumentPath ?? null,
       operation,
       operationWorkItemId: operationId,
       dependencyWorkItemIds: dependencies,
@@ -595,7 +806,13 @@ function buildReport() {
         targetSet: targetSetReviewStatus,
         familyTrack: familyTrackReviewStatus,
         targetSetReviewId: targetSetReview?.reviewId ?? null,
-        familyTrackReviewId: familyTrackReview?.reviewId ?? null
+        familyTrackReviewId: familyTrackReview?.reviewId ?? null,
+        familyTrackReviewIds: familyTrackReviews
+          .filter(Boolean)
+          .map((review) => review.reviewId),
+        replan: replanReview?.decision ?? "pending",
+        replanApproved,
+        revalidationArtifact: revalidationArtifact?.fingerprintSha256 ?? null
       }
     };
   });

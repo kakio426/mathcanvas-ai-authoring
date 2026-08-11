@@ -45,6 +45,8 @@
       "LEARNING_MAP_BINDING",
       "TARGET_SET",
       "SOL_REVIEW",
+      "SOL_REPLAN",
+      "FAMILY_REVALIDATION",
       "AFFORDANCE_DISCOVERY",
       "ENGINE_CORE",
       "FAMILY_TRACK",
@@ -84,6 +86,37 @@
         "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REPLAN": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
+      ],
+      "FAMILY_REVALIDATION": [
+        "reports/curriculum-execution/family-revalidation/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ],
       "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
@@ -142,6 +175,37 @@
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REPLAN": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
+      ],
+      "FAMILY_REVALIDATION": [
+        "reports/curriculum-execution/family-revalidation/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ]
     }
   },
@@ -150,6 +214,12 @@
     "requiredAfter": [
       "TARGET_SET",
       "FAMILY_TRACK"
+    ],
+    "reviewOperations": [
+      "TARGET_SET",
+      "FAMILY_TRACK",
+      "SOL_REPLAN",
+      "FAMILY_REVALIDATION"
     ],
     "reviewBeforeStatus": [
       "reviewed-complete",
@@ -169,6 +239,19 @@
       "changes-requested",
       "blocked"
     ],
+    "scopePolicy": {
+      "familyTrackRequires": [
+        "familyTrackId",
+        "scopeId"
+      ],
+      "scopeKey": [
+        "standardCode",
+        "operation",
+        "familyTrackId",
+        "scopeId"
+      ],
+      "legacyUnscopedReviews": "pre-scope approvals remain auditable; every new FAMILY_TRACK gate must provide both scope fields"
+    },
     "artifactRequiredFields": [
       "reviewId",
       "workItemId",
@@ -609,6 +692,8 @@
     "FAMILY_TRACK",
     "STANDARD_BINDING",
     "SOL_REVIEW",
+    "SOL_REPLAN",
+    "FAMILY_REVALIDATION",
     "LIVE_EVIDENCE",
     "BATCH_CLOSEOUT"
   ],
@@ -737,10 +822,10 @@
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 95,
-      "offline-in-progress": 0,
+      "offline-in-progress": 1,
       "sol-review-required": 0,
       "blocked-needs-sol-replan": 1,
-      "live-evidence": 1,
+      "live-evidence": 0,
       "complete": 0
     },
     "solReviewSummary": {
@@ -751,66 +836,74 @@
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
-      "sequence": 3,
-      "workItemId": "W003",
-      "batchId": "B08",
-      "wave": 2,
-      "standardCode": "[4수03-01]",
-      "gradeBand": "3-4",
-      "domain": "도형과 측정",
-      "officialGoal": "직선, 선분, 반직선을 이해하고 구별할 수 있다.",
-      "archetypeId": "G01",
-      "plannedFamilyId": "geometry.line-extent.classify-v1",
+      "sequence": 1,
+      "workItemId": "W001",
+      "batchId": "B01",
+      "wave": 0,
+      "standardCode": "[2수04-02]",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "officialGoal": "자료를 분류하여 표로 나타내고, 자료를 표로 나타내면 편리한 점을 말할 수 있다.",
+      "archetypeId": "D01A",
+      "plannedFamilyId": "data.early-table.organize-v1",
       "engineClassIds": [
-        "R11"
+        "R22"
       ],
-      "operation": "LEARNING_MAP_BINDING",
-      "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
-      "dependencyWorkItemIds": [],
+      "reviewScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ],
+      "replanDocumentPath": null,
+      "operation": "FAMILY_REVALIDATION",
+      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "dependencyWorkItemIds": [
+        "W001-FAMILY_TRACK",
+        "W001-SOL_REVIEW-FAMILY_TRACK"
+      ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "fixtures/pedagogy/no-family-learning-map.used.json",
-        "scripts/curriculum/no-family-plan.json",
-        "packages/curriculum/src/data.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/family-revalidation/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ],
       "reviewGate": null,
-      "learningMapBound": false,
-      "targetOutlineSha256": "8acfb50ecf520d819097576f4373e3d368e5003661c8021d6f11e8d270727c77",
+      "learningMapBound": true,
+      "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
       "expectedTargetOutline": [
         {
-          "key": "identify-line-ray-segment-properties",
-          "studentDecision": "끝점의 수와 뻗는 방향을 근거로 직선·선분·반직선의 성질을 정한다.",
-          "invariant": "직선은 양쪽, 반직선은 한쪽으로 계속 뻗고 선분은 두 끝점 사이로 한정된다.",
-          "observableEvidence": "끝점과 연장 방향을 표시한 그림에 알맞은 이름을 대응한다.",
-          "misconceptionClass": "line-type-judged-by-drawn-length"
+          "key": "organize-classified-data-in-table",
+          "studentDecision": "분류된 각 자료를 알맞은 표의 범주에 대응시키고 개수를 나타낸다.",
+          "invariant": "표의 범주별 개수 합은 원자료의 전체 개수와 같고 각 자료는 정확히 한 범주에 속한다.",
+          "observableEvidence": "완성한 표의 범주·개수와 원자료의 대응을 화면에서 확인할 수 있다.",
+          "misconceptionClass": "table-category-or-count-mismatch"
         },
         {
-          "key": "distinguish-line-ray-segment-examples",
-          "studentDecision": "방향이나 길이가 달라진 사례에서도 직선·선분·반직선을 구별한다.",
-          "invariant": "그림의 위치·방향·보이는 길이는 도형의 종류를 바꾸지 않는다.",
-          "observableEvidence": "여러 방향의 사례를 분류하고 끝점·연장 표시로 근거를 남긴다.",
-          "misconceptionClass": "orientation-dependent-line-classification"
+          "key": "explain-table-usefulness",
+          "studentDecision": "원자료보다 표가 비교·집계에 편리한 이유를 자료에 근거해 고른다.",
+          "invariant": "표는 같은 범주의 자료를 모아 개수와 범주 간 차이를 드러낸다.",
+          "observableEvidence": "표에서 바로 읽을 수 있는 개수나 비교 결과를 근거로 설명한다.",
+          "misconceptionClass": "table-as-decoration-without-information-gain"
         }
       ],
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family",
+      "nextAction": "finish-offline-validation",
+      "actionClass": "offline-in-progress",
       "solReview": {
-        "targetSet": "pending",
-        "familyTrack": "pending",
-        "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "targetSet": "approved",
+        "familyTrack": "stale",
+        "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
+        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     "nextReplanWork": {
@@ -827,17 +920,50 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "SOL_REVIEW",
-      "operationWorkItemId": "W002-SOL_REVIEW-FAMILY_TRACK",
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "replanDocumentPath": "W002_REPLAN.md",
+      "operation": "SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
-        "W002-FAMILY_TRACK"
+        "W002-FAMILY_TRACK",
+        "W002-SOL_REVIEW-FAMILY_TRACK"
       ],
       "allowedFiles": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
         "scripts/curriculum/sol-review-board.json",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
       ],
-      "reviewGate": "FAMILY_TRACK",
+      "reviewGate": null,
       "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
@@ -865,61 +991,14 @@
         "targetSet": "approved",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4"
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
-    "nextLiveEvidenceWork": {
-      "sequence": 1,
-      "workItemId": "W001",
-      "batchId": "B01",
-      "wave": 0,
-      "standardCode": "[2수04-02]",
-      "gradeBand": "1-2",
-      "domain": "자료와 가능성",
-      "officialGoal": "자료를 분류하여 표로 나타내고, 자료를 표로 나타내면 편리한 점을 말할 수 있다.",
-      "archetypeId": "D01A",
-      "plannedFamilyId": "data.early-table.organize-v1",
-      "engineClassIds": [
-        "R22"
-      ],
-      "operation": "LIVE_EVIDENCE",
-      "operationWorkItemId": "W001-LIVE_EVIDENCE",
-      "dependencyWorkItemIds": [],
-      "allowedFiles": [
-        "research/mathcanvas/**",
-        "reports/**"
-      ],
-      "reviewGate": null,
-      "learningMapBound": true,
-      "targetOutlineSha256": "0aa4ab91ce14e10ce437227b6aee6bb417ab2a58f81f929933347ac417d2b058",
-      "expectedTargetOutline": [
-        {
-          "key": "organize-classified-data-in-table",
-          "studentDecision": "분류된 각 자료를 알맞은 표의 범주에 대응시키고 개수를 나타낸다.",
-          "invariant": "표의 범주별 개수 합은 원자료의 전체 개수와 같고 각 자료는 정확히 한 범주에 속한다.",
-          "observableEvidence": "완성한 표의 범주·개수와 원자료의 대응을 화면에서 확인할 수 있다.",
-          "misconceptionClass": "table-category-or-count-mismatch"
-        },
-        {
-          "key": "explain-table-usefulness",
-          "studentDecision": "원자료보다 표가 비교·집계에 편리한 이유를 자료에 근거해 고른다.",
-          "invariant": "표는 같은 범주의 자료를 모아 개수와 범주 간 차이를 드러낸다.",
-          "observableEvidence": "표에서 바로 읽을 수 있는 개수나 비교 결과를 근거로 설명한다.",
-          "misconceptionClass": "table-as-decoration-without-information-gain"
-        }
-      ],
-      "expectedTargetCount": 2,
-      "archetypeRole": "anchor",
-      "splitRisk": "low",
-      "nextAction": "capture-current-hash-live-evidence",
-      "actionClass": "live-evidence",
-      "solReview": {
-        "targetSet": "approved",
-        "familyTrack": "approved",
-        "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3"
-      }
-    }
+    "nextLiveEvidenceWork": null
   },
   "batches": [
     {
@@ -2751,6 +2830,21 @@
       "familyId": "pattern.create-repeat-unit-explain-v1",
       "engineClassIds": [
         "R08"
+      ],
+      "replanDocumentPath": "W002_REPLAN.md",
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
       ]
     },
     "C02A": {
@@ -3048,6 +3142,20 @@
       "familyId": "data.early-table.organize-v1",
       "engineClassIds": [
         "R22"
+      ],
+      "revalidationFiles": [
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+        "fixtures/pedagogy/learning-map.used.json"
+      ],
+      "reviewScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
       ]
     },
     "D01B": {
@@ -3110,12 +3218,27 @@
       "engineClassIds": [
         "R22"
       ],
-      "operation": "LIVE_EVIDENCE",
-      "operationWorkItemId": "W001-LIVE_EVIDENCE",
-      "dependencyWorkItemIds": [],
+      "reviewScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ],
+      "replanDocumentPath": null,
+      "operation": "FAMILY_REVALIDATION",
+      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "dependencyWorkItemIds": [
+        "W001-FAMILY_TRACK",
+        "W001-SOL_REVIEW-FAMILY_TRACK"
+      ],
       "allowedFiles": [
-        "research/mathcanvas/**",
-        "reports/**"
+        "reports/curriculum-execution/family-revalidation/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -3139,13 +3262,17 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "capture-current-hash-live-evidence",
-      "actionClass": "live-evidence",
+      "nextAction": "finish-offline-validation",
+      "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "approved",
+        "familyTrack": "stale",
         "targetSetReviewId": "W001-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3"
+        "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3162,17 +3289,50 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "SOL_REVIEW",
-      "operationWorkItemId": "W002-SOL_REVIEW-FAMILY_TRACK",
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "replanDocumentPath": "W002_REPLAN.md",
+      "operation": "SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
-        "W002-FAMILY_TRACK"
+        "W002-FAMILY_TRACK",
+        "W002-SOL_REVIEW-FAMILY_TRACK"
       ],
       "allowedFiles": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
         "scripts/curriculum/sol-review-board.json",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
       ],
-      "reviewGate": "FAMILY_TRACK",
+      "reviewGate": null,
       "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
@@ -3200,7 +3360,11 @@
         "targetSet": "approved",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4"
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3217,6 +3381,8 @@
       "engineClassIds": [
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3263,7 +3429,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3280,6 +3450,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W004-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3326,7 +3498,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3343,6 +3519,8 @@
       "engineClassIds": [
         "R22"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W005-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3396,7 +3574,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3413,6 +3595,8 @@
       "engineClassIds": [
         "R09"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W006-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3466,7 +3650,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3483,6 +3671,8 @@
       "engineClassIds": [
         "R01"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W007-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3536,7 +3726,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3553,6 +3747,8 @@
       "engineClassIds": [
         "R08"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W008-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3606,7 +3802,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3623,6 +3823,8 @@
       "engineClassIds": [
         "R23"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W009-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3683,7 +3885,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3700,6 +3906,8 @@
       "engineClassIds": [
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W010-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3753,7 +3961,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3771,6 +3983,8 @@
         "R15",
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W011-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3824,7 +4038,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3841,6 +4059,8 @@
       "engineClassIds": [
         "R22"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W012-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3887,7 +4107,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3904,6 +4128,8 @@
       "engineClassIds": [
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W013-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3950,7 +4176,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -3967,6 +4197,8 @@
       "engineClassIds": [
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W014-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4020,7 +4252,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4037,6 +4273,8 @@
       "engineClassIds": [
         "R14"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W015-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4083,7 +4321,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4100,6 +4342,8 @@
       "engineClassIds": [
         "R22"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W016-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4153,7 +4397,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4170,6 +4418,8 @@
       "engineClassIds": [
         "R09"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W017-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4216,7 +4466,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4233,6 +4487,8 @@
       "engineClassIds": [
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W018-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4279,7 +4535,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4296,6 +4556,8 @@
       "engineClassIds": [
         "R22"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W019-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4349,7 +4611,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4367,6 +4633,8 @@
         "R02",
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W020-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4420,7 +4688,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4437,6 +4709,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W021-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4490,7 +4764,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4507,6 +4785,8 @@
       "engineClassIds": [
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W022-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4553,7 +4833,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4570,6 +4854,8 @@
       "engineClassIds": [
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W023-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4623,7 +4909,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4640,6 +4930,8 @@
       "engineClassIds": [
         "R21"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W024-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4686,7 +4978,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4703,6 +4999,8 @@
       "engineClassIds": [
         "R09"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W025-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4756,7 +5054,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4774,6 +5076,8 @@
         "R02",
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W026-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4820,7 +5124,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4837,6 +5145,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W027-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4883,7 +5193,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4900,6 +5214,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W028-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4946,7 +5262,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -4963,6 +5283,8 @@
       "engineClassIds": [
         "R15"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W029-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5016,7 +5338,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5033,6 +5359,8 @@
       "engineClassIds": [
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W030-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5079,7 +5407,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5096,6 +5428,8 @@
       "engineClassIds": [
         "R09"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W031-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5142,7 +5476,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5159,6 +5497,8 @@
       "engineClassIds": [
         "R06"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W032-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5212,7 +5552,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5230,6 +5574,8 @@
         "R24",
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W033-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5276,7 +5622,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5293,6 +5643,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W034-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5346,7 +5698,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5363,6 +5719,8 @@
       "engineClassIds": [
         "R15"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W035-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5409,7 +5767,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5426,6 +5788,8 @@
       "engineClassIds": [
         "R06"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W036-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5479,7 +5843,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5496,6 +5864,8 @@
       "engineClassIds": [
         "R12"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W037-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5542,7 +5912,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5559,6 +5933,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W038-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5605,7 +5981,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5623,6 +6003,8 @@
         "R24",
         "R22"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W039-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5669,7 +6051,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5686,6 +6072,8 @@
       "engineClassIds": [
         "R06"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W040-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5732,7 +6120,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5749,6 +6141,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W041-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5795,7 +6189,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5812,6 +6210,8 @@
       "engineClassIds": [
         "R16"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W042-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5858,7 +6258,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5875,6 +6279,8 @@
       "engineClassIds": [
         "R18"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W043-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5935,7 +6341,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -5952,6 +6362,8 @@
       "engineClassIds": [
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W044-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5998,7 +6410,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6015,6 +6431,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W045-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6061,7 +6479,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6078,6 +6500,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W046-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6131,7 +6555,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6148,6 +6576,8 @@
       "engineClassIds": [
         "R16"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W047-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6194,7 +6624,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6211,6 +6645,8 @@
       "engineClassIds": [
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W048-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6257,7 +6693,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6274,6 +6714,8 @@
       "engineClassIds": [
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W049-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6327,7 +6769,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6344,6 +6790,8 @@
       "engineClassIds": [
         "R13"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W050-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6390,7 +6838,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6407,6 +6859,8 @@
       "engineClassIds": [
         "R12"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W051-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6453,7 +6907,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6470,6 +6928,8 @@
       "engineClassIds": [
         "R07"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W052-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6516,7 +6976,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6533,6 +6997,8 @@
       "engineClassIds": [
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W053-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6579,7 +7045,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6596,6 +7066,8 @@
       "engineClassIds": [
         "R07"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W054-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6649,7 +7121,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6666,6 +7142,8 @@
       "engineClassIds": [
         "R14"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W055-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6712,7 +7190,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6729,6 +7211,8 @@
       "engineClassIds": [
         "R12"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W056-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6782,7 +7266,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6801,6 +7289,8 @@
         "R07",
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W057-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6847,7 +7337,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6864,6 +7358,8 @@
       "engineClassIds": [
         "R17"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W058-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6910,7 +7406,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6927,6 +7427,8 @@
       "engineClassIds": [
         "R07"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W059-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6973,7 +7475,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -6990,6 +7496,8 @@
       "engineClassIds": [
         "R14"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W060-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7036,7 +7544,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7053,6 +7565,8 @@
       "engineClassIds": [
         "R12"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W061-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7099,7 +7613,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7116,6 +7634,8 @@
       "engineClassIds": [
         "R07"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W062-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7169,7 +7689,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7186,6 +7710,8 @@
       "engineClassIds": [
         "R19"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W063-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7239,7 +7765,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7256,6 +7786,8 @@
       "engineClassIds": [
         "R06"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W064-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7302,7 +7834,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7319,6 +7855,8 @@
       "engineClassIds": [
         "R07"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W065-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7372,7 +7910,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7390,6 +7932,8 @@
         "R18",
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W066-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7436,7 +7980,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7453,6 +8001,8 @@
       "engineClassIds": [
         "R21"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W067-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7506,7 +8056,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7524,6 +8078,8 @@
         "R07",
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W068-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7577,7 +8133,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7594,6 +8154,8 @@
       "engineClassIds": [
         "R18"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W069-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7640,7 +8202,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7657,6 +8223,8 @@
       "engineClassIds": [
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W070-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7703,7 +8271,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7720,6 +8292,8 @@
       "engineClassIds": [
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W071-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7766,7 +8340,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7783,6 +8361,8 @@
       "engineClassIds": [
         "R17"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W072-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7829,7 +8409,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7846,6 +8430,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W073-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7899,7 +8485,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7917,6 +8507,8 @@
         "R19",
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W074-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7963,7 +8555,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -7980,6 +8576,8 @@
       "engineClassIds": [
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W075-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8026,7 +8624,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8043,6 +8645,8 @@
       "engineClassIds": [
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W076-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8096,7 +8700,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8114,6 +8722,8 @@
         "R19",
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W077-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8160,7 +8770,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8179,6 +8793,8 @@
         "R07",
         "R02"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W078-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8225,7 +8841,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8243,6 +8863,8 @@
         "R02",
         "R03"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W079-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8289,7 +8911,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8307,6 +8933,8 @@
         "R21",
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W080-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8374,7 +9002,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8391,6 +9023,8 @@
       "engineClassIds": [
         "R18"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W081-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8444,7 +9078,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8461,6 +9099,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W082-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8514,7 +9154,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8531,6 +9175,8 @@
       "engineClassIds": [
         "R16"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W083-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8584,7 +9230,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8601,6 +9251,8 @@
       "engineClassIds": [
         "R19"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W084-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8647,7 +9299,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8664,6 +9320,8 @@
       "engineClassIds": [
         "R05"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W085-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8710,7 +9368,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8728,6 +9390,8 @@
         "R16",
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W086-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8774,7 +9438,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8791,6 +9459,8 @@
       "engineClassIds": [
         "R18"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W087-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8844,7 +9514,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8862,6 +9536,8 @@
         "R13",
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W088-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8908,7 +9584,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8925,6 +9605,8 @@
       "engineClassIds": [
         "R19"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W089-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8971,7 +9653,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -8988,6 +9674,8 @@
       "engineClassIds": [
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W090-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9034,7 +9722,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9052,6 +9744,8 @@
         "R19",
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W091-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9098,7 +9792,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9116,6 +9814,8 @@
         "R14",
         "R20"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W092-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9169,7 +9869,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9186,6 +9890,8 @@
       "engineClassIds": [
         "R18"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W093-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9239,7 +9945,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9256,6 +9966,8 @@
       "engineClassIds": [
         "R19"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W094-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9309,7 +10021,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9326,6 +10042,8 @@
       "engineClassIds": [
         "R19"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W095-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9372,7 +10090,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9390,6 +10112,8 @@
         "R19",
         "R04"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W096-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9436,7 +10160,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     },
     {
@@ -9454,6 +10182,8 @@
         "R21",
         "R11"
       ],
+      "reviewScopes": [],
+      "replanDocumentPath": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W097-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9500,7 +10230,11 @@
         "targetSet": "pending",
         "familyTrack": "pending",
         "targetSetReviewId": null,
-        "familyTrackReviewId": null
+        "familyTrackReviewId": null,
+        "familyTrackReviewIds": [],
+        "replan": "pending",
+        "replanApproved": false,
+        "revalidationArtifact": null
       }
     }
   ]

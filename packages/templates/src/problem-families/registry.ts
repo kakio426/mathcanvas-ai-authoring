@@ -158,6 +158,9 @@ export function createProblemFamilyRegistry(
                 rendererId: source.familyId,
                 layoutTokenSet: source.blueprint.layoutTokenSet
               },
+        ...(source.solReviewScope
+          ? { solReviewScope: { ...source.solReviewScope } }
+          : {}),
         releaseEvidence: {
           schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
           supportState: source.supportState,

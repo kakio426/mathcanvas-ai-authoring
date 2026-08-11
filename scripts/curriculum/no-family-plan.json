@@ -58,6 +58,7 @@
   "solReview": {
     "boardPath": "scripts/curriculum/sol-review-board.json",
     "requiredAfter": ["TARGET_SET", "FAMILY_TRACK"],
+    "reviewOperations": ["TARGET_SET", "FAMILY_TRACK", "SOL_REPLAN", "FAMILY_REVALIDATION"],
     "reviewBeforeStatus": ["reviewed-complete", "offline-validated", "live-released"],
     "reviewerModel": "gpt-5.6-sol / max",
     "transactionPolicy": {
@@ -68,6 +69,11 @@
       "allowedPostApprovalFilesAreManifestBound": true
     },
     "decisionValues": ["approved", "changes-requested", "blocked"],
+    "scopePolicy": {
+      "familyTrackRequires": ["familyTrackId", "scopeId"],
+      "scopeKey": ["standardCode", "operation", "familyTrackId", "scopeId"],
+      "legacyUnscopedReviews": "pre-scope approvals remain auditable; every new FAMILY_TRACK gate must provide both scope fields"
+    },
     "artifactRequiredFields": [
       "reviewId",
       "workItemId",
@@ -90,6 +96,8 @@
       "LEARNING_MAP_BINDING",
       "TARGET_SET",
       "SOL_REVIEW",
+      "SOL_REPLAN",
+      "FAMILY_REVALIDATION",
       "AFFORDANCE_DISCOVERY",
       "ENGINE_CORE",
       "FAMILY_TRACK",
@@ -129,6 +137,37 @@
         "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REPLAN": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
+      ],
+      "FAMILY_REVALIDATION": [
+        "reports/curriculum-execution/family-revalidation/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ],
       "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
@@ -187,6 +226,37 @@
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "SOL_REPLAN": [
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
+      ],
+      "FAMILY_REVALIDATION": [
+        "reports/curriculum-execution/family-revalidation/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/build-family-revalidation.mjs"
       ]
     }
   },
@@ -220,6 +290,8 @@
     "FAMILY_TRACK",
     "STANDARD_BINDING",
     "SOL_REVIEW",
+    "SOL_REPLAN",
+    "FAMILY_REVALIDATION",
     "LIVE_EVIDENCE",
     "BATCH_CLOSEOUT"
   ],
@@ -327,7 +399,25 @@
     "N18": { "familyId": "fraction.divide.measurement-partition-v1", "engineClassIds": ["R07"] },
     "N19": { "familyId": "decimal.multiply.place-value-scale-v1", "engineClassIds": ["R05"] },
     "N20": { "familyId": "decimal.divide.place-value-quotient-v1", "engineClassIds": ["R05"] },
-    "C01": { "familyId": "pattern.create-repeat-unit-explain-v1", "engineClassIds": ["R08"] },
+    "C01": {
+      "familyId": "pattern.create-repeat-unit-explain-v1",
+      "engineClassIds": ["R08"],
+      "replanDocumentPath": "W002_REPLAN.md",
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ]
+    },
     "C02A": { "familyId": "relation.change-sequence.infer-express-v1", "engineClassIds": ["R08"] },
     "C02B": { "familyId": "relation.calculation-array.infer-predict-v1", "engineClassIds": ["R04"] },
     "C02C": { "familyId": "relation.covariation-table.infer-symbolize-v1", "engineClassIds": ["R09"] },
@@ -375,7 +465,24 @@
     "G28": { "familyId": "measure.surface-area.net-sum-v1", "engineClassIds": ["R13", "R20"] },
     "G29": { "familyId": "measure.volume.cuboid-unit-cube-v1", "engineClassIds": ["R14", "R20"] },
     "G30": { "familyId": "geometry.polygon.angle-sum.rearrange-explain-v1", "engineClassIds": ["R21", "R11"] },
-    "D01A": { "familyId": "data.early-table.organize-v1", "engineClassIds": ["R22"] },
+    "D01A": {
+      "familyId": "data.early-table.organize-v1",
+      "engineClassIds": ["R22"],
+      "revalidationFiles": [
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+        "fixtures/pedagogy/learning-map.used.json"
+      ],
+      "reviewScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ]
+    },
     "D01B": { "familyId": "data.early-symbol-graph.organize-v1", "engineClassIds": ["R22"] },
     "D02A": { "familyId": "data.line-graph.construct-interpret-v1", "engineClassIds": ["R22"] },
     "D02B": { "familyId": "data.inquiry.choose-graph-construct-interpret-v1", "engineClassIds": ["R22"] },

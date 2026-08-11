@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { reviewImplementationFiles } from "./sol-review-status.mjs";
 
 const root = resolve(new URL("../..", import.meta.url).pathname);
 const reportPath = resolve(root, "reports/curriculum-execution/no-family-plan.json");
@@ -67,11 +68,23 @@ const board = readJson(boardPath);
 const workItemId = arg("--work-item");
 const operation = arg("--operation");
 const candidateCommit = arg("--candidate") ?? git("rev-parse", "HEAD");
+const familyTrackId = arg("--family-track-id");
+const scopeId = arg("--scope-id");
 
 if (!workItemId || !operation) fail("work-item-and-operation-required");
 if (!/^[a-f0-9]{40}$/.test(candidateCommit)) fail("candidate-commit-format");
-if (operation !== "TARGET_SET" && operation !== "FAMILY_TRACK") {
+if (
+  operation !== "TARGET_SET" &&
+  operation !== "FAMILY_TRACK" &&
+  operation !== "SOL_REPLAN"
+) {
   fail("operation-not-review-gated");
+}
+if ((familyTrackId && !scopeId) || (!familyTrackId && scopeId)) {
+  fail("review-scope-incomplete");
+}
+if (operation === "FAMILY_TRACK" && !familyTrackId) {
+  fail("family-track-review-scope-required");
 }
 
 const workItem = report.workItems.find(
@@ -85,7 +98,11 @@ if (!workItem) fail(`unknown-work-item:${workItemId}`);
 const reviews = board.reviews
   .filter(
     (review) =>
-      review.standardCode === workItem.standardCode && review.operation === operation
+      review.standardCode === workItem.standardCode &&
+      review.operation === operation &&
+      (operation !== "FAMILY_TRACK" ||
+        (review.familyTrackId === familyTrackId &&
+          review.scopeId === scopeId))
   )
   .sort((left, right) => right.attempt - left.attempt);
 const review = reviews[0];
@@ -141,8 +158,7 @@ assertFilesAllowed(candidateFiles, operationPatterns, "candidate-file-not-allowe
 const postApprovalPatterns = [
   ...(report.operationPolicy?.postApprovalFilesByOperation?.[operation] ?? []),
   "scripts/curriculum/sol-review-board.json",
-  "reports/curriculum-execution/no-family-plan.json",
-  "reports/curriculum-execution/no-family-plan.md"
+  "reports/**"
 ];
 if (!postApprovalPatterns.length) fail(`post-approval-manifest-missing:${operation}`);
 const afterCandidateFiles = changedFilesAfter(candidateCommit);
@@ -152,6 +168,20 @@ assertFilesAllowed(
   postApprovalPatterns,
   "post-approval-file-not-allowed"
 );
+const implementationFilesAfterCandidate = afterCandidateFiles.filter((file) => {
+  if (file === "scripts/curriculum/sol-review-board.json" || file.startsWith("reports/")) {
+    return false;
+  }
+  return reviewImplementationFiles({
+    operation,
+    changedFiles: [file]
+  }).length > 0;
+});
+if (implementationFilesAfterCandidate.length) {
+  fail(
+    `candidate-implementation-mutated-after-candidate:${implementationFilesAfterCandidate.join(",")}`
+  );
+}
 if (!afterCandidateFiles.includes("scripts/curriculum/sol-review-board.json")) {
   fail("sol-board-commit-missing");
 }

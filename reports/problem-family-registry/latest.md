@@ -13,7 +13,7 @@
 | data.bar-graph.represent-from-table-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
 | data.bar-graph.scale-unit.read-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | live-released | - |
 | data.classification.given-criterion-count-v1 | 자료와 가능성 | [2수04-01] | native-render-recipe | generatable | classificationSetId, matchingCount |
-| data.early-table.organize-v1 | 자료와 가능성 | [2수04-02] | native-render-recipe | offline-validated | contextId |
+| data.early-table.organize-v1 | 자료와 가능성 | [2수04-02] | native-render-recipe | generatable | contextId |
 | data.graph.purpose.claim-evidence-v1 | 자료와 가능성 | [6수04-03] | legacy-blueprint-adapter | offline-validated | - |
 | data.picture-graph.key.claim-evidence-v1 | 자료와 가능성 | [4수04-01] | legacy-blueprint-adapter | offline-validated | - |
 | fraction.add.same-denominator.improper-sum-v1 | 수와 연산 | [4수01-15] | legacy-blueprint-adapter | live-released | - |

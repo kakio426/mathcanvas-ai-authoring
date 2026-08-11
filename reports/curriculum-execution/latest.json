@@ -21,7 +21,7 @@
     "officialStandards": 121,
     "reviewedTargetSets": 4,
     "reviewedTargets": 10,
-    "offlineReviewedTargets": 4,
+    "offlineReviewedTargets": 2,
     "liveReviewedTargets": 2,
     "fullyLiveStandards": 1,
     "representativeCellsProven": 1,
@@ -60,7 +60,7 @@
       "phase": "3B",
       "name": "필수 target family·offline 검증",
       "status": "in-progress",
-      "progress": "4/10 reviewed targets; global denominator incomplete"
+      "progress": "2/10 reviewed targets; global denominator incomplete"
     },
     {
       "phase": "3C",
@@ -401,10 +401,9 @@
     }
   ],
   "standardActionSummary": {
-    "capture-current-hash-live-evidence": 1,
     "complete": 1,
     "cover-unbound-reviewed-targets": 1,
-    "finish-offline-validation": 1,
+    "finish-offline-validation": 2,
     "review-target-set-and-bind-released-family": 17,
     "review-target-set-and-close-offline-family": 5,
     "review-target-set-and-design-family": 95
@@ -706,18 +705,16 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
       },
       "linkedFamilyIds": [
         "data.early-table.organize-v1"
       ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [
-        "data.early-table.organize-v1"
-      ],
-      "offlineCoveredTargetCount": 2,
+      "offlineFamilyIds": [],
+      "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "capture-current-hash-live-evidence"
+      "nextAction": "finish-offline-validation"
     },
     {
       "queueIndex": 13,

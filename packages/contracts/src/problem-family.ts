@@ -294,6 +294,17 @@ export const releaseEvidenceSchema = z
     }
   });
 
+export const solReviewScopeSchema = z
+  .object({
+    familyTrackId: familyIdSchema,
+    scopeId: z
+      .string()
+      .min(3)
+      .max(160)
+      .regex(/^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)+$/)
+  })
+  .strict();
+
 export const problemFamilyManifestSchema = z
   .object({
     schemaVersion: z.literal(PROBLEM_FAMILY_SCHEMA_VERSION),
@@ -312,6 +323,7 @@ export const problemFamilyManifestSchema = z
       .strict(),
     capability: capabilityManifestSchema,
     renderRecipe: renderRecipeSchema,
+    solReviewScope: solReviewScopeSchema.optional(),
     releaseEvidence: releaseEvidenceSchema
   })
   .strict()
@@ -349,4 +361,5 @@ export type AssessmentTargetSet = z.infer<typeof assessmentTargetSetSchema>;
 export type CapabilityManifest = z.infer<typeof capabilityManifestSchema>;
 export type RenderRecipe = z.infer<typeof renderRecipeSchema>;
 export type ReleaseEvidence = z.infer<typeof releaseEvidenceSchema>;
+export type SolReviewScope = z.infer<typeof solReviewScopeSchema>;
 export type ProblemFamilyManifest = z.infer<typeof problemFamilyManifestSchema>;

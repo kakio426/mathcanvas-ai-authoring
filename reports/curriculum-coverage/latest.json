@@ -898,7 +898,7 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "offline-validated",
+      "activityStage": "generatable",
       "activityIds": [
         "data.early-table.organize-v1"
       ],
@@ -910,7 +910,7 @@
         "status": "available",
         "numerator": 0,
         "denominator": 2,
-        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",

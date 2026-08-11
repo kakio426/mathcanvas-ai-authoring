@@ -17,8 +17,8 @@
 |---|---:|
 | unmapped | 0 |
 | mapped | 95 |
-| generatable | 2 |
-| offline-validated | 6 |
+| generatable | 3 |
+| offline-validated | 5 |
 | live-released | 18 |
 
 ## 학년군별
@@ -77,7 +77,7 @@
 | [2수03-12] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수03-13] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-4, 2-2-3 |
 | [2수04-01] | 1-2 | 자료와 가능성 | generatable | live 0/4; reviewed-complete target set 기준입니다. offline-validated 이상은 0/4, live-released는 0/4입니다. | data.classification.given-criterion-count-v1 | - | 2-1-5, 2-2-5 |
-| [2수04-02] | 1-2 | 자료와 가능성 | offline-validated | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다. | data.early-table.organize-v1 | - | 2-2-5 |
+| [2수04-02] | 1-2 | 자료와 가능성 | generatable | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다. | data.early-table.organize-v1 | - | 2-2-5 |
 | [2수04-03] | 1-2 | 자료와 가능성 | mapped | - | - | - | 2-2-5 |
 | [4수01-01] | 3-4 | 수와 연산 | mapped | - | - | - | 4-1-1 |
 | [4수01-02] | 3-4 | 수와 연산 | mapped | - | - | - | 4-1-1 |

@@ -53,20 +53,24 @@ pnpm curriculum:program
 3. `AFFORDANCE_DISCOVERY` — 승인된 native tool 하나의 bounded read/canary 계약만 조사
 4. `ENGINE_CORE` — 승인된 R01~R24 shared recipe/adapter 하나의 최소 core
 5. `FAMILY_TRACK` — 승인된 track 하나의 generator·capability·runtime·cognitive·envelope
-6. `STANDARD_BINDING` — 같은 gradeBand의 후속 standard target/envelope pack을 기존 core에 결속
-7. `SOL_REVIEW` — Sol max가 한 standard·한 operation의 교육·구조 증거를 독립 검토
-8. `LIVE_EVIDENCE` — 명시적으로 승인된 create-only canary·조작·저장·재열기
-9. `BATCH_CLOSEOUT` — 해당 batch의 보고서·회귀·증거만 마감
+6. `SOL_REVIEW` — Sol max가 한 standard·한 operation의 교육·구조 증거를 독립 검토
+7. `SOL_REPLAN` — blocked item의 범위·schema·native 의존성을 재계획하고 재개 조건을 고정
+8. `STANDARD_BINDING` — 같은 gradeBand의 후속 standard target/envelope pack을 기존 core에 결속
+9. `LIVE_EVIDENCE` — 명시적으로 승인된 create-only canary·조작·저장·재열기
+10. `BATCH_CLOSEOUT` — 해당 batch의 보고서·회귀·증거만 마감
 
 한 실행에서는 operation 하나와 standard 하나만 소유한다. 가능한 한 lifecycle을 전진시키되 두 operation을 합치지 않는다.
 
 각 standard의 offline operation 순서는 `LEARNING_MAP_BINDING → TARGET_SET → SOL_REVIEW →
 AFFORDANCE_DISCOVERY/ENGINE_CORE → FAMILY_TRACK → SOL_REVIEW → STANDARD_BINDING`이다.
+최신 Sol review가 `blocked`이면 같은 family operation을 재시도하지 않고 독립적인
+`SOL_REPLAN` work item으로만 재개한다. 재계획이 승인되기 전에는 해당 family를 완료로
+계산하지 않으며, 다른 표준의 offline queue만 독립적으로 진행한다.
 실제 generated work item의 `operation`, `dependencyWorkItemIds`, `allowedFiles`,
 `targetOutlineSha256`를 입력으로 사용하며, 이 값이 없거나 현재 코드와 맞지 않으면
 `blocked-needs-sol-replan`이다.
 
-`TARGET_SET`과 `FAMILY_TRACK`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
+`TARGET_SET`, `FAMILY_TRACK`, `SOL_REPLAN`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
 focused QA를 수행한 뒤 **아직 push하지 않은 local candidate commit**을 만들고
 `pending-sol-review`로 종료한다. [SOL_REVIEW_PROMPT.md](SOL_REVIEW_PROMPT.md)를
 사용하는 Sol max 실행이 그 candidate commit hash에 결속된 `approved` 기록을
@@ -74,6 +78,9 @@ focused QA를 수행한 뒤 **아직 push하지 않은 local candidate commit**�
 no-family report를 별도 로컬 commit으로 만든 뒤, Luna가
 `pnpm curriculum:sol-review:verify -- --work-item W001 --operation TARGET_SET --candidate <sha>`를
 통과시키고 main에 push한다. Sol review 담당자는 구현 파일을 수정하지 않는다.
+`FAMILY_TRACK` review에는 반드시 `--family-track-id <id> --scope-id <id>`를 함께 전달한다.
+두 scope 값은 review record와 candidate work item에 결속되어야 하며, pre-scope legacy
+review는 새 family approval에 재사용하지 않는다.
 
 ## work item 입력 계약
 
@@ -86,6 +93,8 @@ no-family report를 별도 로컬 commit으로 만든 뒤, Luna가
   "plannedFamilyId": "data.early-table.organize-v1",
   "engineClassIds": ["R22"],
   "operation": "TARGET_SET",
+  "familyTrackId": null,
+  "scopeId": null,
   "operationWorkItemId": "W001-TARGET_SET",
   "dependencyWorkItemIds": ["W001-LEARNING_MAP_BINDING"],
   "allowedFiles": [
@@ -203,8 +212,11 @@ generated timestamp만 바뀐 unrelated audit 파일은 내용을 확인한 뒤 
 - 일반 operation은 모든 gate가 통과했을 때 한 work item을 한 atomic commit으로 만든다.
 - `TARGET_SET`·`FAMILY_TRACK`은 Luna가 local candidate commit을 만든 뒤 push하지 않고 종료한다.
 - Sol max가 candidate commit hash에 결속된 `approved` record를 남긴 뒤에만
-  `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation <TARGET_SET|FAMILY_TRACK> --candidate <sha>`를 실행하고 `git push origin main`을 한다.
+  `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation <TARGET_SET|FAMILY_TRACK|SOL_REPLAN> --candidate <sha>`를 실행하고 `git push origin main`을 한다.
+  `FAMILY_TRACK`에는 `--family-track-id <id> --scope-id <id>`를 추가한다.
 - `changes-requested`이면 기존 candidate를 재사용하지 말고 새 attempt·새 candidate commit으로 다시 검토받는다.
+- candidate 이후에는 Sol board와 파생 report만 변경할 수 있다. 구현 파일이 candidate 이후
+  바뀌면 승인 기록은 stale이며 새 candidate·review가 필요하다.
 - live evidence는 offline 구현 commit과 분리한다.
 - `git push origin main`이 fast-forward로 성공해야 완료다.
 - push 충돌 시 임의 해결하지 말고 중단한다.

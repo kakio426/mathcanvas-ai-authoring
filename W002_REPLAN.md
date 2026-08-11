@@ -33,7 +33,7 @@ W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한�
 | repeat 배열 구성·수정 | 선언한 반복 단위로 다음 항을 만들고 어긋난 항을 교체 | repeat-arrangement-repair |
 | change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 정하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | change-rule-construction |
 
-각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 네 slice를 모두 등록하는
+각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 세 slice를 모두 등록하는
 방식은 금지한다. TargetSet 재검토가 이 분해를 승인하기 전에는 어떤 family도 W002 완료를 주장하지 않는다.
 
 새 partial-coverage aggregation schema는 만들지 않는다. 현재 registry의 target union을 그대로
@@ -50,6 +50,9 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 1. `W002-ORCHESTRATOR-GATE` — blocked item을 `nextReplanWork`로 보존하면서 다음 독립 표준을
    `nextOfflineWork`로 선택한다. blocked family는 모든 offline/live numerator와 전역 완료에서 제외한다.
    동시에 familyTrackId/scopeId가 review·candidate·allowedFiles에 결속되는지 검증한다.
+   이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
+   `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다. 허용 파일은 이 문서,
+   no-family plan/target outline, board와 파생 execution report로 제한한다.
 2. `W002-REPLAN-TARGET_SET` — 세 target slice의 statement·invariant·observable evidence·misconception과
    pinned learning-map 결속을 갱신하고 target-outline hash를 재생성한다.
 3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 수 변화 family에 필요한 number/state native affordance가
@@ -87,8 +90,9 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
   저장되어야 하며, 그 state가 배열·정답·해설·exact preview의 원천이어야 한다.
 - `activitySpecHash`는 compile-time resolved spec의 hash이며 학생 조작으로 바뀌지 않는다. 학생이
   선언한 규칙은 별도 `RuleStateEnvelope`로 표현하고, 조작 후에는
-  `StudentRuleStateEvidence`와 `responseHash`로 저장·검증한다. preview·answer는 이 상태를 읽는
-  조건부 rubric/projector로 정의한다.
+  `StudentRuleStateEvidence`와 `responseHash`로 저장·검증한다. preview·answer는 컴파일된 envelope를
+  표시하거나 학생 응답을 읽는 조건부 rubric/projector로 정의하며, 학생의 선언 상태 변화가
+  `activitySpecHash`를 바꾼다고 주장하지 않는다.
 - `construct-rule` decision은 기존 numeric `construct`나 select-one의 `correctValuePath`를 재사용하지 않는다.
   최소 두 개의 서로 유효한 rule state와 surplus/distractor 상태를 저장하고, 학생의 선언 결과가 이후 배열을 결정한다.
 - 초기 화면은 완성 정답을 노출하지 않는다. 학생이 규칙을 정한 뒤에만 continuation과 repair answer가 결정된다.
@@ -102,7 +106,10 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 
 ## 5. 최소 테스트·승인 기준
 
-- 같은 seed와 같은 선언 상태는 같은 resolved hash를 만들고, 선언 상태를 바꾸면 item·answer·hash가 함께 바뀐다.
+- 같은 seed와 같은 compile-time envelope는 같은 `activitySpecHash`·item·answer를 만들고,
+  같은 학생 선언 상태는 같은 `responseHash`를 만든다. 선언 상태를 바꾸면
+  `StudentRuleStateEvidence`·`responseHash`·save/reopen 결과가 함께 바뀌며,
+  `activitySpecHash`는 유지된다.
 - pre-authored correct card 선택만으로 정답이 결정되는 경로가 없다.
 - repeat/ change 각각 최소 두 개의 서로 다른 rule state와 두 개의 rejectable misconception state가 있다.
 - repair 전후 semantic state와 최종 배열의 불변량을 테스트하며, 모든 native rendered bounds가 target 안에 들어간다.

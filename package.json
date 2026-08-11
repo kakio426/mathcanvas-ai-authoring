@@ -70,6 +70,8 @@
     "curriculum:program:update": "pnpm problem-family:update && pnpm curriculum:coverage:update && node scripts/curriculum/build-execution-program.mjs --write && node scripts/curriculum/build-no-family-plan.mjs --write",
   "curriculum:no-family-plan": "node scripts/curriculum/build-no-family-plan.mjs",
   "curriculum:no-family-plan:update": "node scripts/curriculum/build-no-family-plan.mjs --write",
+  "curriculum:family-revalidation": "node scripts/curriculum/build-family-revalidation.mjs",
+  "curriculum:family-revalidation:update": "node scripts/curriculum/build-family-revalidation.mjs --write",
   "curriculum:sol-review:verify": "node scripts/curriculum/verify-sol-review-gate.mjs",
     "curriculum:source:verify": "node scripts/curriculum/verify-official-source.mjs",
     "doctor": "node scripts/doctor.mjs",

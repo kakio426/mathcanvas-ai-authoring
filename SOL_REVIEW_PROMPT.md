@@ -78,10 +78,18 @@
 diff만 검토하고 `changedFiles`를 정확히 기록한다. 검토 기록을 추가한 뒤에는 board와
 `node scripts/curriculum/build-no-family-plan.mjs --write`가 갱신한 파생 no-family
 report만 별도 로컬 commit으로 함께 기록한다. 이 Sol commit도 push하지 않는다.
+`FAMILY_TRACK` review는 `standardCode + operation + familyTrackId + scopeId`를 하나의
+review scope로 사용한다. review record에 두 scope 필드가 없거나 candidate work item의
+scope와 다르면 다른 family의 승인으로 재사용할 수 없다. pre-scope legacy record는
+감사 가능한 과거 기록으로만 남긴다.
+`SOL_REPLAN`은 blocked standard의 재개 계약만 검토하며 별도 `operationWorkItemId`와
+candidate/allowedFiles를 사용한다. 기존 `FAMILY_TRACK` attempt를 재사용하거나 A5로
+기록하지 않는다.
 수정 요청 뒤에는 이전 승인 기록을 지우지 않고 `attempt`를 올린 새 record와 새
 candidate commit을 만든다. 가장 높은 attempt가 현재 결정이며,
 `pnpm curriculum:sol-review:verify`는 candidate hash·changed files·현재 branch 및
-candidate 이후의 허용된 board/report 파일만 존재하는지를 확인한다.
+candidate 이후의 board/파생 report 파일만 존재하는지를 확인한다. candidate 이후
+구현 파일이 바뀌면 승인 기록은 stale이며, 이전 approval을 재사용하지 않는다.
 
 - `approved`: Luna가 다음 operation으로 진행할 수 있다.
 - `changes-requested`: Luna는 지적된 허용 범위만 수정하고 같은 review를 다시 받는다.

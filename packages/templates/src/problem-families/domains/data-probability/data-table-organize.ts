@@ -635,6 +635,10 @@ const source: ProblemFamilyRegistrySource = {
   domain: "자료와 가능성",
   learningGoal: dataTableOrganizeBlueprint.learningObjective,
   assessmentTargetIds: [...dataTableAssessmentTargetSet.targetIds],
+  solReviewScope: {
+    familyTrackId: DATA_TABLE_ORGANIZE_FAMILY_ID,
+    scopeId: "W001-FAMILY_TRACK-data-table-organize"
+  },
   manipulation: DATA_TABLE_ORGANIZE_MANIPULATION,
   generator: {
     id: DATA_TABLE_ORGANIZE_GENERATOR_ID,
