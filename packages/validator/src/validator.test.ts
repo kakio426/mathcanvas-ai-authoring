@@ -443,6 +443,10 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
         "item-1-rule-variant-8",
         "item-1-rule-variant-9"
       ];
+      constraint.parameters = {
+        ...constraint.parameters,
+        ruleStatePath: "studentRuleState"
+      };
     });
   for (const index of [1, 2, 3, 4]) {
     resolved.constraints.push({
@@ -633,6 +637,75 @@ describe("생성 전 검증", () => {
         "cognitive-rule-state-application-missing",
         "cognitive-rule-state-answer-visible"
       ])
+    );
+  });
+
+  it("student-constructed construct-rule은 중복 misconception을 두 개의 distractor로 세지 않는다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    const predicate = resolved.valuePredicates[0]!;
+    const distractors = predicate.parameters.distractors as Array<
+      Record<string, unknown>
+    >;
+    distractors[1] = { ...distractors[0] };
+    expect(() => validateRegisteredPredicates(resolved, [])).toThrow(
+      "predicate-parameter-invalid:cognitive.rule-state-contract"
+    );
+  });
+
+  it("student-constructed construct-rule은 rule slot의 초기 정답 분할을 거부한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    resolved.emissions.find(
+      (emission) => emission.role === "rule-slot-1"
+    )!.toolIntent.properties.orderedValues = "red";
+    resolved.emissions.find(
+      (emission) => emission.role === "rule-slot-2"
+    )!.toolIntent.properties.orderedValues = "blue";
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        "cognitive-rule-state-decision-missing",
+        "cognitive-rule-state-answer-visible"
+      ])
+    );
+  });
+
+  it("student-constructed construct-rule은 잠긴 안내 emission으로 분할한 정답도 거부한다", () => {
+    const resolved = studentConstructedRuleStatePredicateFixture();
+    resolved.emissions.push(
+      {
+        id: "item-1-locked-hint-red",
+        role: "locked-hint-red",
+        itemId: "item-1",
+        bounds: { x: 0, y: 0, width: 40, height: 40 },
+        locked: true,
+        movable: false,
+        instructionalIntent: "검증용 잠긴 안내",
+        toolIntent: {
+          kind: "text",
+          toolKey: "common.text",
+          properties: { text: "red" }
+        }
+      },
+      {
+        id: "item-1-locked-hint-blue",
+        role: "locked-hint-blue",
+        itemId: "item-1",
+        bounds: { x: 0, y: 0, width: 40, height: 40 },
+        locked: true,
+        movable: false,
+        instructionalIntent: "검증용 잠긴 안내",
+        toolIntent: {
+          kind: "text",
+          toolKey: "common.text",
+          properties: { text: "blue" }
+        }
+      } as never
+    );
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-answer-visible"
     );
   });
 

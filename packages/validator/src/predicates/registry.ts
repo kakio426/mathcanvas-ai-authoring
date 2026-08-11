@@ -3232,6 +3232,23 @@ const handlers: Record<string, Handler> = {
       new Set(value).size === value.length;
     const construction = record(stateConstruction);
     const applicationRecord = record(application);
+    const distractorEntries = Array.isArray(distractors)
+      ? distractors
+      : [];
+    const distractorIdentity = (entry: unknown): string => {
+      const value = record(entry);
+      return JSON.stringify({
+        role: value?.role ?? null,
+        predicateKind: value?.predicateKind ?? null,
+        misconception:
+          typeof value?.misconception === "string"
+            ? value.misconception.normalize("NFKC").trim()
+            : null
+      });
+    };
+    const distinctDistractorCount = new Set(
+      distractorEntries.map(distractorIdentity)
+    ).size;
     const constructionMinimumDistinctValues =
       typeof construction?.minimumDistinctValues === "number"
         ? construction.minimumDistinctValues
@@ -3355,6 +3372,7 @@ const handlers: Record<string, Handler> = {
             ]))) ||
       !Array.isArray(distractors) ||
       distractors.length < (studentConstructed ? 2 : 1) ||
+      distinctDistractorCount < (studentConstructed ? 2 : 1) ||
       distractors.some(
         (entry) =>
           !entry ||
@@ -3441,6 +3459,20 @@ const handlers: Record<string, Handler> = {
         )
         .map((slot) => slot.id);
       const sourceIdSet = new Set(variantIds);
+      const hasConcreteInitialState = (
+        target: ResolvedEmission | undefined
+      ) =>
+        target
+          ? Object.entries(target.toolIntent.properties).some(
+              ([key, value]) =>
+                /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
+                  key
+                ) &&
+                value !== undefined &&
+                value !== null &&
+                value !== ""
+            )
+          : true;
       const orderedSlotConstraints = ruleSlotRoles.map((role, index) => {
         const constraint = resolved.constraints.find(
           (candidate) =>
@@ -3463,6 +3495,9 @@ const handlers: Record<string, Handler> = {
             constraint.requiresStudentAction &&
             !constraint.satisfiedInitially &&
             targetId !== undefined &&
+            (!studentConstructed ||
+              (constraint.parameters.ruleStatePath === ruleStatePath &&
+                !hasConcreteInitialState(slotEmissions[index]))) &&
             constraint.targetId === targetId &&
             constraint.sourceIds.length === variantIds.length &&
             new Set(constraint.sourceIds).size === variantIds.length &&
@@ -3508,20 +3543,6 @@ const handlers: Record<string, Handler> = {
             (constraint) => constraint.targetId === target.id
           )
       );
-      const hasConcreteInitialState = (
-        target: ResolvedEmission | undefined
-      ) =>
-        target
-          ? Object.entries(target.toolIntent.properties).some(
-              ([key, value]) =>
-                /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
-                  key
-                ) &&
-                value !== undefined &&
-                value !== null &&
-                value !== ""
-            )
-          : true;
       const hasStudentStateBoundContinuation =
         studentConstructed &&
         continuationTargets.length > 0 &&
@@ -3696,11 +3717,27 @@ const handlers: Record<string, Handler> = {
                 (target): target is ResolvedEmission =>
                   target !== undefined
               )
-              .map((target) => target.toolIntent.properties),
+            .map((target) => target.toolIntent.properties),
             state
           )
         );
-      if (answerLeak || continuationSequenceLeak) {
+      const lockedItemSequenceLeak =
+        studentConstructed &&
+        validRuleStates?.some((state) =>
+          containsVisibleOrderedRuleStateAcrossProperties(
+            resolved.emissions
+              .filter(
+                (emission) =>
+                  (emission.itemId === item.id ||
+                    emission.itemId === undefined) &&
+                  emission.locked &&
+                  !variantRoles.includes(emission.role)
+              )
+              .map((emission) => emission.toolIntent.properties),
+            state
+          )
+        );
+      if (answerLeak || continuationSequenceLeak || lockedItemSequenceLeak) {
         issue(
           issues,
           "cognitive-rule-state-answer-visible",

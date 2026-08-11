@@ -203,4 +203,13 @@ describe("construct-rule cognitive decision contract", () => {
     delete (partial.decision as { answerMode?: unknown }).answerMode;
     expect(() => defineCognitiveDemandManifest(partial)).toThrow();
   });
+
+  it("requires two distinct misconception records for the student extension", () => {
+    const manifest = studentConstructedManifest();
+    manifest.decision.distractors[1] = {
+      predicateKind: "cognitive.rule-state-contract",
+      misconception: manifest.decision.distractors[0]!.misconception
+    };
+    expect(() => defineCognitiveDemandManifest(manifest)).toThrow();
+  });
 });

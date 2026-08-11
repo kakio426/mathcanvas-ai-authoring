@@ -578,6 +578,17 @@ for (const manifest of manifests) {
       const decision = manifest.decision;
       const construction = decision.stateConstruction;
       const application = decision.application;
+      const distinctDistractorCount = new Set(
+        decision.distractors.map((distractor) =>
+          JSON.stringify({
+            role: distractor.role ?? null,
+            predicateKind: distractor.predicateKind ?? null,
+            misconception: distractor.misconception
+              .normalize("NFKC")
+              .trim()
+          })
+        )
+      ).size;
       const expectedVerificationRoles = [
         ...decision.ruleSlotRoles,
         ...(application?.continuationTargetRoles ?? [])
@@ -617,7 +628,8 @@ for (const manifest of manifests) {
         JSON.stringify(manifest.verification.roles) ===
           JSON.stringify(expectedVerificationRoles) &&
         decision.minimumSurplus >= 2 &&
-        decision.distractors.length >= 2;
+        decision.distractors.length >= 2 &&
+        distinctDistractorCount >= 2;
       const continuationRoles = application?.continuationTargetRoles ?? [];
       const continuationConstraints = continuationRoles.map((role) =>
         blueprint.constraints.find(
@@ -651,10 +663,21 @@ for (const manifest of manifests) {
           );
         }
       );
+      const ruleSlotsAreEmpty = slots.every(
+        (entry) => entry !== undefined && !containsConcreteInitialState(entry.properties)
+      );
+      const slotConstraintContractValid = itemDecisionConstraints.every(
+        (constraint, index) =>
+          constraint !== undefined &&
+          constraint.target.role === decision.ruleSlotRoles[index] &&
+          constraint.parameters?.ruleStatePath === decision.ruleStatePath
+      );
       itemDecisionConstraints.push(...continuationConstraints);
       if (
         !constructionContractValid ||
-        !continuationContractValid
+        !continuationContractValid ||
+        !ruleSlotsAreEmpty ||
+        !slotConstraintContractValid
       ) {
         failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
         failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
@@ -808,6 +831,24 @@ for (const manifest of manifests) {
                   continuationRoles.map((role) =>
                     resolvedRoleProperties(roleByName.get(role), item)
                   ),
+                  state
+                )
+              )
+            ) {
+              studentConstructedAnswerVisible = true;
+            }
+            if (
+              validStates?.some((state) =>
+                containsVisibleOrderedRuleStateAcrossProperties(
+                  blueprint.toolRoles
+                    .filter(
+                      (role) =>
+                        role.locked &&
+                        !decision.variantRoles.includes(role.role)
+                    )
+                    .map((role) =>
+                      resolvedRoleProperties(role, item)
+                    ),
                   state
                 )
               )

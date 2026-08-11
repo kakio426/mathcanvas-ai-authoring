@@ -27,17 +27,17 @@
     "distractors are bound to the rule-state predicate and remain at least two distinct misconception records"
   ],
   "implementationFiles": {
-    "packages/contracts/src/catalog/cognitive-demand.ts": "7dae6f0058fd7bb7016493771eeab9194e4d2c2a2218f7cfd53f97c11490bf84",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "d6f87e6d1f04aa3039b7721c5b38a4cfe507cb9e29dd21da4af0c13d74fad06d",
-    "packages/validator/src/predicates/registry.ts": "f12c7aef4f5d13ec2a3e08b329f046f8ac7549303a87352acedb6d6826ca740c",
-    "packages/validator/src/validator.test.ts": "9cd3fbf61096c2b2ed57e110cc8f7fd485356950055ef69102d753aaa85757ad",
+    "packages/contracts/src/catalog/cognitive-demand.ts": "34ca1675b6bae4b9e18b0eb69417a174bea60c8978db9471b1e1dc2665e8de1d",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "a2422b2f3797d710067143735b6669645bfe98e60047029ef09020218c39d717",
+    "packages/validator/src/predicates/registry.ts": "f52d7ff615f576a3e1701b219879a2757b5e50c01d2dffe031e17807d7404a54",
+    "packages/validator/src/validator.test.ts": "a9b58217b2ae8dbf2f862b765876bd9708ff916e421313a52011d0306597e85b",
     "packages/templates/src/cognitive/registry.ts": "6127bfc98d259fcf7f4469b0c2d6ad2aa88a4282d8368fdbb091813441452184",
     "packages/templates/src/cognitive/registry.test.ts": "3e3899813dbb1076b3feb0539ad18c4a0368c7749bc9911dcef682b5d51faa1e",
-    "scripts/pedagogy/check-cognitive-demand.mjs": "1382296623cc3667b6d4d5f6b4da2f0679ad9d978522a1b1b31218a92158ca0f"
+    "scripts/pedagogy/check-cognitive-demand.mjs": "b4c1e1ca23b4cd1c74975c98c7849fbce0b17083a9692573f1f65450dc10519f"
   },
   "verification": {
-    "focusedTests": "40/40",
-    "fullCheck": "81 files / 505 tests PASS",
+    "focusedTests": "44/44",
+    "fullCheck": "81 files / 509 tests PASS",
     "typecheck": "PASS",
     "cognitiveAudit": "PASS (21 released / 32 manifest / 33 registered)",
     "studentResponseLifecycle": "not claimed; FAMILY_TRACK/LIVE_EVIDENCE required"
