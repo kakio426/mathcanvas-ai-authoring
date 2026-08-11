@@ -136,6 +136,13 @@ export function assertEngineCoreContract(contract, archetypeId) {
     Number.isInteger(value.minimumDistinctValues) &&
     value.minimumDistinctValues >= 2 &&
     value.minimumDistinctValues <= value.slotCount &&
+    Number.isInteger(value.minimumDistinctPoolValues) &&
+    value.minimumDistinctPoolValues >= 3 &&
+    Number.isInteger(value.minimumCopiesPerDistinctValue) &&
+    value.minimumCopiesPerDistinctValue >= 3 &&
+    value.sourceUseMode === "move-once-no-clone" &&
+    value.sourceRoles.length >=
+      value.minimumDistinctPoolValues * value.minimumCopiesPerDistinctValue &&
     value.allowsAnyOrderedSelection === true &&
     value.initialState === "empty" &&
     JSON.stringify(value.sourceRoles) ===
@@ -155,7 +162,10 @@ export function assertEngineCoreContract(contract, archetypeId) {
     value.minimumTargetCount >= 4 &&
     value.continuationTargetRoles.length >= value.minimumTargetCount &&
     value.period === ruleSlotRoles.length &&
+    value.minimumTargetCount % value.period === 0 &&
     value.requiresVisibleComparison === true &&
+    value.requiresSimultaneousRuleAndContinuation === true &&
+    value.ruleStateIndexMode === "index-mod-period" &&
     value.evidenceMode === "student-state-dependent";
   assert(
     decision &&
@@ -164,7 +174,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
       decision.answerMode === "conditional-rubric" &&
       stableId(decision.ruleStatePath) &&
       stableId(decision.decisionConstraintId) &&
-      stringList(decision.variantRoles, 3) &&
+      stringList(decision.variantRoles, 9) &&
       stringList(decision.ruleSlotRoles, 2) &&
       stableId(decision.variantProperty) &&
       stableId(decision.validRuleStatesPath) &&
@@ -173,6 +183,13 @@ export function assertEngineCoreContract(contract, archetypeId) {
       decision.minimumValidStates >= 2 &&
       Number.isInteger(decision.minimumSurplus) &&
       decision.minimumSurplus >= 2 &&
+      decision.stateConstruction?.minimumDistinctPoolValues === 3 &&
+      decision.stateConstruction?.minimumCopiesPerDistinctValue === 3 &&
+      decision.stateConstruction?.minimumDistinctValues ===
+        decision.ruleSlotRoles.length &&
+      decision.variantRoles.length >=
+        (decision.stateConstruction?.minimumDistinctPoolValues ?? 0) *
+          (decision.stateConstruction?.minimumCopiesPerDistinctValue ?? 0) &&
       orderedCapacity(
         decision.variantRoles.length,
         decision.ruleSlotRoles.length

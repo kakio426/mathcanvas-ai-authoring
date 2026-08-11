@@ -448,7 +448,7 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v6",
+      "replanContractRevision": "W002-SOL-REPLAN-v7",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "manifestDecision": {
@@ -457,7 +457,11 @@
           "answerMode": "conditional-rubric",
           "ruleStatePath": "studentRuleState",
           "decisionConstraintId": "construct-rule-slot",
-          "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+          "variantRoles": [
+            "rule-variant-1", "rule-variant-2", "rule-variant-3",
+            "rule-variant-4", "rule-variant-5", "rule-variant-6",
+            "rule-variant-7", "rule-variant-8", "rule-variant-9"
+          ],
           "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
           "variantProperty": "orderedValues",
           "validRuleStatesPath": "validRuleStateExamples",
@@ -466,10 +470,17 @@
           "minimumSurplus": 2,
           "stateConstruction": {
             "kind": "ordered-distinct-subset-from-pool",
-            "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+            "sourceRoles": [
+              "rule-variant-1", "rule-variant-2", "rule-variant-3",
+              "rule-variant-4", "rule-variant-5", "rule-variant-6",
+              "rule-variant-7", "rule-variant-8", "rule-variant-9"
+            ],
             "slotRoles": ["rule-slot-1", "rule-slot-2"],
             "slotCount": 2,
             "minimumDistinctValues": 2,
+            "minimumDistinctPoolValues": 3,
+            "minimumCopiesPerDistinctValue": 3,
+            "sourceUseMode": "move-once-no-clone",
             "allowsAnyOrderedSelection": true,
             "initialState": "empty"
           },
@@ -482,6 +493,8 @@
             "period": 2,
             "minimumTargetCount": 4,
             "requiresVisibleComparison": true,
+            "requiresSimultaneousRuleAndContinuation": true,
+            "ruleStateIndexMode": "index-mod-period",
             "evidenceMode": "student-state-dependent"
           },
           "distractors": [
@@ -505,7 +518,11 @@
             "decisionConstraintId": "construct-rule-slot",
             "validRuleStatesPath": "validRuleStateExamples",
             "surplusPath": "surplusRuleStateExamples",
-            "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+            "variantRoles": [
+              "rule-variant-1", "rule-variant-2", "rule-variant-3",
+              "rule-variant-4", "rule-variant-5", "rule-variant-6",
+              "rule-variant-7", "rule-variant-8", "rule-variant-9"
+            ],
             "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
             "variantProperty": "orderedValues",
             "continuationRuleStatePath": "studentRuleState",
@@ -521,10 +538,17 @@
             "minimumSurplus": 2,
             "stateConstruction": {
               "kind": "ordered-distinct-subset-from-pool",
-              "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+              "sourceRoles": [
+                "rule-variant-1", "rule-variant-2", "rule-variant-3",
+                "rule-variant-4", "rule-variant-5", "rule-variant-6",
+                "rule-variant-7", "rule-variant-8", "rule-variant-9"
+              ],
               "slotRoles": ["rule-slot-1", "rule-slot-2"],
               "slotCount": 2,
               "minimumDistinctValues": 2,
+              "minimumDistinctPoolValues": 3,
+              "minimumCopiesPerDistinctValue": 3,
+              "sourceUseMode": "move-once-no-clone",
               "allowsAnyOrderedSelection": true,
               "initialState": "empty"
             },
@@ -537,6 +561,8 @@
               "period": 2,
               "minimumTargetCount": 4,
               "requiresVisibleComparison": true,
+              "requiresSimultaneousRuleAndContinuation": true,
+              "ruleStateIndexMode": "index-mod-period",
               "evidenceMode": "student-state-dependent"
             },
             "distractors": [

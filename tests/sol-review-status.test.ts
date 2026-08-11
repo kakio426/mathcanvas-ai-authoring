@@ -56,6 +56,17 @@ describe("Sol review candidate and scope gates", () => {
     const base = () =>
       JSON.parse(JSON.stringify(source.trackContracts.C01));
     expect(() => assertEngineCoreContract(base(), "C01")).not.toThrow();
+    expect(
+      base().engineCoreContract.manifestDecision.variantRoles
+    ).toHaveLength(9);
+    expect(
+      base().engineCoreContract.manifestDecision.stateConstruction
+        .sourceUseMode
+    ).toBe("move-once-no-clone");
+    expect(
+      base().engineCoreContract.manifestDecision.stateConstruction
+        .minimumCopiesPerDistinctValue
+    ).toBe(3);
 
     const tooFewTargets = base();
     tooFewTargets.engineCoreContract.manifestDecision.application.continuationTargetRoles.pop();
@@ -78,6 +89,31 @@ describe("Sol review candidate and scope gates", () => {
     const impossibleDistinctness = base();
     impossibleDistinctness.engineCoreContract.manifestDecision.stateConstruction.minimumDistinctValues = 3;
     expect(() => assertEngineCoreContract(impossibleDistinctness, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
+
+    const insufficientPhysicalPool = base();
+    insufficientPhysicalPool.engineCoreContract.manifestDecision.variantRoles =
+      insufficientPhysicalPool.engineCoreContract.manifestDecision.variantRoles.slice(
+        0,
+        8
+      );
+    insufficientPhysicalPool.engineCoreContract.manifestDecision.stateConstruction.sourceRoles =
+      insufficientPhysicalPool.engineCoreContract.manifestDecision.stateConstruction.sourceRoles.slice(
+        0,
+        8
+      );
+    insufficientPhysicalPool.engineCoreContract.runtimePredicate.parameters.variantRoles =
+      insufficientPhysicalPool.engineCoreContract.runtimePredicate.parameters.variantRoles.slice(
+        0,
+        8
+      );
+    insufficientPhysicalPool.engineCoreContract.runtimePredicate.parameters.stateConstruction.sourceRoles =
+      insufficientPhysicalPool.engineCoreContract.runtimePredicate.parameters.stateConstruction.sourceRoles.slice(
+        0,
+        8
+      );
+    expect(() => assertEngineCoreContract(insufficientPhysicalPool, "C01")).toThrow(
       "no-family-plan-engine-core-manifest-invalid:C01"
     );
   });
@@ -110,6 +146,11 @@ describe("Sol review candidate and scope gates", () => {
         item?.workItemId === "W002"
     );
     expect(currentProjection?.engineCoreContract).toEqual(expected);
+    expect(report.current.nextReplanWork?.workItemId).toBe("W002");
+    expect(report.current.nextReplanWork?.operation).toBe("SOL_REPLAN");
+    expect(report.current.nextReplanWork?.replanContractRevision).toBe(
+      "W002-SOL-REPLAN-v7"
+    );
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
