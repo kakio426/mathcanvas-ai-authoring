@@ -56,10 +56,18 @@
     "allowedFilesByOperation": {
       "LEARNING_MAP_BINDING": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "TARGET_SET": [
         "packages/curriculum/src/assessment-targets/**",
@@ -517,18 +525,24 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "LEARNING_MAP_BINDING",
-      "operationWorkItemId": "W002-LEARNING_MAP_BINDING",
-      "dependencyWorkItemIds": [],
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W002-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W002-LEARNING_MAP_BINDING"
+      ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
-      "learningMapBound": false,
+      "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
         {
@@ -2852,18 +2866,24 @@
       "engineClassIds": [
         "R08"
       ],
-      "operation": "LEARNING_MAP_BINDING",
-      "operationWorkItemId": "W002-LEARNING_MAP_BINDING",
-      "dependencyWorkItemIds": [],
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W002-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W002-LEARNING_MAP_BINDING"
+      ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
-      "learningMapBound": false,
+      "learningMapBound": true,
       "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
       "expectedTargetOutline": [
         {
@@ -2912,10 +2932,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -2967,10 +2995,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3022,10 +3058,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3084,10 +3128,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3146,10 +3198,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3208,10 +3268,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3270,10 +3338,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3339,10 +3415,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3402,10 +3486,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3464,10 +3556,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3519,10 +3619,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3574,10 +3682,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3636,10 +3752,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3691,10 +3815,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3753,10 +3885,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3808,10 +3948,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3863,10 +4011,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3926,10 +4082,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -3988,10 +4152,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4050,10 +4222,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4105,10 +4285,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4167,10 +4355,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4222,10 +4418,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4285,10 +4489,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4340,10 +4552,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4395,10 +4615,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4450,10 +4678,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4512,10 +4748,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4567,10 +4811,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4622,10 +4874,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4685,10 +4945,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4740,10 +5008,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4802,10 +5078,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4857,10 +5141,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4919,10 +5211,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -4974,10 +5274,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5030,10 +5338,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5085,10 +5401,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5140,10 +5464,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5195,10 +5527,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5250,10 +5590,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5319,10 +5667,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5374,10 +5730,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5429,10 +5793,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5491,10 +5863,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5546,10 +5926,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5601,10 +5989,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5663,10 +6059,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5718,10 +6122,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5773,10 +6185,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5828,10 +6248,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5883,10 +6311,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -5945,10 +6381,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6000,10 +6444,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6064,10 +6516,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6119,10 +6579,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6174,10 +6642,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6229,10 +6705,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6284,10 +6768,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6339,10 +6831,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6401,10 +6901,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6463,10 +6971,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6518,10 +7034,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6581,10 +7105,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6636,10 +7168,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6699,10 +7239,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6761,10 +7309,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6816,10 +7372,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6871,10 +7435,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6926,10 +7498,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -6981,10 +7561,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7044,10 +7632,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7099,10 +7695,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7154,10 +7758,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7217,10 +7829,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7274,10 +7894,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7330,10 +7958,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7386,10 +8022,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7462,10 +8106,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7524,10 +8176,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7586,10 +8246,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7648,10 +8316,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7703,10 +8379,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7759,10 +8443,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7814,10 +8506,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7877,10 +8577,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7932,10 +8640,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -7987,10 +8703,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8043,10 +8767,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8099,10 +8831,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8161,10 +8901,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8223,10 +8971,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8285,10 +9041,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8341,10 +9105,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,
@@ -8397,10 +9169,18 @@
       "dependencyWorkItemIds": [],
       "allowedFiles": [
         "fixtures/pedagogy/learning-map.used.json",
+        "fixtures/pedagogy/no-family-learning-map.used.json",
+        "scripts/curriculum/no-family-plan.json",
         "packages/curriculum/src/data.ts",
         "packages/curriculum/src/assessment-targets/**",
         "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts"
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": false,

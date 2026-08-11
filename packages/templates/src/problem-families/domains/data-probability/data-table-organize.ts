@@ -39,7 +39,7 @@ export const DATA_TABLE_ORGANIZE_GENERATOR_ID =
   "data.early-table.organize-items" as const;
 export const DATA_TABLE_ORGANIZE_GENERATOR_VERSION = "1.0.0" as const;
 const LEARNING_MAP_USAGE_SNAPSHOT_SHA256 =
-  "ad5931c31d7b2fe0f43c9dbb8a6e1c2e690acd9402351c876421e4f6ab1259d4";
+  "bed940f1896d3991aeb12766dff49c84dd110465e38ed01625ed5f32b564b1d5";
 
 const dataTableAssessmentTargetSet = findAssessmentTargetSet("[2수04-02]");
 if (!dataTableAssessmentTargetSet || dataTableAssessmentTargetSet.targetIds.length !== 2) {
