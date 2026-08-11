@@ -1430,6 +1430,86 @@
           "승인 후 registry→coverage→execution→no-family 전체 파생 report를 manifest-bound 범위로 갱신했고 registry lifecycleStage=offline-validated, coverage activityStage=offline-validated, execution offlineCoveredTargetCount=2/2, no-family nextLiveEvidenceWork=W001로 일치한다. nextOfflineWork는 W002로 이동했고 replan queue는 비었다.",
           "release 한계: fresh current-hash canary의 initial/selected/manipulated/undo-or-reset/save/reopen 증거가 없으므로 live-released로 보지 않는다. 독립 QA는 artifact verify·focused 20/20·problem-family·coverage·program·전체 pnpm check 78 files/474 tests와 native/contract/cognitive/visual/quality P0/P1 0을 통과했다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A6",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 6,
+        "candidateCommit": "6d99839d268b0437ac7d012ac40768fc1bef372d",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "packages/curriculum/src/assessment-targets.test.ts",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+          "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+          "reports/curriculum-coverage/latest.json",
+          "reports/curriculum-coverage/latest.md",
+          "reports/curriculum-execution/latest.json",
+          "reports/curriculum-execution/latest.md",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "reports/problem-family-registry/latest.json",
+          "scripts/curriculum/no-family-plan.json"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A5",
+        "checkedAt": "2026-08-11T17:13:05.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "6fec391130cde8944ea7c5cccfa9695a9461c4fc85a5b7577b2a0bc6787330b6",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v3",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:6d99839d268b0437ac7d012ac40768fc1bef372d",
+          "git:0be8bfde1b05e19e19ef40c4db85e1c4fd10eee0",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A5",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A4",
+          "W002_REPLAN.md",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts#assessmentTargetIds",
+          "reports/problem-family-registry/latest.json#pattern.create-repeat-unit-explain-v1",
+          "reports/curriculum-coverage/latest.json#[2수02-02]",
+          "reports/curriculum-execution/latest.json#[2수02-02]",
+          "reports/curriculum-execution/no-family-plan.json#W002",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "scripts/curriculum/sol-review-status.mjs#reviewCandidateIsCurrent",
+          "command:W002-TARGET_SET-SOL-A1 currentness=false",
+          "command:pnpm exec vitest run assessment-targets.test.ts repeating-pattern-assessment-targets.test.ts repeating-pattern-arrangement.test.ts sol-review-status.test.ts (22/22)",
+          "command:pnpm cognitive:verify",
+          "command:pnpm problem-family:verify",
+          "command:pnpm curriculum:no-family-plan (FAIL stale report)",
+          "command:pnpm check (78 files/474 tests PASS; FAIL at no-family stale report)",
+          "command:git diff --check 0be8bfd..6d99839"
+        ],
+        "findings": [
+          "개선 확인: candidate 6d99839는 parent 0be8bfd 위 exact 15-file commit이고 W002 SOL_REPLAN allowedFiles 안에 있다. 공식 [2수02-02]를 repeat 단위 직접 구성, 선언된 repeat 적용·수정, 시작값·변화량·방향을 직접 정하는 change 구성·적용의 세 target으로 나눈 학생 결정·불변량·관찰 증거는 권위 outline 3개와 일치한다. subwork state와 C01 contract revision도 W002-SOL-REPLAN-v3로 일치한다.",
+          "quarantine 경계는 맞다. 기존 pattern.create-repeat-unit-explain-v1은 새 세 family 중 하나로 승인되지 않고 lifecycleStage=generatable, solReviewStatus=blocked, offline/live target numerator=0인 채 repeat-repair target 하나만 등록한다. 따라서 기존 보기 선택형 후보를 repeat-rule construct 또는 change family 승인으로 재사용하지 않는다.",
+          "P0 수정 요청: committed candidate에서 `pnpm curriculum:no-family-plan`과 전체 `pnpm check`가 no-family stale report로 실패한다. W002-TARGET_SET-SOL-A1의 유일한 implementation file인 repeating-pattern-2su02-02.ts가 그 승인 뒤 바뀌어 reviewCandidateIsCurrent=false인데, candidate report는 여전히 targetSet=approved로 저장돼 있다. pre-commit 상태에서 만든 report를 담은 것으로 보이며 현재 commit hash 기준 파생 상태가 아니다.",
+          "P0 상태 승격 수정 요청: 별도 TARGET_SET review를 아직 요구하는 동시에 새 source의 세 target을 reviewStatus=reviewed, AssessmentTargetSet completeness=reviewed-complete, reviewedAt=2026-08-12T00:00:00Z로 설치했다. 그 결과 coverage/execution은 새 TARGET_SET 승인 전에 [2수02-02]을 targetSetReviewed=true와 reviewed target set 4/121로 집계한다. 이는 reviewBeforeStatus와 W002_REPLAN의 ‘새 TARGET_SET review가 revision/hash를 소비해야 한다’는 계약을 우회한다.",
+          "최소 수정 방향: SOL_REPLAN 후보에서는 새 3-target source와 adapter target-ID 전환을 아직 설치하지 말고, v3 문서·scope/subwork·TARGET_SET 단계에서 사용할 exact compatibility allowedFiles만 승인한다. 후속 TARGET_SET candidate가 target source 2→3, target tests, blocked adapter의 repeat-repair target 전환과 파생 reports를 한 atomic candidate로 묶어 별도 승인받아야 한다. 대안으로 source를 먼저 설치하려면 coverage/execution의 reviewed 상태 자체를 current TARGET_SET Sol approval과 revision/hash에 fail-closed로 결속하는 일반 계약이 먼저 필요하다.",
+          "새 후보는 6d99839 위 report-only commit으로 쌓으면 안 된다. 그러면 candidate changedFiles에서 아직 승인되지 않은 target/template 변경 5개가 사라진다. parent 0be8bfd 기준 atomic replacement/squash candidate를 만들고, commit된 상태에서 no-family report를 재생성해 full check가 녹색인지 확인해야 한다.",
+          "P1 정리: assessment-targets.test.ts의 테스트 제목은 여전히 ‘두 필수 목표’라고 쓰면서 3개를 기대한다. 또한 TARGET_SET 승인 전 미래 UTC 시각의 REVIEWED_AT을 기록하지 말고 실제 target review candidate의 정확한 provenance로 갱신해야 한다.",
+          "독립 QA는 focused 22/22, typecheck가 포함된 전체 suite 78 files/474 tests, build, problem-family/cognitive 및 candidate diff-check까지 통과했다. 그러나 no-family currentness gate에서 재현 가능하게 실패하므로 SOL_REPLAN v3는 승인할 수 없다."
+        ]
       }
     ]
   },
@@ -1589,9 +1669,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 20,
+      "totalRecords": 21,
       "approved": 8,
-      "changesRequested": 11,
+      "changesRequested": 12,
       "blocked": 1,
       "pendingRequiredReviews": 190
     },
@@ -1853,12 +1933,12 @@
       "nextAction": "sol-replan-required",
       "actionClass": "blocked-needs-sol-replan",
       "solReview": {
-        "targetSet": "approved",
+        "targetSet": "stale",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
         "familyTrackReviewIds": [],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
@@ -4496,12 +4576,12 @@
       "nextAction": "sol-replan-required",
       "actionClass": "blocked-needs-sol-replan",
       "solReview": {
-        "targetSet": "approved",
+        "targetSet": "stale",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
         "familyTrackReviewIds": [],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
