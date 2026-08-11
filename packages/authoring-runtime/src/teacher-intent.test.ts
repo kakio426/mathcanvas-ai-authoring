@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
+  DIVISION_GROUPING_CONTEXT_DETAILS,
+  DIVISION_GROUPING_CONTEXT_OBJECT_IDS,
   getTeacherIntentCapability,
   sha256Hex,
   type TeacherIntent
 } from "@mathcanvas/contracts";
-import { resolveActivity } from "@mathcanvas/compiler";
+import { compileActivity, resolveActivity } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
 import {
   buildRegisteredAppliedTeacherIntent,
@@ -14,6 +16,7 @@ import {
   prepareRegisteredActivity,
   projectRegisteredApprovalView
 } from "@mathcanvas/templates";
+import { validateForCreation } from "@mathcanvas/validator";
 
 const multiplicationIntent = {
   kind: "multiplication-array-v1",
@@ -64,11 +67,19 @@ function prepare(intent: TeacherIntent) {
     })
   );
   const approvalView = projectRegisteredApprovalView(resolved);
+  const compiled = compileActivity(resolved);
+  const validation = validateForCreation(
+    resolved,
+    compiled,
+    new Date("2026-08-10T00:00:00.000Z")
+  );
   return {
     recommendation,
     resolved,
     approvalView,
     activitySpecHash: sha256Hex(approvalView),
+    compiled,
+    validation,
     answerKey: buildRegisteredTeacherAnswerKey(resolved),
     problemPreviews: buildRegisteredProblemPreviews(resolved),
     appliedTeacherIntent: buildRegisteredAppliedTeacherIntent(resolved)
@@ -90,6 +101,57 @@ describe("TeacherIntent capability 세로 단면", () => {
       expect(first.activitySpecHash).toBe(second.activitySpecHash);
       expect(first.recommendation.teacherIntent).toEqual(intent);
       expect(first.appliedTeacherIntent).toEqual(intent);
+    }
+  );
+
+  it("나눗셈의 등록 사물 맥락 4종은 자연스러운 canonical 이야기로 생성 전 검증을 통과한다", () => {
+    for (const contextObjectId of DIVISION_GROUPING_CONTEXT_OBJECT_IDS) {
+      const result = prepare({ ...divisionIntent, contextObjectId });
+      const context = DIVISION_GROUPING_CONTEXT_DETAILS[contextObjectId];
+      const first = result.resolved.items[0];
+      expect(result.validation.canCreate).toBe(true);
+      expect(first?.values.questionText).toContain(context.objectName);
+      expect(first?.values.evidenceText).toContain(context.objectName);
+      expect(first?.values.evidenceText).toContain("묶음");
+      expect(first?.values.countableCounter).toBe(context.counter);
+    }
+  });
+
+  it("나눗셈 TeacherIntent 이야기의 근거 문장을 바꾸면 canonical 언어 감사가 생성 차단한다", () => {
+    const result = prepare(divisionIntent);
+    const tampered = structuredClone(result.resolved);
+    tampered.items[0]!.values.evidenceText =
+      "사탕을 세어 보세요.";
+    const compiled = compileActivity(tampered);
+    const validation = validateForCreation(
+      tampered,
+      compiled,
+      new Date("2026-08-10T00:00:00.000Z")
+    );
+    expect(validation.canCreate).toBe(false);
+    expect(validation.issues.map((issue) => issue.code)).toContain(
+      "classroom-language-unclear"
+    );
+  });
+
+  it.each([
+    ["곱셈", multiplicationIntent],
+    ["나눗셈", divisionIntent],
+    ["분수", fractionIntent]
+  ] as const)(
+    "%s은 승인된 resolved에서 생성 payload까지 컴파일되고 생성 전 검증을 통과한다",
+    (_name, intent) => {
+      const result = prepare(intent);
+      expect(result.compiled.payloadHash).toBe(
+        sha256Hex(result.compiled.payload)
+      );
+      expect(result.validation.compiledPayloadHash).toBe(
+        result.compiled.payloadHash
+      );
+      expect(result.validation.canCreate).toBe(true);
+      expect(
+        result.validation.issues.filter((issue) => issue.severity === "error")
+      ).toEqual([]);
     }
   );
 

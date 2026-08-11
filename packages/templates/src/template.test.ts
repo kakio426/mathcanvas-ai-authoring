@@ -365,6 +365,8 @@ describe("분수 비교 템플릿", () => {
         "사탕 23개를 4개씩 묶으면 몇 묶음이고 몇 개가 남을까요?",
       correctValueText: "5묶음, 3개",
       answerExplanation: "4개씩 5묶음은 20개이고 3개가 남습니다.",
+      evidenceText:
+        "사탕으로 4개짜리 묶음을 만들고 남은 사탕을 세어 보세요.",
       countableTotal: 23,
       countableGroupSize: 4,
       countableObjectName: "사탕",
@@ -380,7 +382,7 @@ describe("분수 비교 템플릿", () => {
       .toHaveLength(1);
     expect(candidates).toContain("3묶음, 5개");
     expect(candidates).toContain("4묶음, 7개");
-    expect(item?.provenance.generatorVersion).toBe("1.7.0");
+    expect(item?.provenance.generatorVersion).toBe("1.8.0");
   });
 
   it("분수 TeacherIntent를 첫 분수 쌍·관계·오개념 표식에 함께 반영한다", () => {

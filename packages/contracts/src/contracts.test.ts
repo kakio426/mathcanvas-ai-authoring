@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
+  DIVISION_GROUPING_CONTEXT_OBJECT_IDS,
   SensitiveDataError,
   TEACHER_INTENT_CAPABILITIES,
   assertTeacherIntentCapabilityRegistry,
+  buildDivisionGroupingTeacherIntentCanonicalStory,
   canonicalJson,
   createSeededRandom,
   divisionGroupingTeacherIntentSchema,
@@ -163,6 +165,39 @@ describe("공통 계약", () => {
       expect(divisionGroupingTeacherIntentSchema.safeParse(invalid).success)
         .toBe(false);
     }
+  });
+
+  it("나눗셈 TeacherIntent 허용 범위 전체가 고유한 5개 답 카드와 canonical 이야기를 만든다", () => {
+    let supportedCount = 0;
+    for (const contextObjectId of DIVISION_GROUPING_CONTEXT_OBJECT_IDS) {
+      for (let totalCount = 7; totalCount <= 42; totalCount += 1) {
+        for (let groupSize = 2; groupSize <= 9; groupSize += 1) {
+          const parsed = divisionGroupingTeacherIntentSchema.safeParse({
+            kind: "division-grouping-v1",
+            totalCount,
+            groupSize,
+            contextObjectId,
+            misconceptionId: "quotient-remainder-meaning"
+          });
+          if (!parsed.success) continue;
+          supportedCount += 1;
+          const story =
+            buildDivisionGroupingTeacherIntentCanonicalStory(parsed.data);
+          const quotient = Math.floor(totalCount / groupSize);
+          const remainder = totalCount % groupSize;
+          expect(story.candidateSet).toHaveLength(5);
+          expect(new Set(story.candidateSet).size).toBe(5);
+          expect(story.candidateSet).toContain(
+            `${quotient}묶음, ${remainder}${story.fields.countableCounter}`
+          );
+          expect(story.fields.evidenceText).toContain("묶음");
+          expect(story.fields.evidenceText).toContain(
+            story.fields.countableObjectName
+          );
+        }
+      }
+    }
+    expect(supportedCount).toBe(612);
   });
 
   it("분수 비교 TeacherIntent는 서로 다른 분모의 구별 가능한 두 진분수만 받는다", () => {

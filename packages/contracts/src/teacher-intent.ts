@@ -96,6 +96,17 @@ export const DIVISION_GROUPING_CONTEXT_LABELS: Readonly<
   marble: "구슬",
   "colored-paper": "색종이"
 };
+export const DIVISION_GROUPING_CONTEXT_DETAILS: Readonly<
+  Record<
+    (typeof DIVISION_GROUPING_CONTEXT_OBJECT_IDS)[number],
+    { readonly objectName: string; readonly counter: string }
+  >
+> = {
+  candy: { objectName: "사탕", counter: "개" },
+  pencil: { objectName: "연필", counter: "자루" },
+  marble: { objectName: "구슬", counter: "개" },
+  "colored-paper": { objectName: "색종이", counter: "장" }
+};
 export const divisionGroupingContextObjectIdSchema = z.enum(
   DIVISION_GROUPING_CONTEXT_OBJECT_IDS
 );
@@ -155,6 +166,121 @@ export type DivisionGroupingContextObjectId = z.infer<
 export type DivisionGroupingTeacherIntent = z.infer<
   typeof divisionGroupingTeacherIntentSchema
 >;
+
+function koreanFinalConsonantIndex(value: string): number | undefined {
+  const last = value.at(-1);
+  if (!last) return undefined;
+  const offset = last.charCodeAt(0) - 0xac00;
+  return offset >= 0 && offset <= 0xd7a3 - 0xac00
+    ? offset % 28
+    : undefined;
+}
+
+function withKoreanObjectParticle(value: string): string {
+  const finalConsonant = koreanFinalConsonantIndex(value);
+  return `${value}${finalConsonant !== undefined && finalConsonant !== 0 ? "을" : "를"}`;
+}
+
+function withKoreanSubjectParticle(value: string): string {
+  const finalConsonant = koreanFinalConsonantIndex(value);
+  return `${value}${finalConsonant !== undefined && finalConsonant !== 0 ? "이" : "가"}`;
+}
+
+function withKoreanInstrumentalParticle(value: string): string {
+  const finalConsonant = koreanFinalConsonantIndex(value);
+  return `${value}${finalConsonant === undefined || finalConsonant === 0 || finalConsonant === 8 ? "로" : "으로"}`;
+}
+
+function divisionGroupingCandidateSet(input: {
+  readonly quotient: number;
+  readonly remainder: number;
+  readonly groupSize: number;
+  readonly counter: string;
+}): readonly [string, string, string, string, string] {
+  const candidate = (groups: number, remainder: number) =>
+    `${groups}묶음, ${remainder}${input.counter}`;
+  const candidates = [
+    candidate(input.quotient, input.remainder),
+    candidate(input.quotient - 1, input.remainder + input.groupSize),
+    candidate(input.quotient, input.groupSize),
+    candidate(input.groupSize, input.remainder),
+    candidate(input.remainder, input.quotient),
+    candidate(input.quotient + 1, input.remainder),
+    candidate(input.quotient - 1, input.remainder)
+  ].filter((value, index, all) => all.indexOf(value) === index);
+  if (candidates.length < 5) {
+    throw new Error("division-teacher-intent-candidate-capacity");
+  }
+  return [
+    candidates[0]!,
+    candidates[1]!,
+    candidates[2]!,
+    candidates[3]!,
+    candidates[4]!
+  ];
+}
+
+export interface DivisionGroupingTeacherIntentCanonicalStory {
+  readonly fields: {
+    readonly questionText: string;
+    readonly evidenceLabelText: string;
+    readonly evidenceText: string;
+    readonly correctValueText: string;
+    readonly answerExplanation: string;
+    readonly countableTotal: number;
+    readonly countableGroupSize: number;
+    readonly countableObjectName: string;
+    readonly countableCounter: string;
+    readonly countableGroupName: "묶음";
+    readonly contextObjectId: DivisionGroupingContextObjectId;
+    readonly misconceptionId: "quotient-remainder-meaning";
+  };
+  readonly candidateSet: readonly [string, string, string, string, string];
+}
+
+export function buildDivisionGroupingTeacherIntentCanonicalStory(
+  input: DivisionGroupingTeacherIntent
+): DivisionGroupingTeacherIntentCanonicalStory {
+  const intent = divisionGroupingTeacherIntentSchema.parse(input);
+  const context = DIVISION_GROUPING_CONTEXT_DETAILS[intent.contextObjectId];
+  const quotient = Math.floor(intent.totalCount / intent.groupSize);
+  const remainder = intent.totalCount % intent.groupSize;
+  const totalQuantity = `${intent.totalCount}${context.counter}`;
+  const groupQuantity = `${intent.groupSize}${context.counter}`;
+  return {
+    fields: {
+      questionText:
+        `${context.objectName} ${withKoreanObjectParticle(totalQuantity)} ` +
+        `${groupQuantity}씩 묶으면 몇 묶음이고 ` +
+        `${withKoreanSubjectParticle(`몇 ${context.counter}`)} 남을까요?`,
+      evidenceLabelText:
+        `${context.objectName} ${withKoreanInstrumentalParticle(totalQuantity)} ` +
+        `${groupQuantity}짜리 묶음 만들기`,
+      evidenceText:
+        `${withKoreanInstrumentalParticle(context.objectName)} ` +
+        `${groupQuantity}짜리 묶음을 만들고 남은 ` +
+        `${withKoreanObjectParticle(context.objectName)} 세어 보세요.`,
+      correctValueText: `${quotient}묶음, ${remainder}${context.counter}`,
+      answerExplanation:
+        `${groupQuantity}씩 ${quotient}묶음은 ` +
+        `${intent.groupSize * quotient}${context.counter}이고 ` +
+        `${remainder}${context.counter}가 남습니다.`,
+      countableTotal: intent.totalCount,
+      countableGroupSize: intent.groupSize,
+      countableObjectName: context.objectName,
+      countableCounter: context.counter,
+      countableGroupName: "묶음",
+      contextObjectId: intent.contextObjectId,
+      misconceptionId: intent.misconceptionId
+    },
+    candidateSet: divisionGroupingCandidateSet({
+      quotient,
+      remainder,
+      groupSize: intent.groupSize,
+      counter: context.counter
+    })
+  };
+}
 
 export const FRACTION_COMPARISON_NUMERATOR_RANGE = { min: 1, max: 11 } as const;
 export const FRACTION_COMPARISON_DENOMINATOR_RANGE = { min: 2, max: 12 } as const;

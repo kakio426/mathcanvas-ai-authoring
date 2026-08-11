@@ -11,18 +11,30 @@
   공통 분자가 같은 분수 비교. 세 종류 모두 요청→실제 문항→정답→exact preview→
   반영표→hash가 같은 의미값으로 결속된다.
 - `pnpm teacher-intent:verify` PASS, `pnpm check` PASS. 전체 66개 테스트 파일·
-  402/402, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
+  408/408, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
 - 로컬 teacher-ui HTTP 경로에서 3종 모두 카드→exact preview→정답→반영표→승인
   토큰 발급까지 확인했다. `/api/creations`는 호출하지 않았다.
-- 남은 것은 로컬 compose/preview 육안 확인과 fresh canary다. 외부 MathCanvas 쓰기는
-  이번 구현에서 실행하지 않았다.
+- 남은 것은 로컬 compose/preview 육안 확인과 fresh canary다. 2026-08-11 제작자 확인
+  기준 외부 MathCanvas 접근이 차단되어 fresh canary는 실행 불가 상태다. 당일 로그인
+  사전 확인은 프로젝트 생성 전에 중단했으며 외부 쓰기는 0건이다.
 
 **전체 대비 위치**: 현재는 "공통 기반 + 서로 다른 사례 3개"다. intent coverage는
 released 21종 중 3종이고, 맞춤 범위는 첫 문항이다. 제품 내부 자유문장 파서와
 대화식 부분 수정은 없으므로 "교사가 무엇이든 프롬프트로 만든다"는 단계가 아니다.
 MCP를 호출하는 외부 AI가 설명이 붙은 공통 스키마로 자연어를 구조화하며, 지원하지
 않는 조건은 확인 질문으로 멈춘다. fresh canary 전까지 새 맞춤 산출물의 공식 릴리스를
-주장하지 않는다.
+주장하지 않는다. 외부 접근이 복구되기 전에는 canary를 반복 시도하지 않는다.
+
+### 외부 MathCanvas 차단 중의 진행 원칙 (2026-08-11)
+
+- 공식 release 증거와 실제 저장·재열기 통과를 추정하거나 로컬 결과로 대체하지 않는다.
+- 로컬 자동 QA는 `TeacherIntent → resolved → approval hash → compiler payload → validator`
+  경계까지 실행한다. 세 capability 모두 payload hash 결속과 `canCreate: true`를 요구한다.
+- 이 경계 검사를 추가하며 나눗셈 맞춤 문항의 기존 `canCreate: false`를 발견해 수정했다.
+  canonical 이야기 생성기를 계약으로 공유하고, 등록 맥락 4종·허용 조합 612개·언어
+  변조 차단을 회귀 테스트로 고정했다.
+- 외부 접근이 복구되면 새 코드를 더 만들기 전에 세 capability fresh canary를 먼저
+  실행한다. 생성은 각 1회만 허용하고 초기 화면·핵심 조작·되돌리기·재열기 증거를 남긴다.
 
 기준 사실: Honest Preview R1~R7 구현·자동 QA 완료(`HONEST_PREVIEW_CHECKLIST.md`,
 `pnpm check` 361/361). 브라우저 실측으로 핵심 시나리오 재현 확인(수업 메모 미반영이

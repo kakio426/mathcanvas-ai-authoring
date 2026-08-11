@@ -1,8 +1,10 @@
-import type {
-  ResolvedActivity,
-  ResolvedEmission,
-  ValidationIssue,
-  ValuePredicate
+import {
+  buildDivisionGroupingTeacherIntentCanonicalStory,
+  type DivisionGroupingTeacherIntentCanonicalStory,
+  type ResolvedActivity,
+  type ResolvedEmission,
+  type ValidationIssue,
+  type ValuePredicate
 } from "@mathcanvas/contracts";
 import { issue } from "../layers/shared.js";
 
@@ -3212,6 +3214,15 @@ const handlers: Record<string, Handler> = {
             predicate,
             "canonicalCandidateValueKeys"
           );
+    const teacherIntentCanonicalStory:
+      | DivisionGroupingTeacherIntentCanonicalStory
+      | undefined =
+      resolved.recommendationSnapshot.teacherIntent?.kind ===
+      "division-grouping-v1"
+        ? buildDivisionGroupingTeacherIntentCanonicalStory(
+            resolved.recommendationSnapshot.teacherIntent
+          )
+        : undefined;
     const rawExactItemRoleBindings = parameter(
       predicate,
       "exactItemRoleBindings"
@@ -3401,7 +3412,17 @@ const handlers: Record<string, Handler> = {
         const normalizedRequiredValue =
           typeof requiredValue === "string" ? requiredValue.trim() : "";
         const forbiddenValues = requirement.forbiddenValues ?? [];
-        const allowedValues = requirement.allowedValues ?? [];
+        const projectedValue = teacherIntentCanonicalStory
+          ? (
+              teacherIntentCanonicalStory.fields as unknown as Readonly<
+                Record<string, unknown>
+              >
+            )[requirement.valueKey]
+          : undefined;
+        const allowedValues = [
+          ...(requirement.allowedValues ?? []),
+          ...(typeof projectedValue === "string" ? [projectedValue] : [])
+        ].filter((value, index, all) => all.indexOf(value) === index);
         const conflictingValues = allowedValues.filter(
           (value) => value !== normalizedRequiredValue
         );
@@ -3474,7 +3495,10 @@ const handlers: Record<string, Handler> = {
           }
         }
       }
-      if (canonicalItemStories.length > 0) {
+      const applicableCanonicalItemStories = teacherIntentCanonicalStory
+        ? [teacherIntentCanonicalStory]
+        : canonicalItemStories;
+      if (applicableCanonicalItemStories.length > 0) {
         const candidateValues = canonicalCandidateValueKeys.map(
           (key) => item.values[key]
         );
@@ -3486,7 +3510,7 @@ const handlers: Record<string, Handler> = {
         )
           ? [...candidateValues].sort()
           : [];
-        const matchingStories = canonicalItemStories.filter(
+        const matchingStories = applicableCanonicalItemStories.filter(
           (story) =>
             Object.entries(story.fields).every(
               ([key, expected]) => item.values[key] === expected

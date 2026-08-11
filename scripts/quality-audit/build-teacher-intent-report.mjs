@@ -9,7 +9,10 @@ import {
   sha256Hex,
   teacherIntentSchema
 } from "../../packages/contracts/dist/index.js";
-import { resolveActivity } from "../../packages/mathcanvas-compiler/dist/index.js";
+import {
+  compileActivity,
+  resolveActivity
+} from "../../packages/mathcanvas-compiler/dist/index.js";
 import { recommendActivity } from "../../packages/planner/dist/index.js";
 import {
   buildRegisteredTeacherAnswerKey,
@@ -21,6 +24,7 @@ import {
   projectProblemPreviews
 } from "../../packages/authoring-runtime/dist/index.js";
 import { buildInputReflections } from "../../apps/teacher-ui/dist/server/input-reflections.js";
+import { validateForCreation } from "../../packages/validator/dist/index.js";
 
 const root = resolve(import.meta.dirname, "../..");
 const reportPath = resolve(root, "reports/teacher-intent/latest.md");
@@ -155,12 +159,20 @@ function prepare(intent) {
   );
   const approvalView = projectRegisteredApprovalView(resolved);
   const answerKey = buildRegisteredTeacherAnswerKey(resolved);
+  const compiled = compileActivity(resolved);
+  const validation = validateForCreation(
+    resolved,
+    compiled,
+    new Date("2026-08-10T00:00:00.000Z")
+  );
   return {
     capability,
     recommendation,
     resolved,
     approvalView,
     activitySpecHash: sha256Hex(approvalView),
+    compiled,
+    validation,
     answerKey,
     problemPreviews: projectProblemPreviews(resolved, answerKey),
     appliedTeacherIntent: projectAppliedTeacherIntent(resolved)
@@ -249,7 +261,13 @@ const results = fixtures.map((fixture, index) => {
       JSON.stringify(golden.resolved.items[0]?.values) !==
         JSON.stringify(changed.resolved.items[0]?.values) &&
       golden.activitySpecHash !== changed.activitySpecHash,
-    conflict: conflictCode === "teacher-intent-confirmation-required"
+    conflict: conflictCode === "teacher-intent-confirmation-required",
+    compiledPayload:
+      golden.compiled.payloadHash === sha256Hex(golden.compiled.payload) &&
+      golden.validation.compiledPayloadHash === golden.compiled.payloadHash,
+    creationGate:
+      golden.validation.canCreate &&
+      !golden.validation.issues.some((issue) => issue.severity === "error")
   };
   return { fixture, golden, reflected, checks };
 });
@@ -293,7 +311,7 @@ const passed =
 const capabilityRows = results
   .map(({ fixture, golden, reflected, checks }) => {
     const preview = golden.problemPreviews[0];
-    return `| ${fixture.name} | ${escapeCell(fixture.expectedPreview)} | ${escapeCell(displayAnswer(golden.answerKey[0]?.answer ?? "없음"))} | ${escapeCell(fixture.evidence)} | ${reflected.length}/${golden.capability.fields.length} 반영 | ${status(Object.values(checks).every(Boolean))} |`;
+    return `| ${fixture.name} | ${escapeCell(fixture.expectedPreview)} | ${escapeCell(displayAnswer(golden.answerKey[0]?.answer ?? "없음"))} | ${escapeCell(fixture.evidence)} | ${reflected.length}/${golden.capability.fields.length} 반영 | \`${golden.compiled.payloadHash.slice(0, 12)}…\` | ${status(golden.validation.canCreate)} | ${status(Object.values(checks).every(Boolean))} |`;
   })
   .join("\n");
 
@@ -315,13 +333,13 @@ const report = `# TeacherIntent capability 3종 — 자동 QA
 - 결과: **${status(passed)}**
 - capability 수: **${TEACHER_INTENT_CAPABILITIES.length}**
 - 고정 seed: \`${fixedSeed}\`
-- 외부 MathCanvas 쓰기: 실행하지 않음
-- fresh canary: 실행하지 않음(자동 검증과 별도)
+- 외부 MathCanvas 쓰기: 실행하지 않음(프로젝트 생성 0건)
+- fresh canary: **BLOCKED** — 2026-08-11 제작자 확인 기준 외부 MathCanvas 접근 차단
 
 ## 요청 → 실제 결과
 
-| capability | exact preview | 정답 | 실제 의미 증거 | 반영표 | 판정 |
-|---|---|---|---|---|---|
+| capability | exact preview | 정답 | 실제 의미 증거 | 반영표 | payload hash | validator | 판정 |
+|---|---|---|---|---|---|---|---|
 ${capabilityRows}
 
 ## 공통 파이프라인 검사
@@ -339,14 +357,15 @@ ${boundaryRows}
 ## 현재 범위와 남은 일
 
 - 구현됨: 구조화된 TeacherIntent 3종, 첫 문항 exact preview, 실제 적용값 대조,
-  동일 입력 재현성, 조건 변경에 따른 문항/hash 변경, route 충돌 차단.
+  동일 입력 재현성, 조건 변경에 따른 문항/hash 변경, route 충돌 차단,
+  실제 compiler payload와 생성 전 validator 통과.
 - 구현되지 않음: 제품 내부 자유문장 파서, 대화식 부분 수정, 나머지 18개 released
   활동의 TeacherIntent, 외부 MathCanvas fresh canary.
 - 따라서 이 보고서의 PASS는 **TeacherIntent 공통 기반 + 3개 capability**의 오프라인
   통과를 뜻하며, 교사용 AI 전체 완성을 뜻하지 않습니다.
 
-자동 검사는 외부 프로젝트를 만들지 않습니다. 실제 생성과 fresh canary는 제작자가 원할
-때 별도로 실행합니다.
+자동 검사는 외부 프로젝트를 만들지 않습니다. 현재 외부 MathCanvas 접근 차단 때문에
+fresh canary는 실행할 수 없으며, 접근이 복구된 뒤 별도 실행해야 합니다.
 `;
 
 mkdirSync(dirname(reportPath), { recursive: true });

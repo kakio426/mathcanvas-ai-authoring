@@ -90,7 +90,7 @@ Honest Preview 체크리스트는 수정하지 않는다.
 - [x] 몫/나머지 바꾸기와 나머지가 나누는 수 이상인 오답 보기 포함.
 - [x] 실제 `questionText` exact preview와 적용값 projector 등록.
 - [x] `4명에게 똑같이 나누기`를 `4개씩 묶기`로 침묵 변환하지 않도록 차단.
-- [x] TeacherIntent 전용 generator provenance `1.7.0` 기록.
+- [x] TeacherIntent 전용 generator provenance `1.8.0` 기록.
 
 ## R9. 분수 비교 TeacherIntent — core
 
@@ -112,10 +112,10 @@ Honest Preview 체크리스트는 수정하지 않는다.
 
 ## 최종 QA와 사람 확인
 
-- 상태: 자동 QA 완료, 제작자 화면 확인 대기
-- [x] 변경 패키지 집중 테스트: 9개 파일·65개 테스트 통과.
+- 상태: 로컬 자동 QA 완료, 외부 MathCanvas 접근 차단으로 fresh canary 보류
+- [x] 변경 패키지 집중 테스트와 나눗셈 canonical story 회귀 테스트 통과.
 - [x] `pnpm typecheck`: 전체 `pnpm check` 안에서 통과.
-- [x] `pnpm test`: 66개 파일·402/402 통과.
+- [x] `pnpm test`: 66개 파일·408/408 통과.
 - [x] `pnpm check`: 빌드와 모든 감사 포함 통과.
 - [x] MCP in-memory 골든 호출: 실제 첫 문항과 충돌 오류 코드 확인.
 - [x] teacher-ui 로컬 HTTP 3종 요청/미리보기: exact 문항·정답·모든 반영 행·승인 토큰 확인.
@@ -123,7 +123,11 @@ Honest Preview 체크리스트는 수정하지 않는다.
 - [x] 인지 계약·교실 한국어·text-fit·공간 감사: P0/P1 0, 시각 점수 100.
 - [x] fresh canary 실행 여부를 자동 게이트와 분리해 기록: **미실행**.
 - [ ] 제작자 화면 확인 3문항: 수·맥락 / 수학적 정오 / 실제 사용 의향.
-- [x] 외부 실생성: **미실행**. 별도 승인 전에는 수행하지 않는다.
+- [x] 세 capability 모두 compiler payload hash 결속과 생성 전 validator 통과.
+- [x] 나눗셈 등록 맥락 4종, 허용 조합 612개, canonical 언어 변조 차단 고정.
+- [ ] 외부 실생성·fresh canary: **BLOCKED**. 2026-08-11 제작자 확인 기준
+  MathCanvas 접근 차단. 로그인 사전 확인 단계에서 중단했으며 프로젝트 생성 0건.
+  접근 복구 전에는 재시도하지 않는다.
 
 ## 완료 기록
 
@@ -131,10 +135,10 @@ Honest Preview 체크리스트는 수정하지 않는다.
   `632cff5 feat: expose TeacherIntent in teacher preview`.
 - 공통화·확장 커밋: `938239e feat: generalize TeacherIntent capabilities`,
   `cecd2d2 feat: expose TeacherIntent capability forms`.
-- 테스트 수: 전체 66개 파일·402개 테스트, 집중 10개 파일·90개 테스트.
+- 테스트 수: 전체 66개 파일·408개 테스트.
 - QA 보고서 경로: `reports/teacher-intent/latest.md`.
 - fallback 활동 수 변화: 20종 → 18종(곱셈·분수 exact preview 등록, 나눗셈 유지).
-- 남은 수동 확인: 교사용 compose/preview에서 3개 capability, fresh canary, 원할 때만 외부
-  실생성 1회.
+- 남은 수동 확인: 교사용 compose/preview에서 3개 capability. 외부 접근 복구 뒤
+  capability별 fresh canary 1회.
 - 알려진 제한: released 21종 중 3종의 첫 문항만 맞춤, 범용 자연어 파서·부분 수정
   없음. 새 TeacherIntent 산출물의 공식 release 근거는 fresh canary 전까지 주장하지 않는다.
