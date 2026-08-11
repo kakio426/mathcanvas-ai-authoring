@@ -180,5 +180,20 @@ describe("reviewed AssessmentTarget registry", () => {
     ).toBe(true);
     expect(targets[0]?.statement).toContain("스스로 정할");
     expect(targets[1]?.statement).toContain("어긋난 항목");
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
+      )?.assessmentPrompt
+    ).toContain("직접 정해");
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
+      )?.scopeNote
+    ).toContain("repeat-only family");
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructArrangementFollowingRule
+      )?.misconceptions.map((misconception) => misconception.misconceptionId)
+    ).toContain("change.pattern.rule-boundary-mismatch-v1");
   });
 });

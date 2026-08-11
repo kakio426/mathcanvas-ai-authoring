@@ -38,7 +38,7 @@ export const repeatingPatternArrangementAssessmentTargets:
       "정한 규칙이 배열의 각 위치에 어떻게 적용되는지 말이나 그림으로 설명한다."
     ],
     assessmentPrompt:
-      "물체·무늬·수 카드를 제시하고, 학생이 자신이 정한 배열 규칙을 선택한 뒤 규칙의 반복 단위나 변화 관계를 말하게 하라.",
+      "물체·무늬·수 카드와 빈 배열 칸을 제시하고, 학생이 반복 단위나 변화 관계를 직접 정해 규칙을 선언한 뒤 그 규칙을 배열에 적용할 방법을 말하게 하라.",
     misconceptions: [
       {
         misconceptionId: "change.pattern.rule-changes-mid-sequence-v1",
@@ -60,7 +60,7 @@ export const repeatingPatternArrangementAssessmentTargets:
     required: true,
     reviewStatus: "reviewed",
     scopeNote:
-      "공식 문장의 ‘자신이 정한 규칙’을 학생이 반복 단위나 변화 관계로 명시하는 결정으로 구체화한다. 물체·무늬·수는 문제 맥락의 다양성으로 관리한다.",
+      "공식 문장의 ‘자신이 정한 규칙’을 학생이 반복 단위나 변화 관계로 직접 구성·선언하는 결정으로 구체화한다. 물체·무늬·수는 문제 맥락의 다양성으로 관리하며, repeat/change를 모두 포함하는 family track은 두 envelope를 증명해야 하고 repeat-only family는 전체 target을 주장할 수 없다.",
     reviewedAt: REVIEWED_AT,
     reviewer: REVIEWER
   }),
@@ -85,9 +85,9 @@ export const repeatingPatternArrangementAssessmentTargets:
           "마지막에 보인 항목만 그대로 복사하고 배열 전체의 규칙을 적용하지 않는다."
       },
       {
-        misconceptionId: "change.pattern.omit-rule-check-v1",
+        misconceptionId: "change.pattern.rule-boundary-mismatch-v1",
         statement:
-          "배열을 완성한 뒤에도 각 위치가 같은 규칙을 따르는지 확인하지 않는다."
+          "반복 단위의 시작과 끝을 잘못 정해 일부 위치만 맞는 어긋난 배열도 완성된 것으로 판단한다."
       }
     ],
     learningMap: {
