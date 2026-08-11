@@ -45,7 +45,17 @@ const constructRuleDecisionSchema = z
   .object({
     mode: z.literal("construct-rule"),
     ruleStatePath: stableIdSchema,
-    variantRoles: z.array(stableIdSchema).min(2).max(12),
+    decisionConstraintId: stableIdSchema,
+    variantRoles: z
+      .array(stableIdSchema)
+      .min(2)
+      .max(12)
+      .refine((values) => new Set(values).size === values.length),
+    ruleSlotRoles: z
+      .array(stableIdSchema)
+      .min(2)
+      .max(12)
+      .refine((values) => new Set(values).size === values.length),
     variantProperty: stableIdSchema,
     validRuleStatesPath: stableIdSchema,
     surplusPath: stableIdSchema,

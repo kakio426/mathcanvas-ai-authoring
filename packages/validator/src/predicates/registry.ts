@@ -213,6 +213,51 @@ function containsVisibleTextValue(
   });
 }
 
+function visibleTextStrings(
+  value: unknown,
+  output: string[] = []
+): string[] {
+  if (typeof value === "string") {
+    output.push(value);
+    return output;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry) => visibleTextStrings(entry, output));
+    return output;
+  }
+  if (value && typeof value === "object") {
+    Object.entries(value as Record<string, unknown>).forEach(
+      ([key, entry]) => {
+        if (
+          /(?:text|latex|label|title|expression)$/iu.test(key) ||
+          (entry && typeof entry === "object")
+        ) {
+          visibleTextStrings(entry, output);
+        }
+      }
+    );
+  }
+  return output;
+}
+
+function containsVisibleOrderedRuleState(
+  properties: Record<string, unknown>,
+  state: readonly unknown[]
+): boolean {
+  if (containsValue(properties, state)) return true;
+  return visibleTextStrings(properties).some((text) => {
+    let cursor = -1;
+    return state.every((entry) => {
+      const normalized = text.normalize("NFKC");
+      const token = String(entry).normalize("NFKC");
+      const next = normalized.indexOf(token, cursor + 1);
+      if (next < 0) return false;
+      cursor = next;
+      return true;
+    });
+  });
+}
+
 type NumericPair = readonly [number, number];
 
 function numericPairList(value: unknown): NumericPair[] | undefined {
@@ -246,6 +291,34 @@ function orderedRuleStateList(
     return undefined;
   }
   return value as unknown[][];
+}
+
+function orderedRuleState(
+  value: unknown
+): unknown[] | undefined {
+  if (
+    !Array.isArray(value) ||
+    value.length < 2 ||
+    value.some((entry) => Array.isArray(entry))
+  ) {
+    return undefined;
+  }
+  return value as unknown[];
+}
+
+function canComposeRuleState(
+  state: readonly unknown[],
+  variantValues: readonly unknown[]
+): boolean {
+  const remaining = [...variantValues];
+  return state.every((entry) => {
+    const index = remaining.findIndex((candidate) =>
+      sameValue(candidate, entry)
+    );
+    if (index < 0) return false;
+    remaining.splice(index, 1);
+    return true;
+  });
 }
 
 function numericValues(
@@ -3031,6 +3104,10 @@ const handlers: Record<string, Handler> = {
   ) => {
     const mode = stringParameter(predicate, "mode");
     const ruleStatePath = stringParameter(predicate, "ruleStatePath");
+    const decisionConstraintId = stringParameter(
+      predicate,
+      "decisionConstraintId"
+    );
     const validRuleStatesPath = stringParameter(
       predicate,
       "validRuleStatesPath"
@@ -3039,6 +3116,11 @@ const handlers: Record<string, Handler> = {
     const variantRoles = stringArrayParameter(
       predicate,
       "variantRoles",
+      2
+    );
+    const ruleSlotRoles = stringArrayParameter(
+      predicate,
+      "ruleSlotRoles",
       2
     );
     const variantProperty = stringParameter(
@@ -3078,6 +3160,9 @@ const handlers: Record<string, Handler> = {
       mode !== "construct-rule" ||
       continuationRuleStatePath !== ruleStatePath ||
       explanationRuleStatePath !== ruleStatePath ||
+      new Set(variantRoles).size !== variantRoles.length ||
+      new Set(ruleSlotRoles).size !== ruleSlotRoles.length ||
+      ruleSlotRoles.length < 2 ||
       typeof minimumValidStates !== "number" ||
       !Number.isInteger(minimumValidStates) ||
       minimumValidStates < 2 ||
@@ -3121,6 +3206,12 @@ const handlers: Record<string, Handler> = {
       const surplusRuleStates = orderedRuleStateList(
         item.values[surplusPath]
       );
+      const currentRuleState = orderedRuleState(
+        item.values[ruleStatePath]
+      );
+      const variantValues = variants
+        .map((variant) => variant?.toolIntent.properties[variantProperty])
+        .filter((value): value is unknown => value !== undefined);
       const validStateKeys = validRuleStates?.map((state) =>
         JSON.stringify(state)
       );
@@ -3132,13 +3223,44 @@ const handlers: Record<string, Handler> = {
             sameValue(validState, state)
           )
       );
-      const hasOpenVariantDecision = resolved.constraints.some(
-        (constraint) =>
-          constraint.requiresStudentAction &&
-          !constraint.satisfiedInitially &&
-          (constraint.sourceIds.some((id) => variantIds.includes(id)) ||
-            variantIds.includes(constraint.targetId))
+      const slotEmissions = ruleSlotRoles.map((role) =>
+        byRole(resolved, item.id, role)
       );
+      const slotIds = slotEmissions
+        .filter(
+          (slot): slot is ResolvedEmission => slot !== undefined
+        )
+        .map((slot) => slot.id);
+      const sourceIdSet = new Set(variantIds);
+      const orderedSlotConstraints = ruleSlotRoles.map((role, index) => {
+        const constraint = resolved.constraints.find(
+          (candidate) =>
+            candidate.id ===
+              `${decisionConstraintId}-${index + 1}:${item.id}`
+        );
+        return { role, constraint };
+      });
+      const hasExactOrderedSlotDecision =
+        slotIds.length === ruleSlotRoles.length &&
+        new Set(slotIds).size === ruleSlotRoles.length &&
+        slotEmissions.every(
+          (slot) => slot !== undefined && slot.locked && !slot.movable
+        ) &&
+        orderedSlotConstraints.every(({ constraint }, index) => {
+          const targetId = slotEmissions[index]?.id;
+          return (
+            constraint !== undefined &&
+            constraint.kind === "fill-from-pool" &&
+            constraint.requiresStudentAction &&
+            !constraint.satisfiedInitially &&
+            targetId !== undefined &&
+            constraint.targetId === targetId &&
+            constraint.sourceIds.length === variantIds.length &&
+            new Set(constraint.sourceIds).size === variantIds.length &&
+            constraint.sourceIds.every((id) => sourceIdSet.has(id))
+          );
+        });
+      const hasOpenVariantDecision = hasExactOrderedSlotDecision;
       const variantInvalid =
         variants.some(
           (variant) =>
@@ -3147,6 +3269,7 @@ const handlers: Record<string, Handler> = {
             variant.toolIntent.properties[variantProperty] === undefined
         ) ||
         variantIds.length !== variantRoles.length ||
+        new Set(variantIds).size !== variantIds.length ||
         !hasOpenVariantDecision;
       if (variantInvalid) {
         issue(
@@ -3158,13 +3281,25 @@ const handlers: Record<string, Handler> = {
       }
 
       const envelopeInvalid =
-        item.values[ruleStatePath] === undefined ||
+        !currentRuleState ||
         !validRuleStates ||
         !distinctValidStates ||
         validRuleStates.length < minimumValidStates ||
         !surplusRuleStates ||
         surplusRuleStates.length < minimumSurplus ||
-        !surplusIsRejectable;
+        !surplusIsRejectable ||
+        !validRuleStates.some((state) => sameValue(state, currentRuleState)) ||
+        ruleSlotRoles.length !== currentRuleState?.length ||
+        validRuleStates.some(
+          (state) =>
+            state.length !== ruleSlotRoles.length ||
+            !canComposeRuleState(state, variantValues)
+        ) ||
+        surplusRuleStates.some(
+          (state) =>
+            state.length !== ruleSlotRoles.length ||
+            !canComposeRuleState(state, variantValues)
+        );
       if (envelopeInvalid) {
         issue(
           issues,
@@ -3180,8 +3315,10 @@ const handlers: Record<string, Handler> = {
             (emission) =>
               (emission.itemId === item.id ||
                 emission.itemId === undefined) &&
-              !variantRoles.includes(emission.role) &&
-              containsValue(emission.toolIntent.properties, state)
+              containsVisibleOrderedRuleState(
+                emission.toolIntent.properties,
+                state
+              )
           )
         ) ?? true;
       if (answerLeak) {

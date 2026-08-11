@@ -25,7 +25,9 @@ const constructRuleManifest = () => ({
   decision: {
     mode: "construct-rule" as const,
     ruleStatePath: "ruleState",
+    decisionConstraintId: "construct-rule-slot",
     variantRoles: ["rule-variant-1", "rule-variant-2"],
+    ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
     variantProperty: "orderedValues",
     validRuleStatesPath: "validRuleStates",
     surplusPath: "surplusRuleStates",
@@ -78,6 +80,8 @@ describe("construct-rule cognitive decision contract", () => {
         ...manifest,
         decision: {
           mode: "construct-rule",
+          decisionConstraintId: "construct-rule-slot",
+          ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
           correctValuePath: "correctValueText"
         }
       } as never)

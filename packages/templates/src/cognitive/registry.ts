@@ -1519,9 +1519,11 @@ export function expectedCognitiveRuntimePredicate(
       parameters: {
         mode: manifest.decision.mode,
         ruleStatePath: manifest.decision.ruleStatePath,
+        decisionConstraintId: manifest.decision.decisionConstraintId,
         validRuleStatesPath: manifest.decision.validRuleStatesPath,
         surplusPath: manifest.decision.surplusPath,
         variantRoles: manifest.decision.variantRoles,
+        ruleSlotRoles: manifest.decision.ruleSlotRoles,
         variantProperty: manifest.decision.variantProperty,
         continuationRuleStatePath: manifest.decision.ruleStatePath,
         explanationRuleStatePath: manifest.decision.ruleStatePath,

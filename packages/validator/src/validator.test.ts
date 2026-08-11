@@ -143,7 +143,11 @@ function multiplicationArrayFixture() {
 
 function ruleStatePredicateFixture(): ResolvedActivity {
   const itemId = "item-1";
-  const variantIds = ["item-1-rule-variant-1", "item-1-rule-variant-2"];
+  const variantIds = [
+    "item-1-rule-variant-1",
+    "item-1-rule-variant-2",
+    "item-1-rule-variant-3"
+  ];
   const emission = (
     id: string,
     role: string,
@@ -194,22 +198,35 @@ function ruleStatePredicateFixture(): ResolvedActivity {
     ],
     emissions: [
       emission(variantIds[0]!, "rule-variant-1", false, {
-        orderedValues: ["red"]
+        orderedValues: "red"
       }),
       emission(variantIds[1]!, "rule-variant-2", false, {
-        orderedValues: ["blue"]
+        orderedValues: "blue"
       }),
-      emission("item-1-rule-lane", "rule-lane", true, {}),
+      emission(variantIds[2]!, "rule-variant-3", false, {
+        orderedValues: "red"
+      }),
+      emission("item-1-rule-slot-1", "rule-slot-1", true, {}),
+      emission("item-1-rule-slot-2", "rule-slot-2", true, {}),
       emission("item-1-continuation-lane", "continuation-lane", true, {}),
       emission("item-1-prediction", "prediction-box", true, {}),
       emission("item-1-explanation", "explanation-box", true, {})
     ],
     constraints: [
       {
-        id: "construct-rule:item-1",
+        id: "construct-rule-slot-1:item-1",
         kind: "fill-from-pool",
         sourceIds: variantIds,
-        targetId: "item-1-rule-lane",
+        targetId: "item-1-rule-slot-1",
+        parameters: {},
+        requiresStudentAction: true,
+        satisfiedInitially: false
+      },
+      {
+        id: "construct-rule-slot-2:item-1",
+        kind: "fill-from-pool",
+        sourceIds: variantIds,
+        targetId: "item-1-rule-slot-2",
         parameters: {},
         requiresStudentAction: true,
         satisfiedInitially: false
@@ -221,15 +238,25 @@ function ruleStatePredicateFixture(): ResolvedActivity {
         parameters: {
           mode: "construct-rule",
           ruleStatePath: "ruleState",
+          decisionConstraintId: "construct-rule-slot",
           validRuleStatesPath: "validRuleStates",
           surplusPath: "surplusRuleStates",
-          variantRoles: ["rule-variant-1", "rule-variant-2"],
+          variantRoles: [
+            "rule-variant-1",
+            "rule-variant-2",
+            "rule-variant-3"
+          ],
+          ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
           variantProperty: "orderedValues",
           continuationRuleStatePath: "ruleState",
           explanationRuleStatePath: "ruleState",
           predictionRole: "prediction-box",
           explanationRole: "explanation-box",
-          verificationRoles: ["rule-lane", "continuation-lane"],
+          verificationRoles: [
+            "rule-slot-1",
+            "rule-slot-2",
+            "continuation-lane"
+          ],
           minimumValidStates: 2,
           minimumSurplus: 1,
           distractors: [
@@ -275,6 +302,55 @@ describe("생성 전 검증", () => {
         "cognitive-rule-state-envelope-invalid",
         "cognitive-rule-state-answer-visible"
       ])
+    );
+  });
+
+  it("construct-rule은 현재 상태·모든 순서 슬롯·정확한 pool source를 요구한다", () => {
+    const resolved = ruleStatePredicateFixture();
+    resolved.items[0]!.values.ruleState = ["red"];
+    resolved.constraints = resolved.constraints.slice(0, 1);
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        "cognitive-rule-state-decision-missing",
+        "cognitive-rule-state-envelope-invalid"
+      ])
+    );
+  });
+
+  it("construct-rule은 variant 하나에 완성 규칙을 숨긴 선택형 우회를 차단한다", () => {
+    const resolved = ruleStatePredicateFixture();
+    resolved.emissions.find(
+      (emission) => emission.role === "rule-variant-1"
+    )!.toolIntent.properties.orderedValues = ["red", "blue"];
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-answer-visible"
+    );
+  });
+
+  it("construct-rule은 화면 문구에 유효한 순서를 직접 노출하면 차단한다", () => {
+    const resolved = ruleStatePredicateFixture();
+    resolved.emissions.push({
+      id: "item-1-visible-rule-text",
+      role: "visible-rule-text",
+      itemId: "item-1",
+      bounds: { x: 0, y: 0, width: 40, height: 40 },
+      locked: true,
+      movable: false,
+      instructionalIntent: "검증용 문구",
+      toolIntent: {
+        kind: "text",
+        toolKey: "common.text",
+        properties: { text: "red → blue" }
+      }
+    });
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-state-answer-visible"
     );
   });
 
