@@ -1,12 +1,43 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v8)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v9)
 
-상태: **Sol max 재계획 검토 대기 — ENGINE_CORE completion evidence currentness 보강**
+상태: **Sol max 재계획 검토 대기 — CONTRACT_CAPACITY·LAYOUT_CAPACITY hard-stop 해소**
 
-v8은 승인된 v7 ENGINE_CORE의 교육·런타임 범위를 바꾸지 않는다. 다만
-ENGINE_CORE를 완료했다고 기록하려면 권위 artifact의 identity, revision, 상태, 구현 파일
-목록과 현재 SHA-256을 phase-state가 함께 증명해야 한다. 기록만 남기고 검증하지 않는
-전이는 허용하지 않으며, 이 v8 governance가 승인·소비되기 전에는 W002를 FAMILY_TRACK으로
-전진시키지 않는다.
+v9는 A2 `W002-FAMILY_TRACK-repeat-rule-SOL-A2`의 preflight blocked를 소비하는
+최소 재계획이다. A3 TARGET_SET의 세 target·outline hash·learning-map 결속은 바꾸지
+않고, repeat-rule cursor를 `AFFORDANCE_DISCOVERY` 완료·`ENGINE_CORE` 대기로 되감는다.
+v8 completion artifact는 역사 자료로만 남기며 v9 evidence로 재사용하지 않는다.
+v9 승인·소비 전에는 W002를 FAMILY_TRACK으로 전진시키지 않는다.
+
+이번 hard-stop은 두 공통 seam을 동시에 다룬다. 승인된 core는 9개의 physical source
+role과 rule slot 2개·continuation target 4개를 동시에 요구하지만, 기존 blueprint
+constraint schema는 source를 8개로 제한하고 wave16 preset은 188×188 target을 2개만
+제공한다. source를 8개로 줄이거나 기존 wave16을 억지로 재사용하는 것은 capacity·
+observability 계약을 위조하므로 금지한다.
+
+v9가 허용하는 공통 변경은 다음뿐이다: declarative/resolved constraint source 상한을
+명시적 12로 대칭 확장하고 9-source 회귀를 추가한다; architecture baseline을 갱신한다;
+wave16을 수정하지 않고 `w002-repeat-rule-construction-v1` 전용 preset·registry·
+containment/resolve 테스트를 추가한다. family generator·teacher UI·response/save-reopen은
+여전히 이 재계획 범위 밖이다.
+
+## v9 hard-stop과 재진입 계약
+
+- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-preflight-blocker.json`
+  및 review `W002-FAMILY_TRACK-repeat-rule-SOL-A2`.
+- 재계획 revision: `W002-SOL-REPLAN-v9`, `replanTargetSetRequired=false`.
+- constraint capacity: `maxSources=12`, `requiredSources=9`; 두 schema가 같은 상한을 사용하고
+  9는 통과·13은 거부해야 한다.
+- layout capacity: tokenSet `w002-repeat-rule-construction-v1`; source 9, rule slot 2,
+  continuation 4; 각 target 최소 188×188, 모두 동시에 보이며 native rendered bounds를
+  containment 검사한다.
+- v9 승인 후 순서: `ENGINE_CORE` 공통 seam·전용 preset 구현 → 새 v9 artifact/current SHA
+  검증 → repeat-rule FAMILY_TRACK 재진입. v8 artifact를 상태 cursor에 다시 기록하지 않는다.
+
+## v8 이전 governance의 위치
+
+아래 v6/v7/v8 절은 왜 학생 구성 상태·completion evidence·용량 계약이 필요했는지에 대한
+역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v9 절과
+`scripts/curriculum/no-family-plan.json#trackContracts.C01`을 따른다.
 
 이번 v7은 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
 3-target source·adapter 결속·target-outline hash는 현재 저장소에 설치되어 소비된
@@ -80,11 +111,11 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
-이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v8`이며, A3 TARGET_SET이
-승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v8을 승인·소비한
-뒤에만 `ENGINE_CORE`가 이 revision과 core 허용 파일 범위에 결속되어 시작된다.
+기존 v8 문단의 재계획 계약 revision은 `W002-SOL-REPLAN-v8`이었다. A3 TARGET_SET이
+승인한 target-outline hash와 source 결속은 그대로 유지되지만, v8 completion evidence는
+현재 v9에서 역사 자료로만 취급한다.
 
-## v8 governance amendment — ENGINE_CORE completion evidence
+## v8 governance amendment — ENGINE_CORE completion evidence (historical)
 
 v7의 ENGINE_CORE artifact는 다음 권위 계약으로 고정한다.
 
@@ -137,9 +168,9 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 
 A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
 slice 결속을 이미 승인했고, v7 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
-v8의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
-v8 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
-그중 하나라도 바꿔야 하면 현재 v8 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+v9의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
+v9 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v9 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
 `TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서
@@ -193,7 +224,7 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 각 family의 native/core 계약이 공통 compiler schema 변경을 요구하면 해당 단계는 즉시 종료하고,
 새 `ENGINE_CORE` work item과 Sol 재계획을 만든다. 기존 W002 후보에 schema 변경을 섞지 않는다.
 
-### v7 ENGINE_CORE 범위
+### v7 ENGINE_CORE 범위 (historical core contract)
 
 이번 AFFORDANCE_DISCOVERY의 결과는 새 native 도구를 추가하는 것이 아니라,
 기존 `SM02PB` 배치 위에 **학생이 만든 규칙을 임의 상태로 보존하고 눈에 보이는
@@ -384,7 +415,7 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 명시하고, preview/answer가 미래 응답을 증명한다고 말하지 않는다.
 
 ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
-요구하면 이 v7 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
+요구하면 이 v9 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
 그 경우 `pattern.repeat-unit.construct-v1` 구현을 partial release로 올리지 않는다.
 
 ## 4. 구현 불변량

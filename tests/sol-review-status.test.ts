@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 // @ts-ignore Sol review gate is a repository-side ESM utility.
 import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
@@ -71,6 +71,26 @@ describe("Sol review candidate and scope gates", () => {
       base().engineCoreContract.manifestDecision.stateConstruction
         .minimumCopiesPerDistinctValue
     ).toBe(3);
+    expect(base().engineCoreContract.constraintCapacity).toEqual({
+      maxSources: 12,
+      requiredSources: 9
+    });
+    expect(base().engineCoreContract.layoutContract).toEqual({
+      tokenSet: "w002-repeat-rule-construction-v1",
+      sourceRoles: 9,
+      ruleSlotRoles: 2,
+      continuationTargetRoles: 4,
+      minSlotWidth: 188,
+      minSlotHeight: 188,
+      allVisibleSimultaneously: true,
+      containment: "native-rendered-bounds"
+    });
+
+    const missingCapacity = base();
+    delete missingCapacity.engineCoreContract.constraintCapacity;
+    expect(() => assertEngineCoreContract(missingCapacity, "C01")).toThrow(
+      "no-family-plan-engine-core-capacity-contract-invalid:C01"
+    );
 
     const tooFewTargets = base();
     tooFewTargets.engineCoreContract.manifestDecision.application.continuationTargetRoles.pop();
@@ -150,10 +170,6 @@ describe("Sol review candidate and scope gates", () => {
         item.workItemId === "W002-FAMILY_TRACK-repeat-rule"
     );
     const artifactPath = contract.engineCoreContract.artifactContract.artifactPath;
-    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
-    const artifactSha256 = createHash("sha256")
-      .update(readFileSync(artifactPath))
-      .digest("hex");
     const pending = {
       workItemId: planned.workItemId,
       completedOperations: ["AFFORDANCE_DISCOVERY"],
@@ -162,6 +178,26 @@ describe("Sol review candidate and scope gates", () => {
     expect(() =>
       assertEngineCoreCompletionEvidence(pending, planned, contract)
     ).not.toThrow();
+
+    if (!existsSync(artifactPath)) {
+      expect(() =>
+        assertEngineCoreCompletionEvidence(
+          {
+            ...pending,
+            completedOperations: ["AFFORDANCE_DISCOVERY", "ENGINE_CORE"],
+            nextOperation: "FAMILY_TRACK"
+          },
+          planned,
+          contract
+        )
+      ).toThrow("no-family-plan-subwork-engine-core-evidence-required");
+      return;
+    }
+
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    const artifactSha256 = createHash("sha256")
+      .update(readFileSync(artifactPath))
+      .digest("hex");
 
     const completed = {
       ...pending,
@@ -243,7 +279,7 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v8"
+        "W002-SOL-REPLAN-v9"
       );
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false

@@ -137,8 +137,15 @@
         "packages/curriculum/src/native-affordance-*.ts"
       ],
       "ENGINE_CORE": [
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
         "packages/validator/src/predicates/registry.ts",
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
@@ -194,8 +201,15 @@
         "reports/curriculum-execution/no-family-plan.md"
       ],
       "ENGINE_CORE": [
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
         "packages/validator/src/predicates/registry.ts",
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
@@ -3062,6 +3076,20 @@
         "R08"
       ],
       "engineCoreContract": {
+        "constraintCapacity": {
+          "maxSources": 12,
+          "requiredSources": 9
+        },
+        "layoutContract": {
+          "tokenSet": "w002-repeat-rule-construction-v1",
+          "sourceRoles": 9,
+          "ruleSlotRoles": 2,
+          "continuationTargetRoles": 4,
+          "minSlotWidth": 188,
+          "minSlotHeight": 188,
+          "allVisibleSimultaneously": true,
+          "containment": "native-rendered-bounds"
+        },
         "manifestDecision": {
           "mode": "construct-rule",
           "constructionMode": "student-constructed",
@@ -3245,11 +3273,17 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
           "status": "implemented-verified-pending-family-track",
           "implementationFiles": [
+            "packages/contracts/src/vocabulary/constraints.ts",
+            "packages/contracts/src/vocabulary/constraints.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+            "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
             "packages/validator/src/predicates/registry.ts",
             "packages/validator/src/validator.test.ts",
             "packages/templates/src/cognitive/registry.ts",
@@ -3294,10 +3328,9 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "FAMILY_TRACK",
+          "nextOperation": "ENGINE_CORE",
           "completedOperations": [
-            "AFFORDANCE_DISCOVERY",
-            "ENGINE_CORE"
+            "AFFORDANCE_DISCOVERY"
           ],
           "reviewStatus": "blocked",
           "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
@@ -3358,41 +3391,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-        "familyId": "pattern.repeat-unit.construct-v1",
-        "familyTrackId": "pattern.repeat-unit.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
-        "targetOutlineKeys": [
-          "choose-own-arrangement-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.repeat-rule.construct-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET"
-        ],
-        "operationSequence": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v8",
+      "replanContractRevision": "W002-SOL-REPLAN-v9",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -3466,8 +3470,8 @@
           "W002-FAMILY_TRACK-repeat-rule-SOL-A2"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null
@@ -5378,9 +5382,23 @@
       ],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v8",
+      "replanContractRevision": "W002-SOL-REPLAN-v9",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
+        "constraintCapacity": {
+          "maxSources": 12,
+          "requiredSources": 9
+        },
+        "layoutContract": {
+          "tokenSet": "w002-repeat-rule-construction-v1",
+          "sourceRoles": 9,
+          "ruleSlotRoles": 2,
+          "continuationTargetRoles": 4,
+          "minSlotWidth": 188,
+          "minSlotHeight": 188,
+          "allVisibleSimultaneously": true,
+          "containment": "native-rendered-bounds"
+        },
         "manifestDecision": {
           "mode": "construct-rule",
           "constructionMode": "student-constructed",
@@ -5564,11 +5582,17 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
           "status": "implemented-verified-pending-family-track",
           "implementationFiles": [
+            "packages/contracts/src/vocabulary/constraints.ts",
+            "packages/contracts/src/vocabulary/constraints.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+            "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
             "packages/validator/src/predicates/registry.ts",
             "packages/validator/src/validator.test.ts",
             "packages/templates/src/cognitive/registry.ts",
@@ -6136,6 +6160,20 @@
         "R08"
       ],
       "engineCoreContract": {
+        "constraintCapacity": {
+          "maxSources": 12,
+          "requiredSources": 9
+        },
+        "layoutContract": {
+          "tokenSet": "w002-repeat-rule-construction-v1",
+          "sourceRoles": 9,
+          "ruleSlotRoles": 2,
+          "continuationTargetRoles": 4,
+          "minSlotWidth": 188,
+          "minSlotHeight": 188,
+          "allVisibleSimultaneously": true,
+          "containment": "native-rendered-bounds"
+        },
         "manifestDecision": {
           "mode": "construct-rule",
           "constructionMode": "student-constructed",
@@ -6319,11 +6357,17 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
           "status": "implemented-verified-pending-family-track",
           "implementationFiles": [
+            "packages/contracts/src/vocabulary/constraints.ts",
+            "packages/contracts/src/vocabulary/constraints.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+            "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
             "packages/validator/src/predicates/registry.ts",
             "packages/validator/src/validator.test.ts",
             "packages/templates/src/cognitive/registry.ts",
@@ -6368,10 +6412,9 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "FAMILY_TRACK",
+          "nextOperation": "ENGINE_CORE",
           "completedOperations": [
-            "AFFORDANCE_DISCOVERY",
-            "ENGINE_CORE"
+            "AFFORDANCE_DISCOVERY"
           ],
           "reviewStatus": "blocked",
           "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
@@ -6432,41 +6475,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-        "familyId": "pattern.repeat-unit.construct-v1",
-        "familyTrackId": "pattern.repeat-unit.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
-        "targetOutlineKeys": [
-          "choose-own-arrangement-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.repeat-rule.construct-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET"
-        ],
-        "operationSequence": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v8",
+      "replanContractRevision": "W002-SOL-REPLAN-v9",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -6540,8 +6554,8 @@
           "W002-FAMILY_TRACK-repeat-rule-SOL-A2"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null

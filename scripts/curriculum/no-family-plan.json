@@ -189,8 +189,15 @@
         "packages/curriculum/src/native-affordance-*.ts"
       ],
       "ENGINE_CORE": [
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
         "packages/validator/src/predicates/registry.ts",
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
@@ -246,8 +253,15 @@
         "reports/curriculum-execution/no-family-plan.md"
       ],
       "ENGINE_CORE": [
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
         "packages/validator/src/predicates/registry.ts",
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
@@ -448,9 +462,23 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v8",
+      "replanContractRevision": "W002-SOL-REPLAN-v9",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
+        "constraintCapacity": {
+          "maxSources": 12,
+          "requiredSources": 9
+        },
+        "layoutContract": {
+          "tokenSet": "w002-repeat-rule-construction-v1",
+          "sourceRoles": 9,
+          "ruleSlotRoles": 2,
+          "continuationTargetRoles": 4,
+          "minSlotWidth": 188,
+          "minSlotHeight": 188,
+          "allVisibleSimultaneously": true,
+          "containment": "native-rendered-bounds"
+        },
         "manifestDecision": {
           "mode": "construct-rule",
           "constructionMode": "student-constructed",
@@ -587,11 +615,17 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
           "status": "implemented-verified-pending-family-track",
           "implementationFiles": [
+            "packages/contracts/src/vocabulary/constraints.ts",
+            "packages/contracts/src/vocabulary/constraints.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+            "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+            "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
             "packages/validator/src/predicates/registry.ts",
             "packages/validator/src/validator.test.ts",
             "packages/templates/src/cognitive/registry.ts",

@@ -153,8 +153,10 @@ export function assertEngineCoreContract(contract, archetypeId) {
     value.initialState === "empty" &&
     JSON.stringify(value.sourceRoles) ===
       JSON.stringify(decisionValue.variantRoles) &&
-    JSON.stringify(value.slotRoles) ===
+      JSON.stringify(value.slotRoles) ===
       JSON.stringify(decisionValue.ruleSlotRoles);
+  const constraintCapacity = core.constraintCapacity;
+  const layoutContract = core.layoutContract;
   const applicationValid = (value, ruleStatePath, ruleSlotRoles) =>
     value &&
     value.ruleStatePath === ruleStatePath &&
@@ -174,6 +176,22 @@ export function assertEngineCoreContract(contract, archetypeId) {
     value.ruleStateIndexMode === "index-mod-period" &&
     value.evidenceMode === "student-state-dependent";
   assert(
+    constraintCapacity &&
+      constraintCapacity.maxSources === 12 &&
+      constraintCapacity.requiredSources === 9 &&
+      constraintCapacity.maxSources >= constraintCapacity.requiredSources &&
+    layoutContract &&
+      layoutContract.tokenSet === "w002-repeat-rule-construction-v1" &&
+      layoutContract.sourceRoles === 9 &&
+      layoutContract.ruleSlotRoles === 2 &&
+      layoutContract.continuationTargetRoles === 4 &&
+      layoutContract.minSlotWidth >= 188 &&
+      layoutContract.minSlotHeight >= 188 &&
+      layoutContract.allVisibleSimultaneously === true &&
+      layoutContract.containment === "native-rendered-bounds",
+    `no-family-plan-engine-core-capacity-contract-invalid:${archetypeId}`
+  );
+  assert(
     decision &&
       decision.mode === "construct-rule" &&
       decision.constructionMode === "student-constructed" &&
@@ -181,6 +199,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
       stableId(decision.ruleStatePath) &&
       stableId(decision.decisionConstraintId) &&
       stringList(decision.variantRoles, 9) &&
+      decision.variantRoles.length === constraintCapacity.requiredSources &&
       stringList(decision.ruleSlotRoles, 2) &&
       stableId(decision.variantProperty) &&
       stableId(decision.validRuleStatesPath) &&
@@ -193,7 +212,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
       decision.stateConstruction?.minimumCopiesPerDistinctValue === 3 &&
       decision.stateConstruction?.minimumDistinctValues ===
         decision.ruleSlotRoles.length &&
-      decision.variantRoles.length >=
+      decision.variantRoles.length ===
         (decision.stateConstruction?.minimumDistinctPoolValues ?? 0) *
           (decision.stateConstruction?.minimumCopiesPerDistinctValue ?? 0) &&
       Number.isInteger(
