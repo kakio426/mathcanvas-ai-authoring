@@ -8,9 +8,16 @@
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-rule",
       "completedOperations": [
-        "AFFORDANCE_DISCOVERY"
+        "AFFORDANCE_DISCOVERY",
+        "ENGINE_CORE"
       ],
-      "nextOperation": "ENGINE_CORE"
+      "nextOperation": "FAMILY_TRACK",
+      "completionEvidenceByOperation": {
+        "ENGINE_CORE": {
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "artifactSha256": "f25e9eec33ed882f562952da63d4509402802b4edc2058c4852819f1ad280965"
+        }
+      }
     },
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-repair",
