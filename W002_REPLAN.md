@@ -1,11 +1,18 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v3)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v4)
 
-상태: **Sol max 재계획 검토 대기**
+상태: **Sol max 재계획 검토 대기 — ENGINE_CORE 범위 확장**
 
-이번 v3는 v2의 세 target 분해를 바꾸지 않는다. 다만 이 커밋은 재계획
+이번 v4는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. 다만 이 커밋은 재계획
 계약·sub-work·허용 범위만 고정한다. 새 3-target source와 기존 adapter의
 target 결속 변경은 이 단계에서 설치하지 않으며, 후속 TARGET_SET 후보가
 두 변경과 파생 보고서를 하나의 원자적 후보로 제출한다.
+
+v3 AFFORDANCE_DISCOVERY에서 `SM02PB`의 정적 variant·기존 배치 canary는
+확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는 native 계약은
+찾지 못했다. 따라서 다음 `ENGINE_CORE`는 기존 `select-one`/numeric
+`construct`를 재사용하지 않고, 공통 cognitive contract를 확장하는 범위로
+Sol의 재승인을 받는다. 이 재계획은 target 문구를 바꾸지 않으므로 A3
+TARGET_SET을 다시 소비하지 않는다(`replanTargetSetRequired=false`).
 
 ## 1. 재계획을 여는 이유
 
@@ -31,7 +38,9 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한다. 이 문서의 재계획 계약 revision은
-`W002-SOL-REPLAN-v3`이며, Sol이 승인한 뒤 새 TARGET_SET review가 이 revision과 새 target-outline hash를
+`W002-SOL-REPLAN-v4`이며, A3 TARGET_SET이 이미 승인한 target-outline hash를 유지한 채
+이 revision을 소비한다. Sol이 승인한 뒤에만 `ENGINE_CORE`가 이 revision과
+core 허용 파일 범위에 결속되어 시작된다.
 명시적으로 소비해야 한다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
@@ -114,6 +123,29 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 
 각 family의 native/core 계약이 공통 compiler schema 변경을 요구하면 해당 단계는 즉시 종료하고,
 새 `ENGINE_CORE` work item과 Sol 재계획을 만든다. 기존 W002 후보에 schema 변경을 섞지 않는다.
+
+### v4 ENGINE_CORE 범위
+
+이번 AFFORDANCE_DISCOVERY의 결과는 새 native 도구를 추가하는 것이 아니라,
+기존 `SM02PB` 배치 위에 학생이 만든 규칙을 의미 상태로 보존하는 공통 core가
+필요하다는 것이다. 승인된 ENGINE_CORE 후보는 다음 네 가지를 함께 계약한다.
+
+1. `CognitiveDemandManifest.decision`에 별도 `construct-rule` 결정을 추가한다.
+   `correctValuePath` 하나를 고르는 선택형 결정이나 기존 숫자 구성 결정으로
+   우회하지 않는다.
+2. `cognitive.rule-state-contract` validator predicate를 추가한다. 최소 두 개의
+   유효한 ordered variant-list와 하나 이상의 surplus/rejectable state를 검증하고,
+   continuation·explanation이 같은 rule-state path를 읽는지 확인한다.
+3. templates cognitive registry와 계약 테스트를 결속한다. 이 단계에서는 특정
+   family의 generator·layout·released registry를 승격하지 않고, 다음 FAMILY_TRACK이
+   소비할 수 있는 공통 manifest/validator seam만 만든다.
+4. 공통 compiler payload와 `activitySpecHash`는 변경하지 않는다. 학생의 선언은
+   별도 `StudentRuleStateEvidence`/`responseHash`로 다루며, save/reopen 증거는
+   FAMILY_TRACK 또는 LIVE_EVIDENCE에서 별도로 수집한다.
+
+ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
+요구하면 이 v4 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
+그 경우 `pattern.repeat-unit.construct-v1` 구현을 partial release로 올리지 않는다.
 
 ## 4. 구현 불변량
 

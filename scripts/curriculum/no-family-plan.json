@@ -189,6 +189,12 @@
         "packages/curriculum/src/native-affordance-*.ts"
       ],
     "ENGINE_CORE": [
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/cognitive/registry.test.ts",
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
         "packages/templates/src/problem-families/registry.test.ts",
@@ -232,6 +238,21 @@
         "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
         "reports/curriculum-coverage/**",
         "reports/problem-family-registry/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "ENGINE_CORE": [
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/cognitive/registry.test.ts",
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
@@ -425,7 +446,8 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v3",
+      "replanContractRevision": "W002-SOL-REPLAN-v4",
+      "replanTargetSetRequired": false,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "reviewScopes": [
         {
