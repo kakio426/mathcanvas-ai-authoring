@@ -133,11 +133,15 @@
         "packages/templates/src/problem-families/registry.test.ts"
       ],
       "FAMILY_TRACK": [
+        "fixtures/pedagogy/learning-map.used.json",
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
         "packages/templates/src/problem-families/registry.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/validator/src/native/registry.ts",
         "packages/curriculum/src/assessment-targets/**",
         "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
