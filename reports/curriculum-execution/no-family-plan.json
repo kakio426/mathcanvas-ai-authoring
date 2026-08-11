@@ -670,6 +670,91 @@
           "재계획 최소안: A4의 feasible repair shell은 ‘이미 선언된 repeat-2 규칙을 고쳐 이어 놓기’ target-2 partial family로만 보존 검토하고, target 1은 학생이 빈 rule lane에서 SM02PB 성분·순서를 직접 구성한 뒤 그 저장 상태를 배열에 적용하는 별도 family로 설계하라. TargetSet이 요구하는 change envelope는 observable number/state affordance의 별도 family로 분리하라. 여러 family의 partial assessmentTarget coverage를 standard completion으로 합산할 계약이 없으면 먼저 registry/coverage schema 계획을 승인받아야 한다.",
           "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 하지만 loop contract는 같은 deterministic 원인의 수정은 최대 2회, 세 번째 동일 실패·family 분할·schema 변경·context 한계의 partial 구현은 즉시 blocked-needs-sol-replan으로 규정한다. A1~A4에서 self-defined rule 부재가 반복되고 A4가 명시적으로 partial scope로 축소됐으므로 추가 A5 retry는 허용하지 않는다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A1",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 1,
+        "candidateCommit": "824d188884ffd27b6defaeae49534e013afda122",
+        "changedFiles": [
+          "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+          "SOL_REVIEW_PROMPT.md",
+          "W002_REPLAN.md",
+          "package.json",
+          "packages/contracts/src/problem-family.test.ts",
+          "packages/contracts/src/problem-family.ts",
+          "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+          "packages/templates/src/problem-families/registry.ts",
+          "packages/templates/src/problem-families/types.ts",
+          "reports/curriculum-coverage/latest.json",
+          "reports/curriculum-coverage/latest.md",
+          "reports/curriculum-execution/latest.json",
+          "reports/curriculum-execution/latest.md",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md",
+          "reports/problem-family-registry/latest.json",
+          "reports/problem-family-registry/latest.md",
+          "scripts/curriculum/build-family-revalidation.mjs",
+          "scripts/curriculum/build-no-family-plan.mjs",
+          "scripts/curriculum/no-family-plan.json",
+          "scripts/curriculum/sol-review-status.mjs",
+          "scripts/curriculum/verify-sol-review-gate.mjs",
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": null,
+        "checkedAt": "2026-08-11T14:58:11.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "2470a567ca4901c5c8e4510efd41dc5d87232ae85f24744e80c820f357317ade",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "replanOwner": "Luna",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:824d188884ffd27b6defaeae49534e013afda122",
+          "git:c945aacb110890b70425b6f812153cca6a29f77d",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A4",
+          "W002_REPLAN.md",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+          "scripts/curriculum/no-family-plan.json#C01",
+          "scripts/curriculum/build-no-family-plan.mjs#replanApproved",
+          "scripts/curriculum/build-family-revalidation.mjs",
+          "scripts/curriculum/sol-review-status.mjs",
+          "scripts/curriculum/verify-sol-review-gate.mjs",
+          "reports/curriculum-execution/no-family-plan.json#W001",
+          "reports/curriculum-execution/no-family-plan.json#W002",
+          "tests/sol-review-status.test.ts",
+          "command:pnpm check (candidate author report: 78 files / 467 tests)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts",
+          "command:pnpm typecheck",
+          "command:pnpm curriculum:no-family-plan",
+          "command:pnpm curriculum:program"
+        ],
+        "findings": [
+          "개선 확인: candidate exact diff 23개는 생성된 W002 SOL_REPLAN allowedFiles에 모두 포함되고, manifest strict schema와 registry source에 solReviewScope가 실제 전달된다. latest blocked family는 offline/live numerator에서 제외되며 현재 queue는 W001 FAMILY_REVALIDATION과 W002 SOL_REPLAN을 구분한다. 독립 재실행에서도 scope/status 테스트 5/5, typecheck, curriculum:no-family-plan, curriculum:program이 통과했다.",
+          "수정 요청: 권위 target outline은 아직 repeat/change를 함께 묶은 기존 2개 target인데 W002_REPLAN.md는 repeat 구성, repeat 적용·수정, change 구성·적용·수정의 3개 target을 요구한다. replan 승인 직후 Luna가 소비하는 expectedTargetOutline이 재계획과 모순되므로 이 candidate에서 Sol draft를 3개 slice로 갱신하고 targetOutlineSha256·expectedTargetCount를 일치시켜야 한다.",
+          "수정 요청: replanApproved가 true이면 build-no-family-plan은 기존 target의 승인 여부나 새 TARGET_SET review 완료 여부와 무관하게 항상 TARGET_SET branch를 선택한다. 승인된 새 target review가 replan을 소비했다는 revision/hash 결속이 없어 W002가 TARGET_SET에 영구 고정된다. replan review ID와 새 target-outline hash를 supersede하는 TARGET_SET approval을 소비한 뒤 AFFORDANCE_DISCOVERY/ENGINE_CORE로 전진하는 상태를 추가해야 한다.",
+          "수정 요청: C01은 plannedFamilyId 하나와 W002-FAMILY_TRACK work item 하나만 유지하면서 reviewScopes만 세 개로 늘렸다. target review 뒤에도 Luna가 repeat construct, repeat repair, change construct 중 어느 concrete family를 구현할지 선택할 sub-work item·familyId·target ownership·dependency가 없다. 세 scoped concrete family를 각각 bounded work item으로 생성하고 각 승인 상태를 target union에 합산해야 한다.",
+          "수정 요청: SOL_REPLAN의 지속 승인 판정이 reviewCandidateIsCurrent 전체 candidate diff에 결속돼 있다. 이 candidate가 변경한 global no-family plan, prompt, gate, package.json 중 하나를 후속 W003+ 작업이 수정하면 W002 replan이 다시 stale/blocked로 회귀한다. review-time candidate freeze는 verify gate로 보장하고, 지속 승인은 W002 replan document hash, blocker ID, scope 목록과 전용 contract revision에만 결속해야 한다.",
+          "수정 요청: FAMILY_REVALIDATION은 operation·artifact를 만들었지만 verify-sol-review-gate가 이 operation을 허용하지 않고, artifact 생성 뒤에는 FAMILY_TRACK review로 라우팅한다. 그 candidate의 report-only diff는 FAMILY_TRACK allowedFiles와 맞지 않으며, 설령 승인해도 nativeFamilyReviewStatus는 artifact fingerprint를 읽지 않아 이후 구현 변경을 탐지하지 못한다. scoped FAMILY_REVALIDATION review와 fingerprint-currentness를 lifecycle 승격에 직접 소비하는 하나의 일관된 계약으로 닫아야 한다.",
+          "W001 stale 판정은 정당하다. 승인 후보 ea286d5 이후 e3004b9가 data-table-organize.ts의 learning-map usage snapshot hash를 변경했고 824d188이 scope metadata도 추가했다. 다만 W001은 의미 없는 source 수정 없이 fingerprint artifact를 만든 뒤 독립 scoped revalidation review를 통과시키는 경로가 위 계약 수정 후에만 실행 가능하다.",
+          "문서의 activitySpecHash와 responseHash 분리는 바로잡혔지만 exact preview가 아직 미래의 학생 저장 state 자체를 표시한다고 읽히는 문장이 남아 있다. 승인 전 preview는 compile-time RuleStateEnvelope와 조건부 rubric만 표시하고 실제 StudentRuleStateEvidence는 조작 후 save/reopen 증거에서만 표시한다고 명시해야 한다."
+        ]
       }
     ]
   },
@@ -829,9 +914,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 9,
+      "totalRecords": 10,
       "approved": 3,
-      "changesRequested": 5,
+      "changesRequested": 6,
       "blocked": 1,
       "pendingRequiredReviews": 190
     },
@@ -993,7 +1078,7 @@
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
         "familyTrackReviewIds": [],
-        "replan": "pending",
+        "replan": "changes-requested",
         "replanApproved": false,
         "revalidationArtifact": null
       }
@@ -3362,7 +3447,7 @@
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
         "familyTrackReviewIds": [],
-        "replan": "pending",
+        "replan": "changes-requested",
         "replanApproved": false,
         "revalidationArtifact": null
       }
