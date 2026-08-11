@@ -30,6 +30,7 @@ const root = resolve(import.meta.dirname, "../..");
 const jsonPath = resolve(root, "reports/visual-audit/latest.json");
 const markdownPath = resolve(root, "reports/VISUAL_QUALITY_AUDIT.md");
 const strict = !process.argv.includes("--allow-issues");
+const writeReport = !process.argv.includes("--verify-only");
 const REQUIRED_VISUAL_PREDICATES = Object.freeze([
   "visual.text-fit",
   "visual.labeled-pool-row",
@@ -444,8 +445,6 @@ const report = {
   activities: results
 };
 
-mkdirSync(dirname(jsonPath), { recursive: true });
-writeFileSync(jsonPath, `${JSON.stringify(report, null, 2)}\n`);
 const markdown = [
   "# MathCanvas 시각 품질 감사",
   "",
@@ -482,7 +481,11 @@ const markdown = [
   "P0는 출시 차단, P1은 배포 전 수정, P2는 후속 미감 개선입니다. 모든 variation에서 실제 rendered bounds를 사용하고, 선택물을 목표 중앙에 놓은 조작 후 상태까지 계산합니다. 실제 글자 잉크는 현재 blueprint·layout hash에 결속된 canary preview로 보완합니다. 이 점수는 자동 계약 통과율이며, 최종 미감·교육 품질 점수와는 구분합니다.",
   ""
 ].join("\n");
-writeFileSync(markdownPath, markdown);
+if (writeReport) {
+  mkdirSync(dirname(jsonPath), { recursive: true });
+  writeFileSync(jsonPath, `${JSON.stringify(report, null, 2)}\n`);
+  writeFileSync(markdownPath, markdown);
+}
 
 process.stdout.write(
   `visual-audit ${report.status}: ${report.activityCount} activities / ${report.variationCount} variations / P0 ${report.issueCounts.p0} / P1 ${report.issueCounts.p1} / ${report.overallScore.toFixed(1)} points\n`

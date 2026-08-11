@@ -64,6 +64,9 @@
     "contract:verify:division-native-rubric": "node scripts/contract-lab/verify-division-native-rubric.mjs",
     "contract:verify": "node scripts/contract-lab/verify.mjs",
     "cognitive:verify": "node scripts/pedagogy/check-cognitive-demand.mjs",
+    "curriculum:coverage": "pnpm --filter @mathcanvas/compiler... build && node scripts/visual-audit/run.mjs --verify-only && node scripts/curriculum/build-coverage-report.mjs",
+    "curriculum:coverage:update": "pnpm --filter @mathcanvas/compiler... build && node scripts/visual-audit/run.mjs --verify-only && node scripts/curriculum/build-coverage-report.mjs --write",
+    "curriculum:source:verify": "node scripts/curriculum/verify-official-source.mjs",
     "doctor": "node scripts/doctor.mjs",
     "golden:verify": "vitest run tests/p0-golden.test.ts",
     "golden:update": "node scripts/golden/update.mjs",
@@ -103,7 +106,7 @@
     "test:watch": "vitest",
     "teacher-intent:verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/build-teacher-intent-report.mjs",
     "teacher-intent:ui-verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/capture-teacher-intent-ui.mjs",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && node scripts/curriculum/build-coverage-report.mjs && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",
