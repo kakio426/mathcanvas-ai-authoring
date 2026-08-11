@@ -68,12 +68,22 @@ export interface CurriculumLearningNeedOption {
 
 export interface CurriculumActivityOption {
   id: string;
+  familyId: string;
   label: string;
   description: string;
-  defaultProblemCount: 1 | 2 | 4;
-  availableProblemCounts: Array<1 | 2 | 4 | 6>;
+  manipulation: string;
+  defaultProblemCount: number;
+  availableProblemCounts: number[];
   learningNeeds: CurriculumLearningNeedOption[];
   availability: "verified" | "released";
+  problemParameterCapability?: {
+    familyId: string;
+    title: string;
+    scopeNote: string;
+    defaultParameters: import("@mathcanvas/contracts/problem-family").ProblemParameters;
+    fields: import("@mathcanvas/contracts/problem-family").ProblemParameterField[];
+  };
+  /** @deprecated 기존 저장 화면 호환용 */
   teacherIntentCapability?: import("@mathcanvas/contracts/teacher-intent").TeacherIntentKind;
 }
 
@@ -132,3 +142,8 @@ export {
   type TeacherIntentFieldDefinition,
   type TeacherIntentKind
 } from "@mathcanvas/contracts/teacher-intent";
+export {
+  problemParametersSchema,
+  type ProblemParameterField,
+  type ProblemParameters
+} from "@mathcanvas/contracts/problem-family";

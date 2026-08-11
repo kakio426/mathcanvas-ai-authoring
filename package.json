@@ -78,6 +78,8 @@
     "lesson-bundle:run": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/run-lesson-bundle-activity.mjs",
     "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
     "prompt-harness:eduitit-html30:update": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs --write",
+    "problem-family:verify": "pnpm --filter @mathcanvas/templates... build && node scripts/problem-families/build-registry-report.mjs",
+    "problem-family:update": "pnpm --filter @mathcanvas/templates... build && node scripts/problem-families/build-registry-report.mjs --write",
     "prompt-harness:eduitit-html30:verify": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs",
     "html30:v2:offline:update": "pnpm --filter @mathcanvas/compiler... build && node scripts/prompt-harness/build-eduitit-html30-v2-offline.mjs --write",
     "html30:v2:offline:verify": "pnpm --filter @mathcanvas/compiler... build && node scripts/prompt-harness/build-eduitit-html30-v2-offline.mjs",
@@ -106,7 +108,7 @@
     "test:watch": "vitest",
     "teacher-intent:verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/build-teacher-intent-report.mjs",
     "teacher-intent:ui-verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/capture-teacher-intent-ui.mjs",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && node scripts/curriculum/build-coverage-report.mjs && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && node scripts/problem-families/build-registry-report.mjs && node scripts/curriculum/build-coverage-report.mjs && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

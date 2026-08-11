@@ -3,7 +3,10 @@ import { z } from "zod";
 import {
   denominatorRelationSchema,
   difficultySchema,
-  manipulationSchema,
+  familyIdSchema,
+  officialElementaryStandardSchema,
+  problemFamilyManipulationSchema,
+  problemParametersSchema,
   redactSensitiveText,
   teacherIntentSchema
 } from "@mathcanvas/contracts";
@@ -112,20 +115,33 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
     {
       title: "MathCanvas 활동 추천",
       description:
-        "교사 요청을 공식 교육과정과 검증된 템플릿에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. teacherIntent는 곱셈 배열, 몇 개씩 묶는 나눗셈, 공통 분자 분수 비교 3종의 첫 문항 조건을 정확히 맞춥니다. 지원하지 않는 자유문장 조건을 임의로 채우지 말고 사용자에게 확인하세요. 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
+        "교사 요청을 공식 교육과정과 released ProblemFamily registry에 맞춰 분석하고 학년, 문제 수, 난이도, 조작 방식과 교사용 정답지를 추천합니다. problemParameters는 familyId와 역할 있는 조건값을 전달하며 registry가 선언한 범위 밖 조건은 확인 질문으로 차단합니다. teacherIntent는 기존 클라이언트 호환 입력입니다. 지원하지 않는 자유문장 조건을 임의로 채우지 마세요. 승인 재개용 로컬 초안을 저장하지만 MathCanvas 프로젝트는 만들지 않습니다.",
       inputSchema: z
         .object({
           prompt: z.string().min(5).max(2000),
+          requestedFamilyId: familyIdSchema
+            .describe(
+              "ProblemFamily registry의 canonical familyId입니다. 같은 성취기준에 여러 문제군이 있을 때 이 값으로 선택합니다."
+            )
+            .optional(),
+          requestedStandardCode: officialElementaryStandardSchema.shape.code
+            .describe("2022 개정 초등 수학 공식 성취기준 코드입니다.")
+            .optional(),
           requestedGrade: z.number().int().min(1).max(6).optional(),
           problemCount: z.number().int().min(1).max(6).optional(),
           difficulty: difficultySchema.optional(),
           denominatorRelation: denominatorRelationSchema.optional(),
-          // 계약 스키마에서 직접 파생한다. 활동을 추가하면서 이 목록을
-          // 갱신하지 않아 MCP에서만 활동에 접근하지 못하는 드리프트를 막는다.
-          manipulation: manipulationSchema.optional(),
+          // 신규 family의 조작 문자열은 수동 enum에 추가하지 않는다. 실제 route
+          // 지원 여부는 canonical ProblemFamily registry가 서버에서 검증한다.
+          manipulation: problemFamilyManipulationSchema.optional(),
+          problemParameters: problemParametersSchema
+            .describe(
+              "ProblemFamily registry의 familyId와 역할 있는 조건값입니다. registry에 없는 family·필드·값은 추측하거나 버리지 않고 거부합니다."
+            )
+            .optional(),
           teacherIntent: teacherIntentSchema
             .describe(
-              "등록된 활동의 첫 문항만 맞춤 설정합니다. kind별 필드의 수학적 역할을 그대로 사용하며 지원하지 않는 조합은 거부합니다."
+              "기존 클라이언트 호환 입력입니다. 새 호출은 problemParameters를 우선 사용하세요."
             )
             .optional()
         })
@@ -143,6 +159,12 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
           ok: true,
           ...service.recommend({
             prompt: input.prompt,
+            ...(input.requestedFamilyId === undefined
+              ? {}
+              : { requestedFamilyId: input.requestedFamilyId }),
+            ...(input.requestedStandardCode === undefined
+              ? {}
+              : { requestedStandardCode: input.requestedStandardCode }),
             ...(input.requestedGrade === undefined
               ? {}
               : { requestedGrade: input.requestedGrade }),
@@ -161,6 +183,9 @@ export function createMcpServer(service: MathCanvasAuthoringService): McpServer 
             ...(input.manipulation === undefined
               ? {}
               : { manipulation: input.manipulation }),
+            ...(input.problemParameters === undefined
+              ? {}
+              : { problemParameters: input.problemParameters }),
             ...(input.teacherIntent === undefined
               ? {}
               : { teacherIntent: input.teacherIntent })

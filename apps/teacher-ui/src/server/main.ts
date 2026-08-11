@@ -13,8 +13,7 @@ import {
   type MathCanvasAuthoringService
 } from "@mathcanvas/authoring-runtime";
 import {
-  findTeacherCurriculumStandard,
-  findTeacherTextbookUnit
+  findTeacherCurriculumStandard
 } from "@mathcanvas/curriculum";
 import type {
   ApiErrorBody,
@@ -31,9 +30,15 @@ import {
 import { buildInputReflections } from "./input-reflections.js";
 import {
   findTeacherIntentCapabilityForRoute,
+  problemParametersSchema,
   teacherIntentSchema,
+  type ProblemParameters,
   type TeacherIntent
 } from "@mathcanvas/contracts";
+import {
+  findProblemFamilyByRoute,
+  validateProblemParameters
+} from "@mathcanvas/templates";
 import { appendTeacherInputLog } from "./teacher-input-log.js";
 import { buildCurriculumCatalogResponse } from "./curriculum-catalog.js";
 
@@ -163,6 +168,7 @@ function toPublicActivity(
     >;
     learningNeedLabel: string;
     contextNote: string;
+    problemParameters?: ProblemParameters;
     teacherIntent?: TeacherIntent;
   }
 ): PublicActivity {
@@ -206,6 +212,15 @@ function toPublicActivity(
         learningNeedLabel: fallback.learningNeedLabel,
         contextNote: fallback.contextNote,
         problemCount: fallback.problemCount,
+        ...(fallback.problemParameters === undefined
+          ? {}
+          : { problemParameters: fallback.problemParameters }),
+        ...(result.activitySummary?.appliedProblemParameters === undefined
+          ? {}
+          : {
+              appliedProblemParameters:
+                result.activitySummary.appliedProblemParameters
+            }),
         ...(fallback.teacherIntent === undefined
           ? {}
           : { teacherIntent: fallback.teacherIntent }),
@@ -352,14 +367,21 @@ async function handleApi(
     const contextNote = typeof body.contextNote === "string" ? body.contextNote.trim() : "";
     const requestedGrade = Number(body.requestedGrade);
     const problemCount = Number(body.problemCount);
+    const problemParametersResult =
+      body.problemParameters === undefined
+        ? undefined
+        : problemParametersSchema.safeParse(body.problemParameters);
     const teacherIntentResult =
       body.teacherIntent === undefined
         ? undefined
         : teacherIntentSchema.safeParse(
             body.teacherIntent
           );
-    const unit = findTeacherTextbookUnit(unitId);
-    const standard = findTeacherCurriculumStandard(standardCode);
+    const curriculumCatalog = buildCurriculumCatalogResponse();
+    const unit = curriculumCatalog.units.find((candidate) => candidate.id === unitId);
+    const standard = curriculumCatalog.standards.find(
+      (candidate) => candidate.standardCode === standardCode
+    );
     const activityOption = standard?.activities.find((candidate) => candidate.id === activityId);
     const learningNeed = activityOption?.learningNeeds.find((candidate) => candidate.id === learningNeedId);
     if (
@@ -372,7 +394,7 @@ async function handleApi(
       requestedGrade !== unit.grade ||
       !unit.standardCodes.includes(standard.standardCode) ||
       !unit.activityIds.includes(activityOption.id) ||
-      !activityOption.availableProblemCounts.includes(problemCount as 1 | 2 | 4 | 6)
+      !activityOption.availableProblemCounts.includes(problemCount)
     ) {
       error(response, 400, "invalid_lesson", "학년, 단원, 성취기준과 학생의 어려움을 다시 확인해 주세요.");
       return;
@@ -387,7 +409,45 @@ async function handleApi(
       );
       return;
     }
+    if (problemParametersResult && !problemParametersResult.success) {
+      error(
+        response,
+        400,
+        "problem_parameters_confirmation_required",
+        "문제 맞춤 조건을 정확히 확인해 주세요.",
+        problemParametersResult.error.issues.map((issue) => issue.message)
+      );
+      return;
+    }
+    let problemParameters = problemParametersResult?.data;
+    if (problemParameters) {
+      try {
+        problemParameters = validateProblemParameters(problemParameters);
+      } catch (caught) {
+        error(
+          response,
+          400,
+          "problem_parameters_confirmation_required",
+          "선택한 활동이 지원하는 문제 조건인지 다시 확인해 주세요.",
+          [caught instanceof Error ? caught.message : "invalid-problem-parameters"]
+        );
+        return;
+      }
+    }
     const teacherIntent = teacherIntentResult?.data;
+    const problemFamily = findProblemFamilyByRoute({
+      manipulation: activityOption.manipulation,
+      standardCode: standard.standardCode
+    });
+    if (problemParameters && problemFamily?.familyId !== problemParameters.familyId) {
+      error(
+        response,
+        400,
+        "problem_parameters_confirmation_required",
+        "선택한 활동과 문제 맞춤 조건의 문제군이 다릅니다. 조건을 다시 골라 주세요."
+      );
+      return;
+    }
     const teacherIntentCapability = findTeacherIntentCapabilityForRoute({
       manipulation: activityOption.manipulation,
       standardCode: standard.standardCode
@@ -401,9 +461,16 @@ async function handleApi(
       );
       return;
     }
+    const legacyStandard = findTeacherCurriculumStandard(standard.standardCode);
+    const legacyActivity = legacyStandard?.activities.find(
+      (candidate) => candidate.id === activityOption.id
+    );
+    const legacyLearningNeed = legacyActivity?.learningNeeds.find(
+      (candidate) => candidate.id === learningNeed.id
+    );
     const prompt = [
-      activityOption.promptSeed,
-      learningNeed.promptDetail,
+      legacyActivity?.promptSeed ?? activityOption.description,
+      legacyLearningNeed?.promptDetail ?? learningNeed.description,
       ...(contextNote ? [`우리 반 상황: ${contextNote}`] : [])
     ].join(". ");
     const currentRuntime = getRuntime();
@@ -414,9 +481,11 @@ async function handleApi(
     const result = currentRuntime.service.recommend({
       prompt,
       requestedStandardCode: standard.standardCode,
+      requestedFamilyId: activityOption.familyId,
       requestedGrade,
       problemCount,
       manipulation: activityOption.manipulation,
+      ...(problemParameters === undefined ? {} : { problemParameters }),
       ...(teacherIntent === undefined ? {} : { teacherIntent })
     });
     await appendTeacherInputLog(teacherInputLogPath, {
@@ -427,6 +496,7 @@ async function handleApi(
       learningNeedId,
       problemCount,
       contextNote,
+      ...(problemParameters === undefined ? {} : { problemParameters }),
       ...(teacherIntent === undefined ? {} : { teacherIntent }),
       supported: result.supported
     });
@@ -455,6 +525,7 @@ async function handleApi(
       manipulation: activityOption.manipulation,
       learningNeedLabel: learningNeed.label,
       contextNote,
+      ...(problemParameters === undefined ? {} : { problemParameters }),
       ...(teacherIntent === undefined ? {} : { teacherIntent })
     });
     sessions.addCard(session, {

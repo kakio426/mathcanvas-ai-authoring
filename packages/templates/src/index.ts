@@ -1,5 +1,6 @@
 export {
   FRACTION_TEMPLATE_VERSION,
+  buildRegisteredAppliedProblemParameters,
   buildRegisteredAppliedTeacherIntent,
   buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
@@ -54,6 +55,17 @@ export {
   type RegisteredTeacherAnswer,
   type RegisteredActivityPlan
 } from "./registry.js";
+export {
+  createProblemFamilyRegistry,
+  findProblemFamilyByLegacyTeacherIntentKind,
+  findProblemFamilyByRoute,
+  getProblemFamilyManifest,
+  listProblemFamilyManifests,
+  problemParametersFromTeacherIntent,
+  teacherIntentFromProblemParameters,
+  validateProblemParameters,
+  type ProblemFamilyRegistry
+} from "./problem-families/registry.js";
 export {
   prepareWorksheetV2,
   prepareWorksheetV2ForContractLab,

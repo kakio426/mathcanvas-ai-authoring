@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
 import type { RecommendationSummary } from "@mathcanvas/authoring-runtime";
-import type { TeacherIntent } from "@mathcanvas/contracts";
+import {
+  PROBLEM_FAMILY_SCHEMA_VERSION,
+  type TeacherIntent
+} from "@mathcanvas/contracts";
 import {
   buildInputReflections,
+  problemParameterValuesEqual,
   type TeacherRecommendationInput
 } from "./input-reflections.js";
 
@@ -31,6 +35,14 @@ const recommendation: RecommendationSummary = {
 };
 
 describe("교사 입력 반영 상태", () => {
+  it("배열형 문제 조건은 참조가 아니라 구조 값으로 비교한다", () => {
+    expect(problemParameterValuesEqual([2, 4, 6], [2, 4, 6])).toBe(true);
+    expect(problemParameterValuesEqual(["삼각형", "사각형"], ["삼각형", "사각형"])).toBe(
+      true
+    );
+    expect(problemParameterValuesEqual([2, 4], [4, 2])).toBe(false);
+  });
+
   it("추천 echo와 일치하는 다섯 입력은 반영됨으로 표시한다", () => {
     const reflections = buildInputReflections(input, recommendation);
     expect(reflections.slice(0, 5).every(({ status }) => status === "applied"))
@@ -152,6 +164,37 @@ describe("교사 입력 반영 상태", () => {
     expect(
       reflections.find(({ inputLabel }) => inputLabel === "묶음 수")
     ).toMatchObject({ status: "applied" });
+  });
+
+  it("공통 ProblemParameters도 추천 echo와 실제 적용값을 모두 대조한다", () => {
+    const problemParameters = {
+      schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
+      familyId: "number.multiplication.group-array-meaning-v1",
+      values: {
+        itemsPerGroup: 4,
+        groupCount: 6,
+        contextObjectId: "ice-cream",
+        misconceptionId: "groups-size-order"
+      }
+    } as const;
+    const reflections = buildInputReflections(
+      {
+        ...input,
+        problemParameters,
+        appliedProblemParameters: problemParameters
+      },
+      { ...recommendation, problemParameters }
+    );
+    const parameterRows = reflections.slice(-4);
+    expect(parameterRows.map(({ value }) => value)).toEqual([
+      "4개씩",
+      "6묶음",
+      "아이스크림",
+      "두 수의 뜻 바꾸기"
+    ]);
+    expect(parameterRows.every(({ status }) => status === "applied")).toBe(
+      true
+    );
   });
 
   it.each([

@@ -1,6 +1,6 @@
 # 2022 개정 초등 수학 전 범위 생성 계획
 
-상태: Phase 0 완료, Phase 1 미착수  
+상태: Phase 0·1 완료, Phase 2 착수 대기
 작성일: 2026-08-11  
 최우선 목표: 2022 개정 초등 수학의 모든 공식 성취기준에 대해 교사가 실제로 사용할 수 있는 MathCanvas 수업자료를 생성한다.
 
@@ -54,18 +54,18 @@
 | 공식 원문 대조 완료 성취기준 | 121 | 121 |
 | 활동이 하나라도 연결된 성취기준 | 23 | 참고 지표 |
 | released 활동이 연결된 성취기준 | 18 | 모든 필수 평가 목표가 released인 성취기준 100% |
-| 고유 활동 ID | 28 | 목표 달성에 필요한 수만큼 |
+| canonical ProblemFamily | 29 | 목표 달성에 필요한 수만큼 |
 | released 활동 ID | 21 | 목표 달성에 필요한 수만큼 |
 | 교과서 단원 수 | 71 | 71 |
 | 활동이 하나라도 있는 단원 | 24/71 | 참고 지표 |
 | released 활동이 하나라도 있는 단원 | 16/71 | 모든 단원이 최소 하나 이상 + 해당 성취기준 완전 추적 |
-| 구조화 TeacherIntent | 3종 | 모든 released ProblemFamily가 공통 요청 계약 사용 |
+| 공통 ProblemParameters 지원 | 3/29 | 모든 released ProblemFamily가 공통 요청 계약 사용 |
 
 주의:
 
 - Phase 0 전 catalog 99행과 공식 121개를 대조한 결과, 빠진 22개는 모두 1~2학년군이었다. 현재는 121개 모두 공식 fixture에서 카탈로그로 투영된다.
 - `getElementaryCurriculumCoverage()`의 `18/121`은 released 활동 reach다. `AssessmentTarget`이 아직 없으므로 `targetCoverage`는 계속 `unavailable`이다.
-- Phase 1의 canonical `FamilyId` 전까지 `familyVariety`는 teacher activity option 수를 명시적 proxy로 사용하며, target coverage와 합치지 않는다.
+- `familyVariety`는 Phase 1 canonical `FamilyId`를 사용하며 target coverage와 합치지 않는다.
 - 현재 16/71은 “released 활동이 하나라도 있음”일 뿐 단원 전체를 만들 수 있다는 뜻이 아니다.
 - 공식 source manifest와 121개 레코드는 `packages/curriculum/src/fixtures/kr-2022-elementary-math/official-standards.json`에 있고, 최신 숫자는 `reports/curriculum-coverage/latest.md`에서 확인한다.
 
@@ -173,18 +173,28 @@ OfficialStandard
 
 ### Phase 1 — 공통 ProblemFamily 기반
 
+상태: **완료(2026-08-11)**. canonical 29개/released 21개, 기존 released
+blueprint·layout·payload hash 21/21 불변, 전체 440/440 테스트와 품질 gate 통과.
+기계 판독 대응표는 `reports/problem-family-registry/latest.json`, 확장 규칙은
+`docs/PROBLEM_FAMILY_ARCHITECTURE.md`에 고정한다.
+
 목적: 성취기준마다 하드코딩 데모를 만드는 구조를 없앤다.
 
 작업:
 
 1. `OfficialStandard`, `AssessmentTarget`, `ProblemFamily`, `CapabilityManifest`, `RenderRecipe`, `ReleaseEvidence` 스키마를 추가한다.
 2. catalog 활동 ID·template ID·manipulation 문자열을 연결하는 canonical `FamilyId`를 정의한다.
-3. 기존 21 released 활동과 release evidence를 새 registry에 점진적으로 이관한다. 현재 visual audit의 blueprint·layout hash 결속은 유지하고, generator·payload 결속이 부족한 항목만 보강한다.
+3. 기존 21 released 활동과 release evidence를 새 registry에 점진적으로 이관한다. 현재 visual audit의 blueprint·layout hash 결속을 유지하고 compiled payload hash 기준선도 고정한다.
 4. 기존 blueprint를 즉시 RenderRecipe로 재작성하지 않는다. 기존 구현은 `legacy recipe adapter`로 감싸고 신규 ProblemFamily부터 분리된 RenderRecipe를 사용한다.
 5. 새 registry가 기존 record를 감싸는 strangler 방식으로 전환한다. 새 경로가 같은 결과를 내는 것이 확인된 뒤에만 구 경로를 제거한다.
 6. 기존 TeacherIntent 3종을 공통 `ProblemParameters` 계약으로 이관한다.
 7. planner·MCP·teacher-ui가 registry만 읽도록 바꾼다.
 8. `mapped → generatable → offline-validated → live-released` 상태를 분리한다.
+
+구현 메모: 과거 `ACTIVITY_IDS`, `ACTIVITY_SUPPORT`, 중앙 generator/variation 목록은
+contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy adapter input으로
+남겼다. 신규 family는 이 기록을 수정하지 않고 영역 index의
+`ProblemFamilyNativeModule(source + capability + runtime)`만 사용한다.
 
 완료 기준:
 
@@ -195,6 +205,9 @@ OfficialStandard
 - 미지원 조건은 자동으로 `unsupported` 또는 `clarification-required`가 되며 침묵 무시 0건
 
 ### Phase 2 — 네 영역·세 학년군 대표 격자
+
+상태: **다음 실행 단계**. reviewed AssessmentTarget 분해와 native family의 첫 실제
+사용은 이 단계에서 시작한다. Phase 1의 더미 인수 fixture를 출시 family로 세지 않는다.
 
 목적: 수와 연산에 편중된 구조가 아닌지 전 범위 확장 전에 증명한다.
 

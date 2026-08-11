@@ -127,10 +127,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -145,10 +145,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "place-value-exchange"
+        "number.place-value.regroup-ten-bundles-v1"
       ],
       "releasedActivityIds": [
-        "place-value-exchange"
+        "number.place-value.regroup-ten-bundles-v1"
       ],
       "unitIds": [
         "1-1-5",
@@ -160,10 +160,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -191,10 +191,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -209,10 +209,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "make-ten"
+        "number.make-10.cards-v1"
       ],
       "releasedActivityIds": [
-        "make-ten"
+        "number.make-10.cards-v1"
       ],
       "unitIds": [
         "1-1-1",
@@ -222,10 +222,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -252,10 +252,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -282,10 +282,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -312,10 +312,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -342,10 +342,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -372,10 +372,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -390,10 +390,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "multiplication-array"
+        "number.multiplication.group-array-meaning-v1"
       ],
       "releasedActivityIds": [
-        "multiplication-array"
+        "number.multiplication.group-array-meaning-v1"
       ],
       "unitIds": [
         "2-1-6"
@@ -402,10 +402,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -428,10 +428,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -446,10 +446,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "repeating-pattern-unit"
+        "pattern.repeat-unit.pattern-blocks-v1"
       ],
       "releasedActivityIds": [
-        "repeating-pattern-unit"
+        "pattern.repeat-unit.pattern-blocks-v1"
       ],
       "unitIds": [
         "1-2-5",
@@ -459,10 +459,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -486,10 +486,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -513,10 +513,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -539,10 +539,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -567,10 +567,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -595,10 +595,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -622,10 +622,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -649,10 +649,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -667,10 +667,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "clock-hour-boundary"
+        "measure.time.clock.hour-hand-boundary-v1"
       ],
       "releasedActivityIds": [
-        "clock-hour-boundary"
+        "measure.time.clock.hour-hand-boundary-v1"
       ],
       "unitIds": [
         "1-2-3",
@@ -680,10 +680,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -698,10 +698,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "elapsed-time"
+        "measure.time.elapsed.clock-pair-v1"
       ],
       "releasedActivityIds": [
-        "elapsed-time"
+        "measure.time.elapsed.clock-pair-v1"
       ],
       "unitIds": [
         "2-2-4"
@@ -710,10 +710,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -736,10 +736,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -754,10 +754,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "broken-ruler-length"
+        "measure.length.unit-iteration.ruler-v1"
       ],
       "releasedActivityIds": [
-        "broken-ruler-length"
+        "measure.length.unit-iteration.ruler-v1"
       ],
       "unitIds": [
         "2-1-4",
@@ -767,10 +767,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -794,10 +794,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -821,10 +821,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -848,10 +848,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -875,10 +875,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -901,10 +901,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -927,10 +927,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -953,10 +953,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -979,10 +979,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1005,10 +1005,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1023,7 +1023,7 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "partial-product"
+        "number.multiplication.partial-products.construction-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -1035,10 +1035,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 0
       }
@@ -1063,10 +1063,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1081,11 +1081,11 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "division-remainder",
-        "partial-quotient"
+        "number.division.partial-quotients.construction-v1",
+        "number.division.quotient-remainder.claim-evidence-v1"
       ],
       "releasedActivityIds": [
-        "division-remainder"
+        "number.division.quotient-remainder.claim-evidence-v1"
       ],
       "unitIds": [
         "3-2-2",
@@ -1095,10 +1095,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 2,
         "releasedFamilyCount": 1
       }
@@ -1122,10 +1122,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1148,10 +1148,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1175,10 +1175,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1202,10 +1202,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1228,10 +1228,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1255,10 +1255,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1282,10 +1282,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1308,10 +1308,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1326,12 +1326,12 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "same-denominator-sum",
-        "same-denominator-over-one"
+        "fraction.add.same-denominator.improper-sum-v1",
+        "fraction.add.same-denominator.strips-v1"
       ],
       "releasedActivityIds": [
-        "same-denominator-sum",
-        "same-denominator-over-one"
+        "fraction.add.same-denominator.improper-sum-v1",
+        "fraction.add.same-denominator.strips-v1"
       ],
       "unitIds": [
         "4-2-1"
@@ -1340,10 +1340,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 2,
         "releasedFamilyCount": 2
       }
@@ -1366,10 +1366,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1392,10 +1392,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1418,10 +1418,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1436,12 +1436,12 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "balanced-equation",
-        "balance-scale-sum"
+        "relation.equal-sign.balance-scale.sum-card-v1",
+        "relation.equal-sign.balanced-equation.cards-v1"
       ],
       "releasedActivityIds": [
-        "balanced-equation",
-        "balance-scale-sum"
+        "relation.equal-sign.balance-scale.sum-card-v1",
+        "relation.equal-sign.balanced-equation.cards-v1"
       ],
       "unitIds": [
         "4-1-6"
@@ -1450,10 +1450,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 2,
         "releasedFamilyCount": 2
       }
@@ -1476,10 +1476,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1502,10 +1502,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1528,10 +1528,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1554,10 +1554,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1580,10 +1580,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1606,10 +1606,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1632,10 +1632,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1658,10 +1658,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1676,10 +1676,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "triangle-classification"
+        "geometry.triangle.classification.claim-evidence-v1"
       ],
       "releasedActivityIds": [
-        "triangle-classification"
+        "geometry.triangle.classification.claim-evidence-v1"
       ],
       "unitIds": [
         "4-2-2"
@@ -1688,10 +1688,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -1714,10 +1714,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1740,10 +1740,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1766,10 +1766,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1792,10 +1792,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1818,10 +1818,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1844,10 +1844,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1870,10 +1870,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1896,10 +1896,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1922,10 +1922,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1948,10 +1948,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -1974,10 +1974,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2000,10 +2000,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2026,10 +2026,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2052,10 +2052,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2070,10 +2070,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "angle-turn"
+        "measure.angle.turn-size.claim-evidence-v1"
       ],
       "releasedActivityIds": [
-        "angle-turn"
+        "measure.angle.turn-size.claim-evidence-v1"
       ],
       "unitIds": [
         "4-1-2"
@@ -2082,10 +2082,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -2108,10 +2108,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2126,11 +2126,12 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "bar-graph-scale",
-        "picture-graph-key"
+        "data.bar-graph.represent-from-table-v1",
+        "data.bar-graph.scale-unit.read-v1",
+        "data.picture-graph.key.claim-evidence-v1"
       ],
       "releasedActivityIds": [
-        "bar-graph-scale"
+        "data.bar-graph.scale-unit.read-v1"
       ],
       "unitIds": [
         "3-2-6",
@@ -2140,11 +2141,11 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
-        "familyCount": 2,
+        "basis": "canonical-problem-family-registry",
+        "familyCount": 3,
         "releasedFamilyCount": 1
       }
     },
@@ -2167,10 +2168,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2193,10 +2194,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2211,7 +2212,7 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "mixed-calculation-order"
+        "number.mixed-calculation.order.claim-evidence-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -2221,10 +2222,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 0
       }
@@ -2247,10 +2248,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2273,10 +2274,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2291,7 +2292,7 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "factor-pair-array"
+        "number.factor-pairs.array-construction-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -2301,10 +2302,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 0
       }
@@ -2327,10 +2328,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2345,10 +2346,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "equivalent-fraction"
+        "fraction.equivalent.same-whole.visual-v1"
       ],
       "releasedActivityIds": [
-        "equivalent-fraction"
+        "fraction.equivalent.same-whole.visual-v1"
       ],
       "unitIds": [
         "5-1-4"
@@ -2357,10 +2358,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -2375,10 +2376,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "unlike-denominator-comparison"
+        "fraction.compare.unlike-denominators.visual-v1"
       ],
       "releasedActivityIds": [
-        "unlike-denominator-comparison"
+        "fraction.compare.unlike-denominators.visual-v1"
       ],
       "unitIds": [
         "5-1-4"
@@ -2387,10 +2388,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -2405,12 +2406,12 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "unlike-denominator-sum",
-        "unlike-denominator-difference"
+        "fraction.add.unlike-denominators.common-unit-v1",
+        "fraction.subtract.unlike-denominators.common-unit-v1"
       ],
       "releasedActivityIds": [
-        "unlike-denominator-sum",
-        "unlike-denominator-difference"
+        "fraction.add.unlike-denominators.common-unit-v1",
+        "fraction.subtract.unlike-denominators.common-unit-v1"
       ],
       "unitIds": [
         "5-1-5"
@@ -2419,10 +2420,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 2,
         "releasedFamilyCount": 2
       }
@@ -2445,10 +2446,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2472,10 +2473,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2498,10 +2499,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2524,10 +2525,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2550,10 +2551,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2577,10 +2578,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2603,10 +2604,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2629,10 +2630,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2647,7 +2648,7 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "ratio-same-unit"
+        "relation.ratio.same-unit.claim-evidence-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -2657,10 +2658,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 0
       }
@@ -2683,10 +2684,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2709,10 +2710,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2735,10 +2736,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2761,10 +2762,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2779,10 +2780,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "line-symmetry-distance"
+        "geometry.symmetry.equal-distance.claim-evidence-v1"
       ],
       "releasedActivityIds": [
-        "line-symmetry-distance"
+        "geometry.symmetry.equal-distance.claim-evidence-v1"
       ],
       "unitIds": [
         "5-2-3"
@@ -2791,10 +2792,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -2817,10 +2818,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2843,10 +2844,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2869,10 +2870,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2895,10 +2896,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2921,10 +2922,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2947,10 +2948,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2973,10 +2974,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -2999,10 +3000,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3025,10 +3026,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3051,10 +3052,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3077,10 +3078,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3103,10 +3104,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3129,10 +3130,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3155,10 +3156,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3181,10 +3182,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3207,10 +3208,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3233,10 +3234,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3259,10 +3260,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3285,10 +3286,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3303,7 +3304,7 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "graph-purpose"
+        "data.graph.purpose.claim-evidence-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -3313,10 +3314,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 0
       }
@@ -3331,10 +3332,10 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "live-released",
       "activityIds": [
-        "probability-comparison"
+        "probability.compare.bag-ratios-v1"
       ],
       "releasedActivityIds": [
-        "probability-comparison"
+        "probability.compare.bag-ratios-v1"
       ],
       "unitIds": [
         "5-2-6"
@@ -3343,10 +3344,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 1,
         "releasedFamilyCount": 1
       }
@@ -3369,10 +3370,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }
@@ -3395,10 +3396,10 @@
         "status": "unavailable",
         "numerator": null,
         "denominator": null,
-        "note": "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "note": "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       },
       "familyVariety": {
-        "basis": "teacher-activity-option-proxy",
+        "basis": "canonical-problem-family-registry",
         "familyCount": 0,
         "releasedFamilyCount": 0
       }

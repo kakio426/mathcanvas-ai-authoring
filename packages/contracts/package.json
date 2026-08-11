@@ -13,6 +13,10 @@
     "./teacher-intent": {
       "types": "./dist/teacher-intent.d.ts",
       "default": "./dist/teacher-intent.js"
+    },
+    "./problem-family": {
+      "types": "./dist/problem-family.d.ts",
+      "default": "./dist/problem-family.js"
     }
   },
   "scripts": {

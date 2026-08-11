@@ -12,6 +12,7 @@
     "@mathcanvas/authoring-runtime": "workspace:*",
     "@mathcanvas/contracts": "workspace:*",
     "@mathcanvas/curriculum": "workspace:*",
+    "@mathcanvas/templates": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

@@ -65,6 +65,9 @@ importers:
       '@mathcanvas/curriculum':
         specifier: workspace:*
         version: link:../../packages/curriculum
+      '@mathcanvas/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
       react:
         specifier: ^19.1.1
         version: 19.2.8
@@ -141,6 +144,9 @@ importers:
       '@mathcanvas/curriculum':
         specifier: workspace:*
         version: link:../curriculum
+      '@mathcanvas/templates':
+        specifier: workspace:*
+        version: link:../templates
 
   packages/templates:
     dependencies:

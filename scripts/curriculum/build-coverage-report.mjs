@@ -9,6 +9,10 @@ import {
   teacherCurriculumCatalog,
   teacherTextbookUnits
 } from "../../packages/curriculum/dist/index.js";
+import {
+  listProblemFamilyManifests,
+  listRegisteredBlueprints
+} from "../../packages/templates/dist/index.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const jsonPath = resolve(root, "reports/curriculum-coverage/latest.json");
@@ -23,20 +27,68 @@ function available(numerator, denominator, note) {
   return { status: "available", numerator, denominator, note };
 }
 
-function stageFor(standard) {
+function stageFor(standard, families) {
   if (!standard) return "unmapped";
-  if (standard.activities.length === 0) return "mapped";
-  if (standard.activities.some((activity) => activity.availability === "released")) {
-    return "live-released";
-  }
-  if (standard.activities.some((activity) => activity.availability === "verified")) {
-    return "offline-validated";
-  }
-  return "generatable";
+  if (families.length === 0) return "mapped";
+  const order = ["mapped", "generatable", "offline-validated", "live-released"];
+  return families
+    .map((family) => family.releaseEvidence.lifecycleStage)
+    .sort((left, right) => order.indexOf(right) - order.indexOf(left))[0];
 }
 
 function buildReport() {
   const { source, standards } = officialElementaryStandardsFixture;
+  const families = listProblemFamilyManifests();
+  const officialCodes = new Set(standards.map((standard) => standard.code));
+  const manifestIds = new Set(families.map((family) => family.familyId));
+  const runtimeBlueprints = listRegisteredBlueprints();
+  const runtimeIds = new Set(runtimeBlueprints.map((blueprint) => blueprint.id));
+  const missingRuntime = [...manifestIds].filter(
+    (familyId) => !runtimeIds.has(familyId)
+  );
+  const missingManifest = [...runtimeIds].filter(
+    (familyId) => !manifestIds.has(familyId)
+  );
+  const unknownFamilyStandardCodes = [
+    ...new Set(
+      families.flatMap((family) =>
+        family.capability.supportedStandardCodes.filter(
+          (standardCode) => !officialCodes.has(standardCode)
+        )
+      )
+    )
+  ];
+  const blueprintHashMismatches = runtimeBlueprints
+    .filter(
+      (blueprint) =>
+        families.find((family) => family.familyId === blueprint.id)
+          ?.releaseEvidence.blueprintContentHash !== blueprint.contentHash
+    )
+    .map((blueprint) => blueprint.id);
+  if (
+    missingRuntime.length > 0 ||
+    missingManifest.length > 0 ||
+    unknownFamilyStandardCodes.length > 0 ||
+    blueprintHashMismatches.length > 0
+  ) {
+    throw new Error(
+      [
+        `problem-family-coverage-join-failed`,
+        `missing-runtime=${missingRuntime.join(",")}`,
+        `missing-manifest=${missingManifest.join(",")}`,
+        `unknown-standard=${unknownFamilyStandardCodes.join(",")}`,
+        `hash-mismatch=${blueprintHashMismatches.join(",")}`
+      ].join(":")
+    );
+  }
+  const familiesByStandard = new Map();
+  for (const family of families) {
+    for (const standardCode of family.capability.supportedStandardCodes) {
+      const registered = familiesByStandard.get(standardCode) ?? [];
+      registered.push(family);
+      familiesByStandard.set(standardCode, registered);
+    }
+  }
   const catalogByCode = new Map(
     teacherCurriculumCatalog.map((standard) => [standard.standardCode, standard])
   );
@@ -51,11 +103,11 @@ function buildReport() {
 
   const rows = standards.map((official) => {
     const catalog = catalogByCode.get(official.code);
-    const activityIds = catalog?.activities.map((activity) => activity.id) ?? [];
-    const releasedActivityIds =
-      catalog?.activities
-        .filter((activity) => activity.availability === "released")
-        .map((activity) => activity.id) ?? [];
+    const registeredFamilies = familiesByStandard.get(official.code) ?? [];
+    const activityIds = registeredFamilies.map((family) => family.familyId);
+    const releasedActivityIds = registeredFamilies
+      .filter((family) => family.releaseEvidence.supportState === "released")
+      .map((family) => family.familyId);
     return {
       code: official.code,
       gradeBand: official.gradeBand,
@@ -65,22 +117,21 @@ function buildReport() {
       catalogSummaryKind: catalog?.summaryKind ?? null,
       catalogGoalMatchesOfficial:
         catalog === undefined ? null : catalog.standardSummary === official.officialGoal,
-      activityStage: stageFor(catalog),
+      activityStage: stageFor(catalog, registeredFamilies),
       activityIds,
       releasedActivityIds,
       unitIds: unitsByStandard.get(official.code) ?? [],
       targetCoverage: unavailable(
-        "AssessmentTarget registry는 Phase 1에서 도입합니다. 활동 연결 수를 target coverage로 대체하지 않습니다."
+        "AssessmentTarget 스키마는 도입했지만 공식 성취기준별 reviewed target 분해는 Phase 2부터 진행합니다. family 수를 target coverage로 대체하지 않습니다."
       ),
       familyVariety: {
-        basis: "teacher-activity-option-proxy",
+        basis: "canonical-problem-family-registry",
         familyCount: activityIds.length,
         releasedFamilyCount: releasedActivityIds.length
       }
     };
   });
 
-  const officialCodes = new Set(standards.map((standard) => standard.code));
   const missingOfficialCodes = standards
     .filter((standard) => !catalogByCode.has(standard.code))
     .map((standard) => standard.code);
@@ -201,7 +252,7 @@ function markdown(report) {
     `- 카탈로그 매핑: **${report.mappedStandardCount}/${report.officialStandardCount}**`,
     `- released 활동 reach: **${report.standardsWithReleasedActivity}/${report.officialStandardCount} (${percent(report.standardsWithReleasedActivity, report.officialStandardCount)})**`,
     "- target coverage: **산정하지 않음** — AssessmentTarget registry가 생기기 전에는 활동 수로 대신하지 않습니다.",
-    "- family variety: Phase 1 canonical FamilyId 전까지 teacher activity option 수를 명시적 proxy로 사용합니다.",
+    "- family variety: canonical ProblemFamily registry의 FamilyId를 사용하며 target coverage와 합치지 않습니다.",
     `- catalog diff: 누락 ${report.catalogDiff.missingOfficialCodes.length}, fixture 밖 ${report.catalogDiff.codesOutsideOfficialFixture.length}, 문구 ${report.catalogDiff.officialGoalMismatches.length}, 학년군 ${report.catalogDiff.gradeBandMismatches.length}, 영역 ${report.catalogDiff.domainMismatches.length}`,
     "",
     "> released 활동 reach는 ‘이 성취기준에 출시 활동이 하나라도 연결됨’을 뜻합니다. 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다.",

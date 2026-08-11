@@ -1,7 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, describe, expect, it } from "vitest";
-import { manipulationSchema } from "@mathcanvas/contracts";
 import {
   CreationJobStore,
   MANAGED_BROWSER_VERSION,
@@ -84,6 +83,15 @@ describe("MCP 도구 seam", () => {
     );
     expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
       "teacherIntent"
+    );
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "problemParameters"
+    );
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "requestedFamilyId"
+    );
+    expect(JSON.stringify(recommendTool?.inputSchema)).toContain(
+      "requestedStandardCode"
     );
     for (const kind of [
       "multiplication-array-v1",
@@ -173,30 +181,21 @@ describe("MCP 도구 seam", () => {
     });
   });
 
-  it("추천 도구의 조작 방식 목록이 계약 스키마와 어긋나지 않는다", async () => {
+  it("추천 도구는 신규 조작 문자열을 legacy enum 없이 받고 registry에서 판정한다", async () => {
     const client = await connectedClient();
-    const tools = await client.listTools();
-    const recommendTool = tools.tools.find(
-      (tool) => tool.name === "mathcanvas_recommend_activity"
-    );
-    const exposed = new Set<string>(
-      (
-        (
-          recommendTool?.inputSchema as {
-            properties?: {
-              manipulation?: { enum?: unknown[] };
-            };
-          }
-        ).properties?.manipulation?.enum ?? []
-      ).map(String)
-    );
-
-    // 등록된 활동의 조작 방식은 전부 MCP로도 요청할 수 있어야 한다.
-    // 활동을 추가하고 이 목록을 갱신하지 않으면 MCP에서만 접근이 막힌다.
-    const contracted = new Set<string>(manipulationSchema.options);
-    expect([...contracted].filter((value) => !exposed.has(value))).toEqual([]);
-    expect([...exposed].filter((value) => !contracted.has(value))).toEqual([]);
-    expect(exposed.size).toBe(contracted.size);
+    const result = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "등록 전 도형 문제군의 조작 경로를 확인해 주세요.",
+        requestedStandardCode: "[4수03-24]",
+        manipulation: "geometry-angle-sort-card-drag"
+      }
+    });
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      supported: false
+    });
   });
 
   it("전용 Chrome 열기 도구가 로그인 위치를 반환한다", async () => {
@@ -321,6 +320,75 @@ describe("MCP 도구 seam", () => {
         scenario.expectedPreview
       );
     }
+  });
+
+  it("MCP가 generic ProblemParameters를 registry 검증 뒤 실제 문항까지 전달한다", async () => {
+    const client = await connectedClient();
+    const problemParameters = {
+      schemaVersion: "1.0.0",
+      familyId: "number.multiplication.group-array-meaning-v1",
+      values: {
+        itemsPerGroup: 4,
+        groupCount: 6,
+        contextObjectId: "ice-cream",
+        misconceptionId: "groups-size-order"
+      }
+    };
+    const result = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "아이스크림 4개씩 6묶음의 두 수 뜻을 확인해 주세요.",
+        problemParameters
+      }
+    });
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      supported: true,
+      recommendation: { problemParameters },
+      activitySummary: { appliedProblemParameters: problemParameters }
+    });
+    expect(JSON.stringify(result.structuredContent)).toContain(
+      "한 묶음에 아이스크림이 4개씩"
+    );
+
+    const unsupported = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "아이스크림 4개씩 6묶음으로 만들어 주세요.",
+        problemParameters: {
+          ...problemParameters,
+          values: {
+            ...problemParameters.values,
+            ignoredContext: "cookie"
+          }
+        }
+      }
+    });
+    expect(unsupported.isError).toBe(true);
+    expect(unsupported.structuredContent).toMatchObject({
+      errorCode: "problem-parameters-confirmation-required"
+    });
+  });
+
+  it("MCP가 canonical FamilyId만으로 문제군을 선택해 추천한다", async () => {
+    const client = await connectedClient();
+    const result = await client.callTool({
+      name: "mathcanvas_recommend_activity",
+      arguments: {
+        prompt: "수 카드로 10을 만드는 문제군을 추천해 주세요.",
+        requestedFamilyId: "number.make-10.cards-v1"
+      }
+    });
+    expect(result.isError).not.toBe(true);
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      supported: true,
+      recommendation: {
+        templateId: "number.make-10.cards-v1",
+        standardCode: "[2수01-04]"
+      }
+    });
   });
 
   it("teacherConfirmed가 없으면 MCP 스키마 단계에서 쓰기를 막는다", async () => {

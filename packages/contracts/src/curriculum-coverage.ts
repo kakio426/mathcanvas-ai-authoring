@@ -154,7 +154,10 @@ export const officialStandardCoverageRowSchema = z
     targetCoverage: nullableCoverageCountSchema,
     familyVariety: z
       .object({
-        basis: z.literal("teacher-activity-option-proxy"),
+        basis: z.enum([
+          "teacher-activity-option-proxy",
+          "canonical-problem-family-registry"
+        ]),
         familyCount: z.number().int().min(0),
         releasedFamilyCount: z.number().int().min(0)
       })

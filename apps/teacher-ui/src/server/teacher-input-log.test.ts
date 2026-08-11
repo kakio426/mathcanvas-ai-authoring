@@ -22,6 +22,16 @@ describe("교사 입력 로컬 로그", () => {
       ...base,
       at: "2026-08-10T00:01:00.000Z",
       contextNote: "수업 메모",
+      problemParameters: {
+        schemaVersion: "1.0.0",
+        familyId: "number.multiplication.group-array-meaning-v1",
+        values: {
+          itemsPerGroup: 4,
+          groupCount: 6,
+          contextObjectId: "ice-cream",
+          misconceptionId: "groups-size-order"
+        }
+      },
       teacherIntent: {
         kind: "multiplication-array-v1",
         itemsPerGroup: 4,
@@ -39,6 +49,16 @@ describe("교사 입력 로컬 로그", () => {
         ...base,
         at: "2026-08-10T00:01:00.000Z",
         contextNote: "수업 메모",
+        problemParameters: {
+          schemaVersion: "1.0.0",
+          familyId: "number.multiplication.group-array-meaning-v1",
+          values: {
+            itemsPerGroup: 4,
+            groupCount: 6,
+            contextObjectId: "ice-cream",
+            misconceptionId: "groups-size-order"
+          }
+        },
         teacherIntent: {
           kind: "multiplication-array-v1",
           itemsPerGroup: 4,

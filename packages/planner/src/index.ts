@@ -5,9 +5,10 @@ import {
   VERIFIED_TEMPLATE_ID,
   generationRequestSchema,
   getActivitySupportState,
-  getTeacherIntentCapability,
   recommendationSchema,
   type GenerationRequest,
+  type ProblemFamilyManifest,
+  type ProblemParameters,
   type Recommendation
 } from "@mathcanvas/contracts";
 import {
@@ -20,6 +21,13 @@ import {
   partialOperationActivityProfiles,
   resolveCurriculum
 } from "@mathcanvas/curriculum";
+import {
+  findProblemFamilyByRoute,
+  getProblemFamilyManifest,
+  problemParametersFromTeacherIntent,
+  teacherIntentFromProblemParameters,
+  validateProblemParameters
+} from "@mathcanvas/templates";
 
 export {
   planWorksheetV2,
@@ -520,12 +528,104 @@ export class PlanningError extends Error {
       | "unsupported-intent"
       | "grade-mismatch"
       | "low-confidence"
-      | "teacher-intent-confirmation-required",
+      | "teacher-intent-confirmation-required"
+      | "problem-parameters-confirmation-required",
     message: string
   ) {
     super(message);
     this.name = "PlanningError";
   }
+}
+
+interface RequestedProblemFamilyCustomization {
+  readonly manifest: ProblemFamilyManifest;
+  readonly parameters: ProblemParameters;
+  readonly legacyTeacherIntent: GenerationRequest["teacherIntent"];
+}
+
+function candidateFromManifest(
+  manifest: ProblemFamilyManifest,
+  requestedStandardCode?: string
+) {
+  const standardCode =
+    requestedStandardCode &&
+    manifest.capability.supportedStandardCodes.includes(requestedStandardCode)
+      ? requestedStandardCode
+      : manifest.capability.supportedStandardCodes[0]!;
+  return {
+    templateId: manifest.templateId,
+    standardCode,
+    manipulation: manifest.manipulation,
+    grade: manifest.capability.recommendedGrade,
+    gradeRange: manifest.capability.gradeRange,
+    maximumProblemCount: Math.max(
+      ...manifest.capability.availableProblemCounts
+    )
+  };
+}
+
+function sameParameters(
+  left: ProblemParameters,
+  right: ProblemParameters
+): boolean {
+  const normalizedValues = (values: ProblemParameters["values"]) =>
+    JSON.stringify(
+      Object.entries(values).sort(([leftKey], [rightKey]) =>
+        leftKey.localeCompare(rightKey)
+      )
+    );
+  return (
+    left.familyId === right.familyId &&
+    normalizedValues(left.values) === normalizedValues(right.values)
+  );
+}
+
+function resolveRequestedProblemFamilyCustomization(
+  request: GenerationRequest
+): RequestedProblemFamilyCustomization | undefined {
+  let fromLegacy: ProblemParameters | undefined;
+  let explicit: ProblemParameters | undefined;
+  try {
+    fromLegacy = request.teacherIntent
+      ? problemParametersFromTeacherIntent(request.teacherIntent)
+      : undefined;
+    explicit = request.problemParameters
+      ? validateProblemParameters(request.problemParameters)
+      : undefined;
+  } catch (error) {
+    throw new PlanningError(
+      "problem-parameters-confirmation-required",
+      `지정한 문제 조건을 이 활동에서 정확히 반영할 수 없습니다. 조건을 고쳐 다시 확인해 주세요. (${error instanceof Error ? error.message : "invalid-problem-parameters"})`
+    );
+  }
+  if (request.teacherIntent && !fromLegacy) {
+    throw new PlanningError(
+      "teacher-intent-confirmation-required",
+      "기존 맞춤 조건을 canonical ProblemFamily에 연결할 수 없습니다. 조건을 빼고 만들거나 취소해 주세요."
+    );
+  }
+  if (fromLegacy && explicit && !sameParameters(fromLegacy, explicit)) {
+    throw new PlanningError(
+      "problem-parameters-confirmation-required",
+      "기존 맞춤 조건과 공통 문제 조건이 서로 다릅니다. 둘 중 하나만 남기고 확인해 주세요."
+    );
+  }
+  const parameters = explicit ?? fromLegacy;
+  if (!parameters) return undefined;
+  const manifest = getProblemFamilyManifest(parameters.familyId);
+  if (!manifest || manifest.capability.parameterFields.length === 0) {
+    throw new PlanningError(
+      "problem-parameters-confirmation-required",
+      "선택한 문제군은 아직 추가 맞춤 조건을 지원하지 않습니다. 조건을 빼고 만들거나 다른 문제군을 골라 주세요."
+    );
+  }
+  return {
+    manifest,
+    parameters,
+    legacyTeacherIntent:
+      request.teacherIntent ??
+      teacherIntentFromProblemParameters(parameters)
+  };
 }
 
 export function recommendActivity(input: unknown): Recommendation {
@@ -539,59 +639,86 @@ export function recommendActivity(input: unknown): Recommendation {
     );
   }
   const request: GenerationRequest = parsed.data;
-  const teacherIntentCapability = request.teacherIntent
-    ? getTeacherIntentCapability(request.teacherIntent.kind)
+  const customization = resolveRequestedProblemFamilyCustomization(request);
+  const requestedFamily = request.requestedFamilyId
+    ? getProblemFamilyManifest(request.requestedFamilyId)
     : undefined;
-  const blockedPrompt = teacherIntentCapability?.promptGuards?.find((guard) =>
+  if (request.requestedFamilyId && !requestedFamily) {
+    throw new PlanningError(
+      "problem-parameters-confirmation-required",
+      `등록되지 않은 문제군입니다: ${request.requestedFamilyId}`
+    );
+  }
+  if (
+    customization &&
+    requestedFamily &&
+    customization.manifest.familyId !== requestedFamily.familyId
+  ) {
+    throw new PlanningError(
+      "problem-parameters-confirmation-required",
+      "선택한 문제군과 문제 조건의 문제군이 다릅니다. 둘을 같은 문제군으로 맞춰 주세요."
+    );
+  }
+  const selectedFamily = customization?.manifest ?? requestedFamily;
+  const registryRoutedFamily =
+    selectedFamily ??
+    (request.requestedStandardCode
+      ? findProblemFamilyByRoute({
+          standardCode: request.requestedStandardCode,
+          ...(request.manipulation
+            ? { manipulation: request.manipulation }
+            : {})
+        })
+      : undefined);
+  const familyCapability = registryRoutedFamily?.capability;
+  const blockedPrompt = familyCapability?.promptGuards.find((guard) =>
     new RegExp(guard.pattern, "u").test(request.prompt)
   );
   if (blockedPrompt) {
     throw new PlanningError(
-      "teacher-intent-confirmation-required",
+      request.problemParameters
+        ? "problem-parameters-confirmation-required"
+        : "teacher-intent-confirmation-required",
       blockedPrompt.message
     );
   }
   if (
-    teacherIntentCapability &&
+    selectedFamily &&
     request.manipulation !== undefined &&
-    request.manipulation !== teacherIntentCapability.manipulation
+    request.manipulation !== selectedFamily.manipulation
   ) {
     throw new PlanningError(
-      "teacher-intent-confirmation-required",
-      `지정한 조건은 ${teacherIntentCapability.title}에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 해당 활동으로 바꿔 주세요.`
+      request.problemParameters
+        ? "problem-parameters-confirmation-required"
+        : "teacher-intent-confirmation-required",
+      `지정한 조건은 ${familyCapability?.title ?? selectedFamily.familyId}에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 해당 활동으로 바꿔 주세요.`
     );
   }
   if (
-    teacherIntentCapability &&
+    selectedFamily &&
     request.requestedStandardCode !== undefined &&
-    request.requestedStandardCode !== teacherIntentCapability.standardCode
+    !selectedFamily.capability.supportedStandardCodes.includes(
+      request.requestedStandardCode
+    )
   ) {
     throw new PlanningError(
-      "teacher-intent-confirmation-required",
-      `지정한 조건은 성취기준 ${teacherIntentCapability.standardCode} 활동에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 성취기준을 다시 골라 주세요.`
+      request.problemParameters
+        ? "problem-parameters-confirmation-required"
+        : "teacher-intent-confirmation-required",
+      `지정한 조건은 성취기준 ${selectedFamily.capability.supportedStandardCodes.join(", ")} 활동에서만 정확히 반영할 수 있습니다. 조건을 빼고 만들거나 성취기준을 다시 골라 주세요.`
     );
   }
-  const routedRequest: GenerationRequest = teacherIntentCapability
+  const routedRequest: GenerationRequest = selectedFamily
     ? {
         ...request,
-        manipulation:
-          teacherIntentCapability.manipulation as NonNullable<
-            Recommendation["manipulation"]
-          >
+        manipulation: selectedFamily.manipulation
       }
     : request;
-  const candidate = teacherIntentCapability
-    ? {
-        templateId: teacherIntentCapability.templateId,
-        standardCode: teacherIntentCapability.standardCode,
-        manipulation:
-          teacherIntentCapability.manipulation as NonNullable<
-            Recommendation["manipulation"]
-          >,
-        grade: teacherIntentCapability.recommendedGrade,
-        gradeRange: teacherIntentCapability.gradeRange,
-        maximumProblemCount: teacherIntentCapability.maximumProblemCount
-      }
+  const candidate = registryRoutedFamily
+    ? candidateFromManifest(
+        registryRoutedFamily,
+        request.requestedStandardCode
+      )
     : routedRequest.manipulation
       ? verifiedCandidate(routedRequest)
       : makeTenPatterns.some((pattern) => pattern.test(request.prompt))
@@ -601,19 +728,25 @@ export function recommendActivity(input: unknown): Recommendation {
           : verifiedCandidate(routedRequest);
   if (candidate) {
     if (
-      teacherIntentCapability &&
-      candidate.templateId !== teacherIntentCapability.templateId
+      selectedFamily &&
+      candidate.templateId !== selectedFamily.templateId
     ) {
       throw new PlanningError(
-        "teacher-intent-confirmation-required",
+        request.problemParameters
+          ? "problem-parameters-confirmation-required"
+          : "teacher-intent-confirmation-required",
         "지정한 조건을 선택한 활동에서 정확히 지킬 수 없습니다. 조건을 빼고 만들거나 취소해 주세요."
       );
     }
     const curriculum = resolveCurriculum(candidate.standardCode);
-    const supportState = getActivitySupportState(candidate.templateId);
+    const familyManifest =
+      registryRoutedFamily ?? getProblemFamilyManifest(candidate.templateId);
+    const supportState =
+      familyManifest?.releaseEvidence.supportState ??
+      getActivitySupportState(candidate.templateId);
     const problemCount =
       request.problemCount ??
-      teacherIntentCapability?.defaultProblemCount ??
+      familyCapability?.defaultProblemCount ??
       Math.min(4, candidate.maximumProblemCount);
     const difficulty = request.difficulty ?? "normal";
     const unsupportedRequests = [
@@ -622,15 +755,21 @@ export function recommendActivity(input: unknown): Recommendation {
             `문제 수는 ${candidate.maximumProblemCount}개까지 검증되었습니다.`
           ]
         : []),
+      ...(familyCapability &&
+      !familyCapability.availableProblemCounts.includes(problemCount)
+        ? [
+            `이 문제군은 ${familyCapability.availableProblemCounts.join(", ")}문항 구성을 지원합니다.`
+          ]
+        : []),
       ...(difficulty !== "normal"
         ? [
             "이 활동의 난이도 선택은 아직 수학적 차이를 만들지 않아 기본값만 지원합니다."
           ]
         : []),
       ...(request.denominatorRelation !== undefined &&
-      request.denominatorRelation !== teacherIntentCapability?.denominatorRelation
+      request.denominatorRelation !== familyCapability?.denominatorRelation
         ? [
-            teacherIntentCapability
+            familyCapability
               ? "이 맞춤 활동에서는 선택한 분모 관계를 지원하지 않습니다."
               : "분모 관계 선택은 분수 크기 비교 활동에서만 지원합니다."
           ]
@@ -654,19 +793,23 @@ export function recommendActivity(input: unknown): Recommendation {
       recommendedGrade: request.requestedGrade ?? candidate.grade,
       standardCode: curriculum.record.code,
       learningGoal:
+        familyManifest?.learningGoal ??
         ACTIVITY_LEARNING_GOALS[
           candidate.templateId as keyof typeof ACTIVITY_LEARNING_GOALS
         ],
       prerequisites: curriculum.record.prerequisites,
       problemCount,
       difficulty,
-      ...(teacherIntentCapability?.denominatorRelation
-        ? { denominatorRelation: teacherIntentCapability.denominatorRelation }
+      ...(familyCapability?.denominatorRelation
+        ? { denominatorRelation: familyCapability.denominatorRelation }
         : {}),
       manipulation: candidate.manipulation,
-      ...(request.teacherIntent === undefined
+      ...(customization?.legacyTeacherIntent === undefined
         ? {}
-        : { teacherIntent: request.teacherIntent }),
+        : { teacherIntent: customization.legacyTeacherIntent }),
+      ...(request.problemParameters === undefined
+        ? {}
+        : { problemParameters: customization?.parameters }),
       rationale: [
         "요청을 등록된 활동 유형과 성취기준에 연결했습니다."
       ],

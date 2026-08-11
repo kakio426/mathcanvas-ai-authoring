@@ -1,7 +1,7 @@
 # 2022 개정 초등 수학 전 범위 생성 체크리스트
 
 기준 문서: `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`  
-현재 실행 범위: Phase 0 완료, Phase 1 미착수  
+현재 실행 범위: Phase 0·1 완료, Phase 2 착수 대기
 상태 표기: `[ ]` 미착수, `[-]` 진행 중, `[x]` 완료, `[!]` 차단
 
 ## P0-A — 계획 보정
@@ -80,3 +80,90 @@
 - 기존 3종의 UI polish
 - 부분 수정 기능
 - 다수 교사 배포 기능
+
+## P1-A — 기준선과 이관 경계
+
+- [x] 기존 활동 ID·template ID·generator·manipulation·교육과정·support·release evidence의 현재 진실 공급원을 대조한다.
+- [x] 기존 29개 registered / 21개 released family의 canonical ID 대응표를 만든다.
+- [x] 기존 released blueprint content hash·layout hash·compiled payload snapshot 기준선을 고정한다.
+- [x] Phase 1에서 새 blueprint, 새 수학 문항, UI polish를 만들지 않는 범위를 테스트와 registry 보고서의 native 0개로 보호한다.
+
+완료 기준:
+
+- [x] 이관 전후에 비교할 기계 판독 가능한 기준선이 저장소에 있다.
+- [x] legacy adapter가 보존해야 할 필드와 새 registry가 소유할 필드가 문서와 타입으로 구분된다.
+
+## P1-B — 공통 계약과 영역별 registry
+
+- [x] `FamilyId`, `AssessmentTarget`, `ProblemFamily`, `ProblemParameters`, `CapabilityManifest`, `RenderRecipe`, `ReleaseEvidence` 스키마를 추가한다.
+- [x] lifecycle을 `mapped → generatable → offline-validated → live-released`로 분리한다.
+- [x] 네 교육과정 영역별 family index와 하나의 읽기 전용 domain registry를 만든다.
+- [x] family ID·activity ID·template ID·manipulation의 중복과 불일치를 시작 시점에 거부한다.
+- [x] 미지원 파라미터 처리 정책을 `unsupported` 또는 `clarification-required`로 명시한다.
+
+완료 기준:
+
+- [x] registry가 전체 29개 family를 정확히 한 번씩 반환하고 기존 21개 released 상태를 보존한다.
+- [x] 공통 소비자는 개별 family 리터럴이나 수동 union을 몰라도 manifest를 조회할 수 있다.
+
+## P1-C — legacy strangler 이관
+
+- [x] 기존 blueprint와 generator를 `legacy recipe adapter`로 감싼다.
+- [x] `ACTIVITY_IDS`, `ACTIVITY_SUPPORT`, release evidence는 frozen legacy input으로 격리하고 canonical 보고·소비 경로는 새 registry projection으로 바꾼다. 신규 family는 이 record를 수정하지 않는다.
+- [x] template runtime registry가 canonical family binding과 native module seam을 노출하되 기존 compile 경로를 보존한다.
+- [x] visual/cognitive/layout evidence의 기존 hash 결속을 그대로 유지한다.
+
+완료 기준:
+
+- [x] 기존 public API와 legacy 추천·compile 결과가 바뀌지 않는다.
+- [x] 21개 released family의 blueprint/layout/payload hash가 기준선과 일치한다.
+
+## P1-D — 공통 ProblemParameters와 소비자 전환
+
+- [x] 기존 3개 TeacherIntent를 `ProblemParameters` 요청 envelope로 호환 이관한다.
+- [x] capability의 parameter schema·필드·기본값·route를 family manifest에서 투영한다.
+- [x] planner가 `requestedFamilyId`와 family registry의 route/capability로 신규 경로를 선택하도록 바꾼다. 과거 prompt router는 legacy fallback으로만 남긴다.
+- [x] MCP가 generic family ID·ProblemParameters schema와 registry 설명을 읽고 신규 family용 수동 union을 요구하지 않는다.
+- [x] teacher-ui가 registry projection만 읽고 개별 activity 조건을 하드코딩하지 않는지 검증한다.
+- [x] authoring-runtime의 승인 token·activitySpecHash·create-only 안전 게이트를 보존한다.
+
+완료 기준:
+
+- [x] legacy 3개 요청의 기존 hash가 보존되고, 동등한 ProblemParameters 요청은 같은 문항·정답·compiled payload를 만든다. 새 envelope가 포함된 approval hash를 legacy hash와 같다고 과장하지 않는다.
+- [x] 지원하지 않는 family·kind·필드·값은 침묵 무시 없이 명시적으로 차단된다.
+
+## P1-E — 확장성 인수 테스트와 커버리지 조인
+
+- [x] 더미 fourth family를 native domain module 계약으로 조립하는 인수 fixture를 만든다.
+- [x] 더미 family 때문에 공통 planner·MCP·teacher-ui·template/generator registry를 수정하면 실패하는 아키텍처 테스트를 추가한다.
+- [x] 새 family가 `family module + manifest + tests + 영역별 index`만으로 조회·route·runtime·폼 projection에 나타남을 증명한다.
+- [x] 커버리지 보고서가 canonical family와 lifecycle을 사용하고 family 수를 target coverage로 표시하지 않는다.
+
+완료 기준:
+
+- [x] 단일 등록 지점 인수 테스트가 통과한다.
+- [x] 공식 성취기준→family→runtime binding→release evidence 조인이 끊기면 CI가 실패한다.
+
+## P1-F — 회귀 QA와 종료 대조
+
+- [x] 관련 단위·contract·architecture 테스트를 통과한다.
+- [x] `pnpm curriculum:coverage`를 재생성했다. reach는 18/121로 동일하고 familyVariety의 basis만 legacy proxy에서 canonical registry로 바뀌었다.
+- [x] `pnpm check` 전체를 통과한다.
+- [x] plan과 checklist를 다시 읽어 Phase 1 누락과 범위 이탈을 대조한다.
+- [x] architecture baseline을 검토했다. frozen core baseline 32개·hash는 변경되지 않았고 재동결이 필요하지 않았다.
+- [x] 구현·테스트·문서를 원자적 커밋으로 정리해 `main`에 push한다.
+
+## Phase 1 증거 — 2026-08-11
+
+- canonical registry: 29개 exactly-once, released 21개, native production family 0개
+- 공통 요청: `requestedFamilyId` 29/29 라우팅, ProblemParameters 3개 legacy family 무손실 호환
+- 확장 seam: 네 영역 index + `ProblemFamilyNativeModule(source/capability/runtime)`, 더미 geometry family가 runtime·planner 계약·MCP generic schema·teacher-ui form projection에 나타남
+- hash 기준선: released 21개의 blueprint·layout·compiled payload 21/21 일치
+- 커버리지: 공식 121, mapped 121, any family reach 23, released reach 18, target coverage unavailable 유지
+- 전체 QA: 71 test files, 440/440 tests, build, registry/coverage stale check, native/contract/cognitive/visual/quality audit PASS
+- architecture baseline: 32 files, `a8a237bda09a8b0c48b8c252ec7b7ea57ad94210e7b2c184dcda5d351ac90a9c` 유지
+- 외부 MathCanvas 쓰기: 0건. Phase 1은 새 family를 출시하지 않아 fresh canary가 완료 조건이 아님
+- Fable CLI 독립 검수: `PASS`, P0 0건, P1 0건. P2 권고였던 MCP legacy manipulation enum, 문항 수 상한 이원화, 다중 성취기준 route, 배열 값 비교, native projector 요건은 커밋 전 해소
+- Fable CLI 수정 재검수: `PASS`, Phase 1 커밋 가능. 추가 권고인 ProblemParameters record key 순서 의존도 정규화 비교로 해소
+
+Phase 1은 위 완료 기준이 모두 충족되기 전까지 완료로 표시하지 않는다.

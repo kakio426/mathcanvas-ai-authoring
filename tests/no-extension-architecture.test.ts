@@ -79,7 +79,7 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     );
   });
 
-  it("TeacherIntent 중앙 소비자는 capability kind별 분기 없이 registry 계약만 사용한다", () => {
+  it("ProblemParameters 중앙 소비자는 family별 kind 분기 없이 registry 계약만 사용한다", () => {
     const consumers = [
       read("packages/planner/src/index.ts"),
       read("apps/mcp-server/src/server.ts"),
@@ -91,8 +91,41 @@ describe("확장 기능 없는 아키텍처 회귀 방지", () => {
     expect(consumers).not.toMatch(
       /multiplication-array-v1|division-grouping-v1|fraction-comparison-v1/
     );
-    expect(consumers).toContain("getTeacherIntentCapability");
-    expect(consumers).toContain("teacherIntentSchema");
-    expect(consumers).toContain("findTeacherIntentCapabilityForRoute");
+    expect(consumers).toContain("problemParametersSchema");
+    expect(consumers).toContain("getProblemFamilyManifest");
+    expect(consumers).toContain("findProblemFamilyByRoute");
+    expect(consumers).toContain("validateProblemParameters");
+  });
+
+  it("신규 family runtime은 영역 index에서 중앙 수동 registry를 우회한다", () => {
+    const templateRegistry = read("packages/templates/src/registry.ts");
+    const domainIndex = read(
+      "packages/templates/src/problem-families/domains/index.ts"
+    );
+    const runtimeRegistry = read(
+      "packages/templates/src/problem-families/runtime-registry.ts"
+    );
+    const familyTypes = read(
+      "packages/templates/src/problem-families/types.ts"
+    );
+    const legacyManipulations = read(
+      "packages/templates/src/problem-families/legacy-manipulations.ts"
+    );
+
+    expect(templateRegistry).toContain(
+      "DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES"
+    );
+    expect(templateRegistry).toContain(
+      "createProblemFamilyRuntimeRegistry"
+    );
+    expect(domainIndex).toContain("NUMBER_OPERATIONS_NATIVE_PROBLEM_FAMILY_MODULES");
+    expect(domainIndex).toContain("CHANGE_RELATIONSHIPS_NATIVE_PROBLEM_FAMILY_MODULES");
+    expect(domainIndex).toContain("GEOMETRY_MEASUREMENT_NATIVE_PROBLEM_FAMILY_MODULES");
+    expect(domainIndex).toContain("DATA_PROBABILITY_NATIVE_PROBLEM_FAMILY_MODULES");
+    expect(runtimeRegistry).toContain("ProblemFamilyNativeModule");
+    expect(familyTypes).toContain("source:");
+    expect(familyTypes).toContain("capability?:");
+    expect(familyTypes).toContain("runtime:");
+    expect(legacyManipulations).toContain("strangler adapter 전용 고정표");
   });
 });

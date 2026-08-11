@@ -2,18 +2,19 @@
 
 작성: 2026-08-10, 실행 상태 갱신: 2026-08-11.
 
-> **우선순위 변경:** 이 문서는 Honest Preview와 TeacherIntent 3종 구현 기록이다. 다음 작업을 지시하는 master plan이 아니다. 장기 실행과 현재 우선순위는 `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`, 진행 증거는 `ELEMENTARY_2022_FULL_COVERAGE_CHECKLIST.md`를 따른다. 전 범위 계획의 Phase 1 공통 registry가 끝나기 전에는 아래 6단계 실사용 확장이나 새 TeacherIntent를 추가하지 않는다.
+> **완료 기록:** 이 문서는 Honest Preview와 legacy TeacherIntent 3종 구현 기록이다. 다음 작업을 지시하는 master plan이 아니다. 전 범위 계획 Phase 1에서 세 종류를 공통 `ProblemParameters`로 호환 이관했고, 현재 우선순위는 Phase 2 대표 격자다. 장기 실행은 `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`, 진행 증거는 `ELEMENTARY_2022_FULL_COVERAGE_CHECKLIST.md`를 따른다.
 
 ## 진행 상태 (2026-08-11)
 
 - 기존 혼합 작업 분리와 Honest Preview 기준선 정리는 완료했다.
-- 곱셈 전용 하드코딩을 공통 capability registry로 일반화했다. 플래너, MCP, 교사용
-  서버·반영표·웹 폼은 개별 kind를 분기하지 않는다.
+- canonical ProblemFamily registry는 29개 전체를 감싸며, 플래너·MCP·교사용
+  서버·반영표·웹 폼은 개별 TeacherIntent kind를 분기하지 않는다. 신규 family는
+  영역 index의 native module만 등록한다.
 - 구조화 TeacherIntent는 3종이다: 곱셈 배열, **몇 개씩 묶는 포함제 나눗셈**,
   공통 분자가 같은 분수 비교. 세 종류 모두 요청→실제 문항→정답→exact preview→
   반영표→hash가 같은 의미값으로 결속된다.
-- `pnpm teacher-intent:verify` PASS. 전 범위 Phase 0까지 합친 최신 `pnpm check`는
-  68개 테스트 파일·416/416, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
+- `pnpm teacher-intent:verify` PASS. 전 범위 Phase 1까지 합친 최신 `pnpm check`는
+  71개 테스트 파일·440/440, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
 - 로컬 teacher-ui HTTP 경로에서 3종 모두 카드→exact preview→정답→반영표→승인
   토큰 발급까지 확인했다. `/api/creations`는 호출하지 않았다.
 - `pnpm teacher-intent:ui-verify`로 세 capability의 실제 브라우저 화면을 반복 검증한다.
@@ -24,8 +25,8 @@
   차단되어 fresh canary는 실행 불가 상태다. 당일 로그인 사전 확인은 프로젝트 생성
   전에 중단했으며 외부 쓰기는 0건이다.
 
-**전체 대비 위치**: 현재는 "공통 기반 + 서로 다른 사례 3개"다. intent coverage는
-released 21종 중 3종이고, 맞춤 범위는 첫 문항이다. 제품 내부 자유문장 파서와
+**전체 대비 위치**: 현재는 "공통 ProblemFamily 기반 + 맞춤 사례 3개"다. parameter
+coverage는 released 21종 중 3종이고, 맞춤 범위는 첫 문항이다. 제품 내부 자유문장 파서와
 대화식 부분 수정은 없으므로 "교사가 무엇이든 프롬프트로 만든다"는 단계가 아니다.
 MCP를 호출하는 외부 AI가 설명이 붙은 공통 스키마로 자연어를 구조화하며, 지원하지
 않는 조건은 확인 질문으로 멈춘다. fresh canary 전까지 새 맞춤 산출물의 공식 릴리스를

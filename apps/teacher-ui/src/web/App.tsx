@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState, type FormEvent } from "react";
 import {
-  TEACHER_INTENT_CAPABILITIES,
-  createDefaultTeacherIntent,
-  getTeacherIntentCapability,
-  teacherIntentSchema,
+  problemParametersSchema,
   type ApiErrorBody,
   type CreationStatus,
   type CurriculumActivityOption,
@@ -11,8 +8,8 @@ import {
   type CurriculumStandardOption,
   type CurriculumUnitOption,
   type InputReflectionStatus,
-  type TeacherIntent,
-  type TeacherIntentFieldDefinition,
+  type ProblemParameterField,
+  type ProblemParameters,
   type PreviewResponse,
   type PublicActivity,
   type SessionResponse
@@ -28,9 +25,9 @@ interface LessonForm {
   activityId: string;
   learningNeedId: string;
   contextNote: string;
-  problemCount: 1 | 2 | 4 | 6;
-  teacherIntentEnabled: boolean;
-  teacherIntent: TeacherIntent;
+  problemCount: number;
+  problemParametersEnabled: boolean;
+  problemParameters?: ProblemParameters;
 }
 
 class ApiClientError extends Error {
@@ -90,49 +87,54 @@ function formForStandard(
       standardCode: standard.standardCode,
       activityId: "",
       learningNeedId: "",
-      teacherIntentEnabled: false
+      problemParametersEnabled: false
     };
   }
-  const teacherIntentCapability = activity.teacherIntentCapability
-    ? getTeacherIntentCapability(activity.teacherIntentCapability)
-    : undefined;
-  const preservesTeacherIntent =
-    teacherIntentCapability?.kind === current.teacherIntent.kind;
+  const capability = activity.problemParameterCapability;
+  const preservesParameters =
+    capability?.familyId === current.problemParameters?.familyId;
   return {
     ...current,
     standardCode: standard.standardCode,
     activityId: activity.id,
     learningNeedId: learningNeed.id,
     problemCount: activity.defaultProblemCount,
-    teacherIntentEnabled:
-      preservesTeacherIntent && current.teacherIntentEnabled,
-    teacherIntent: teacherIntentCapability
-      ? current.teacherIntent.kind === teacherIntentCapability.kind
-        ? current.teacherIntent
-        : createDefaultTeacherIntent(teacherIntentCapability.kind)
-      : current.teacherIntent
+    problemParametersEnabled:
+      preservesParameters && current.problemParametersEnabled,
+    ...(capability
+      ? {
+          problemParameters: preservesParameters
+            ? current.problemParameters ?? capability.defaultParameters
+            : capability.defaultParameters
+        }
+      : {})
   };
 }
 
-function teacherIntentFieldValue(
-  intent: TeacherIntent,
-  field: TeacherIntentFieldDefinition
-): string | number {
-  const value = (intent as unknown as Readonly<Record<string, unknown>>)[
-    field.key
-  ];
-  return typeof value === "number" || typeof value === "string" ? value : "";
+function problemParameterFieldValue(
+  parameters: ProblemParameters | undefined,
+  field: ProblemParameterField
+): string | number | boolean {
+  const value = parameters?.values[field.key];
+  return typeof value === "number" ||
+    typeof value === "string" ||
+    typeof value === "boolean"
+    ? value
+    : "";
 }
 
-function withTeacherIntentField(
-  intent: TeacherIntent,
-  field: TeacherIntentFieldDefinition,
-  rawValue: string
-): TeacherIntent {
+function withProblemParameterField(
+  parameters: ProblemParameters,
+  field: ProblemParameterField,
+  rawValue: string | boolean
+): ProblemParameters {
   return {
-    ...intent,
-    [field.key]: field.control === "number" ? Number(rawValue) : rawValue
-  } as TeacherIntent;
+    ...parameters,
+    values: {
+      ...parameters.values,
+      [field.key]: field.control === "number" ? Number(rawValue) : rawValue
+    }
+  };
 }
 
 function StepDots({ step }: { step: number }) {
@@ -250,10 +252,7 @@ export function App() {
     learningNeedId: "",
     contextNote: "",
     problemCount: 4,
-    teacherIntentEnabled: false,
-    teacherIntent: createDefaultTeacherIntent(
-      TEACHER_INTENT_CAPABILITIES[0]!.kind
-    )
+    problemParametersEnabled: false
   });
   const [catalog, setCatalog] = useState<CurriculumCatalogResponse>();
   const [recommending, setRecommending] = useState(false);
@@ -376,33 +375,36 @@ export function App() {
       return;
     }
     if (
-      form.teacherIntentEnabled &&
-      selectedActivity?.teacherIntentCapability !== form.teacherIntent.kind
+      form.problemParametersEnabled &&
+      selectedActivity?.problemParameterCapability?.familyId !==
+        form.problemParameters?.familyId
     ) {
       setMessage("선택한 활동과 첫 문항 맞춤 조건이 달라요. 활동을 다시 골라 주세요.");
       return;
     }
-    const parsedTeacherIntent = form.teacherIntentEnabled
-      ? teacherIntentSchema.safeParse(form.teacherIntent)
+    const parsedProblemParameters = form.problemParametersEnabled
+      ? problemParametersSchema.safeParse(form.problemParameters)
       : undefined;
-    if (parsedTeacherIntent && !parsedTeacherIntent.success) {
+    if (parsedProblemParameters && !parsedProblemParameters.success) {
       setMessage("첫 문항에 사용할 수와 맥락을 다시 확인해 주세요.");
-      setHints(parsedTeacherIntent.error.issues.map((issue) => issue.message));
+      setHints(
+        parsedProblemParameters.error.issues.map((issue) => issue.message)
+      );
       return;
     }
     setRecommending(true);
     try {
       const {
-        teacherIntentEnabled: _teacherIntentEnabled,
-        teacherIntent: _teacherIntent,
+        problemParametersEnabled: _problemParametersEnabled,
+        problemParameters: _problemParameters,
         ...lessonForm
       } = form;
       const recommendation = await api<{ card: { cardId: string } }>("/api/recommendations", {
         method: "POST",
         body: JSON.stringify({
           ...lessonForm,
-          ...(parsedTeacherIntent?.success
-            ? { teacherIntent: parsedTeacherIntent.data }
+          ...(parsedProblemParameters?.success
+            ? { problemParameters: parsedProblemParameters.data }
             : {})
         })
       });
@@ -473,9 +475,13 @@ export function App() {
   const selectedActivity = selectedStandard?.activities.find(
     (activityOption) => activityOption.id === form.activityId
   );
-  const selectedIntentCapability = selectedActivity?.teacherIntentCapability
-    ? getTeacherIntentCapability(selectedActivity.teacherIntentCapability)
-    : undefined;
+  const selectedParameterCapability =
+    selectedActivity?.problemParameterCapability;
+  const selectedParameterSections = [
+    ...new Set(
+      selectedParameterCapability?.fields.map((field) => field.section) ?? []
+    )
+  ];
   const selectedLearningNeed = selectedActivity?.learningNeeds.find(
     (need) => need.id === form.learningNeedId
   );
@@ -710,28 +716,28 @@ export function App() {
                     options={selectedActivity.availableProblemCounts.map((value) => ({ value, label: `${value}문항` }))}
                     onChange={(problemCount) => setForm({ ...form, problemCount })}
                   />
-                  {selectedIntentCapability ? (
+                  {selectedParameterCapability ? (
                     <div className="teacher-intent-settings">
                       <label className="intent-toggle">
                         <input
                           type="checkbox"
-                          checked={form.teacherIntentEnabled}
+                          checked={form.problemParametersEnabled}
                           onChange={(event) =>
                             setForm((current) => ({
                               ...current,
-                              teacherIntentEnabled: event.target.checked
+                              problemParametersEnabled: event.target.checked
                             }))
                           }
                         />
                         <span>
-                          <strong>{selectedIntentCapability.title}</strong>
+                          <strong>{selectedParameterCapability.title}</strong>
                           <small>검증된 조건만 실제 첫 문제에 넣습니다.</small>
                         </span>
                       </label>
-                      {form.teacherIntentEnabled ? (
+                      {form.problemParametersEnabled ? (
                         <div className="intent-controls">
-                          {(["수학 조건", "맥락과 오개념"] as const).map((section) => {
-                            const fields = selectedIntentCapability.fields.filter(
+                          {selectedParameterSections.map((section) => {
+                            const fields = selectedParameterCapability.fields.filter(
                               (field) => field.section === section
                             );
                             if (fields.length === 0) return null;
@@ -748,32 +754,92 @@ export function App() {
                                             type="number"
                                             min={field.min}
                                             max={field.max}
-                                            value={teacherIntentFieldValue(form.teacherIntent, field)}
+                                            value={String(problemParameterFieldValue(form.problemParameters, field))}
                                             onChange={(event) =>
                                               setForm((current) => ({
                                                 ...current,
-                                                teacherIntent: withTeacherIntentField(
-                                                  current.teacherIntent,
-                                                  field,
-                                                  event.target.value
-                                                )
+                                                ...(current.problemParameters
+                                                  ? {
+                                                      problemParameters:
+                                                        withProblemParameterField(
+                                                          current.problemParameters,
+                                                          field,
+                                                          event.target.value
+                                                        )
+                                                    }
+                                                  : {})
                                               }))
                                             }
                                           />
                                           {field.unit ? <em>{field.unit}</em> : null}
                                         </span>
+                                      ) : field.control === "boolean" ? (
+                                        <input
+                                          type="checkbox"
+                                          checked={Boolean(
+                                            problemParameterFieldValue(
+                                              form.problemParameters,
+                                              field
+                                            )
+                                          )}
+                                          onChange={(event) =>
+                                            setForm((current) => ({
+                                              ...current,
+                                              ...(current.problemParameters
+                                                ? {
+                                                    problemParameters:
+                                                      withProblemParameterField(
+                                                        current.problemParameters,
+                                                        field,
+                                                        event.target.checked
+                                                      )
+                                                  }
+                                                : {})
+                                            }))
+                                          }
+                                        />
+                                      ) : field.control === "text" ? (
+                                        <input
+                                          type="text"
+                                          value={String(
+                                            problemParameterFieldValue(
+                                              form.problemParameters,
+                                              field
+                                            )
+                                          )}
+                                          onChange={(event) =>
+                                            setForm((current) => ({
+                                              ...current,
+                                              ...(current.problemParameters
+                                                ? {
+                                                    problemParameters:
+                                                      withProblemParameterField(
+                                                        current.problemParameters,
+                                                        field,
+                                                        event.target.value
+                                                      )
+                                                  }
+                                                : {})
+                                            }))
+                                          }
+                                        />
                                       ) : (
                                         <select
-                                          value={teacherIntentFieldValue(form.teacherIntent, field)}
+                                          value={String(problemParameterFieldValue(form.problemParameters, field))}
                                           disabled={field.control === "fixed"}
                                           onChange={(event) =>
                                             setForm((current) => ({
                                               ...current,
-                                              teacherIntent: withTeacherIntentField(
-                                                current.teacherIntent,
-                                                field,
-                                                event.target.value
-                                              )
+                                              ...(current.problemParameters
+                                                ? {
+                                                    problemParameters:
+                                                      withProblemParameterField(
+                                                        current.problemParameters,
+                                                        field,
+                                                        event.target.value
+                                                      )
+                                                  }
+                                                : {})
                                             }))
                                           }
                                         >
@@ -791,7 +857,7 @@ export function App() {
                             );
                           })}
                           <p className="intent-help">
-                            {selectedIntentCapability.scopeNote}
+                            {selectedParameterCapability.scopeNote}
                           </p>
                         </div>
                       ) : null}

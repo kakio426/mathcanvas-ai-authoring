@@ -40,6 +40,22 @@ import {
 import { generateBlueprintItems } from "./item-generators/registry.js";
 import { resolveRegisteredVariation } from "./variations/registry.js";
 import { assertCognitiveManifestBound } from "./cognitive/registry.js";
+import { DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES } from "./problem-families/domains/index.js";
+import { createProblemFamilyRuntimeRegistry } from "./problem-families/runtime-registry.js";
+import type {
+  GenerateActivitySpecOptions,
+  ProblemFamilyRuntimeBinding,
+  RegisteredActivityPlan,
+  RegisteredProblemPreview,
+  RegisteredTeacherAnswer
+} from "./problem-families/runtime-types.js";
+
+export type {
+  GenerateActivitySpecOptions,
+  RegisteredActivityPlan,
+  RegisteredProblemPreview,
+  RegisteredTeacherAnswer
+} from "./problem-families/runtime-types.js";
 
 export const FRACTION_TEMPLATE_VERSION =
   fractionComparisonBlueprint.version;
@@ -326,25 +342,6 @@ export const claimEvidenceTemplateDefinitions = Object.fromEntries(
     ];
   })
 ) as Readonly<Record<string, TemplateDefinition>>;
-
-export interface GenerateActivitySpecOptions {
-  readonly seed: string;
-  readonly generatedAt: string;
-  readonly activityId?: string;
-}
-
-export interface RegisteredActivityPlan {
-  readonly blueprint: ActivityBlueprint;
-  readonly items: readonly ResolvedItem[];
-  readonly recommendation: Recommendation;
-  readonly options: {
-    readonly seed: string;
-    readonly generatedAt: string;
-    readonly activityId: string;
-    readonly templateVersion: string;
-    readonly variation: Readonly<Record<string, unknown>>;
-  };
-}
 
 function prepare(
   blueprint: ActivityBlueprint,
@@ -694,34 +691,7 @@ export function generatePartialOperationDecompositionActivity(
   );
 }
 
-type RegistryEntry = {
-  readonly blueprint: ActivityBlueprint;
-  readonly prepare: (
-    recommendation: Recommendation,
-    options: GenerateActivitySpecOptions
-  ) => RegisteredActivityPlan;
-  readonly supportState: "verified" | "released";
-  readonly answerKey: (
-    resolved: ResolvedActivity
-  ) => RegisteredTeacherAnswer[];
-  readonly problemPreviews?: (
-    resolved: ResolvedActivity
-  ) => RegisteredProblemPreview[];
-  readonly appliedTeacherIntent?: (
-    resolved: ResolvedActivity
-  ) => TeacherIntent | undefined;
-};
-
-export interface RegisteredTeacherAnswer {
-  readonly problemNumber: number;
-  readonly answer: string;
-  readonly explanation: string;
-}
-
-export interface RegisteredProblemPreview {
-  readonly problemNumber: number;
-  readonly statements: readonly string[];
-}
+type RegistryEntry = Omit<ProblemFamilyRuntimeBinding, "familyId">;
 
 function ratioValue(
   item: ResolvedItem,
@@ -1212,7 +1182,7 @@ const partialOperationRegistry = Object.fromEntries(
   ])
 ) as Readonly<Record<string, RegistryEntry>>;
 
-const registry: Readonly<Record<string, RegistryEntry>> = {
+const legacyRegistry: Readonly<Record<string, RegistryEntry>> = {
   ...claimEvidenceRegistry,
   ...partialOperationRegistry,
   [barGraphRepresentFromTableBlueprint.id]: {
@@ -1371,6 +1341,14 @@ const registry: Readonly<Record<string, RegistryEntry>> = {
   }
 };
 
+const registry = createProblemFamilyRuntimeRegistry(
+  Object.entries(legacyRegistry).map(([familyId, binding]) => ({
+    familyId,
+    ...binding
+  })),
+  DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES
+);
+
 export function prepareRegisteredActivity(
   recommendation: Recommendation,
   options: GenerateActivitySpecOptions
@@ -1459,6 +1437,29 @@ export function buildRegisteredAppliedTeacherIntent(
   if (!applied || JSON.stringify(applied) !== JSON.stringify(requested)) {
     throw new Error(
       `teacher-intent-projection-mismatch:${resolved.binding.blueprintId}`
+    );
+  }
+  return applied;
+}
+
+export function buildRegisteredAppliedProblemParameters(
+  resolved: ResolvedActivity
+): import("@mathcanvas/contracts").ProblemParameters | undefined {
+  const requested = resolved.recommendationSnapshot.problemParameters;
+  if (!requested) return undefined;
+  const entry = registry[resolved.binding.blueprintId];
+  if (!entry) {
+    throw new Error(
+      `activity-handler-unregistered:${resolved.binding.blueprintId}`
+    );
+  }
+  const applied = entry.appliedProblemParameters?.(resolved);
+  if (
+    applied !== undefined &&
+    JSON.stringify(applied) !== JSON.stringify(requested)
+  ) {
+    throw new Error(
+      `problem-parameters-projection-mismatch:${resolved.binding.blueprintId}`
     );
   }
   return applied;

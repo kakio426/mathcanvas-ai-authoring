@@ -7,6 +7,10 @@ import {
   teacherCurriculumCatalog,
   teacherTextbookUnits
 } from "@mathcanvas/curriculum";
+import {
+  listProblemFamilyManifests,
+  problemParametersFromTeacherIntent
+} from "@mathcanvas/templates";
 import { recommendActivity } from "./index.js";
 
 const baseRequest = {
@@ -17,6 +21,56 @@ const baseRequest = {
 } as const;
 
 describe("활동 추천", () => {
+  it("canonical FamilyId만으로 전체 29개 registry 항목을 중앙 분기 없이 라우팅한다", () => {
+    for (const family of listProblemFamilyManifests()) {
+      const result = recommendActivity({
+        ...baseRequest,
+        requestId: `request-family-${family.familyId}`,
+        prompt: `${family.capability.title} 문제군을 추천해 주세요.`,
+        requestedFamilyId: family.familyId,
+        requestedStandardCode:
+          family.capability.supportedStandardCodes[0],
+        problemCount: family.capability.defaultProblemCount,
+        manipulation: family.manipulation
+      });
+      expect(result.templateId, family.familyId).toBe(family.familyId);
+      expect(result.standardCode, family.familyId).toBe(
+        family.capability.supportedStandardCodes[0]
+      );
+      expect(result.manipulation, family.familyId).toBe(family.manipulation);
+      expect(result.supported, family.familyId).toBe(
+        family.releaseEvidence.supportState === "released"
+      );
+    }
+  });
+
+  it("등록되지 않은 FamilyId와 ProblemParameters family 충돌을 차단한다", () => {
+    expect(() =>
+      recommendActivity({
+        ...baseRequest,
+        requestedFamilyId: "geometry.unknown.family-v1"
+      })
+    ).toThrowError(
+      expect.objectContaining({
+        code: "problem-parameters-confirmation-required"
+      })
+    );
+    const capability = TEACHER_INTENT_CAPABILITIES[0]!;
+    expect(() =>
+      recommendActivity({
+        ...baseRequest,
+        requestedFamilyId: TEACHER_INTENT_CAPABILITIES[1]!.templateId,
+        problemParameters: problemParametersFromTeacherIntent(
+          capability.defaultIntent
+        )
+      })
+    ).toThrowError(
+      expect.objectContaining({
+        code: "problem-parameters-confirmation-required"
+      })
+    );
+  });
+
   it("교사 화면이 고른 모든 활동을 출시 상태대로 라우팅한다", () => {
     // 교사 화면은 항상 성취기준 코드와 조작 방식을 함께 보낸다.
     // 이 조합에서 출시 활동은 전부 추천되어야 하고, 출시 전 활동은
@@ -248,6 +302,92 @@ describe("활동 추천", () => {
         );
       }
     }
+  });
+
+  it("등록된 세 family의 공통 ProblemParameters를 같은 경로와 legacy generator 입력으로 라우팅한다", () => {
+    for (const capability of TEACHER_INTENT_CAPABILITIES) {
+      const problemParameters = problemParametersFromTeacherIntent(
+        capability.defaultIntent
+      )!;
+      const result = recommendActivity({
+        ...baseRequest,
+        requestId: `request-problem-parameters-${capability.kind}`,
+        prompt: `${capability.title} 활동을 만들어 주세요.`,
+        problemParameters
+      });
+      expect(result, capability.kind).toMatchObject({
+        supported: true,
+        templateId: capability.templateId,
+        standardCode: capability.standardCode,
+        manipulation: capability.manipulation,
+        problemParameters,
+        teacherIntent: capability.defaultIntent
+      });
+    }
+  });
+
+  it("공통 ProblemParameters의 미지원 필드와 legacy 조건 충돌을 확인 질문으로 차단한다", () => {
+    const capability = TEACHER_INTENT_CAPABILITIES[0]!;
+    const problemParameters = problemParametersFromTeacherIntent(
+      capability.defaultIntent
+    )!;
+    for (const input of [
+      {
+        problemParameters: {
+          ...problemParameters,
+          values: {
+            ...problemParameters.values,
+            silentlyIgnored: true
+          }
+        }
+      },
+      {
+        teacherIntent: capability.defaultIntent,
+        problemParameters: {
+          ...problemParameters,
+          values: {
+            ...problemParameters.values,
+            itemsPerGroup: 5
+          }
+        }
+      }
+    ]) {
+      expect(() =>
+        recommendActivity({
+          ...baseRequest,
+          requestId: "request-problem-parameters-conflict",
+          prompt: capability.title,
+          ...input
+        })
+      ).toThrowError(
+        expect.objectContaining({
+          code: "problem-parameters-confirmation-required"
+        })
+      );
+    }
+  });
+
+  it("같은 ProblemParameters는 record key 순서가 달라도 legacy 조건과 충돌하지 않는다", () => {
+    const capability = TEACHER_INTENT_CAPABILITIES[0]!;
+    const canonical = problemParametersFromTeacherIntent(
+      capability.defaultIntent
+    )!;
+    const reversed = {
+      ...canonical,
+      values: Object.fromEntries(Object.entries(canonical.values).reverse())
+    };
+    expect(
+      recommendActivity({
+        ...baseRequest,
+        requestId: "request-problem-parameters-key-order",
+        prompt: capability.title,
+        teacherIntent: capability.defaultIntent,
+        problemParameters: reversed
+      })
+    ).toMatchObject({
+      supported: true,
+      templateId: capability.templateId
+    });
   });
 
   it("각 TeacherIntent를 다른 registry route와 결합하면 확인 질문으로 차단한다", () => {

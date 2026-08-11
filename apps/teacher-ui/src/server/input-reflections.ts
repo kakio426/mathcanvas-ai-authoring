@@ -1,9 +1,9 @@
 import type { RecommendationSummary } from "@mathcanvas/authoring-runtime";
+import type { ProblemParameters, TeacherIntent } from "@mathcanvas/contracts";
 import {
-  formatTeacherIntentFieldValue,
-  getTeacherIntentCapability,
-  type TeacherIntent
-} from "@mathcanvas/contracts";
+  getProblemFamilyManifest,
+  problemParametersFromTeacherIntent
+} from "@mathcanvas/templates";
 import type { InputReflection } from "../shared/contract.js";
 
 export interface TeacherRecommendationInput {
@@ -16,8 +16,22 @@ export interface TeacherRecommendationInput {
   learningNeedLabel: string;
   contextNote: string;
   problemCount: number;
+  problemParameters?: ProblemParameters;
+  appliedProblemParameters?: ProblemParameters;
   teacherIntent?: TeacherIntent;
   appliedTeacherIntent?: TeacherIntent;
+}
+
+function formatProblemParameterFieldValue(
+  parameters: ProblemParameters,
+  field: NonNullable<
+    ReturnType<typeof getProblemFamilyManifest>
+  >["capability"]["parameterFields"][number]
+): string {
+  const value = parameters.values[field.key];
+  const option = field.options?.find((candidate) => candidate.value === value);
+  if (option) return option.label;
+  return `${String(value)}${field.unit ?? ""}`;
 }
 
 function memoSummary(value: string): string {
@@ -32,6 +46,13 @@ function confirmationNote(
   return recommended === undefined
     ? "선택한 값을 추천 결과에서 확인할 수 없어 다시 살펴봐 주세요."
     : `선택한 값은 ${String(requested)}이지만 추천 결과는 ${String(recommended)}입니다. 다시 살펴봐 주세요.`;
+}
+
+export function problemParameterValuesEqual(
+  left: import("@mathcanvas/contracts").ProblemParameterValue | undefined,
+  right: import("@mathcanvas/contracts").ProblemParameterValue | undefined
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 export function buildInputReflections(
@@ -113,33 +134,48 @@ export function buildInputReflections(
     });
   }
 
-  if (input.teacherIntent) {
-    const applied = input.appliedTeacherIntent;
-    const recommendationIntent = recommendation.teacherIntent;
-    const capability = getTeacherIntentCapability(input.teacherIntent.kind);
-    const requestedValues = input.teacherIntent as unknown as Readonly<
-      Record<string, unknown>
-    >;
-    const recommendationValues = recommendationIntent as unknown as
-      | Readonly<Record<string, unknown>>
-      | undefined;
-    const appliedValues = applied as unknown as
-      | Readonly<Record<string, unknown>>
-      | undefined;
+  const requestedParameters =
+    input.problemParameters ??
+    (input.teacherIntent
+      ? problemParametersFromTeacherIntent(input.teacherIntent)
+      : undefined);
+  if (requestedParameters) {
+    const appliedParameters =
+      input.appliedProblemParameters ??
+      (input.appliedTeacherIntent
+        ? problemParametersFromTeacherIntent(input.appliedTeacherIntent)
+        : undefined);
+    const recommendationParameters =
+      recommendation.problemParameters ??
+      (recommendation.teacherIntent
+        ? problemParametersFromTeacherIntent(recommendation.teacherIntent)
+        : undefined);
+    const family = getProblemFamilyManifest(requestedParameters.familyId);
+    if (!family) {
+      throw new Error(
+        `input-reflection-family-missing:${requestedParameters.familyId}`
+      );
+    }
     const valuesMatch = (field: string) =>
-      recommendationIntent?.kind === input.teacherIntent?.kind &&
-      applied?.kind === input.teacherIntent?.kind &&
-      recommendationValues?.[field] === requestedValues[field] &&
-      appliedValues?.[field] === requestedValues[field];
+      recommendationParameters?.familyId === requestedParameters.familyId &&
+      appliedParameters?.familyId === requestedParameters.familyId &&
+      problemParameterValuesEqual(
+        recommendationParameters.values[field],
+        requestedParameters.values[field]
+      ) &&
+      problemParameterValuesEqual(
+        appliedParameters.values[field],
+        requestedParameters.values[field]
+      );
     reflections.push(
-      ...capability.fields.map((field) => ({
+      ...family.capability.parameterFields.map((field) => ({
         inputLabel: field.inputLabel,
-        value: formatTeacherIntentFieldValue(input.teacherIntent!, field),
+        value: formatProblemParameterFieldValue(requestedParameters, field),
         status: valuesMatch(field.key)
           ? "applied" as const
           : "needs-review" as const,
         note: valuesMatch(field.key)
-          ? capability.scopeNote
+          ? family.capability.scopeNote
           : "요청한 값과 추천 또는 실제 첫 문항이 달라 다시 확인해 주세요."
       }))
     );

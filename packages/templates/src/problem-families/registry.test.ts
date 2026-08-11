@@ -1,0 +1,226 @@
+import { describe, expect, it } from "vitest";
+import {
+  ACTIVITY_IDS,
+  PROBLEM_FAMILY_SCHEMA_VERSION,
+  TEACHER_INTENT_CAPABILITIES,
+  problemParametersSchema,
+  type ProblemParameters
+} from "@mathcanvas/contracts";
+import {
+  createProblemFamilyRegistry,
+  findProblemFamilyByLegacyTeacherIntentKind,
+  findProblemFamilyByRoute,
+  listProblemFamilyManifests,
+  problemParametersFromTeacherIntent,
+  teacherIntentFromProblemParameters,
+  validateProblemParameters
+} from "./registry.js";
+import { multiplicationArrayMeaningBlueprint } from "../blueprints/multiplication-array-meaning.js";
+import { createProblemFamilyRuntimeRegistry } from "./runtime-registry.js";
+import type {
+  ProblemFamilyCapabilityExtension,
+  ProblemFamilyNativeModule,
+  ProblemFamilyRegistrySource
+} from "./types.js";
+
+describe("canonical ProblemFamily registry", () => {
+  it("기존 29개와 released 21개를 canonical ID로 정확히 한 번 감싼다", () => {
+    const manifests = listProblemFamilyManifests();
+    expect(manifests).toHaveLength(29);
+    expect(
+      manifests.filter(
+        (manifest) => manifest.releaseEvidence.supportState === "released"
+      )
+    ).toHaveLength(21);
+    expect(new Set(manifests.map((manifest) => manifest.familyId))).toEqual(
+      new Set(Object.values(ACTIVITY_IDS))
+    );
+    for (const manifest of manifests) {
+      expect(manifest.familyId).toBe(manifest.activityId);
+      expect(manifest.familyId).toBe(manifest.templateId);
+      expect(manifest.renderRecipe.kind).toBe("legacy-blueprint-adapter");
+      expect(manifest.releaseEvidence.blueprintContentHash).toMatch(
+        /^[a-f0-9]{64}$/
+      );
+    }
+  });
+
+  it("기존 세 TeacherIntent를 공통 ProblemParameters로 무손실 왕복한다", () => {
+    for (const capability of TEACHER_INTENT_CAPABILITIES) {
+      const parameters = problemParametersFromTeacherIntent(
+        capability.defaultIntent
+      );
+      expect(parameters?.familyId).toBe(capability.templateId);
+      expect(validateProblemParameters(parameters!)).toEqual(parameters);
+      expect(teacherIntentFromProblemParameters(parameters!)).toEqual(
+        capability.defaultIntent
+      );
+      expect(
+        findProblemFamilyByLegacyTeacherIntentKind(capability.kind)?.familyId
+      ).toBe(capability.templateId);
+      expect(
+        findProblemFamilyByRoute({
+          standardCode: capability.standardCode,
+          manipulation: capability.manipulation
+        })?.familyId
+      ).toBe(capability.templateId);
+    }
+  });
+
+  it("미지원 family·누락 필드·범위 밖 값은 침묵 무시하지 않는다", () => {
+    expect(() =>
+      validateProblemParameters({
+        schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
+        familyId: ACTIVITY_IDS.makeTenNumberCards,
+        values: { target: 10 }
+      })
+    ).toThrow("problem-parameters-unsupported");
+    const multiplication = problemParametersFromTeacherIntent(
+      TEACHER_INTENT_CAPABILITIES[0]!.defaultIntent
+    )!;
+    expect(() =>
+      validateProblemParameters({
+        ...multiplication,
+        values: { ...multiplication.values, itemsPerGroup: 99 }
+      })
+    ).toThrow();
+    expect(() =>
+      validateProblemParameters({
+        ...multiplication,
+        values: { ...multiplication.values, ignoredField: "silent" }
+      })
+    ).toThrow();
+  });
+
+  it("fourth family fixture는 공통 registry 수정 없이 domain source와 capability만으로 나타난다", () => {
+    const familyId = "geometry.angle.sort-v1";
+    const source: ProblemFamilyRegistrySource = {
+      registrationKind: "native-problem-family-module",
+      familyId,
+      activityId: familyId,
+      templateId: familyId,
+      standardCode: "[4수03-24]",
+      supportedStandardCodes: ["[4수03-24]", "[4수03-25]"],
+      gradeBand: "3-4",
+      domain: "도형과 측정",
+      learningGoal: "각을 회전한 양에 따라 분류한다.",
+      manipulation: "angle-sort-card-drag",
+      generator: { id: "geometry.angle.sort-items", version: "1.0.0" },
+      blueprint: {
+        contentHash: "a".repeat(64),
+        version: "1.0.0",
+        layoutTokenSet: "angle-sort-v1"
+      },
+      availableProblemCounts: [2, 4],
+      supportedDifficulties: ["normal"],
+      supportState: "verified",
+      evidencePaths: []
+    };
+    const defaultParameters = problemParametersSchema.parse({
+      schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
+      familyId,
+      values: { angleDegrees: 90 }
+    });
+    const extension: ProblemFamilyCapabilityExtension = {
+      familyId,
+      recommendedGrade: 4,
+      gradeRange: [3, 4],
+      defaultProblemCount: 2,
+      parameterFields: [
+        {
+          key: "angleDegrees",
+          inputLabel: "각의 크기",
+          control: "number",
+          section: "수학 조건",
+          unit: "°",
+          min: 10,
+          max: 170
+        }
+      ],
+      defaultParameters,
+      promptGuards: [],
+      unsupportedParameterPolicy: "clarification-required",
+      title: "각 분류",
+      scopeNote: "10°에서 170° 사이의 각을 지원합니다.",
+      parseParameters: (input: ProblemParameters) => {
+        const parsed = problemParametersSchema.parse(input);
+        const keys = Object.keys(parsed.values);
+        const value = parsed.values.angleDegrees;
+        if (
+          parsed.familyId !== familyId ||
+          keys.length !== 1 ||
+          typeof value !== "number" ||
+          value < 10 ||
+          value > 170
+        ) {
+          throw new Error("dummy-angle-parameters-unsupported");
+        }
+        return parsed;
+      }
+    };
+    const dummyBlueprint = {
+      ...multiplicationArrayMeaningBlueprint,
+      id: familyId,
+      contentHash: "a".repeat(64),
+      title: "각 분류",
+      learningObjective: source.learningGoal,
+      curriculumBinding: {
+        standardCode: source.standardCode,
+        domain: source.domain,
+        officialGoal: source.learningGoal
+      },
+      generator: {
+        id: source.generator.id,
+        version: source.generator.version,
+        parameters: { problemCount: 2, difficulty: "normal" }
+      },
+      layout: {
+        ...multiplicationArrayMeaningBlueprint.layout,
+        tokenSet: source.blueprint.layoutTokenSet
+      }
+    };
+    const module: ProblemFamilyNativeModule = {
+      source,
+      capability: extension,
+      runtime: {
+        familyId,
+        blueprint: dummyBlueprint,
+        supportState: "verified",
+        prepare: () => {
+          throw new Error("dummy-runtime-not-executed");
+        },
+        answerKey: () => [],
+        appliedProblemParameters: () => defaultParameters
+      }
+    };
+    const registry = createProblemFamilyRegistry(
+      [module.source],
+      [module.capability!]
+    );
+    const runtimeRegistry = createProblemFamilyRuntimeRegistry([], [module]);
+
+    expect(registry.list()).toHaveLength(1);
+    expect(registry.get(familyId)?.renderRecipe.kind).toBe(
+      "native-render-recipe"
+    );
+    expect(runtimeRegistry[familyId]?.blueprint.id).toBe(familyId);
+    expect(registry.get(familyId)?.capability.parameterFields[0]?.key).toBe(
+      "angleDegrees"
+    );
+    expect(
+      registry.findByRoute({
+        standardCode: "[4수03-24]",
+        manipulation: "angle-sort-card-drag"
+      })?.familyId
+    ).toBe(familyId);
+    expect(
+      registry.findByRoute({
+        standardCode: "[4수03-25]",
+        manipulation: "angle-sort-card-drag"
+      })?.familyId
+    ).toBe(familyId);
+    expect(registry.validateParameters(defaultParameters)).toEqual(
+      defaultParameters
+    );
+  });
+});

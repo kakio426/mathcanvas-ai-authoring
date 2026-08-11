@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@mathcanvas/contracts": "workspace:*",
-    "@mathcanvas/curriculum": "workspace:*"
+    "@mathcanvas/curriculum": "workspace:*",
+    "@mathcanvas/templates": "workspace:*"
   }
 }

@@ -18,6 +18,7 @@ import {
   sha256Hex,
   verifyApprovalReceipt,
   type Recommendation,
+  type ProblemParameters,
   type ResolvedActivity,
   type TeacherIntent
 } from "@mathcanvas/contracts";
@@ -33,10 +34,12 @@ import {
 } from "@mathcanvas/compiler";
 import { recommendActivity } from "@mathcanvas/planner";
 import {
+  buildRegisteredAppliedProblemParameters,
   buildRegisteredAppliedTeacherIntent,
   buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
   getRegisteredBlueprintContentHash,
+  problemParametersFromTeacherIntent,
   prepareRegisteredActivity,
   projectRegisteredApprovalView
 } from "@mathcanvas/templates";
@@ -80,6 +83,7 @@ export interface RecommendationSummary {
     Recommendation["denominatorRelation"]
   >;
   manipulation?: NonNullable<Recommendation["manipulation"]>;
+  problemParameters?: ProblemParameters;
   teacherIntent?: TeacherIntent;
   rationale: string[];
   caveats: string[];
@@ -125,6 +129,9 @@ function summarizeRecommendation(
     ...(recommendation.manipulation === undefined
       ? {}
       : { manipulation: recommendation.manipulation }),
+    ...(recommendation.problemParameters === undefined
+      ? {}
+      : { problemParameters: recommendation.problemParameters }),
     ...(recommendation.teacherIntent === undefined
       ? {}
       : { teacherIntent: recommendation.teacherIntent }),
@@ -568,6 +575,7 @@ export class MathCanvasAuthoringService {
   public recommend(input: {
     prompt: string;
     requestedStandardCode?: string;
+    requestedFamilyId?: string;
     requestedGrade?: number;
     problemCount?: number;
     difficulty?: "easy" | "normal" | "hard";
@@ -575,6 +583,7 @@ export class MathCanvasAuthoringService {
       Recommendation["denominatorRelation"]
     >;
     manipulation?: NonNullable<Recommendation["manipulation"]>;
+    problemParameters?: ProblemParameters;
     teacherIntent?: TeacherIntent;
   }): {
     supported: boolean;
@@ -586,6 +595,7 @@ export class MathCanvasAuthoringService {
       title: string;
       studentInstructions: string[];
       problemPreviews: ProblemPreview[];
+      appliedProblemParameters?: ProblemParameters;
       appliedTeacherIntent?: TeacherIntent;
       minimumVisualDifferencePercent?: number;
     };
@@ -610,6 +620,9 @@ export class MathCanvasAuthoringService {
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: `request-${randomUUID()}`,
       prompt: input.prompt,
+      ...(input.requestedFamilyId === undefined
+        ? {}
+        : { requestedFamilyId: input.requestedFamilyId }),
       ...(input.requestedStandardCode === undefined
         ? {}
         : { requestedStandardCode: input.requestedStandardCode }),
@@ -631,6 +644,9 @@ export class MathCanvasAuthoringService {
       ...(input.manipulation === undefined
         ? {}
         : { manipulation: input.manipulation }),
+      ...(input.problemParameters === undefined
+        ? {}
+        : { problemParameters: input.problemParameters }),
       ...(input.teacherIntent === undefined
         ? {}
         : { teacherIntent: input.teacherIntent }),
@@ -657,6 +673,22 @@ export class MathCanvasAuthoringService {
     const teacherAnswerKey = buildRegisteredTeacherAnswerKey(resolved);
     const problemPreviews = projectProblemPreviews(resolved, teacherAnswerKey);
     const appliedTeacherIntent = projectAppliedTeacherIntent(resolved);
+    const appliedProblemParameters =
+      buildRegisteredAppliedProblemParameters(resolved) ??
+      (appliedTeacherIntent
+        ? problemParametersFromTeacherIntent(appliedTeacherIntent)
+        : undefined);
+    if (
+      recommendation.problemParameters &&
+      (!appliedProblemParameters ||
+        JSON.stringify(appliedProblemParameters) !==
+          JSON.stringify(recommendation.problemParameters))
+    ) {
+      throw new AuthoringServiceError(
+        "validation-failed",
+        "요청한 문제 조건과 실제 생성 문항의 적용값이 달라 생성하지 않았습니다."
+      );
+    }
     this.#drafts.set(draftId, {
       draftSchemaVersion: 3,
       draftId,
@@ -678,6 +710,9 @@ export class MathCanvasAuthoringService {
         title: resolved.title,
         studentInstructions: projectLearnerFacingInstructions(resolved),
         problemPreviews,
+        ...(appliedProblemParameters === undefined
+          ? {}
+          : { appliedProblemParameters }),
         ...(appliedTeacherIntent === undefined
           ? {}
           : { appliedTeacherIntent }),

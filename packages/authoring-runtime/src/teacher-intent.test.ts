@@ -14,6 +14,7 @@ import {
   buildRegisteredProblemPreviews,
   buildRegisteredTeacherAnswerKey,
   prepareRegisteredActivity,
+  problemParametersFromTeacherIntent,
   projectRegisteredApprovalView
 } from "@mathcanvas/templates";
 import { validateForCreation } from "@mathcanvas/validator";
@@ -86,7 +87,66 @@ function prepare(intent: TeacherIntent) {
   };
 }
 
+function prepareWithProblemParameters(intent: TeacherIntent) {
+  const capability = getTeacherIntentCapability(intent.kind);
+  const problemParameters = problemParametersFromTeacherIntent(intent);
+  if (!problemParameters) {
+    throw new Error(`problem-parameters-adapter-missing:${intent.kind}`);
+  }
+  const recommendation = recommendActivity({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: `teacher-intent-${intent.kind}`,
+    prompt: `${capability.title} 활동을 만들어 주세요.`,
+    requestedStandardCode: capability.standardCode,
+    requestedGrade: capability.recommendedGrade,
+    problemCount: capability.defaultProblemCount,
+    difficulty: "normal",
+    ...(capability.denominatorRelation
+      ? { denominatorRelation: capability.denominatorRelation }
+      : {}),
+    manipulation: capability.manipulation,
+    problemParameters,
+    createdAt: "2026-08-10T00:00:00.000Z"
+  });
+  const resolved = resolveActivity(
+    prepareRegisteredActivity(recommendation, {
+      seed: "teacher-intent-fixed-seed",
+      generatedAt: "2026-08-10T00:00:00.000Z",
+      activityId: `teacher-intent-${intent.kind}`
+    })
+  );
+  return {
+    recommendation,
+    resolved,
+    compiled: compileActivity(resolved),
+    answerKey: buildRegisteredTeacherAnswerKey(resolved),
+    problemPreviews: buildRegisteredProblemPreviews(resolved),
+    appliedTeacherIntent: buildRegisteredAppliedTeacherIntent(resolved)
+  };
+}
+
 describe("TeacherIntent capability 세로 단면", () => {
+  it.each([
+    ["곱셈", multiplicationIntent],
+    ["나눗셈", divisionIntent],
+    ["분수", fractionIntent]
+  ] as const)(
+    "%s legacy TeacherIntent와 공통 ProblemParameters는 같은 문항·정답·payload를 만든다",
+    (_name, intent) => {
+      const legacy = prepare(intent);
+      const generic = prepareWithProblemParameters(intent);
+      expect(generic.resolved.items).toEqual(legacy.resolved.items);
+      expect(generic.answerKey).toEqual(legacy.answerKey);
+      expect(generic.problemPreviews).toEqual(legacy.problemPreviews);
+      expect(generic.appliedTeacherIntent).toEqual(intent);
+      expect(generic.compiled.payload).toEqual(legacy.compiled.payload);
+      expect(generic.compiled.payloadHash).toBe(legacy.compiled.payloadHash);
+      expect(generic.recommendation.problemParameters).toEqual(
+        problemParametersFromTeacherIntent(intent)
+      );
+    }
+  );
+
   it.each([
     ["곱셈", multiplicationIntent],
     ["나눗셈", divisionIntent],

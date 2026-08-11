@@ -2,14 +2,15 @@
 
 ## 한 줄 구조
 
-교사의 대화를 로컬 MCP 서버가 등록된 blueprint와 유한 variation으로 바꾸고, 같은 서버의 제한형 브라우저 런타임이 별도 영구 프로필의 Google Chrome 안에서 검증된 새 프로젝트만 생성합니다.
+교사의 요청을 로컬 MCP 서버가 canonical ProblemFamily와 검증된 파라미터로 바꾸고, 등록된 runtime binding이 ActivitySpec을 생성하며, 같은 서버의 제한형 브라우저 런타임이 별도 영구 프로필의 Google Chrome 안에서 승인된 새 프로젝트만 생성합니다.
 
 ```mermaid
 flowchart LR
   T["교사"] --> A["Codex 또는 Claude Code"]
   A --> M["로컬 stdio MCP 서버"]
-  M --> R["교육과정 추천"]
-  R --> S["ActivitySpec"]
+  M --> R["공식 성취기준·ProblemFamily 선택"]
+  R --> F["ProblemParameters 검증"]
+  F --> S["ActivitySpec"]
   S --> V["컴파일·검증·교사 승인 해시"]
   V --> B["관리형 Chrome 런타임"]
   B --> P["MathCanvas 페이지 컨텍스트"]
@@ -39,11 +40,12 @@ flowchart LR
 
 - 엄격한 Zod 스키마와 버전
 - 공식 교육과정 우선 resolver
+- 네 영역별 canonical ProblemFamily manifest·capability·runtime registry
 - 활동별 blueprint와 결정적 item generator
 - 활동별 유한 variation envelope(현재 21종·93조합)
 - MathCanvas 네이티브 객체 컴파일러
 - 수학·교수학습·배치·상호작용·계약 validator
-- MCP 도구 5개
+- MCP 도구 6개
 - `playwright-core` 기반 관리형 Chrome 런타임
 - 원자적 추천 초안·생성 작업 저장과 중복 생성 방지
 
@@ -53,16 +55,22 @@ flowchart LR
 
 - 등록 활동 29종 중 21종이 현재 blueprint·layout hash에 결속된 canary를 갖춘 `released` 상태이며, released 21종의 93개 variation을 전수 컴파일·검증합니다.
 - 2022 개정 초등 수학 공식 분모는 HWP·PDF를 교차 확인한 121개 성취기준입니다. 카탈로그 매핑은 121/121이지만, released 활동이 닿는 성취기준은 18/121입니다.
-- 18/121은 활동 reach일 뿐 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다. `AssessmentTarget` registry가 생기기 전까지 target coverage는 산정하지 않습니다.
+- 18/121은 활동 reach일 뿐 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다. `AssessmentTarget` 스키마는 생겼지만 공식 성취기준별 reviewed target 분해 전이므로 target coverage는 산정하지 않습니다.
+- 29개는 canonical FamilyId로 조회되며, 신규 family는 영역 index의 `source + capability + runtime` 단일 모듈로 등록합니다. 기존 29개의 수동 목록은 legacy adapter 전용으로 봉인했습니다.
 - 최신 분모·학년군·영역·단원별 상태는 `reports/curriculum-coverage/latest.md`가 기계 판독 JSON과 함께 고정합니다.
 - 고정 값이나 알 수 없는 key를 바꾸려 하면 fail-closed로 중단합니다.
 - 승인 해시는 blueprint 내용, generator 버전, seed, variation을 포함한 canonical binding에 연결됩니다.
-- public MCP는 5개를 유지하며 raw payload, 좌표, 내부 tool ID를 노출하지 않습니다.
+- public MCP는 6개를 유지하며 raw payload, 좌표, 내부 tool ID를 노출하지 않습니다.
 
 ## 동시 실행
 
 Codex와 Claude Code는 같은 stdio MCP 명령을 등록할 수 있지만 하나의 전용 Chrome 프로필은 동시에 한 프로세스만 열 수 있습니다. v0.2는 한 번에 한 AI 앱을 쓰는 단일 사용자 구조입니다. `server.lock`이 살아 있는 프로세스를 확인해 두 번째 서버를 시작 전에 차단합니다.
 
 ## 확장 경계
+
+신규 ProblemFamily는 공통 planner·MCP·teacher-ui·template/generator registry를
+수정하지 않고 해당 영역 index에만 등록합니다. 기존 활동의 frozen adapter와 신규
+native module의 경계, fail-closed 조건과 추가 절차는
+[`PROBLEM_FAMILY_ARCHITECTURE.md`](./PROBLEM_FAMILY_ARCHITECTURE.md)에 고정합니다.
 
 `RemoteRecommendationProvider`, `AdditionalTemplateProvider`, `StudentActivityPublisher`, `DesktopDistributionChannel`은 미래 기능의 인터페이스만 선언합니다. 현재 버전에는 가짜 원격 호출이나 학생 배포 기능이 없습니다.

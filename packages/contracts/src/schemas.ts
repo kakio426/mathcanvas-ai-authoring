@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { teacherIntentSchema } from "./teacher-intent.js";
+import {
+  familyIdSchema,
+  problemFamilyManipulationSchema,
+  problemParametersSchema
+} from "./problem-family.js";
 
 export const CONTRACT_SCHEMA_VERSION = "1.0.0" as const;
 export const ACTIVITY_SPEC_SCHEMA_VERSION = "1.0.0" as const;
@@ -118,11 +123,13 @@ export const generationRequestSchema = z
       .string()
       .regex(/^\[[246]수\d{2}-\d{2}\]$/)
       .optional(),
+    requestedFamilyId: familyIdSchema.optional(),
     requestedGrade: z.number().int().min(1).max(6).optional(),
     problemCount: z.number().int().min(1).max(6).optional(),
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
-    manipulation: manipulationSchema.optional(),
+    manipulation: problemFamilyManipulationSchema.optional(),
+    problemParameters: problemParametersSchema.optional(),
     teacherIntent: teacherIntentSchema.optional(),
     createdAt: z.string().datetime()
   })
@@ -142,7 +149,8 @@ export const recommendationSchema = z
     problemCount: z.number().int().min(1).max(6).optional(),
     difficulty: difficultySchema.optional(),
     denominatorRelation: denominatorRelationSchema.optional(),
-    manipulation: manipulationSchema.optional(),
+    manipulation: problemFamilyManipulationSchema.optional(),
+    problemParameters: problemParametersSchema.optional(),
     teacherIntent: teacherIntentSchema.optional(),
     rationale: z.array(z.string().min(1).max(500)).min(1).max(8),
     confidence: z.number().min(0).max(1),
