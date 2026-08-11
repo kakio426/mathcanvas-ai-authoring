@@ -3116,7 +3116,7 @@ const handlers: Record<string, Handler> = {
     const variantRoles = stringArrayParameter(
       predicate,
       "variantRoles",
-      2
+      3
     );
     const ruleSlotRoles = stringArrayParameter(
       predicate,
@@ -3162,6 +3162,7 @@ const handlers: Record<string, Handler> = {
       explanationRuleStatePath !== ruleStatePath ||
       new Set(variantRoles).size !== variantRoles.length ||
       new Set(ruleSlotRoles).size !== ruleSlotRoles.length ||
+      variantRoles.length < 3 ||
       ruleSlotRoles.length < 2 ||
       typeof minimumValidStates !== "number" ||
       !Number.isInteger(minimumValidStates) ||

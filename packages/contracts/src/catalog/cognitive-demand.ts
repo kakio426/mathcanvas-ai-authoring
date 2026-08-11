@@ -48,7 +48,7 @@ const constructRuleDecisionSchema = z
     decisionConstraintId: stableIdSchema,
     variantRoles: z
       .array(stableIdSchema)
-      .min(2)
+      .min(3)
       .max(12)
       .refine((values) => new Set(values).size === values.length),
     ruleSlotRoles: z
