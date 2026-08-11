@@ -306,6 +306,42 @@ describe("Sol review candidate and scope gates", () => {
     ).toBe("SOL_REPLAN");
   });
 
+  it("ignores the consumed replan's superseded failure identity", () => {
+    const sameFamilyRevalidation = review({
+      reviewId: "W002-FAMILY_REVALIDATION-repeat-rule-SOL-A2",
+      operation: "FAMILY_REVALIDATION",
+      decision: "blocked"
+    });
+    const sameFamilyTrigger = replanTriggerForFlow({
+      rawTrigger: sameFamilyRevalidation,
+      replanConsumed: true,
+      latestFamilyRevalidationReview: sameFamilyRevalidation
+    });
+    expect(sameFamilyTrigger).toBe(null);
+    expect(
+      resolveFlowOperation({
+        flowReplanTrigger: sameFamilyTrigger,
+        replanApproved: true,
+        replanConsumed: true,
+        nextSubWorkOperation: "AFFORDANCE_DISCOVERY"
+      })
+    ).toBe("AFFORDANCE_DISCOVERY");
+
+    const sameScopedBlocker = review({
+      reviewId: "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+      decision: "blocked",
+      familyTrackId: "pattern.repeat-unit.construct-v1",
+      scopeId: "W002-FAMILY_TRACK-repeat-rule"
+    });
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: sameScopedBlocker,
+        replanConsumed: true,
+        scopedFamilyTrackReviews: [sameScopedBlocker]
+      })
+    ).toBe(null);
+  });
+
   it("resolves the complete consumed and unconsumed operation transitions", () => {
     const legacyTrigger = review({ decision: "blocked" });
     expect(

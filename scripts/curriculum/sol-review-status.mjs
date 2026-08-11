@@ -148,6 +148,7 @@ export function replanTriggerForFlow({
   if (!replanConsumed) return rawTrigger ?? null;
   if (
     latestFamilyRevalidationReview &&
+    latestFamilyRevalidationReview.reviewId !== rawTrigger?.reviewId &&
     ["changes-requested", "blocked"].includes(
       latestFamilyRevalidationReview.decision
     )
@@ -155,8 +156,11 @@ export function replanTriggerForFlow({
     return latestFamilyRevalidationReview;
   }
   return (
-    scopedFamilyTrackReviews.find((review) => review?.decision === "blocked") ??
-    null
+    scopedFamilyTrackReviews.find(
+      (review) =>
+        review?.reviewId !== rawTrigger?.reviewId &&
+        review?.decision === "blocked"
+    ) ?? null
   );
 }
 
