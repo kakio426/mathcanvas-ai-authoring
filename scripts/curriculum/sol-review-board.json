@@ -1311,6 +1311,66 @@
         "범위 한계: 이 승인은 세 target의 AssessmentTarget 문구나 세 family 구현·native affordance·exact preview·compiler/validator·current-hash canary/save/reopen을 승인하지 않는다. 기존 pattern.create-repeat-unit-explain-v1도 generatable/blocked이고 offline/live coverage 0으로 남는다.",
         "독립 QA는 focused 4 files/22 tests, 전체 pnpm check 78 files/474 tests, typecheck/build, registry/coverage/execution/no-family, native/contract/cognitive, visual·quality P0/P1 0, candidate diff-check를 통과했다. audit generatedAt만 candidate 값으로 복구해 후보 구현을 변경하지 않았다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A8",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 8,
+      "candidateCommit": "c4fd8e7da2f8d80f098e25b9c92f90e9f5e92887",
+      "changedFiles": [
+        "reports/curriculum-execution/no-family-plan.json",
+        "scripts/curriculum/no-family-plan.json"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A7",
+      "checkedAt": "2026-08-11T17:44:43.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "80efcaccc8a030fbc0593fb0738f3582679063ed1f1231d6795f1a15a59df036",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-SOL-A4",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v3",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:c4fd8e7da2f8d80f098e25b9c92f90e9f5e92887",
+        "git:1a90343d8688935865db9eeed45822866d97f3af",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A7",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A4",
+        "W002_REPLAN.md",
+        "scripts/curriculum/no-family-plan.json#TARGET_SET",
+        "reports/curriculum-execution/no-family-plan.json#operationPolicy",
+        "reports/curriculum-coverage/latest.json#[2수02-02]",
+        "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm curriculum:program",
+        "command:pnpm typecheck",
+        "command:git diff --check 1a90343..c4fd8e7"
+      ],
+      "findings": [
+        "승인: candidate c4fd8e7은 parent 1a90343 위 exact 2-file SOL_REPLAN governance commit이며 두 파일 모두 기존 SOL_REPLAN allowedFiles 안에 있다. W002_REPLAN.md hash, W002-FAMILY_TRACK-SOL-A4 trigger, 세 scope와 W002-SOL-REPLAN-v3 revision은 A7과 동일하게 유지된다.",
+        "manifest P0 해소: TARGET_SET allowedFilesByOperation과 postApprovalFilesByOperation 양쪽에 reports/problem-family-registry/**를 명시했다. 후속 target source와 blocked adapter의 assessmentTarget slice가 함께 바뀔 때 registry report를 후보·Sol 파생 commit에서 정직하게 포함할 수 있다.",
+        "권한 경계 승인: manifest 변경은 TARGET_SET 후보가 자기 권한을 확장한 것이 아니라, scripts/curriculum/no-family-plan.json을 이미 허용하는 별도 SOL_REPLAN candidate로 제출됐다. reports/** 암묵 fallback 없이 exact operation manifest에만 의존하는 fail-closed 정책을 유지한다.",
+        "상태 비승격 확인: target source·target tests·adapter 구현·registry·coverage는 parent와 byte-identical하다. [2수02-02]은 기존 승인 2-target denominator와 offline 0/2, adapter generatable/blocked 상태를 유지하고 새 3-target이나 family 승인을 아직 주장하지 않는다.",
+        "다음 단계는 새 atomic TARGET_SET candidate다. 그 후보는 3-target source/tests, blocked adapter의 repeat-repair 단일 slice, registry→coverage→execution→no-family reports를 함께 제출하고 A7이 아니라 최신 A8 review ID·v3 revision·outline hash를 소비해야 한다.",
+        "교육·release 범위는 변하지 않는다. 이번 승인은 파생 report 소유권만 보정하며 AssessmentTarget 완전성, family 구현, native affordance, exact preview, canary/save/reopen을 승인하지 않는다.",
+        "독립 QA는 no-family 97 standards/24 engines/84 tracks, curriculum program, typecheck와 candidate diff-check를 통과했고 worktree가 clean함을 확인했다."
+      ]
     }
   ]
 }
