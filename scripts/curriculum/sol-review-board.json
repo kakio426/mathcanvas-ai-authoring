@@ -2334,6 +2334,75 @@
         "승인 경계: 이 승인은 v7 재계획과 다음 ENGINE_CORE work item 생성만 허용한다. family generator, StudentRuleStateEvidence/responseHash, conditional answer, visible continuation application, save/reopen, exact preview 또는 current-hash canary는 별도 ENGINE_CORE/FAMILY_TRACK/LIVE_EVIDENCE 검증 없이는 승인하지 않는다.",
         "QA: focused pre/post approval 18/18, no-family plan, candidate exact diff가 통과했고 full pnpm check 81 files/494 tests 및 모든 audit gate PASS가 보고됐다. reviewer 파생 report는 replanApproved/replanConsumed=true로 전이하고 W002를 숨기지 않은 채 다음 단일 작업을 ENGINE_CORE로 제한한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A21",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 21,
+      "candidateCommit": "80af629a67da9eba1babe451abffec7f9f0984b0",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A20",
+      "checkedAt": "2026-08-11T21:58:14.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "06f190bda2022cf15dd14e7501fbf95268d0f9948985985333794afa764a1058",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v8",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:80af629a67da9eba1babe451abffec7f9f0984b0",
+        "git:077233be1993bd06dffd0467ca05469aae414f94",
+        "git:be2b7ea4e8e4858e61e9fb9c272729391fd75fd7",
+        "git:a635fa621bfcb8b2f4fcf61f13a96a4333b555ee",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A20",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "W002_REPLAN.md#v8-governance-amendment-ENGINE_CORE-completion-evidence",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract.artifactContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+        "tests/sol-review-status.test.ts#requires-current-ENGINE_CORE-completion-evidence-before-FAMILY_TRACK",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "command:git diff-tree --root --no-commit-id --name-only -r 80af629 (exact 8 files)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (19/19 pre-approval)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002 v8)",
+        "command:pnpm check (81 files/511 tests; candidate full gates PASS)",
+        "command:git diff --check 077233b..80af629"
+      ],
+      "findings": [
+        "개선 확인: candidate 80af629는 be2 transition을 되돌린 reviewer lineage 077233b 위 direct exact 8-file SOL_REPLAN v8 후보이고 모든 파일이 SOL_REPLAN allowedFiles 안에 있다. v7의 세 target·outline hash·family scope와 승인된 ENGINE_CORE 구현 내용은 바꾸지 않았고 W002 cursor는 승인 전 ENGINE_CORE에 머문다.",
+        "completion evidence 계약은 타당하다: source artifactContract가 exact artifact path·status·7 implementation files를 권위화하고, builder는 completed ENGINE_CORE에 대해 state evidence path/hash, artifact identity·work item·operation ID·standard/family/scope·revision/status, exact implementation file set, artifact whole-file SHA와 각 현재 implementation SHA를 fail-closed로 검증한다. ENGINE_CORE 미완료 상태의 선행 evidence도 거부한다.",
+        "P0 post-transition test 회귀: projection test의 승인 후 분기는 여전히 nextOfflineWork.operation=ENGINE_CORE만 허용한다. v8 승인·소비 뒤 completionEvidenceByOperation을 기록해 정상적으로 completed=[AFFORDANCE_DISCOVERY,ENGINE_CORE], nextOperation=FAMILY_TRACK으로 전진하면 report가 FAMILY_TRACK을 산출하는 순간 이 repository test가 다시 실패한다. be2에서 확인된 동일 실패를 이번 governance 후보가 아직 닫지 못했다.",
+        "필수 최소 수정: 같은 projection test가 post-replan ENGINE_CORE와 post-evidence FAMILY_TRACK 두 상태를 명시적으로 구분해야 한다. FAMILY_TRACK 분기에서는 exact operationWorkItemId, completedOperations prefix, nextFamilySubWork.nextOperation, current artifact path와 SHA를 가진 completionEvidenceByOperation.ENGINE_CORE, replanApproved/replanConsumed=true, nextReplanWork=null을 검증한다. builder evidence unit test의 completed positive object만으로 generated report 전이를 대신할 수 없다.",
+        "후속 hard-stop 경계: 현재 artifactContract는 repeat-rule 단일 artifact identity만 권위화한다. repeat-repair와 change-rule의 ENGINE_CORE는 동일 artifact를 plannedItem identity로 재사용할 수 없으며, 교육적 결정도 다르므로 해당 cursor에 도달하면 별도 artifactContract/SOL_REPLAN 없이는 완료 처리하지 않는 것이 맞다. 이 제한을 v8 문서에 명시하면 현재 repeat-rule governance 승인을 막는 별도 P0는 아니다.",
+        "판정: 사전 focused 19/19, typecheck, no-family plan과 reported full check 81/511은 통과했다. 그러나 다음 정상 state transition에서 repository QA가 깨지는 P0가 남아 있어 v8 replanApproved/replanConsumed, ENGINE_CORE completion cursor, FAMILY_TRACK 진입 또는 main push를 승인하지 않는다."
+      ]
     }
   ]
 }
