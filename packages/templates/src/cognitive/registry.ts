@@ -1510,6 +1510,61 @@ export function listCognitiveDemandManifests(): readonly CognitiveDemandManifest
   );
 }
 
+export function expectedCognitiveRuntimePredicate(
+  manifest: CognitiveDemandManifest
+): { kind: string; parameters: Record<string, unknown> } {
+  if (manifest.decision.mode === "construct-rule") {
+    return {
+      kind: "cognitive.rule-state-contract",
+      parameters: {
+        mode: manifest.decision.mode,
+        ruleStatePath: manifest.decision.ruleStatePath,
+        validRuleStatesPath: manifest.decision.validRuleStatesPath,
+        surplusPath: manifest.decision.surplusPath,
+        variantRoles: manifest.decision.variantRoles,
+        variantProperty: manifest.decision.variantProperty,
+        continuationRuleStatePath: manifest.decision.ruleStatePath,
+        explanationRuleStatePath: manifest.decision.ruleStatePath,
+        predictionRole: manifest.prediction.regionRole,
+        explanationRole: manifest.explanation.regionRole,
+        verificationRoles: manifest.verification.roles,
+        minimumValidStates: manifest.decision.minimumValidStates,
+        minimumSurplus: manifest.decision.minimumSurplus,
+        distractors: manifest.decision.distractors
+      }
+    };
+  }
+  return {
+    kind: "cognitive.release-contract",
+    parameters:
+      manifest.decision.mode === "select-one"
+        ? {
+            mode: manifest.decision.mode,
+            decisionConstraintId: manifest.decision.constraintId,
+            candidateRoles: manifest.decision.candidateRoles,
+            candidateProperty: manifest.decision.candidateProperty,
+            correctValuePath: manifest.decision.correctValuePath,
+            predictionRole: manifest.prediction.regionRole,
+            explanationRole: manifest.explanation.regionRole,
+            verificationRoles: manifest.verification.roles
+          }
+        : {
+            mode: manifest.decision.mode,
+            slotRoles: manifest.decision.slotRoles,
+            pieceRoles: manifest.decision.pieceRoles,
+            pieceProperty: manifest.decision.pieceProperty,
+            totalPath: manifest.decision.totalPath,
+            solutionSetPath: manifest.decision.solutionSetPath,
+            surplusPath: manifest.decision.surplusPath,
+            minimumSolutions: manifest.decision.minimumSolutions,
+            minimumSurplus: manifest.decision.minimumSurplus,
+            predictionRole: manifest.prediction.regionRole,
+            explanationRole: manifest.explanation.regionRole,
+            verificationRoles: manifest.verification.roles
+          }
+  };
+}
+
 export function assertCognitiveManifestBound(
   blueprint: ActivityBlueprint
 ): CognitiveDemandManifest {
@@ -1527,42 +1582,19 @@ export function assertCognitiveManifestBound(
       `cognitive-manifest-drift:${blueprint.id}`
     );
   }
+  const expected = expectedCognitiveRuntimePredicate(manifest);
   const predicate = blueprint.valuePredicates.find(
-    (candidate) =>
-      candidate.kind === "cognitive.release-contract"
+    (candidate) => candidate.kind === expected.kind
   );
   if (!predicate) {
     throw new Error(
       `cognitive-runtime-predicate-missing:${blueprint.id}`
     );
   }
-  const expected =
-    manifest.decision.mode === "select-one"
-      ? {
-          mode: manifest.decision.mode,
-          decisionConstraintId: manifest.decision.constraintId,
-          candidateRoles: manifest.decision.candidateRoles,
-          candidateProperty: manifest.decision.candidateProperty,
-          correctValuePath: manifest.decision.correctValuePath,
-          predictionRole: manifest.prediction.regionRole,
-          explanationRole: manifest.explanation.regionRole,
-          verificationRoles: manifest.verification.roles
-        }
-      : {
-          mode: manifest.decision.mode,
-          slotRoles: manifest.decision.slotRoles,
-          pieceRoles: manifest.decision.pieceRoles,
-          pieceProperty: manifest.decision.pieceProperty,
-          totalPath: manifest.decision.totalPath,
-          solutionSetPath: manifest.decision.solutionSetPath,
-          surplusPath: manifest.decision.surplusPath,
-          minimumSolutions: manifest.decision.minimumSolutions,
-          minimumSurplus: manifest.decision.minimumSurplus,
-          predictionRole: manifest.prediction.regionRole,
-          explanationRole: manifest.explanation.regionRole,
-          verificationRoles: manifest.verification.roles
-        };
-  if (JSON.stringify(predicate.parameters) !== JSON.stringify(expected)) {
+  if (
+    JSON.stringify(predicate.parameters) !==
+    JSON.stringify(expected.parameters)
+  ) {
     throw new Error(
       `cognitive-runtime-predicate-drift:${blueprint.id}`
     );

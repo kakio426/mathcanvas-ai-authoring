@@ -64,7 +64,7 @@ describe("Sol review candidate and scope gates", () => {
         .continuationRuleStatePath
     ).toBe(workItem.engineCoreContract.manifestDecision.ruleStatePath);
     expect(
-      report.current.nextReplanWork?.engineCoreContract
+      report.current.nextOfflineWork?.engineCoreContract
     ).toEqual(expected);
   });
 

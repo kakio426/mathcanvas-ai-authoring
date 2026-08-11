@@ -41,6 +41,20 @@ const constructDecisionSchema = z
   })
   .strict();
 
+const constructRuleDecisionSchema = z
+  .object({
+    mode: z.literal("construct-rule"),
+    ruleStatePath: stableIdSchema,
+    variantRoles: z.array(stableIdSchema).min(2).max(12),
+    variantProperty: stableIdSchema,
+    validRuleStatesPath: stableIdSchema,
+    surplusPath: stableIdSchema,
+    minimumValidStates: z.number().int().min(2).max(12),
+    minimumSurplus: z.number().int().min(1).max(8),
+    distractors: z.array(distractorSchema).min(1).max(7)
+  })
+  .strict();
+
 export const COGNITIVE_GATE_IDS = [
   "G0_MANIFEST_BOUND",
   "G1_DECISION_EXISTS",
@@ -78,7 +92,8 @@ export const cognitiveDemandManifestSchema = z
       .strict(),
     decision: z.discriminatedUnion("mode", [
       selectOneDecisionSchema,
-      constructDecisionSchema
+      constructDecisionSchema,
+      constructRuleDecisionSchema
     ]),
     prediction: z.object({ regionRole: stableIdSchema }).strict(),
     verification: z

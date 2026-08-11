@@ -234,6 +234,20 @@ function numericPairList(value: unknown): NumericPair[] | undefined {
   return value as NumericPair[];
 }
 
+function orderedRuleStateList(
+  value: unknown
+): unknown[][] | undefined {
+  if (
+    !Array.isArray(value) ||
+    !value.every(
+      (state) => Array.isArray(state) && state.length >= 2
+    )
+  ) {
+    return undefined;
+  }
+  return value as unknown[][];
+}
+
 function numericValues(
   values: Record<string, unknown>,
   paths: readonly string[]
@@ -2994,6 +3008,229 @@ const handlers: Record<string, Handler> = {
         );
       }
 
+      const itemOpenConstraints = resolved.constraints.filter(
+        (constraint) =>
+          constraint.id.endsWith(`:${item.id}`) &&
+          constraint.requiresStudentAction &&
+          !constraint.satisfiedInitially
+      );
+      if (itemOpenConstraints.length === 0) {
+        issue(
+          issues,
+          "cognitive-item-already-solved",
+          "pedagogy",
+          `${item.id}가 처음부터 해결된 상태입니다.`
+        );
+      }
+    }
+  },
+  "cognitive.rule-state-contract": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const mode = stringParameter(predicate, "mode");
+    const ruleStatePath = stringParameter(predicate, "ruleStatePath");
+    const validRuleStatesPath = stringParameter(
+      predicate,
+      "validRuleStatesPath"
+    );
+    const surplusPath = stringParameter(predicate, "surplusPath");
+    const variantRoles = stringArrayParameter(
+      predicate,
+      "variantRoles",
+      2
+    );
+    const variantProperty = stringParameter(
+      predicate,
+      "variantProperty"
+    );
+    const continuationRuleStatePath = stringParameter(
+      predicate,
+      "continuationRuleStatePath"
+    );
+    const explanationRuleStatePath = stringParameter(
+      predicate,
+      "explanationRuleStatePath"
+    );
+    const predictionRole = stringParameter(
+      predicate,
+      "predictionRole"
+    );
+    const explanationRole = stringParameter(
+      predicate,
+      "explanationRole"
+    );
+    const verificationRoles = stringArrayParameter(
+      predicate,
+      "verificationRoles"
+    );
+    const minimumValidStates = parameter(
+      predicate,
+      "minimumValidStates"
+    );
+    const minimumSurplus = parameter(
+      predicate,
+      "minimumSurplus"
+    );
+    const distractors = parameter(predicate, "distractors");
+    if (
+      mode !== "construct-rule" ||
+      continuationRuleStatePath !== ruleStatePath ||
+      explanationRuleStatePath !== ruleStatePath ||
+      typeof minimumValidStates !== "number" ||
+      !Number.isInteger(minimumValidStates) ||
+      minimumValidStates < 2 ||
+      typeof minimumSurplus !== "number" ||
+      !Number.isInteger(minimumSurplus) ||
+      minimumSurplus < 1 ||
+      !Array.isArray(distractors) ||
+      distractors.length < 1 ||
+      distractors.some(
+        (entry) =>
+          !entry ||
+          typeof entry !== "object" ||
+          typeof (entry as Record<string, unknown>).misconception !==
+            "string" ||
+          !(
+            typeof (entry as Record<string, unknown>).role ===
+              "string" ||
+            typeof (entry as Record<string, unknown>).predicateKind ===
+              "string"
+          )
+      )
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:rule-state-contract`
+      );
+    }
+
+    for (const item of resolved.items) {
+      const variants = variantRoles.map((role) =>
+        byRole(resolved, item.id, role)
+      );
+      const variantIds = variants
+        .filter(
+          (variant): variant is ResolvedEmission =>
+            variant !== undefined
+        )
+        .map((variant) => variant.id);
+      const validRuleStates = orderedRuleStateList(
+        item.values[validRuleStatesPath]
+      );
+      const surplusRuleStates = orderedRuleStateList(
+        item.values[surplusPath]
+      );
+      const validStateKeys = validRuleStates?.map((state) =>
+        JSON.stringify(state)
+      );
+      const distinctValidStates =
+        validStateKeys && new Set(validStateKeys).size === validStateKeys.length;
+      const surplusIsRejectable = surplusRuleStates?.every(
+        (state) =>
+          !validRuleStates?.some((validState) =>
+            sameValue(validState, state)
+          )
+      );
+      const hasOpenVariantDecision = resolved.constraints.some(
+        (constraint) =>
+          constraint.requiresStudentAction &&
+          !constraint.satisfiedInitially &&
+          (constraint.sourceIds.some((id) => variantIds.includes(id)) ||
+            variantIds.includes(constraint.targetId))
+      );
+      const variantInvalid =
+        variants.some(
+          (variant) =>
+            !variant?.movable ||
+            variant.locked ||
+            variant.toolIntent.properties[variantProperty] === undefined
+        ) ||
+        variantIds.length !== variantRoles.length ||
+        !hasOpenVariantDecision;
+      if (variantInvalid) {
+        issue(
+          issues,
+          "cognitive-rule-state-decision-missing",
+          "pedagogy",
+          `${item.id}에 학생이 순서 있는 규칙 상태를 직접 구성하는 열린 조작이 없습니다.`
+        );
+      }
+
+      const envelopeInvalid =
+        item.values[ruleStatePath] === undefined ||
+        !validRuleStates ||
+        !distinctValidStates ||
+        validRuleStates.length < minimumValidStates ||
+        !surplusRuleStates ||
+        surplusRuleStates.length < minimumSurplus ||
+        !surplusIsRejectable;
+      if (envelopeInvalid) {
+        issue(
+          issues,
+          "cognitive-rule-state-envelope-invalid",
+          "mathematics",
+          `${item.id}에 서로 다른 유효 규칙 상태와 거부 가능한 잉여 상태가 충분하지 않습니다.`
+        );
+      }
+
+      const answerLeak =
+        validRuleStates?.some((state) =>
+          resolved.emissions.some(
+            (emission) =>
+              (emission.itemId === item.id ||
+                emission.itemId === undefined) &&
+              !variantRoles.includes(emission.role) &&
+              containsValue(emission.toolIntent.properties, state)
+          )
+        ) ?? true;
+      if (answerLeak) {
+        issue(
+          issues,
+          "cognitive-rule-state-answer-visible",
+          "pedagogy",
+          `${item.id}의 유효 규칙 상태가 학생의 구성 전에 화면에 노출됩니다.`
+        );
+      }
+
+      const prediction = byRole(
+        resolved,
+        item.id,
+        predictionRole
+      );
+      if (!prediction || !prediction.locked) {
+        issue(
+          issues,
+          "cognitive-prediction-region-missing",
+          "pedagogy",
+          `${item.id}에 빈 예측 영역이 없습니다.`
+        );
+      }
+      const explanation = byRole(
+        resolved,
+        item.id,
+        explanationRole
+      );
+      if (!explanation || !explanation.locked) {
+        issue(
+          issues,
+          "cognitive-explanation-region-missing",
+          "pedagogy",
+          `${item.id}에 수학적 근거를 남길 영역이 없습니다.`
+        );
+      }
+      if (
+        verificationRoles.some(
+          (role) => !byRole(resolved, item.id, role)
+        )
+      ) {
+        issue(
+          issues,
+          "cognitive-self-verification-missing",
+          "pedagogy",
+          `${item.id}에 규칙 상태를 대조할 수학적 불변량 표현이 없습니다.`
+        );
+      }
       const itemOpenConstraints = resolved.constraints.filter(
         (constraint) =>
           constraint.id.endsWith(`:${item.id}`) &&

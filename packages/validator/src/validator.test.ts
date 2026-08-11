@@ -3,6 +3,7 @@ import {
   CONTRACT_SCHEMA_VERSION,
   recommendationSchema,
   sha256Hex,
+  type ResolvedActivity,
   type CompiledProject
 } from "@mathcanvas/contracts";
 import {
@@ -21,6 +22,7 @@ import {
   generateMultiplicationArrayMeaningActivity
 } from "@mathcanvas/templates";
 import { validateForCreation } from "./index.js";
+import { validateRegisteredPredicates } from "./predicates/registry.js";
 
 function fixture() {
   const gated = recommendActivity({
@@ -139,7 +141,152 @@ function multiplicationArrayFixture() {
   return { resolved, compiled: compileActivity(resolved) };
 }
 
+function ruleStatePredicateFixture(): ResolvedActivity {
+  const itemId = "item-1";
+  const variantIds = ["item-1-rule-variant-1", "item-1-rule-variant-2"];
+  const emission = (
+    id: string,
+    role: string,
+    locked: boolean,
+    properties: Record<string, unknown>
+  ) => ({
+    id,
+    role,
+    itemId,
+    bounds: { x: 0, y: 0, width: 40, height: 40 },
+    locked,
+    movable: !locked,
+    instructionalIntent: "규칙 상태 증거",
+    toolIntent: {
+      kind: "text",
+      toolKey: "common.text",
+      properties
+    }
+  });
+  return {
+    schemaVersion: "1.0.0",
+    id: "rule-state-activity",
+    seed: "rule-state-seed",
+    title: "규칙 상태 검증",
+    learningObjective: "규칙을 구성한다.",
+    curriculumReferences: [],
+    recommendationSnapshot: {},
+    binding: {},
+    items: [
+      {
+        id: itemId,
+        order: 1,
+        kind: "pattern",
+        values: {
+          ruleState: ["red", "blue"],
+          validRuleStates: [
+            ["red", "blue"],
+            ["blue", "red"]
+          ],
+          surplusRuleStates: [["red", "red"]]
+        },
+        provenance: {
+          generatorId: "rule-state-generator",
+          generatorVersion: "1.0.0",
+          seed: "rule-state-seed"
+        }
+      }
+    ],
+    emissions: [
+      emission(variantIds[0]!, "rule-variant-1", false, {
+        orderedValues: ["red"]
+      }),
+      emission(variantIds[1]!, "rule-variant-2", false, {
+        orderedValues: ["blue"]
+      }),
+      emission("item-1-rule-lane", "rule-lane", true, {}),
+      emission("item-1-continuation-lane", "continuation-lane", true, {}),
+      emission("item-1-prediction", "prediction-box", true, {}),
+      emission("item-1-explanation", "explanation-box", true, {})
+    ],
+    constraints: [
+      {
+        id: "construct-rule:item-1",
+        kind: "fill-from-pool",
+        sourceIds: variantIds,
+        targetId: "item-1-rule-lane",
+        parameters: {},
+        requiresStudentAction: true,
+        satisfiedInitially: false
+      }
+    ],
+    valuePredicates: [
+      {
+        kind: "cognitive.rule-state-contract",
+        parameters: {
+          mode: "construct-rule",
+          ruleStatePath: "ruleState",
+          validRuleStatesPath: "validRuleStates",
+          surplusPath: "surplusRuleStates",
+          variantRoles: ["rule-variant-1", "rule-variant-2"],
+          variantProperty: "orderedValues",
+          continuationRuleStatePath: "ruleState",
+          explanationRuleStatePath: "ruleState",
+          predictionRole: "prediction-box",
+          explanationRole: "explanation-box",
+          verificationRoles: ["rule-lane", "continuation-lane"],
+          minimumValidStates: 2,
+          minimumSurplus: 1,
+          distractors: [
+            {
+              predicateKind: "cognitive.rule-state-contract",
+              misconception: "반복 단위의 순서를 중간에 바꾼다."
+            }
+          ]
+        }
+      }
+    ]
+  } as unknown as ResolvedActivity;
+}
+
 describe("생성 전 검증", () => {
+  it("construct-rule은 두 유효 상태·잉여 상태·열린 구성 조작을 검증한다", () => {
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(ruleStatePredicateFixture(), issues);
+    expect(issues).toEqual([]);
+  });
+
+  it("construct-rule은 정답 상태가 화면에 노출되거나 잉여 상태가 사라지면 차단한다", () => {
+    const resolved = ruleStatePredicateFixture();
+    resolved.items[0]!.values.surplusRuleStates = [["red", "blue"]];
+    resolved.emissions.push({
+      id: "item-1-leak",
+      role: "instruction-rule-leak",
+      itemId: "item-1",
+      bounds: { x: 0, y: 0, width: 40, height: 40 },
+      locked: true,
+      movable: false,
+      instructionalIntent: "검증용 누출",
+      toolIntent: {
+        kind: "text",
+        toolKey: "common.text",
+        properties: { orderedValues: ["red", "blue"] }
+      }
+    });
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        "cognitive-rule-state-envelope-invalid",
+        "cognitive-rule-state-answer-visible"
+      ])
+    );
+  });
+
+  it("construct-rule은 continuation과 explanation이 같은 rule state path를 써야 한다", () => {
+    const resolved = ruleStatePredicateFixture();
+    resolved.valuePredicates[0]!.parameters.explanationRuleStatePath =
+      "otherRuleState";
+    expect(() =>
+      validateRegisteredPredicates(resolved, [])
+    ).toThrow("predicate-parameter-invalid:cognitive.rule-state-contract");
+  });
+
   it("visual.text-fit은 줄바꿈된 고정 문구를 가장 긴 줄 기준으로 검사한다", () => {
     const { resolved, compiled } = multiplicationArrayFixture();
     const report = validateForCreation(resolved, compiled);

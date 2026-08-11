@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "operation": "ENGINE_CORE",
+  "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+  "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.repeat-unit.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+  "replanContractRevision": "W002-SOL-REPLAN-v4",
+  "status": "implemented-pending-sol-review",
+  "decisionMode": "construct-rule",
+  "runtimePredicateKind": "cognitive.rule-state-contract",
+  "contractInvariants": [
+    "construct-rule is distinct from select-one and numeric construct",
+    "validRuleStatesPath contains at least two distinct ordered states",
+    "surplusPath contains at least one rejectable state",
+    "continuationRuleStatePath and explanationRuleStatePath equal ruleStatePath",
+    "distractors are bound to a predicate kind and misconception",
+    "student-action variant roles are open and answer states are not emitted"
+  ],
+  "implementationFiles": {
+    "packages/contracts/src/catalog/cognitive-demand.ts": "8b6545cb89ca60e5afd71668dce0c804f4d9ea149828cbe9d91c75ada8cd3715",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "1bfa2be681a142e6ee7af42383ba9908dfdf7b58376f7b376085e7edf4c53f3b",
+    "packages/validator/src/predicates/registry.ts": "62674bf1b7a092a75b8eb6f91c9f75d93e665f69e06666b28d9e7dd9be55df22",
+    "packages/validator/src/validator.test.ts": "ecf965d9568116776de6826ff92e06da909fceadf8f2ec44b623495bfcc42392",
+    "packages/templates/src/cognitive/registry.ts": "f5cf56902446468404b291baf52c89d05c061a0e56b29c7f70f26a92ff0e592f",
+    "packages/templates/src/cognitive/registry.test.ts": "83f125b71a36db6298c98c9b0f538c7312fcded6779f7118b149fb475c07727b"
+  },
+  "verification": {
+    "focusedTests": "26/26",
+    "fullCheck": "80 files / 487 tests PASS",
+    "studentResponseLifecycle": "not claimed; FAMILY_TRACK/LIVE_EVIDENCE required"
+  }
+}
