@@ -6,7 +6,7 @@
   "standardCode": "[2수02-02]",
   "familyTrackId": "pattern.repeat-unit.construct-v1",
   "scopeId": "W002-FAMILY_TRACK-repeat-rule",
-  "replanContractRevision": "W002-SOL-REPLAN-v7",
+  "replanContractRevision": "W002-SOL-REPLAN-v8",
   "status": "implemented-verified-pending-family-track",
   "decisionMode": "construct-rule",
   "runtimePredicateKind": "cognitive.rule-state-contract",

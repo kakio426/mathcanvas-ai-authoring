@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 // @ts-ignore Sol review gate is a repository-side ESM utility.
 import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
 // @ts-ignore Semantic revalidation helper is a repository-side ESM utility.
@@ -22,7 +23,10 @@ const {
 } = solReviewStatus;
 const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
   semanticSlices;
-const { assertEngineCoreContract } = noFamilyPlanBuilder;
+const {
+  assertEngineCoreContract,
+  assertEngineCoreCompletionEvidence
+} = noFamilyPlanBuilder;
 
 const candidateCommit = "a".repeat(40);
 
@@ -136,6 +140,78 @@ describe("Sol review candidate and scope gates", () => {
     );
   });
 
+  it("requires current ENGINE_CORE completion evidence before FAMILY_TRACK", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const contract = source.trackContracts.C01;
+    const planned = contract.subWorkItems.find(
+      (item: { workItemId: string }) =>
+        item.workItemId === "W002-FAMILY_TRACK-repeat-rule"
+    );
+    const artifactPath = contract.engineCoreContract.artifactContract.artifactPath;
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    const artifactSha256 = createHash("sha256")
+      .update(readFileSync(artifactPath))
+      .digest("hex");
+    const pending = {
+      workItemId: planned.workItemId,
+      completedOperations: ["AFFORDANCE_DISCOVERY"],
+      nextOperation: "ENGINE_CORE"
+    };
+    expect(() =>
+      assertEngineCoreCompletionEvidence(pending, planned, contract)
+    ).not.toThrow();
+
+    const completed = {
+      ...pending,
+      completedOperations: ["AFFORDANCE_DISCOVERY", "ENGINE_CORE"],
+      nextOperation: "FAMILY_TRACK",
+      completionEvidenceByOperation: {
+        ENGINE_CORE: { artifactPath, artifactSha256 }
+      }
+    };
+    expect(() =>
+      assertEngineCoreCompletionEvidence(completed, planned, contract)
+    ).not.toThrow();
+
+    expect(() =>
+      assertEngineCoreCompletionEvidence(
+        {
+          ...completed,
+          completionEvidenceByOperation: {
+            ENGINE_CORE: { artifactPath, artifactSha256: "0".repeat(64) }
+          }
+        },
+        planned,
+        contract
+      )
+    ).toThrow("no-family-plan-subwork-engine-core-evidence-stale");
+    expect(() =>
+      assertEngineCoreCompletionEvidence(
+        {
+          ...completed,
+          completionEvidenceByOperation: undefined
+        },
+        planned,
+        contract
+      )
+    ).toThrow("no-family-plan-subwork-engine-core-evidence-required");
+    expect(() =>
+      assertEngineCoreCompletionEvidence(
+        {
+          ...pending,
+          completionEvidenceByOperation: {
+            ENGINE_CORE: { artifactPath, artifactSha256 }
+          }
+        },
+        planned,
+        contract
+      )
+    ).toThrow("no-family-plan-subwork-engine-core-evidence-before-completion");
+    expect(artifact.status).toBe("implemented-verified-pending-family-track");
+  });
+
   it("projects the W002 engine-core contract into the generated loop work item", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
@@ -167,7 +243,7 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v7"
+        "W002-SOL-REPLAN-v8"
       );
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false

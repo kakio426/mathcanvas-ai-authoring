@@ -103,6 +103,12 @@ export function assertEngineCoreContract(contract, archetypeId) {
   const stableId = (value) =>
     typeof value === "string" &&
     /^[A-Za-z0-9._:-]+$/.test(value);
+  const relativePath = (value) =>
+    typeof value === "string" &&
+    value.length > 0 &&
+    !value.startsWith("/") &&
+    !value.includes("..") &&
+    /^[A-Za-z0-9._/-]+$/.test(value);
   const stringList = (value, minimum = 1) =>
     Array.isArray(value) &&
     value.length >= minimum &&
@@ -269,6 +275,18 @@ export function assertEngineCoreContract(contract, archetypeId) {
       binding.answerMode === decision.answerMode,
     `no-family-plan-engine-core-binding-invalid:${archetypeId}`
   );
+  const artifactContract = core.artifactContract;
+  assert(
+    artifactContract &&
+      relativePath(artifactContract.artifactPath) &&
+      artifactContract.status === "implemented-verified-pending-family-track" &&
+      Array.isArray(artifactContract.implementationFiles) &&
+      artifactContract.implementationFiles.length > 0 &&
+      new Set(artifactContract.implementationFiles).size ===
+        artifactContract.implementationFiles.length &&
+      artifactContract.implementationFiles.every(relativePath),
+    `no-family-plan-engine-core-artifact-contract-invalid:${archetypeId}`
+  );
 }
 
 function familyRevalidationArtifactPath(baseWorkItemId) {
@@ -288,6 +306,64 @@ function sha256File(relativePath) {
   return createHash("sha256")
     .update(readFileSync(absolutePath))
     .digest("hex");
+}
+
+export function assertEngineCoreCompletionEvidence(
+  stateItem,
+  plannedItem,
+  contract
+) {
+  const completedOperations = stateItem?.completedOperations ?? [];
+  const hasEngineCore = completedOperations.includes("ENGINE_CORE");
+  const evidence = stateItem?.completionEvidenceByOperation?.ENGINE_CORE;
+  if (!hasEngineCore) {
+    assert(
+      evidence === undefined,
+      `no-family-plan-subwork-engine-core-evidence-before-completion:${plannedItem.workItemId}`
+    );
+    return;
+  }
+
+  const artifactContract = contract.engineCoreContract?.artifactContract;
+  assert(
+    artifactContract &&
+      evidence &&
+      evidence.artifactPath === artifactContract.artifactPath &&
+      typeof evidence.artifactSha256 === "string" &&
+      /^[a-f0-9]{64}$/u.test(evidence.artifactSha256),
+    `no-family-plan-subwork-engine-core-evidence-required:${plannedItem.workItemId}`
+  );
+  const artifactPath = evidence.artifactPath;
+  const artifact = readJson(resolve(root, artifactPath));
+  assert(
+    artifact.schemaVersion === "1.0.0" &&
+      artifact.operation === "ENGINE_CORE" &&
+      artifact.workItemId === plannedItem.workItemId &&
+      artifact.operationWorkItemId ===
+        `${plannedItem.workItemId}-ENGINE_CORE` &&
+      artifact.standardCode === contract.standardCode &&
+      artifact.familyTrackId === plannedItem.familyTrackId &&
+      artifact.scopeId === plannedItem.scopeId &&
+      artifact.replanContractRevision === contract.replanContractRevision &&
+      artifact.status === artifactContract.status,
+    `no-family-plan-subwork-engine-core-evidence-invalid:${plannedItem.workItemId}`
+  );
+  const expectedFiles = [...artifactContract.implementationFiles].sort();
+  const actualFiles = Object.keys(artifact.implementationFiles ?? {}).sort();
+  assert(
+    JSON.stringify(actualFiles) === JSON.stringify(expectedFiles),
+    `no-family-plan-subwork-engine-core-evidence-files:${plannedItem.workItemId}`
+  );
+  assert(
+    evidence.artifactSha256 === sha256File(artifactPath),
+    `no-family-plan-subwork-engine-core-evidence-stale:${plannedItem.workItemId}`
+  );
+  for (const file of expectedFiles) {
+    assert(
+      sha256File(file) === artifact.implementationFiles[file],
+      `no-family-plan-subwork-engine-core-implementation-stale:${plannedItem.workItemId}:${file}`
+    );
+  }
 }
 
 function readCurrentFamilyRevalidationArtifact(
@@ -384,6 +460,8 @@ function readSubWorkState(contract) {
       );
       assert(
         planned &&
+          assertEngineCoreCompletionEvidence(item, planned, contract) ===
+            undefined &&
           validateOperationCursor(
             planned.operationSequence,
             item.completedOperations,

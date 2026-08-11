@@ -1,6 +1,12 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v7)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v8)
 
-상태: **Sol max 재계획 검토 대기 — 물리 조각 용량·엄격한 런타임 계약 보강**
+상태: **Sol max 재계획 검토 대기 — ENGINE_CORE completion evidence currentness 보강**
+
+v8은 승인된 v7 ENGINE_CORE의 교육·런타임 범위를 바꾸지 않는다. 다만
+ENGINE_CORE를 완료했다고 기록하려면 권위 artifact의 identity, revision, 상태, 구현 파일
+목록과 현재 SHA-256을 phase-state가 함께 증명해야 한다. 기록만 남기고 검증하지 않는
+전이는 허용하지 않으며, 이 v8 governance가 승인·소비되기 전에는 W002를 FAMILY_TRACK으로
+전진시키지 않는다.
 
 이번 v7은 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
 3-target source·adapter 결속·target-outline hash는 현재 저장소에 설치되어 소비된
@@ -74,9 +80,38 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
-이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v7`이며, A3 TARGET_SET이
-승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v7을 승인·소비한
+이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v8`이며, A3 TARGET_SET이
+승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v8을 승인·소비한
 뒤에만 `ENGINE_CORE`가 이 revision과 core 허용 파일 범위에 결속되어 시작된다.
+
+## v8 governance amendment — ENGINE_CORE completion evidence
+
+v7의 ENGINE_CORE artifact는 다음 권위 계약으로 고정한다.
+
+```json
+{
+  "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+  "status": "implemented-verified-pending-family-track",
+  "implementationFiles": [
+    "packages/contracts/src/catalog/cognitive-demand.ts",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts",
+    "packages/validator/src/predicates/registry.ts",
+    "packages/validator/src/validator.test.ts",
+    "packages/templates/src/cognitive/registry.ts",
+    "packages/templates/src/cognitive/registry.test.ts",
+    "scripts/pedagogy/check-cognitive-demand.mjs"
+  ]
+}
+```
+
+repeat-rule phase-state는 `completionEvidenceByOperation.ENGINE_CORE`에 artifact 경로와
+artifact 파일 SHA-256을 기록한다. builder는 ENGINE_CORE가 completedOperations에 들어간
+순간 다음을 fail-closed로 확인한다: artifact의 schemaVersion·operation·workItemId·
+operationWorkItemId·standardCode·familyTrackId·scopeId·replanContractRevision·status가
+계획과 정확히 일치하는지, artifact implementationFiles 집합이 위 권위 목록과 같은지,
+artifact SHA와 각 구현 파일 SHA가 현재 작업 트리와 일치하는지. `nextOperation=ENGINE_CORE`
+상태에서는 completion evidence를 미리 기록할 수 없다. 이 검증을 통과하지 못하면
+FAMILY_TRACK으로의 전이는 생성되지 않는다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
 |---|---|---|
@@ -102,9 +137,9 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 
 A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
 slice 결속을 이미 승인했고, v7 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
-v7의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
-v7 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
-그중 하나라도 바꿔야 하면 현재 v7 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+v8의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
+v8 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v8 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
 `TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서

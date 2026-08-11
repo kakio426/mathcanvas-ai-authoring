@@ -448,7 +448,7 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v7",
+      "replanContractRevision": "W002-SOL-REPLAN-v8",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "manifestDecision": {
@@ -585,6 +585,19 @@
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
           "answerMode": "conditional-rubric"
+        },
+        "artifactContract": {
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "status": "implemented-verified-pending-family-track",
+          "implementationFiles": [
+            "packages/contracts/src/catalog/cognitive-demand.ts",
+            "packages/contracts/src/catalog/cognitive-demand.test.ts",
+            "packages/validator/src/predicates/registry.ts",
+            "packages/validator/src/validator.test.ts",
+            "packages/templates/src/cognitive/registry.ts",
+            "packages/templates/src/cognitive/registry.test.ts",
+            "scripts/pedagogy/check-cognitive-demand.mjs"
+          ]
         }
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
