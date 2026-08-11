@@ -373,6 +373,55 @@
         "item misconceptionIds는 모든 context에서 repeat boundary mismatch를 계속 공유해 change의 간격·방향 오개념이 item state에 결속되지 않는다. target 1의 arrangement-no-rule도 실제 대안으로 구현되지 않고 cognitive decision은 여전히 select-one 정답 맞히기다. context별 rejectable misconception과 두 AssessmentTarget의 각각 다른 observable evidence를 회귀 테스트로 고정해야 한다.",
         "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 그러나 테스트는 role·constraint 존재만 확인하고 source multiset, rendered target containment, remove→reuse phase history, self-defined rule state를 검증하지 않아 위 P0를 탐지하지 못한다. 다음 수정이 새 phase/event contract나 일반 construct decision schema를 요구하면 FAMILY_TRACK 안에서 core scope를 조용히 넓히지 말고 planning/discovery hard stop으로 전환해야 한다."
       ]
+    },
+    {
+      "reviewId": "W002-FAMILY_TRACK-SOL-A4",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "FAMILY_TRACK",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 4,
+      "candidateCommit": "4a44f242443294204eae9503d7d7963e49cb480b",
+      "changedFiles": [
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+        "reports/problem-family-registry/latest.json"
+      ],
+      "supersedesReviewId": "W002-FAMILY_TRACK-SOL-A3",
+      "checkedAt": "2026-08-11T14:01:35.000Z",
+      "evidenceRefs": [
+        "git:4a44f242443294204eae9503d7d7963e49cb480b",
+        "git:0212bf0cd79534c4c6f75cb087118fd18124ccd6",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A3",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A1",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md#retry·승격",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md#구현-중-교육적-hard-stop",
+        "scripts/curriculum/no-family-plan.json#loopPolicy.retryPolicy",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+        "scripts/curriculum/no-family-plan.json#C01",
+        "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/wave16-repeating-pattern-v1.ts",
+        "packages/mathcanvas-compiler/src/adapters/native-pattern-block-contract.ts",
+        "packages/mathcanvas-compiler/src/core/compile-resolved.ts#lockedIds",
+        "reports/problem-family-registry/latest.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "command:pnpm exec vitest run repeating-pattern-arrangement.test.ts registry.test.ts",
+        "command:pnpm check"
+      ],
+      "findings": [
+        "A3의 interaction P0는 상당 부분 해소됐다. wrong block은 completion source에서 제외되어 piece-bank에 최종 유지할 수 있고, 두 context 모두 completion multiset이 repair 1개와 continuation 2개를 충족하며 surplus도 남는다. repair는 120×120 안에 들어가는 SM02PB variant 4·5만 쓰고 next slots는 188×188이며, initial wrong block은 movable·repair surface는 별도 locked rectangle이라 하나의 가능한 final state가 존재한다.",
+        "차단 판정: 승인된 TargetSet scopeNote는 repeat/change를 모두 target 범위로 두고 repeat-only family가 전체 target을 주장하지 못하게 한다. A4 capability도 repeat-3·change·수·다른 맥락을 구현하지 않는다고 명시하면서 source.assessmentTargetIds에는 두 required target을 모두 등록한다. 이는 context 한계로 부분 구현만 commit하는 경우에 해당하며 W002 standard를 닫을 수 없다. partial family coverage를 합산하는 registry 계약 또는 concrete family 분할 계획 없이 이 candidate를 승인하면 reviewed-complete coverage overclaim이 된다.",
+        "첫 target의 동일한 교육적 결함도 네 attempt 동안 남았다. 질문 자체가 ‘초록-주황’ 또는 ‘주황-초록 반복 단위’를 답으로 제시하고, 학생은 unique correctRuleText와 네 distractor 중 그 답을 고른다. 빈 explanation text를 추가해도 rule state가 학생 구성에서 생성되지 않으므로 ‘자신이 정한 규칙’이 아니라 주어진 규칙 재진술이다. 가운데 green/orange block 역시 학생이 먼저 정한 다른 유효 규칙에서는 어긋난 항이 아닐 수 있다.",
+        "sequence-block-4~6을 세 개의 ‘⋯’로 놓고 그 뒤에 next-slot 두 칸을 배치해 반복의 phase가 사라진다. 생략 항 수가 불명확하면 다음 두 항이 유일하지 않고, 세 위치를 정확히 생략한 뜻이면 corrected G-O-G 뒤 4~6항은 O-G-O이므로 7~8항은 G-O가 되어 candidate answer O-G와 반대다. preview는 화면을 충실히 묘사하지만 화면 자체의 수학적 위치 의미가 잘못됐다. next slots는 세 번째 항 바로 뒤에 놓거나 명시한 위치 번호와 parity에 맞춰야 한다.",
+        "explanation-box를 common.text로 바꿨지만 role은 locked=true이고 compiled payload lockIds에 포함된다. static object의 isTextEdit=true만으로 잠긴 객체가 학생 모드에서 실제 입력·수정·저장·재열기 가능한지는 증명되지 않았으며 테스트는 오히려 locked임만 고정한다. target 1의 핵심 증거를 이 입력에 의존하려면 unlocked text lifecycle evidence가 필요하고, 아니면 검증된 pen/explanation region을 사용해야 한다.",
+        "각 context의 두 item은 sequence, question, candidate set, pool, answer, explanation이 완전히 같아 2문항이 독립된 rule/repair evidence를 추가하지 않는다. context 두 개도 같은 repeat-2 invariant에서 시작 색만 뒤집은 두 상태뿐이므로 현재 4개 산출물은 acceptance gate의 충분한 정규화 상태·오개념 대안 폭을 충족하지 않는다.",
+        "repeat-only capability인데 promptGuards가 비어 있어 requestedFamilyId와 함께 변화 규칙·수 배열·repeat-3을 구체적으로 요청해도 scope 밖 조건을 침묵 무시할 수 있다. Sol 재계획 후 각 partial family는 unsupported condition을 명시적으로 clarification-required로 돌려야 한다.",
+        "재계획 최소안: A4의 feasible repair shell은 ‘이미 선언된 repeat-2 규칙을 고쳐 이어 놓기’ target-2 partial family로만 보존 검토하고, target 1은 학생이 빈 rule lane에서 SM02PB 성분·순서를 직접 구성한 뒤 그 저장 상태를 배열에 적용하는 별도 family로 설계하라. TargetSet이 요구하는 change envelope는 observable number/state affordance의 별도 family로 분리하라. 여러 family의 partial assessmentTarget coverage를 standard completion으로 합산할 계약이 없으면 먼저 registry/coverage schema 계획을 승인받아야 한다.",
+        "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 하지만 loop contract는 같은 deterministic 원인의 수정은 최대 2회, 세 번째 동일 실패·family 분할·schema 변경·context 한계의 partial 구현은 즉시 blocked-needs-sol-replan으로 규정한다. A1~A4에서 self-defined rule 부재가 반복되고 A4가 명시적으로 partial scope로 축소됐으므로 추가 A5 retry는 허용하지 않는다."
+      ]
     }
   ]
 }
