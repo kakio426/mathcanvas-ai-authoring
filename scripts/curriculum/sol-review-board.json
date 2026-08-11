@@ -736,6 +736,76 @@
         "회귀 테스트 수정 요청: 현재 7개 테스트는 exact cursor와 FAMILY_REVALIDATION 첫 attempt 링크만 직접 고정한다. 최소한 revalidation attempt 1→changes-requested→attempt 2→approved 체인, malformed/wrong-standard subWork state hard stop, scoped/legacy stale artifact current·mismatch, FAMILY_TRACK changes-requested retry와 blocked→SOL_REPLAN 전이를 builder/gate 수준 fixture로 실행해야 이번 orchestration 계약을 승인할 수 있다.",
         "독립 QA는 status 7/7, typecheck, curriculum:no-family-plan(97 standards/24 engines/84 tracks), curriculum:program, visual audit 21/93 P0/P1 0, candidate diff-check를 통과했다. 후보 구현의 일반 빌드 건전성은 확인됐지만 위 P0 review-chain 모순 때문에 SOL_REPLAN 승인은 보류한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A5",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 5,
+      "candidateCommit": "b3c9d5de45ae45a9851d32201732912c68cd5d64",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A4",
+      "checkedAt": "2026-08-11T15:43:15.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "c7af7979579df28812afa91e33aa0374b24b331364a4f29432de7e852fd93939",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-SOL-A4",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
+      "targetOutlineSha256": "61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:b3c9d5de45ae45a9851d32201732912c68cd5d64",
+        "git:db04da622e0d4ea4f621c0b80841ef1f7cf5b459",
+        "git:37f310d9adc987ec5594cdd095602f3b414fb12c",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A4",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+        "scripts/curriculum/no-family-plan.json#C01",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs#readSubWorkState",
+        "scripts/curriculum/build-no-family-plan.mjs#sol-review-attempt-order",
+        "scripts/curriculum/sol-review-status.mjs#familyRevalidationSupersedes",
+        "scripts/curriculum/sol-review-status.mjs#rewindFamilyTrackForRetry",
+        "scripts/curriculum/verify-sol-review-gate.mjs#FAMILY_REVALIDATION",
+        "W002_REPLAN.md#구현-불변량",
+        "tests/sol-review-status.test.ts",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (8/8)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm check (78 files / 470 tests)",
+        "command:git diff --check b3c9d5d^ b3c9d5d"
+      ],
+      "findings": [
+        "승인: candidate exact diff 7개는 SOL_REPLAN allowedFiles에 모두 포함되며 candidate 이후 구현 변경은 없다. [2수02-02]의 3개 target과 세 scoped family ownership, W002-SOL-REPLAN-v2 revision, targetOutlineSha256=61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6가 일치한다.",
+        "A4 P0 해소: FAMILY_REVALIDATION은 attempt 1에서 supersedesReviewId=null, 이후에는 동일 scoped FAMILY_REVALIDATION의 직전 reviewId를 사용하도록 일반 attempt-order와 특수 record/gate 조건이 양립한다. supersedesFamilyTrackReviewId는 attempt 체인과 분리되어 원 FAMILY_TRACK review를 계속 결속하고, lifecycle helper도 이 별도 링크만 검증한다.",
+        "상태 계약 승인: C01 contract에 standardCode=[2수02-02]가 고정되고 readSubWorkState가 schema/revision/workItem/standardCode, 세 item의 exact·unique coverage, 각 operationSequence의 exact prefix cursor를 fail-closed로 검증한다. FAMILY_TRACK changes-requested는 구현 단계로 rewind되고 blocked는 consumed replan 이후 새 SOL_REPLAN으로 분기한다.",
+        "교육·preview 계약 승인: change target은 시작값·변화량·방향을 학생이 직접 구성·선언하는 결정과 관찰 증거를 명시한다. W002_REPLAN.md는 compile-time RuleStateEnvelope·조건부 rubric과 post-interaction StudentRuleStateEvidence·responseHash를 분리해 승인 전 preview가 미래 학생 상태를 주장하지 않는다.",
+        "회귀 확인: helper fixture는 first/later FAMILY_REVALIDATION link, mismatch, exact cursor, changes-requested rewind를 고정한다. builder의 generic attempt-order와 FAMILY_REVALIDATION special gate를 함께 읽어 later attempt가 반드시 직전 revalidation review를 supersede함을 확인했다.",
+        "독립 QA는 focused 8/8, typecheck, no-family plan 97 standards/24 engines/84 tracks, 전체 pnpm check 78 files/470 tests, build, cognitive/native/contract gates, visual·quality audit P0/P1 0, candidate diff-check를 통과했다. SOL_REPLAN을 승인하며 다음 순서는 W001 FAMILY_REVALIDATION artifact/review 후 W002의 새 TARGET_SET review이다."
+      ]
     }
   ]
 }
