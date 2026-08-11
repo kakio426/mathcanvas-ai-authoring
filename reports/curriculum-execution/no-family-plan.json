@@ -114,6 +114,8 @@
       ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
+        "reports/problem-family-registry/latest.json",
+        "reports/problem-family-registry/latest.md",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
@@ -205,6 +207,8 @@
       ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
+        "reports/problem-family-registry/latest.json",
+        "reports/problem-family-registry/latest.md",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
@@ -1335,9 +1339,9 @@
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 96,
-      "offline-in-progress": 1,
+      "offline-in-progress": 0,
       "sol-review-required": 0,
-      "blocked-needs-sol-replan": 0,
+      "blocked-needs-sol-replan": 1,
       "live-evidence": 0,
       "complete": 0
     },
@@ -1349,6 +1353,182 @@
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
+      "sequence": 2,
+      "workItemId": "W002",
+      "batchId": "B01",
+      "wave": 0,
+      "standardCode": "[2수02-02]",
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "officialGoal": "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.",
+      "archetypeId": "C01",
+      "plannedFamilyId": "pattern.create-repeat-unit-explain-v1",
+      "engineClassIds": [
+        "R08"
+      ],
+      "reviewScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "familySubWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": [
+            "choose-own-arrangement-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.repeat-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET"
+          ],
+          "operationSequence": [
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": [
+            "construct-repeat-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.declared-repeat.repair-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
+          ],
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": [
+            "construct-change-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.change-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
+          ],
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
+          "reviewStatus": "pending",
+          "reviewId": null,
+          "retryingFamilyTrack": false
+        }
+      ],
+      "nextFamilySubWork": null,
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
+      "operation": "TARGET_SET",
+      "operationWorkItemId": "W002-TARGET_SET",
+      "dependencyWorkItemIds": [
+        "W002-LEARNING_MAP_BINDING"
+      ],
+      "allowedFiles": [
+        "packages/curriculum/src/assessment-targets/**",
+        "packages/curriculum/src/assessment-targets.ts",
+        "packages/curriculum/src/assessment-targets.test.ts",
+        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "reviewGate": null,
+      "learningMapBound": true,
+      "targetOutlineSha256": "61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6",
+      "expectedTargetOutline": [
+        {
+          "key": "choose-own-arrangement-rule",
+          "studentDecision": "물체·무늬 배열에 적용할 반복 단위의 성분과 순서를 스스로 정하고 선언한다.",
+          "invariant": "정한 반복 단위가 배열의 모든 연속 위치에 같은 순서로 적용된다.",
+          "observableEvidence": "학생이 구성·선언한 반복 단위와 그 경계가 배열 시작 부분에 드러난다.",
+          "misconceptionClass": "repeat-unit-changes-mid-sequence"
+        },
+        {
+          "key": "construct-repeat-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 반복 단위에 맞도록 다음 항목들을 배열하고 어긋난 반복 항목을 고친다.",
+          "invariant": "반복 배열의 모든 항목은 학생이 선언한 동일한 반복 단위로 생성된다.",
+          "observableEvidence": "완성된 반복 배열에서 단위 경계·수정된 항목·반복 근거를 다시 추적할 수 있다.",
+          "misconceptionClass": "copy-last-item-instead-of-applying-repeat-rule"
+        },
+        {
+          "key": "construct-change-arrangement-following-rule",
+          "studentDecision": "수 배열에 적용할 시작값·변화량·방향을 스스로 정하고 선언한 뒤, 그 관계로 다음 항을 배열하고 어긋난 항을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 시작값·변화량·방향의 같은 관계를 만족한다.",
+          "observableEvidence": "학생이 구성·선언한 시작값·변화량·방향과 연속 항의 관계를 화면에서 대조하고 다음 항을 예측한다.",
+          "misconceptionClass": "change-step-or-direction-mismatch"
+        }
+      ],
+      "expectedTargetCount": 3,
+      "archetypeRole": "anchor",
+      "splitRisk": "medium",
+      "nextAction": "review-target-set-and-design-family",
+      "actionClass": "planned-no-family",
+      "solReview": {
+        "targetSet": "approved",
+        "familyTrack": "blocked",
+        "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
+        "familyTrackReviewIds": [],
+        "replan": "approved",
+        "replanApproved": true,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
+        "revalidationArtifact": null
+      }
+    },
+    "nextReplanWork": {
       "sequence": 1,
       "workItemId": "W001",
       "batchId": "B01",
@@ -1372,19 +1552,36 @@
       "nextFamilySubWork": null,
       "subWorkStatePath": null,
       "replanDocumentPath": "W001_REPLAN.md",
-      "replanContractRevision": "W001-SOL-REPLAN-v1",
-      "operation": "FAMILY_REVALIDATION",
-      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
+      "operation": "SOL_REPLAN",
+      "operationWorkItemId": "W001-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W001-FAMILY_TRACK",
         "W001-SOL_REVIEW-FAMILY_TRACK"
       ],
       "allowedFiles": [
-        "reports/curriculum-execution/family-revalidation/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "W001_REPLAN.md",
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/revalidation-semantic-slice.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -1408,8 +1605,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "finish-offline-validation",
-      "actionClass": "offline-in-progress",
+      "nextAction": "sol-replan-required",
+      "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "stale",
@@ -1417,14 +1614,13 @@
         "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
         "familyTrackReviewIds": [],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "changes-requested",
         "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
-    "nextReplanWork": null,
     "nextLiveEvidenceWork": null
   },
   "batches": [
@@ -3649,7 +3845,7 @@
       ],
       "standardCode": "[2수04-02]",
       "replanDocumentPath": "W001_REPLAN.md",
-      "replanContractRevision": "W001-SOL-REPLAN-v1",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
       "replanTargetSetRequired": false,
       "revalidationFiles": [
         "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
@@ -3758,19 +3954,36 @@
       "nextFamilySubWork": null,
       "subWorkStatePath": null,
       "replanDocumentPath": "W001_REPLAN.md",
-      "replanContractRevision": "W001-SOL-REPLAN-v1",
-      "operation": "FAMILY_REVALIDATION",
-      "operationWorkItemId": "W001-FAMILY_REVALIDATION",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
+      "operation": "SOL_REPLAN",
+      "operationWorkItemId": "W001-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W001-FAMILY_TRACK",
         "W001-SOL_REVIEW-FAMILY_TRACK"
       ],
       "allowedFiles": [
-        "reports/curriculum-execution/family-revalidation/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "W001_REPLAN.md",
+        "W002_REPLAN.md",
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/revalidation-semantic-slice.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "scripts/curriculum/sol-review-board.json",
+        "packages/contracts/src/problem-family.ts",
+        "packages/contracts/src/problem-family.test.ts",
+        "packages/templates/src/problem-families/types.ts",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "package.json",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
+        "reports/curriculum-execution/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -3794,8 +4007,8 @@
       "expectedTargetCount": 2,
       "archetypeRole": "anchor",
       "splitRisk": "low",
-      "nextAction": "finish-offline-validation",
-      "actionClass": "offline-in-progress",
+      "nextAction": "sol-replan-required",
+      "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "stale",
@@ -3803,8 +4016,8 @@
         "familyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
         "familyTrackReviewIds": [],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "changes-requested",
         "revalidationApproved": false,
         "revalidationArtifact": null

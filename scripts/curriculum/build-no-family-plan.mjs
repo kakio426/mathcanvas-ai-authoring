@@ -7,7 +7,8 @@ import {
   familyRevalidationSupersedes,
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
-  validateOperationCursor
+  validateOperationCursor,
+  replanTriggerReview
 } from "./sol-review-status.mjs";
 import { semanticSliceIsCurrent } from "./revalidation-semantic-slice.mjs";
 
@@ -997,20 +998,19 @@ function buildReport() {
       scopedFamilyRevalidationReviews
         .filter(Boolean)
         .sort((left, right) => right.attempt - left.attempt)[0] ?? null;
-    const replanTriggerReview =
-      latestFamilyRevalidationReview &&
-      ["changes-requested", "blocked"].includes(
-        latestFamilyRevalidationReview.decision
-      )
-        ? latestFamilyRevalidationReview
-        : blockedFamilyTrackReview;
+    const replanTrigger = replanTriggerReview(
+      replanReview,
+      latestFamilyRevalidationReview,
+      blockedFamilyTrackReview,
+      solReviewBoard.reviews ?? []
+    );
     const replanApproved =
       replanReview?.decision === "approved" &&
       typeof replanDocumentPath === "string" &&
       replanReview.replanDocumentPath === replanDocumentPath &&
       replanReview.replanDocumentSha256 === sha256File(replanDocumentPath) &&
       replanReview.supersedesBlockedReviewId ===
-        replanTriggerReview?.reviewId &&
+        replanTrigger?.reviewId &&
       JSON.stringify(replanReview.replanScopes ?? []) ===
         JSON.stringify(reviewScopes) &&
       replanReview.replanContractRevision === contract.replanContractRevision;
@@ -1150,14 +1150,15 @@ function buildReport() {
       (!replanApproved || replanConsumed);
     const linkedFamily = (current?.linkedFamilyIds?.length ?? 0) > 0;
     const familyValidated =
+      revalidationApproved ||
       (current?.offlineFamilyIds?.length ?? 0) > 0 ||
       (current?.releasedFamilyIds?.length ?? 0) > 0;
     let operation;
     let reviewGate = null;
     const revalidationNeedsReplan =
-      replanTriggerReview?.operation === "FAMILY_REVALIDATION";
+      replanTrigger?.operation === "FAMILY_REVALIDATION";
     const blockedBySolReplan =
-      replanTriggerReview !== null &&
+      replanTrigger !== null &&
       (!replanApproved || (!revalidationNeedsReplan && replanConsumed));
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";

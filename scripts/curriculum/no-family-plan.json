@@ -166,6 +166,8 @@
       ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
+        "reports/problem-family-registry/latest.json",
+        "reports/problem-family-registry/latest.md",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
@@ -257,6 +259,8 @@
       ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
+        "reports/problem-family-registry/latest.json",
+        "reports/problem-family-registry/latest.md",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
@@ -515,7 +519,7 @@
       "engineClassIds": ["R22"],
       "standardCode": "[2수04-02]",
       "replanDocumentPath": "W001_REPLAN.md",
-      "replanContractRevision": "W001-SOL-REPLAN-v1",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
       "replanTargetSetRequired": false,
       "revalidationFiles": [
         "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",

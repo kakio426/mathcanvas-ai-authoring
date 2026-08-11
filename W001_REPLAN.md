@@ -1,4 +1,4 @@
-# W001 semantic-slice revalidation replan
+# W001 semantic-slice revalidation replan (v2)
 
 ## 범위
 
@@ -25,6 +25,9 @@
    반드시 stale가 되어 새 FAMILY_REVALIDATION을 요구한다.
 5. target set은 이미 승인된 두 target을 그대로 사용하므로 replan 승인 뒤 TARGET_SET을
    다시 요구하지 않는다(`replanTargetSetRequired=false`).
+6. replan 승인 기록은 다음 FAMILY_REVALIDATION attempt와 독립적으로 유지된다.
+   revalidation 승인 뒤에는 `familyValidated`와 registry/coverage 파생 보고서를 함께
+   갱신하여 FAMILY_TRACK으로 되돌아가지 않는다.
 
 ## 검증 순서
 
@@ -36,5 +39,7 @@ Sol은 다음을 독립 검증한다.
 - 다른 표준 topic만 추가하면 current가 유지되는가
 - FAMILY_REVALIDATION `changes-requested`가 같은 SOL_REVIEW에 머물지 않고
   `SOL_REPLAN`으로 이동하는가
+- FAMILY_REVALIDATION 승인 뒤 `replanApproved/replanConsumed`와 family validation이
+  유지되고, registry 보고서도 stale가 아닌가
 
 이 조건을 통과한 뒤에만 W001 artifact를 새 fingerprint로 재생성한다.

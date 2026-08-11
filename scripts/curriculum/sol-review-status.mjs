@@ -108,6 +108,30 @@ export function familyRevalidationSupersedes(
   );
 }
 
+export function replanTriggerReview(
+  replanReview,
+  latestFamilyRevalidationReview,
+  blockedFamilyTrackReview,
+  reviews = []
+) {
+  if (
+    latestFamilyRevalidationReview &&
+    ["changes-requested", "blocked"].includes(
+      latestFamilyRevalidationReview.decision
+    )
+  ) {
+    return latestFamilyRevalidationReview;
+  }
+  if (replanReview?.supersedesBlockedReviewId) {
+    return (
+      reviews.find(
+        (review) => review.reviewId === replanReview.supersedesBlockedReviewId
+      ) ?? null
+    );
+  }
+  return blockedFamilyTrackReview ?? null;
+}
+
 function defaultGit(args) {
   return execFileSync("git", args, {
     cwd: root,

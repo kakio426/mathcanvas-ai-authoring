@@ -8,6 +8,7 @@ const {
   effectiveFamilyLifecycleStage,
   familyRevalidationSupersedes,
   nativeFamilyReviewStatus,
+  replanTriggerReview,
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
   reviewImplementationFiles,
@@ -181,6 +182,45 @@ describe("Sol review candidate and scope gates", () => {
     expect(
       rewindFamilyTrackForRetry(sequence, ["AFFORDANCE_DISCOVERY"], "changes-requested")
     ).toBe(null);
+  });
+
+  it("keeps a replan trigger alive after its family revalidation is approved", () => {
+    const blockedRevalidation = review({
+      reviewId: "W001-FAMILY_REVALIDATION-SOL-A1",
+      operation: "FAMILY_REVALIDATION",
+      decision: "changes-requested"
+    });
+    const approvedRevalidation = {
+      ...blockedRevalidation,
+      reviewId: "W001-FAMILY_REVALIDATION-SOL-A2",
+      decision: "approved",
+      attempt: 2,
+      supersedesReviewId: blockedRevalidation.reviewId
+    };
+    const replan = {
+      ...review({
+        reviewId: "W001-SOL_REPLAN-SOL-A2",
+        operation: "SOL_REPLAN",
+        supersedesBlockedReviewId: blockedRevalidation.reviewId
+      })
+    };
+
+    expect(
+      replanTriggerReview(
+        replan,
+        blockedRevalidation,
+        null,
+        [blockedRevalidation, approvedRevalidation]
+      )
+    ).toBe(blockedRevalidation);
+    expect(
+      replanTriggerReview(
+        replan,
+        approvedRevalidation,
+        null,
+        [blockedRevalidation, approvedRevalidation]
+      )
+    ).toBe(blockedRevalidation);
   });
 
   it("fingerprints only the selected standard learning-map slice", () => {

@@ -12,14 +12,133 @@
   ],
   "domain": "자료와 가능성",
   "blueprintContentHash": "4f800f9747d04c3e119710cacd60f60039b0ca864e5229bb1a9f7c397e070659",
-  "learningMapUsageSnapshotSha256": "bed940f1896d3991aeb12766dff49c84dd110465e38ed01625ed5f32b564b1d5",
+  "replanContractRevision": "W001-SOL-REPLAN-v1",
+  "learningMapUsageSnapshotSha256": null,
   "implementationFiles": {
-    "fixtures/pedagogy/learning-map.used.json": "be69ba2e071b143203a0e303b86931181dd904d8cec1e529ae19d55c1493e652",
     "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts": "d8e6890dd925873d7a91170b17bf0bd2d336f07d3cfbb60d5dda53f810b4972b",
-    "packages/templates/src/cognitive/registry.ts": "47aa71482d036b4be81bad6a33e812dd903ad87d48d909e39cbe9d000c2a797c",
-    "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts": "b47db85baaa118a2c748dac0ff49ac3e84535640cdd65b35f7520e1306c8a3d5",
-    "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts": "ad2a4f36e556d892eb69dc7a51ce69689b1585b0fd096fbc9a46ff857b618bf8",
-    "packages/validator/src/native/registry.ts": "45e7c41518cb570c1a8c2edbc14ea461c658bbdedbd479b977a9ed0d11a88388"
+    "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts": "b47db85baaa118a2c748dac0ff49ac3e84535640cdd65b35f7520e1306c8a3d5"
   },
-  "fingerprintSha256": "4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2"
+  "semanticSlices": [
+    {
+      "kind": "learning-map",
+      "path": "fixtures/pedagogy/learning-map.used.json",
+      "standardCode": "[2수04-02]",
+      "sha256": "81a7326e1e34ebc3e1fb7b20fdb97ec245a2f07c4540ba68ab6b70f15689ae04",
+      "value": {
+        "kind": "learning-map",
+        "path": "fixtures/pedagogy/learning-map.used.json",
+        "standardCode": "[2수04-02]",
+        "topics": [
+          {
+            "id": "kr.mt.math.data-probability.g1-2.s2-04-02.concept",
+            "titleKorean": "[2수04-02] 자료의 정리 - 개념 확인",
+            "evidence": [
+              "[2수04-02] 자료의 정리 - 개념 확인을 이루는 핵심 요소 두 가지 이상을 찾아 자신의 말로 설명한다.",
+              "자료와 가능성 사례에서 [2수04-02] 자료의 정리 - 개념 확인이 드러나는 장면을 선택하고 판단 근거를 제시한다."
+            ],
+            "assessmentPrompt": "'자료의 정리'에 관한 짧은 상황을 제시하고, 학생이 공식 성취기준 [2수04-02]의 핵심 개념을 자신의 말과 간단한 예로 설명하게 하라."
+          },
+          {
+            "id": "kr.mt.math.data-probability.g1-2.s2-04-02.representation",
+            "titleKorean": "[2수04-02] 자료의 정리 - 표현과 연결",
+            "evidence": [
+              "[2수04-02] 자료의 정리 - 표현과 연결을 말·글·표·그림·소리·움직임 중 알맞은 방식으로 표현한다.",
+              "자신의 표현물에서 자료와 가능성 내용과 근거가 드러나는 부분을 찾아 설명한다."
+            ],
+            "assessmentPrompt": "'자료의 정리'에 관한 과제를 제시하고, 학생이 같은 수학적 의미를 두 가지 이상의 표현으로 나타낸 뒤 연결 이유를 설명하게 하라."
+          },
+          {
+            "id": "kr.mt.math.data-probability.g1-2.s2-04-02.application",
+            "titleKorean": "[2수04-02] 자료의 정리 - 적용과 설명",
+            "evidence": [
+              "[2수04-02] 자료의 정리 - 적용과 설명을 수행하는 순서와 주의할 점을 말한 뒤 과제를 끝까지 실행한다.",
+              "수행 과정과 결과를 기록하고, [2수04-02] 자료의 정리 - 적용과 설명의 다음 시도에서 바꿀 점을 한 가지 제시한다."
+            ],
+            "assessmentPrompt": "'자료의 정리'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라."
+          }
+        ],
+        "dependencies": [
+          {
+            "topicId": "kr.mt.math.data-probability.g1-2.s2-04-02.representation",
+            "prerequisiteId": "kr.mt.math.data-probability.g1-2.s2-04-02.concept",
+            "strength": "hard",
+            "reason": "[2수04-02] '자료의 정리': 표현 활동 전에 핵심 개념 확인이 필요하다."
+          },
+          {
+            "topicId": "kr.mt.math.data-probability.g1-2.s2-04-02.application",
+            "prerequisiteId": "kr.mt.math.data-probability.g1-2.s2-04-02.representation",
+            "strength": "hard",
+            "reason": "[2수04-02] '자료의 정리': 적용·설명 과제 전에 표현과 연결 활동이 필요하다."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "registry-family",
+      "path": "reports/problem-family-registry/latest.json",
+      "standardCode": "[2수04-02]",
+      "familyId": "data.early-table.organize-v1",
+      "sha256": "a982a1a42abc10e1f932681819ca5d0e57ef3f33af099ecc38691ac9ae45cf97",
+      "value": {
+        "kind": "registry-family",
+        "path": "reports/problem-family-registry/latest.json",
+        "standardCode": "[2수04-02]",
+        "familyId": "data.early-table.organize-v1",
+        "family": {
+          "familyId": "data.early-table.organize-v1",
+          "activityId": "data.early-table.organize-v1",
+          "templateId": "data.early-table.organize-v1",
+          "domain": "자료와 가능성",
+          "standardCodes": [
+            "[2수04-02]"
+          ],
+          "manipulation": "data-table-organize-choice-drag",
+          "generator": {
+            "id": "data.early-table.organize-items",
+            "version": "1.0.0"
+          },
+          "renderRecipeKind": "native-render-recipe",
+          "blueprintContentHash": "4f800f9747d04c3e119710cacd60f60039b0ca864e5229bb1a9f7c397e070659",
+          "assessmentTargetIds": [
+            "data.table.organize-classified-data-v1",
+            "data.table.explain-usefulness-v1"
+          ],
+          "parameterKeys": [
+            "contextId"
+          ],
+          "evidencePaths": [
+            "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts"
+          ]
+        }
+      }
+    },
+    {
+      "kind": "source-module",
+      "path": "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+      "standardCode": "[2수04-02]",
+      "normalization": "ignore-learning-map-snapshot",
+      "sha256": "1cf6c00f62816833a3db90686a7caa712b09a4955f9f7d3f7ebb688412e0a625",
+      "value": {
+        "kind": "source-module",
+        "path": "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "standardCode": "[2수04-02]",
+        "contentSha256": "f6e2f8f696a613b882b3ab49b5ee934b0f6b98d2a8599ca9be7ffe62d1b7cfea"
+      }
+    },
+    {
+      "kind": "source-module",
+      "path": "packages/validator/src/native/registry.ts",
+      "standardCode": "[2수04-02]",
+      "startMarker": "function dataTableHandler(",
+      "endMarker": "function pointLineHandler(",
+      "sha256": "37954aeff4e1c4201b9334beb9deafceb2ba96cfeb534b3157e4e491439d3ab2",
+      "value": {
+        "kind": "source-module",
+        "path": "packages/validator/src/native/registry.ts",
+        "standardCode": "[2수04-02]",
+        "contentSha256": "5985a3ed0ce9a70905952082eb3994c57a2119ff18add7646d14422bb3584add"
+      }
+    }
+  ],
+  "fingerprintSha256": "9fa62d11488796110fd08199de85e9a5016010fcede346caf21b2fc07837024e"
 }
