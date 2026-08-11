@@ -33,6 +33,7 @@
   },
   "foundation": {
     "baselineCommit": "06b5fe17fc5ea3164bbd01d333743c2aa03a0041",
+    "executionLearningMapFixture": "fixtures/pedagogy/no-family-learning-map.used.json",
     "defaultLearningMapRecordsForPlan": 0,
     "pilotInclusiveLearningMapRecordsForPlan": 9,
     "requiredPinnedLearningMapAdditions": 88,

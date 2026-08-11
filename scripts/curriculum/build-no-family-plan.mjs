@@ -11,7 +11,10 @@ const targetOutlinePath = resolve(
   root,
   "scripts/curriculum/no-family-target-outlines.sol-draft.json"
 );
-const learningMapPath = resolve(root, "fixtures/pedagogy/learning-map.used.json");
+const learningMapPath = resolve(
+  root,
+  "fixtures/pedagogy/no-family-learning-map.used.json"
+);
 const solReviewBoardPath = resolve(
   root,
   "scripts/curriculum/sol-review-board.json"
@@ -192,7 +195,9 @@ function buildReport() {
   assert(
     learningMap.schemaVersion === "1.0.0" &&
       Array.isArray(learningMap.topics) &&
-      Array.isArray(learningMap.dependencies),
+      Array.isArray(learningMap.dependencies) &&
+      source.foundation.executionLearningMapFixture ===
+        "fixtures/pedagogy/no-family-learning-map.used.json",
     "no-family-plan-learning-map-schema"
   );
 
