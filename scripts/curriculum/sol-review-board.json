@@ -145,6 +145,45 @@
         "둘째 문항의 올바른 표, 개수 비교 대안, 장식성·전체 수 중심 오개념, 설명 영역은 여전히 둘째 AssessmentTarget을 충족하므로 유지 가능하다. 새 native edit contract나 family 재분리는 필요하지 않아 blocked가 아니라 changes-requested로 판정한다.",
         "독립 재검증에서 focused 2파일·8/8, pnpm cognitive:verify, pnpm curriculum:no-family-plan이 통과했다. 이 녹색 결과는 현재 schema·serialization·hash 결속을 증명하지만, 테스트가 네 context 모두 같은 3,1,2 정답이고 최종 DP02TG가 [1,1,1]인 상태를 허용하므로 위 교육적 관찰 증거 결함을 해소하지 않는다."
       ]
+    },
+    {
+      "reviewId": "W001-FAMILY_TRACK-SOL-A3",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "FAMILY_TRACK",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 3,
+      "candidateCommit": "ea286d5dd02f2dadfb436512fe749cfdf477e638",
+      "changedFiles": [
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "reports/problem-family-registry/latest.json"
+      ],
+      "supersedesReviewId": "W001-FAMILY_TRACK-SOL-A2",
+      "checkedAt": "2026-08-11T12:11:58.000Z",
+      "evidenceRefs": [
+        "git:ea286d5dd02f2dadfb436512fe749cfdf477e638",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_TRACK-SOL-A2",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
+        "scripts/curriculum/no-family-plan.json#D01A",
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "reports/problem-family-registry/latest.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "command:pnpm check"
+      ],
+      "findings": [
+        "A2의 최종 상태 모순이 해소됐다. locked DP02TG는 제목·instructionalIntent·exact preview에서 ‘고쳐야 할 표’라는 반례로만 명시되고, 학생이 prediction-box에 저장하는 선택은 범주 이름과 각 개수가 세 줄로 직접 결속된 완전한 category-to-count mapping이다. 편집되지 않는 native 표를 완성 표라고 주장하지 않는다.",
+        "cognitive release predicate와 manifest verification roles가 data-table·raw-data·prediction-box를 함께 참조하고, invariant는 선택한 완전 매핑의 범주별 개수가 원자료와 일치하며 세 개수의 합이 전체 수와 같아야 함을 명시한다. 학생 지시·revision path·정답·해설·preview·테스트가 같은 상태와 3+1+2=6 검산을 가리킨다.",
+        "네 context의 원자료와 counts를 직접 대조해 fruit [3,1,2], toys [2,3,1], vehicles [1,2,4], school-supplies [2,3,2]가 각각 일치함을 확인했다. 모든 첫 문항 후보는 범주명 세 개를 포함하고 서로 유일하며 해당 원자료 총수와 같은 합을 보존하고, context 변경은 정답 매핑·raw data·payload hash를 함께 바꾼다.",
+        "오개념 대안은 전체 수를 첫 범주에 몰기, 범주 간 개수 바꾸기, 한 범주의 하나를 다른 범주로 옮기기를 실제 완전 매핑으로 제시한다. 총수만 맞추면 된다는 지름길을 차단하고 범주별 빈도를 원자료와 대조해야 정답을 결정할 수 있으며 선택은 계속 수정할 수 있다.",
+        "family source의 두 AssessmentTarget ID, representation·application topic, concept·representation prerequisite, application evidence·prompt, prediction-box verification role과 합계 invariant가 family 회귀 테스트에 명시적으로 고정됐다. 둘째 문항의 올바른 표·개수 비교 근거·설명 영역도 그대로 유지된다.",
+        "candidate diff는 family source·해당 회귀 테스트·파생 registry hash 3개로 한정되고 기존 released family hash, 공통 planner·MCP·teacher-ui, live evidence를 변경하지 않는다. supportState는 verified/offline-validated이며 이 승인은 FAMILY_TRACK offline 구조만 승인할 뿐 current-hash canary·저장·재열기 증거를 대신하지 않는다.",
+        "독립 검증에서 focused 2파일·8/8, cognitive:verify, problem-family:verify, curriculum:no-family-plan과 전체 pnpm check가 통과했다. 전체 결과는 76파일·457/457 테스트, build·typecheck·registry·native/contract gate PASS, visual·quality audit P0/P1 0이다."
+      ]
     }
   ]
 }
