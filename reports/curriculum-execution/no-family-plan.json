@@ -491,6 +491,53 @@
           "item misconceptionIds는 repeat와 change context 모두 rule-boundary-mismatch를 공유해 change 관계의 간격·방향 오개념이 실제 상태에 결속되지 않는다. source scopeNote는 물체·수 표현을 별도라고 정직하게 제한하지만 learningObjective와 cognitive mathematicalDecision은 물체·무늬·수를 모두 구현한 것처럼 남아 있다. context별 rejectable misconception과 실제 pattern-block 범위에 맞게 주장 범위를 정렬해야 한다.",
           "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 그러나 현재 테스트는 constraint 존재와 compile/hash만 보고 phase별 조건 적용, wrong block removal, pool 동시 충족, visible change invariant, preview/action role 일치를 검증하지 않아 위 교육·interaction 결함을 탐지하지 못한다."
         ]
+      },
+      {
+        "reviewId": "W002-FAMILY_TRACK-SOL-A3",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 3,
+        "candidateCommit": "0212bf0cd79534c4c6f75cb087118fd18124ccd6",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+          "reports/problem-family-registry/latest.json"
+        ],
+        "supersedesReviewId": "W002-FAMILY_TRACK-SOL-A2",
+        "checkedAt": "2026-08-11T13:43:08.000Z",
+        "evidenceRefs": [
+          "git:0212bf0cd79534c4c6f75cb087118fd18124ccd6",
+          "git:e0a86c340e2b996e8e66cd1b2587c8dc161bcdf4",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A2",
+          "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A1",
+          "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+          "scripts/curriculum/no-family-plan.json#C01",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+          "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts#resolveConstraints",
+          "packages/mathcanvas-compiler/src/constraint-handlers/registry.ts#place-in,fill-from-pool",
+          "packages/mathcanvas-compiler/src/layout-presets/wave16-repeating-pattern-v1.ts",
+          "packages/mathcanvas-compiler/src/adapters/native-pattern-block-contract.ts",
+          "reports/problem-family-registry/latest.json",
+          "reports/curriculum-execution/no-family-plan.json",
+          "command:pnpm exec vitest run repeating-pattern-arrangement.test.ts registry.test.ts",
+          "command:pnpm check"
+        ],
+        "findings": [
+          "A2의 무조건 phase 분기 문제를 피하려고 모든 item을 하나의 repair+construct lifecycle로 통일했고, sequence-block-2를 빈 rectangle으로 바꾸며 movable misaligned-block을 별도 emission으로 둔 점은 개선이다. sequence-block-4~6과 next-slot-1~2가 모두 실제 fill target이고 preview도 초기 세 블록·관찰 안내·수정 자리·다섯 자리·규칙 후보·바구니·phase를 노출한다. candidate exact diff는 family source·test와 파생 registry hash 3개로 한정된다.",
+          "수정 요청: 첫 AssessmentTarget은 학생이 규칙을 직접 구성·선언해야 하지만 A3도 고정 endpoints와 다섯 preauthored card 중 유일한 correctRuleText를 제공하고 나머지를 distractor로 처리한다. 학생 선택이 배열을 생성하지 않고 개발자가 먼저 정한 continuation을 맞히므로 ‘자신이 정한 규칙’이 아니라 intended rule 추론이다. 특히 가운데 블록을 빼기 전에는 그 블록이 왜 어긋났는지도 학생 자신의 선행 rule state로 결정되지 않는다. 빈 배열과 블록으로 반복 단위 성분·순서 또는 변화 관계를 먼저 구성하게 하고, 그 저장된 rule state에 후속 배열·repair를 결속해야 한다.",
+          "remove-misaligned-arrangement는 wrong block이 piece-bank 안에 있어야 만족하고, 다섯 continuation fill은 같은 wrong block을 source로 다시 target에 놓게 한다. 현재 constraint 계약은 순서나 이동 history를 저장하지 않으므로 두 상태는 최종 화면에서 동시에 성립하지 않으며 학생은 바구니를 거치지 않고 wrong block을 곧바로 빈 칸에 놓아도 된다. ‘바구니로 이동→재사용’을 주장하려면 관찰 가능한 중간 phase/event 계약이 필요하다. 그렇지 않으면 final-state invariant를 wrong block이 원래 자리에서 사라지고 유효한 continuation 위치에 있으며 repair slot이 교정됐다는 상태로 다시 설계해야 한다.",
+          "pool multiplicity는 repeat-colors만 맞는다. repeat-shapes는 repair와 continuation에 파란 마름모가 3개 필요하지만 completion에는 2개, step-1은 파란 마름모가 2개 필요하지만 1개, step-2는 초록 삼각형이 3개 필요하지만 2개뿐이다. 대신 각각 불필요한 orange square·yellow hexagon·red trapezoid가 남는다. misaligned block을 재사용해도 부족하므로 3/4 envelope는 올바른 final arrangement를 물리적으로 만들 수 없다. 각 target별 required multiset과 available multiset의 일치를 테스트로 고정해야 한다.",
+          "sequence-block-4~6 drop surface는 120×120인데 SM02PB rendered bounds는 blue rhombus 높이 약 138.6, yellow/red 폭 160, purple 높이 약 154.9다. correctContinuation의 첫 세 항 중 모든 context에 이 크기 초과 variant가 있어 fill-from-pool containment를 만족할 수 없다. next-slot처럼 모든 released variant를 담는 충분한 native drop surface를 쓰고 rendered-bounds containment를 context별로 검증해야 한다.",
+          "step-1·step-2의 관찰 안내는 ‘수 1→□→3’, ‘수 2→□→6’이라 쓰지만 화면 객체는 숫자 표지가 없는 패턴 블록이고 variant 1~6의 순서표도 없다. 더구나 continuation은 6 다음을 1 또는 2로 순환시켜 보통의 수 +1/+2 관계와 모순된다. 학생이 관찰할 수 있는 고정 순서 띠와 순환 규칙을 명시하거나 실제 number/state affordance로 바꾸지 않으면 change envelope 및 repeat/change 전체 target 주장은 유지할 수 없다.",
+          "preview는 A2보다 정확해졌지만 answer의 본문은 규칙과 continuation만 담고 repair replacement를 explanation에만 의존한다. 두 문항은 각 context 안에서 초기 상태·정답·continuation·질문이 사실상 동일해 문제 수 2가 독립 evidence를 늘리지 않는다. 서로 다른 유효 start/repair 상태를 만들고 answer·preview·테스트가 repair value와 다섯 target을 직접 대조하게 해야 한다.",
+          "item misconceptionIds는 모든 context에서 repeat boundary mismatch를 계속 공유해 change의 간격·방향 오개념이 item state에 결속되지 않는다. target 1의 arrangement-no-rule도 실제 대안으로 구현되지 않고 cognitive decision은 여전히 select-one 정답 맞히기다. context별 rejectable misconception과 두 AssessmentTarget의 각각 다른 observable evidence를 회귀 테스트로 고정해야 한다.",
+          "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 그러나 테스트는 role·constraint 존재만 확인하고 source multiset, rendered target containment, remove→reuse phase history, self-defined rule state를 검증하지 않아 위 P0를 탐지하지 못한다. 다음 수정이 새 phase/event contract나 일반 construct decision schema를 요구하면 FAMILY_TRACK 안에서 core scope를 조용히 넓히지 말고 planning/discovery hard stop으로 전환해야 한다."
+        ]
       }
     ]
   },
@@ -647,9 +694,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 7,
+      "totalRecords": 8,
       "approved": 3,
-      "changesRequested": 4,
+      "changesRequested": 5,
       "blocked": 0,
       "pendingRequiredReviews": 190
     },
@@ -705,7 +752,7 @@
         "targetSet": "approved",
         "familyTrack": "changes-requested",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A2"
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A3"
       }
     },
     "nextLiveEvidenceWork": {
@@ -3040,7 +3087,7 @@
         "targetSet": "approved",
         "familyTrack": "changes-requested",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A2"
+        "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A3"
       }
     },
     {
