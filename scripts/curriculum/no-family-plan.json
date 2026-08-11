@@ -1,0 +1,774 @@
+{
+  "schemaVersion": "1.0.0",
+  "planId": "kr-2022-elementary-math-no-family-baseline",
+  "purpose": "2026-08-11 기준 새 ProblemFamily 설계가 필요한 97개 성취기준을 재사용 가능한 shared-engine archetype과 순차 실행 카드로 배정한다.",
+  "baseline": {
+    "capturedOn": "2026-08-11",
+    "expectedNextAction": "review-target-set-and-design-family",
+    "expectedStandardCount": 97,
+    "standardCodeSha256": "04a9f033a5968b1c5dc3a7886de28e3981c20b606fed4a0966a7728e069a66a3",
+    "standardWorkOrderSha256": "5e7a7e97a7fa0899776e6a13f3bb62afae1babb1eb5ad03be20a96b9224b6c5d"
+  },
+  "standardWorkOrder": [
+    "[2수04-02]", "[2수02-02]", "[4수03-01]", "[2수03-01]",
+    "[4수04-02]", "[6수02-01]", "[2수01-01]", "[4수02-01]",
+    "[6수04-01]", "[4수01-01]", "[6수03-01]", "[2수04-03]",
+    "[4수03-02]", "[6수01-02]", "[2수03-02]", "[4수04-03]",
+    "[6수02-03]", "[4수02-02]", "[6수04-02]", "[4수01-02]",
+    "[6수03-03]", "[4수03-03]", "[6수01-03]", "[2수03-03]",
+    "[6수02-04]", "[2수01-03]", "[4수01-03]", "[6수03-04]",
+    "[4수03-04]", "[2수03-04]", "[6수02-05]", "[2수01-05]",
+    "[6수04-05]", "[6수03-05]", "[4수03-05]", "[6수01-05]",
+    "[2수03-05]", "[2수01-06]", "[6수04-06]", "[4수01-05]",
+    "[6수03-06]", "[4수03-06]", "[2수03-06]", "[2수01-07]",
+    "[4수01-07]", "[6수03-07]", "[4수03-07]", "[2수01-08]",
+    "[4수01-08]", "[6수03-08]", "[4수03-08]", "[6수01-09]",
+    "[2수01-09]", "[4수01-09]", "[6수03-09]", "[4수03-10]",
+    "[6수01-10]", "[2수03-09]", "[4수01-10]", "[6수03-10]",
+    "[4수03-11]", "[6수01-11]", "[2수03-11]", "[2수01-11]",
+    "[4수01-11]", "[6수03-11]", "[4수03-12]", "[6수01-12]",
+    "[2수03-12]", "[4수01-12]", "[6수03-12]", "[4수03-13]",
+    "[6수01-13]", "[2수03-13]", "[4수01-13]", "[6수03-13]",
+    "[4수03-14]", "[6수01-14]", "[4수01-14]", "[6수03-14]",
+    "[4수03-15]", "[6수01-15]", "[6수03-15]", "[4수03-16]",
+    "[4수01-16]", "[6수03-16]", "[4수03-17]", "[6수03-17]",
+    "[4수03-18]", "[6수03-18]", "[4수03-19]", "[6수03-19]",
+    "[4수03-20]", "[4수03-21]", "[4수03-22]", "[4수03-23]",
+    "[4수03-25]"
+  ],
+  "modelPolicy": {
+    "planning": "gpt-5.6-sol / max",
+    "execution": "luna / max (operator-selected)",
+    "escalation": "gpt-5.6-sol / max",
+    "runtimeNote": "현재 Codex sub-agent catalog에는 Luna라는 모델명이 노출되지 않는다. 반복 계약은 모델 독립적으로 고정하고, Luna가 제공되는 운영 환경에서 Luna max를 선택한다."
+  },
+  "loopPolicy": {
+    "workUnit": "one-standard-per-run",
+    "selection": "reports/curriculum-execution/no-family-plan.json의 nextOfflineWork를 사용한다.",
+    "transition": "한 실행에서는 한 성취기준만 소유하고, 통과 가능한 lifecycle 단계까지 전진한다.",
+    "concurrency": "single-writer-sequential",
+    "commitPolicy": "전체 QA 통과 뒤 원자적 main 커밋과 push",
+    "liveWritePolicy": "offline queue와 분리하고 승인된 canonical create-only 경로만 사용",
+    "retryPolicy": "같은 원인으로 두 번 실패하면 범위를 넓히지 말고 Sol max 재계획으로 승격",
+    "externalReview": "repository-qa-only-no-fable"
+  },
+  "estimate": {
+    "standardWorkCards": 97,
+    "sharedRenderRecipeEngineClasses": 24,
+    "initialConcreteProblemFamilyTracks": 84,
+    "finalConcreteProblemFamilyRange": "92-110",
+    "rangeNote": "AssessmentTarget 완전 분해 전 계획 범위다. 84개 track은 단일 gradeBand를 지키는 구현 소유권 baseline이며 하나의 track이 여러 concrete family로 갈라질 수 있다. 수를 맞추기 위해 합치지 않는다.",
+    "expectedAssessmentTargetRange": "230-380",
+    "solDraftExpectedTargetCount": 236,
+    "expectedLunaWorkItemRuns": "288-330",
+    "boundedNativeDiscoveryBundles": "9-12",
+    "existingFamilyReuseOrExtensionRange": "8-16",
+    "netNewFamilyModuleRange": "76-102",
+    "freshCanaryBundleRange": "84-110"
+  },
+  "foundation": {
+    "baselineCommit": "06b5fe17fc5ea3164bbd01d333743c2aa03a0041",
+    "defaultLearningMapRecordsForPlan": 0,
+    "pilotInclusiveLearningMapRecordsForPlan": 9,
+    "requiredPinnedLearningMapAdditions": 88,
+    "rule": "FAMILY_TRACK 전에 각 standard의 pinned learning-map concept·representation·application·prerequisite record와 fixture hash가 존재해야 한다."
+  },
+  "workItemTypes": [
+    "TARGET_SET",
+    "LEARNING_MAP_BINDING",
+    "AFFORDANCE_DISCOVERY",
+    "ENGINE_CORE",
+    "FAMILY_TRACK",
+    "STANDARD_BINDING",
+    "LIVE_EVIDENCE",
+    "BATCH_CLOSEOUT"
+  ],
+  "nativeDiscoveryBundles": [
+    { "id": "ND01", "scope": "NO07NL number line", "required": true },
+    { "id": "ND02", "scope": "NO04NG semantic array", "required": true },
+    { "id": "ND03", "scope": "CR07CP coordinate plane", "required": true },
+    { "id": "ND04", "scope": "SM07CS circle handles and measurement", "required": true },
+    { "id": "ND05", "scope": "SM06UC cube state and views", "required": true },
+    { "id": "ND06", "scope": "SM06PH/SM07SR solid inspection and net relation", "required": true },
+    { "id": "ND07", "scope": "DP03PG/DP05LC/DP06RC graph editing", "required": true },
+    { "id": "ND08", "scope": "unit exchange semantic state", "required": true },
+    { "id": "ND09", "scope": "capacity and mass measurement representation", "required": true },
+    { "id": "ND10", "scope": "polygon and tangram tools", "required": false },
+    { "id": "ND11", "scope": "DP07MC mean tool", "required": false },
+    { "id": "ND12", "scope": "NO07PF factor and multiple tool", "required": false }
+  ],
+  "familyAcceptanceGates": [
+    "official goal에 대응하는 reviewed-complete AssessmentTargetSet과 필수 target 누락 0",
+    "각 target에 오개념 최소 1개와 pinned learning-map hash 결속",
+    "학생 결정·오개념 충돌·불변량·화면 증거·수정 경로 명시",
+    "same input/seed는 same item/hash, 의미 조건 변경은 item/hash 동반 변경",
+    "유한 envelope 전수 또는 경계와 property test",
+    "가능한 상태가 12개 이상이면 최소 12개 정규화 문항",
+    "상태 공간이 더 작지 않으면 최소 3개 구별 가능한 대안",
+    "resolved item에서 도출한 exact preview·정답·해설 일치",
+    "unsupported parameter silent ignore 0",
+    "resolve→compile→validator error 0",
+    "classroom Korean·text-fit·labeled-pool·overlap·cognitive predicate 통과",
+    "기존 released blueprint·layout·payload hash 회귀 0",
+    "offline 통과 뒤에도 fresh evidence 전에는 offline-validated 유지",
+    "current hash initial/selected/manipulated/undo-or-reset/save/reopen canary",
+    "min/max와 실제 wrap/stack variant 포함",
+    "save/reopen mathematical semantic state 안정",
+    "targetCoverage와 familyVariety 분리",
+    "단일 gradeBand와 domain을 지키는 CapabilityManifest"
+  ],
+  "planningGuardrails": [
+    "97개 기준 집합의 누락·중복·외부 코드가 각각 0이어야 한다.",
+    "AssessmentTargetSet reviewed-complete가 계획 archetype보다 우선한다.",
+    "학생의 수학적 결정, 불변량, 관찰 증거 중 하나라도 다르면 concrete ProblemFamily를 분리한다.",
+    "한 concrete family는 CapabilityManifest의 단일 gradeBand와 domain을 지킨다.",
+    "pinned learning-map record와 fixture hash가 없으면 family 구현을 시작하지 않는다.",
+    "같은 MathCanvas 화면이나 같은 선택형 shell을 쓴다는 이유만으로 family를 합치지 않는다.",
+    "새 family 때문에 공통 planner, MCP schema, teacher-ui 활동별 분기, legacy 중앙 registry를 수정하지 않는다.",
+    "정답·해설·오개념·exact preview·compile·validator가 함께 통과하기 전 offline-validated로 올리지 않는다.",
+    "현재 해시의 create·조작·저장·재열기 증거 없이 live-released로 올리지 않는다.",
+    "MathCanvas live 경로가 막혀도 offline queue를 계속 진행한다.",
+    "Fable CLI나 외부 교사 검수를 실행 조건으로 두지 않는다."
+  ],
+  "sharedEngineClasses": [
+    { "engineClassId": "R01", "title": "count-cardinality-board", "nativeDependency": "NO01SC/NO04NT; cardinality state contract review" },
+    { "engineClassId": "R02", "title": "positional-place-board", "nativeDependency": "NO04PD/NO04NT/NO03FM; place-value exchange contract" },
+    { "engineClassId": "R03", "title": "number-line-boundary", "nativeDependency": "NO07NL discovery required" },
+    { "engineClassId": "R04", "title": "equation-card-rail", "nativeDependency": "common.formula/NO04NT/CR07BS existing" },
+    { "engineClassId": "R05", "title": "place-value-operation", "nativeDependency": "NO04PD existing tool; exchange semantic contract required" },
+    { "engineClassId": "R06", "title": "group-array-cycle", "nativeDependency": "NO01SC existing; NO04NG/NO07PF partial discovery" },
+    { "engineClassId": "R07", "title": "fraction-same-whole", "nativeDependency": "NO03FM existing; V2 semantic adapter required" },
+    { "engineClassId": "R08", "title": "pattern-rule", "nativeDependency": "SM02PB/NO04NT existing" },
+    { "engineClassId": "R09", "title": "table-rule-ratio", "nativeDependency": "DP02TG/common.formula/NO03FM existing" },
+    { "engineClassId": "R10", "title": "claim-evidence-choice", "nativeDependency": "common rectangle/text/formula existing" },
+    { "engineClassId": "R11", "title": "geometry-2d-draw", "nativeDependency": "common point-line/rectangle existing; circle contracted" },
+    { "engineClassId": "R12", "title": "polygon-property", "nativeDependency": "common point-line existing; SM05PG/SM05RP discovery" },
+    { "engineClassId": "R13", "title": "solid-inspect-net", "nativeDependency": "SM06PH/SM07SR discovery required" },
+    { "engineClassId": "R14", "title": "cube-grid-view", "nativeDependency": "SM06UC/CR10CS discovery required" },
+    { "engineClassId": "R15", "title": "coordinate-transform", "nativeDependency": "CR07CP discovery required" },
+    { "engineClassId": "R16", "title": "circle-semantic", "nativeDependency": "SM07CS/native-circle-model-v1 semantic contract required" },
+    { "engineClassId": "R17", "title": "clock-time", "nativeDependency": "SM02AD existing; calendar extension review" },
+    { "engineClassId": "R18", "title": "unit-measure", "nativeDependency": "released ruler substrate; capacity/mass semantics discovery" },
+    { "engineClassId": "R19", "title": "unit-exchange", "nativeDependency": "NO04NT/NO01SC existing; native-unit-conversion-v1 contract required" },
+    { "engineClassId": "R20", "title": "area-volume-tile", "nativeDependency": "common rectangle existing; NO04NG/SM06UC partial discovery" },
+    { "engineClassId": "R21", "title": "decompose-rearrange", "nativeDependency": "SM02PB existing; SM02TG/SM04PM discovery" },
+    { "engineClassId": "R22", "title": "data-table-graph", "nativeDependency": "DP02TG/DP04BC existing; DP03PG/DP05LC/DP06RC discovery" },
+    { "engineClassId": "R23", "title": "mean-redistribute", "nativeDependency": "NO01SC+DP02TG existing; DP07MC optional discovery" },
+    { "engineClassId": "R24", "title": "probability-model", "nativeDependency": "NO03FM/common/DP02TG existing; NO07NL discovery if used" }
+  ],
+  "trackContracts": {
+    "N01A": { "familyId": "number.cardinality.count-read-write-v1", "engineClassIds": ["R01"] },
+    "N01B": { "familyId": "number.place-value.large-number.compose-read-write-v1", "engineClassIds": ["R02"] },
+    "N01C": { "familyId": "number.decimal.place-value.compose-read-write-v1", "engineClassIds": ["R02"] },
+    "N02A12": { "familyId": "number.whole.order-sequence-compare.under-10000-v1", "engineClassIds": ["R02", "R03"] },
+    "N02A34": { "familyId": "number.large.order-sequence-compare-v1", "engineClassIds": ["R02", "R03"] },
+    "N02B": { "familyId": "number.decimal.compare-place-value-v1", "engineClassIds": ["R02", "R03"] },
+    "N03": { "familyId": "number.range.boundary-notation-v1", "engineClassIds": ["R03"] },
+    "N04": { "familyId": "number.approximation.round-to-place-v1", "engineClassIds": ["R03"] },
+    "N05A12": { "familyId": "number.add-sub.two-digit.place-value-construction-v1", "engineClassIds": ["R05"] },
+    "N05A34": { "familyId": "number.add-sub.three-digit.place-value-construction-v1", "engineClassIds": ["R05"] },
+    "N05B": { "familyId": "number.add-sub.three-number-chain-v1", "engineClassIds": ["R04"] },
+    "N05C": { "familyId": "number.add-sub.decimal-place-value-construction-v1", "engineClassIds": ["R05"] },
+    "N06": { "familyId": "number.add-sub.situation-model-v1", "engineClassIds": ["R06"] },
+    "N07": { "familyId": "number.add-sub.inverse-missing-value-v1", "engineClassIds": ["R04"] },
+    "N08": { "familyId": "number.multiples.common-cycle-v1", "engineClassIds": ["R06"] },
+    "N09": { "familyId": "number.division.equal-groups-inverse-v1", "engineClassIds": ["R06"] },
+    "N10": { "familyId": "number.division.partial-quotients-two-digit-divisor-v1", "engineClassIds": ["R05"] },
+    "N11": { "familyId": "number.operation.estimate-reasonableness-v1", "engineClassIds": ["R04"] },
+    "N12": { "familyId": "number.multiplication.fact-array-v1", "engineClassIds": ["R06"] },
+    "N13A": { "familyId": "fraction.same-whole.construct-read-write-v1", "engineClassIds": ["R07"] },
+    "N13B": { "familyId": "fraction.same-whole.transform-fraction-forms-v1", "engineClassIds": ["R07"] },
+    "N14": { "familyId": "fraction.compare.same-unit-v1", "engineClassIds": ["R07"] },
+    "N15": { "familyId": "rational.fraction-decimal.equivalence-compare-v1", "engineClassIds": ["R07", "R02"] },
+    "N16": { "familyId": "rational.division-quotient.represent-v1", "engineClassIds": ["R06", "R07", "R02"] },
+    "N17": { "familyId": "fraction.multiply.partition-scale-v1", "engineClassIds": ["R07"] },
+    "N18": { "familyId": "fraction.divide.measurement-partition-v1", "engineClassIds": ["R07"] },
+    "N19": { "familyId": "decimal.multiply.place-value-scale-v1", "engineClassIds": ["R05"] },
+    "N20": { "familyId": "decimal.divide.place-value-quotient-v1", "engineClassIds": ["R05"] },
+    "C01": { "familyId": "pattern.create-repeat-unit-explain-v1", "engineClassIds": ["R08"] },
+    "C02A": { "familyId": "relation.change-sequence.infer-express-v1", "engineClassIds": ["R08"] },
+    "C02B": { "familyId": "relation.calculation-array.infer-predict-v1", "engineClassIds": ["R04"] },
+    "C02C": { "familyId": "relation.covariation-table.infer-symbolize-v1", "engineClassIds": ["R09"] },
+    "C03": { "familyId": "relation.ratio.multi-representation-v1", "engineClassIds": ["R09"] },
+    "C04": { "familyId": "relation.proportion.equation-invariant-v1", "engineClassIds": ["R09"] },
+    "C05": { "familyId": "relation.proportional-allocation-v1", "engineClassIds": ["R09"] },
+    "G01": { "familyId": "geometry.line-extent.classify-v1", "engineClassIds": ["R11"] },
+    "G02": { "familyId": "geometry.solid-shape.recognize-compose-v1", "engineClassIds": ["R13"] },
+    "G03A": { "familyId": "geometry.plane-shape.recognize-compose-v1", "engineClassIds": ["R21"] },
+    "G03B": { "familyId": "geometry.plane-shape.draw-v1", "engineClassIds": ["R11"] },
+    "G04A12": { "familyId": "geometry.polygon.basic-common-properties-v1", "engineClassIds": ["R12"] },
+    "G04B34": { "familyId": "geometry.polygon.named-classification-properties-v1", "engineClassIds": ["R12"] },
+    "G05": { "familyId": "geometry.angle.right-acute-obtuse.classify-v1", "engineClassIds": ["R11"] },
+    "G06": { "familyId": "geometry.line-relation.perpendicular-parallel-v1", "engineClassIds": ["R11"] },
+    "G07": { "familyId": "geometry.congruence.overlay-correspondence-v1", "engineClassIds": ["R15", "R11"] },
+    "G08": { "familyId": "geometry.cube.construct-position-describe-v1", "engineClassIds": ["R14"] },
+    "G09": { "familyId": "geometry.solid.properties.classify-explain-v1", "engineClassIds": ["R13"] },
+    "G10A": { "familyId": "geometry.cuboid.representation-net-sketch-v1", "engineClassIds": ["R13"] },
+    "G10B": { "familyId": "geometry.solid.net-fold-match-v1", "engineClassIds": ["R13"] },
+    "G11A": { "familyId": "geometry.shape-transformation.apply-describe-v1", "engineClassIds": ["R15"] },
+    "G11B": { "familyId": "geometry.point-movement.locate-describe-v1", "engineClassIds": ["R15"] },
+    "G12A": { "familyId": "geometry.circle.center-radius-diameter.properties-v1", "engineClassIds": ["R16"] },
+    "G12B": { "familyId": "geometry.circle.compass-construct-v1", "engineClassIds": ["R16"] },
+    "G13": { "familyId": "measure.attribute.direct-compare-v1", "engineClassIds": ["R18"] },
+    "G14": { "familyId": "geometry.cube.hidden-count-v1", "engineClassIds": ["R14"] },
+    "G15": { "familyId": "geometry.cube.orthographic-view-infer-v1", "engineClassIds": ["R14"] },
+    "G16": { "familyId": "geometry.shape.compose-tile-explain-v1", "engineClassIds": ["R21"] },
+    "G17": { "familyId": "measure.time.calendar-unit-relations-v1", "engineClassIds": ["R17"] },
+    "G18": { "familyId": "measure.time.second-clock-read-v1", "engineClassIds": ["R17"] },
+    "G19A12": { "familyId": "measure.length.m-cm.exchange-represent-v1", "engineClassIds": ["R19"] },
+    "G19B34": { "familyId": "measure.metric-unit.exchange-represent-v1", "engineClassIds": ["R19"] },
+    "G20A12": { "familyId": "measure.length.estimate-benchmark-v1", "engineClassIds": ["R18"] },
+    "G20A34": { "familyId": "measure.length.metric-measure-estimate-v1", "engineClassIds": ["R18"] },
+    "G20B": { "familyId": "measure.capacity.measure-estimate-v1", "engineClassIds": ["R18"] },
+    "G20C": { "familyId": "measure.mass.measure-estimate-v1", "engineClassIds": ["R18"] },
+    "G21A12": { "familyId": "measure.length.mixed-unit.add-sub-v1", "engineClassIds": ["R19", "R04"] },
+    "G21B34": { "familyId": "measure.metric-mixed-unit.add-sub-v1", "engineClassIds": ["R19", "R04"] },
+    "G22": { "familyId": "measure.perimeter.compose-lengths-v1", "engineClassIds": ["R18", "R11"] },
+    "G23A": { "familyId": "measure.area-unit.structure-v1", "engineClassIds": ["R20"] },
+    "G23B": { "familyId": "measure.volume-unit.structure-v1", "engineClassIds": ["R20"] },
+    "G24": { "familyId": "measure.area.rectangle-unit-array-v1", "engineClassIds": ["R20"] },
+    "G25": { "familyId": "measure.area.polygon-decompose-rearrange-v1", "engineClassIds": ["R21", "R20"] },
+    "G26": { "familyId": "measure.circle.pi.measure-ratio-v1", "engineClassIds": ["R16"] },
+    "G27": { "familyId": "measure.circle.circumference-area-v1", "engineClassIds": ["R16", "R20"] },
+    "G28": { "familyId": "measure.surface-area.net-sum-v1", "engineClassIds": ["R13", "R20"] },
+    "G29": { "familyId": "measure.volume.cuboid-unit-cube-v1", "engineClassIds": ["R14", "R20"] },
+    "G30": { "familyId": "geometry.polygon.angle-sum.rearrange-explain-v1", "engineClassIds": ["R21", "R11"] },
+    "D01A": { "familyId": "data.early-table.organize-v1", "engineClassIds": ["R22"] },
+    "D01B": { "familyId": "data.early-symbol-graph.organize-v1", "engineClassIds": ["R22"] },
+    "D02A": { "familyId": "data.line-graph.construct-interpret-v1", "engineClassIds": ["R22"] },
+    "D02B": { "familyId": "data.inquiry.choose-graph-construct-interpret-v1", "engineClassIds": ["R22"] },
+    "D03": { "familyId": "data.mean.equal-share-interpret-v1", "engineClassIds": ["R23"] },
+    "D04": { "familyId": "data.ratio-graph.construct-interpret-v1", "engineClassIds": ["R22"] },
+    "D05": { "familyId": "probability.quantify-number-line-v1", "engineClassIds": ["R24", "R03"] },
+    "D06": { "familyId": "probability.data-based-predict-decide-v1", "engineClassIds": ["R24", "R22"] }
+  },
+  "batches": [
+    { "batchId": "B01", "wave": 0, "purpose": "초기 수량·패턴·평면 합성·표", "archetypeIds": ["N01A", "C01", "G03A", "D01A"] },
+    { "batchId": "B02", "wave": 0, "purpose": "상황 연산·변화 규칙·도형 그리기·기호그래프", "archetypeIds": ["N06", "C02A", "G03B", "D01B"] },
+    { "batchId": "B03", "wave": 1, "purpose": "큰 수·계산 배열·도형 성질·꺾은선그래프", "archetypeIds": ["N01B", "C02B", "G04A12", "D02A"] },
+    { "batchId": "B04", "wave": 1, "purpose": "분수 생성·공변 관계·입체 성질·자료 탐구", "archetypeIds": ["N13A", "C02C", "G09", "D02B"] },
+    { "batchId": "B05", "wave": 1, "purpose": "수 범위·비율·합동·평균", "archetypeIds": ["N03", "C03", "G07", "D03"] },
+    { "batchId": "B06", "wave": 2, "purpose": "배수·비례식·시간 단위·비율그래프", "archetypeIds": ["N08", "C04", "G17", "D04"] },
+    { "batchId": "B07", "wave": 2, "purpose": "저학년 자릿값 연산·비례배분·시각·가능성", "archetypeIds": ["N05A12", "C05", "G18", "D05"] },
+    { "batchId": "B08", "wave": 2, "purpose": "저학년 수 비교·선·입체 모양·자료 판단", "archetypeIds": ["N02A12", "G01", "G02", "D06"] },
+    { "batchId": "B09", "wave": 2, "purpose": "역관계·곱셈구구·각·직접 비교", "archetypeIds": ["N07", "N12", "G05", "G13"] },
+    { "batchId": "B10", "wave": 3, "purpose": "나눗셈 의미·계산·선 관계·쌓기나무", "archetypeIds": ["N09", "N10", "G06", "G08"] },
+    { "batchId": "B11", "wave": 3, "purpose": "소수 위치기수·분수형·도형변환·원 성질", "archetypeIds": ["N01C", "N13B", "G11A", "G12A"] },
+    { "batchId": "B12", "wave": 3, "purpose": "중학년 수 비교·어림·점 이동·저학년 단위 교환", "archetypeIds": ["N02A34", "N04", "G11B", "G19A12"] },
+    { "batchId": "B13", "wave": 3, "purpose": "중학년 자릿값 연산·세 수 연산·원 구성·저학년 길이 측정", "archetypeIds": ["N05A34", "N05B", "G12B", "G20A12"] },
+    { "batchId": "B14", "wave": 4, "purpose": "소수 덧뺄셈·타당성·중학년 측정", "archetypeIds": ["N05C", "N11", "G20A34", "G20B"] },
+    { "batchId": "B15", "wave": 4, "purpose": "분수 비교·유리수 비교·무게 측정·중학년 단위 교환", "archetypeIds": ["N14", "N15", "G20C", "G19B34"] },
+    { "batchId": "B16", "wave": 4, "purpose": "몫 표현·분수 곱셈·학년군별 복명수 연산", "archetypeIds": ["N16", "N17", "G21A12", "G21B34"] },
+    { "batchId": "B17", "wave": 5, "purpose": "분수 나눗셈·소수 곱셈·중학년 도형 성질·합성", "archetypeIds": ["N18", "N19", "G04B34", "G16"] },
+    { "batchId": "B18", "wave": 5, "purpose": "소수 나눗셈·소수 비교·둘레·넓이 단위", "archetypeIds": ["N20", "N02B", "G22", "G23A"] },
+    { "batchId": "B19", "wave": 5, "purpose": "부피 단위·직사각형 넓이·다각형 넓이·원주율", "archetypeIds": ["G23B", "G24", "G25", "G26"] },
+    { "batchId": "B20", "wave": 6, "purpose": "공간 추론·전개도", "archetypeIds": ["G14", "G15", "G10A", "G10B"] },
+    { "batchId": "B21", "wave": 6, "purpose": "원·겉넓이·부피·각의 합", "archetypeIds": ["G27", "G28", "G29", "G30"] }
+  ],
+  "archetypes": [
+    {
+      "archetypeId": "N01A", "domain": "수와 연산", "title": "수 세기·cardinality·읽기·쓰기",
+      "studentDecision": "센 마지막 수와 전체 수량을 수 기호 및 읽기와 대응한다.", "invariant": "대상의 배열이나 세기 순서를 바꾸어도 cardinality가 같다.",
+      "observableEvidence": "대상을 하나씩 대응해 세고 수 카드·읽기·쓰기를 일치시킨다.", "renderRecipeClass": "count-cardinality-board", "nativeDependency": "NO01SC/NO04NT cardinality contract review", "splitRisk": "high",
+      "anchorStandardCode": "[2수01-01]", "standardCodes": ["[2수01-01]"]
+    },
+    {
+      "archetypeId": "N01B", "domain": "수와 연산", "title": "큰 수 위치적 기수법 구성·읽기·쓰기",
+      "studentDecision": "큰 수의 자리별 값을 수 기호 및 읽기와 대응한다.", "invariant": "각 자리의 값의 합이 원래 수와 같다.",
+      "observableEvidence": "자리별 구성을 바꾸고 같은 수의 표기·읽기를 일치시킨다.", "renderRecipeClass": "positional-place-board", "nativeDependency": "NO04PD/NO04NT exchange contract required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-01]", "standardCodes": ["[4수01-01]"]
+    },
+    {
+      "archetypeId": "N01C", "domain": "수와 연산", "title": "소수 위치적 기수법 구성·읽기·쓰기",
+      "studentDecision": "10분의 1·100분의 1·1000분의 1 자릿값을 소수 표기와 대응한다.", "invariant": "각 소수 자리 단위의 합이 원래 수와 같다.",
+      "observableEvidence": "소수 자리별 조각과 수 기호·읽기를 일치시킨다.", "renderRecipeClass": "positional-place-board", "nativeDependency": "NO04PD/NO03FM decimal place contract required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-12]", "standardCodes": ["[4수01-12]", "[4수01-13]"]
+    },
+    {
+      "archetypeId": "N02A12", "domain": "수와 연산", "title": "1~2학년 자연수 계열·크기 비교",
+      "studentDecision": "두 수의 순서와 크기를 정하고 근거 자리를 고른다.", "invariant": "수직선 순서와 가장 높은 서로 다른 자리의 값이 대소와 일치한다.",
+      "observableEvidence": "수직선 위치 또는 자리 카드를 근거로 비교를 수정한다.", "renderRecipeClass": "number-line-boundary", "nativeDependency": "NO07NL discovery required", "splitRisk": "medium",
+      "anchorStandardCode": "[2수01-03]", "standardCodes": ["[2수01-03]"]
+    },
+    {
+      "archetypeId": "N02A34", "domain": "수와 연산", "title": "3~4학년 큰 수 계열·크기 비교",
+      "studentDecision": "큰 수의 순서와 크기를 정하고 비교 방법을 설명한다.", "invariant": "가장 높은 서로 다른 자리의 값이 대소를 결정한다.",
+      "observableEvidence": "자리값 근거와 수직선 위치를 연결해 설명한다.", "renderRecipeClass": "number-line-boundary", "nativeDependency": "NO07NL/NO04PD contract review", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-02]", "standardCodes": ["[4수01-02]"]
+    },
+    {
+      "archetypeId": "N02B", "domain": "수와 연산", "title": "소수 크기 비교",
+      "studentDecision": "소수의 같은 자리 단위를 맞추어 크기를 비교한다.", "invariant": "가장 높은 서로 다른 소수 자리의 값이 대소를 결정한다.",
+      "observableEvidence": "자리값 모형과 비교 기호·설명을 일치시킨다.", "renderRecipeClass": "positional-place-board+number-line-boundary", "nativeDependency": "NO04PD/NO07NL contract review", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-14]", "standardCodes": ["[4수01-14]"]
+    },
+    {
+      "archetypeId": "N03", "domain": "수와 연산", "title": "수 범위 경계 표현",
+      "studentDecision": "경계값의 포함 여부에 맞는 이상·이하·초과·미만을 선택한다.", "invariant": "열린 경계와 닫힌 경계의 포함 집합이 표현과 일치한다.",
+      "observableEvidence": "수직선 경계와 포함되는 수 카드를 함께 맞춘다.", "renderRecipeClass": "number-line-boundary-set", "nativeDependency": "number-line semantic discovery required", "splitRisk": "low",
+      "anchorStandardCode": "[6수01-02]", "standardCodes": ["[6수01-02]"]
+    },
+    {
+      "archetypeId": "N04", "domain": "수와 연산", "title": "올림·버림·반올림",
+      "studentDecision": "목적과 기준 자리에 맞는 어림 방법과 결과를 정한다.", "invariant": "정해진 자리 아래 처리 규칙과 결과 범위가 일치한다.",
+      "observableEvidence": "기준 자리와 버려지는 부분을 표시하고 원값과 어림값을 비교한다.", "renderRecipeClass": "place-value-rounding-rail", "nativeDependency": "place-value/static rail; no new live affordance initially", "splitRisk": "medium",
+      "anchorStandardCode": "[6수01-03]", "standardCodes": ["[6수01-03]"]
+    },
+    {
+      "archetypeId": "N05A12", "domain": "수와 연산", "title": "두 자리 수 덧셈·뺄셈 자릿값 구성",
+      "studentDecision": "십과 일의 같은 자리끼리 계산하고 묶음 교환 시점을 정한다.", "invariant": "교환 전후 전체 값과 연산 결과가 보존된다.",
+      "observableEvidence": "십·일 묶음을 합치거나 가르며 받아올림·내림을 설명한다.", "renderRecipeClass": "place-value-operation", "nativeDependency": "NO04PD exchange semantic contract required", "splitRisk": "high",
+      "anchorStandardCode": "[2수01-06]", "standardCodes": ["[2수01-06]"]
+    },
+    {
+      "archetypeId": "N05A34", "domain": "수와 연산", "title": "세 자리 수 덧셈·뺄셈 자릿값 구성",
+      "studentDecision": "백·십·일의 같은 자리끼리 계산하고 묶음 교환 시점을 정한다.", "invariant": "교환 전후 전체 값과 연산 결과가 보존된다.",
+      "observableEvidence": "백·십·일 묶음과 식을 대응해 받아올림·내림을 설명한다.", "renderRecipeClass": "place-value-operation", "nativeDependency": "NO04PD exchange semantic contract required", "splitRisk": "high",
+      "anchorStandardCode": "[4수01-03]", "standardCodes": ["[4수01-03]"]
+    },
+    {
+      "archetypeId": "N05C", "domain": "수와 연산", "title": "소수 덧셈·뺄셈 자릿값 구성",
+      "studentDecision": "소수점을 기준으로 같은 단위를 정렬하고 계산한다.", "invariant": "같은 소수 단위끼리 계산하며 전체 값이 보존된다.",
+      "observableEvidence": "소수 자릿값판과 세로식의 정렬·교환을 대응한다.", "renderRecipeClass": "place-value-operation", "nativeDependency": "NO04PD decimal exchange semantic contract required", "splitRisk": "high",
+      "anchorStandardCode": "[4수01-16]", "standardCodes": ["[4수01-16]"]
+    },
+    {
+      "archetypeId": "N06", "domain": "수와 연산", "title": "덧셈·뺄셈 상황 의미",
+      "studentDecision": "상황의 합병·첨가·제거·비교 구조에 맞는 식을 고른다.", "invariant": "부분-전체 또는 변화 전후 관계가 식과 일치한다.",
+      "observableEvidence": "상황 카드와 수 모형을 연결하고 식을 바꾸어 확인한다.", "renderRecipeClass": "part-whole-change-model", "nativeDependency": "counting/model recipe reuse; semantic grouping review", "splitRisk": "medium",
+      "anchorStandardCode": "[2수01-05]", "standardCodes": ["[2수01-05]"]
+    },
+    {
+      "archetypeId": "N07", "domain": "수와 연산", "title": "덧뺄셈 역관계·미지수",
+      "studentDecision": "관련된 덧셈식·뺄셈식을 구성해 빠진 값을 찾는다.", "invariant": "동일한 부분-전체 관계를 네 관련식이 보존한다.",
+      "observableEvidence": "수 카드나 모형을 옮겨 역연산으로 결과를 검산한다.", "renderRecipeClass": "fact-family-missing-value", "nativeDependency": "card/balance recipe reuse", "splitRisk": "medium",
+      "anchorStandardCode": "[2수01-07]", "standardCodes": ["[2수01-07]", "[2수01-09]"]
+    },
+    {
+      "archetypeId": "N08", "domain": "수와 연산", "title": "배수·공배수 주기",
+      "studentDecision": "두 수의 반복 주기가 처음 함께 만나는 값을 찾는다.", "invariant": "공배수는 두 수로 모두 나누어떨어지고 최소값은 양의 첫 교점이다.",
+      "observableEvidence": "두 배수 열 또는 배열을 겹쳐 후보를 확인한다.", "renderRecipeClass": "dual-cycle-number-line", "nativeDependency": "number-line/array recipe discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수01-05]", "standardCodes": ["[6수01-05]"]
+    },
+    {
+      "archetypeId": "N09", "domain": "수와 연산", "title": "나눗셈 등분·포함과 역관계",
+      "studentDecision": "상황을 등분제 또는 포함제로 모델링하고 곱셈과 연결한다.", "invariant": "피제수 = 제수 × 몫 + 나머지이며 상황의 단위가 일치한다.",
+      "observableEvidence": "대상을 묶거나 나누고 대응 곱셈식으로 검산한다.", "renderRecipeClass": "equal-groups-division-model", "nativeDependency": "native-counting-model-v1 conditional-go", "splitRisk": "high",
+      "anchorStandardCode": "[4수01-05]", "standardCodes": ["[4수01-05]"]
+    },
+    {
+      "archetypeId": "N10", "domain": "수와 연산", "title": "두 자리 수로 나누는 부분몫",
+      "studentDecision": "적절한 부분몫을 선택해 피제수를 단계적으로 줄인다.", "invariant": "누적 부분몫과 남은 양이 나눗셈 항등식을 보존한다.",
+      "observableEvidence": "부분곱을 빼고 남은 값을 추적해 몫을 구성한다.", "renderRecipeClass": "partial-quotients-construction", "nativeDependency": "existing partial-quotients family engine extension", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-07]", "standardCodes": ["[4수01-07]"]
+    },
+    {
+      "archetypeId": "N11", "domain": "수와 연산", "title": "사칙연산 어림과 타당성",
+      "studentDecision": "상황에 맞는 어림 수와 연산을 골라 결과 범위를 판단한다.", "invariant": "어림 결과가 원 계산의 합리적 상·하한 또는 근삿값 범위에 있다.",
+      "observableEvidence": "어림 전략과 정확값을 대조해 전략을 수정한다.", "renderRecipeClass": "estimate-exact-compare", "nativeDependency": "static/card recipe; no new native affordance", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-08]", "standardCodes": ["[4수01-08]"]
+    },
+    {
+      "archetypeId": "N12", "domain": "수와 연산", "title": "곱셈구구 배열",
+      "studentDecision": "묶음 수와 묶음당 개수로 곱셈 사실을 구성한다.", "invariant": "행 × 열 = 전체이며 교환한 식은 전체가 같아도 상황 의미가 다를 수 있다.",
+      "observableEvidence": "배열·묶음과 식을 연결하고 빠진 곱을 채운다.", "renderRecipeClass": "array-fact-practice", "nativeDependency": "native-array-model-v1 captured; adapter discovery required", "splitRisk": "medium",
+      "anchorStandardCode": "[2수01-11]", "standardCodes": ["[2수01-11]"]
+    },
+    {
+      "archetypeId": "N13A", "domain": "수와 연산", "title": "같은 전체 등분·분수 생성",
+      "studentDecision": "같은 전체를 같은 크기로 등분해 선택한 부분을 분수로 나타낸다.", "invariant": "선택한 부분 수와 전체의 같은 크기 부분 수가 분수값을 결정한다.",
+      "observableEvidence": "분수 모형을 구성하고 읽기·쓰기와 일치시킨다.", "renderRecipeClass": "fraction-same-whole", "nativeDependency": "NO03FM V2 adapter required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-09]", "standardCodes": ["[4수01-09]"]
+    },
+    {
+      "archetypeId": "N13B", "domain": "수와 연산", "title": "진분수·가분수·대분수 형태 변환",
+      "studentDecision": "같은 양을 진·가·대분수 표현 사이에서 바꾼다.", "invariant": "표현을 바꾸어도 같은 전체에 대한 분수 양이 보존된다.",
+      "observableEvidence": "두 분수 모형과 두 표기를 연결해 동치를 확인한다.", "renderRecipeClass": "fraction-same-whole", "nativeDependency": "NO03FM V2 adapter required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-10]", "standardCodes": ["[4수01-10]"]
+    },
+    {
+      "archetypeId": "N14", "domain": "수와 연산", "title": "같은 단위 분수 비교",
+      "studentDecision": "같은 전체와 분수 단위를 확인해 두 분수의 크기를 비교한다.", "invariant": "같은 분모에서는 분자, 단위분수에서는 분모가 크기 관계를 결정한다.",
+      "observableEvidence": "같은 전체 모형과 수식을 나란히 놓고 비교 근거를 고친다.", "renderRecipeClass": "fraction-same-unit-compare", "nativeDependency": "native-fraction-model-v1 / existing fraction visual recipe", "splitRisk": "medium",
+      "anchorStandardCode": "[4수01-11]", "standardCodes": ["[4수01-11]"]
+    },
+    {
+      "archetypeId": "N15", "domain": "수와 연산", "title": "분수·소수 동치와 비교",
+      "studentDecision": "분수와 소수를 공통 단위로 바꾸어 동치와 대소를 판단한다.", "invariant": "표현 변환 전후 유리수 값과 같은 전체가 보존된다.",
+      "observableEvidence": "분수 모형·수직선·소수 표기를 연결해 비교한다.", "renderRecipeClass": "rational-common-unit-compare", "nativeDependency": "fraction model plus number-line recipe", "splitRisk": "high",
+      "anchorStandardCode": "[6수01-12]", "standardCodes": ["[6수01-12]"]
+    },
+    {
+      "archetypeId": "N16", "domain": "수와 연산", "title": "나눗셈 몫의 분수·소수 표현",
+      "studentDecision": "나눗셈 몫을 요구된 유리수 표현으로 바꾼다.", "invariant": "a ÷ b와 a/b 및 대응 소수의 값이 같다.",
+      "observableEvidence": "등분 모형과 긴 나눗셈 또는 수직선을 대조한다.", "renderRecipeClass": "quotient-rational-representation", "nativeDependency": "fraction/counting plus decimal representation recipe", "splitRisk": "high",
+      "anchorStandardCode": "[6수01-10]", "standardCodes": ["[6수01-10]", "[6수01-14]"]
+    },
+    {
+      "archetypeId": "N17", "domain": "수와 연산", "title": "분수 곱셈 분할·확대",
+      "studentDecision": "한 양의 분수배를 분할 또는 확대하여 곱을 구한다.", "invariant": "공통 전체와 단위분수 크기 아래 부분 수의 곱이 결과를 보존한다.",
+      "observableEvidence": "영역 또는 띠 모형을 겹쳐 계산식과 연결한다.", "renderRecipeClass": "fraction-multiply-area-strip", "nativeDependency": "native-fraction-model-v1 adapter required", "splitRisk": "high",
+      "anchorStandardCode": "[6수01-09]", "standardCodes": ["[6수01-09]"]
+    },
+    {
+      "archetypeId": "N18", "domain": "수와 연산", "title": "분수 나눗셈 측정·분할",
+      "studentDecision": "나누는 양이 몇 번 포함되는지 또는 어떻게 등분되는지 모델링한다.", "invariant": "몫 × 제수 = 피제수이며 단위와 같은 전체가 일치한다.",
+      "observableEvidence": "분수 띠를 반복 배치하거나 등분해 역곱셈으로 확인한다.", "renderRecipeClass": "fraction-division-measure-partition", "nativeDependency": "native-fraction-model-v1 plus grouping adapter", "splitRisk": "high",
+      "anchorStandardCode": "[6수01-11]", "standardCodes": ["[6수01-11]"]
+    },
+    {
+      "archetypeId": "N19", "domain": "수와 연산", "title": "소수 곱셈 자릿값 확대",
+      "studentDecision": "정수 곱셈과 10의 거듭제곱 배율을 연결해 소수점을 정한다.", "invariant": "인수의 배율 곱과 곱의 자릿값 배율이 일치한다.",
+      "observableEvidence": "자리값 표와 부분곱을 대조해 소수점 위치를 검증한다.", "renderRecipeClass": "decimal-multiply-place-value", "nativeDependency": "place-value recipe; decimal exchange discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수01-13]", "standardCodes": ["[6수01-13]"]
+    },
+    {
+      "archetypeId": "N20", "domain": "수와 연산", "title": "소수 나눗셈 자릿값 몫",
+      "studentDecision": "피제수와 제수를 같은 배율로 바꾸거나 자릿값 단위로 몫을 구성한다.", "invariant": "두 수에 같은 10의 거듭제곱을 곱해도 몫은 보존된다.",
+      "observableEvidence": "자리값 표·부분몫·역곱셈을 연결해 검산한다.", "renderRecipeClass": "decimal-divide-place-value", "nativeDependency": "place-value/counting recipe; decimal adapter discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수01-15]", "standardCodes": ["[6수01-15]"]
+    },
+    {
+      "archetypeId": "N05B", "domain": "수와 연산", "title": "세 수 덧셈·뺄셈 연쇄",
+      "studentDecision": "세 수의 연산 순서와 중간값을 추적해 결과를 구한다.", "invariant": "각 단계의 중간값이 원래 식의 연산 순서를 보존한다.",
+      "observableEvidence": "중간 결과 카드를 배치하고 전체 계산을 역산해 확인한다.", "renderRecipeClass": "three-term-operation-chain", "nativeDependency": "card/equation-rail recipe", "splitRisk": "low",
+      "anchorStandardCode": "[2수01-08]", "standardCodes": ["[2수01-08]"]
+    },
+    {
+      "archetypeId": "C01", "domain": "변화와 관계", "title": "반복 단위로 규칙 만들기",
+      "studentDecision": "자신이 정한 반복 단위를 배열하고 규칙을 설명한다.", "invariant": "전체 배열이 선택한 최소 반복 단위의 반복으로 생성된다.",
+      "observableEvidence": "조각을 배치·수정하고 반복 단위 경계를 표시한다.", "renderRecipeClass": "pattern-block-construction", "nativeDependency": "existing pattern-block recipe extension", "splitRisk": "medium",
+      "anchorStandardCode": "[2수02-02]", "standardCodes": ["[2수02-02]"]
+    },
+    {
+      "archetypeId": "C02A", "domain": "변화와 관계", "title": "변화 규칙 찾기·표현·예측",
+      "studentDecision": "변하는 배열의 규칙을 찾아 수나 식으로 표현하고 다음 값을 예측한다.", "invariant": "같은 변환 규칙이 모든 연속 항에 적용된다.",
+      "observableEvidence": "항을 바꾸어 규칙식의 예측과 실제 배열을 대조한다.", "renderRecipeClass": "sequence-rule-table", "nativeDependency": "table/card recipe; no new native affordance initially", "splitRisk": "medium",
+      "anchorStandardCode": "[4수02-01]", "standardCodes": ["[4수02-01]"]
+    },
+    {
+      "archetypeId": "C02B", "domain": "변화와 관계", "title": "계산 배열 규칙과 결과 추측",
+      "studentDecision": "계산식 배열의 구조 변화를 찾아 계산 결과를 추측한다.", "invariant": "피연산자 변화와 결과 변화 사이의 산술 관계가 모든 행에서 유지된다.",
+      "observableEvidence": "식 카드의 변화를 표시하고 빈 결과를 예측·검산한다.", "renderRecipeClass": "calculation-pattern-grid", "nativeDependency": "equation/card grid recipe", "splitRisk": "medium",
+      "anchorStandardCode": "[4수02-02]", "standardCodes": ["[4수02-02]"]
+    },
+    {
+      "archetypeId": "C02C", "domain": "변화와 관계", "title": "공변 관계 표·식",
+      "studentDecision": "두 양의 대응 관계를 표에서 찾아 기호식으로 나타낸다.", "invariant": "모든 대응쌍이 같은 함수 규칙을 만족한다.",
+      "observableEvidence": "표의 값을 바꾸고 식의 예측값이 대응쌍과 맞는지 확인한다.", "renderRecipeClass": "covariation-table-equation", "nativeDependency": "table/equation recipe; semantic table edit discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수02-01]", "standardCodes": ["[6수02-01]"]
+    },
+    {
+      "archetypeId": "C03", "domain": "변화와 관계", "title": "비율의 분수·소수·백분율 표현",
+      "studentDecision": "기준량에 대한 비교량의 비를 세 표현으로 변환한다.", "invariant": "분수·소수·백분율 표현이 같은 비 값을 보존한다.",
+      "observableEvidence": "비 모형과 세 표현 카드를 연결하고 기준량을 확인한다.", "renderRecipeClass": "ratio-multi-representation", "nativeDependency": "ratio strip/grid recipe discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수02-03]", "standardCodes": ["[6수02-03]"]
+    },
+    {
+      "archetypeId": "C04", "domain": "변화와 관계", "title": "비례식 등가비 불변량",
+      "studentDecision": "등가인 두 비를 구성하고 미지항을 구한다.", "invariant": "두 비의 교차곱이 같고 같은 배율 관계가 유지된다.",
+      "observableEvidence": "비 카드의 배율을 조정하고 교차곱으로 검산한다.", "renderRecipeClass": "proportion-equation-balance", "nativeDependency": "ratio/equality recipe reuse", "splitRisk": "medium",
+      "anchorStandardCode": "[6수02-04]", "standardCodes": ["[6수02-04]"]
+    },
+    {
+      "archetypeId": "C05", "domain": "변화와 관계", "title": "비례배분",
+      "studentDecision": "전체량을 주어진 비에 따라 두 부분으로 나눈다.", "invariant": "부분의 합은 전체이고 부분 사이의 비는 주어진 비와 같다.",
+      "observableEvidence": "전체 막대를 단위비만큼 나누고 합·비를 검산한다.", "renderRecipeClass": "ratio-bar-allocation", "nativeDependency": "ratio strip construction discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수02-05]", "standardCodes": ["[6수02-05]"]
+    },
+    {
+      "archetypeId": "G01", "domain": "도형과 측정", "title": "직선·선분·반직선 구별",
+      "studentDecision": "양끝의 유한성에 따라 선의 종류를 구별한다.", "invariant": "끝점 수와 연장 가능 방향이 정의와 일치한다.",
+      "observableEvidence": "끝점·화살표를 표시하고 분류 근거를 설명한다.", "renderRecipeClass": "line-extent-classification", "nativeDependency": "line/endpoint semantic discovery required", "splitRisk": "low",
+      "anchorStandardCode": "[4수03-01]", "standardCodes": ["[4수03-01]"]
+    },
+    {
+      "archetypeId": "G02", "domain": "도형과 측정", "title": "생활 속 입체 모양 찾기·합성",
+      "studentDecision": "물체의 전체 모양을 기본 입체 모양과 대응하고 합성한다.", "invariant": "회전·이동해도 기본 모양의 곡면·평면 구조가 보존된다.",
+      "observableEvidence": "물체를 분류하고 기본 모양을 배치해 새 모양을 만든다.", "renderRecipeClass": "solid-shape-recognize-compose", "nativeDependency": "solid object library/drag semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-01]", "standardCodes": ["[2수03-01]"]
+    },
+    {
+      "archetypeId": "G03A", "domain": "도형과 측정", "title": "평면 모양 찾기·합성",
+      "studentDecision": "생활 물체의 평면 모양을 찾고 기본 모양으로 합성한다.", "invariant": "이동·회전해도 변·꼭짓점·곡선 구조가 보존된다.",
+      "observableEvidence": "모양 조각을 선택·배치하고 구성 근거를 말한다.", "renderRecipeClass": "plane-shape-recognize-compose", "nativeDependency": "shape drag/compose semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-03]", "standardCodes": ["[2수03-03]"]
+    },
+    {
+      "archetypeId": "G04A12", "domain": "도형과 측정", "title": "삼각형·사각형 공통점",
+      "studentDecision": "변과 꼭짓점의 공통 성질로 삼각형과 사각형을 구별한다.", "invariant": "분류 결과가 변·꼭짓점 수의 정의 성질과 일치한다.",
+      "observableEvidence": "도형의 요소를 표시하고 공통점 카드를 선택한다.", "renderRecipeClass": "polygon-property", "nativeDependency": "common geometry primitives", "splitRisk": "medium",
+      "anchorStandardCode": "[2수03-05]", "standardCodes": ["[2수03-05]"]
+    },
+    {
+      "archetypeId": "G04B34", "domain": "도형과 측정", "title": "삼각형·사각형·정다각형 성질 분류",
+      "studentDecision": "필요충분 성질을 검사해 도형을 분류하고 포함 관계를 설명한다.", "invariant": "분류 결과가 각·평행·길이·변의 수 등 정의 성질과 일치한다.",
+      "observableEvidence": "성질을 표시하고 반례와 비교해 분류를 수정한다.", "renderRecipeClass": "polygon-property", "nativeDependency": "SM05PG/SM05RP bounded discovery", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-08]", "standardCodes": ["[4수03-08]", "[4수03-10]", "[4수03-11]"]
+    },
+    {
+      "archetypeId": "G05", "domain": "도형과 측정", "title": "직각 기준 각 분류",
+      "studentDecision": "직각과 비교해 예각·직각·둔각을 구별한다.", "invariant": "각의 크기는 두 반직선 사이의 회전량이며 직각을 기준으로 한다.",
+      "observableEvidence": "직각 도구를 겹치고 분류 근거를 표시한다.", "renderRecipeClass": "angle-right-benchmark-classify", "nativeDependency": "angle overlay/rotation semantic discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-02]", "standardCodes": ["[4수03-02]"]
+    },
+    {
+      "archetypeId": "G06", "domain": "도형과 측정", "title": "수직·평행 관계",
+      "studentDecision": "두 직선의 만남과 방향 관계로 수직 또는 평행을 판단한다.", "invariant": "수직은 직각 교차, 평행은 같은 평면에서 만나지 않고 일정 거리를 유지한다.",
+      "observableEvidence": "직각 표지 또는 평행 이동으로 관계를 확인한다.", "renderRecipeClass": "line-relation-construct-classify", "nativeDependency": "line snap/angle semantics discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-03]", "standardCodes": ["[4수03-03]"]
+    },
+    {
+      "archetypeId": "G07", "domain": "도형과 측정", "title": "합동 포개기·대응",
+      "studentDecision": "이동·회전·뒤집기로 두 도형의 합동과 대응 요소를 판단한다.", "invariant": "강체변환 뒤 대응 길이와 각 및 전체 모양이 일치한다.",
+      "observableEvidence": "도형을 포개고 대응점·변·각을 표시한다.", "renderRecipeClass": "rigid-overlay-correspondence", "nativeDependency": "shape transform/overlay semantic discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수03-01]", "standardCodes": ["[6수03-01]"]
+    },
+    {
+      "archetypeId": "G08", "domain": "도형과 측정", "title": "쌓기나무 구성·위치 설명",
+      "studentDecision": "위치·방향 조건에 맞게 쌓기나무 모양을 구성하고 설명한다.", "invariant": "각 큐브의 격자 좌표와 면 맞닿음 관계가 조건을 만족한다.",
+      "observableEvidence": "큐브를 놓고 옮기며 위치 언어로 구성을 검증한다.", "renderRecipeClass": "unit-cube-3d-construction", "nativeDependency": "3D cube placement/state discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-02]", "standardCodes": ["[2수03-02]"]
+    },
+    {
+      "archetypeId": "G09", "domain": "도형과 측정", "title": "입체도형 구성 요소·성질 분류 공통 엔진",
+      "studentDecision": "면·모서리·꼭짓점과 밑면 구조로 입체를 분류하고 성질을 설명한다.", "invariant": "구성 요소의 수와 연결 관계가 해당 입체 정의를 만족한다.",
+      "observableEvidence": "입체를 회전해 요소를 표시하고 반례와 구별한다.", "renderRecipeClass": "solid-property-classifier", "nativeDependency": "3D solid inspection semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-03]", "standardCodes": ["[6수03-03]", "[6수03-05]", "[6수03-07]"]
+    },
+    {
+      "archetypeId": "G10A", "domain": "도형과 측정", "title": "직육면체 겨냥도·전개도 대응",
+      "studentDecision": "직육면체의 면 인접 관계를 겨냥도와 전개도에서 대응한다.", "invariant": "면 인접성과 모서리 짝이 동일한 직육면체를 나타낸다.",
+      "observableEvidence": "전개도에 대응 면·모서리를 표시하고 겨냥도와 대조한다.", "renderRecipeClass": "solid-inspect-net", "nativeDependency": "SM06PH/SM07SR discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-04]", "standardCodes": ["[6수03-04]"]
+    },
+    {
+      "archetypeId": "G10B", "domain": "도형과 측정", "title": "각기둥·원기둥 전개도 접기 판단",
+      "studentDecision": "전개도가 목표 각기둥 또는 원기둥으로 접히는지 판단한다.", "invariant": "접은 뒤 면 인접·크기 관계가 맞고 겹침이나 누락이 없다.",
+      "observableEvidence": "선택 전개도와 대응 면·모서리 근거를 함께 남긴다.", "renderRecipeClass": "solid-inspect-net", "nativeDependency": "SM06PH/SM07SR discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-06]", "standardCodes": ["[6수03-06]", "[6수03-08]"]
+    },
+    {
+      "archetypeId": "G11A", "domain": "도형과 측정", "title": "밀기·뒤집기·돌리기",
+      "studentDecision": "주어진 강체변환을 도형에 적용하고 변화를 설명한다.", "invariant": "길이와 각은 보존되고 위치·방향·손잡이성은 변환 규칙을 따른다.",
+      "observableEvidence": "변환 전후 도형의 대응점을 표시하고 결과를 비교한다.", "renderRecipeClass": "coordinate-transform", "nativeDependency": "CR07CP discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-04]", "standardCodes": ["[4수03-04]"]
+    },
+    {
+      "archetypeId": "G11B", "domain": "도형과 측정", "title": "점 이동 위치·방향 설명",
+      "studentDecision": "방향과 거리를 누적해 이동한 점의 위치를 정한다.", "invariant": "각 이동 벡터의 합이 시작점과 끝점의 변화를 나타낸다.",
+      "observableEvidence": "이동 경로와 끝점을 표시하고 위치 언어로 설명한다.", "renderRecipeClass": "coordinate-transform", "nativeDependency": "CR07CP discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-05]", "standardCodes": ["[4수03-05]"]
+    },
+    {
+      "archetypeId": "G12A", "domain": "도형과 측정", "title": "원의 중심·반지름·지름 성질",
+      "studentDecision": "원에서 중심·반지름·지름을 찾고 관계를 판단한다.", "invariant": "모든 반지름은 같고 지름은 중심을 지나며 반지름의 두 배다.",
+      "observableEvidence": "중심과 선분을 표시하고 길이 관계를 확인한다.", "renderRecipeClass": "circle-parts-properties", "nativeDependency": "native-circle-model-v1 captured; handle contract required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-06]", "standardCodes": ["[4수03-06]"]
+    },
+    {
+      "archetypeId": "G13", "domain": "도형과 측정", "title": "측정 속성 직접 비교",
+      "studentDecision": "같은 속성끼리 직접 또는 간접 비교해 더 긴·많은·무거운·넓은 대상을 고른다.", "invariant": "비교 대상과 속성이 같고 비교 관계의 추이성이 유지된다.",
+      "observableEvidence": "대상을 맞대거나 공통 매개와 비교하고 근거를 표시한다.", "renderRecipeClass": "attribute-direct-indirect-compare", "nativeDependency": "drag/overlay plus container/weight proxy discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-06]", "standardCodes": ["[2수03-06]"]
+    },
+    {
+      "archetypeId": "G14", "domain": "도형과 측정", "title": "쌓기나무 숨은 개수 추론",
+      "studentDecision": "보이는 큐브와 지지 조건으로 숨은 큐브 수를 추론한다.", "invariant": "각 위쪽 큐브 아래에는 연속된 지지 큐브가 있고 좌표 중복이 없다.",
+      "observableEvidence": "층별 배치를 복원하고 전체 좌표를 세어 확인한다.", "renderRecipeClass": "unit-cube-layer-count", "nativeDependency": "3D cube layer projection discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-09]", "standardCodes": ["[6수03-09]"]
+    },
+    {
+      "archetypeId": "G15", "domain": "도형과 측정", "title": "위·앞·옆 모양과 입체 추론",
+      "studentDecision": "입체에서 정사영을 만들거나 여러 정사영에서 가능한 입체를 추론한다.", "invariant": "각 보기의 격자 점유가 같은 3차원 좌표 집합의 투영과 일치한다.",
+      "observableEvidence": "입체와 세 투영을 오가며 불일치 칸을 수정한다.", "renderRecipeClass": "orthographic-view-reconstruct", "nativeDependency": "3D cube projection semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-10]", "standardCodes": ["[6수03-10]"]
+    },
+    {
+      "archetypeId": "G16", "domain": "도형과 측정", "title": "도형 합성·채우기",
+      "studentDecision": "주어진 조각으로 목표 영역을 겹침·틈 없이 구성한다.", "invariant": "조각 넓이의 합이 목표 넓이와 같고 내부가 겹치지 않는다.",
+      "observableEvidence": "조각을 이동·회전해 빈틈과 겹침을 제거하고 설명한다.", "renderRecipeClass": "shape-compose-tessellate", "nativeDependency": "polygon drag/snap/collision semantics discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-12]", "standardCodes": ["[4수03-12]"]
+    },
+    {
+      "archetypeId": "G17", "domain": "도형과 측정", "title": "달력·시간 단위 관계",
+      "studentDecision": "분·시간·일·주·개월·년 사이의 관계로 같은 기간을 표현한다.", "invariant": "정의된 단위 교환비 안에서 총 기간이 보존된다.",
+      "observableEvidence": "달력·시간띠를 묶거나 풀어 두 표현을 일치시킨다.", "renderRecipeClass": "calendar-time-unit-relation", "nativeDependency": "calendar/time-strip recipe discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-09]", "standardCodes": ["[2수03-09]"]
+    },
+    {
+      "archetypeId": "G18", "domain": "도형과 측정", "title": "초 단위 시각 읽기",
+      "studentDecision": "시침·분침·초침의 위치로 초 단위 시각을 읽는다.", "invariant": "각 바늘의 주기와 눈금값이 같은 시각을 나타낸다.",
+      "observableEvidence": "바늘을 맞추고 디지털 표기와 대조한다.", "renderRecipeClass": "clock-second-read", "nativeDependency": "released clock contract extension review", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-13]", "standardCodes": ["[4수03-13]"]
+    },
+    {
+      "archetypeId": "G19A12", "domain": "도형과 측정", "title": "m·cm 단위 교환·복명수 표현",
+      "studentDecision": "m와 cm의 교환비로 길이 표현을 서로 바꾼다.", "invariant": "cm로 환산한 총길이가 교환 전후 같다.",
+      "observableEvidence": "단위 묶음을 합치거나 풀고 두 표현을 대조한다.", "renderRecipeClass": "unit-exchange", "nativeDependency": "native-unit-conversion-v1 semantic contract required", "splitRisk": "medium",
+      "anchorStandardCode": "[2수03-11]", "standardCodes": ["[2수03-11]"]
+    },
+    {
+      "archetypeId": "G19B34", "domain": "도형과 측정", "title": "길이·들이·무게 단위 교환",
+      "studentDecision": "속성별 단위 교환비로 큰 단위·작은 단위 표현을 바꾼다.", "invariant": "기준 단위로 환산한 총량이 교환 전후 같다.",
+      "observableEvidence": "단위 묶음과 동치식을 함께 구성한다.", "renderRecipeClass": "unit-exchange", "nativeDependency": "native-unit-conversion-v1 semantic contract required", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-16]", "standardCodes": ["[4수03-16]", "[4수03-18]", "[4수03-21]", "[4수03-22]"]
+    },
+    {
+      "archetypeId": "G20A12", "domain": "도형과 측정", "title": "1~2학년 길이 어림·측정",
+      "studentDecision": "길이를 어림하고 기준 또는 실제 측정값과 비교한다.", "invariant": "길이는 동일 단위의 반복 수로 나타나며 어림 오차가 설명 가능하다.",
+      "observableEvidence": "어림값과 자로 잰 값을 나란히 놓고 양감을 수정한다.", "renderRecipeClass": "unit-measure", "nativeDependency": "released ruler substrate", "splitRisk": "medium",
+      "anchorStandardCode": "[2수03-12]", "standardCodes": ["[2수03-12]"]
+    },
+    {
+      "archetypeId": "G20A34", "domain": "도형과 측정", "title": "mm·km 길이 측정·어림",
+      "studentDecision": "상황에 맞는 mm·km 단위를 골라 측정값 또는 어림값을 정한다.", "invariant": "같은 길이를 동일 단위의 반복과 단위 교환으로 보존한다.",
+      "observableEvidence": "어림과 실제 측정·환산값을 대조한다.", "renderRecipeClass": "unit-measure", "nativeDependency": "released ruler substrate plus scale extension", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-15]", "standardCodes": ["[4수03-15]"]
+    },
+    {
+      "archetypeId": "G20B", "domain": "도형과 측정", "title": "들이 측정·어림",
+      "studentDecision": "적절한 들이 단위와 도구를 골라 측정값 또는 어림값을 정한다.", "invariant": "들이가 동일 용량 단위의 반복으로 보존된다.",
+      "observableEvidence": "어림한 양과 용기에 잰 양을 비교한다.", "renderRecipeClass": "unit-measure", "nativeDependency": "capacity measurement semantics discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-17]", "standardCodes": ["[4수03-17]"]
+    },
+    {
+      "archetypeId": "G20C", "domain": "도형과 측정", "title": "무게 측정·어림",
+      "studentDecision": "적절한 무게 단위와 도구를 골라 측정값 또는 어림값을 정한다.", "invariant": "무게가 동일 질량 단위의 반복과 저울 균형으로 보존된다.",
+      "observableEvidence": "어림한 무게와 저울로 잰 값을 비교한다.", "renderRecipeClass": "unit-measure", "nativeDependency": "mass measurement semantics discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-20]", "standardCodes": ["[4수03-20]"]
+    },
+    {
+      "archetypeId": "G21A12", "domain": "도형과 측정", "title": "1~2학년 길이 덧셈·뺄셈",
+      "studentDecision": "같은 길이 단위끼리 계산하고 필요한 단위 교환을 한다.", "invariant": "기준 단위 총길이와 연산 결과가 교환 전후 보존된다.",
+      "observableEvidence": "단위식과 결과를 연결해 계산을 검산한다.", "renderRecipeClass": "unit-exchange+equation-card-rail", "nativeDependency": "native-unit-conversion-v1 plus formula recipe", "splitRisk": "medium",
+      "anchorStandardCode": "[2수03-13]", "standardCodes": ["[2수03-13]"]
+    },
+    {
+      "archetypeId": "G21B34", "domain": "도형과 측정", "title": "시간·들이·무게 복명수 덧셈·뺄셈",
+      "studentDecision": "속성별 기준 단위를 맞추고 필요한 교환 뒤 계산한다.", "invariant": "기준 단위 총량과 연산 결과가 교환 전후 보존된다.",
+      "observableEvidence": "변환식과 계산 결과를 함께 구성한다.", "renderRecipeClass": "unit-exchange+equation-card-rail", "nativeDependency": "unit exchange and operation semantic contracts", "splitRisk": "high",
+      "anchorStandardCode": "[4수03-14]", "standardCodes": ["[4수03-14]", "[4수03-19]", "[4수03-23]"]
+    },
+    {
+      "archetypeId": "G22", "domain": "도형과 측정", "title": "평면도형 둘레",
+      "studentDecision": "도형의 경계를 따라 필요한 변 길이를 모두 더한다.", "invariant": "경계 선분 길이의 합이 둘레이고 내부 선분은 포함하지 않는다.",
+      "observableEvidence": "경계 변을 한 번씩 표시하고 식과 대응시킨다.", "renderRecipeClass": "perimeter-boundary-sum", "nativeDependency": "polygon edge/length semantic discovery", "splitRisk": "low",
+      "anchorStandardCode": "[6수03-11]", "standardCodes": ["[6수03-11]"]
+    },
+    {
+      "archetypeId": "G23A", "domain": "도형과 측정", "title": "넓이 단위 구조",
+      "studentDecision": "선형 단위 관계를 정사각형 단위 관계로 확장한다.", "invariant": "한 변의 교환비 r에 대해 넓이는 r²배로 교환된다.",
+      "observableEvidence": "단위 정사각형 배열을 구성해 교환 수를 센다.", "renderRecipeClass": "area-volume-tile", "nativeDependency": "rectangle/array semantic review", "splitRisk": "medium",
+      "anchorStandardCode": "[6수03-12]", "standardCodes": ["[6수03-12]"]
+    },
+    {
+      "archetypeId": "G23B", "domain": "도형과 측정", "title": "부피 단위 구조",
+      "studentDecision": "선형 단위 관계를 정육면체 단위 관계로 확장한다.", "invariant": "한 변의 교환비 r에 대해 부피는 r³배로 교환된다.",
+      "observableEvidence": "단위 정육면체 층을 구성해 교환 수를 센다.", "renderRecipeClass": "area-volume-tile", "nativeDependency": "SM06UC cube-state discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-18]", "standardCodes": ["[6수03-18]"]
+    },
+    {
+      "archetypeId": "G24", "domain": "도형과 측정", "title": "직사각형·정사각형 넓이",
+      "studentDecision": "단위 정사각형 배열에서 가로×세로 공식을 구성한다.", "invariant": "행 수 × 열 수가 겹침 없는 단위 넓이 개수와 같다.",
+      "observableEvidence": "단위 정사각형을 배열하고 곱셈식과 대응한다.", "renderRecipeClass": "rectangle-unit-area-array", "nativeDependency": "array/grid semantic discovery", "splitRisk": "low",
+      "anchorStandardCode": "[6수03-13]", "standardCodes": ["[6수03-13]"]
+    },
+    {
+      "archetypeId": "G25", "domain": "도형과 측정", "title": "다각형 넓이 분해·재배열",
+      "studentDecision": "도형을 이미 아는 넓이 도형으로 분해·재배열해 공식을 추론한다.", "invariant": "자르기·옮기기 전후 전체 넓이가 보존된다.",
+      "observableEvidence": "조각을 이동해 직사각형 등으로 만들고 대응 식을 설명한다.", "renderRecipeClass": "polygon-area-decompose-rearrange", "nativeDependency": "polygon cut/drag/snap semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-14]", "standardCodes": ["[6수03-14]"]
+    },
+    {
+      "archetypeId": "G26", "domain": "도형과 측정", "title": "원주율 측정·비",
+      "studentDecision": "여러 원의 원주와 지름을 측정해 두 양의 비를 비교한다.", "invariant": "같은 측정 오차 범위에서 원주÷지름은 일정한 근삿값이다.",
+      "observableEvidence": "원 크기를 바꾸고 측정표의 비가 수렴하는지 확인한다.", "renderRecipeClass": "circle-measure-ratio", "nativeDependency": "native-circle-model-v1 plus circumference measurement contract", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-15]", "standardCodes": ["[6수03-15]"]
+    },
+    {
+      "archetypeId": "G27", "domain": "도형과 측정", "title": "원주·원의 넓이",
+      "studentDecision": "반지름·지름·원주율 관계와 재배열로 원주와 넓이를 구한다.", "invariant": "원주=지름×원주율, 넓이=반지름²×원주율 관계가 유지된다.",
+      "observableEvidence": "원 조각 또는 길이 관계를 식과 대응해 검산한다.", "renderRecipeClass": "circle-circumference-area", "nativeDependency": "native-circle-model-v1 and sector rearrangement discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수03-16]", "standardCodes": ["[6수03-16]"]
+    },
+    {
+      "archetypeId": "G28", "domain": "도형과 측정", "title": "직육면체·정육면체 겉넓이",
+      "studentDecision": "전개도 또는 면 쌍을 이용해 모든 겉면 넓이를 합한다.", "invariant": "중복·누락 없이 여섯 면 넓이의 합이 겉넓이다.",
+      "observableEvidence": "전개도 면을 표시하고 면별 넓이 식과 합을 연결한다.", "renderRecipeClass": "solid-surface-area-net-sum", "nativeDependency": "net face/area semantic discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수03-17]", "standardCodes": ["[6수03-17]"]
+    },
+    {
+      "archetypeId": "G29", "domain": "도형과 측정", "title": "직육면체·정육면체 부피",
+      "studentDecision": "단위 정육면체의 층·행·열 구조로 부피를 구한다.", "invariant": "가로×세로×높이가 겹침 없는 단위 부피 개수와 같다.",
+      "observableEvidence": "층별 큐브 수를 구성하고 세 차원의 곱과 대응한다.", "renderRecipeClass": "cuboid-unit-cube-volume", "nativeDependency": "3D unit-cube layer semantics discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수03-19]", "standardCodes": ["[6수03-19]"]
+    },
+    {
+      "archetypeId": "G30", "domain": "도형과 측정", "title": "삼각형·사각형 내각의 합",
+      "studentDecision": "각을 분해·재배열해 내각의 합을 추론하고 설명한다.", "invariant": "삼각형 내각 합은 180°, 사각형은 삼각형 두 개로 나뉘어 360°다.",
+      "observableEvidence": "각 조각을 직선각 또는 한 점 둘레에 모아 추론을 검증한다.", "renderRecipeClass": "polygon-angle-sum-rearrange", "nativeDependency": "angle piece cut/rotate/snap discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-25]", "standardCodes": ["[4수03-25]"]
+    },
+    {
+      "archetypeId": "G03B", "domain": "도형과 측정", "title": "기본 평면도형 그리기",
+      "studentDecision": "삼각형·사각형·원의 핵심 형태 조건을 만족하도록 그린다.", "invariant": "그린 경계의 변·꼭짓점·폐곡선 구조가 목표 모양과 일치한다.",
+      "observableEvidence": "선을 추가·이동·지우며 목표 도형 조건을 확인한다.", "renderRecipeClass": "basic-shape-draw", "nativeDependency": "line/circle drawing semantics discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수03-04]", "standardCodes": ["[2수03-04]"]
+    },
+    {
+      "archetypeId": "G12B", "domain": "도형과 측정", "title": "컴퍼스로 원 구성",
+      "studentDecision": "주어진 중심과 반지름 조건에 맞게 원을 그린다.", "invariant": "원 위 모든 점과 중심 사이의 거리가 선택한 반지름과 같다.",
+      "observableEvidence": "중심과 반지름을 설정하고 원 위 표본점의 거리를 확인한다.", "renderRecipeClass": "circle-compass-construction", "nativeDependency": "native-circle-model-v1 creation/handle contract required", "splitRisk": "medium",
+      "anchorStandardCode": "[4수03-07]", "standardCodes": ["[4수03-07]"]
+    },
+    {
+      "archetypeId": "D01A", "domain": "자료와 가능성", "title": "초기 자료 표 조직",
+      "studentDecision": "범주별 개수를 보존하며 자료를 표의 맞는 칸에 정리한다.", "invariant": "각 범주의 빈도와 전체 자료 수가 표현 전후 같다.",
+      "observableEvidence": "자료를 하나씩 표식하고 완성된 표와 합계를 확인한다.", "renderRecipeClass": "data-table-graph", "nativeDependency": "DP02TG table edit contract review", "splitRisk": "low",
+      "anchorStandardCode": "[2수04-02]", "standardCodes": ["[2수04-02]"]
+    },
+    {
+      "archetypeId": "D01B", "domain": "자료와 가능성", "title": "초기 기호그래프 조직",
+      "studentDecision": "범주별 개수를 보존하며 자료를 기호그래프로 나타낸다.", "invariant": "기호 수와 각 범주의 자료 수 및 전체 합이 일치한다.",
+      "observableEvidence": "기호를 배치하고 원자료·범주별 개수와 대조한다.", "renderRecipeClass": "data-table-graph", "nativeDependency": "DP03PG/native-picture-graph-v1 semantic edit discovery", "splitRisk": "high",
+      "anchorStandardCode": "[2수04-03]", "standardCodes": ["[2수04-03]"]
+    },
+    {
+      "archetypeId": "D02A", "domain": "자료와 가능성", "title": "꺾은선그래프 구성·해석",
+      "studentDecision": "순서 있는 자료를 점과 선으로 나타내고 변화를 해석한다.", "invariant": "축·눈금과 모든 순서쌍이 원자료를 보존한다.",
+      "observableEvidence": "점·선분을 수정하고 원자료 및 해석 문장과 대조한다.", "renderRecipeClass": "data-table-graph", "nativeDependency": "DP05LC line-graph edit discovery required", "splitRisk": "high",
+      "anchorStandardCode": "[4수04-02]", "standardCodes": ["[4수04-02]"]
+    },
+    {
+      "archetypeId": "D02B", "domain": "자료와 가능성", "title": "탐구용 그래프 선택·구성·해석",
+      "studentDecision": "탐구 질문과 자료 성격에 맞는 그래프를 골라 구성하고 해석한다.", "invariant": "표현 목적과 그래프 종류가 맞고 모든 자료값이 보존된다.",
+      "observableEvidence": "그래프 선택 근거·완성 그래프·해석을 원자료와 대조한다.", "renderRecipeClass": "data-table-graph", "nativeDependency": "DP04BC/DP05LC bounded comparison and edit discovery", "splitRisk": "high",
+      "anchorStandardCode": "[4수04-03]", "standardCodes": ["[4수04-03]"]
+    },
+    {
+      "archetypeId": "D03", "domain": "자료와 가능성", "title": "평균의 균등화·해석",
+      "studentDecision": "자료의 총량을 자료 수만큼 고르게 나누어 대표값을 해석한다.", "invariant": "평균×자료 수가 원자료 합과 같다.",
+      "observableEvidence": "양을 옮겨 모두 같게 만들고 계산 평균과 비교한다.", "renderRecipeClass": "mean-equal-share", "nativeDependency": "counting/bar transfer semantic discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수04-01]", "standardCodes": ["[6수04-01]"]
+    },
+    {
+      "archetypeId": "D04", "domain": "자료와 가능성", "title": "띠·원그래프 구성·해석",
+      "studentDecision": "부분-전체 비율을 띠 또는 원의 구간으로 나타내고 해석한다.", "invariant": "모든 범주의 비율 합이 전체 100% 또는 360°와 같다.",
+      "observableEvidence": "구간 크기와 백분율을 조정하고 원자료와 대조한다.", "renderRecipeClass": "ratio-graph-construct-interpret", "nativeDependency": "band/circle graph semantic edit discovery", "splitRisk": "high",
+      "anchorStandardCode": "[6수04-02]", "standardCodes": ["[6수04-02]"]
+    },
+    {
+      "archetypeId": "D05", "domain": "자료와 가능성", "title": "가능성 수량화",
+      "studentDecision": "가능성을 0과 1 사이 수 또는 동등한 분수·소수로 나타낸다.", "invariant": "가능한 경우 수 ÷ 전체 동등한 경우 수가 이론적 가능성과 같다.",
+      "observableEvidence": "가능한 결과를 세고 가능성 수직선 위치와 연결한다.", "renderRecipeClass": "probability-number-line", "nativeDependency": "number-line plus outcome-set recipe discovery", "splitRisk": "medium",
+      "anchorStandardCode": "[6수04-05]", "standardCodes": ["[6수04-05]"]
+    },
+    {
+      "archetypeId": "D06", "domain": "자료와 가능성", "title": "자료 기반 예상·판단",
+      "studentDecision": "자료와 가능성 증거를 비교해 예측 또는 행동을 선택한다.", "invariant": "판단 근거가 제시된 자료의 경향·가능성과 모순되지 않는다.",
+      "observableEvidence": "주장·근거 쌍을 선택하고 반대 자료가 주어지면 판단을 수정한다.", "renderRecipeClass": "data-probability-claim-evidence", "nativeDependency": "claim-evidence shell plus graph/probability recipes", "splitRisk": "high",
+      "anchorStandardCode": "[6수04-06]", "standardCodes": ["[6수04-06]"]
+    }
+  ]
+}

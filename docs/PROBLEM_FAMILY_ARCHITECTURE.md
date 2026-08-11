@@ -32,6 +32,34 @@ family 보고서를 조인해 다음 두 queue를 만든다.
 거부한다. 이 orchestration은 family 구현의 권위가 아니라 기존 registry들을 읽는
 파생 계층이다.
 
+### 97개 no-family 계획의 두 재사용 층
+
+현재 새 family 설계가 필요한 97개는 `scripts/curriculum/no-family-plan.json`에서
+24개 shared RenderRecipe/engine class와 84개 concrete planning track으로 분리한다.
+engine은 화면·상태·도구 재사용 단위이고 ProblemFamily는 학생의 수학적 결정·
+불변량·관찰 증거 단위다. 같은 engine을 쓴다는 이유로 서로 다른 family를 합치지
+않는다.
+
+`CapabilityManifest.gradeBand`와 registry source의 gradeBand가 단일 값이므로 한
+concrete track도 여러 학년군을 섞지 않는다. 이 제약으로 자연수 비교, 자릿값
+덧뺄셈, 다각형 성질, 단위 교환, 길이 측정, 복명수 연산을 학년군별 track으로
+나눴다. 84개는 최종 family 수가 아니며 97개 expected AssessmentTarget outline
+236개의 실제 검토 결과에 따라 더 분리할 수 있다.
+
+`pnpm curriculum:no-family-plan`은 다음을 fail-closed로 검사한다.
+
+- 97개 코드와 W001~W097 순서 hash
+- 24 engine, 84 track, 21 batch의 누락·중복
+- 모든 standard의 정확히 한 track 소유권
+- track 안 gradeBand·domain 혼합 0
+- track→planned family ID→engine 참조의 완전성
+- officialGoal과 236개 target outline의 일치·필수 필드
+- 현재 execution report에 새로 생긴 unplanned no-family 0
+
+반복 구현 계약은 `CURRICULUM_97_LUNA_LOOP_PROMPT.md`를 사용한다. Luna 실행 한
+번은 standard 하나와 operation 하나만 소유하고, 교육적 분할이나 schema/native
+tool 변경이 필요하면 `blocked-needs-sol-replan`으로 중단한다.
+
 ## 단일 등록 단위
 
 신규 문제군 모듈은 다음 다섯 항목을 함께 내보낸다.

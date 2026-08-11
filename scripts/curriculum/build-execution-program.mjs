@@ -504,6 +504,8 @@ function markdown(report) {
       ([action, count]) => `| ${actionLabel(action)} | ${count} |`
     ),
     "",
+    "새 family 설계가 필요한 기준선은 `reports/curriculum-execution/no-family-plan.md`의 24 engine · 84 grade-band-safe track · W001~W097 계획을 사용한다.",
+    "",
     "## 전체 breadth queue",
     "",
     "대표 격자 뒤에는 아래 순서를 다시 묻지 않고 진행한다. 같은 rotation 안에서 학년군과 영역을 바꾸며 한 셀에 몰리지 않게 한다.",

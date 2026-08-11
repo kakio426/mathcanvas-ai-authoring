@@ -27,6 +27,33 @@
 
 전체 현황과 120개 잔여 순서는 `reports/curriculum-execution/latest.md`를 권위로 사용한다.
 
+## P-97 — 새 family가 필요한 97개 전체 계획
+
+- [x] 현재 `review-target-set-and-design-family` 집합을 97개로 고정하고 code-set·work-order SHA-256을 기록한다.
+- [x] 97개 mapped occurrence 97, unique 97, duplicate 0, missing 0, extra 0을 검증한다.
+- [x] 공통 MathCanvas 상태·표현을 24개 shared RenderRecipe/engine class로 분리한다.
+- [x] engine 재사용과 수학 ProblemFamily를 구분한다.
+- [x] 단일 `gradeBand`·`domain`을 지키는 84개 concrete planning track으로 배정한다.
+- [x] 학생의 결정·불변량·관찰 증거가 다른 변화 규칙/계산 배열/공변 관계 등을 분리한다.
+- [x] 21개 engine checkpoint batch와 W001~W097 breadth-first standard 순서를 각각 고정한다.
+- [x] 계획 source와 현재 execution state를 조인하는 JSON·Markdown report builder를 추가한다.
+- [x] stale·누락·중복·grade-band 혼합·unknown engine·unbatched track을 `pnpm check` hard gate로 만든다.
+- [x] Sol max planning / Luna max one-work-item execution / Sol replan 역할을 고정한다.
+- [x] Luna 계약에 허용 파일·금지 파일·retry 2회·live write 분리·commit/push·hard-stop을 명시한다.
+- [x] family acceptance gate 18개와 bounded native discovery 9개 필수·3개 조건부를 계획에 기록한다.
+- [x] 97개 standard별 Sol expected AssessmentTarget outline 236개를 기계 판독 fixture로 고정하고 officialGoal·순서·필수 필드·누락·중복을 검증한다.
+- [ ] pinned learning-map record가 없는 88개 standard의 concept·representation·application·prerequisite fixture를 추가한다.
+- [ ] 필수 native discovery 9개를 bounded work item으로 닫는다.
+- [ ] generated work item manifest에 operation·dependencies·allowed files·target outline hash를 투영한다.
+- [ ] Luna loop를 W001부터 순차 실행하고 매 항목 full QA·원자적 main commit·push로 닫는다.
+- [ ] 97개뿐 아니라 나머지 24개 경로까지 합쳐 121/121 standard의 모든 필수 target을 live-released로 만든다.
+
+권위 파일:
+
+- `scripts/curriculum/no-family-plan.json`
+- `reports/curriculum-execution/no-family-plan.md`
+- `CURRICULUM_97_LUNA_LOOP_PROMPT.md`
+
 ## P0-A — 계획 보정
 
 - [x] `targetCoverage`와 `familyVariety`를 분리한다.

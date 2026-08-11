@@ -1,6 +1,6 @@
 # 2022 개정 초등 수학 전 범위 생성 계획
 
-상태: Phase 0·1 완료, Phase 2 대표 격자 1/12 pipeline-proven, reviewed target set 2/121, 전체 120개 잔여 queue 자동 산출
+상태: Phase 0·1 완료, Phase 2 대표 격자 1/12 pipeline-proven, reviewed target set 2/121, 전체 120개 잔여 queue 자동 산출, 무-family 97개를 24 engine·84 grade-band-safe track·97 work item으로 계획 고정
 작성일: 2026-08-11  
 최우선 목표: 2022 개정 초등 수학의 모든 공식 성취기준에 대해 교사가 실제로 사용할 수 있는 MathCanvas 수업자료를 생성한다.
 
@@ -370,6 +370,64 @@ Phase 3 전체 완료 기준:
 - 공식 성취기준의 모든 필수 AssessmentTarget이 `live-released`
 - `targetCoverage` 100%와 미지원 target 0건
 - 모든 성취기준 카드가 현재 `scopeNote`와 `familyVariety`를 표시함
+
+#### Phase 3-P — 무-family 97개 전체 구현 프로그램
+
+상태: **계획 기준선 완료, foundation 대기**. 2026-08-11 execution report에서
+`review-target-set-and-design-family`로 분류된 정확히 97개를 다음 세 층으로
+분리했다.
+
+- 공통 MathCanvas 표현·상태 계층: **24개 shared RenderRecipe/engine class**
+- 단일 `gradeBand`·`domain`을 지키는 구현 소유권: **84개 concrete family track**
+- 실제 breadth-first 실행 단위: **W001~W097 standard work item**
+
+97개 코드의 mapped occurrence와 unique code는 모두 97이며 duplicate·missing·extra는
+각각 0이다. 기계 판독 원본은 `scripts/curriculum/no-family-plan.json`, 현재 상태를
+조인한 보드는 `reports/curriculum-execution/no-family-plan.md`다. 다음 명령이 코드
+집합 hash, work order hash, grade-band 혼합, batch·track·engine 누락과 stale report를
+검증한다.
+
+```bash
+pnpm curriculum:no-family-plan
+```
+
+84는 최종 family 수가 아니다. `AssessmentTargetSet` 완전 분해에서 학생의 결정,
+수학적 불변량, 관찰 증거가 갈리면 track을 분리한다. 현재 예상 범위는 concrete
+family 92~110개, 필수 AssessmentTarget 230~380개, bounded loop work item
+288~330회다. 수를 맞추기 위한 병합은 금지한다.
+
+Sol max 계획 초안은 97개 officialGoal을 **236개 expected target outline**으로
+분해했다. 각 target은 학생의 결정·불변량·화면 증거·오개념 class를 가지며 코드,
+공식 문구, W001~W097 순서, 필수 필드의 누락·중복·불일치가 모두 0임을 자동
+검증한다. 이 outline은 Luna의 범위 입력이지 곧바로 `reviewed-complete` 증거가
+아니다. 실제 AssessmentTarget module로 옮길 때 추가 분리가 필요하면 Sol 재계획으로
+멈춘다.
+
+실행 전 foundation은 두 가지다.
+
+1. 고정 learning-map commit에서 97개 standard에 필요한 concept·representation·
+   application·prerequisite record를 추출하고 fixture hash에 결속한다. 현재 기본
+   fixture는 0/97, grade-3 pilot을 포함해도 9/97이므로 88개가 추가로 필요하다.
+2. number line, semantic array, coordinate plane, circle, cube/solid/net, graph edit,
+   unit exchange, capacity/mass measurement의 필수 bounded discovery 9개와 조건부
+   discovery 최대 3개를 work item으로 분리한다.
+
+모델 역할은 고정한다.
+
+- **Sol max**: target outline, engine/family 경계, grade-band split, native affordance,
+  재계획과 architecture 결정
+- **Luna max**: 승인된 work item 하나의 구현·테스트·보고서·원자적 commit·push
+- 같은 deterministic 실패 2회, target 완전성 불명, 새로운 schema/native tool,
+  결정·불변량·증거 분기는 `blocked-needs-sol-replan`
+
+현재 Codex sub-agent catalog에는 `Luna`라는 모델명이 노출되지 않으므로 저장소의
+실행 계약은 모델 독립적으로 고정한다. Luna가 제공되는 운영 환경에서 Luna max를
+선택한다. 전체 반복 계약은 `CURRICULUM_97_LUNA_LOOP_PROMPT.md`를 권위로 사용하며,
+Fable CLI는 사용하지 않는다.
+
+중요하게, 이 97개를 닫는 것만으로 전체 완료가 아니다. 기존 family 재사용·offline
+완성·reviewed gap으로 분류된 나머지 24개를 합쳐 121/121 standard의 모든 필수
+target이 current-hash live evidence를 가질 때 Phase 3가 끝난다.
 
 ### Phase 4 — 전 범위 교사용 AI
 
