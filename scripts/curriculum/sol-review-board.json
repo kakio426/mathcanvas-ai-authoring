@@ -277,6 +277,55 @@
         "후보 테스트는 결정성·compile/hash·두 빈칸 정답을 검증하지만 위 semantic gap을 그대로 고정한다. A2는 직접 정한 rule state, 반복·변화 각각의 실제 수학 관계 변화, 명시적 repair lifecycle, preview 완전성, cognitive role 존재성을 회귀 assertion으로 추가해야 한다. 후보의 보고된 pnpm check 녹색은 구조 건전성을 뒷받침하지만 두 승인 target의 관찰 가능한 구현을 대신하지 않는다.",
         "candidate exact diff 12개는 family source/test/registry와 파생 coverage·execution·problem-family report로 한정돼 manifest 범위에는 맞는다. 다만 수정 과정에서 repeat/change 분리나 새 native affordance 탐색이 필요해지면 같은 work item 안에서 조용히 범위를 넓히지 말고 계획·discovery 게이트로 명시적으로 되돌려야 한다."
       ]
+    },
+    {
+      "reviewId": "W002-FAMILY_TRACK-SOL-A2",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "FAMILY_TRACK",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 2,
+      "candidateCommit": "e0a86c340e2b996e8e66cd1b2587c8dc161bcdf4",
+      "changedFiles": [
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+        "reports/problem-family-registry/latest.json"
+      ],
+      "supersedesReviewId": "W002-FAMILY_TRACK-SOL-A1",
+      "checkedAt": "2026-08-11T13:22:06.000Z",
+      "evidenceRefs": [
+        "git:e0a86c340e2b996e8e66cd1b2587c8dc161bcdf4",
+        "git:93542f204187fb49ff3099a5fb918d101b04232b",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-SOL-A1",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A1",
+        "scripts/curriculum/no-family-target-outlines.sol-draft.json#[2수02-02]",
+        "scripts/curriculum/no-family-plan.json#C01",
+        "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts#resolveConstraints",
+        "packages/mathcanvas-compiler/src/constraint-handlers/registry.ts#fill-from-pool",
+        "packages/mathcanvas-compiler/src/layout-presets/wave16-repeating-pattern-v1.ts",
+        "packages/mathcanvas-compiler/src/adapters/native-pattern-block-contract.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "reports/problem-family-registry/latest.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "command:pnpm exec vitest run repeating-pattern-arrangement.test.ts registry.test.ts",
+        "command:pnpm check"
+      ],
+      "findings": [
+        "A1에서 요구한 SM02PB native block, repeat-2·repeat-3·step-1·step-2 relationId, 규칙 후보·phase가 포함된 preview, 빈 promptGuards, 실재 predicateKind만 쓰는 cognitive distractor는 반영됐다. candidate exact diff도 family source·test와 파생 registry hash 3개로 한정돼 허용 범위에 맞는다.",
+        "수정 요청: declare 문항은 고정된 세 블록을 먼저 보여 주고 다섯 preauthored card 중 유일한 correctRuleText를 고르게 한다. 학생의 선택이 sequence를 생성하지 않고 나머지는 오답으로 처리되므로 여전히 ‘자신이 정한 규칙’이 아니라 주어진 prefix의 규칙 추론이다. 특히 repeat-3은 한 번 나온 [1,2,3]만으로 반복 단위가 결정되지 않는다. 승인 target대로 학생이 반복 단위 성분·순서 또는 변화의 시작 상태·간격·방향을 먼저 정한 뒤 그 rule state로 배열을 구성하게 해야 하며, 두 문항의 독립된 정답 카드는 이전 선언 상태를 공유한 증거가 아니다.",
+        "repair-misaligned-arrangement는 phasePath·repairIndexPath를 parameters에 넣었지만 compiler resolveConstraints와 fill-from-pool handler는 이를 조건 분기나 정답 결속에 사용하지 않는다. 따라서 declare와 repair 두 item 모두 repair action을 무조건 받는다. declare item의 이미 올바른 sequence-block-2에도 불필요한 교체를 요구하므로 phase lifecycle이 실제 계약과 불일치한다. 조건부 constraint를 core 수정 없이 표현할 수 없다면 두 phase를 억지로 같은 반복 blueprint에 넣지 말고 planning/discovery 게이트로 되돌려야 한다.",
+        "repair target인 sequence-block-2는 이미 wrong SM02PB가 차지하고 locked=true·movable=false인 120×120 native object다. 학생은 잘못된 블록을 제거하거나 옮길 수 없고 correct block을 위에 포개는 것만 시도할 수 있다. fill-from-pool containment는 rendered bounds를 사용하므로 triangle/square 위에 더 높은 blue rhombus를 넣는 repeat-colors·repeat-shapes·step-1 repair는 기하적으로도 성립하지 않는다. 별도 빈 drop surface와 이동 가능한 wrong block 또는 검증된 replacement contract로 수정 전후 상태를 실제 저장해야 한다.",
+        "모든 completion source는 variant 1~5가 한 개씩뿐인데 repeat-2·repeat-3·step-2 repair는 교체 조각과 다음 두 칸 중 하나에 같은 variant를 두 번 요구한다. native block은 복제되지 않는 movable object이므로 모든 required target을 동시에 만족하는 최종 상태가 없다. pool multiplicity와 전체 post-interaction satisfiability를 envelope별로 검증해야 한다.",
+        "layout은 sequence-block-1~3만 native로 채우고 sequence-block-4~6을 빈 rectangle으로 만들지만 fill constraint는 이 세 칸이 아니라 그 뒤의 next-slot-1~2를 대상으로 한다. 학생은 세 빈 칸을 건너뛰어 7·8번째 위치를 채우게 된다. preview는 앞의 배열에 이 세 빈 칸만 표시하고 실제 action target 두 칸은 누락하므로 exact하지 않다. 부분 배열 바로 뒤의 두 drop surface만 보이도록 render recipe와 preview를 같은 role set에 결속해야 한다.",
+        "step-1·step-2는 관계 이름은 달라졌지만 수학적 순서를 화면에 없는 SM02PB 내부 variant 번호 1~6에 의존한다. 학생에게 노란 육각형→파란 마름모→빨간 사다리꼴이 왜 ‘한 칸’, 파란 마름모→초록 삼각형→보라 마름모가 왜 ‘두 칸’인지 결정할 수 있는 순서표·수값·측정 속성이 없다. 고정된 native 순서 띠를 명시하거나 number/state affordance로 관계를 관찰 가능하게 만들지 않으면 change envelope와 두 target을 주장할 수 없다.",
+        "repair answer는 correctAnswerText에 규칙과 다음 두 조각만 담고 실제 고쳐야 할 위치·교체 조각·correctSequence를 누락한다. repeat-shapes와 change-odd-numbers 설명은 잘못된 두 번째 조각을 두고 ‘세 번째 조각을 고친다’고 써 정답 상태와도 모순된다. answer key·explanation·preview가 initial wrong state, repair 위치·값, 다음 항을 모두 정확히 보여야 한다.",
+        "item misconceptionIds는 repeat와 change context 모두 rule-boundary-mismatch를 공유해 change 관계의 간격·방향 오개념이 실제 상태에 결속되지 않는다. source scopeNote는 물체·수 표현을 별도라고 정직하게 제한하지만 learningObjective와 cognitive mathematicalDecision은 물체·무늬·수를 모두 구현한 것처럼 남아 있다. context별 rejectable misconception과 실제 pattern-block 범위에 맞게 주장 범위를 정렬해야 한다.",
+        "독립 QA에서 focused 2파일·8/8, curriculum:no-family-plan, cognitive:verify, problem-family:verify와 전체 pnpm check가 통과했다. 전체는 77파일·462/462 테스트, build·typecheck·native/contract gates PASS, visual·quality P0/P1 0이다. 그러나 현재 테스트는 constraint 존재와 compile/hash만 보고 phase별 조건 적용, wrong block removal, pool 동시 충족, visible change invariant, preview/action role 일치를 검증하지 않아 위 교육·interaction 결함을 탐지하지 못한다."
+      ]
     }
   ]
 }
