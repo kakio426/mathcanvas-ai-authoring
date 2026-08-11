@@ -4,6 +4,8 @@ import { readFileSync } from "node:fs";
 import * as solReviewStatus from "../scripts/curriculum/sol-review-status.mjs";
 // @ts-ignore Semantic revalidation helper is a repository-side ESM utility.
 import * as semanticSlices from "../scripts/curriculum/revalidation-semantic-slice.mjs";
+// @ts-ignore The curriculum builder exports a repository-side contract validator.
+import * as noFamilyPlanBuilder from "../scripts/curriculum/build-no-family-plan.mjs";
 
 const {
   effectiveFamilyLifecycleStage,
@@ -20,6 +22,7 @@ const {
 } = solReviewStatus;
 const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
   semanticSlices;
+const { assertEngineCoreContract } = noFamilyPlanBuilder;
 
 const candidateCommit = "a".repeat(40);
 
@@ -46,6 +49,39 @@ function manifest(scope?: Record<string, string>) {
 }
 
 describe("Sol review candidate and scope gates", () => {
+  it("fails closed for incomplete student-constructed rule contracts", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const base = () =>
+      JSON.parse(JSON.stringify(source.trackContracts.C01));
+    expect(() => assertEngineCoreContract(base(), "C01")).not.toThrow();
+
+    const tooFewTargets = base();
+    tooFewTargets.engineCoreContract.manifestDecision.application.continuationTargetRoles.pop();
+    expect(() => assertEngineCoreContract(tooFewTargets, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
+
+    const wrongPeriod = base();
+    wrongPeriod.engineCoreContract.manifestDecision.application.period = 1;
+    expect(() => assertEngineCoreContract(wrongPeriod, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
+
+    const missingVerificationRole = base();
+    missingVerificationRole.engineCoreContract.runtimePredicate.parameters.verificationRoles.pop();
+    expect(() => assertEngineCoreContract(missingVerificationRole, "C01")).toThrow(
+      "no-family-plan-engine-core-runtime-binding-invalid:C01"
+    );
+
+    const impossibleDistinctness = base();
+    impossibleDistinctness.engineCoreContract.manifestDecision.stateConstruction.minimumDistinctValues = 3;
+    expect(() => assertEngineCoreContract(impossibleDistinctness, "C01")).toThrow(
+      "no-family-plan-engine-core-manifest-invalid:C01"
+    );
+  });
+
   it("projects the W002 engine-core contract into the generated loop work item", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")

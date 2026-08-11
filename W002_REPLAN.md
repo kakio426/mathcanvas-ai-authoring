@@ -1,18 +1,49 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v5)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v6)
 
-상태: **Sol max 재계획 검토 대기 — ENGINE_CORE 계약 보강**
+상태: **Sol max 재계획 검토 대기 — 고정 정답 제거·학생 구성 상태 계약 보강**
 
-이번 v5는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
-3-target source·adapter 결속·target-outline hash는 이미 현재 저장소에 설치되어 소비된
+이번 v6는 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
+3-target source·adapter 결속·target-outline hash는 현재 저장소에 설치되어 소비된
 상태이며, 이 후보는 재계획 계약·sub-work·ENGINE_CORE 허용 범위만 고정한다.
-따라서 v5를 소비하기 위해 새 TARGET_SET을 만들지 않는다.
+따라서 v6를 소비하기 위해 새 TARGET_SET을 만들지 않는다. 다만 기존 v5
+`construct-rule` 계약은 실제 학생 선택을 보장하지 못했으므로, v6 승인 전에는
+어떤 FAMILY_TRACK 후보도 유효한 구현으로 취급하지 않는다.
 
 v3 AFFORDANCE_DISCOVERY에서 `SM02PB`의 정적 variant·기존 배치 canary는
 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는 native 계약은
 찾지 못했다. 따라서 다음 `ENGINE_CORE`는 기존 `select-one`/numeric
 `construct`를 재사용하지 않고, 공통 cognitive contract를 확장하는 범위로
-Sol의 재승인을 받는다. 이 재계획은 target 문구를 바꾸지 않으므로 A3
-TARGET_SET을 다시 소비하지 않는다(`replanTargetSetRequired=false`).
+Sol의 재승인을 받는다. 첫 후보가 드러낸 고정 정답·가짜 입력 문제도
+ENGINE_CORE의 명시적 차단 조건으로 포함한다. 이 재계획은 target 문구를
+바꾸지 않으므로 A3 TARGET_SET을 다시 소비하지 않는다
+(`replanTargetSetRequired=false`).
+
+## 0. v5 후보의 독립 검토 결과와 v6의 hard-stop
+
+후보 `f195e3a`는 `pnpm check`(81 files / 493 tests)를 통과했지만 Sol 독립
+검토에서 **BLOCKED** 되었다. 이 결과는 기술 녹색을 교육적 승인으로 오인하지
+않도록 v6의 선행 조건으로 고정한다.
+
+1. `validRuleStates`가 `[A,B]`와 `[B,A]`로 미리 고정되고 answer key가 `[A,B]`
+   하나를 고르도록 되어 있어, 학생이 바구니에서 임의의 두 조각과 순서를 정하는
+   target을 실제로 수행하지 않는다.
+2. `continuation-lane`은 잠긴 문구뿐이고, 학생이 구성한 규칙을 눈에 보이는
+   다음 배열에 적용·대조하는 target representation이 없다.
+3. 잠긴 `common.text`를 학생 설명 입력처럼 서술했지만 입력·저장·재열기 증거가
+   없으므로 교사 답안과 학생 response를 연결할 수 없다.
+4. 공통 `scripts/pedagogy/check-cognitive-demand.mjs`가 새 mode를 해석하도록
+   수정됐지만 FAMILY_TRACK 허용 범위 밖이다. 이 변경은 family 후보에 섞지
+   않고 v6 ENGINE_CORE의 허용 파일로 승격해 별도 검토한다.
+
+이 후보의 exact changedFiles는 숨기지 않는다. operation manifest 밖의 파일을
+포함한 후보는 `SCOPE_VIOLATION` finding을 가진 **blocked review**로만 board에
+기록할 수 있고, 승인·post-approval 파생 커밋으로는 통과할 수 없다. 이 예외는
+실패 후보의 증거를 보존하기 위한 것이며, 다음 구현 후보의 허용 범위를 넓히는
+근거가 아니다.
+
+따라서 v6의 완료 정의는 “고정된 예시 두 개를 통과시킨다”가 아니라
+**임의로 선택 가능한 ordered state의 구조·눈에 보이는 적용·조건부 rubric을
+공통 계약과 family 테스트가 함께 증명한다**이다.
 
 ## 1. 재계획을 여는 이유
 
@@ -38,8 +69,8 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
-이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v5`이며, A3 TARGET_SET이
-승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v5를 승인·소비한
+이 문서의 재계획 계약 revision은 `W002-SOL-REPLAN-v6`이며, A3 TARGET_SET이
+승인한 target-outline hash와 source 결속을 그대로 유지한다. Sol이 v6를 승인·소비한
 뒤에만 `ENGINE_CORE`가 이 revision과 core 허용 파일 범위에 결속되어 시작된다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
@@ -65,10 +96,10 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 ### TARGET_SET 경계
 
 A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
-slice 결속을 이미 승인했고, v5 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
-v5의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
-v5 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
-그중 하나라도 바꿔야 하면 현재 v5 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+slice 결속을 이미 승인했고, v6 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
+v6의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
+v6 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v6 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
 `TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서
@@ -81,14 +112,14 @@ v5 후보는 target source, target IDs, outline hash, coverage 분모를 변경�
    다음 독립 표준을 `nextOfflineWork`로 선택하며, familyTrackId/scopeId를 review·candidate·allowedFiles에
    결속한다. 이 단계의 generated operation은 `SOL_REPLAN`·`W002-SOL_REPLAN`이며, 기존
    `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다.
-2. `W002-REPLAN-TARGET_SET` — v5에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
+2. `W002-REPLAN-TARGET_SET` — v6에서는 실행하지 않는다. A3 승인·소비가 이미 세 target
    slice의 statement·invariant·observable evidence·misconception·pinned learning-map
    결속과 outline hash를 고정했다. target 변경이 필요할 때만 새 SOL_REPLAN과
    `supersedesReplanReviewId`·`replanContractRevision`·`targetOutlineSha256`를 가진
    별도 TARGET_SET 후보를 만든다.
 3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 첫 repeat sub-work에서 완료됐다. `SM02PB` 정적
    variant·기존 배치 canary는 확인했지만 학생이 만든 반복 단위의 의미 상태를 저장·검증하는
-   native 계약은 찾지 못했으므로, 그 결과가 이 v5 `ENGINE_CORE` 재계획의 근거다.
+   native 계약은 찾지 못했으므로, 그 결과가 이 v6 `ENGINE_CORE` 재계획의 근거다.
 4. `W002-ENGINE_CORE` — 기존 numeric `construct`나 select-one의 `correctValuePath`를 재사용하지 않는
    별도 `construct-rule` decision과 `cognitive.rule-state-contract` predicate를 만든다.
    가능한 경우 기존 fill-from-pool·SM02PB·NO04NT native 조작을 재사용하고, 공통 compiler schema를
@@ -122,24 +153,32 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 각 family의 native/core 계약이 공통 compiler schema 변경을 요구하면 해당 단계는 즉시 종료하고,
 새 `ENGINE_CORE` work item과 Sol 재계획을 만든다. 기존 W002 후보에 schema 변경을 섞지 않는다.
 
-### v5 ENGINE_CORE 범위
+### v6 ENGINE_CORE 범위
 
 이번 AFFORDANCE_DISCOVERY의 결과는 새 native 도구를 추가하는 것이 아니라,
-기존 `SM02PB` 배치 위에 학생이 만든 규칙을 의미 상태로 보존하는 공통 core가
-필요하다는 것이다. 승인된 ENGINE_CORE 후보는 다음 네 가지를 함께 계약한다.
+기존 `SM02PB` 배치 위에 **학생이 만든 규칙을 임의 상태로 보존하고 눈에 보이는
+다음 배열에 적용하는** 공통 core가 필요하다는 것이다. 승인 전 ENGINE_CORE
+후보는 다음 다섯 가지를 함께 계약한다.
 
-1. `CognitiveDemandManifest.decision`에 별도 `construct-rule` 결정을 추가한다.
-   `correctValuePath` 하나를 고르는 선택형 결정이나 기존 숫자 구성 결정으로
-   우회하지 않는다.
-2. `cognitive.rule-state-contract` validator predicate를 추가한다. 최소 두 개의
-   유효한 ordered variant-list와 하나 이상의 surplus/rejectable state를 검증하고,
-   continuation·explanation이 같은 rule-state path를 읽는지 확인한다.
-3. templates cognitive registry와 계약 테스트를 결속한다. 이 단계에서는 특정
-   family의 generator·layout·released registry를 승격하지 않고, 다음 FAMILY_TRACK이
-   소비할 수 있는 공통 manifest/validator seam만 만든다.
-4. 공통 compiler payload와 `activitySpecHash`는 변경하지 않는다. 학생의 선언은
-   별도 `StudentRuleStateEvidence`/`responseHash`로 다루며, save/reopen 증거는
-   FAMILY_TRACK 또는 LIVE_EVIDENCE에서 별도로 수집한다.
+1. `CognitiveDemandManifest.decision`에 `construct-rule`을 유지하되
+   `constructionMode: "student-constructed"`와 `answerMode: "conditional-rubric"`를
+   추가한다. `correctValuePath` 하나를 고르는 select-one이나 고정 정답 문자열은
+   이 target의 증거로 인정하지 않는다.
+2. `stateConstruction.kind: "ordered-distinct-subset-from-pool"`을 추가한다.
+   `ruleSlotRoles` 두 칸은 처음 비어 있고, 실제 variant pool에서 서로 다른 두
+   값을 어떤 순서로든 선택할 수 있어야 한다. `validRuleStatesPath`와
+   `surplusPath`는 정답 목록이 아니라 각각 **가능 상태 예시**와 **거부 상태 예시**다.
+3. `application`을 추가한다. `ruleStatePath`와 같은 학생 상태가 최소 네 개의
+   `continuationTargetRoles`에 반복 적용되고, 화면에서 선택한 두 조각과 다음
+   배열의 대응을 직접 비교할 수 있어야 한다. 잠긴 안내문만으로는 이 조건을
+   충족할 수 없다.
+4. `cognitive.rule-state-contract`와 공통 audit script를 함께 확장한다. validator는
+   초기 상태가 empty인지, 모든 ordered distinct 선택이 pool 수량으로 가능한지,
+   valid/surplus가 sample envelope인지, application target과 상태 path가 결속되는지
+   fail-closed로 확인한다. 이 공통 audit script 변경은 ENGINE_CORE 허용 파일이다.
+5. 공통 compiler payload와 `activitySpecHash`는 변경하지 않는다. 학생의 선택 상태와
+   다음 배열의 대응은 별도 response evidence가 있는 경우에만 조건부 rubric으로
+   평가한다. save/reopen 증거가 없으면 teacher-only preview에서 그 사실을 명시한다.
 
 ENGINE_CORE가 소비할 계약은 다음 JSON shape로 고정한다. 실제 family가 어떤
 role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 않는다.
@@ -148,19 +187,45 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 {
   "decision": {
     "mode": "construct-rule",
-    "ruleStatePath": "ruleState",
+    "constructionMode": "student-constructed",
+    "answerMode": "conditional-rubric",
+    "ruleStatePath": "studentRuleState",
     "decisionConstraintId": "construct-rule-slot",
     "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
     "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
     "variantProperty": "orderedValues",
-    "validRuleStatesPath": "validRuleStates",
-    "surplusPath": "surplusRuleStates",
+    "validRuleStatesPath": "validRuleStateExamples",
+    "surplusPath": "surplusRuleStateExamples",
     "minimumValidStates": 2,
-    "minimumSurplus": 1,
+    "minimumSurplus": 2,
+    "stateConstruction": {
+      "kind": "ordered-distinct-subset-from-pool",
+      "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+      "slotRoles": ["rule-slot-1", "rule-slot-2"],
+      "slotCount": 2,
+      "minimumDistinctValues": 2,
+      "allowsAnyOrderedSelection": true,
+      "initialState": "empty"
+    },
+    "application": {
+      "ruleStatePath": "studentRuleState",
+      "continuationTargetRoles": [
+        "continuation-slot-1", "continuation-slot-2",
+        "continuation-slot-3", "continuation-slot-4"
+      ],
+      "period": 2,
+      "minimumTargetCount": 4,
+      "requiresVisibleComparison": true,
+      "evidenceMode": "student-state-dependent"
+    },
     "distractors": [
       {
         "predicateKind": "cognitive.rule-state-contract",
-        "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+        "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+      },
+      {
+        "predicateKind": "cognitive.rule-state-contract",
+        "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
       }
     ]
   },
@@ -168,27 +233,66 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
     "kind": "cognitive.rule-state-contract",
     "parameters": {
       "mode": "construct-rule",
-      "ruleStatePath": "ruleState",
+      "constructionMode": "student-constructed",
+      "answerMode": "conditional-rubric",
+      "ruleStatePath": "studentRuleState",
       "decisionConstraintId": "construct-rule-slot",
-      "validRuleStatesPath": "validRuleStates",
-      "surplusPath": "surplusRuleStates",
+      "validRuleStatesPath": "validRuleStateExamples",
+      "surplusPath": "surplusRuleStateExamples",
       "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
       "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
       "variantProperty": "orderedValues",
-      "continuationRuleStatePath": "ruleState",
-      "explanationRuleStatePath": "ruleState",
+      "continuationRuleStatePath": "studentRuleState",
+      "explanationRuleStatePath": "studentRuleState",
       "predictionRole": "prediction-box",
-      "explanationRole": "explanation-box",
-      "verificationRoles": ["rule-slot-1", "rule-slot-2", "continuation-lane"],
+      "explanationRole": "teacher-rubric",
+      "studentInputRoles": [],
+      "verificationRoles": [
+        "rule-slot-1", "rule-slot-2", "continuation-slot-1",
+        "continuation-slot-2", "continuation-slot-3", "continuation-slot-4"
+      ],
       "minimumValidStates": 2,
-      "minimumSurplus": 1,
+      "minimumSurplus": 2,
+      "stateConstruction": {
+        "kind": "ordered-distinct-subset-from-pool",
+        "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+        "slotRoles": ["rule-slot-1", "rule-slot-2"],
+        "slotCount": 2,
+        "minimumDistinctValues": 2,
+        "allowsAnyOrderedSelection": true,
+        "initialState": "empty"
+      },
+      "application": {
+        "ruleStatePath": "studentRuleState",
+        "continuationTargetRoles": [
+          "continuation-slot-1", "continuation-slot-2",
+          "continuation-slot-3", "continuation-slot-4"
+        ],
+        "period": 2,
+        "minimumTargetCount": 4,
+        "requiresVisibleComparison": true,
+        "evidenceMode": "student-state-dependent"
+      },
       "distractors": [
         {
           "predicateKind": "cognitive.rule-state-contract",
-          "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+          "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+        },
+        {
+          "predicateKind": "cognitive.rule-state-contract",
+          "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
         }
       ]
     }
+  },
+  "binding": {
+    "manifestDecisionMode": "construct-rule",
+    "predicateKind": "cognitive.rule-state-contract",
+    "decisionConstraintId": "construct-rule-slot",
+    "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
+    "studentRuleStatePath": "studentRuleState",
+    "applicationRuleStatePath": "studentRuleState",
+    "answerMode": "conditional-rubric"
   }
 }
 ```
@@ -196,40 +300,41 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 `decisionConstraintId`는 `${decisionConstraintId}-${index + 1}:${itemId}` 규칙 슬롯 constraint의
 공통 prefix이고, `ruleSlotRoles`의 순서가 학생이 구성하는 ordered state의 슬롯 순서다.
 각 슬롯은 모든 variant source를 가진, 처음에는 충족되지 않은 `fill-from-pool` constraint와
-정확히 결속되어야 한다. `ruleState`는 하나의 ordered state이며 `validRuleStatesPath`의
-상태 중 하나여야 하고, valid/surplus 상태 모두 variant pool의 실제 수량으로 구성 가능해야
-한다. 완성된 ordered state를 variant property나 visible text로 내보내는 구현은 차단한다.
-공통 envelope에는 최소 3개의 variant role과 2개의 rule slot을 두며,
-`P(variantRoles, ruleSlotRoles) >= minimumValidStates + minimumSurplus`를 builder가
-fail-closed로 확인한다. 실제 값의 중복·수량 가능성은 family item의 validator가 추가로 확인한다.
+정확히 결속되어야 한다. `studentRuleState`는 초기에는 빈 상태이고, 학생이 pool에서 고른
+서로 다른 두 값을 어느 순서로 배치했는지가 실제 상태다. `validRuleStateExamplesPath`와
+`surplusRuleStateExamplesPath`는 여러 가능한 상태를 설명하는 compile-time envelope일 뿐,
+특정 두 값이나 하나의 정답을 잠그는 목록이 아니다. 모든 variant 수량과 ordered state의
+조합 가능성은 family item에서 다시 확인한다.
 
-`continuationRuleStatePath`와 `explanationRuleStatePath`는 반드시
-`ruleStatePath`와 같아야 한다. `validRuleStatesPath`에는 순서가 있는 유효
-규칙 상태가 두 개 이상, `surplusPath`에는 화면에서 거부할 수 있는 상태가
-하나 이상 있어야 한다. 이 계약은 compile-time envelope를 검증하는 것이며,
-학생이 실제로 만든 상태와 `responseHash`는 FAMILY_TRACK/LIVE_EVIDENCE의
-별도 lifecycle 증거다.
+`application.continuationTargetRoles`는 최소 네 개의 눈에 보이는 native target을 요구한다.
+선택한 두 조각과 이 target들의 대응을 같은 `studentRuleState` path로 비교할 수 있어야 하며,
+잠긴 `common.text`를 입력창이나 설명 evidence로 간주하지 않는다. 학생 입력·저장·재열기
+경로가 구현되지 않은 단계에서는 `studentInputRoles: []`과 teacher-only conditional rubric을
+명시하고, preview/answer가 미래 응답을 증명한다고 말하지 않는다.
 
 ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
-요구하면 이 v5 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
+요구하면 이 v6 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
 그 경우 `pattern.repeat-unit.construct-v1` 구현을 partial release로 올리지 않는다.
 
 ## 4. 구현 불변량
 
-- 규칙은 보기 카드 하나를 고르는 것으로 끝나지 않는다. compile-time RuleStateEnvelope에는 허용된
-  반복 단위 또는 시작값·간격·방향의 envelope와 정답 조건이 들어가고, 학생이 만든 실제 rule state는
-  조작 후 StudentRuleStateEvidence로 저장되어 배열·정답·해설의 조건부 rubric과 대조된다.
+- 규칙은 보기 카드 하나를 고르는 것으로 끝나지 않는다. compile-time RuleStateEnvelope에는
+  **가능한 ordered state의 생성 규칙**과 예시·거부 경계가 들어가고, 특정 블록 순서 하나를
+  정답으로 고정하지 않는다. 학생이 만든 실제 rule state는 조작 후 StudentRuleStateEvidence로
+  저장되어 다음 배열·조건부 rubric과 대조된다.
 - `activitySpecHash`는 compile-time resolved spec의 hash이며 학생 조작으로 바뀌지 않는다. 학생이
   선언한 규칙은 별도 `RuleStateEnvelope`로 표현하고, 조작 후에는
   `StudentRuleStateEvidence`와 `responseHash`로 저장·검증한다. preview·answer는 컴파일된 envelope를
   표시하거나 학생 응답을 읽는 조건부 rubric/projector로 정의하며, 학생의 선언 상태 변화가
   `activitySpecHash`를 바꾼다고 주장하지 않는다.
 - `construct-rule` decision은 기존 numeric `construct`나 select-one의 `correctValuePath`를 재사용하지 않는다.
-  최소 두 개의 서로 유효한 rule state와 surplus/distractor 상태를 저장하고, 학생의 선언 결과가 이후 배열을 결정한다.
-- 초기 화면은 완성 정답을 노출하지 않는다. 학생이 규칙을 정한 뒤에만 continuation과 repair answer가 결정된다.
+  학생이 pool에서 고른 임의의 서로 다른 두 값과 순서가 rule state가 되며, 초기 화면에는 empty slot만 있다.
+- 초기 화면은 완성 정답을 노출하지 않는다. 학생이 규칙을 정한 뒤에만 continuation target이
+  그 state를 반복 적용하도록 평가된다. compile-time 예시는 answer key가 아니다.
 - repair는 선언된 rule과 독립된 실제 오답 상태를 제공하고, 수정 전·후 semantic state가 서로 달라야 한다.
 - repeat와 change는 화면 객체·수학적 관계·오개념·검증 불변량이 다르면 같은 family로 합치지 않는다.
-- contexts는 시작값만 바꾸는 표면 variation이 아니라 정답 rule state·배열·오개념 상태가 실제로 달라야 한다.
+- contexts는 시작값만 바꾸는 표면 variation이 아니라 pool 구성·가능 state·continuation 배열·오개념
+  경계가 실제로 달라야 한다. 어느 context도 하나의 선결정 정답을 가리키지 않는다.
 - unsupported repeat-3, change 밖의 수 표현, 미등록 객체·도구 요청은 조용히 fallback하지 않고
   `clarification-required`/unsupported 결과로 반환한다.
 - exact preview는 compile-time RuleStateEnvelope, rule lane, 초기 상태, repair 위치, continuation target과
@@ -243,7 +348,10 @@ ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui �
   `StudentRuleStateEvidence`·`responseHash`·save/reopen 결과가 함께 바뀌며,
   `activitySpecHash`는 유지된다.
 - pre-authored correct card 선택만으로 정답이 결정되는 경로가 없다.
-- repeat/ change 각각 최소 두 개의 서로 다른 rule state와 두 개의 rejectable misconception state가 있다.
+- repeat/ change 각각 임의 선택을 허용하는 state-construction domain, 최소 두 개의 예시 state와
+  두 개의 rejectable misconception state가 있다. 예시 state가 가능한 전체 선택을 대신하지 않는다.
+- repeat family는 최소 네 개의 visible continuation target을 같은 studentRuleState에 결속하고,
+  초기 empty → 학생 선택 → 적용 결과의 세 상태를 preview와 interaction contract에서 구분한다.
 - repair 전후 semantic state와 최종 배열의 불변량을 테스트하며, 모든 native rendered bounds가 target 안에 들어간다.
 - preview·answer·explanation·cognitive manifest가 동일한 role/state를 가리킨다.
 - family source의 target IDs가 자신이 실제로 증명한 slice와 일치한다.

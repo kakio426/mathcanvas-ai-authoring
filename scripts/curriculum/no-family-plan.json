@@ -188,13 +188,14 @@
         "packages/contracts/src/catalog/**",
         "packages/curriculum/src/native-affordance-*.ts"
       ],
-    "ENGINE_CORE": [
+      "ENGINE_CORE": [
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
         "packages/validator/src/predicates/registry.ts",
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
         "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
         "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
@@ -251,6 +252,7 @@
         "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
         "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
         "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
@@ -445,24 +447,50 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v5",
+      "replanContractRevision": "W002-SOL-REPLAN-v6",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "manifestDecision": {
           "mode": "construct-rule",
-          "ruleStatePath": "ruleState",
+          "constructionMode": "student-constructed",
+          "answerMode": "conditional-rubric",
+          "ruleStatePath": "studentRuleState",
           "decisionConstraintId": "construct-rule-slot",
           "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
           "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
           "variantProperty": "orderedValues",
-          "validRuleStatesPath": "validRuleStates",
-          "surplusPath": "surplusRuleStates",
+          "validRuleStatesPath": "validRuleStateExamples",
+          "surplusPath": "surplusRuleStateExamples",
           "minimumValidStates": 2,
-          "minimumSurplus": 1,
+          "minimumSurplus": 2,
+          "stateConstruction": {
+            "kind": "ordered-distinct-subset-from-pool",
+            "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+            "slotRoles": ["rule-slot-1", "rule-slot-2"],
+            "slotCount": 2,
+            "minimumDistinctValues": 2,
+            "allowsAnyOrderedSelection": true,
+            "initialState": "empty"
+          },
+          "application": {
+            "ruleStatePath": "studentRuleState",
+            "continuationTargetRoles": [
+              "continuation-slot-1", "continuation-slot-2",
+              "continuation-slot-3", "continuation-slot-4"
+            ],
+            "period": 2,
+            "minimumTargetCount": 4,
+            "requiresVisibleComparison": true,
+            "evidenceMode": "student-state-dependent"
+          },
           "distractors": [
             {
               "predicateKind": "cognitive.rule-state-contract",
-              "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+              "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+            },
+            {
+              "predicateKind": "cognitive.rule-state-contract",
+              "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
             }
           ]
         },
@@ -470,24 +498,54 @@
           "kind": "cognitive.rule-state-contract",
           "parameters": {
             "mode": "construct-rule",
-            "ruleStatePath": "ruleState",
+            "constructionMode": "student-constructed",
+            "answerMode": "conditional-rubric",
+            "ruleStatePath": "studentRuleState",
             "decisionConstraintId": "construct-rule-slot",
-            "validRuleStatesPath": "validRuleStates",
-            "surplusPath": "surplusRuleStates",
+            "validRuleStatesPath": "validRuleStateExamples",
+            "surplusPath": "surplusRuleStateExamples",
             "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
             "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
             "variantProperty": "orderedValues",
-            "continuationRuleStatePath": "ruleState",
-            "explanationRuleStatePath": "ruleState",
+            "continuationRuleStatePath": "studentRuleState",
+            "explanationRuleStatePath": "studentRuleState",
             "predictionRole": "prediction-box",
-            "explanationRole": "explanation-box",
-            "verificationRoles": ["rule-slot-1", "rule-slot-2", "continuation-lane"],
+            "explanationRole": "teacher-rubric",
+            "studentInputRoles": [],
+            "verificationRoles": [
+              "rule-slot-1", "rule-slot-2", "continuation-slot-1",
+              "continuation-slot-2", "continuation-slot-3", "continuation-slot-4"
+            ],
             "minimumValidStates": 2,
-            "minimumSurplus": 1,
+            "minimumSurplus": 2,
+            "stateConstruction": {
+              "kind": "ordered-distinct-subset-from-pool",
+              "sourceRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
+              "slotRoles": ["rule-slot-1", "rule-slot-2"],
+              "slotCount": 2,
+              "minimumDistinctValues": 2,
+              "allowsAnyOrderedSelection": true,
+              "initialState": "empty"
+            },
+            "application": {
+              "ruleStatePath": "studentRuleState",
+              "continuationTargetRoles": [
+                "continuation-slot-1", "continuation-slot-2",
+                "continuation-slot-3", "continuation-slot-4"
+              ],
+              "period": 2,
+              "minimumTargetCount": 4,
+              "requiresVisibleComparison": true,
+              "evidenceMode": "student-state-dependent"
+            },
             "distractors": [
               {
                 "predicateKind": "cognitive.rule-state-contract",
-                "misconception": "반복 단위의 순서를 중간에 바꾸거나 마지막 항만 복사한다."
+                "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+              },
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
               }
             ]
           }
@@ -497,8 +555,9 @@
           "predicateKind": "cognitive.rule-state-contract",
           "decisionConstraintId": "construct-rule-slot",
           "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
-          "continuationRuleStatePath": "ruleState",
-          "explanationRuleStatePath": "ruleState"
+          "studentRuleStatePath": "studentRuleState",
+          "applicationRuleStatePath": "studentRuleState",
+          "answerMode": "conditional-rubric"
         }
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",

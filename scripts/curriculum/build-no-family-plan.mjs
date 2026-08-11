@@ -86,7 +86,7 @@ function jsonHash(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
-function assertEngineCoreContract(contract, archetypeId) {
+export function assertEngineCoreContract(contract, archetypeId) {
   const requiresEngineCore = (contract.subWorkItems ?? []).some((item) =>
     item.operationSequence?.includes("ENGINE_CORE")
   );
@@ -127,9 +127,41 @@ function assertEngineCoreContract(contract, archetypeId) {
         entry.misconception.length > 0 &&
         (stableId(entry.role) || stableId(entry.predicateKind))
     );
+  const stateConstructionValid = (value, decisionValue) =>
+    value &&
+    value.kind === "ordered-distinct-subset-from-pool" &&
+    stringList(value.sourceRoles, 3) &&
+    stringList(value.slotRoles, 2) &&
+    value.slotCount === value.slotRoles.length &&
+    Number.isInteger(value.minimumDistinctValues) &&
+    value.minimumDistinctValues >= 2 &&
+    value.minimumDistinctValues <= value.slotCount &&
+    value.allowsAnyOrderedSelection === true &&
+    value.initialState === "empty" &&
+    JSON.stringify(value.sourceRoles) ===
+      JSON.stringify(decisionValue.variantRoles) &&
+    JSON.stringify(value.slotRoles) ===
+      JSON.stringify(decisionValue.ruleSlotRoles);
+  const applicationValid = (value, ruleStatePath, ruleSlotRoles) =>
+    value &&
+    value.ruleStatePath === ruleStatePath &&
+    Array.isArray(value.continuationTargetRoles) &&
+    value.continuationTargetRoles.length >= 4 &&
+    new Set(value.continuationTargetRoles).size ===
+      value.continuationTargetRoles.length &&
+    value.continuationTargetRoles.every(stableId) &&
+    value.period === 2 &&
+    Number.isInteger(value.minimumTargetCount) &&
+    value.minimumTargetCount >= 4 &&
+    value.continuationTargetRoles.length >= value.minimumTargetCount &&
+    value.period === ruleSlotRoles.length &&
+    value.requiresVisibleComparison === true &&
+    value.evidenceMode === "student-state-dependent";
   assert(
     decision &&
       decision.mode === "construct-rule" &&
+      decision.constructionMode === "student-constructed" &&
+      decision.answerMode === "conditional-rubric" &&
       stableId(decision.ruleStatePath) &&
       stableId(decision.decisionConstraintId) &&
       stringList(decision.variantRoles, 3) &&
@@ -140,13 +172,20 @@ function assertEngineCoreContract(contract, archetypeId) {
       Number.isInteger(decision.minimumValidStates) &&
       decision.minimumValidStates >= 2 &&
       Number.isInteger(decision.minimumSurplus) &&
-      decision.minimumSurplus >= 1 &&
+      decision.minimumSurplus >= 2 &&
       orderedCapacity(
         decision.variantRoles.length,
         decision.ruleSlotRoles.length
       ) >=
         decision.minimumValidStates + decision.minimumSurplus &&
-      distractorList(decision.distractors),
+      distractorList(decision.distractors) &&
+      decision.distractors.length >= 2 &&
+      stateConstructionValid(decision.stateConstruction, decision) &&
+      applicationValid(
+        decision.application,
+        decision.ruleStatePath,
+        decision.ruleSlotRoles
+      ),
     `no-family-plan-engine-core-manifest-invalid:${archetypeId}`
   );
   assert(
@@ -159,6 +198,8 @@ function assertEngineCoreContract(contract, archetypeId) {
   const parameters = runtime.parameters;
   assert(
     parameters.mode === decision.mode &&
+      parameters.constructionMode === decision.constructionMode &&
+      parameters.answerMode === decision.answerMode &&
       parameters.ruleStatePath === decision.ruleStatePath &&
       parameters.decisionConstraintId === decision.decisionConstraintId &&
       parameters.validRuleStatesPath === decision.validRuleStatesPath &&
@@ -175,6 +216,17 @@ function assertEngineCoreContract(contract, archetypeId) {
       stringList(parameters.verificationRoles, 1) &&
       parameters.minimumValidStates === decision.minimumValidStates &&
       parameters.minimumSurplus === decision.minimumSurplus &&
+      Array.isArray(parameters.studentInputRoles) &&
+      parameters.studentInputRoles.length === 0 &&
+      JSON.stringify(parameters.stateConstruction) ===
+        JSON.stringify(decision.stateConstruction) &&
+      JSON.stringify(parameters.application) ===
+        JSON.stringify(decision.application) &&
+      JSON.stringify(parameters.verificationRoles) ===
+        JSON.stringify([
+          ...decision.ruleSlotRoles,
+          ...decision.application.continuationTargetRoles
+        ]) &&
       JSON.stringify(parameters.distractors) ===
         JSON.stringify(decision.distractors),
     `no-family-plan-engine-core-runtime-binding-invalid:${archetypeId}`
@@ -186,8 +238,9 @@ function assertEngineCoreContract(contract, archetypeId) {
       binding.decisionConstraintId === decision.decisionConstraintId &&
       JSON.stringify(binding.ruleSlotRoles) ===
         JSON.stringify(decision.ruleSlotRoles) &&
-      binding.continuationRuleStatePath === decision.ruleStatePath &&
-      binding.explanationRuleStatePath === decision.ruleStatePath,
+      binding.studentRuleStatePath === decision.ruleStatePath &&
+      binding.applicationRuleStatePath === decision.ruleStatePath &&
+      binding.answerMode === decision.answerMode,
     `no-family-plan-engine-core-binding-invalid:${archetypeId}`
   );
 }
@@ -831,12 +884,23 @@ function buildReport() {
     );
     const reviewAllowedFiles =
       source.operationPolicy.allowedFilesByOperation[review.operation];
-    assert(
-      review.changedFiles.every((file) =>
-        reviewAllowedFiles.some((pattern) => fileMatches(pattern, file))
-      ),
-      `no-family-plan-sol-review-file-not-allowed:${review.reviewId}`
+    const disallowedReviewFiles = review.changedFiles.filter(
+      (file) =>
+        !reviewAllowedFiles.some((pattern) => fileMatches(pattern, file))
     );
+    if (disallowedReviewFiles.length > 0) {
+      // A blocked review is the audit record for a candidate that must not
+      // advance. Preserve its exact changedFiles even when the candidate
+      // violated the operation manifest, but require an explicit finding so
+      // the exception cannot silently become an approval or post-approval.
+      assert(
+        review.decision === "blocked" &&
+          review.findings.some((finding) =>
+            finding.includes("SCOPE_VIOLATION")
+          ),
+        `no-family-plan-sol-review-file-not-allowed:${review.reviewId}`
+      );
+    }
     solReviewIds.add(review.reviewId);
     const key = reviewKey(
       review.standardCode,
