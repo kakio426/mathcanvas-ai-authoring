@@ -63,9 +63,14 @@ describe("Sol review candidate and scope gates", () => {
       workItem.engineCoreContract.runtimePredicate.parameters
         .continuationRuleStatePath
     ).toBe(workItem.engineCoreContract.manifestDecision.ruleStatePath);
-    expect(
-      report.current.nextOfflineWork?.engineCoreContract
-    ).toEqual(expected);
+    const currentProjection = [
+      report.current.nextOfflineWork,
+      report.current.nextReplanWork
+    ].find(
+      (item: { workItemId?: string } | null | undefined) =>
+        item?.workItemId === "W002"
+    );
+    expect(currentProjection?.engineCoreContract).toEqual(expected);
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {

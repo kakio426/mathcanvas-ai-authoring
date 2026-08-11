@@ -150,7 +150,7 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
     "mode": "construct-rule",
     "ruleStatePath": "ruleState",
     "decisionConstraintId": "construct-rule-slot",
-    "variantRoles": ["rule-variant-1", "rule-variant-2"],
+    "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
     "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
     "variantProperty": "orderedValues",
     "validRuleStatesPath": "validRuleStates",
@@ -172,7 +172,7 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
       "decisionConstraintId": "construct-rule-slot",
       "validRuleStatesPath": "validRuleStates",
       "surplusPath": "surplusRuleStates",
-      "variantRoles": ["rule-variant-1", "rule-variant-2"],
+      "variantRoles": ["rule-variant-1", "rule-variant-2", "rule-variant-3"],
       "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
       "variantProperty": "orderedValues",
       "continuationRuleStatePath": "ruleState",
@@ -193,12 +193,15 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 }
 ```
 
-`decisionConstraintId`는 `${decisionConstraintId}-${index}` 규칙 슬롯 constraint의
+`decisionConstraintId`는 `${decisionConstraintId}-${index + 1}:${itemId}` 규칙 슬롯 constraint의
 공통 prefix이고, `ruleSlotRoles`의 순서가 학생이 구성하는 ordered state의 슬롯 순서다.
 각 슬롯은 모든 variant source를 가진, 처음에는 충족되지 않은 `fill-from-pool` constraint와
 정확히 결속되어야 한다. `ruleState`는 하나의 ordered state이며 `validRuleStatesPath`의
 상태 중 하나여야 하고, valid/surplus 상태 모두 variant pool의 실제 수량으로 구성 가능해야
 한다. 완성된 ordered state를 variant property나 visible text로 내보내는 구현은 차단한다.
+공통 envelope에는 최소 3개의 variant role과 2개의 rule slot을 두며,
+`P(variantRoles, ruleSlotRoles) >= minimumValidStates + minimumSurplus`를 builder가
+fail-closed로 확인한다. 실제 값의 중복·수량 가능성은 family item의 validator가 추가로 확인한다.
 
 `continuationRuleStatePath`와 `explanationRuleStatePath`는 반드시
 `ruleStatePath`와 같아야 한다. `validRuleStatesPath`에는 순서가 있는 유효

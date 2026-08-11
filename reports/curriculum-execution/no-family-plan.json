@@ -2435,7 +2435,8 @@
           "decisionConstraintId": "construct-rule-slot",
           "variantRoles": [
             "rule-variant-1",
-            "rule-variant-2"
+            "rule-variant-2",
+            "rule-variant-3"
           ],
           "ruleSlotRoles": [
             "rule-slot-1",
@@ -2463,7 +2464,8 @@
             "surplusPath": "surplusRuleStates",
             "variantRoles": [
               "rule-variant-1",
-              "rule-variant-2"
+              "rule-variant-2",
+              "rule-variant-3"
             ],
             "ruleSlotRoles": [
               "rule-slot-1",
@@ -4598,7 +4600,8 @@
           "decisionConstraintId": "construct-rule-slot",
           "variantRoles": [
             "rule-variant-1",
-            "rule-variant-2"
+            "rule-variant-2",
+            "rule-variant-3"
           ],
           "ruleSlotRoles": [
             "rule-slot-1",
@@ -4626,7 +4629,8 @@
             "surplusPath": "surplusRuleStates",
             "variantRoles": [
               "rule-variant-1",
-              "rule-variant-2"
+              "rule-variant-2",
+              "rule-variant-3"
             ],
             "ruleSlotRoles": [
               "rule-slot-1",
@@ -5229,7 +5233,8 @@
           "decisionConstraintId": "construct-rule-slot",
           "variantRoles": [
             "rule-variant-1",
-            "rule-variant-2"
+            "rule-variant-2",
+            "rule-variant-3"
           ],
           "ruleSlotRoles": [
             "rule-slot-1",
@@ -5257,7 +5262,8 @@
             "surplusPath": "surplusRuleStates",
             "variantRoles": [
               "rule-variant-1",
-              "rule-variant-2"
+              "rule-variant-2",
+              "rule-variant-3"
             ],
             "ruleSlotRoles": [
               "rule-slot-1",

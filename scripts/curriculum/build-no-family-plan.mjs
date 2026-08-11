@@ -108,6 +108,13 @@ function assertEngineCoreContract(contract, archetypeId) {
     value.length >= minimum &&
     new Set(value).size === value.length &&
     value.every(stableId);
+  const orderedCapacity = (variantCount, slotCount) => {
+    let capacity = 1;
+    for (let index = 0; index < slotCount; index += 1) {
+      capacity *= variantCount - index;
+    }
+    return capacity;
+  };
   const distractorList = (value) =>
     Array.isArray(value) &&
     value.length >= 1 &&
@@ -125,7 +132,7 @@ function assertEngineCoreContract(contract, archetypeId) {
       decision.mode === "construct-rule" &&
       stableId(decision.ruleStatePath) &&
       stableId(decision.decisionConstraintId) &&
-      stringList(decision.variantRoles, 2) &&
+      stringList(decision.variantRoles, 3) &&
       stringList(decision.ruleSlotRoles, 2) &&
       stableId(decision.variantProperty) &&
       stableId(decision.validRuleStatesPath) &&
@@ -134,6 +141,11 @@ function assertEngineCoreContract(contract, archetypeId) {
       decision.minimumValidStates >= 2 &&
       Number.isInteger(decision.minimumSurplus) &&
       decision.minimumSurplus >= 1 &&
+      orderedCapacity(
+        decision.variantRoles.length,
+        decision.ruleSlotRoles.length
+      ) >=
+        decision.minimumValidStates + decision.minimumSurplus &&
       distractorList(decision.distractors),
     `no-family-plan-engine-core-manifest-invalid:${archetypeId}`
   );
