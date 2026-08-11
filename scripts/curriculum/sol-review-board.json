@@ -1045,6 +1045,61 @@
         "이 결함은 artifact JSON만 고쳐 해결할 수 없고 operation/gate manifest 변경이 필요하므로, 같은 FAMILY_REVALIDATION artifact A3를 반복하기 전에 새 SOL_REPLAN revision으로 승격해야 한다. 기존 v2 artifact는 교육·semantic 증거로 재사용 가능한 입력이지만 새 revision 소비 여부는 재계획 계약이 결정해야 한다.",
         "독립 QA는 artifact verify, focused 20/20, cognitive-demand, problem-family registry, no-family 97 standards/24 engines/84 tracks, candidate diff-check를 통과했다. 구현 현재성은 녹색이지만 승인 후 파생 보고서 소유권 계약이 닫히지 않아 changes-requested로 판정한다."
       ]
+    },
+    {
+      "reviewId": "W001-SOL_REPLAN-SOL-A3",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 3,
+      "candidateCommit": "95261b72d2ccea6a0e350fbe84d8f2abe8ac144f",
+      "changedFiles": [
+        "SOL_REVIEW_PROMPT.md",
+        "W001_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/verify-sol-review-gate.mjs"
+      ],
+      "supersedesReviewId": "W001-SOL_REPLAN-SOL-A2",
+      "checkedAt": "2026-08-11T16:52:18.000Z",
+      "replanDocumentPath": "W001_REPLAN.md",
+      "replanDocumentSha256": "2da073c5bb26b7de546877fbb09d33f3ca69a52dd7951df19e2b1d11bd804158",
+      "supersedesBlockedReviewId": "W001-FAMILY_REVALIDATION-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W001-SOL-REPLAN-v3",
+      "replanScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ],
+      "evidenceRefs": [
+        "git:95261b72d2ccea6a0e350fbe84d8f2abe8ac144f",
+        "git:fdf4bab3242377c88a1ca17ad83dea205feb7c5e",
+        "scripts/curriculum/sol-review-board.json#W001-SOL_REPLAN-SOL-A2",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_REVALIDATION-SOL-A2",
+        "W001_REPLAN.md",
+        "SOL_REVIEW_PROMPT.md#FAMILY_REVALIDATION",
+        "scripts/curriculum/no-family-plan.json#FAMILY_REVALIDATION",
+        "scripts/curriculum/verify-sol-review-gate.mjs#postApprovalPatterns",
+        "reports/curriculum-execution/no-family-plan.json#operationPolicy",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (12/12)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm curriculum:program",
+        "command:pnpm check (78 files/474 tests; all gates PASS)",
+        "command:git diff --check fdf4bab..95261b7"
+      ],
+      "findings": [
+        "승인: candidate 95261b7은 parent fdf4bab 위 exact 5-file SOL_REPLAN commit이고, 모든 파일이 W001 SOL_REPLAN allowedFiles에 포함되며 후보 이후 구현 변경이 없다. W001_REPLAN.md SHA-256=2da073c5bb26b7de546877fbb09d33f3ca69a52dd7951df19e2b1d11bd804158, trigger=W001-FAMILY_REVALIDATION-SOL-A2, scope=data.early-table.organize-v1/W001-FAMILY_TRACK-data-table-organize, revision=W001-SOL-REPLAN-v3에 정확히 결속한다.",
+        "P0 해소: FAMILY_REVALIDATION의 allowedFilesByOperation과 postApprovalFilesByOperation 양쪽에 reports/curriculum-coverage/**가 명시되어 registry→coverage→execution→no-family 전체 파생 체인을 승인 커밋에 포함할 수 있다. source manifest와 generated no-family report의 operationPolicy가 일치한다.",
+        "fail-closed 승인: verify-sol-review-gate의 postApprovalPatterns에서 암묵적 reports/** fallback이 제거되었다. board는 명시적으로 허용하되, report 파일은 operation manifest에 없으면 post-approval-file-not-allowed로 차단되며 candidate exact-files·candidate 이후 변경·board/no-family 존재 검증도 유지된다.",
+        "문서 계약 승인: W001_REPLAN v3와 SOL_REVIEW_PROMPT는 FAMREV 승인 뒤 registry, curriculum coverage, execution, no-family 순서의 전체 재생성과 manifest-bound commit을 요구한다. 이전 v2 artifact/review는 v3 revision을 소비하지 못하므로 다음 단계는 새 v3 artifact와 FAMILY_REVALIDATION attempt 3이다.",
+        "교육 범위는 변하지 않는다. 공식 [2수04-02]의 두 target, family 구현, semantic-slice 범위와 live evidence 상태에는 변경이 없으며 이번 승인은 offline review orchestration만 다룬다. fresh canary·조작·save/reopen·live release를 주장하지 않는다.",
+        "독립 QA는 sol-status 12/12, typecheck, no-family 97 standards/24 engines/84 tracks, curriculum program, 전체 pnpm check 78 files/474 tests·build·native/contract/cognitive·visual/quality P0/P1 0, candidate diff-check를 통과했다."
+      ]
     }
   ]
 }

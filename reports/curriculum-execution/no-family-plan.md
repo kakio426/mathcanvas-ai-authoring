@@ -33,8 +33,8 @@
 
 ## 지금 선택된 작업
 
-- offline: [2수02-02] · C01 · review-target-set-and-design-family
-- Sol 재계획: [2수04-02] · D01A · sol-replan-required
+- offline: [2수04-02] · D01A · finish-offline-validation
+- Sol 재계획: 없음
 - live evidence: 없음
 
 ## Sol 독립 검토 게이트
@@ -42,7 +42,7 @@
 - reviewer: **gpt-5.6-sol / max**
 - required after: **TARGET_SET · FAMILY_TRACK**
 - board: **scripts/curriculum/sol-review-board.json**
-- 승인 기록: **6개** · 수정 요청: **11개** · 차단: **1개** · pending: **190개**
+- 승인 기록: **7개** · 수정 요청: **11개** · 차단: **1개** · pending: **190개**
 - Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.
 - 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.
 
@@ -51,9 +51,9 @@
 | 상태 | 성취기준 수 |
 |---|---:|
 | planned-no-family | 96 |
-| offline-in-progress | 0 |
+| offline-in-progress | 1 |
 | sol-review-required | 0 |
-| blocked-needs-sol-replan | 1 |
+| blocked-needs-sol-replan | 0 |
 | live-evidence | 0 |
 | complete | 0 |
 
@@ -207,7 +207,7 @@
 
 | work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| W001-SOL_REPLAN | SOL_REPLAN | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target approved / family stale | sol-replan-required |
+| W001-FAMILY_REVALIDATION | FAMILY_REVALIDATION | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target approved / family stale | finish-offline-validation |
 | W002-TARGET_SET | TARGET_SET | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | 61d81952e25b (3) | anchor | target approved / family blocked | review-target-set-and-design-family |
 | W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
