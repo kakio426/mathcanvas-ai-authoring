@@ -132,6 +132,35 @@ export function replanTriggerReview(
   return blockedFamilyTrackReview ?? null;
 }
 
+/**
+ * Once an approved replan has been consumed, its original legacy blocker is
+ * historical evidence, not a fresh blocker. Only a new scoped family review
+ * or a new family-revalidation decision may send the cursor back through
+ * SOL_REPLAN. Before consumption we retain the original trigger so the
+ * replan approval can still be validated against supersedesBlockedReviewId.
+ */
+export function replanTriggerForFlow({
+  rawTrigger,
+  replanConsumed,
+  latestFamilyRevalidationReview = null,
+  scopedFamilyTrackReviews = []
+}) {
+  if (!replanConsumed) return rawTrigger ?? null;
+  if (
+    latestFamilyRevalidationReview &&
+    ["changes-requested", "blocked"].includes(
+      latestFamilyRevalidationReview.decision
+    )
+  ) {
+    return latestFamilyRevalidationReview;
+  }
+  return (
+    scopedFamilyTrackReviews.find((review) =>
+      ["changes-requested", "blocked"].includes(review?.decision)
+    ) ?? null
+  );
+}
+
 function defaultGit(args) {
   return execFileSync("git", args, {
     cwd: root,

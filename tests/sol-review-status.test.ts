@@ -8,6 +8,7 @@ const {
   effectiveFamilyLifecycleStage,
   familyRevalidationSupersedes,
   nativeFamilyReviewStatus,
+  replanTriggerForFlow,
   replanTriggerReview,
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
@@ -221,6 +222,56 @@ describe("Sol review candidate and scope gates", () => {
         [blockedRevalidation, approvedRevalidation]
       )
     ).toBe(blockedRevalidation);
+  });
+
+  it("does not resurrect a consumed legacy blocker, but routes new scoped blockers", () => {
+    const legacyBlocked = review({
+      reviewId: "W002-FAMILY_TRACK-SOL-A4",
+      decision: "blocked"
+    });
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: legacyBlocked,
+        replanConsumed: false,
+        scopedFamilyTrackReviews: []
+      })
+    ).toBe(legacyBlocked);
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: legacyBlocked,
+        replanConsumed: true,
+        scopedFamilyTrackReviews: []
+      })
+    ).toBe(null);
+
+    const scopedChanges = review({
+      reviewId: "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+      decision: "changes-requested",
+      familyTrackId: "pattern.repeat-unit.construct-v1",
+      scopeId: "W002-FAMILY_TRACK-repeat-rule"
+    });
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: legacyBlocked,
+        replanConsumed: true,
+        scopedFamilyTrackReviews: [scopedChanges]
+      })
+    ).toBe(scopedChanges);
+  });
+
+  it("routes a new family revalidation blocker after replan consumption", () => {
+    const revalidation = review({
+      reviewId: "W001-FAMILY_REVALIDATION-SOL-A1",
+      operation: "FAMILY_REVALIDATION",
+      decision: "blocked"
+    });
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: review({ decision: "blocked" }),
+        replanConsumed: true,
+        latestFamilyRevalidationReview: revalidation
+      })
+    ).toBe(revalidation);
   });
 
   it("fingerprints only the selected standard learning-map slice", () => {

@@ -7,6 +7,7 @@ import {
   familyRevalidationSupersedes,
   rewindFamilyTrackForRetry,
   reviewCandidateIsCurrent,
+  replanTriggerForFlow,
   validateOperationCursor,
   replanTriggerReview
 } from "./sol-review-status.mjs";
@@ -1155,10 +1156,16 @@ function buildReport() {
       (current?.releasedFamilyIds?.length ?? 0) > 0;
     let operation;
     let reviewGate = null;
+    const flowReplanTrigger = replanTriggerForFlow({
+      rawTrigger: replanTrigger,
+      replanConsumed,
+      latestFamilyRevalidationReview,
+      scopedFamilyTrackReviews
+    });
     const revalidationNeedsReplan =
-      replanTrigger?.operation === "FAMILY_REVALIDATION";
+      flowReplanTrigger?.operation === "FAMILY_REVALIDATION";
     const blockedBySolReplan =
-      replanTrigger !== null &&
+      flowReplanTrigger !== null &&
       (!replanApproved || (!revalidationNeedsReplan && replanConsumed));
     if (blockedBySolReplan) {
       nextAction = "sol-replan-required";
