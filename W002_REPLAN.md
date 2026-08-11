@@ -1,6 +1,11 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v3)
 
 상태: **Sol max 재계획 검토 대기**
+
+이번 v3는 v2의 세 target 분해를 바꾸지 않는다. v2를 적용하자 기존에
+등록되어 있던 blocked 단일 adapter가 새 target set의 두 target을 전제로 해
+registry를 중단시키는 호환성 문제가 드러났으므로, target set 재검토 전에
+그 adapter를 범위 밖 상태로 격리한다.
 
 ## 1. 재계획을 여는 이유
 
@@ -26,7 +31,7 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
 W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한다. 이 문서의 재계획 계약 revision은
-`W002-SOL-REPLAN-v2`이며, Sol이 승인한 뒤 새 TARGET_SET review가 이 revision과 새 target-outline hash를
+`W002-SOL-REPLAN-v3`이며, Sol이 승인한 뒤 새 TARGET_SET review가 이 revision과 새 target-outline hash를
 명시적으로 소비해야 한다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
@@ -47,6 +52,15 @@ sub-work의 scoped review ID까지 의존성에 기록한다.
 사용하되, 각 family가 자기 target slice만 `source.assessmentTargetIds`에 등록하도록 고정한다.
 repeat-only family가 change target을 등록하거나, change family가 repeat target을 등록하는 것은
 검토·coverage gate에서 거부한다.
+
+### 기존 blocked adapter 격리
+
+기존 `pattern.create-repeat-unit-explain-v1` adapter는 새 세 family 중 어느 것도
+대표하지 않는 이전 후보다. v3 호환성 보정에서는 이 adapter가 새 target set의
+`change.pattern.declared-repeat.repair-v1` 하나만 보유하도록 명시하고, 이전의
+“target 2개” 고정 검사를 제거한다. 이는 새 family 구현이나 Sol FAMILY_TRACK 승인이
+아니며, 해당 adapter는 계속 `generatable`/미승인으로 남아 offline·live coverage에
+포함되지 않는다. 세 planned family의 첫 실제 구현은 새 TARGET_SET 승인 뒤에만 시작한다.
 
 ## 3. 재개 작업 순서
 
