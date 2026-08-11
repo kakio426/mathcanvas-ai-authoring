@@ -21,9 +21,9 @@
   "mappedStandardCount": 121,
   "standardsWithAnyActivity": 24,
   "standardsWithReleasedActivity": 18,
-  "reviewedAssessmentTargetStandardCount": 1,
-  "reviewedAssessmentTargetCount": 4,
-  "reviewedRequiredAssessmentTargetCount": 4,
+  "reviewedAssessmentTargetStandardCount": 2,
+  "reviewedAssessmentTargetCount": 6,
+  "reviewedRequiredAssessmentTargetCount": 6,
   "catalogDiff": {
     "missingOfficialCodes": [],
     "codesOutsideOfficialFixture": [],
@@ -47,7 +47,7 @@
     "status": "unavailable",
     "numerator": null,
     "denominator": null,
-    "note": "1/121개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target 4개 중 live-released 0개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다."
+    "note": "2/121개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target 6개 중 live-released 2개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다."
   },
   "textbookUnitReach": {
     "totalUnits": 71,
@@ -459,10 +459,10 @@
         "2-2-6"
       ],
       "targetCoverage": {
-        "status": "unavailable",
-        "numerator": null,
-        "denominator": null,
-        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+        "status": "available",
+        "numerator": 2,
+        "denominator": 2,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다."
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",

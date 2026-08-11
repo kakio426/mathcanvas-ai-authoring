@@ -20,6 +20,7 @@ import {
   DOMAIN_PROBLEM_FAMILY_CAPABILITIES
 } from "./domains/index.js";
 import { LEGACY_MANIPULATION_BY_FAMILY } from "./legacy-manipulations.js";
+import { getLegacyAssessmentTargetIds } from "./legacy-assessment-target-bindings.js";
 import type {
   ProblemFamilyCapabilityExtension,
   ProblemFamilyRegistrySource
@@ -312,6 +313,7 @@ function buildLegacySources(): ProblemFamilyRegistrySource[] {
       gradeBand: gradeBandFor(blueprint.curriculumBinding.standardCode),
       domain: blueprint.curriculumBinding.domain as ProblemFamilyRegistrySource["domain"],
       learningGoal: blueprint.learningObjective,
+      assessmentTargetIds: getLegacyAssessmentTargetIds(blueprint.id),
       manipulation,
       generator: {
         id: blueprint.generator.id,
@@ -334,12 +336,22 @@ let canonicalRegistry: ProblemFamilyRegistry | undefined;
 
 export function assertProblemFamilyAssessmentTargetBindings(
   value: ProblemFamilyRegistry,
-  nativeSources: readonly ProblemFamilyRegistrySource[] =
-    DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
+  sources: readonly ProblemFamilyRegistrySource[] = [
+    ...buildLegacySources(),
+    ...DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
+  ]
 ): void {
-  for (const source of nativeSources) {
+  for (const source of sources) {
     const manifest = value.get(source.familyId);
-    if (!manifest || manifest.assessmentTargetIds.length < 1) {
+    if (!manifest) {
+      throw new Error(
+        `problem-family-assessment-target-manifest-missing:${source.familyId}`
+      );
+    }
+    if (
+      source.registrationKind === "native-problem-family-module" &&
+      manifest.assessmentTargetIds.length < 1
+    ) {
       throw new Error(
         `problem-family-native-assessment-target-missing:${source.familyId}`
       );
@@ -374,17 +386,18 @@ function registry(): ProblemFamilyRegistry {
         capability !== undefined
     );
   if (!canonicalRegistry) {
+    const sources = [
+      ...buildLegacySources(),
+      ...DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
+    ];
     canonicalRegistry = createProblemFamilyRegistry(
-      [
-        ...buildLegacySources(),
-        ...DOMAIN_NATIVE_PROBLEM_FAMILY_MODULES.map((module) => module.source)
-      ],
+      sources,
       [
         ...DOMAIN_PROBLEM_FAMILY_CAPABILITIES,
         ...nativeCapabilityExtensions
       ]
     );
-    assertProblemFamilyAssessmentTargetBindings(canonicalRegistry);
+    assertProblemFamilyAssessmentTargetBindings(canonicalRegistry, sources);
   }
   return canonicalRegistry;
 }

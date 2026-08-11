@@ -226,6 +226,7 @@ export {
 } from "./official-elementary-standards.js";
 export {
   CLASSIFICATION_ASSESSMENT_TARGET_IDS,
+  REPEATING_PATTERN_ASSESSMENT_TARGET_IDS,
   assessmentTargetSets,
   assessmentTargets,
   findAssessmentTarget,

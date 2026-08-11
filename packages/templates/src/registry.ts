@@ -956,6 +956,61 @@ function repeatingPatternUnitAnswerKey(resolved: ResolvedActivity): RegisteredTe
   }));
 }
 
+const patternBlockPreviewLabels: Readonly<Record<number, string>> = {
+  1: "노란 육각형",
+  2: "파란 마름모",
+  3: "빨간 사다리꼴",
+  4: "초록 삼각형",
+  5: "주황 정사각형",
+  6: "보라 마름모"
+};
+
+function patternBlockPreviewLabel(value: unknown): string {
+  if (
+    typeof value !== "number" ||
+    !Number.isInteger(value) ||
+    patternBlockPreviewLabels[value] === undefined
+  ) {
+    throw new Error("repeating-pattern-preview-variant-invalid");
+  }
+  return patternBlockPreviewLabels[value]!;
+}
+
+function repeatingPatternUnitProblemPreviews(
+  resolved: ResolvedActivity
+): RegisteredProblemPreview[] {
+  return [...resolved.items]
+    .sort((left, right) => left.order - right.order)
+    .map((item) => {
+      const questionText = item.values.questionText;
+      if (typeof questionText !== "string" || questionText.trim().length === 0) {
+        throw new Error("repeating-pattern-preview-question-missing");
+      }
+      const sequence = Array.from({ length: 6 }, (_, index) =>
+        patternBlockPreviewLabel(
+          item.values[`sequenceVariant${index + 1}`]
+        )
+      );
+      const pieces = Array.from({ length: 5 }, (_, index) =>
+        patternBlockPreviewLabel(
+          item.values[`completionVariant${index + 1}`]
+        )
+      );
+      const choices = Array.from({ length: 5 }, (_, index) =>
+        String(item.values[`candidate${index + 1}`])
+      );
+      return {
+        problemNumber: item.order,
+        statements: [
+          questionText,
+          `주어진 무늬: ${sequence.join(" → ")}`,
+          `이어 놓을 조각: ${pieces.join(", ")}`,
+          `고를 수 있는 조각 수: ${choices.join(", ")}`
+        ]
+      };
+    });
+}
+
 function multiplicationArrayMeaningAnswerKey(resolved: ResolvedActivity): RegisteredTeacherAnswer[] {
   return resolved.items.map((item) => ({
     problemNumber: item.order,
@@ -1323,7 +1378,8 @@ const legacyRegistry: Readonly<Record<string, RegistryEntry>> = {
     blueprint: repeatingPatternUnitBlueprint,
     prepare: generateRepeatingPatternUnitActivity,
     supportState: getActivitySupportState(repeatingPatternUnitBlueprint.id) ?? "verified",
-    answerKey: repeatingPatternUnitAnswerKey
+    answerKey: repeatingPatternUnitAnswerKey,
+    problemPreviews: repeatingPatternUnitProblemPreviews
   },
   [multiplicationArrayMeaningBlueprint.id]: {
     blueprint: multiplicationArrayMeaningBlueprint,

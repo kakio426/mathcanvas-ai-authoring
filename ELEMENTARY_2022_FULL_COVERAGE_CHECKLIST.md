@@ -1,7 +1,7 @@
 # 2022 개정 초등 수학 전 범위 생성 체크리스트
 
 기준 문서: `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`  
-현재 실행 범위: Phase 0·1 완료, Phase 2-A offline 검증 완료(live release 대기)
+현재 실행 범위: Phase 0·1 완료, Phase 2 대표 격자 진행 중 — reviewed target set 2/121
 상태 표기: `[ ]` 미착수, `[-]` 진행 중, `[x]` 완료, `[!]` 차단
 
 ## P0-A — 계획 보정
@@ -233,3 +233,37 @@ Phase 2 전체는 12개 대표 격자의 빈 셀이 0개가 될 때만 완료다
 - 상태: canonical 30, released 21, `[2수04-01]` offline 3/4 · live 0/4, 전역 target coverage unavailable
 - 외부 MathCanvas 쓰기: 0건. fresh canary·저장·재열기 전이므로 `verified/offline-validated` 유지
 - 독립 검수: Fable 5는 usage credits로 차단; Claude Sonnet 대체 검수 `PASS`, P0/P1 0건
+
+## P2-R02 — `[2수02-01]` 반복 규칙 legacy live 이관
+
+- [x] 공식 `[2수02-01]`을 규칙 찾기 / 같은 규칙을 여러 방법으로 표현하기의 필수 target 2개로 완전 분해한다.
+- [x] 대상별 AssessmentTarget 모듈과 공통 registry 집계·중복·완전성 검사를 추가한다.
+- [x] 고정 learning-map의 concept / representation / application topic과 hard prerequisite를 결속한다.
+- [x] 기존 `pattern.repeat-unit.pattern-blocks-v1` family를 legacy 전용 target binding 표에서 두 target에 연결한다.
+- [x] legacy와 native source 모두 존재하는 target, 같은 공식 성취기준, reviewed-complete set만 참조하도록 fail-closed 검증한다.
+- [x] 실제 질문·여섯 칸 무늬·사용 가능한 다섯 조각·수 선택지를 교사용 exact preview로 투영한다.
+- [x] 2·3문항 variation 전체에서 결정성, 정답, 반복 단위 구조, unused 대안, compile·validator를 검증한다.
+- [x] 현재 blueprint/layout hash와 기존 release canary의 create-only·저장·재열기 증거가 일치하는지 통합 테스트로 고정한다.
+- [x] blueprint·generator·compiled payload를 바꾸지 않았으므로 새 외부 MathCanvas write가 필요하지 않음을 확인한다.
+- [x] problem-family와 curriculum 보고서를 갱신해 `[2수02-01]` live 2/2와 전역 target coverage `unavailable`을 함께 기록한다.
+- [x] `pnpm check` 전체를 통과한다.
+- [!] Fable CLI는 2026-08-11 계정의 `Fable 5 requires usage credits`로 실행이 차단됐다. 통과로 표시하지 않는다.
+- [x] 같은 읽기 전용 검수 프롬프트를 Claude Sonnet에 대체 실행해 `PASS`, P0 0건, P1 0건을 받았다. P2의 timeout 변경 사유 주석 권고도 반영했다.
+- [x] 구현을 원자적 커밋으로 정리해 `main`에 push한다.
+
+완료 경계:
+
+- `[2수02-01]` live 2/2는 세 무늬 블록 반복 사례의 두 필수 target을 다룬다는 뜻이다.
+- 물체·수 배열, 비반복 변화 규칙, 모든 가능한 문제 유형까지 지원한다는 뜻이 아니다.
+- Phase 2 전체는 여전히 진행 중이며 reviewed-complete target set은 2/121뿐이다.
+
+## Phase 2-R02 live 이관 증거 — 2026-08-11
+
+- 권위 분해: `[2수02-01]` reviewed-complete target 2개, 필수 누락 0개
+- 구현 범위: 기존 released `pattern.repeat-unit.pattern-blocks-v1`이 세 무늬 블록 반복 사례에서 규칙 찾기·여러 방법 표현 target 2/2를 live로 다룸
+- variation envelope: 문항 수 2·3 전부 결정적 resolve·compile·validator PASS
+- release 결속: current blueprint `4143cea8a814cabbb474672c5836c4bfa664de287a53db22da4bbc15f82cc675`, 기존 wave16 canary의 create-only·저장·재열기 증거와 일치
+- payload 영향: blueprint·generator·compiled payload 변경 0건, 외부 MathCanvas 쓰기 0건
+- 상태: canonical 30, released 21, reviewed target set 2/121·target 6개, `[2수02-01]` live 2/2, 전역 target coverage unavailable
+- 전체 QA: 75 test files, 452/452 tests, build, curriculum coverage, native/contract/cognitive/visual/quality audit PASS
+- 독립 검수: Fable 5 usage credits 차단; Claude Sonnet 대체 검수 `PASS`, P0/P1 0건, P2 추적성 권고 반영

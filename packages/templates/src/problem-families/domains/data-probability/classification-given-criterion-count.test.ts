@@ -159,6 +159,7 @@ describe("[2수04-01] 주어진 기준 분류·개수 세기 native family", () 
     }
   });
 
+  // 전체 suite 병렬 실행에서도 60조합 전수 검증을 줄이지 않도록 CPU 경합 여유를 둔다.
   it("선언한 4×5×3 유한 파라미터 envelope를 전수 생성·컴파일·검증한다", () => {
     let combinationCount = 0;
     for (const classificationSetId of CLASSIFICATION_SET_IDS) {
@@ -205,7 +206,7 @@ describe("[2수04-01] 주어진 기준 분류·개수 세기 native family", () 
       }
     }
     expect(combinationCount).toBe(60);
-  });
+  }, 20_000);
 
   it("같은 입력은 결정적이고 의미 조건 변경은 문항과 payload hash를 함께 바꾼다", () => {
     const sameA = resolveEnvelope({

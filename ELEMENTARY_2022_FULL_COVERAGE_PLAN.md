@@ -1,6 +1,6 @@
 # 2022 개정 초등 수학 전 범위 생성 계획
 
-상태: Phase 0·1 완료, Phase 2-A offline 검증 완료(live release 대기)
+상태: Phase 0·1 완료, Phase 2 대표 격자 진행 중 — reviewed target set 2/121, `[2수02-01]` live 2/2, `[2수04-01]` offline 3/4
 작성일: 2026-08-11  
 최우선 목표: 2022 개정 초등 수학의 모든 공식 성취기준에 대해 교사가 실제로 사용할 수 있는 MathCanvas 수업자료를 생성한다.
 
@@ -45,7 +45,7 @@
 
 ## 3. 현재 기준선
 
-2026-08-11 Phase 0 fixture와 커버리지 계층을 반영한 저장소 실측값이다.
+2026-08-11 Phase 0·1과 현재 Phase 2 대표 셀을 반영한 저장소 실측값이다.
 
 | 지표 | 현재 | 목표 |
 |---|---:|---:|
@@ -60,13 +60,15 @@
 | 활동이 하나라도 있는 단원 | 24/71 | 참고 지표 |
 | released 활동이 하나라도 있는 단원 | 16/71 | 모든 단원이 최소 하나 이상 + 해당 성취기준 완전 추적 |
 | 공통 ProblemParameters 지원 | 4/30 | 모든 released ProblemFamily가 공통 요청 계약 사용 |
-| reviewed-complete AssessmentTarget set | 1/121 (target 4개) | 121/121 |
+| reviewed-complete AssessmentTarget set | 2/121 (target 6개) | 121/121 |
+| `[2수02-01]` target coverage | live 2/2 | live 2/2 유지 + family variety 확장 |
 | `[2수04-01]` target coverage | offline 3/4 · live 0/4 | live 4/4 |
 
 주의:
 
 - Phase 0 전 catalog 99행과 공식 121개를 대조한 결과, 빠진 22개는 모두 1~2학년군이었다. 현재는 121개 모두 공식 fixture에서 카탈로그로 투영된다.
-- `getElementaryCurriculumCoverage()`의 `18/121`은 released 활동 reach다. `[2수04-01]`만 target set이 완성됐으므로 전역 `targetCoverage`는 계속 `unavailable`이다.
+- `getElementaryCurriculumCoverage()`의 `18/121`은 released 활동 reach다. `[2수02-01]`과 `[2수04-01]` 두 target set만 완성됐으므로 전역 `targetCoverage`는 계속 `unavailable`이다.
+- `[2수02-01]`의 live 2/2는 현재 family가 다루는 세 무늬 블록 반복 사례에 대한 target 충족이다. 공식 문구에 있는 물체·수 배열의 모든 변형 또는 가능한 모든 규칙 유형을 지원한다는 뜻은 아니다.
 - `familyVariety`는 Phase 1 canonical `FamilyId`를 사용하며 target coverage와 합치지 않는다.
 - 현재 16/71은 “released 활동이 하나라도 있음”일 뿐 단원 전체를 만들 수 있다는 뜻이 아니다.
 - 공식 source manifest와 121개 레코드는 `packages/curriculum/src/fixtures/kr-2022-elementary-math/official-standards.json`에 있고, 최신 숫자는 `reports/curriculum-coverage/latest.md`에서 확인한다.
@@ -209,7 +211,9 @@ contracts→templates 의존 방향을 뒤집지 않기 위해 frozen legacy ada
 ### Phase 2 — 네 영역·세 학년군 대표 격자
 
 상태: **진행 중**. reviewed AssessmentTarget 분해와 native family의 첫 실제
-사용은 이 단계에서 시작한다. Phase 1의 더미 인수 fixture를 출시 family로 세지 않는다.
+사용에 더해, 기존 released family 한 개를 새 target 권위 계층으로 이관했다.
+현재 reviewed-complete set은 2/121뿐이며 Phase 1의 더미 인수 fixture를 출시
+family로 세지 않는다.
 
 목적: 수와 연산에 편중된 구조가 아닌지 전 범위 확장 전에 증명한다.
 
@@ -259,6 +263,32 @@ family로 구현한다. 자신이 정한 기준으로 다시 분류하는 목표
 - 최소·최대 matching count와 1·3문항 경계에서 문항·정답·exact preview·compile·validator 통과
 - cognitive manifest와 learning-map 고정 fixture가 blueprint hash에 결속됨
 - offline 통과 뒤에도 fresh canary·저장·재열기 전에는 `verified/offline-validated` 유지
+
+#### Phase 2-R02 — 1~2학년군 × 변화와 관계 legacy live 이관
+
+상태: **완료(2026-08-11)**. 공식 `[2수02-01]`을 규칙 찾기와 같은 규칙을
+여러 방법으로 표현하기의 필수 target 2개로 완전 분해했다. 기존 released
+`pattern.repeat-unit.pattern-blocks-v1` family가 두 target을 모두 지원하며,
+현재 blueprint hash와 저장·재열기 release canary가 일치한다.
+
+이 대표 셀은 새 blueprint를 만들지 않고 legacy family를 새 권위 계층에 연결하는
+strangler 경로를 검증한다. target 연결은 legacy 전용 이관 표 한 곳에만 두고,
+canonical registry가 공식 성취기준·reviewed-complete set·family manifest를
+fail-closed로 대조한다. 교사용 preview는 실제 생성된 질문, 여섯 칸 무늬,
+사용 가능한 다섯 조각과 수 선택지를 정확히 투영한다.
+
+이 단위의 완료 증거:
+
+- `[2수02-01]` reviewed-complete target 2개와 고정 learning-map 선수 관계
+- legacy family manifest가 두 target을 선언하고 현재 release canary hash와 결속
+- 2·3문항 variation 전체에서 결정성, 정답·해설·exact preview, compile·validator 통과
+- blueprint·generator·compiled payload 변경 0건이므로 기존 current-hash canary 재사용
+- 커버리지 보고서에 `[2수02-01]` live 2/2, 전역 target coverage는 `unavailable`
+
+범위 제한: 현재 family는 세 종류의 무늬 블록으로 이루어진 반복 단위를 찾고
+이어 놓는 경우만 제공한다. 물체·수 배열, 비반복 변화 규칙, 모든 표현 양식까지
+지원한다고 주장하지 않으며, 그런 추가 문제 다양성은 `familyVariety` 확장으로
+별도 추적한다.
 
 ### Phase 3 — 전 성취기준 breadth-first 확장
 

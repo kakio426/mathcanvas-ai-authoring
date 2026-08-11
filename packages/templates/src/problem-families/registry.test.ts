@@ -21,7 +21,10 @@ import {
 import { multiplicationArrayMeaningBlueprint } from "../blueprints/multiplication-array-meaning.js";
 import { createProblemFamilyRuntimeRegistry } from "./runtime-registry.js";
 import { getCognitiveDemandManifest } from "../cognitive/registry.js";
-import { CLASSIFICATION_ASSESSMENT_TARGET_IDS } from "@mathcanvas/curriculum";
+import {
+  CLASSIFICATION_ASSESSMENT_TARGET_IDS,
+  REPEATING_PATTERN_ASSESSMENT_TARGET_IDS
+} from "@mathcanvas/curriculum";
 import { CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID } from "./domains/data-probability/classification-given-criterion-count.js";
 import type {
   ProblemFamilyCapabilityExtension,
@@ -65,6 +68,20 @@ describe("canonical ProblemFamily registry", () => {
       CLASSIFICATION_ASSESSMENT_TARGET_IDS.countByClass,
       CLASSIFICATION_ASSESSMENT_TARGET_IDS.describeResult
     ]);
+    expect(
+      getProblemFamilyManifest(ACTIVITY_IDS.repeatingPatternUnit)
+    ).toMatchObject({
+      assessmentTargetIds: Object.values(
+        REPEATING_PATTERN_ASSESSMENT_TARGET_IDS
+      ),
+      releaseEvidence: {
+        supportState: "released",
+        lifecycleStage: "live-released",
+        evidencePaths: [
+          "research/mathcanvas/wave16-pattern-release-canary.json"
+        ]
+      }
+    });
   });
 
   it("기존 세 TeacherIntent를 공통 ProblemParameters로 무손실 왕복한다", () => {

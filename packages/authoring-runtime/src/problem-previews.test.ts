@@ -190,6 +190,17 @@ describe("문항 미리보기 프로젝션", () => {
         blueprint.id
       ).toBe(true);
       expect(sha256Hex(resolved), blueprint.id).toBe(beforeProjectionHash);
+      if (blueprint.id === "pattern.repeat-unit.pattern-blocks-v1") {
+        expect(previews[0]).toMatchObject({
+          statementSource: "learner-instructions",
+          statements: [
+            "되풀이되는 가장 짧은 무늬는 몇 조각인가요?",
+            expect.stringMatching(/^주어진 무늬: .+ → .+$/),
+            expect.stringContaining("이어 놓을 조각:"),
+            expect.stringContaining("고를 수 있는 조각 수:")
+          ]
+        });
+      }
       if (
         previews.some(
           (preview) => preview.statementSource === "answer-explanation"
@@ -216,7 +227,6 @@ describe("문항 미리보기 프로젝션", () => {
       "data.bar-graph.scale-unit.read-v1",
       "measure.length.unit-iteration.ruler-v1",
       "number.place-value.regroup-ten-bundles-v1",
-      "pattern.repeat-unit.pattern-blocks-v1",
       "probability.compare.bag-ratios-v1"
     ]);
   });

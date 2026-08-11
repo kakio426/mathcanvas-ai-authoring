@@ -6,8 +6,11 @@ Phase 1은 기존 활동별 중앙 분기를 없애기 위한 공통 실행 경�
 30개 family는 canonical `ProblemFamilyManifest`로 정확히 한 번씩 조회되고,
 그중 21개는 기존 release evidence를 보존한 `live-released` 상태다. 첫 native
 family는 `[2수04-01]`의 reviewed target 4개 중 3개만 다루는
-`offline-validated` 상태다. 따라서 이 숫자는 교육과정 완전 커버리지가 아니다.
-전체 121개 target set이 완성되기 전에는 전역 `targetCoverage`도 산정하지 않는다.
+`offline-validated` 상태다. 기존 반복 규칙 family는 `[2수02-01]`의 reviewed
+target 2개에 이관돼 `live-released` 상태다. 현재 reviewed-complete set은
+2/121, target은 6개이며 그중 live target은 2개다. 따라서 이 숫자는 교육과정
+완전 커버리지가 아니다. 전체 121개 target set이 완성되기 전에는 전역
+`targetCoverage`도 산정하지 않는다.
 
 기존 29개는 결과를 바꾸지 않기 위해 `legacy-blueprint-adapter`로 감쌌다. 신규
 문제군은 `native-render-recipe`와 `ProblemFamilyNativeModule` 경로만 사용한다.
@@ -51,6 +54,7 @@ generator·variation·cognitive 중앙 registry의 family별 목록, `ACTIVITY_I
 
 - `packages/contracts/src/catalog/activity-support.ts`
 - `packages/templates/src/problem-families/legacy-manipulations.ts`
+- `packages/templates/src/problem-families/legacy-assessment-target-bindings.ts`
 - 기존 `templates/src/registry.ts`, `item-generators/registry.ts`,
   `variations/registry.ts`, `cognitive/registry.ts`의 legacy 수동 목록
 
@@ -59,13 +63,19 @@ manifest로 투영할 뿐, contracts 패키지가 상위 templates 패키지를 
 않는다. 이 의존 방향 때문에 과거 `ACTIVITY_*` export를 새 registry의 원천이라고
 부르지 않는다.
 
+`legacy-assessment-target-bindings.ts`는 reviewed target set이 생긴 기존 family를
+새 권위 계층으로 옮기는 단일 strangler 표다. 기존 blueprint·generator·payload를
+바꾸지 않으며, 신규 native family는 이 표가 아니라 자신의 영역 모듈에서 target을
+직접 선언한다. `[2수02-01]` 반복 규칙 family가 이 경계의 첫 live 이관 사례다.
+
 ## fail-closed 검증
 
 - family/activity/template ID, generator ID·version, blueprint hash, 교육과정 binding,
   support state, variation envelope, cognitive manifest가 source와 runtime 사이에서
   다르면 시작 시 실패한다.
-- native family가 reviewed target을 하나도 선언하지 않거나 다른 공식 성취기준의
-  target을 연결하면 시작 시 실패한다.
+- native family가 reviewed target을 하나도 선언하지 않으면 시작 시 실패한다.
+  legacy와 native 모두 존재하지 않는 target, 다른 공식 성취기준의 target,
+  reviewed-complete set 밖 target을 연결하면 시작 시 실패한다.
 - capability가 맞춤 파라미터를 선언하면 실제 생성 결과에서 값을 다시 읽는
   projector가 반드시 있어야 한다.
 - 지원하지 않는 family·field·value와 서로 충돌하는 legacy/new 요청은 확인 필요

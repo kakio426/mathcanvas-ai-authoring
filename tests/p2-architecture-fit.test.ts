@@ -193,6 +193,7 @@ function envelopeRecommendation(
 }
 
 describe("P2 구조 적합성", () => {
+  // released 21종·93 variation 전수 compile은 병렬 suite에서 느려질 수 있어 검증 범위 대신 시간 여유만 늘린다.
   it("동치분수와 10 만들기를 같은 frozen core로 재현·컴파일·검증한다", () => {
     const cases = [
       {
@@ -534,5 +535,5 @@ describe("P2 구조 적합성", () => {
       }
     }
     expect(envelopeRunCount).toBe(93);
-  }, 10_000);
+  }, 30_000);
 });

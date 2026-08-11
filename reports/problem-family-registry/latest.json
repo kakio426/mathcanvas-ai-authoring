@@ -622,7 +622,10 @@
       "supportState": "released",
       "lifecycleStage": "live-released",
       "blueprintContentHash": "4143cea8a814cabbb474672c5836c4bfa664de287a53db22da4bbc15f82cc675",
-      "assessmentTargetIds": [],
+      "assessmentTargetIds": [
+        "change.pattern.identify-rule-v1",
+        "change.pattern.express-rule-multiple-ways-v1"
+      ],
       "parameterKeys": [],
       "evidencePaths": [
         "research/mathcanvas/wave16-pattern-release-canary.json"

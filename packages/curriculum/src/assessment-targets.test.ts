@@ -41,14 +41,17 @@ describe("reviewed AssessmentTarget registry", () => {
       "여러 가지 사물을 정해진 기준 또는 자신이 정한 기준으로 분류하여 개수를 세어 보고, 기준에 따른 결과를 말할 수 있다."
     );
     const set = findAssessmentTargetSet("[2수04-01]");
+    const targets = assessmentTargets.filter(
+      (target) => target.standardCode === "[2수04-01]"
+    );
     expect(set).toMatchObject({
       completeness: "reviewed-complete",
       targetIds: Object.values(CLASSIFICATION_ASSESSMENT_TARGET_IDS)
     });
-    expect(assessmentTargetSets).toHaveLength(1);
-    expect(assessmentTargets).toHaveLength(4);
+    expect(assessmentTargetSets).toContainEqual(set);
+    expect(targets).toHaveLength(4);
     expect(
-      assessmentTargets.every(
+      targets.every(
         (target) =>
           target.standardCode === "[2수04-01]" &&
           target.required &&
@@ -56,7 +59,7 @@ describe("reviewed AssessmentTarget registry", () => {
       )
     ).toBe(true);
     expect(
-      new Set(assessmentTargets.map((target) => target.targetId))
+      new Set(targets.map((target) => target.targetId))
     ).toEqual(new Set(set?.targetIds));
     expect(
       findAssessmentTarget(
