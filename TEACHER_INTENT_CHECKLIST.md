@@ -119,10 +119,14 @@ Honest Preview 체크리스트는 수정하지 않는다.
 - [x] `pnpm check`: 빌드와 모든 감사 포함 통과.
 - [x] MCP in-memory 골든 호출: 실제 첫 문항과 충돌 오류 코드 확인.
 - [x] teacher-ui 로컬 HTTP 3종 요청/미리보기: exact 문항·정답·모든 반영 행·승인 토큰 확인.
+- [x] `pnpm teacher-intent:ui-verify`: 실제 브라우저 3종 화면·intent 4행·표시 정답 확인,
+  생성·로그인 API 0건.
+- [x] 곱셈 정답·해설의 raw `\\times`를 교사용 `×` 표시로 정리.
 - [x] 로컬 HTTP 검증에서 `/api/creations` 미호출, 외부 쓰기 0건 확인.
 - [x] 인지 계약·교실 한국어·text-fit·공간 감사: P0/P1 0, 시각 점수 100.
 - [x] fresh canary 실행 여부를 자동 게이트와 분리해 기록: **미실행**.
-- [ ] 제작자 화면 확인 3문항: 수·맥락 / 수학적 정오 / 실제 사용 의향.
+- [x] 화면 확인 중 수·맥락 반영과 수학적 정오를 브라우저 QA로 대조.
+- [ ] 제작자의 실제 수업 사용 의향 판단.
 - [x] 세 capability 모두 compiler payload hash 결속과 생성 전 validator 통과.
 - [x] 나눗셈 등록 맥락 4종, 허용 조합 612개, canonical 언어 변조 차단 고정.
 - [ ] 외부 실생성·fresh canary: **BLOCKED**. 2026-08-11 제작자 확인 기준
@@ -137,8 +141,9 @@ Honest Preview 체크리스트는 수정하지 않는다.
   `cecd2d2 feat: expose TeacherIntent capability forms`.
 - 테스트 수: 전체 66개 파일·408개 테스트.
 - QA 보고서 경로: `reports/teacher-intent/latest.md`.
+- 로컬 UI 보고서 경로: `reports/teacher-intent/local-ui.md`.
 - fallback 활동 수 변화: 20종 → 18종(곱셈·분수 exact preview 등록, 나눗셈 유지).
-- 남은 수동 확인: 교사용 compose/preview에서 3개 capability. 외부 접근 복구 뒤
-  capability별 fresh canary 1회.
+- 남은 수동 확인: 제작자의 실제 수업 사용 의향. 외부 접근 복구 뒤 capability별
+  fresh canary 1회.
 - 알려진 제한: released 21종 중 3종의 첫 문항만 맞춤, 범용 자연어 파서·부분 수정
   없음. 새 TeacherIntent 산출물의 공식 release 근거는 fresh canary 전까지 주장하지 않는다.

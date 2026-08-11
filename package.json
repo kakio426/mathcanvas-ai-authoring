@@ -102,6 +102,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "teacher-intent:verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/build-teacher-intent-report.mjs",
+    "teacher-intent:ui-verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/capture-teacher-intent-ui.mjs",
     "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {

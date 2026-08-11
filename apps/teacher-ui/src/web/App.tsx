@@ -68,6 +68,10 @@ const reflectionStatusLabels: Readonly<Record<InputReflectionStatus, string>> = 
   "needs-review": "확인 필요"
 };
 
+function displayMathText(value: string): string {
+  return value.replaceAll("\\times", "×");
+}
+
 function formForStandard(
   current: LessonForm,
   standard: CurriculumStandardOption,
@@ -873,7 +877,7 @@ export function App() {
                     <h3>{problem.problemNumber}번 문항</h3>
                     <ul>
                       {problem.statements.map((statement, index) => (
-                        <li key={`${problem.problemNumber}-${index}`}>{statement}</li>
+                        <li key={`${problem.problemNumber}-${index}`}>{displayMathText(statement)}</li>
                       ))}
                     </ul>
                     {problem.statementSource === "answer-explanation" ? (
@@ -892,8 +896,8 @@ export function App() {
                   {activity.teacherAnswerKey.map((answer) => (
                     <li key={answer.problemNumber}>
                       <h3>{answer.problemNumber}번 문항</h3>
-                      <p><strong>정답</strong><span>{answer.answer}</span></p>
-                      <p><strong>해설</strong><span>{answer.explanation}</span></p>
+                      <p><strong>정답</strong><span>{displayMathText(answer.answer)}</span></p>
+                      <p><strong>해설</strong><span>{displayMathText(answer.explanation)}</span></p>
                     </li>
                   ))}
                 </ol>
