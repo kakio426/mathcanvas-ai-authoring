@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "operation": "FAMILY_TRACK",
+  "status": "blocked-preflight",
+  "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+  "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.repeat-unit.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+  "baseCommit": "97037c07afc22f312eddd4d73d03c6ab0207b867",
+  "replanContractRevision": "W002-SOL-REPLAN-v8",
+  "blockingFindings": [
+    {
+      "code": "CONTRACT_CAPACITY",
+      "severity": "P0",
+      "authority": "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract",
+      "evidence": {
+        "requiredPhysicalSourceRoles": 9,
+        "requiredSourceIdsPerFillConstraint": 9,
+        "interactionConstraintSchemaMaxSources": 8,
+        "resolvedConstraintSchemaMaxSourceIds": 8,
+        "schemaPath": "packages/contracts/src/vocabulary/constraints.ts",
+        "observedFailure": "defineActivityBlueprint rejects each 9-source fill-from-pool constraint with Zod too_big (maximum 8)."
+      },
+      "forbiddenWorkarounds": [
+        "reduce the pool to eight roles",
+        "split one exact-source constraint into partial pools",
+        "assume clone/reuse without an observed affordance contract"
+      ]
+    },
+    {
+      "code": "LAYOUT_CAPACITY",
+      "severity": "P0",
+      "authority": "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract.application",
+      "evidence": {
+        "requiredVisibleRoles": {
+          "sourceRoles": 9,
+          "ruleSlotRoles": 2,
+          "continuationTargetRoles": 4
+        },
+        "existingPreset": "wave16-repeating-pattern-v1",
+        "existingLargeTargets": 2,
+        "existingLargeTargetSize": "188x188",
+        "nativeBoundsThatExceed120": [
+          "SM02PB-01: 160x138.564",
+          "SM02PB-02: 80x138.564",
+          "SM02PB-03: 160x69.282",
+          "SM02PB-06: 41.516x154.942"
+        ],
+        "presetPath": "packages/mathcanvas-compiler/src/layout-presets/wave16-repeating-pattern-v1.ts",
+        "nativeContractPath": "packages/mathcanvas-compiler/src/adapters/native-pattern-block-contract.ts"
+      },
+      "requiredResolution": "A new scoped preset with simultaneous non-overlapping 9-source, 2-rule-slot, and 4-continuation-slot containment; wave16 must remain unchanged."
+    }
+  ],
+  "commands": [
+    "pnpm exec vitest run packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts (dry-run fails during blueprint definition: sources maximum 8)",
+    "pnpm typecheck (clean base PASS; does not exercise the uninstantiable 9-source blueprint)",
+    "pnpm curriculum:no-family-plan (clean base PASS; authority contract itself remains 9-role)"
+  ],
+  "nextAction": "SOL_REPLAN",
+  "notes": "This artifact records a preflight hard-stop only. No family source, shared constraint schema, or existing wave16 preset was modified."
+}
