@@ -2532,9 +2532,10 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "ENGINE_CORE",
+          "nextOperation": "FAMILY_TRACK",
           "completedOperations": [
-            "AFFORDANCE_DISCOVERY"
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE"
           ],
           "reviewStatus": "pending",
           "reviewId": null,
@@ -2616,9 +2617,10 @@
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "ENGINE_CORE",
+        "nextOperation": "FAMILY_TRACK",
         "completedOperations": [
-          "AFFORDANCE_DISCOVERY"
+          "AFFORDANCE_DISCOVERY",
+          "ENGINE_CORE"
         ],
         "reviewStatus": "pending",
         "reviewId": null,
@@ -2627,24 +2629,27 @@
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v5",
-      "operation": "ENGINE_CORE",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
+      "operation": "FAMILY_TRACK",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
         "W002-SOL_REVIEW-TARGET_SET"
       ],
       "allowedFiles": [
-        "packages/contracts/src/catalog/cognitive-demand.ts",
-        "packages/contracts/src/catalog/cognitive-demand.test.ts",
-        "packages/validator/src/predicates/registry.ts",
-        "packages/validator/src/validator.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/cognitive/registry.test.ts",
-        "reports/curriculum-execution/subwork-state/**",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -5343,9 +5348,10 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "ENGINE_CORE",
+          "nextOperation": "FAMILY_TRACK",
           "completedOperations": [
-            "AFFORDANCE_DISCOVERY"
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE"
           ],
           "reviewStatus": "pending",
           "reviewId": null,
@@ -5427,9 +5433,10 @@
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "ENGINE_CORE",
+        "nextOperation": "FAMILY_TRACK",
         "completedOperations": [
-          "AFFORDANCE_DISCOVERY"
+          "AFFORDANCE_DISCOVERY",
+          "ENGINE_CORE"
         ],
         "reviewStatus": "pending",
         "reviewId": null,
@@ -5438,24 +5445,27 @@
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v5",
-      "operation": "ENGINE_CORE",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
+      "operation": "FAMILY_TRACK",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
         "W002-SOL_REVIEW-TARGET_SET"
       ],
       "allowedFiles": [
-        "packages/contracts/src/catalog/cognitive-demand.ts",
-        "packages/contracts/src/catalog/cognitive-demand.test.ts",
-        "packages/validator/src/predicates/registry.ts",
-        "packages/validator/src/validator.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/cognitive/registry.test.ts",
-        "reports/curriculum-execution/subwork-state/**",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,
