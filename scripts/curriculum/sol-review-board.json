@@ -1436,6 +1436,67 @@
         "범위 한계: TARGET_SET 승인은 target 완전성·adapter 격리만 다룬다. 학생이 실제 구성한 RuleState, repeat/change native affordance, deterministic generator/envelope, exact preview, compiler/validator, current-hash canary/save/reopen은 아직 승인하지 않는다.",
         "독립 재검증은 focused 4 files/22 tests, cognitive, problem-family registry, no-family currentness, exact 12-file manifest 대조와 outline hash 재계산을 통과했다. candidate 사전 전체 QA도 78 files/474 tests·typecheck/build·native/contract/cognitive·visual/quality P0/P1 0으로 기록됐다. 그러나 승인 가정 파생 상태가 즉시 SOL_REPLAN loop로 회귀하므로 changes-requested로 판정한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A9",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 9,
+      "candidateCommit": "3746803cbdf8597cb2f7c6341f7d38056b24ece1",
+      "changedFiles": [
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A8",
+      "checkedAt": "2026-08-11T17:56:54.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "80efcaccc8a030fbc0593fb0738f3582679063ed1f1231d6795f1a15a59df036",
+      "supersedesBlockedReviewId": "W002-TARGET_SET-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v3",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:3746803cbdf8597cb2f7c6341f7d38056b24ece1",
+        "git:978f24953a12c56f64ec9f24a4608a741d526517",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A8",
+        "scripts/curriculum/sol-review-board.json#W002-TARGET_SET-SOL-A2",
+        "W002_REPLAN.md#재개-작업-순서",
+        "scripts/curriculum/build-no-family-plan.mjs#blockedBySolReplan",
+        "scripts/curriculum/sol-review-status.mjs#replanTriggerForFlow",
+        "scripts/curriculum/sol-review-status.mjs#rewindFamilyTrackForRetry",
+        "tests/sol-review-status.test.ts#consumed-replan",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (14/14)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:manual final blockedBySolReplan projection: scoped changes=true; FAMILY_REVALIDATION blocked=false",
+        "command:git diff --check 978f249..3746803"
+      ],
+      "findings": [
+        "후보 범위 확인: candidate 3746803은 parent 978f249 위 exact 3-file SOL_REPLAN governance commit이고 모든 파일이 SOL_REPLAN allowedFiles 안에 있으며 target source·adapter·W002_REPLAN 문서·coverage를 수정하지 않는다.",
+        "개선 확인: consumed replan에서 과거 legacy A4 raw trigger를 버리고 scoped review 또는 family revalidation을 별도 flow trigger로 고르는 seam을 만들었다. consumed 상태에 새 scoped review가 없으면 null을 반환하므로 A2 승인 뒤 첫 subWork로 전진하려는 방향은 맞다.",
+        "P0 수정 요청: replanTriggerForFlow는 scoped FAMILY_TRACK decision이 changes-requested여도 trigger로 반환한다. build-no-family-plan의 blockedBySolReplan은 consumed=true·FAMILY_TRACK trigger에서 true가 되므로 기존 rewindFamilyTrackForRetry 계약을 우회해 같은 family 구현 retry가 아니라 SOL_REPLAN으로 보낸다. consumed scoped trigger는 blocked만 재계획 사유여야 하고 changes-requested는 FAMILY_TRACK 단계로 rewind되어야 한다.",
+        "P0 수정 요청: 새 FAMILY_REVALIDATION changes-requested/blocked를 helper가 반환해도 revalidationNeedsReplan=true가 되면서 blockedBySolReplan의 `!revalidationNeedsReplan` 조건이 false가 되어 오히려 SOL_REPLAN으로 가지 않는다. 독립 projection은 scoped changes→blockedBySolReplan=true, FAMREV blocked→false로 재현돼 의도와 정확히 반대다.",
+        "최소 수정은 helper 반환만 테스트하지 말고 최종 route 판정을 하나의 순수 함수 또는 report-level fixture로 고정하는 것이다. 필수 cases는 legacy blocker+unconsumed, consumed+새 scoped 없음, consumed+scoped changes-requested, consumed+scoped blocked, consumed+현재 replan이 이미 supersede한 FAMREV 실패, consumed+그 이후 새 FAMREV changes-requested/blocked다.",
+        "권고 판정은 consumed 후 scoped FAMILY_TRACK blocked만 새 family trigger로 선택하고 changes-requested는 제외하며, FAMILY_REVALIDATION trigger는 current replan의 supersedesBlockedReviewId와 같은 과거 review면 무시하고 다른 새 failure면 SOL_REPLAN으로 보내는 것이다. blockedBySolReplan에서 operation 종류로 새 FAMREV를 억제하는 현재 예외는 제거하거나 reviewed trigger identity 비교로 대체해야 한다.",
+        "독립 QA에서 14/14 tests, typecheck, no-family plan은 통과했다. 그러나 추가 테스트가 helper 객체 반환만 검증하고 실제 operation 결과를 검증하지 않아 두 상반된 P0를 놓치므로 changes-requested로 판정한다."
+      ]
     }
   ]
 }
