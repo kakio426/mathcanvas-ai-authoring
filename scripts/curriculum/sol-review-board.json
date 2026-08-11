@@ -925,6 +925,69 @@
         "교육 범위는 재계획으로 바뀌지 않는다. 승인된 두 target은 원자료→범주별 완전 매핑·전체 합 불변량과, 표에서 읽은 범주별 개수·차이에 근거한 편리함 설명을 각각 소유한다. A3의 오개념 대안, exact preview, 수정 가능한 선택, learning-map concept→representation→application 결속을 재사용하며 이번 승인은 live/save/reopen 증거를 새로 주장하지 않는다.",
         "독립 QA는 focused 11/11, typecheck, curriculum:no-family-plan 97 standards/24 engines/84 tracks, curriculum:program, candidate diff-check를 통과했다. 후보 작성자가 보고한 전체 pnpm check도 78 files/473 tests, build·cognitive/native/contract·visual/quality P0/P1 0이다."
       ]
+    },
+    {
+      "reviewId": "W001-SOL_REPLAN-SOL-A2",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 2,
+      "candidateCommit": "61e35120063f2675293511cce5e35924591f4ff0",
+      "changedFiles": [
+        "W001_REPLAN.md",
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/sol-review-status.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W001-SOL_REPLAN-SOL-A1",
+      "checkedAt": "2026-08-11T16:40:42.000Z",
+      "replanDocumentPath": "W001_REPLAN.md",
+      "replanDocumentSha256": "5a27c942138dc72e64336c01444f522c9ad1fcad739ba95289f70da7de8ebac5",
+      "supersedesBlockedReviewId": "W001-FAMILY_REVALIDATION-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W001-SOL-REPLAN-v2",
+      "replanScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ],
+      "evidenceRefs": [
+        "git:61e35120063f2675293511cce5e35924591f4ff0",
+        "git:5644b0a19640019ebd9449bd01babafa41412fc4",
+        "scripts/curriculum/sol-review-board.json#W001-SOL_REPLAN-SOL-A1",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_REVALIDATION-SOL-A1",
+        "W001_REPLAN.md",
+        "scripts/curriculum/no-family-plan.json#D01A",
+        "scripts/curriculum/no-family-plan.json#FAMILY_REVALIDATION-postApproval",
+        "scripts/curriculum/sol-review-status.mjs#replanTriggerReview",
+        "scripts/curriculum/build-no-family-plan.mjs#replanApproved",
+        "scripts/curriculum/build-no-family-plan.mjs#familyValidated",
+        "scripts/curriculum/verify-sol-review-gate.mjs#postApprovalPatterns",
+        "tests/sol-review-status.test.ts",
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (12/12)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm curriculum:program",
+        "command:pnpm check (474 tests; all gates PASS)",
+        "command:git diff --check 5644b0a..61e3512"
+      ],
+      "findings": [
+        "승인: candidate 61e3512는 parent 5644b0a 위의 exact 8-file SOL_REPLAN commit이고 모든 파일이 W001 SOL_REPLAN allowedFiles에 포함되며 후보 이후 구현 변경이 없다. W001_REPLAN.md SHA-256=5a27c942138dc72e64336c01444f522c9ad1fcad739ba95289f70da7de8ebac5, trigger=W001-FAMILY_REVALIDATION-SOL-A1, scope=data.early-table.organize-v1/W001-FAMILY_TRACK-data-table-organize, revision=W001-SOL-REPLAN-v2에 정확히 결속한다.",
+        "trigger persistence 승인: replanTriggerReview는 최신 FAMILY_REVALIDATION이 changes-requested/blocked이면 새 재계획을 요구하고, 후속 revalidation이 approved가 되면 현재 SOL_REPLAN이 명시한 supersedesBlockedReviewId를 review history에서 복구한다. 따라서 A2 FAMREV 승인 뒤에도 replanApproved/replanConsumed가 사라지지 않으며, helper 회귀는 latest negative와 latest approved 두 경우 모두 원 A1 trigger를 유지한다.",
+        "FAMILY_TRACK bounce 해소: familyValidated가 current execution report의 offline/released family뿐 아니라 현재 semantic artifact에 결속된 revalidationApproved를 직접 소비한다. registry/coverage report가 아직 이전 lifecycle snapshot이어도 승인 직후 FAMILY_TRACK으로 되돌아가지 않고, 이후 파생 체인 갱신으로 LIVE_EVIDENCE 또는 다음 offline work로 수렴한다.",
+        "파생 report 계약 승인: FAMILY_REVALIDATION candidate/postApproval 범위에 problem-family registry JSON/MD가 추가됐고 post-approval gate는 reports/**를 허용한다. 다음 FAMREV 승인 commit은 problem-family registry만 단독 갱신하지 말고 registry→curriculum coverage→execution→no-family 전체 파생 체인을 재생성해야 `problem-family:verify`와 `pnpm check`가 동시에 current가 된다.",
+        "revision fail-closed 확인: candidate에 남은 artifact는 W001-SOL-REPLAN-v1이라 v2 report에서 revalidationArtifact=null로 거부된다. 이 v2 승인 뒤 새 W001-SOL-REPLAN-v2 artifact와 FAMILY_REVALIDATION attempt 2 승인을 요구하므로 이전 9fa62d… artifact나 미커밋 A2 승인을 재사용하지 않는다.",
+        "교육 범위는 변하지 않는다. 공식 [2수04-02]의 원자료→범주별 완전 매핑·전체 합 불변량과 표의 개수·차이에 근거한 편리함 설명, 오개념 대안, 수정 경로, pinned learning-map 결속은 기존 A3 hash를 유지한다. 이번 승인은 offline orchestration만 다루며 fresh canary·조작·save/reopen·live release를 주장하지 않는다.",
+        "독립 QA는 focused 12/12, typecheck, no-family 97 standards/24 engines/84 tracks, curriculum program, 전체 pnpm check 474 tests·build·native/contract/cognitive·visual/quality P0/P1 0, candidate diff-check를 통과했다."
+      ]
     }
   ]
 }
