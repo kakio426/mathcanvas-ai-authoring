@@ -19,8 +19,8 @@
   },
   "current": {
     "officialStandards": 121,
-    "reviewedTargetSets": 3,
-    "reviewedTargets": 8,
+    "reviewedTargetSets": 4,
+    "reviewedTargets": 10,
     "offlineReviewedTargets": 7,
     "liveReviewedTargets": 2,
     "fullyLiveStandards": 1,
@@ -54,19 +54,19 @@
       "phase": "3A",
       "name": "121개 AssessmentTargetSet 완전 분해",
       "status": "in-progress",
-      "progress": "3/121"
+      "progress": "4/121"
     },
     {
       "phase": "3B",
       "name": "필수 target family·offline 검증",
       "status": "in-progress",
-      "progress": "7/8 reviewed targets; global denominator incomplete"
+      "progress": "7/10 reviewed targets; global denominator incomplete"
     },
     {
       "phase": "3C",
       "name": "현재 해시 live create·저장·재열기",
       "status": "in-progress",
-      "progress": "2/8 reviewed targets; global denominator incomplete"
+      "progress": "2/10 reviewed targets; global denominator incomplete"
     },
     {
       "phase": "4",
@@ -410,10 +410,10 @@
   "standardActionSummary": {
     "capture-current-hash-live-evidence": 1,
     "complete": 1,
-    "cover-unbound-reviewed-targets": 1,
+    "cover-unbound-reviewed-targets": 2,
     "review-target-set-and-bind-released-family": 17,
     "review-target-set-and-close-offline-family": 5,
-    "review-target-set-and-design-family": 96
+    "review-target-set-and-design-family": 95
   },
   "remainingStandardCount": 120,
   "breadthQueue": [
@@ -734,19 +734,19 @@
       "gradeBand": "1-2",
       "domain": "변화와 관계",
       "officialGoal": "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.",
-      "targetSetReviewed": false,
+      "targetSetReviewed": true,
       "targetCoverage": {
-        "status": "unavailable",
-        "numerator": null,
-        "denominator": null,
-        "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
+        "status": "available",
+        "numerator": 0,
+        "denominator": 2,
+        "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다."
       },
       "linkedFamilyIds": [],
       "releasedFamilyIds": [],
       "offlineFamilyIds": [],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "cover-unbound-reviewed-targets"
     },
     {
       "queueIndex": 14,

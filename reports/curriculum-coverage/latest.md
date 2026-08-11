@@ -4,8 +4,8 @@
 - 공식 분모: **121개 성취기준** (교육부 HWP와 NCIC PDF 교차 확인)
 - 카탈로그 매핑: **121/121**
 - released 활동 reach: **18/121 (14.9%)**
-- reviewed AssessmentTarget 분해: **3/121개 성취기준 · 8개 target**
-- target coverage: **전역 산정하지 않음** — 3/121개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target 8개 중 live-released 2개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다.
+- reviewed AssessmentTarget 분해: **4/121개 성취기준 · 10개 target**
+- target coverage: **전역 산정하지 않음** — 4/121개 성취기준만 reviewed-complete입니다. 현재 검토된 필수 target 10개 중 live-released 2개지만, 전체 target 분모가 완성되기 전에는 전역 비율을 제시하지 않습니다.
 - family variety: canonical ProblemFamily registry의 FamilyId를 사용하며 target coverage와 합치지 않습니다.
 - catalog diff: 누락 0, fixture 밖 0, 문구 0, 학년군 0, 영역 0
 
@@ -62,7 +62,7 @@
 | [2수01-10] | 1-2 | 수와 연산 | live-released | - | number.multiplication.group-array-meaning-v1 | number.multiplication.group-array-meaning-v1 | 2-1-6 |
 | [2수01-11] | 1-2 | 수와 연산 | mapped | - | - | - | 2-2-2 |
 | [2수02-01] | 1-2 | 변화와 관계 | live-released | live 2/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다. | pattern.repeat-unit.pattern-blocks-v1 | pattern.repeat-unit.pattern-blocks-v1 | 1-2-5, 2-2-6 |
-| [2수02-02] | 1-2 | 변화와 관계 | mapped | - | - | - | 1-2-5, 2-2-6 |
+| [2수02-02] | 1-2 | 변화와 관계 | mapped | live 0/2; reviewed-complete target set 기준입니다. offline-validated 이상은 0/2, live-released는 0/2입니다. | - | - | 1-2-5, 2-2-6 |
 | [2수03-01] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-2-3, 2-1-2 |
 | [2수03-02] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-2 |
 | [2수03-03] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-1-2, 1-2-3, 2-1-2 |

@@ -68,7 +68,7 @@ describe("[2수02-01] reviewed AssessmentTarget set", () => {
         expect.stringContaining("조각 수와 실제 배열")
       ])
     });
-    expect(assessmentTargetSets).toHaveLength(3);
-    expect(assessmentTargets).toHaveLength(8);
+    expect(assessmentTargetSets).toHaveLength(4);
+    expect(assessmentTargets).toHaveLength(10);
   });
 });

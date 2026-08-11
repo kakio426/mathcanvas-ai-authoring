@@ -15,6 +15,11 @@ import {
   repeatingPatternAssessmentTargets
 } from "./assessment-targets/repeating-pattern-2su02-01.js";
 import {
+  REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS,
+  repeatingPatternArrangementAssessmentTargetSet,
+  repeatingPatternArrangementAssessmentTargets
+} from "./assessment-targets/repeating-pattern-2su02-02.js";
+import {
   DATA_TABLE_ASSESSMENT_TARGET_IDS,
   dataTableAssessmentTargetSet,
   dataTableAssessmentTargets
@@ -23,17 +28,20 @@ import {
 export {
   CLASSIFICATION_ASSESSMENT_TARGET_IDS,
   REPEATING_PATTERN_ASSESSMENT_TARGET_IDS,
+  REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS,
   DATA_TABLE_ASSESSMENT_TARGET_IDS
 };
 
 const rawTargets: readonly AssessmentTarget[] = [
   ...classificationAssessmentTargets,
   ...repeatingPatternAssessmentTargets,
+  ...repeatingPatternArrangementAssessmentTargets,
   ...dataTableAssessmentTargets
 ];
 const rawSets: readonly AssessmentTargetSet[] = [
   classificationAssessmentTargetSet,
   repeatingPatternAssessmentTargetSet,
+  repeatingPatternArrangementAssessmentTargetSet,
   dataTableAssessmentTargetSet
 ];
 

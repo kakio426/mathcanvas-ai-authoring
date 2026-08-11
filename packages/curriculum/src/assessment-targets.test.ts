@@ -5,6 +5,7 @@ import { LEARNING_MAP_COMMIT } from "./data.js";
 import {
   CLASSIFICATION_ASSESSMENT_TARGET_IDS,
   DATA_TABLE_ASSESSMENT_TARGET_IDS,
+  REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS,
   assessmentTargetSets,
   assessmentTargets,
   findAssessmentTarget,
@@ -151,5 +152,33 @@ describe("reviewed AssessmentTarget registry", () => {
     ).toBe(true);
     expect(targets[0]?.statement).toContain("표");
     expect(targets[1]?.statement).toContain("편리한 점");
+  });
+
+  it("[2수02-02] 자신이 정한 규칙에 따른 배열의 두 필수 목표를 고정한다", () => {
+    const standard = findOfficialElementaryStandard("[2수02-02]");
+    expect(standard?.officialGoal).toBe(
+      "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다."
+    );
+    const set = findAssessmentTargetSet("[2수02-02]");
+    const targets = assessmentTargets.filter(
+      (target) => target.standardCode === "[2수02-02]"
+    );
+    expect(set).toMatchObject({
+      completeness: "reviewed-complete",
+      targetIds: Object.values(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS
+      )
+    });
+    expect(targets).toHaveLength(2);
+    expect(
+      targets.every(
+        (target) =>
+          target.required &&
+          target.reviewStatus === "reviewed" &&
+          target.learningMap.commit === LEARNING_MAP_COMMIT
+      )
+    ).toBe(true);
+    expect(targets[0]?.statement).toContain("스스로 정할");
+    expect(targets[1]?.statement).toContain("어긋난 항목");
   });
 });
