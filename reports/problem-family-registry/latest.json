@@ -678,7 +678,8 @@
       "solReviewStatus": "blocked",
       "blueprintContentHash": "11a3736b9dfd45f05ebc82734916549a2df8ad72188df7b7d996f92a12895461",
       "assessmentTargetIds": [
-        "change.pattern.declared-repeat.repair-v1"
+        "change.pattern.choose-own-arrangement-rule-v1",
+        "change.pattern.construct-arrangement-following-rule-v1"
       ],
       "parameterKeys": [
         "contextId"

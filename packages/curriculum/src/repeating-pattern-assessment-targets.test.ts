@@ -69,6 +69,6 @@ describe("[2수02-01] reviewed AssessmentTarget set", () => {
       ])
     });
     expect(assessmentTargetSets).toHaveLength(4);
-    expect(assessmentTargets).toHaveLength(11);
+    expect(assessmentTargets).toHaveLength(10);
   });
 });

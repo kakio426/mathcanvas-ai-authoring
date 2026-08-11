@@ -42,10 +42,9 @@ const LEARNING_MAP_USAGE_SNAPSHOT_SHA256 =
   "bed940f1896d3991aeb12766dff49c84dd110465e38ed01625ed5f32b564b1d5";
 
 const assessmentTargetSet = findAssessmentTargetSet("[2수02-02]");
-const quarantinedTargetId = "change.pattern.declared-repeat.repair-v1";
 if (
   !assessmentTargetSet ||
-  !assessmentTargetSet.targetIds.includes(quarantinedTargetId)
+  assessmentTargetSet.targetIds.length !== 2
 ) {
   throw new Error("repeating-pattern-arrangement-assessment-target-set-invalid");
 }
@@ -925,10 +924,7 @@ const source: ProblemFamilyRegistrySource = {
   gradeBand: "1-2",
   domain: "변화와 관계",
   learningGoal: repeatingPatternArrangementBlueprint.learningObjective,
-  // This pre-replan adapter is quarantined to the repeat-repair slice. The
-  // three new W002 families must earn their own scoped approvals before any
-  // target coverage is counted.
-  assessmentTargetIds: [quarantinedTargetId],
+  assessmentTargetIds: [...assessmentTargetSet.targetIds],
   manipulation: REPEATING_PATTERN_ARRANGEMENT_MANIPULATION,
   generator: {
     id: REPEATING_PATTERN_ARRANGEMENT_GENERATOR_ID,

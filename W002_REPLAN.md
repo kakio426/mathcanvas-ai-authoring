@@ -2,10 +2,10 @@
 
 상태: **Sol max 재계획 검토 대기**
 
-이번 v3는 v2의 세 target 분해를 바꾸지 않는다. v2를 적용하자 기존에
-등록되어 있던 blocked 단일 adapter가 새 target set의 두 target을 전제로 해
-registry를 중단시키는 호환성 문제가 드러났으므로, target set 재검토 전에
-그 adapter를 범위 밖 상태로 격리한다.
+이번 v3는 v2의 세 target 분해를 바꾸지 않는다. 다만 이 커밋은 재계획
+계약·sub-work·허용 범위만 고정한다. 새 3-target source와 기존 adapter의
+target 결속 변경은 이 단계에서 설치하지 않으며, 후속 TARGET_SET 후보가
+두 변경과 파생 보고서를 하나의 원자적 후보로 제출한다.
 
 ## 1. 재계획을 여는 이유
 
@@ -53,14 +53,16 @@ sub-work의 scoped review ID까지 의존성에 기록한다.
 repeat-only family가 change target을 등록하거나, change family가 repeat target을 등록하는 것은
 검토·coverage gate에서 거부한다.
 
-### 기존 blocked adapter 격리
+### TARGET_SET 경계
 
-기존 `pattern.create-repeat-unit-explain-v1` adapter는 새 세 family 중 어느 것도
-대표하지 않는 이전 후보다. v3 호환성 보정에서는 이 adapter가 새 target set의
-`change.pattern.declared-repeat.repair-v1` 하나만 보유하도록 명시하고, 이전의
-“target 2개” 고정 검사를 제거한다. 이는 새 family 구현이나 Sol FAMILY_TRACK 승인이
-아니며, 해당 adapter는 계속 `generatable`/미승인으로 남아 offline·live coverage에
-포함되지 않는다. 세 planned family의 첫 실제 구현은 새 TARGET_SET 승인 뒤에만 시작한다.
+현재 저장소의 기존 2-target source와 adapter는 이 재계획 후보에서 그대로
+유지한다. 따라서 W002는 아직 기존 TARGET_SET 승인만 가진 상태로 남고,
+새 3-target 분해를 `reviewed-complete` 또는 coverage 분모로 주장하지 않는다.
+후속 `W002-REPLAN-TARGET_SET` 후보가 target source 2→3, target 테스트,
+기존 adapter의 자기 slice 결속, 그리고 coverage·execution·registry 파생
+보고서를 함께 변경한다. 그 후보는 `supersedesReplanReviewId`,
+`replanContractRevision`, `targetOutlineSha256`를 가진 별도 TARGET_SET
+승인을 받아야 한다.
 
 ## 3. 재개 작업 순서
 

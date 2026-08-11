@@ -169,7 +169,7 @@ describe("reviewed AssessmentTarget registry", () => {
         REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS
       )
     });
-    expect(targets).toHaveLength(3);
+    expect(targets).toHaveLength(2);
     expect(
       targets.every(
         (target) =>
@@ -178,28 +178,22 @@ describe("reviewed AssessmentTarget registry", () => {
           target.learningMap.commit === LEARNING_MAP_COMMIT
       )
     ).toBe(true);
-    expect(targets[0]?.statement).toContain("반복 단위");
-    expect(targets[1]?.statement).toContain("어긋난 반복 항목");
-    expect(targets[2]?.statement).toContain("시작값·변화량·방향");
+    expect(targets[0]?.statement).toContain("스스로 정할");
+    expect(targets[1]?.statement).toContain("어긋난 항목");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatRule
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
       )?.assessmentPrompt
     ).toContain("직접 정해");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatRule
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
       )?.scopeNote
     ).toContain("repeat-only family");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatArrangement
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructArrangementFollowingRule
       )?.misconceptions.map((misconception) => misconception.misconceptionId)
-    ).toContain("repeat.pattern.rule-boundary-mismatch-v1");
-    expect(
-      findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructChangeArrangement
-      )?.assessmentPrompt
-    ).toContain("시작값·변화량·방향");
+    ).toContain("change.pattern.rule-boundary-mismatch-v1");
   });
 });

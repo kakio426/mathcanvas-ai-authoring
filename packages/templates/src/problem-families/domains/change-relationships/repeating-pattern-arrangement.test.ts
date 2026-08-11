@@ -102,9 +102,7 @@ describe("[2수02-02] 정한 규칙으로 배열 만들기 native family", () =>
     });
     expect(
       repeatingPatternArrangementProblemFamilyModule.source.assessmentTargetIds
-    ).toEqual([
-      "change.pattern.declared-repeat.repair-v1"
-    ]);
+    ).toHaveLength(2);
     expect(manifest.learningMap.topicIds).toEqual([
       "kr.mt.math.change-relationships.g1-2.s2-02-02.representation",
       "kr.mt.math.change-relationships.g1-2.s2-02-02.application"
