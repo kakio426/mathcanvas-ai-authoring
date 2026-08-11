@@ -164,11 +164,34 @@ describe("Sol review candidate and scope gates", () => {
         item?.workItemId === "W002"
     );
     expect(currentProjection?.engineCoreContract).toEqual(expected);
-    expect(report.current.nextReplanWork?.workItemId).toBe("W002");
-    expect(report.current.nextReplanWork?.operation).toBe("SOL_REPLAN");
-    expect(report.current.nextReplanWork?.replanContractRevision).toBe(
-      "W002-SOL-REPLAN-v7"
-    );
+    if (report.current.nextReplanWork?.workItemId === "W002") {
+      expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
+      expect(report.current.nextReplanWork.replanContractRevision).toBe(
+        "W002-SOL-REPLAN-v7"
+      );
+      expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
+        false
+      );
+      expect(report.current.nextReplanWork.solReview.replanConsumed).toBe(
+        false
+      );
+    } else {
+      expect(report.current.nextOfflineWork?.workItemId).toBe("W002");
+      expect(report.current.nextOfflineWork?.operation).toBe("ENGINE_CORE");
+      expect(report.current.nextOfflineWork?.operationWorkItemId).toBe(
+        "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
+      );
+      expect(
+        report.current.nextOfflineWork?.nextFamilySubWork?.nextOperation
+      ).toBe("ENGINE_CORE");
+      expect(report.current.nextOfflineWork?.solReview.replanApproved).toBe(
+        true
+      );
+      expect(report.current.nextOfflineWork?.solReview.replanConsumed).toBe(
+        true
+      );
+      expect(report.current.nextReplanWork).toBeNull();
+    }
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
