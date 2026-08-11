@@ -4,7 +4,7 @@
 - shared RenderRecipe/engine class: **24개**
 - grade-band-safe concrete family track: **84개**
 - 영역별 track: **수와 연산 28 · 변화와 관계 7 · 도형과 측정 41 · 자료와 가능성 8**
-- Sol expected AssessmentTarget outline: **236개 / 97 standards**
+- Sol expected AssessmentTarget outline: **237개 / 97 standards**
 - 실행 batch: **21개**
 - 현재 no-family: **95개**
 - 초기 집합 일치: **진행으로 감소**
@@ -208,7 +208,7 @@
 | work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | W001-FAMILY_REVALIDATION | FAMILY_REVALIDATION | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target approved / family stale | finish-offline-validation |
-| W002-SOL_REPLAN | SOL_REPLAN | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | bff0cd112afd (2) | anchor | target approved / family blocked | sol-replan-required |
+| W002-SOL_REPLAN | SOL_REPLAN | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | ea2d22f991f2 (3) | anchor | target approved / family blocked | sol-replan-required |
 | W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W005-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [4수04-02] | 3-4 | 자료와 가능성 | D02A | R22 | 4998a2001117 (3) | anchor | target pending / family pending | review-target-set-and-design-family |

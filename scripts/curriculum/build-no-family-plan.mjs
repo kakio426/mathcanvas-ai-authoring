@@ -2,7 +2,10 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { reviewCandidateIsCurrent } from "./sol-review-status.mjs";
+import {
+  familyRevalidationArtifactIsCurrent,
+  reviewCandidateIsCurrent
+} from "./sol-review-status.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const sourcePath = resolve(root, "scripts/curriculum/no-family-plan.json");
@@ -64,6 +67,7 @@ function reviewKey(
 function effectiveReview(review) {
   if (
     review?.decision === "approved" &&
+    review.operation !== "SOL_REPLAN" &&
     !reviewCandidateIsCurrent(review)
   ) {
     return { ...review, decision: "stale" };
@@ -84,8 +88,13 @@ function familyRevalidationArtifactPath(baseWorkItemId) {
 }
 
 function sha256File(relativePath) {
+  const absolutePath = resolve(root, relativePath);
+  assert(
+    absolutePath.startsWith(`${root}/`),
+    `no-family-plan-revalidation-path-outside-root:${relativePath}`
+  );
   return createHash("sha256")
-    .update(readFileSync(resolve(root, relativePath)))
+    .update(readFileSync(absolutePath))
     .digest("hex");
 }
 
@@ -155,7 +164,15 @@ function hasLearningMapBinding(learningMap, standardCode) {
   );
 }
 
-function operationWorkItemId(baseWorkItemId, operation, reviewGate) {
+function operationWorkItemId(
+  baseWorkItemId,
+  operation,
+  reviewGate,
+  subWorkItem = null
+) {
+  if (subWorkItem?.workItemId) {
+    return `${subWorkItem.workItemId}-${operation}`;
+  }
   if (operation === "SOL_REPLAN") {
     return `${baseWorkItemId}-SOL_REPLAN`;
   }
@@ -171,12 +188,16 @@ function operationDependencies(
   baseWorkItemId,
   operation,
   reviewGate,
-  familyTrackReviewStatus = null
+  familyTrackReviewStatus = null,
+  subWorkItem = null
 ) {
   const map = `${baseWorkItemId}-LEARNING_MAP_BINDING`;
   const target = `${baseWorkItemId}-TARGET_SET`;
   const targetReview = `${baseWorkItemId}-SOL_REVIEW-TARGET_SET`;
   const family = `${baseWorkItemId}-FAMILY_TRACK`;
+  if (subWorkItem?.dependencies?.length && operation !== "SOL_REPLAN") {
+    return [...subWorkItem.dependencies];
+  }
   if (operation === "LEARNING_MAP_BINDING") return [];
   if (operation === "TARGET_SET") return [map];
   if (operation === "SOL_REVIEW" && reviewGate === "TARGET_SET") {
@@ -193,6 +214,9 @@ function operationDependencies(
     return familyTrackReviewStatus === "stale"
       ? [family, `${baseWorkItemId}-FAMILY_REVALIDATION`]
       : [family];
+  }
+  if (operation === "SOL_REVIEW" && reviewGate === "FAMILY_REVALIDATION") {
+    return [family, `${baseWorkItemId}-FAMILY_REVALIDATION`];
   }
   return [];
 }
@@ -261,6 +285,13 @@ function buildReport() {
         true &&
       JSON.stringify(source.solReview.scopePolicy?.familyTrackRequires) ===
         JSON.stringify(["familyTrackId", "scopeId"]) &&
+      JSON.stringify(source.solReview.scopePolicy?.familyRevalidationRequires) ===
+        JSON.stringify([
+          "familyTrackId",
+          "scopeId",
+          "artifactPath",
+          "fingerprintSha256"
+        ]) &&
       JSON.stringify(source.solReview.scopePolicy?.scopeKey) ===
         JSON.stringify(["standardCode", "operation", "familyTrackId", "scopeId"]),
     "no-family-plan-sol-review-policy"
@@ -330,6 +361,30 @@ function buildReport() {
     ),
     "no-family-plan-track-contract-engine"
   );
+  for (const [archetypeId, contract] of Object.entries(source.trackContracts)) {
+    const subWorkItems = contract.subWorkItems ?? [];
+    assert(
+      Array.isArray(subWorkItems) &&
+        new Set(subWorkItems.map((item) => item.workItemId)).size ===
+          subWorkItems.length,
+      `no-family-plan-subwork-id:${archetypeId}`
+    );
+    for (const subWorkItem of subWorkItems) {
+      assert(
+        typeof subWorkItem.workItemId === "string" &&
+          typeof subWorkItem.familyId === "string" &&
+          typeof subWorkItem.familyTrackId === "string" &&
+          typeof subWorkItem.scopeId === "string" &&
+          Array.isArray(subWorkItem.targetOutlineKeys) &&
+          subWorkItem.targetOutlineKeys.length > 0 &&
+          Array.isArray(subWorkItem.assessmentTargetIds) &&
+          subWorkItem.assessmentTargetIds.length > 0 &&
+          Array.isArray(subWorkItem.dependencies) &&
+          typeof subWorkItem.preparationOperation === "string",
+        `no-family-plan-subwork-shape:${archetypeId}:${subWorkItem.workItemId}`
+      );
+    }
+  }
   assert(
     new Set(
       Object.values(source.trackContracts).map((contract) => contract.familyId)
@@ -446,6 +501,15 @@ function buildReport() {
         );
       }
     }
+    if (review.operation === "FAMILY_REVALIDATION") {
+      assert(
+        typeof review.familyTrackId === "string" &&
+          typeof review.scopeId === "string" &&
+          typeof review.artifactPath === "string" &&
+          /^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? ""),
+        `no-family-plan-sol-revalidation-record:${review.reviewId}`
+      );
+    }
     if (review.operation === "SOL_REPLAN") {
       assert(
         /^[a-f0-9]{64}$/.test(review.replanDocumentSha256 ?? "") &&
@@ -453,9 +517,25 @@ function buildReport() {
           review.supersedesBlockedReviewId.trim().length > 0 &&
           review.replanOwner === "Luna" &&
           Array.isArray(review.replanScopes) &&
-          review.replanScopes.length > 0,
+          review.replanScopes.length > 0 &&
+          (review.decision !== "approved" ||
+            typeof review.replanContractRevision === "string"),
         `no-family-plan-sol-replan-record:${review.reviewId}`
       );
+    }
+    if (review.operation === "TARGET_SET") {
+      if (
+        review.supersedesReplanReviewId !== undefined ||
+        review.replanContractRevision !== undefined ||
+        review.targetOutlineSha256 !== undefined
+      ) {
+        assert(
+          typeof review.supersedesReplanReviewId === "string" &&
+            typeof review.replanContractRevision === "string" &&
+            /^[a-f0-9]{64}$/.test(review.targetOutlineSha256 ?? ""),
+          `no-family-plan-sol-target-replan-binding:${review.reviewId}`
+        );
+      }
     }
     assert(
       !solReviewIds.has(review.reviewId),
@@ -616,6 +696,7 @@ function buildReport() {
     const contract = source.trackContracts[archetype.archetypeId];
     assert(contract, `no-family-plan-track-contract-missing:${archetype.archetypeId}`);
     const reviewScopes = contract.reviewScopes ?? [];
+    const subWorkItems = contract.subWorkItems ?? [];
     assert(
       reviewScopes.every(
         (scope) =>
@@ -624,11 +705,43 @@ function buildReport() {
       ),
       `no-family-plan-review-scope-invalid:${archetype.archetypeId}`
     );
+    assert(
+      subWorkItems.every(
+        (subWorkItem) =>
+          reviewScopes.some(
+            (scope) =>
+              scope.familyTrackId === subWorkItem.familyTrackId &&
+              scope.scopeId === subWorkItem.scopeId
+          )
+      ),
+      `no-family-plan-subwork-scope-missing:${archetype.archetypeId}`
+    );
     const baseWorkItemId = `W${String(index + 1).padStart(3, "0")}`;
     const current = executionByCode.get(code);
     let nextAction = current?.nextAction ?? "complete";
     const expectedTargetOutline =
       targetOutlineByCode.get(code).expectedTargetOutline;
+    if (subWorkItems.length > 0) {
+      const ownedOutlineKeys = subWorkItems.flatMap(
+        (subWorkItem) => subWorkItem.targetOutlineKeys
+      );
+      assert(
+        new Set(ownedOutlineKeys).size === ownedOutlineKeys.length &&
+          ownedOutlineKeys.length === expectedTargetOutline.length &&
+          expectedTargetOutline.every((target) =>
+            ownedOutlineKeys.includes(target.key)
+          ),
+        `no-family-plan-subwork-target-ownership:${code}`
+      );
+      const ownedAssessmentTargetIds = subWorkItems.flatMap(
+        (subWorkItem) => subWorkItem.assessmentTargetIds
+      );
+      assert(
+        new Set(ownedAssessmentTargetIds).size ===
+          ownedAssessmentTargetIds.length,
+        `no-family-plan-subwork-target-id-duplicate:${code}`
+      );
+    }
     const targetSetReview = solReviewByKey.get(
       reviewKey(code, "TARGET_SET")
     );
@@ -640,6 +753,16 @@ function buildReport() {
         reviewKey(
           code,
           "FAMILY_TRACK",
+          scope.familyTrackId,
+          scope.scopeId
+        )
+      )
+    );
+    const scopedFamilyRevalidationReviews = reviewScopes.map((scope) =>
+      solReviewByKey.get(
+        reviewKey(
+          code,
+          "FAMILY_REVALIDATION",
           scope.familyTrackId,
           scope.scopeId
         )
@@ -693,7 +816,67 @@ function buildReport() {
         blockedFamilyTrackReview?.reviewId &&
       JSON.stringify(replanReview.replanScopes ?? []) ===
         JSON.stringify(reviewScopes) &&
-      reviewCandidateIsCurrent(replanReview);
+      replanReview.replanContractRevision === contract.replanContractRevision;
+    const targetOutlineHash = jsonHash(expectedTargetOutline);
+    const replanConsumed =
+      replanApproved &&
+      targetSetReview?.decision === "approved" &&
+      targetSetReview.supersedesReplanReviewId === replanReview?.reviewId &&
+      targetSetReview.replanContractRevision ===
+        contract.replanContractRevision &&
+      targetSetReview.targetOutlineSha256 === targetOutlineHash;
+    const subWorkStatuses = subWorkItems.map((subWorkItem) => {
+      const review = solReviewByKey.get(
+        reviewKey(
+          code,
+          "FAMILY_TRACK",
+          subWorkItem.familyTrackId,
+          subWorkItem.scopeId
+        )
+      );
+      return {
+        ...subWorkItem,
+        reviewStatus: review?.decision ?? "pending",
+        reviewId: review?.reviewId ?? null
+      };
+    });
+    const nextSubWork = subWorkStatuses.find(
+      (subWorkItem) => subWorkItem.reviewStatus !== "approved"
+    ) ?? null;
+    const scopedFamilyTrackStatus = (() => {
+      const decisions = scopedFamilyTrackReviews
+        .filter(Boolean)
+        .map((review) => review.decision);
+      if (decisions.includes("blocked")) return "blocked";
+      if (decisions.includes("changes-requested")) return "changes-requested";
+      if (decisions.includes("stale")) return "stale";
+      if (
+        reviewScopes.length > 0 &&
+        decisions.length === reviewScopes.length &&
+        decisions.every((decision) => decision === "approved")
+      ) {
+        return "approved";
+      }
+      return "pending";
+    })();
+    const familyTrackStatusBeforeRevalidation = replanConsumed
+      ? scopedFamilyTrackStatus
+      : familyTrackReviewStatus;
+    const familyRevalidationStatus = (() => {
+      const decisions = scopedFamilyRevalidationReviews
+        .filter(Boolean)
+        .map((review) => review.decision);
+      if (decisions.includes("blocked")) return "blocked";
+      if (decisions.includes("changes-requested")) return "changes-requested";
+      if (
+        reviewScopes.length === 1 &&
+        decisions.length === 1 &&
+        decisions[0] === "approved"
+      ) {
+        return "approved";
+      }
+      return "pending";
+    })();
     const revalidationArtifact =
       reviewScopes.length > 0
         ? readCurrentFamilyRevalidationArtifact(
@@ -703,9 +886,23 @@ function buildReport() {
             contract.familyId
           )
         : null;
+    const revalidationApproved =
+      revalidationArtifact !== null &&
+      scopedFamilyRevalidationReviews.some(
+        (review) =>
+          review?.decision === "approved" &&
+          review.artifactPath ===
+            `reports/curriculum-execution/family-revalidation/${baseWorkItemId}.json` &&
+          review.fingerprintSha256 === revalidationArtifact.fingerprintSha256 &&
+          familyRevalidationArtifactIsCurrent(review)
+      );
+    const familyTrackStatusForFlow = revalidationApproved
+      ? "approved"
+      : familyTrackStatusBeforeRevalidation;
     const learningMapBound = hasLearningMapBinding(learningMap, code);
     const targetSetReady =
-      current?.targetSetReviewed === true && !replanApproved;
+      targetSetReviewStatus === "approved" &&
+      (!replanApproved || replanConsumed);
     const linkedFamily = (current?.linkedFamilyIds?.length ?? 0) > 0;
     const familyValidated =
       (current?.offlineFamilyIds?.length ?? 0) > 0 ||
@@ -713,7 +910,7 @@ function buildReport() {
     let operation;
     let reviewGate = null;
     const blockedReviewGate =
-      familyTrackReviewStatus === "blocked"
+      familyTrackStatusForFlow === "blocked"
         ? "FAMILY_TRACK"
         : targetSetReviewStatus === "blocked"
           ? "TARGET_SET"
@@ -723,11 +920,11 @@ function buildReport() {
       nextAction = "sol-replan-required";
       operation = "SOL_REPLAN";
       reviewGate = null;
-    } else if (replanApproved) {
+    } else if (replanApproved && !replanConsumed) {
       nextAction = "review-target-set-and-design-family";
       operation = "TARGET_SET";
     } else if (
-      familyTrackReviewStatus === "stale" &&
+      familyTrackStatusForFlow === "stale" &&
       !revalidationArtifact
     ) {
       operation = "FAMILY_REVALIDATION";
@@ -739,12 +936,18 @@ function buildReport() {
     } else if (targetSetReviewStatus !== "approved") {
       operation = "SOL_REVIEW";
       reviewGate = "TARGET_SET";
-    } else if (familyTrackReviewStatus === "stale" && revalidationArtifact) {
+    } else if (
+      familyTrackStatusForFlow === "stale" &&
+      revalidationArtifact &&
+      !revalidationApproved
+    ) {
       operation = "SOL_REVIEW";
-      reviewGate = "FAMILY_TRACK";
+      reviewGate = "FAMILY_REVALIDATION";
+    } else if (replanConsumed && nextSubWork) {
+      operation = nextSubWork.preparationOperation;
     } else if (!linkedFamily || !familyValidated) {
       operation = "FAMILY_TRACK";
-    } else if (familyTrackReviewStatus !== "approved") {
+    } else if (familyTrackStatusForFlow !== "approved") {
       operation = "SOL_REVIEW";
       reviewGate = "FAMILY_TRACK";
     } else if (nextAction === "capture-current-hash-live-evidence") {
@@ -757,13 +960,15 @@ function buildReport() {
     const operationId = operationWorkItemId(
       baseWorkItemId,
       operation,
-      reviewGate
+      reviewGate,
+      replanConsumed && nextSubWork ? nextSubWork : null
     );
     const dependencies = operationDependencies(
       baseWorkItemId,
       operation,
       reviewGate,
-      familyTrackReviewStatus
+      familyTrackStatusForFlow,
+      replanConsumed && nextSubWork ? nextSubWork : null
     );
     const allowedFiles = source.operationPolicy.allowedFilesByOperation[operation];
     assert(
@@ -783,7 +988,10 @@ function buildReport() {
       plannedFamilyId: contract.familyId,
       engineClassIds: contract.engineClassIds,
       reviewScopes,
+      familySubWorkItems: subWorkStatuses,
+      nextFamilySubWork: replanConsumed ? nextSubWork : null,
       replanDocumentPath: contract.replanDocumentPath ?? null,
+      replanContractRevision: contract.replanContractRevision ?? null,
       operation,
       operationWorkItemId: operationId,
       dependencyWorkItemIds: dependencies,
@@ -804,7 +1012,7 @@ function buildReport() {
           : actionClass(nextAction),
       solReview: {
         targetSet: targetSetReviewStatus,
-        familyTrack: familyTrackReviewStatus,
+        familyTrack: familyTrackStatusForFlow,
         targetSetReviewId: targetSetReview?.reviewId ?? null,
         familyTrackReviewId: familyTrackReview?.reviewId ?? null,
         familyTrackReviewIds: familyTrackReviews
@@ -812,6 +1020,9 @@ function buildReport() {
           .map((review) => review.reviewId),
         replan: replanReview?.decision ?? "pending",
         replanApproved,
+        replanConsumed,
+        familyRevalidation: familyRevalidationStatus,
+        revalidationApproved,
         revalidationArtifact: revalidationArtifact?.fingerprintSha256 ?? null
       }
     };

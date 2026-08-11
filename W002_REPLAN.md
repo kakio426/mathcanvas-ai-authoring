@@ -25,13 +25,15 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 기본안은 **AssessmentTarget을 rule-kind별 concrete target으로 다시 분해하고, family가 자기 target만 등록하는 방식**이다.
 이 방식은 새 partial-coverage 집계 스키마를 먼저 도입하지 않아도 현재 coverage join이 과대 주장을 막는다.
 
-W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한다.
+W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한다. 이 문서의 재계획 계약 revision은
+`W002-SOL-REPLAN-v2`이며, Sol이 승인한 뒤 새 TARGET_SET review가 이 revision과 새 target-outline hash를
+명시적으로 소비해야 한다.
 
 | 새 target slice | 학생의 실제 결정 | 소유 family |
 |---|---|---|
-| repeat rule 구성·선언 | 물체·무늬의 반복 단위 성분과 순서를 직접 정하고 선언 | repeat-rule-construction |
-| repeat 배열 구성·수정 | 선언한 반복 단위로 다음 항을 만들고 어긋난 항을 교체 | repeat-arrangement-repair |
-| change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 정하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | change-rule-construction |
+| repeat rule 구성·선언 | 물체·무늬의 반복 단위 성분과 순서를 직접 정하고 선언 | `pattern.repeat-unit.construct-v1` |
+| repeat 배열 구성·수정 | 선언한 반복 단위로 다음 항을 만들고 어긋난 항을 교체 | `pattern.declared-repeat.repair-v1` |
+| change rule 구성·적용·수정 | 수열의 시작값·간격·방향을 직접 정하고, 그 관계로 다음 수를 만들며 어긋난 수를 수정 | `pattern.change-rule.construct-v1` |
 
 각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 세 slice를 모두 등록하는
 방식은 금지한다. TargetSet 재검토가 이 분해를 승인하기 전에는 어떤 family도 W002 완료를 주장하지 않는다.
@@ -54,7 +56,8 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
    `FAMILY_TRACK` review attempt를 재사용하거나 A5로 세지 않는다. 허용 파일은 이 문서,
    no-family plan/target outline, board와 파생 execution report로 제한한다.
 2. `W002-REPLAN-TARGET_SET` — 세 target slice의 statement·invariant·observable evidence·misconception과
-   pinned learning-map 결속을 갱신하고 target-outline hash를 재생성한다.
+   pinned learning-map 결속을 갱신하고 target-outline hash를 재생성한다. 이 단계의 TARGET_SET 승인 기록은
+   `supersedesReplanReviewId`, `replanContractRevision`, `targetOutlineSha256`를 모두 기록해야 재계획을 소비한다.
 3. `W002-REPLAN-AFFORDANCE_DISCOVERY` — 수 변화 family에 필요한 number/state native affordance가
    현재 catalog에 있는지 bounded read/canary로 확인한다. 없으면 새 native tool을 family 안에 몰래 추가하지 않고
    `ENGINE_CORE` 재계획으로 멈춘다.
@@ -101,8 +104,9 @@ family stage는 `mapped`/`generatable` 이하로만 표시하고, target coverag
 - contexts는 시작값만 바꾸는 표면 variation이 아니라 정답 rule state·배열·오개념 상태가 실제로 달라야 한다.
 - unsupported repeat-3, change 밖의 수 표현, 미등록 객체·도구 요청은 조용히 fallback하지 않고
   `clarification-required`/unsupported 결과로 반환한다.
-- exact preview는 rule lane, 초기 상태, repair 위치, continuation target, 학생이 저장한 rule state를
-  모두 표시하고 resolved item·answer key와 같은 projector에서 나온다.
+- exact preview는 compile-time RuleStateEnvelope, rule lane, 초기 상태, repair 위치, continuation target과
+  조건부 rubric을 표시한다. 학생이 실제로 저장한 StudentRuleStateEvidence는 조작·save/reopen 뒤에만
+  responseHash와 함께 표시되며, 승인 전 preview가 미래의 학생 상태를 증명한다고 주장하지 않는다.
 
 ## 5. 최소 테스트·승인 기준
 

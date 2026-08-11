@@ -76,7 +76,8 @@ if (!/^[a-f0-9]{40}$/.test(candidateCommit)) fail("candidate-commit-format");
 if (
   operation !== "TARGET_SET" &&
   operation !== "FAMILY_TRACK" &&
-  operation !== "SOL_REPLAN"
+  operation !== "SOL_REPLAN" &&
+  operation !== "FAMILY_REVALIDATION"
 ) {
   fail("operation-not-review-gated");
 }
@@ -85,6 +86,9 @@ if ((familyTrackId && !scopeId) || (!familyTrackId && scopeId)) {
 }
 if (operation === "FAMILY_TRACK" && !familyTrackId) {
   fail("family-track-review-scope-required");
+}
+if (operation === "FAMILY_REVALIDATION" && !familyTrackId) {
+  fail("family-revalidation-review-scope-required");
 }
 
 const workItem = report.workItems.find(
@@ -100,7 +104,7 @@ const reviews = board.reviews
     (review) =>
       review.standardCode === workItem.standardCode &&
       review.operation === operation &&
-      (operation !== "FAMILY_TRACK" ||
+      (!["FAMILY_TRACK", "FAMILY_REVALIDATION"].includes(operation) ||
         (review.familyTrackId === familyTrackId &&
           review.scopeId === scopeId))
   )
@@ -112,6 +116,16 @@ if (review.candidateCommit !== candidateCommit) {
   fail(`candidate-mismatch:${review.candidateCommit}:${candidateCommit}`);
 }
 if (review.reviewer !== "gpt-5.6-sol / max") fail("reviewer-mismatch");
+if (operation === "FAMILY_REVALIDATION") {
+  if (
+    review.familyTrackId !== familyTrackId ||
+    review.scopeId !== scopeId ||
+    typeof review.artifactPath !== "string" ||
+    !/^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "")
+  ) {
+    fail("family-revalidation-evidence-missing");
+  }
+}
 if (
   !review.reviewId ||
   !Number.isInteger(review.attempt) ||

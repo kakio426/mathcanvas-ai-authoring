@@ -71,6 +71,7 @@
     "decisionValues": ["approved", "changes-requested", "blocked"],
     "scopePolicy": {
       "familyTrackRequires": ["familyTrackId", "scopeId"],
+      "familyRevalidationRequires": ["familyTrackId", "scopeId", "artifactPath", "fingerprintSha256"],
       "scopeKey": ["standardCode", "operation", "familyTrackId", "scopeId"],
       "legacyUnscopedReviews": "pre-scope approvals remain auditable; every new FAMILY_TRACK gate must provide both scope fields"
     },
@@ -267,7 +268,7 @@
     "finalConcreteProblemFamilyRange": "92-110",
     "rangeNote": "AssessmentTarget 완전 분해 전 계획 범위다. 84개 track은 단일 gradeBand를 지키는 구현 소유권 baseline이며 하나의 track이 여러 concrete family로 갈라질 수 있다. 수를 맞추기 위해 합치지 않는다.",
     "expectedAssessmentTargetRange": "230-380",
-    "solDraftExpectedTargetCount": 236,
+    "solDraftExpectedTargetCount": 237,
     "expectedLunaWorkItemRuns": "288-330",
     "boundedNativeDiscoveryBundles": "9-12",
     "existingFamilyReuseOrExtensionRange": "8-16",
@@ -403,6 +404,7 @@
       "familyId": "pattern.create-repeat-unit-explain-v1",
       "engineClassIds": ["R08"],
       "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -415,6 +417,38 @@
         {
           "familyTrackId": "pattern.change-rule.construct-v1",
           "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "subWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": ["choose-own-arrangement-rule"],
+          "assessmentTargetIds": ["change.pattern.repeat-rule.construct-v1"],
+          "dependencies": [],
+          "preparationOperation": "AFFORDANCE_DISCOVERY"
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": ["construct-repeat-arrangement-following-rule"],
+          "assessmentTargetIds": ["change.pattern.declared-repeat.repair-v1"],
+          "dependencies": ["W002-FAMILY_TRACK-repeat-rule"],
+          "preparationOperation": "ENGINE_CORE"
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": ["construct-change-arrangement-following-rule"],
+          "assessmentTargetIds": ["change.pattern.change-rule.construct-v1"],
+          "dependencies": ["W002-FAMILY_TRACK-repeat-rule"],
+          "preparationOperation": "ENGINE_CORE"
         }
       ]
     },

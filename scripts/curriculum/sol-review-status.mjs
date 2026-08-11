@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,6 +8,10 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultBoardPath = resolve(
   root,
   "scripts/curriculum/sol-review-board.json"
+);
+const revalidationDir = resolve(
+  root,
+  "reports/curriculum-execution/family-revalidation"
 );
 
 export function readSolReviewBoard(boardPath = defaultBoardPath) {
@@ -109,6 +114,64 @@ export function reviewCandidateIsCurrent(review, runGit = defaultGit) {
   }
 }
 
+function sha256Json(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+/**
+ * A revalidation approval is meaningful only while the artifact it reviewed
+ * still has the same fingerprint and every file recorded by that artifact is
+ * unchanged. This lets the lifecycle consume a scoped FAMILY_REVALIDATION
+ * record without tying it to unrelated later standard work.
+ */
+export function familyRevalidationArtifactIsCurrent(review) {
+  if (
+    !review ||
+    review.operation !== "FAMILY_REVALIDATION" ||
+    typeof review.artifactPath !== "string" ||
+    !/^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "")
+  ) {
+    return false;
+  }
+  try {
+    const artifactPath = resolve(root, review.artifactPath);
+    if (!artifactPath.startsWith(`${root}/`) || !existsSync(artifactPath)) {
+      return false;
+    }
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    if (
+      artifact.operation !== "FAMILY_REVALIDATION" ||
+      artifact.workItemId !== review.workItemId ||
+      artifact.standardCode !== review.standardCode ||
+      artifact.familyTrackId !== review.familyTrackId ||
+      artifact.scopeId !== review.scopeId ||
+      artifact.fingerprintSha256 !== review.fingerprintSha256
+    ) {
+      return false;
+    }
+    const { fingerprintSha256, ...fingerprintPayload } = artifact;
+    if (sha256Json(fingerprintPayload) !== fingerprintSha256) return false;
+    return Object.entries(artifact.implementationFiles ?? {}).every(
+      ([relativePath, expectedHash]) => {
+        const implementationPath = resolve(root, relativePath);
+        if (
+          !implementationPath.startsWith(`${root}/`) ||
+          !existsSync(implementationPath)
+        ) {
+          return false;
+        }
+        return (
+          createHash("sha256")
+            .update(readFileSync(implementationPath))
+            .digest("hex") === expectedHash
+        );
+      }
+    );
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Native family lifecycle is not an approval by itself. A native family may
  * be counted as offline/live only after the latest Sol FAMILY_TRACK review for
@@ -139,6 +202,20 @@ export function nativeFamilyReviewStatus(
         review.decision === "approved" &&
         !candidateChecker(review)
       ) {
+        const revalidation = latestReview(
+          board,
+          standardCode,
+          "FAMILY_REVALIDATION",
+          reviewScope
+        );
+        if (
+          revalidation?.decision === "approved" &&
+          revalidation.supersedesReviewId === review.reviewId &&
+          candidateChecker(revalidation) &&
+          familyRevalidationArtifactIsCurrent(revalidation)
+        ) {
+          return "approved";
+        }
         return "stale";
       }
       return review.decision;

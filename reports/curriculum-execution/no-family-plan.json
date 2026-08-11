@@ -244,6 +244,12 @@
         "familyTrackId",
         "scopeId"
       ],
+      "familyRevalidationRequires": [
+        "familyTrackId",
+        "scopeId",
+        "artifactPath",
+        "fingerprintSha256"
+      ],
       "scopeKey": [
         "standardCode",
         "operation",
@@ -886,7 +892,7 @@
     "finalConcreteProblemFamilyRange": "92-110",
     "rangeNote": "AssessmentTarget 완전 분해 전 계획 범위다. 84개 track은 단일 gradeBand를 지키는 구현 소유권 baseline이며 하나의 track이 여러 concrete family로 갈라질 수 있다. 수를 맞추기 위해 합치지 않는다.",
     "expectedAssessmentTargetRange": "230-380",
-    "solDraftExpectedTargetCount": 236,
+    "solDraftExpectedTargetCount": 237,
     "expectedLunaWorkItemRuns": "288-330",
     "boundedNativeDiscoveryBundles": "9-12",
     "existingFamilyReuseOrExtensionRange": "8-16",
@@ -903,7 +909,7 @@
       "도형과 측정": 41,
       "자료와 가능성": 8
     },
-    "expectedTargetCount": 236,
+    "expectedTargetCount": 237,
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 95,
@@ -940,7 +946,10 @@
           "scopeId": "W001-FAMILY_TRACK-data-table-organize"
         }
       ],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "FAMILY_REVALIDATION",
       "operationWorkItemId": "W001-FAMILY_REVALIDATION",
       "dependencyWorkItemIds": [
@@ -988,6 +997,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -1019,7 +1031,63 @@
           "scopeId": "W002-FAMILY_TRACK-change-rule"
         }
       ],
+      "familySubWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": [
+            "choose-own-arrangement-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.repeat-rule.construct-v1"
+          ],
+          "dependencies": [],
+          "preparationOperation": "AFFORDANCE_DISCOVERY",
+          "reviewStatus": "pending",
+          "reviewId": null
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": [
+            "construct-repeat-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.declared-repeat.repair-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE",
+          "reviewStatus": "pending",
+          "reviewId": null
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": [
+            "construct-change-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.change-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE",
+          "reviewStatus": "pending",
+          "reviewId": null
+        }
+      ],
+      "nextFamilySubWork": null,
       "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
       "operation": "SOL_REPLAN",
       "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
@@ -1050,7 +1118,7 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
+      "targetOutlineSha256": "ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
@@ -1060,14 +1128,21 @@
           "misconceptionClass": "rule-changes-mid-sequence"
         },
         {
-          "key": "construct-arrangement-following-rule",
-          "studentDecision": "정한 규칙에 맞도록 다음 항목들을 배열하고 어긋난 항목을 고친다.",
-          "invariant": "모든 항목은 동일한 반복 단위 또는 변화 관계로 생성된다.",
-          "observableEvidence": "완성된 배열에서 반복 단위나 항 사이 관계를 다시 추적할 수 있다.",
-          "misconceptionClass": "copy-last-item-instead-of-applying-rule"
+          "key": "construct-repeat-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 반복 단위에 맞도록 다음 항목들을 배열하고 어긋난 반복 항목을 고친다.",
+          "invariant": "반복 배열의 모든 항목은 학생이 선언한 동일한 반복 단위로 생성된다.",
+          "observableEvidence": "완성된 반복 배열에서 단위 경계·수정된 항목·반복 근거를 다시 추적할 수 있다.",
+          "misconceptionClass": "copy-last-item-instead-of-applying-repeat-rule"
+        },
+        {
+          "key": "construct-change-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 변화 관계에 맞도록 다음 항목을 배열하고 어긋난 항목을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 같은 변화 관계를 만족한다.",
+          "observableEvidence": "연속 항의 관계와 수정된 항을 화면에서 대조하고 다음 항을 예측할 수 있다.",
+          "misconceptionClass": "change-step-or-direction-mismatch"
         }
       ],
-      "expectedTargetCount": 2,
+      "expectedTargetCount": 3,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "sol-replan-required",
@@ -1080,6 +1155,9 @@
         "familyTrackReviewIds": [],
         "replan": "changes-requested",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -2917,6 +2995,7 @@
         "R08"
       ],
       "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -2929,6 +3008,54 @@
         {
           "familyTrackId": "pattern.change-rule.construct-v1",
           "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "subWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": [
+            "choose-own-arrangement-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.repeat-rule.construct-v1"
+          ],
+          "dependencies": [],
+          "preparationOperation": "AFFORDANCE_DISCOVERY"
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": [
+            "construct-repeat-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.declared-repeat.repair-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE"
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": [
+            "construct-change-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.change-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE"
         }
       ]
     },
@@ -3309,7 +3436,10 @@
           "scopeId": "W001-FAMILY_TRACK-data-table-organize"
         }
       ],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "FAMILY_REVALIDATION",
       "operationWorkItemId": "W001-FAMILY_REVALIDATION",
       "dependencyWorkItemIds": [
@@ -3357,6 +3487,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3388,7 +3521,63 @@
           "scopeId": "W002-FAMILY_TRACK-change-rule"
         }
       ],
+      "familySubWorkItems": [
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+          "familyId": "pattern.repeat-unit.construct-v1",
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+          "targetOutlineKeys": [
+            "choose-own-arrangement-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.repeat-rule.construct-v1"
+          ],
+          "dependencies": [],
+          "preparationOperation": "AFFORDANCE_DISCOVERY",
+          "reviewStatus": "pending",
+          "reviewId": null
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+          "familyId": "pattern.declared-repeat.repair-v1",
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+          "targetOutlineKeys": [
+            "construct-repeat-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.declared-repeat.repair-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE",
+          "reviewStatus": "pending",
+          "reviewId": null
+        },
+        {
+          "workItemId": "W002-FAMILY_TRACK-change-rule",
+          "familyId": "pattern.change-rule.construct-v1",
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule",
+          "targetOutlineKeys": [
+            "construct-change-arrangement-following-rule"
+          ],
+          "assessmentTargetIds": [
+            "change.pattern.change-rule.construct-v1"
+          ],
+          "dependencies": [
+            "W002-FAMILY_TRACK-repeat-rule"
+          ],
+          "preparationOperation": "ENGINE_CORE",
+          "reviewStatus": "pending",
+          "reviewId": null
+        }
+      ],
+      "nextFamilySubWork": null,
       "replanDocumentPath": "W002_REPLAN.md",
+      "replanContractRevision": "W002-SOL-REPLAN-v2",
       "operation": "SOL_REPLAN",
       "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
@@ -3419,7 +3608,7 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "bff0cd112afd78cfc90ec401bee93aa8039a8c242b68ae9a117af5ac9d25bd40",
+      "targetOutlineSha256": "ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
@@ -3429,14 +3618,21 @@
           "misconceptionClass": "rule-changes-mid-sequence"
         },
         {
-          "key": "construct-arrangement-following-rule",
-          "studentDecision": "정한 규칙에 맞도록 다음 항목들을 배열하고 어긋난 항목을 고친다.",
-          "invariant": "모든 항목은 동일한 반복 단위 또는 변화 관계로 생성된다.",
-          "observableEvidence": "완성된 배열에서 반복 단위나 항 사이 관계를 다시 추적할 수 있다.",
-          "misconceptionClass": "copy-last-item-instead-of-applying-rule"
+          "key": "construct-repeat-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 반복 단위에 맞도록 다음 항목들을 배열하고 어긋난 반복 항목을 고친다.",
+          "invariant": "반복 배열의 모든 항목은 학생이 선언한 동일한 반복 단위로 생성된다.",
+          "observableEvidence": "완성된 반복 배열에서 단위 경계·수정된 항목·반복 근거를 다시 추적할 수 있다.",
+          "misconceptionClass": "copy-last-item-instead-of-applying-repeat-rule"
+        },
+        {
+          "key": "construct-change-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 변화 관계에 맞도록 다음 항목을 배열하고 어긋난 항목을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 같은 변화 관계를 만족한다.",
+          "observableEvidence": "연속 항의 관계와 수정된 항을 화면에서 대조하고 다음 항을 예측할 수 있다.",
+          "misconceptionClass": "change-step-or-direction-mismatch"
         }
       ],
-      "expectedTargetCount": 2,
+      "expectedTargetCount": 3,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
       "nextAction": "sol-replan-required",
@@ -3449,6 +3645,9 @@
         "familyTrackReviewIds": [],
         "replan": "changes-requested",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3467,7 +3666,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3518,6 +3720,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3536,7 +3741,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W004-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3587,6 +3795,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3605,7 +3816,10 @@
         "R22"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W005-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3663,6 +3877,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3681,7 +3898,10 @@
         "R09"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W006-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3739,6 +3959,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3757,7 +3980,10 @@
         "R01"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W007-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3815,6 +4041,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3833,7 +4062,10 @@
         "R08"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W008-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3891,6 +4123,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3909,7 +4144,10 @@
         "R23"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W009-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -3974,6 +4212,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -3992,7 +4233,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W010-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4050,6 +4294,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4069,7 +4316,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W011-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4127,6 +4377,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4145,7 +4398,10 @@
         "R22"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W012-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4196,6 +4452,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4214,7 +4473,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W013-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4265,6 +4527,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4283,7 +4548,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W014-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4341,6 +4609,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4359,7 +4630,10 @@
         "R14"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W015-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4410,6 +4684,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4428,7 +4705,10 @@
         "R22"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W016-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4486,6 +4766,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4504,7 +4787,10 @@
         "R09"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W017-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4555,6 +4841,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4573,7 +4862,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W018-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4624,6 +4916,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4642,7 +4937,10 @@
         "R22"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W019-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4700,6 +4998,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4719,7 +5020,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W020-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4777,6 +5081,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4795,7 +5102,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W021-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4853,6 +5163,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4871,7 +5184,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W022-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4922,6 +5238,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -4940,7 +5259,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W023-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -4998,6 +5320,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5016,7 +5341,10 @@
         "R21"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W024-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5067,6 +5395,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5085,7 +5416,10 @@
         "R09"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W025-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5143,6 +5477,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5162,7 +5499,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W026-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5213,6 +5553,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5231,7 +5574,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W027-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5282,6 +5628,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5300,7 +5649,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W028-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5351,6 +5703,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5369,7 +5724,10 @@
         "R15"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W029-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5427,6 +5785,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5445,7 +5806,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W030-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5496,6 +5860,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5514,7 +5881,10 @@
         "R09"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W031-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5565,6 +5935,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5583,7 +5956,10 @@
         "R06"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W032-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5641,6 +6017,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5660,7 +6039,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W033-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5711,6 +6093,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5729,7 +6114,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W034-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5787,6 +6175,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5805,7 +6196,10 @@
         "R15"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W035-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5856,6 +6250,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5874,7 +6271,10 @@
         "R06"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W036-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -5932,6 +6332,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -5950,7 +6353,10 @@
         "R12"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W037-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6001,6 +6407,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6019,7 +6428,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W038-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6070,6 +6482,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6089,7 +6504,10 @@
         "R22"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W039-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6140,6 +6558,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6158,7 +6579,10 @@
         "R06"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W040-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6209,6 +6633,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6227,7 +6654,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W041-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6278,6 +6708,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6296,7 +6729,10 @@
         "R16"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W042-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6347,6 +6783,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6365,7 +6804,10 @@
         "R18"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W043-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6430,6 +6872,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6448,7 +6893,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W044-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6499,6 +6947,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6517,7 +6968,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W045-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6568,6 +7022,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6586,7 +7043,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W046-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6644,6 +7104,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6662,7 +7125,10 @@
         "R16"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W047-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6713,6 +7179,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6731,7 +7200,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W048-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6782,6 +7254,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6800,7 +7275,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W049-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6858,6 +7336,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6876,7 +7357,10 @@
         "R13"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W050-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6927,6 +7411,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -6945,7 +7432,10 @@
         "R12"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W051-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -6996,6 +7486,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7014,7 +7507,10 @@
         "R07"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W052-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7065,6 +7561,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7083,7 +7582,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W053-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7134,6 +7636,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7152,7 +7657,10 @@
         "R07"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W054-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7210,6 +7718,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7228,7 +7739,10 @@
         "R14"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W055-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7279,6 +7793,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7297,7 +7814,10 @@
         "R12"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W056-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7355,6 +7875,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7375,7 +7898,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W057-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7426,6 +7952,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7444,7 +7973,10 @@
         "R17"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W058-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7495,6 +8027,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7513,7 +8048,10 @@
         "R07"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W059-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7564,6 +8102,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7582,7 +8123,10 @@
         "R14"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W060-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7633,6 +8177,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7651,7 +8198,10 @@
         "R12"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W061-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7702,6 +8252,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7720,7 +8273,10 @@
         "R07"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W062-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7778,6 +8334,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7796,7 +8355,10 @@
         "R19"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W063-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7854,6 +8416,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7872,7 +8437,10 @@
         "R06"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W064-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7923,6 +8491,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -7941,7 +8512,10 @@
         "R07"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W065-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -7999,6 +8573,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8018,7 +8595,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W066-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8069,6 +8649,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8087,7 +8670,10 @@
         "R21"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W067-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8145,6 +8731,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8164,7 +8753,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W068-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8222,6 +8814,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8240,7 +8835,10 @@
         "R18"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W069-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8291,6 +8889,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8309,7 +8910,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W070-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8360,6 +8964,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8378,7 +8985,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W071-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8429,6 +9039,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8447,7 +9060,10 @@
         "R17"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W072-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8498,6 +9114,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8516,7 +9135,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W073-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8574,6 +9196,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8593,7 +9218,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W074-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8644,6 +9272,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8662,7 +9293,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W075-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8713,6 +9347,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8731,7 +9368,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W076-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8789,6 +9429,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8808,7 +9451,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W077-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8859,6 +9505,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8879,7 +9528,10 @@
         "R02"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W078-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -8930,6 +9582,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -8949,7 +9604,10 @@
         "R03"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W079-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9000,6 +9658,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9019,7 +9680,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W080-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9091,6 +9755,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9109,7 +9776,10 @@
         "R18"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W081-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9167,6 +9837,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9185,7 +9858,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W082-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9243,6 +9919,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9261,7 +9940,10 @@
         "R16"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W083-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9319,6 +10001,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9337,7 +10022,10 @@
         "R19"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W084-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9388,6 +10076,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9406,7 +10097,10 @@
         "R05"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W085-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9457,6 +10151,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9476,7 +10173,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W086-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9527,6 +10227,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9545,7 +10248,10 @@
         "R18"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W087-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9603,6 +10309,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9622,7 +10331,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W088-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9673,6 +10385,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9691,7 +10406,10 @@
         "R19"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W089-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9742,6 +10460,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9760,7 +10481,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W090-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9811,6 +10535,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9830,7 +10557,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W091-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9881,6 +10611,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9900,7 +10633,10 @@
         "R20"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W092-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -9958,6 +10694,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -9976,7 +10715,10 @@
         "R18"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W093-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -10034,6 +10776,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -10052,7 +10797,10 @@
         "R19"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W094-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -10110,6 +10858,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -10128,7 +10879,10 @@
         "R19"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W095-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -10179,6 +10933,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -10198,7 +10955,10 @@
         "R04"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W096-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -10249,6 +11009,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
@@ -10268,7 +11031,10 @@
         "R11"
       ],
       "reviewScopes": [],
+      "familySubWorkItems": [],
+      "nextFamilySubWork": null,
       "replanDocumentPath": null,
+      "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
       "operationWorkItemId": "W097-LEARNING_MAP_BINDING",
       "dependencyWorkItemIds": [],
@@ -10319,6 +11085,9 @@
         "familyTrackReviewIds": [],
         "replan": "pending",
         "replanApproved": false,
+        "replanConsumed": false,
+        "familyRevalidation": "pending",
+        "revalidationApproved": false,
         "revalidationArtifact": null
       }
     }
