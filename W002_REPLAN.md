@@ -37,6 +37,11 @@ W002의 두 초안 target을 다음 세 개의 reviewed target으로 분해한�
 
 각 family는 `source.assessmentTargetIds`에 자기 slice만 넣는다. 한 family가 세 slice를 모두 등록하는
 방식은 금지한다. TargetSet 재검토가 이 분해를 승인하기 전에는 어떤 family도 W002 완료를 주장하지 않는다.
+세 concrete sub-work는 `reports/curriculum-execution/subwork-state/W002.json`의 phase cursor를 사용한다.
+각 cursor는 자신의 `operationSequence`에서 아직 완료하지 않은 정확히 하나의 `nextOperation`만 가리키며,
+`AFFORDANCE_DISCOVERY → ENGINE_CORE → FAMILY_TRACK → SOL_REVIEW`를 건너뛰거나 같은 단계를 반복할 수 없다.
+첫 단계의 의존성은 `W002-SOL_REPLAN`과 새 `W002-SOL_REVIEW-TARGET_SET`이고, 후속 family는 필요한 선행
+sub-work의 scoped review ID까지 의존성에 기록한다.
 
 새 partial-coverage aggregation schema는 만들지 않는다. 현재 registry의 target union을 그대로
 사용하되, 각 family가 자기 target slice만 `source.assessmentTargetIds`에 등록하도록 고정한다.
@@ -75,6 +80,10 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
    수를 이어 놓고 간격·방향 오개념을 수정한다. 이 단계에서 구성과 수정이 서로 다른 결정으로
    드러나면 즉시 별도 family로 split하고 Sol 재계획을 연다.
 8. 각 family의 `FAMILY_TRACK` Sol 승인 후에만 W002를 `offline-validated` 후보로 계산한다.
+
+각 offline 단계가 끝나면 Luna는 해당 candidate에 phase-state JSON과 파생 report를 함께 기록하고,
+다음 실행은 report가 계산한 `nextFamilySubWork`/`operationWorkItemId`만 사용한다. cursor가 없거나
+sequence와 맞지 않으면 구현을 계속하지 않고 `blocked-needs-sol-replan`으로 멈춘다.
 
 이 재계획과 별도로 **검증 상태 정합성 작업**을 먼저 승인한다. 현재 W002는 Sol board에서
 `blocked`인데 `reports/curriculum-coverage/latest.json`과

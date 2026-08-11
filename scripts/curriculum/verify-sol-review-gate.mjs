@@ -121,7 +121,9 @@ if (operation === "FAMILY_REVALIDATION") {
     review.familyTrackId !== familyTrackId ||
     review.scopeId !== scopeId ||
     typeof review.artifactPath !== "string" ||
-    !/^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "")
+    !/^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "") ||
+    review.supersedesReviewId !== null ||
+    typeof review.supersedesFamilyTrackReviewId !== "string"
   ) {
     fail("family-revalidation-evidence-missing");
   }

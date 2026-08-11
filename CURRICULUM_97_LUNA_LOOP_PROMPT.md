@@ -70,7 +70,17 @@ AFFORDANCE_DISCOVERY/ENGINE_CORE → FAMILY_TRACK → SOL_REVIEW → STANDARD_BI
 `targetOutlineSha256`를 입력으로 사용하며, 이 값이 없거나 현재 코드와 맞지 않으면
 `blocked-needs-sol-replan`이다.
 
-`TARGET_SET`, `FAMILY_TRACK`, `SOL_REPLAN`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
+`FAMILY_REVALIDATION`은 stale native family의 fingerprint artifact를 만드는 offline operation이고,
+그 뒤의 `SOL_REVIEW`는 `reviewGate=FAMILY_REVALIDATION`과 `familyTrackId/scopeId`를 함께 사용한다.
+legacy 무범위 FAMILY_TRACK record를 새 scoped 승인으로 재사용하지 않으며, revalidation record는
+별도 review key의 첫 attempt이므로 `supersedesReviewId`는 null이고 legacy 연결은
+`supersedesFamilyTrackReviewId` 필드로 기록한다.
+
+재계획으로 concrete sub-work가 생긴 standard는 generated `familySubWorkItems`와
+`subWorkStatePath`의 cursor를 따른다. cursor가 지시한 `operationSequence`의 한 단계만 실행하고,
+phase-state·파생 report가 갱신되지 않은 상태에서 같은 단계를 다시 실행하지 않는다.
+
+`TARGET_SET`, `FAMILY_TRACK`, `SOL_REPLAN`, `FAMILY_REVALIDATION`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
 focused QA를 수행한 뒤 **아직 push하지 않은 local candidate commit**을 만들고
 `pending-sol-review`로 종료한다. [SOL_REVIEW_PROMPT.md](SOL_REVIEW_PROMPT.md)를
 사용하는 Sol max 실행이 그 candidate commit hash에 결속된 `approved` 기록을
@@ -210,9 +220,9 @@ generated timestamp만 바뀐 unrelated audit 파일은 내용을 확인한 뒤 
 ## commit·push
 
 - 일반 operation은 모든 gate가 통과했을 때 한 work item을 한 atomic commit으로 만든다.
-- `TARGET_SET`·`FAMILY_TRACK`은 Luna가 local candidate commit을 만든 뒤 push하지 않고 종료한다.
+- `TARGET_SET`·`FAMILY_TRACK`·`SOL_REPLAN`·`FAMILY_REVALIDATION`은 Luna가 local candidate commit을 만든 뒤 push하지 않고 종료한다.
 - Sol max가 candidate commit hash에 결속된 `approved` record를 남긴 뒤에만
-  `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation <TARGET_SET|FAMILY_TRACK|SOL_REPLAN> --candidate <sha>`를 실행하고 `git push origin main`을 한다.
+  `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation <TARGET_SET|FAMILY_TRACK|SOL_REPLAN|FAMILY_REVALIDATION> --candidate <sha>`를 실행하고 `git push origin main`을 한다.
   `FAMILY_TRACK`에는 `--family-track-id <id> --scope-id <id>`를 추가한다.
 - `changes-requested`이면 기존 candidate를 재사용하지 말고 새 attempt·새 candidate commit으로 다시 검토받는다.
 - candidate 이후에는 Sol board와 파생 report만 변경할 수 있다. 구현 파일이 candidate 이후

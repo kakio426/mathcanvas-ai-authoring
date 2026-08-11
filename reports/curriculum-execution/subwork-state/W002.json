@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "workItemId": "W002",
+  "standardCode": "[2수02-02]",
+  "contractRevision": "W002-SOL-REPLAN-v2",
+  "items": [
+    {
+      "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+      "completedOperations": [],
+      "nextOperation": "AFFORDANCE_DISCOVERY"
+    },
+    {
+      "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+      "completedOperations": [],
+      "nextOperation": "ENGINE_CORE"
+    },
+    {
+      "workItemId": "W002-FAMILY_TRACK-change-rule",
+      "completedOperations": [],
+      "nextOperation": "ENGINE_CORE"
+    }
+  ]
+}

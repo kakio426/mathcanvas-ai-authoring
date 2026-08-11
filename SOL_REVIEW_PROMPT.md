@@ -10,6 +10,8 @@
 
 - `TARGET_SET`: officialGoal, 학생 결정, 불변량, 관찰 증거, 오개념, target 완전성
 - `FAMILY_TRACK`: learning-map 결속, family 경계, native affordance, 결정성, preview·정답·해설, 교육적 상호작용
+- `SOL_REPLAN`: blocked 원인의 재계획 범위, target ownership, phase cursor, revision/hash 소비 조건
+- `FAMILY_REVALIDATION`: stale family의 scoped fingerprint artifact와 implementation-file hash가 현재인지
 
 현재 work item의 입력은 다음 파일에서 읽는다.
 
@@ -82,6 +84,10 @@ report만 별도 로컬 commit으로 함께 기록한다. 이 Sol commit도 push
 review scope로 사용한다. review record에 두 scope 필드가 없거나 candidate work item의
 scope와 다르면 다른 family의 승인으로 재사용할 수 없다. pre-scope legacy record는
 감사 가능한 과거 기록으로만 남긴다.
+`FAMILY_REVALIDATION`도 별도 scoped review key를 사용한다. 첫 attempt의
+`supersedesReviewId`는 null이어야 하며, legacy 무범위 FAMILY_TRACK과 연결할 때는
+`supersedesFamilyTrackReviewId`를 별도로 기록한다. `artifactPath`와
+`fingerprintSha256`가 현재 artifact·implementation hashes와 일치하지 않으면 승인하지 않는다.
 `SOL_REPLAN`은 blocked standard의 재개 계약만 검토하며 별도 `operationWorkItemId`와
 candidate/allowedFiles를 사용한다. 기존 `FAMILY_TRACK` attempt를 재사용하거나 A5로
 기록하지 않는다.

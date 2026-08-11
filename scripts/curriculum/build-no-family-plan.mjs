@@ -134,6 +134,35 @@ function readCurrentFamilyRevalidationArtifact(
   }
 }
 
+function readSubWorkState(contract) {
+  if (typeof contract.subWorkStatePath !== "string") return null;
+  try {
+    const absolutePath = resolve(root, contract.subWorkStatePath);
+    assert(
+      absolutePath.startsWith(`${root}/`),
+      `no-family-plan-subwork-state-path-outside-root:${contract.subWorkStatePath}`
+    );
+    const state = readJson(absolutePath);
+    assert(
+      state.schemaVersion === "1.0.0" &&
+        state.contractRevision === contract.replanContractRevision &&
+        Array.isArray(state.items),
+      `no-family-plan-subwork-state-schema:${contract.subWorkStatePath}`
+    );
+    return new Map(
+      state.items.map((item) => [
+        item.workItemId,
+        {
+          completedOperations: item.completedOperations,
+          nextOperation: item.nextOperation
+        }
+      ])
+    );
+  } catch {
+    return null;
+  }
+}
+
 function hasLearningMapBinding(learningMap, standardCode) {
   const prefix = `${standardCode} `;
   const topics = learningMap.topics.filter((topic) =>
@@ -290,7 +319,8 @@ function buildReport() {
           "familyTrackId",
           "scopeId",
           "artifactPath",
-          "fingerprintSha256"
+          "fingerprintSha256",
+          "supersedesFamilyTrackReviewId"
         ]) &&
       JSON.stringify(source.solReview.scopePolicy?.scopeKey) ===
         JSON.stringify(["standardCode", "operation", "familyTrackId", "scopeId"]),
@@ -380,9 +410,40 @@ function buildReport() {
           Array.isArray(subWorkItem.assessmentTargetIds) &&
           subWorkItem.assessmentTargetIds.length > 0 &&
           Array.isArray(subWorkItem.dependencies) &&
-          typeof subWorkItem.preparationOperation === "string",
+          Array.isArray(subWorkItem.operationSequence) &&
+          subWorkItem.operationSequence.length > 0 &&
+          subWorkItem.operationSequence.every((operation) =>
+            ["AFFORDANCE_DISCOVERY", "ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"].includes(
+              operation
+            )
+          ) &&
+          subWorkItem.operationSequence.includes(subWorkItem.nextOperation) &&
+          Array.isArray(subWorkItem.completedOperations) &&
+          subWorkItem.completedOperations.every((operation) =>
+            subWorkItem.operationSequence.includes(operation)
+          ) &&
+          new Set(subWorkItem.completedOperations).size ===
+            subWorkItem.completedOperations.length &&
+          subWorkItem.completedOperations.length <
+            subWorkItem.operationSequence.length,
         `no-family-plan-subwork-shape:${archetypeId}:${subWorkItem.workItemId}`
       );
+      assert(
+        subWorkItem.operationSequence[
+          subWorkItem.completedOperations.length
+        ] === subWorkItem.nextOperation,
+        `no-family-plan-subwork-phase-cursor:${archetypeId}:${subWorkItem.workItemId}`
+      );
+      if (typeof contract.subWorkStatePath === "string") {
+        assert(
+          subWorkItem.operationSequence.every((operation) =>
+            (source.operationPolicy.allowedFilesByOperation[operation] ?? []).some(
+              (pattern) => fileMatches(pattern, contract.subWorkStatePath)
+            )
+          ),
+          `no-family-plan-subwork-state-not-allowed:${archetypeId}:${subWorkItem.workItemId}`
+        );
+      }
     }
   }
   assert(
@@ -506,7 +567,10 @@ function buildReport() {
         typeof review.familyTrackId === "string" &&
           typeof review.scopeId === "string" &&
           typeof review.artifactPath === "string" &&
-          /^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? ""),
+          /^[a-f0-9]{64}$/.test(review.fingerprintSha256 ?? "") &&
+          review.supersedesReviewId === null &&
+          typeof review.supersedesFamilyTrackReviewId === "string" &&
+          review.supersedesFamilyTrackReviewId.trim().length > 0,
         `no-family-plan-sol-revalidation-record:${review.reviewId}`
       );
     }
@@ -697,6 +761,13 @@ function buildReport() {
     assert(contract, `no-family-plan-track-contract-missing:${archetype.archetypeId}`);
     const reviewScopes = contract.reviewScopes ?? [];
     const subWorkItems = contract.subWorkItems ?? [];
+    const subWorkState = readSubWorkState(contract);
+    if (subWorkItems.length > 0) {
+      assert(
+        subWorkState instanceof Map,
+        `no-family-plan-subwork-state-required:${archetype.archetypeId}`
+      );
+    }
     assert(
       reviewScopes.every(
         (scope) =>
@@ -826,16 +897,30 @@ function buildReport() {
         contract.replanContractRevision &&
       targetSetReview.targetOutlineSha256 === targetOutlineHash;
     const subWorkStatuses = subWorkItems.map((subWorkItem) => {
+      const state = subWorkState.get(subWorkItem.workItemId) ?? {};
+      const phase = {
+        ...subWorkItem,
+        completedOperations:
+          state.completedOperations ?? subWorkItem.completedOperations,
+        nextOperation: state.nextOperation ?? subWorkItem.nextOperation
+      };
+      assert(
+        Array.isArray(phase.completedOperations) &&
+          phase.completedOperations.length < phase.operationSequence.length &&
+          phase.operationSequence[phase.completedOperations.length] ===
+            phase.nextOperation,
+        `no-family-plan-subwork-state-cursor:${code}:${subWorkItem.workItemId}`
+      );
       const review = solReviewByKey.get(
         reviewKey(
           code,
           "FAMILY_TRACK",
-          subWorkItem.familyTrackId,
-          subWorkItem.scopeId
+          phase.familyTrackId,
+          phase.scopeId
         )
       );
       return {
-        ...subWorkItem,
+        ...phase,
         reviewStatus: review?.decision ?? "pending",
         reviewId: review?.reviewId ?? null
       };
@@ -890,11 +975,33 @@ function buildReport() {
       revalidationArtifact !== null &&
       scopedFamilyRevalidationReviews.some(
         (review) =>
-          review?.decision === "approved" &&
-          review.artifactPath ===
-            `reports/curriculum-execution/family-revalidation/${baseWorkItemId}.json` &&
-          review.fingerprintSha256 === revalidationArtifact.fingerprintSha256 &&
-          familyRevalidationArtifactIsCurrent(review)
+          (() => {
+            if (
+              review?.decision !== "approved" ||
+              review.artifactPath !==
+                `reports/curriculum-execution/family-revalidation/${baseWorkItemId}.json` ||
+              review.fingerprintSha256 !== revalidationArtifact.fingerprintSha256 ||
+              review.supersedesReviewId !== null ||
+              !familyRevalidationArtifactIsCurrent(review)
+            ) {
+              return false;
+            }
+            const scopedFamilyReview = solReviewByKey.get(
+              reviewKey(
+                code,
+                "FAMILY_TRACK",
+                review.familyTrackId,
+                review.scopeId
+              )
+            );
+            const linkedFamilyReview =
+              scopedFamilyReview ?? legacyFamilyTrackReview;
+            return (
+              typeof review.supersedesFamilyTrackReviewId === "string" &&
+              review.supersedesFamilyTrackReviewId ===
+                (linkedFamilyReview?.reviewId ?? null)
+            );
+          })()
       );
     const familyTrackStatusForFlow = revalidationApproved
       ? "approved"
@@ -944,7 +1051,10 @@ function buildReport() {
       operation = "SOL_REVIEW";
       reviewGate = "FAMILY_REVALIDATION";
     } else if (replanConsumed && nextSubWork) {
-      operation = nextSubWork.preparationOperation;
+      operation = nextSubWork.nextOperation;
+      if (operation === "SOL_REVIEW") {
+        reviewGate = "FAMILY_TRACK";
+      }
     } else if (!linkedFamily || !familyValidated) {
       operation = "FAMILY_TRACK";
     } else if (familyTrackStatusForFlow !== "approved") {
@@ -990,6 +1100,7 @@ function buildReport() {
       reviewScopes,
       familySubWorkItems: subWorkStatuses,
       nextFamilySubWork: replanConsumed ? nextSubWork : null,
+      subWorkStatePath: contract.subWorkStatePath ?? null,
       replanDocumentPath: contract.replanDocumentPath ?? null,
       replanContractRevision: contract.replanContractRevision ?? null,
       operation,

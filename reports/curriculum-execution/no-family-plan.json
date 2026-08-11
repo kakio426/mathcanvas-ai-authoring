@@ -85,7 +85,8 @@
       "SOL_REVIEW": [
         "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "SOL_REPLAN": [
         "W002_REPLAN.md",
@@ -120,13 +121,15 @@
       ],
       "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
+        "reports/curriculum-execution/subwork-state/**",
         "packages/contracts/src/catalog/**",
         "packages/curriculum/src/native-affordance-*.ts"
       ],
       "ENGINE_CORE": [
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts"
+        "packages/templates/src/problem-families/registry.test.ts",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "FAMILY_TRACK": [
         "fixtures/pedagogy/learning-map.used.json",
@@ -141,7 +144,8 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "STANDARD_BINDING": [
         "packages/templates/src/problem-families/**",
@@ -248,7 +252,8 @@
         "familyTrackId",
         "scopeId",
         "artifactPath",
-        "fingerprintSha256"
+        "fingerprintSha256",
+        "supersedesFamilyTrackReviewId"
       ],
       "scopeKey": [
         "standardCode",
@@ -1024,6 +1029,7 @@
       ],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "FAMILY_REVALIDATION",
@@ -1119,8 +1125,18 @@
           "assessmentTargetIds": [
             "change.pattern.repeat-rule.construct-v1"
           ],
-          "dependencies": [],
-          "preparationOperation": "AFFORDANCE_DISCOVERY",
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET"
+          ],
+          "operationSequence": [
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         },
@@ -1136,9 +1152,17 @@
             "change.pattern.declared-repeat.repair-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE",
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         },
@@ -1154,14 +1178,23 @@
             "change.pattern.change-rule.construct-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE",
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         }
       ],
       "nextFamilySubWork": null,
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v2",
       "operation": "SOL_REPLAN",
@@ -1194,14 +1227,14 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e",
+      "targetOutlineSha256": "6e37f6cfe26cea878735f35147e568a6182b776fe03e431a147f7951e1c4d20b",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
-          "studentDecision": "물체·무늬·수 배열에 적용할 반복 또는 변화 규칙을 스스로 정한다.",
-          "invariant": "정한 규칙은 배열의 모든 연속 위치에 일관되게 적용된다.",
-          "observableEvidence": "학생이 선택한 반복 단위나 변화 관계가 배열 시작 부분에 드러난다.",
-          "misconceptionClass": "rule-changes-mid-sequence"
+          "studentDecision": "물체·무늬 배열에 적용할 반복 단위의 성분과 순서를 스스로 정하고 선언한다.",
+          "invariant": "정한 반복 단위가 배열의 모든 연속 위치에 같은 순서로 적용된다.",
+          "observableEvidence": "학생이 구성·선언한 반복 단위와 그 경계가 배열 시작 부분에 드러난다.",
+          "misconceptionClass": "repeat-unit-changes-mid-sequence"
         },
         {
           "key": "construct-repeat-arrangement-following-rule",
@@ -3072,6 +3105,7 @@
       ],
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v2",
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -3098,8 +3132,18 @@
           "assessmentTargetIds": [
             "change.pattern.repeat-rule.construct-v1"
           ],
-          "dependencies": [],
-          "preparationOperation": "AFFORDANCE_DISCOVERY"
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET"
+          ],
+          "operationSequence": [
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": []
         },
         {
           "workItemId": "W002-FAMILY_TRACK-repeat-repair",
@@ -3113,9 +3157,17 @@
             "change.pattern.declared-repeat.repair-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE"
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": []
         },
         {
           "workItemId": "W002-FAMILY_TRACK-change-rule",
@@ -3129,9 +3181,17 @@
             "change.pattern.change-rule.construct-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE"
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": []
         }
       ]
     },
@@ -3514,6 +3574,7 @@
       ],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "FAMILY_REVALIDATION",
@@ -3609,8 +3670,18 @@
           "assessmentTargetIds": [
             "change.pattern.repeat-rule.construct-v1"
           ],
-          "dependencies": [],
-          "preparationOperation": "AFFORDANCE_DISCOVERY",
+          "dependencies": [
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET"
+          ],
+          "operationSequence": [
+            "AFFORDANCE_DISCOVERY",
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         },
@@ -3626,9 +3697,17 @@
             "change.pattern.declared-repeat.repair-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE",
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         },
@@ -3644,14 +3723,23 @@
             "change.pattern.change-rule.construct-v1"
           ],
           "dependencies": [
-            "W002-FAMILY_TRACK-repeat-rule"
+            "W002-SOL_REPLAN",
+            "W002-SOL_REVIEW-TARGET_SET",
+            "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
           ],
-          "preparationOperation": "ENGINE_CORE",
+          "operationSequence": [
+            "ENGINE_CORE",
+            "FAMILY_TRACK",
+            "SOL_REVIEW"
+          ],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": [],
           "reviewStatus": "pending",
           "reviewId": null
         }
       ],
       "nextFamilySubWork": null,
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v2",
       "operation": "SOL_REPLAN",
@@ -3684,14 +3772,14 @@
       ],
       "reviewGate": null,
       "learningMapBound": true,
-      "targetOutlineSha256": "ea2d22f991f20ce9ccc513d2b32b44391ca4868d97d1f70feb7692eefdcede4e",
+      "targetOutlineSha256": "6e37f6cfe26cea878735f35147e568a6182b776fe03e431a147f7951e1c4d20b",
       "expectedTargetOutline": [
         {
           "key": "choose-own-arrangement-rule",
-          "studentDecision": "물체·무늬·수 배열에 적용할 반복 또는 변화 규칙을 스스로 정한다.",
-          "invariant": "정한 규칙은 배열의 모든 연속 위치에 일관되게 적용된다.",
-          "observableEvidence": "학생이 선택한 반복 단위나 변화 관계가 배열 시작 부분에 드러난다.",
-          "misconceptionClass": "rule-changes-mid-sequence"
+          "studentDecision": "물체·무늬 배열에 적용할 반복 단위의 성분과 순서를 스스로 정하고 선언한다.",
+          "invariant": "정한 반복 단위가 배열의 모든 연속 위치에 같은 순서로 적용된다.",
+          "observableEvidence": "학생이 구성·선언한 반복 단위와 그 경계가 배열 시작 부분에 드러난다.",
+          "misconceptionClass": "repeat-unit-changes-mid-sequence"
         },
         {
           "key": "construct-repeat-arrangement-following-rule",
@@ -3744,6 +3832,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -3819,6 +3908,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -3894,6 +3984,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -3976,6 +4067,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4058,6 +4150,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4140,6 +4233,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4222,6 +4316,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4311,6 +4406,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4394,6 +4490,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4476,6 +4573,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4551,6 +4649,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4626,6 +4725,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4708,6 +4808,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4783,6 +4884,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4865,6 +4967,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -4940,6 +5043,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5015,6 +5119,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5098,6 +5203,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5180,6 +5286,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5262,6 +5369,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5337,6 +5445,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5419,6 +5528,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5494,6 +5604,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5577,6 +5688,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5652,6 +5764,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5727,6 +5840,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5802,6 +5916,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5884,6 +5999,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -5959,6 +6075,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6034,6 +6151,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6117,6 +6235,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6192,6 +6311,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6274,6 +6394,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6349,6 +6470,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6431,6 +6553,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6506,6 +6629,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6582,6 +6706,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6657,6 +6782,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6732,6 +6858,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6807,6 +6934,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6882,6 +7010,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -6971,6 +7100,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7046,6 +7176,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7121,6 +7252,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7203,6 +7335,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7278,6 +7411,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7353,6 +7487,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7435,6 +7570,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7510,6 +7646,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7585,6 +7722,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7660,6 +7798,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7735,6 +7874,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7817,6 +7957,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7892,6 +8033,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -7976,6 +8118,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8051,6 +8194,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8126,6 +8270,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8201,6 +8346,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8276,6 +8422,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8351,6 +8498,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8433,6 +8581,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8515,6 +8664,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8590,6 +8740,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8673,6 +8824,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8748,6 +8900,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8831,6 +8984,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8913,6 +9067,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -8988,6 +9143,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9063,6 +9219,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9138,6 +9295,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9213,6 +9371,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9296,6 +9455,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9371,6 +9531,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9446,6 +9607,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9529,6 +9691,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9606,6 +9769,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9682,6 +9846,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9758,6 +9923,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9854,6 +10020,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -9936,6 +10103,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10018,6 +10186,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10100,6 +10269,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10175,6 +10345,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10251,6 +10422,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10326,6 +10498,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10409,6 +10582,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10484,6 +10658,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10559,6 +10734,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10635,6 +10811,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10711,6 +10888,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10793,6 +10971,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10875,6 +11054,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -10957,6 +11137,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -11033,6 +11214,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",
@@ -11109,6 +11291,7 @@
       "reviewScopes": [],
       "familySubWorkItems": [],
       "nextFamilySubWork": null,
+      "subWorkStatePath": null,
       "replanDocumentPath": null,
       "replanContractRevision": null,
       "operation": "LEARNING_MAP_BINDING",

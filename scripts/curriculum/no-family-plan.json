@@ -71,7 +71,7 @@
     "decisionValues": ["approved", "changes-requested", "blocked"],
     "scopePolicy": {
       "familyTrackRequires": ["familyTrackId", "scopeId"],
-      "familyRevalidationRequires": ["familyTrackId", "scopeId", "artifactPath", "fingerprintSha256"],
+      "familyRevalidationRequires": ["familyTrackId", "scopeId", "artifactPath", "fingerprintSha256", "supersedesFamilyTrackReviewId"],
       "scopeKey": ["standardCode", "operation", "familyTrackId", "scopeId"],
       "legacyUnscopedReviews": "pre-scope approvals remain auditable; every new FAMILY_TRACK gate must provide both scope fields"
     },
@@ -137,7 +137,8 @@
       "SOL_REVIEW": [
         "scripts/curriculum/sol-review-board.json",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "SOL_REPLAN": [
         "W002_REPLAN.md",
@@ -170,17 +171,19 @@
         "scripts/curriculum/no-family-plan.json",
         "scripts/curriculum/build-family-revalidation.mjs"
       ],
-      "AFFORDANCE_DISCOVERY": [
+    "AFFORDANCE_DISCOVERY": [
         "research/mathcanvas/**",
+        "reports/curriculum-execution/subwork-state/**",
         "packages/contracts/src/catalog/**",
         "packages/curriculum/src/native-affordance-*.ts"
       ],
-      "ENGINE_CORE": [
+    "ENGINE_CORE": [
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts"
+        "packages/templates/src/problem-families/registry.test.ts",
+        "reports/curriculum-execution/subwork-state/**"
       ],
-      "FAMILY_TRACK": [
+    "FAMILY_TRACK": [
         "fixtures/pedagogy/learning-map.used.json",
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
@@ -193,7 +196,8 @@
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "STANDARD_BINDING": [
         "packages/templates/src/problem-families/**",
@@ -405,6 +409,7 @@
       "engineClassIds": ["R08"],
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v2",
+      "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "reviewScopes": [
         {
           "familyTrackId": "pattern.repeat-unit.construct-v1",
@@ -427,8 +432,10 @@
           "scopeId": "W002-FAMILY_TRACK-repeat-rule",
           "targetOutlineKeys": ["choose-own-arrangement-rule"],
           "assessmentTargetIds": ["change.pattern.repeat-rule.construct-v1"],
-          "dependencies": [],
-          "preparationOperation": "AFFORDANCE_DISCOVERY"
+          "dependencies": ["W002-SOL_REPLAN", "W002-SOL_REVIEW-TARGET_SET"],
+          "operationSequence": ["AFFORDANCE_DISCOVERY", "ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"],
+          "nextOperation": "AFFORDANCE_DISCOVERY",
+          "completedOperations": []
         },
         {
           "workItemId": "W002-FAMILY_TRACK-repeat-repair",
@@ -437,8 +444,10 @@
           "scopeId": "W002-FAMILY_TRACK-repeat-repair",
           "targetOutlineKeys": ["construct-repeat-arrangement-following-rule"],
           "assessmentTargetIds": ["change.pattern.declared-repeat.repair-v1"],
-          "dependencies": ["W002-FAMILY_TRACK-repeat-rule"],
-          "preparationOperation": "ENGINE_CORE"
+          "dependencies": ["W002-SOL_REPLAN", "W002-SOL_REVIEW-TARGET_SET", "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"],
+          "operationSequence": ["ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": []
         },
         {
           "workItemId": "W002-FAMILY_TRACK-change-rule",
@@ -447,8 +456,10 @@
           "scopeId": "W002-FAMILY_TRACK-change-rule",
           "targetOutlineKeys": ["construct-change-arrangement-following-rule"],
           "assessmentTargetIds": ["change.pattern.change-rule.construct-v1"],
-          "dependencies": ["W002-FAMILY_TRACK-repeat-rule"],
-          "preparationOperation": "ENGINE_CORE"
+          "dependencies": ["W002-SOL_REPLAN", "W002-SOL_REVIEW-TARGET_SET", "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"],
+          "operationSequence": ["ENGINE_CORE", "FAMILY_TRACK", "SOL_REVIEW"],
+          "nextOperation": "ENGINE_CORE",
+          "completedOperations": []
         }
       ]
     },

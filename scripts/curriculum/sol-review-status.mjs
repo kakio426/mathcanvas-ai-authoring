@@ -29,6 +29,18 @@ function latestReview(board, standardCode, operation, expectedScope = null) {
     .sort((left, right) => right.attempt - left.attempt)[0] ?? null;
 }
 
+function latestUnscopedReview(board, standardCode, operation) {
+  return [...(board.reviews ?? [])]
+    .filter(
+      (review) =>
+        review.standardCode === standardCode &&
+        review.operation === operation &&
+        review.familyTrackId === undefined &&
+        review.scopeId === undefined
+    )
+    .sort((left, right) => right.attempt - left.attempt)[0] ?? null;
+}
+
 function normalizedScope(scope) {
   if (!scope) return null;
   const familyTrackId = scope.familyTrackId ?? null;
@@ -191,23 +203,40 @@ export function nativeFamilyReviewStatus(
   const reviewScope = manifest.solReviewScope ?? null;
   const decisions = standardCodes.map(
     (standardCode) => {
-      const review = latestReview(
+      const scopedReview = latestReview(
         board,
         standardCode,
         "FAMILY_TRACK",
         reviewScope
       );
-      if (!review) return "pending";
+      const legacyReview = reviewScope
+        ? latestUnscopedReview(board, standardCode, "FAMILY_TRACK")
+        : null;
+      const revalidation = latestReview(
+        board,
+        standardCode,
+        "FAMILY_REVALIDATION",
+        reviewScope
+      );
+      if (!scopedReview) {
+        if (
+          legacyReview?.decision === "approved" &&
+          !candidateChecker(legacyReview) &&
+          revalidation?.decision === "approved" &&
+          revalidation.supersedesReviewId === null &&
+          revalidation.supersedesFamilyTrackReviewId === legacyReview.reviewId &&
+          candidateChecker(revalidation) &&
+          familyRevalidationArtifactIsCurrent(revalidation)
+        ) {
+          return "approved";
+        }
+        return "pending";
+      }
+      const review = scopedReview;
       if (
         review.decision === "approved" &&
         !candidateChecker(review)
       ) {
-        const revalidation = latestReview(
-          board,
-          standardCode,
-          "FAMILY_REVALIDATION",
-          reviewScope
-        );
         if (
           revalidation?.decision === "approved" &&
           revalidation.supersedesReviewId === review.reviewId &&
