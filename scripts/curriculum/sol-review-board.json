@@ -2507,6 +2507,73 @@
         "Evidence caveat: the artifact commands entry describing repeat-rule-construction.test as failing refers to a transient dry-run that is not present in this candidate; the same command at d6e42c9 passes 3/3 against the legacy five-source family. It must not be cited as current-tree reproduction. The independently reproducible schema probe, static authority comparison, and native-bounds probe are sufficient to establish both P0 blockers; v9 should correct or supersede the historical command wording.",
         "Required re-entry: do not implement or push FAMILY_TRACK. Create W002-SOL-REPLAN-v9 that supersedes this review ID, preserves the approved three-target source/hash, rewinds repeat-rule to ENGINE_CORE without completion evidence, raises the paired declarative/resolved source bound to a tested finite 12, refreshes the architecture baseline, and authorizes a new scoped compiler layout preset with exact capacity and containment tests."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A23",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 23,
+      "candidateCommit": "e63a198eb002a45c0477ca6f092837c4be5af6dc",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A22",
+      "checkedAt": "2026-08-11T22:37:01.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "2467bcd1be576a1d304af2730b54372343ae87d93a704d9bedaa8685d991e1a6",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v9",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:e63a198eb002a45c0477ca6f092837c4be5af6dc",
+        "git:c33e411242db9fe53bc37df28db5c84cfcc06f1e",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "W002_REPLAN.md#v9-hard-stop과-재진입-계약",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract.constraintCapacity",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract.layoutContract",
+        "scripts/curriculum/no-family-plan.json#operationPolicy.allowedFilesByOperation.ENGINE_CORE",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "command:git diff-tree --no-commit-id --name-only -r e63a198 (exact 7 SOL_REPLAN files)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts before approval (19/19)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002 v9)",
+        "command:pnpm check at candidate (81 files/511 tests; all gates PASS)",
+        "command:git diff --check c33e411..e63a198"
+      ],
+      "findings": [
+        "승인: candidate e63a198은 A2 blocker reviewer commit c33e411의 direct child이며 exact 7 changedFiles가 모두 SOL_REPLAN manifest 안에 있다. target source·target IDs·learning-map·outline hash 61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6·3-target denominator는 바꾸지 않는다.",
+        "CONTRACT_CAPACITY 재계획은 유한하고 대칭적이다. authority가 maxSources=12/requiredSources=9를 고정하고 declarative constraints.ts, paired contract test, 9-source resolve test, architecture baseline을 ENGINE_CORE allowed/postApproval 및 v9 artifact file set에 결속한다. 8-source 축소·partial constraint·미증명 clone 우회는 계속 허용되지 않는다.",
+        "LAYOUT_CAPACITY 재계획은 기존 wave16을 수정하지 않고 w002-repeat-rule-construction-v1 전용 preset·registry·preset test를 허용한다. source 9, rule slot 2, continuation target 4, 최소 188x188, simultaneous visibility, native-rendered-bounds containment가 권위화되며 family generator는 아직 ENGINE_CORE 범위 밖이다.",
+        "상태 전이는 정직하다. repeat-rule은 v8 ENGINE_CORE completion/evidence를 제거하고 completedOperations=[AFFORDANCE_DISCOVERY], nextOperation=ENGINE_CORE, blockedReviewId=A2, contractRevision=v9로 되감겼다. v9 approval 전 report는 W002 SOL_REPLAN/nextOffline W003이고 승인 후에는 evidence 없는 W002 repeat-rule ENGINE_CORE만 생성되어야 한다.",
+        "Builder는 capacity contract의 exact numbers, role-count equality, no-clone capacity, four-target periodicity와 artifact file-set/currentness를 fail-closed로 유지한다. 다음 ENGINE_CORE 후보는 두 schema의 동일 max12, 9/12 accept·13 reject, exact nine sourceIds resolution, 새 preset의 15 native roles containment/non-overlap, unchanged wave16 및 released baseline을 실제 테스트로 증명해야 한다.",
+        "승인 경계: 이 결정은 schema/layout seam을 구현할 권한만 부여한다. repeat-rule family source, generator/envelope, answer/preview, student response, save/reopen, live canary, coverage/release는 승인하지 않는다. ENGINE_CORE 후보가 manifest 밖 compiler/planner/MCP/UI를 요구하거나 global baseline을 무관 변경에 결속하면 즉시 새 SOL_REPLAN으로 중단한다.",
+        "QA: 독립 focused 19/19, typecheck, no-family plan과 exact diff가 통과했고 candidate full pnpm check 81 files/511 tests 및 모든 audit gate PASS가 보고됐다."
+      ]
     }
   ]
 }
