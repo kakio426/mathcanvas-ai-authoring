@@ -27,7 +27,11 @@ const manifest: CognitiveDemandManifest = defineCognitiveDemandManifest({
     mode: "construct-rule",
     ruleStatePath: "ruleState",
     decisionConstraintId: "construct-rule-slot",
-    variantRoles: ["rule-variant-1", "rule-variant-2"],
+    variantRoles: [
+      "rule-variant-1",
+      "rule-variant-2",
+      "rule-variant-3"
+    ],
     ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
     variantProperty: "orderedValues",
     validRuleStatesPath: "validRuleStates",
@@ -65,7 +69,11 @@ describe("cognitive runtime predicate binding", () => {
         decisionConstraintId: "construct-rule-slot",
         validRuleStatesPath: "validRuleStates",
         surplusPath: "surplusRuleStates",
-        variantRoles: ["rule-variant-1", "rule-variant-2"],
+        variantRoles: [
+          "rule-variant-1",
+          "rule-variant-2",
+          "rule-variant-3"
+        ],
         ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
         variantProperty: "orderedValues",
         continuationRuleStatePath: "ruleState",
