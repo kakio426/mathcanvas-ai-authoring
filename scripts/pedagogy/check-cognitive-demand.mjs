@@ -186,17 +186,26 @@ const containsVisibleOrderedRuleStateAcrossProperties = (
   properties,
   state
 ) => {
+  const semanticNumericKey = /^(?:variant|value|orderedValues|pattern|color|shape|expression)$/iu;
   const values = [];
-  const collect = (value) => {
-    if (typeof value === "string" || typeof value === "number") {
+  const collect = (value, key) => {
+    if (typeof value === "string") {
+      values.push(String(value));
+    } else if (
+      typeof value === "number" &&
+      key !== undefined &&
+      semanticNumericKey.test(key)
+    ) {
       values.push(String(value));
     } else if (Array.isArray(value)) {
-      value.forEach(collect);
+      value.forEach((child) => collect(child, key));
     } else if (value && typeof value === "object") {
-      Object.values(value).forEach(collect);
+      Object.entries(value).forEach(([childKey, child]) =>
+        collect(child, childKey)
+      );
     }
   };
-  collect(properties);
+  Object.entries(properties).forEach(([key, value]) => collect(value, key));
   return containsVisibleOrderedRuleState(values.join(" "), state);
 };
 

@@ -262,19 +262,28 @@ function containsVisibleOrderedRuleStateAcrossProperties(
   properties: readonly Record<string, unknown>[],
   state: readonly unknown[]
 ): boolean {
+  const semanticNumericKey = /^(?:variant|value|orderedValues|pattern|color|shape|expression)$/iu;
   const visible = properties
     .flatMap((value) => {
       const values: string[] = [];
-      const collect = (entry: unknown) => {
-        if (typeof entry === "string" || typeof entry === "number") {
+      const collect = (entry: unknown, key?: string) => {
+        if (typeof entry === "string") {
+          values.push(String(entry));
+        } else if (
+          typeof entry === "number" &&
+          key !== undefined &&
+          semanticNumericKey.test(key)
+        ) {
           values.push(String(entry));
         } else if (Array.isArray(entry)) {
-          entry.forEach(collect);
+          entry.forEach((child) => collect(child, key));
         } else if (entry && typeof entry === "object") {
-          Object.values(entry).forEach(collect);
+          Object.entries(entry).forEach(([childKey, child]) =>
+            collect(child, childKey)
+          );
         }
       };
-      collect(value);
+      Object.entries(value).forEach(([key, entry]) => collect(entry, key));
       return values;
     })
     .join(" ")

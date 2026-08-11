@@ -728,6 +728,11 @@ describe("생성 전 검증", () => {
         emission.toolIntent.properties.orderedValues =
           index < 3 ? 2 : index < 6 ? 3 : 4;
       });
+    const baselineIssues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, baselineIssues);
+    expect(baselineIssues.map((entry) => entry.code)).not.toContain(
+      "cognitive-rule-state-answer-visible"
+    );
     resolved.emissions.push(
       {
         id: "item-1-locked-native-hint-2",

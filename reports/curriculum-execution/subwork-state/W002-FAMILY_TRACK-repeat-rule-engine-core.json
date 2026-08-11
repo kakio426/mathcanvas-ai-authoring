@@ -29,11 +29,11 @@
   "implementationFiles": {
     "packages/contracts/src/catalog/cognitive-demand.ts": "8e338d275b8863b08a732c732f203b3c517c7cb5e40bbecf73d28598bb69249e",
     "packages/contracts/src/catalog/cognitive-demand.test.ts": "9d007448a564fb99f62f45908b7d98ab0bd5ca052406f42d04513d4101e68b26",
-    "packages/validator/src/predicates/registry.ts": "2effdaafbef06231be983718b7f49ea3b208968c27646e7f530a5fa0b9076bff",
-    "packages/validator/src/validator.test.ts": "805d2d9df0189be54f68eb69b9d71a352a535ae1a3f15203d71d71af2ef2f013",
+    "packages/validator/src/predicates/registry.ts": "9b8ded4e5144bc2f838938a196a2f502c594d9a2e5f6fff49a0837d5c192360b",
+    "packages/validator/src/validator.test.ts": "005a0e1699bbfeeb2e2399f86537788e5bbae52b187ad6141502e73f6583f07b",
     "packages/templates/src/cognitive/registry.ts": "6127bfc98d259fcf7f4469b0c2d6ad2aa88a4282d8368fdbb091813441452184",
     "packages/templates/src/cognitive/registry.test.ts": "3e3899813dbb1076b3feb0539ad18c4a0368c7749bc9911dcef682b5d51faa1e",
-    "scripts/pedagogy/check-cognitive-demand.mjs": "739074567afe9b856b5265062aadfab5b803f81a074a191b93c9e2d4a55f8abf"
+    "scripts/pedagogy/check-cognitive-demand.mjs": "9fb364b54e59bec4546fd08d272beb64a14ec9cd39c30799d979e8bf079492b5"
   },
   "verification": {
     "focusedTests": "45/45",
