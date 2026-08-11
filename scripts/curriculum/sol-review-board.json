@@ -806,6 +806,60 @@
         "회귀 확인: helper fixture는 first/later FAMILY_REVALIDATION link, mismatch, exact cursor, changes-requested rewind를 고정한다. builder의 generic attempt-order와 FAMILY_REVALIDATION special gate를 함께 읽어 later attempt가 반드시 직전 revalidation review를 supersede함을 확인했다.",
         "독립 QA는 focused 8/8, typecheck, no-family plan 97 standards/24 engines/84 tracks, 전체 pnpm check 78 files/470 tests, build, cognitive/native/contract gates, visual·quality audit P0/P1 0, candidate diff-check를 통과했다. SOL_REPLAN을 승인하며 다음 순서는 W001 FAMILY_REVALIDATION artifact/review 후 W002의 새 TARGET_SET review이다."
       ]
+    },
+    {
+      "reviewId": "W001-FAMILY_REVALIDATION-SOL-A1",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "FAMILY_REVALIDATION",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 1,
+      "candidateCommit": "ea1ee894a4853a4edbb78cdd5e0a2747490c72f8",
+      "changedFiles": [
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
+      "familyTrackId": "data.early-table.organize-v1",
+      "scopeId": "W001-FAMILY_TRACK-data-table-organize",
+      "artifactPath": "reports/curriculum-execution/family-revalidation/W001.json",
+      "fingerprintSha256": "4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2",
+      "supersedesReviewId": null,
+      "supersedesFamilyTrackReviewId": "W001-FAMILY_TRACK-SOL-A3",
+      "checkedAt": "2026-08-11T15:51:29.000Z",
+      "evidenceRefs": [
+        "git:ea1ee894a4853a4edbb78cdd5e0a2747490c72f8",
+        "git:ea286d5dd02f2dadfb436512fe749cfdf477e638",
+        "git:e3004b9",
+        "git:824d188",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_TRACK-SOL-A3",
+        "reports/curriculum-execution/family-revalidation/W001.json",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/no-family-plan.json#D01A.revalidationFiles",
+        "packages/curriculum/src/assessment-targets/data-table-2su04-02.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
+        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/validator/src/native/registry.ts",
+        "command:pnpm curriculum:family-revalidation -- --work-item W001",
+        "command:independent sha256 recomputation (6/6 implementation files; fingerprint match)",
+        "command:pnpm exec vitest run data-table-organize.test.ts assessment-targets.test.ts (8/8)",
+        "command:pnpm problem-family:verify",
+        "command:pnpm cognitive:verify",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm check (78 files / 470 tests)",
+        "command:git diff --check ea1ee89^ ea1ee89"
+      ],
+      "findings": [
+        "현재 artifact 정확성은 통과했다. fingerprint payload를 독립 재직렬화한 SHA-256이 4c58fde18cf8fa72bd32bd7e33f4941fcd5138f13ef1dffd704469a1d7eb5ae2와 일치하고, implementationFiles 6개의 현재 파일 SHA도 모두 artifact와 일치한다. candidate exact diff 3개는 FAMILY_REVALIDATION allowedFiles 범위이며 구현 파일 변경은 없다.",
+        "W001 교육 증거는 A3 승인 상태를 유지한다. family는 [2수04-02]의 두 reviewed target만 소유하고, 첫 문항은 원자료와 범주명·개수의 완전 매핑을 선택해 범주별 개수와 전체 합을 대조하며, 둘째 문항은 범주별 개수 비교라는 표의 편리함을 근거로 고른다. 네 context의 정답 mapping 변화, plausible misconception alternatives, exact preview·answer·explanation, revision path, learning-map concept→representation→application 결속이 focused 8/8과 cognitive gate에 남아 있다.",
+        "P0 loop 수정 요청: artifact가 W001의 의미 slice가 아니라 전역 fixtures/pedagogy/learning-map.used.json, packages/templates/src/cognitive/registry.ts, packages/validator/src/native/registry.ts 파일 전체를 fingerprint한다. 실제 e3004b9/824d188에서 W002 learning-map/scope 추가만으로 이 전역 파일들과 W001 data-table source의 global usageSnapshot hash가 바뀌어, W001의 학생 결정·target·validator 의미가 그대로인데도 A3가 stale됐다. 같은 방식이면 이후 무관 표준·native handler를 추가할 때마다 W001이 재차 queue 선두로 돌아와 97-loop가 반복 재검증된다.",
+        "이 문제는 W001 artifact JSON에서 전역 파일 해시만 빼면 해결되지 않는다. 그러면 W001이 실제로 의존하는 learning-map provenance와 DP02TG validator 변경을 놓친다. 재시도 전에 per-standard canonical learning-map slice hash와 W001-specific validator/cognitive semantic slice 또는 전용 모듈 fingerprint를 정의하거나, 97표준 snapshot을 upfront freeze하고 전역 registry는 의미 단위 hash로 분리하는 SOL_REPLAN 계약이 필요하다. 동일한 whole-file revalidationFiles로 artifact A2만 재생성하는 것은 금지한다.",
+        "queue gate도 함께 수정해야 한다. 현재 build-no-family-plan은 FAMILY_REVALIDATION의 changes-requested/blocked를 새 SOL_REPLAN으로 승격하지 않고 stale artifact가 존재하는 한 같은 SOL_REVIEW로 되돌린다. FAMILY_REVALIDATION 설계 결함은 replan work item으로 hard-stop시키고 W002 TARGET_SET 등 독립 work는 별도 queue에서 계속 진행하도록 해야 한다.",
+        "독립 QA는 artifact generator verify, implementation SHA 6/6, focused 8/8, problem-family, cognitive, no-family plan, 전체 pnpm check 78 files/470 tests, build·native·contract·visual·quality P0/P1 0을 통과했다. 현재 snapshot은 일관되지만 반복 가능한 revalidation contract가 아니므로 승인은 보류하고 changes-requested로 판정한다."
+      ]
     }
   ]
 }
