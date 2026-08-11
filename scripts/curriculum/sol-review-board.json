@@ -860,6 +860,71 @@
         "queue gate도 함께 수정해야 한다. 현재 build-no-family-plan은 FAMILY_REVALIDATION의 changes-requested/blocked를 새 SOL_REPLAN으로 승격하지 않고 stale artifact가 존재하는 한 같은 SOL_REVIEW로 되돌린다. FAMILY_REVALIDATION 설계 결함은 replan work item으로 hard-stop시키고 W002 TARGET_SET 등 독립 work는 별도 queue에서 계속 진행하도록 해야 한다.",
         "독립 QA는 artifact generator verify, implementation SHA 6/6, focused 8/8, problem-family, cognitive, no-family plan, 전체 pnpm check 78 files/470 tests, build·native·contract·visual·quality P0/P1 0을 통과했다. 현재 snapshot은 일관되지만 반복 가능한 revalidation contract가 아니므로 승인은 보류하고 changes-requested로 판정한다."
       ]
+    },
+    {
+      "reviewId": "W001-SOL_REPLAN-SOL-A1",
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 1,
+      "candidateCommit": "9a8b8f95d04f78ec844cc64dfab243d9556717ee",
+      "changedFiles": [
+        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
+        "SOL_REVIEW_PROMPT.md",
+        "W001_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "scripts/curriculum/build-family-revalidation.mjs",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "scripts/curriculum/revalidation-semantic-slice.mjs",
+        "scripts/curriculum/sol-review-status.mjs",
+        "scripts/curriculum/verify-sol-review-gate.mjs",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": null,
+      "checkedAt": "2026-08-11T16:21:25.000Z",
+      "replanDocumentPath": "W001_REPLAN.md",
+      "replanDocumentSha256": "94e246c6e9a0139cd4fdfbaf07d846a04a0ace1648d82ceaa03f94a3c6ce9351",
+      "supersedesBlockedReviewId": "W001-FAMILY_REVALIDATION-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W001-SOL-REPLAN-v1",
+      "replanScopes": [
+        {
+          "familyTrackId": "data.early-table.organize-v1",
+          "scopeId": "W001-FAMILY_TRACK-data-table-organize"
+        }
+      ],
+      "evidenceRefs": [
+        "git:9a8b8f95d04f78ec844cc64dfab243d9556717ee",
+        "git:a9532e80654477a699fbc7e93ffb66ac14e4a174",
+        "scripts/curriculum/sol-review-board.json#W001-FAMILY_REVALIDATION-SOL-A1",
+        "W001_REPLAN.md",
+        "scripts/curriculum/no-family-plan.json#D01A",
+        "scripts/curriculum/revalidation-semantic-slice.mjs#buildSemanticSlice",
+        "scripts/curriculum/build-family-revalidation.mjs#fingerprintPayload",
+        "scripts/curriculum/build-no-family-plan.mjs#readCurrentFamilyRevalidationArtifact",
+        "scripts/curriculum/sol-review-status.mjs#familyRevalidationArtifactIsCurrent",
+        "packages/validator/src/native/registry.ts#dataTableHandler",
+        "reports/problem-family-registry/latest.json#data.early-table.organize-v1",
+        "tests/sol-review-status.test.ts",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (11/11)",
+        "command:pnpm typecheck",
+        "command:pnpm curriculum:no-family-plan",
+        "command:pnpm curriculum:program",
+        "command:git diff --check a9532e8..9a8b8f9",
+        "command:pnpm check (candidate author report: 78 files / 473 tests)"
+      ],
+      "findings": [
+        "승인: candidate 9a8b8f9은 parent a9532e8 위의 단일 atomic commit이고 exact diff 12개가 W001 SOL_REPLAN allowedFiles와 일치하며 후보 이후 구현 변경이 없다. W001_REPLAN.md SHA-256=94e246c6e9a0139cd4fdfbaf07d846a04a0ace1648d82ceaa03f94a3c6ce9351, scope=data.early-table.organize-v1/W001-FAMILY_TRACK-data-table-organize, revision=W001-SOL-REPLAN-v1, trigger=W001-FAMILY_REVALIDATION-SOL-A1에 정확히 결속한다.",
+        "A1 차단 원인 해소: data-table source는 전역 LEARNING_MAP_USAGE_SNAPSHOT_SHA256 상수만 정규화한 module slice로 묶고, [2수04-02] target source·family test는 전체 파일 hash로 유지한다. learning-map은 해당 standard의 concept/representation/application topic과 hard dependency만, native validator는 dataTableHandler 함수만 fingerprint하므로 W001 의미 변경은 stale가 되고 무관 표준·handler 추가는 stale를 만들지 않는다.",
+        "self-invalidation 해소: resolved registry semantic slice는 familyId·activity/template·domain·standardCodes·manipulation·generator·renderRecipeKind·blueprintContentHash·assessmentTargetIds·parameterKeys·evidencePaths만 투영한다. Sol 승인 뒤 바뀌는 lifecycleStage·solReviewStatus는 제외되지만 W001 target·blueprint·generator 의미 변경은 계속 감지한다.",
+        "상태·revision 게이트 승인: artifact schema는 W001-SOL-REPLAN-v1과 정확한 implementationFiles/semanticSlices 수를 요구하고 승인된 FAMILY_REVALIDATION review도 같은 revision을 소비해야 한다. 기존 FAMILY_REVALIDATION changes-requested는 새 SOL_REPLAN을 요구하며, 이 승인 후 target set을 다시 만들지 않고 새 semantic artifact→scoped FAMILY_REVALIDATION A2로 진행한다. W002 TARGET_SET은 독립 offline queue로 유지된다.",
+        "교육 범위는 재계획으로 바뀌지 않는다. 승인된 두 target은 원자료→범주별 완전 매핑·전체 합 불변량과, 표에서 읽은 범주별 개수·차이에 근거한 편리함 설명을 각각 소유한다. A3의 오개념 대안, exact preview, 수정 가능한 선택, learning-map concept→representation→application 결속을 재사용하며 이번 승인은 live/save/reopen 증거를 새로 주장하지 않는다.",
+        "독립 QA는 focused 11/11, typecheck, curriculum:no-family-plan 97 standards/24 engines/84 tracks, curriculum:program, candidate diff-check를 통과했다. 후보 작성자가 보고한 전체 pnpm check도 78 files/473 tests, build·cognitive/native/contract·visual/quality P0/P1 0이다."
+      ]
     }
   ]
 }
