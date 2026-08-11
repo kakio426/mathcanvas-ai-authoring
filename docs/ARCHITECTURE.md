@@ -40,7 +40,7 @@ flowchart LR
 - 엄격한 Zod 스키마와 버전
 - 공식 교육과정 우선 resolver
 - 활동별 blueprint와 결정적 item generator
-- `T1/T2` 유한 variation envelope(현재 89조합)
+- 활동별 유한 variation envelope(현재 21종·93조합)
 - MathCanvas 네이티브 객체 컴파일러
 - 수학·교수학습·배치·상호작용·계약 validator
 - MCP 도구 5개
@@ -51,9 +51,10 @@ flowchart LR
 
 ## P3 출시 경계
 
-- 등록 활동 3종(모두 새 화면 canary 대기 `verified`), variation 54조합을 전수 컴파일·검증합니다.
-- 분수 비교는 문제 수·난이도·분모 관계를 지원합니다.
-- 동치분수는 문제 수만, 10 만들기는 2~5문제만 바꿀 수 있습니다.
+- 등록 활동 29종 중 21종이 현재 blueprint·layout hash에 결속된 canary를 갖춘 `released` 상태이며, released 21종의 93개 variation을 전수 컴파일·검증합니다.
+- 2022 개정 초등 수학 공식 분모는 HWP·PDF를 교차 확인한 121개 성취기준입니다. 카탈로그 매핑은 121/121이지만, released 활동이 닿는 성취기준은 18/121입니다.
+- 18/121은 활동 reach일 뿐 성취기준의 모든 평가 목표를 다룬다는 뜻이 아닙니다. `AssessmentTarget` registry가 생기기 전까지 target coverage는 산정하지 않습니다.
+- 최신 분모·학년군·영역·단원별 상태는 `reports/curriculum-coverage/latest.md`가 기계 판독 JSON과 함께 고정합니다.
 - 고정 값이나 알 수 없는 key를 바꾸려 하면 fail-closed로 중단합니다.
 - 승인 해시는 blueprint 내용, generator 버전, seed, variation을 포함한 canonical binding에 연결됩니다.
 - public MCP는 5개를 유지하며 raw payload, 좌표, 내부 tool ID를 노출하지 않습니다.

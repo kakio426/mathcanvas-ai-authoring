@@ -3,7 +3,7 @@
 > 기록 상태(2026-08-11): 이 문서는 완료된 곱셈 v1의 원 사양이다. 현재 공통화·
 > 나눗셈·분수 확장 상태는 `TEACHER_INTENT_PLAN.md`와
 > `TEACHER_INTENT_CHECKLIST.md`의 R7~R10을 기준으로 한다. 새 Codex 핸드오프를
-> 요구하지 않으며, 현재 구현은 이 저장소에서 직접 이어 간다.
+> 요구하지 않는다. 다음 실행 순서는 `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`를 따른다.
 
 > 빌더 시작 안내: 먼저 `AGENTS.md`와 `TEACHER_INTENT_PLAN.md`를 끝까지 읽으세요.
 > 그다음 `TEACHER_INTENT_CHECKLIST.md`를 R1부터 순서대로 진행하고 상태와 검증 결과를

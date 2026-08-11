@@ -49,7 +49,7 @@ headless viewport 1280×800이며 교실 노트북의 보수적인 기준선이�
 ## 고칠 때 알아야 할 것
 
 **출시 해시가 함께 움직인다.** 블루프린트나 layout preset을 고치면
-`blueprintContentHash`·`layoutPresetContentHash`가 바뀌고, 17개 활동이 모두
+`blueprintContentHash`·`layoutPresetContentHash`가 바뀌고, 영향을 받는 released 활동이
 `released`에서 떨어진다. 되돌리려면 교사 계정으로 로그인해 fresh canary를 다시
 찍어야 한다. 따라서 화면 품질 수정은 조금씩 나눠 하지 말고 한 번에 모아서
 하고, 그 뒤 canary를 한 차례 다시 찍는다.

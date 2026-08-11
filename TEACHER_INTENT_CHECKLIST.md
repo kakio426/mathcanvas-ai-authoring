@@ -1,5 +1,7 @@
 # TeacherIntent capability 체크리스트
 
+> 완료된 하위 작업의 기록이다. 다음 실행 순서는 `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`와 `ELEMENTARY_2022_FULL_COVERAGE_CHECKLIST.md`를 따른다. 전 범위 Phase 1 전에는 새 capability를 추가하지 않는다.
+
 원본 곱셈 사양: `TEACHER_INTENT_PROMPT.md`. R1~R6은 첫 세로 단면 기록이고,
 R7~R10은 2026-08-11 공통화·확장 기록이다. 상태를 `대기` → `진행 중`
 → `완료`로 갱신한다. 보류할 때는 이유와 다음 행동을 기록한다. 기존 `CHECKLIST.md`와
@@ -115,7 +117,7 @@ Honest Preview 체크리스트는 수정하지 않는다.
 - 상태: 로컬 자동 QA 완료, 외부 MathCanvas 접근 차단으로 fresh canary 보류
 - [x] 변경 패키지 집중 테스트와 나눗셈 canonical story 회귀 테스트 통과.
 - [x] `pnpm typecheck`: 전체 `pnpm check` 안에서 통과.
-- [x] `pnpm test`: 66개 파일·408/408 통과.
+- [x] TeacherIntent 완료 당시 `pnpm test`: 66개 파일·408/408 통과. 전 범위 Phase 0 반영 뒤 최신 기준선은 68개 파일·416/416다.
 - [x] `pnpm check`: 빌드와 모든 감사 포함 통과.
 - [x] MCP in-memory 골든 호출: 실제 첫 문항과 충돌 오류 코드 확인.
 - [x] teacher-ui 로컬 HTTP 3종 요청/미리보기: exact 문항·정답·모든 반영 행·승인 토큰 확인.

@@ -1,6 +1,8 @@
-# MathCanvas 교사용 AI — 실행 계획 (1인 제품 기준, 2026-08-11 개정)
+# MathCanvas 교사용 AI — 완료된 하위 계획 (1인 제품 기준)
 
-작성: 2026-08-10, 실행 상태 갱신: 2026-08-11. 이 문서가 이전 판(외부 파일럿 포함)을 대체한다.
+작성: 2026-08-10, 실행 상태 갱신: 2026-08-11.
+
+> **우선순위 변경:** 이 문서는 Honest Preview와 TeacherIntent 3종 구현 기록이다. 다음 작업을 지시하는 master plan이 아니다. 장기 실행과 현재 우선순위는 `ELEMENTARY_2022_FULL_COVERAGE_PLAN.md`, 진행 증거는 `ELEMENTARY_2022_FULL_COVERAGE_CHECKLIST.md`를 따른다. 전 범위 계획의 Phase 1 공통 registry가 끝나기 전에는 아래 6단계 실사용 확장이나 새 TeacherIntent를 추가하지 않는다.
 
 ## 진행 상태 (2026-08-11)
 
@@ -10,8 +12,8 @@
 - 구조화 TeacherIntent는 3종이다: 곱셈 배열, **몇 개씩 묶는 포함제 나눗셈**,
   공통 분자가 같은 분수 비교. 세 종류 모두 요청→실제 문항→정답→exact preview→
   반영표→hash가 같은 의미값으로 결속된다.
-- `pnpm teacher-intent:verify` PASS, `pnpm check` PASS. 전체 66개 테스트 파일·
-  408/408, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
+- `pnpm teacher-intent:verify` PASS. 전 범위 Phase 0까지 합친 최신 `pnpm check`는
+  68개 테스트 파일·416/416, 빌드, 인지·시각·품질 감사(P0/P1 0)를 통과했다.
 - 로컬 teacher-ui HTTP 경로에서 3종 모두 카드→exact preview→정답→반영표→승인
   토큰 발급까지 확인했다. `/api/creations`는 호출하지 않았다.
 - `pnpm teacher-intent:ui-verify`로 세 capability의 실제 브라우저 화면을 반복 검증한다.

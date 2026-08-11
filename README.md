@@ -4,6 +4,8 @@ Codex 또는 Claude Code와 대화해 새 MathCanvas 활동지를 만드는 로�
 
 분수·수 감각·등식·시각과 시간·길이·자료 해석·자릿값에 더해 반복 규칙, 곱셈과 나눗셈의 의미, 가능성 비교, 각의 크기, 삼각형 분류, 선대칭까지 21종 활동이 현재 화면의 headless canary를 통과해 `released` 상태입니다. 스물한 활동 모두 구조 생성과 수학적 판단·오개념 갈등·자기검증·교실 언어·텍스트 배치 게이트를 통과해야 하며, 현재 해시와 결속된 canary가 없으면 실제 생성을 막습니다.
 
+2022 개정 초등 수학의 공식 분모는 교육부 HWP와 NCIC PDF를 교차 확인한 **121개 성취기준**입니다. 121개 모두 교사용 카탈로그와 71개 교과서 단원에 연결됐지만, 활동이 있는 성취기준은 23개, `released` 활동이 닿는 성취기준은 18개(14.9%)뿐입니다. 이 18/121은 활동 reach이며 성취기준의 필수 평가 목표를 모두 다룬다는 뜻이 아닙니다. `AssessmentTarget` registry가 아직 없으므로 전체 교육과정 target coverage는 산정하지 않습니다. 최신 수치는 [커버리지 보고서](./reports/curriculum-coverage/latest.md), 장기 실행 순서는 [전 범위 생성 계획](./ELEMENTARY_2022_FULL_COVERAGE_PLAN.md)에 있습니다.
+
 - 분수 크기 비교 (`released`): 2~6문제, 쉬움·보통·어려움, 분모 관계 혼합·서로소·배수
 - 동치분수 (`released`): 2~6문제, 기준 띠 1개와 분수 띠 6개를 예상·선택·비교·설명
 - 10 만들기 (`released`): 2~5문제, 카드 6장 중 합이 10인 두 쌍을 예상·구성·10칸 확인·다른 방법과 까닭 기록
@@ -50,10 +52,13 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-windows\install.ps1
 
 ```bash
 pnpm install --frozen-lockfile
+pnpm curriculum:coverage
 pnpm check
 pnpm run doctor
 pnpm run smoke:browser
 ```
+
+교육부·NCIC 원본 파일이 바뀌지 않았는지 네트워크로 다시 확인할 때만 `pnpm curriculum:source:verify`를 수동 실행합니다. 일반 CI는 외부 다운로드에 의존하지 않습니다.
 
 ## 처음 사용하는 대화
 
