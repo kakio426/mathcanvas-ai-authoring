@@ -1977,7 +1977,7 @@
       "nextAction": "review-target-set-and-design-family",
       "actionClass": "planned-no-family",
       "solReview": {
-        "targetSet": "approved",
+        "targetSet": "stale",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",
@@ -4605,7 +4605,7 @@
       "nextAction": "review-target-set-and-design-family",
       "actionClass": "planned-no-family",
       "solReview": {
-        "targetSet": "approved",
+        "targetSet": "stale",
         "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A1",
         "familyTrackReviewId": "W002-FAMILY_TRACK-SOL-A4",

@@ -154,7 +154,7 @@ describe("reviewed AssessmentTarget registry", () => {
     expect(targets[1]?.statement).toContain("편리한 점");
   });
 
-  it("[2수02-02] 자신이 정한 규칙에 따른 배열의 두 필수 목표를 고정한다", () => {
+  it("[2수02-02] 자신이 정한 규칙에 따른 배열의 세 필수 목표를 고정한다", () => {
     const standard = findOfficialElementaryStandard("[2수02-02]");
     expect(standard?.officialGoal).toBe(
       "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다."
@@ -169,7 +169,7 @@ describe("reviewed AssessmentTarget registry", () => {
         REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS
       )
     });
-    expect(targets).toHaveLength(2);
+    expect(targets).toHaveLength(3);
     expect(
       targets.every(
         (target) =>
@@ -178,22 +178,28 @@ describe("reviewed AssessmentTarget registry", () => {
           target.learningMap.commit === LEARNING_MAP_COMMIT
       )
     ).toBe(true);
-    expect(targets[0]?.statement).toContain("스스로 정할");
-    expect(targets[1]?.statement).toContain("어긋난 항목");
+    expect(targets[0]?.statement).toContain("반복 단위");
+    expect(targets[1]?.statement).toContain("어긋난 반복 항목");
+    expect(targets[2]?.statement).toContain("시작값·변화량·방향");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatRule
       )?.assessmentPrompt
     ).toContain("직접 정해");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.chooseOwnArrangementRule
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatRule
       )?.scopeNote
     ).toContain("repeat-only family");
     expect(
       findAssessmentTarget(
-        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructArrangementFollowingRule
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructRepeatArrangement
       )?.misconceptions.map((misconception) => misconception.misconceptionId)
-    ).toContain("change.pattern.rule-boundary-mismatch-v1");
+    ).toContain("repeat.pattern.rule-boundary-mismatch-v1");
+    expect(
+      findAssessmentTarget(
+        REPEATING_PATTERN_ARRANGEMENT_ASSESSMENT_TARGET_IDS.constructChangeArrangement
+      )?.assessmentPrompt
+    ).toContain("시작값·변화량·방향");
   });
 });
