@@ -2700,6 +2700,69 @@
           "후속 hard-stop 경계: 현재 artifactContract는 repeat-rule 단일 artifact identity만 권위화한다. repeat-repair와 change-rule의 ENGINE_CORE는 동일 artifact를 plannedItem identity로 재사용할 수 없으며, 교육적 결정도 다르므로 해당 cursor에 도달하면 별도 artifactContract/SOL_REPLAN 없이는 완료 처리하지 않는 것이 맞다. 이 제한을 v8 문서에 명시하면 현재 repeat-rule governance 승인을 막는 별도 P0는 아니다.",
           "판정: 사전 focused 19/19, typecheck, no-family plan과 reported full check 81/511은 통과했다. 그러나 다음 정상 state transition에서 repository QA가 깨지는 P0가 남아 있어 v8 replanApproved/replanConsumed, ENGINE_CORE completion cursor, FAMILY_TRACK 진입 또는 main push를 승인하지 않는다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A22",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "approved",
+        "attempt": 22,
+        "candidateCommit": "f696515f6c75d8caf116659514d2f4611a84866a",
+        "changedFiles": [
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A21",
+        "checkedAt": "2026-08-11T22:01:27.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "06f190bda2022cf15dd14e7501fbf95268d0f9948985985333794afa764a1058",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v8",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:f696515f6c75d8caf116659514d2f4611a84866a",
+          "git:be38389230ed275e63109e11024fd98c343ee940",
+          "git:80af629a67da9eba1babe451abffec7f9f0984b0",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A21",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A20",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+          "W002_REPLAN.md#v8-governance-amendment-ENGINE_CORE-completion-evidence",
+          "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContract.artifactContract",
+          "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+          "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+          "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core.json",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "command:git diff-tree --root --no-commit-id --name-only -r f696515 (exact 1 file)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts before approval (19/19; SOL_REPLAN branch)",
+          "command:review approval + build-no-family-plan --write + focused test (19/19; ENGINE_CORE branch)",
+          "command:pnpm typecheck",
+          "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W002 ENGINE_CORE; replan none)",
+          "command:pnpm check (81 files/511 tests; candidate full gates PASS)",
+          "command:git diff --check be38389..f696515"
+        ],
+        "findings": [
+          "승인: candidate f696515는 A21 reviewer commit be38389 위 direct exact 1-file SOL_REPLAN 수정 후보이며 tests/sol-review-status.test.ts는 SOL_REPLAN allowedFiles 안에 있다. v8 artifact authority·builder evidence validation·revision·target·scope·ENGINE_CORE 구현은 변경하지 않았고 후보 이후 구현 변경은 없다.",
+          "A21 P0 해소: projection test는 pre-approval SOL_REPLAN, post-approval/pending ENGINE_CORE, post-evidence FAMILY_TRACK 세 상태를 명시적으로 구분한다. ENGINE_CORE 분기는 evidence 부재를, FAMILY_TRACK 분기는 exact operation identity, completed prefix, state evidence path와 현재 artifact whole-file SHA를 검증하고 두 승인 후 분기 모두 replanApproved/replanConsumed=true·nextReplanWork=null을 요구한다.",
+          "evidence gate 유지: completed ENGINE_CORE는 권위 artifact identity·revision·status·scope, exact seven-file set, artifact SHA와 각 현재 implementation SHA를 모두 통과해야 한다. evidence 없는 완료, stale artifact, 미완료 상태의 선행 evidence는 fail-closed이며 state cursor 문자열만으로 FAMILY_TRACK을 만들 수 없다.",
+          "실제 전이 검증: 승인 전 SOL_REPLAN report에서 focused 19/19가 통과했고, 이 A22 approved record를 적용해 파생 report를 갱신한 post-approval ENGINE_CORE 상태에서도 focused 19/19가 통과한다. 다음 bounded evidence transition은 같은 test의 FAMILY_TRACK 분기와 builder evidence gate를 동시에 통과해야 한다.",
+          "승인 경계: v8은 repeat-rule ENGINE_CORE completion evidence governance와 그 다음 FAMILY_TRACK work item 생성만 승인한다. repeat-repair/change-rule은 서로 다른 교육적 결정이므로 현재 repeat-rule artifact identity를 재사용하지 않고 각 cursor에서 별도 artifact contract/replan을 받아야 한다. family generator·native layout·exact preview·responseHash·save/reopen·canary는 아직 승인되지 않았다.",
+          "QA: focused pre/post approval 19/19, typecheck, no-family plan, exact diff가 통과했고 full pnpm check 81 files/511 tests와 모든 audit gate PASS가 보고됐다. reviewer 파생 report는 W002를 next ENGINE_CORE로 유지하고 nextReplanWork를 제거한다."
+        ]
       }
     ]
   },
@@ -2853,97 +2916,20 @@
     "batchCount": 21,
     "actionClassCounts": {
       "planned-no-family": 95,
-      "offline-in-progress": 0,
+      "offline-in-progress": 1,
       "sol-review-required": 0,
-      "blocked-needs-sol-replan": 1,
+      "blocked-needs-sol-replan": 0,
       "live-evidence": 1,
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 39,
-      "approved": 16,
+      "totalRecords": 40,
+      "approved": 17,
       "changesRequested": 21,
       "blocked": 2,
       "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
-      "sequence": 3,
-      "workItemId": "W003",
-      "batchId": "B08",
-      "wave": 2,
-      "standardCode": "[4수03-01]",
-      "gradeBand": "3-4",
-      "domain": "도형과 측정",
-      "officialGoal": "직선, 선분, 반직선을 이해하고 구별할 수 있다.",
-      "archetypeId": "G01",
-      "plannedFamilyId": "geometry.line-extent.classify-v1",
-      "engineClassIds": [
-        "R11"
-      ],
-      "engineCoreContract": null,
-      "reviewScopes": [],
-      "familySubWorkItems": [],
-      "nextFamilySubWork": null,
-      "subWorkStatePath": null,
-      "replanDocumentPath": null,
-      "replanContractRevision": null,
-      "operation": "LEARNING_MAP_BINDING",
-      "operationWorkItemId": "W003-LEARNING_MAP_BINDING",
-      "dependencyWorkItemIds": [],
-      "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "fixtures/pedagogy/no-family-learning-map.used.json",
-        "scripts/curriculum/no-family-plan.json",
-        "packages/curriculum/src/data.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "packages/curriculum/src/assessment-targets.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/problem-families/domains/data-probability/**",
-        "reports/curriculum-execution/latest.json",
-        "reports/curriculum-execution/latest.md",
-        "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
-      ],
-      "reviewGate": null,
-      "learningMapBound": false,
-      "targetOutlineSha256": "8acfb50ecf520d819097576f4373e3d368e5003661c8021d6f11e8d270727c77",
-      "expectedTargetOutline": [
-        {
-          "key": "identify-line-ray-segment-properties",
-          "studentDecision": "끝점의 수와 뻗는 방향을 근거로 직선·선분·반직선의 성질을 정한다.",
-          "invariant": "직선은 양쪽, 반직선은 한쪽으로 계속 뻗고 선분은 두 끝점 사이로 한정된다.",
-          "observableEvidence": "끝점과 연장 방향을 표시한 그림에 알맞은 이름을 대응한다.",
-          "misconceptionClass": "line-type-judged-by-drawn-length"
-        },
-        {
-          "key": "distinguish-line-ray-segment-examples",
-          "studentDecision": "방향이나 길이가 달라진 사례에서도 직선·선분·반직선을 구별한다.",
-          "invariant": "그림의 위치·방향·보이는 길이는 도형의 종류를 바꾸지 않는다.",
-          "observableEvidence": "여러 방향의 사례를 분류하고 끝점·연장 표시로 근거를 남긴다.",
-          "misconceptionClass": "orientation-dependent-line-classification"
-        }
-      ],
-      "expectedTargetCount": 2,
-      "archetypeRole": "anchor",
-      "splitRisk": "low",
-      "nextAction": "review-target-set-and-design-family",
-      "actionClass": "planned-no-family",
-      "solReview": {
-        "targetSet": "pending",
-        "familyTrack": "pending",
-        "targetSetReviewId": null,
-        "familyTrackReviewId": null,
-        "familyTrackReviewIds": [],
-        "replan": "pending",
-        "replanApproved": false,
-        "replanConsumed": false,
-        "familyRevalidation": "pending",
-        "revalidationApproved": false,
-        "revalidationArtifact": null
-      }
-    },
-    "nextReplanWork": {
       "sequence": 2,
       "workItemId": "W002",
       "batchId": "B01",
@@ -3253,44 +3239,57 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": null,
+      "nextFamilySubWork": {
+        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+        "familyId": "pattern.repeat-unit.construct-v1",
+        "familyTrackId": "pattern.repeat-unit.construct-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "targetOutlineKeys": [
+          "choose-own-arrangement-rule"
+        ],
+        "assessmentTargetIds": [
+          "change.pattern.repeat-rule.construct-v1"
+        ],
+        "dependencies": [
+          "W002-SOL_REPLAN",
+          "W002-SOL_REVIEW-TARGET_SET"
+        ],
+        "operationSequence": [
+          "AFFORDANCE_DISCOVERY",
+          "ENGINE_CORE",
+          "FAMILY_TRACK",
+          "SOL_REVIEW"
+        ],
+        "nextOperation": "ENGINE_CORE",
+        "completedOperations": [
+          "AFFORDANCE_DISCOVERY"
+        ],
+        "reviewStatus": "blocked",
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "retryingFamilyTrack": false
+      },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v8",
-      "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-SOL_REPLAN",
+      "operation": "ENGINE_CORE",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
       "dependencyWorkItemIds": [
-        "W002-FAMILY_TRACK",
-        "W002-SOL_REVIEW-FAMILY_TRACK"
+        "W002-SOL_REPLAN",
+        "W002-SOL_REVIEW-TARGET_SET"
       ],
       "allowedFiles": [
-        "W001_REPLAN.md",
-        "W002_REPLAN.md",
-        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
-        "SOL_REVIEW_PROMPT.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
-        "scripts/curriculum/build-no-family-plan.mjs",
-        "scripts/curriculum/build-family-revalidation.mjs",
-        "scripts/curriculum/sol-review-status.mjs",
-        "scripts/curriculum/revalidation-semantic-slice.mjs",
-        "scripts/curriculum/verify-sol-review-gate.mjs",
-        "scripts/curriculum/sol-review-board.json",
-        "packages/contracts/src/problem-family.ts",
-        "packages/contracts/src/problem-family.test.ts",
-        "packages/templates/src/problem-families/types.ts",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
-        "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
-        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
-        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
-        "package.json",
-        "tests/sol-review-status.test.ts",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
-        "reports/curriculum-execution/**"
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
+        "reports/curriculum-execution/subwork-state/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -3321,8 +3320,8 @@
       "expectedTargetCount": 3,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "sol-replan-required",
-      "actionClass": "blocked-needs-sol-replan",
+      "nextAction": "cover-unbound-reviewed-targets",
+      "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "blocked",
@@ -3331,14 +3330,15 @@
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A1"
         ],
-        "replan": "changes-requested",
-        "replanApproved": false,
-        "replanConsumed": false,
+        "replan": "approved",
+        "replanApproved": true,
+        "replanConsumed": true,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null
       }
     },
+    "nextReplanWork": null,
     "nextLiveEvidenceWork": {
       "sequence": 1,
       "workItemId": "W001",
@@ -6297,44 +6297,57 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": null,
+      "nextFamilySubWork": {
+        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
+        "familyId": "pattern.repeat-unit.construct-v1",
+        "familyTrackId": "pattern.repeat-unit.construct-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "targetOutlineKeys": [
+          "choose-own-arrangement-rule"
+        ],
+        "assessmentTargetIds": [
+          "change.pattern.repeat-rule.construct-v1"
+        ],
+        "dependencies": [
+          "W002-SOL_REPLAN",
+          "W002-SOL_REVIEW-TARGET_SET"
+        ],
+        "operationSequence": [
+          "AFFORDANCE_DISCOVERY",
+          "ENGINE_CORE",
+          "FAMILY_TRACK",
+          "SOL_REVIEW"
+        ],
+        "nextOperation": "ENGINE_CORE",
+        "completedOperations": [
+          "AFFORDANCE_DISCOVERY"
+        ],
+        "reviewStatus": "blocked",
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A1",
+        "retryingFamilyTrack": false
+      },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v8",
-      "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-SOL_REPLAN",
+      "operation": "ENGINE_CORE",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE",
       "dependencyWorkItemIds": [
-        "W002-FAMILY_TRACK",
-        "W002-SOL_REVIEW-FAMILY_TRACK"
+        "W002-SOL_REPLAN",
+        "W002-SOL_REVIEW-TARGET_SET"
       ],
       "allowedFiles": [
-        "W001_REPLAN.md",
-        "W002_REPLAN.md",
-        "CURRICULUM_97_LUNA_LOOP_PROMPT.md",
-        "SOL_REVIEW_PROMPT.md",
-        "scripts/curriculum/no-family-plan.json",
-        "scripts/curriculum/no-family-target-outlines.sol-draft.json",
-        "scripts/curriculum/build-no-family-plan.mjs",
-        "scripts/curriculum/build-family-revalidation.mjs",
-        "scripts/curriculum/sol-review-status.mjs",
-        "scripts/curriculum/revalidation-semantic-slice.mjs",
-        "scripts/curriculum/verify-sol-review-gate.mjs",
-        "scripts/curriculum/sol-review-board.json",
-        "packages/contracts/src/problem-family.ts",
-        "packages/contracts/src/problem-family.test.ts",
-        "packages/templates/src/problem-families/types.ts",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/domains/data-probability/data-table-organize.ts",
-        "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts",
-        "packages/curriculum/src/assessment-targets.test.ts",
-        "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts",
-        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.ts",
-        "packages/templates/src/problem-families/domains/change-relationships/repeating-pattern-arrangement.test.ts",
-        "package.json",
-        "tests/sol-review-status.test.ts",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
-        "reports/curriculum-execution/**"
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
+        "packages/templates/src/cognitive/registry.ts",
+        "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
+        "reports/curriculum-execution/subwork-state/**",
+        "reports/curriculum-execution/latest.json",
+        "reports/curriculum-execution/latest.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -6365,8 +6378,8 @@
       "expectedTargetCount": 3,
       "archetypeRole": "anchor",
       "splitRisk": "medium",
-      "nextAction": "sol-replan-required",
-      "actionClass": "blocked-needs-sol-replan",
+      "nextAction": "cover-unbound-reviewed-targets",
+      "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
         "familyTrack": "blocked",
@@ -6375,9 +6388,9 @@
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A1"
         ],
-        "replan": "changes-requested",
-        "replanApproved": false,
-        "replanConsumed": false,
+        "replan": "approved",
+        "replanApproved": true,
+        "replanConsumed": true,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null
