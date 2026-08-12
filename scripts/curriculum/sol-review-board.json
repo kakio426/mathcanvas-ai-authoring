@@ -2742,6 +2742,50 @@
         "기계적 정합성: candidate exact 13 files는 현재 SOL_REPLAN manifest 안에 있고 source/state contract revision v10, generated nextReplan W002, nextOffline W003, target source·outline hash·3-target denominator 불변은 일치한다. 그러나 queue가 SOL_REPLAN으로 내려간 원인이 새 repair blocker가 아니라 소비된 A2의 재사용이므로 이 상태를 승인 근거로 사용할 수 없다.",
         "QA: focused 20/20, typecheck, no-family plan, diff check와 독립 full pnpm check 84 files/517 tests가 모두 통과했고 visual/quality P0/P1 0이다. 테스트 녹색은 위 lineage와 repair predicate 미결속을 탐지하지 못하므로 candidate a6f170a는 changes-requested이며 새 blocker provenance와 executable repair authority가 갖춰지기 전 ENGINE_CORE 구현·상태 전진·main push를 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN_REQUEST",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 1,
+      "candidateCommit": "10f7b90d143bdc6ee71bb09cec7925f0fd8c4ea7",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json"
+      ],
+      "supersedesReviewId": null,
+      "checkedAt": "2026-08-12T01:47:45.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      "familyTrackId": "pattern.declared-repeat.repair-v1",
+      "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+      "blockedOperation": "ENGINE_CORE",
+      "blockedContractRevision": "W002-SOL-REPLAN-v9",
+      "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
+      "blockerArtifactSha256": "4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4",
+      "evidenceRefs": [
+        "git:10f7b90d143bdc6ee71bb09cec7925f0fd8c4ea7",
+        "git:91097c3a1194405751e8018b455ecb21ad844c5d",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A23",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
+        "reports/curriculum-execution/subwork-state/W002.json#W002-FAMILY_TRACK-repeat-repair",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1",
+        "scripts/curriculum/sol-review-status.mjs#solReplanRequestMatchesCursor",
+        "scripts/curriculum/verify-sol-review-gate.mjs#SOL_REPLAN_REQUEST",
+        "command:git diff-tree --root --no-commit-id --name-only -r 10f7b90d143bdc6ee71bb09cec7925f0fd8c4ea7 (exact preflight artifact only)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (22/22)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002)",
+        "command:pnpm check (84 files / 521 tests; build/typecheck/native/cognitive/visual/quality PASS)"
+      ],
+      "findings": [
+        "BLOCKED REQUEST IDENTITY: candidate 10f7b90은 정확히 repeat-repair ENGINE_CORE preflight artifact 한 파일만 추가하며 후보 이후 implementation 변경이 없다. artifact SHA, W002/[2수02-02], operationWorkItemId, familyTrackId, scopeId와 현재 W002 repeat-repair cursor가 모두 일치한다.",
+        "P0 CONTRACT_SCOPE_ALIAS: 마지막 승인·소비 revision v9는 repeat-rule 전용 engine contract/artifact를 소유하므로 repeat-repair ENGINE_CORE completion evidence로 재사용하거나 덮어쓸 수 없다. 이미 소비된 repeat-rule FAMILY_TRACK blocker A2도 새 repair 실패 identity를 대신할 수 없다.",
+        "P0 REPAIR_CAPACITY: move-once-no-clone에서 rule slots 2 + period-2 continuation 4 + 별도 repair target 1을 동시에 채우면 repair index의 선택값은 네 physical copies가 필요하다. v9의 3 values × 3 copies=9 source 계약은 불가능하며 repeat-repair는 3 × 4=12 source authority와 전용 layout/validator 증거가 필요하다.",
+        "P0 REPAIR_AUTHORITY: declared rule state, 독립 wrong item, remove-to-bank, state-indexed replacement, before/conditional-after envelope와 exact verification union이 executable validator/audit에 결속되기 전에는 repeat-repair ENGINE_CORE를 완료·승인할 수 없다.",
+        "이 blocked record는 구현 승인·coverage 승격·main push 권한이 아니다. 다음 W002 SOL_REPLAN candidate가 supersedesBlockedReviewId로 `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을 정확히 소비하고 별도 Sol 승인을 받을 때까지 ENGINE_CORE 구현·상태 전진을 금지한다.",
+        "독립 QA는 focused 22/22, no-family plan, full pnpm check 84 files/521 tests와 visual/quality P0/P1 0을 확인했다. 기계적 QA 통과는 위 hard-stop을 해제하지 않는다."
+      ]
     }
   ]
 }
