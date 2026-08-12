@@ -442,13 +442,218 @@ export function assertEngineCoreContract(contract, archetypeId) {
           changeDecision.minimumDistinctStepMagnitudes >= 2,
         `no-family-plan-change-rule-decision-contract-invalid:${archetypeId}:${familyTrackId}`
       );
+      const expectedChangeStates = [
+        { ruleStateKey: "inc-1-by-1", startValue: 1, stepMagnitude: 1, directionCode: 1, direction: "increase", sequenceValues: [1, 2, 3, 4], wrongIndex: 2, wrongValue: 8, repairValue: 3 },
+        { ruleStateKey: "inc-3-by-2", startValue: 3, stepMagnitude: 2, directionCode: 1, direction: "increase", sequenceValues: [3, 5, 7, 9], wrongIndex: 2, wrongValue: 4, repairValue: 7 },
+        { ruleStateKey: "dec-8-by-1", startValue: 8, stepMagnitude: 1, directionCode: 2, direction: "decrease", sequenceValues: [8, 7, 6, 5], wrongIndex: 2, wrongValue: 2, repairValue: 6 },
+        { ruleStateKey: "dec-6-by-2", startValue: 6, stepMagnitude: 2, directionCode: 2, direction: "decrease", sequenceValues: [6, 4, 2, 0], wrongIndex: 2, wrongValue: 9, repairValue: 2 }
+      ];
+      const changeVariantId = (value) =>
+        `NO04NT-${String(value + 1).padStart(2, "0")}`;
+      const changePoolDefinitions = [
+        { id: "rule-start", targetRole: "rule-control-start", phase: "rule-selection", writesStatePath: "studentChangeRuleState", writesStateIndex: 0, stateField: "startValue", valueDecoder: "integer-0-9-v1", value: (state) => state.startValue, constraintId: "construct-change-rule-start" },
+        { id: "rule-step", targetRole: "rule-control-step", phase: "rule-selection", writesStatePath: "studentChangeRuleState", writesStateIndex: 1, stateField: "stepMagnitude", valueDecoder: "positive-integer-1-9-v1", value: (state) => state.stepMagnitude, constraintId: "construct-change-rule-step" },
+        { id: "rule-direction", targetRole: "rule-control-direction", phase: "rule-selection", writesStatePath: "studentChangeRuleState", writesStateIndex: 2, stateField: "direction", valueDecoder: "direction-code-v1", value: (state) => state.directionCode, decoded: (state) => state.direction, constraintId: "construct-change-rule-direction" },
+        ...[0, 1, 2, 3].map((index) => ({ id: `sequence-${index}`, targetRole: `sequence-term-${index + 1}`, phase: "apply-declared-change", writesStatePath: "constructedSequenceState", writesStateIndex: index, valueDecoder: "integer-0-9-v1", value: (state) => state.sequenceValues[index], constraintId: `apply-change-rule-term-${index + 1}` })),
+        { id: "repair", targetRole: "repair-target", phase: "repair-declared-change", writesStatePath: "repairedChangeSequenceState", writesStateIndex: 2, writesStateIndexPath: "misalignedTermIndex", mappingPath: "validRepairValueByRuleStateKey", valueDecoder: "integer-0-9-v1", value: (state) => state.repairValue, constraintId: "repair-change-rule-term" }
+      ];
+      const expectedChangePools = changePoolDefinitions.map((pool) => ({
+        id: pool.id,
+        targetRole: pool.targetRole,
+        toolKey: "NO04NT",
+        phase: pool.phase,
+        writesStatePath: pool.writesStatePath,
+        writesStateIndex: pool.writesStateIndex,
+        ...(pool.stateField ? { stateField: pool.stateField } : {}),
+        ...(pool.writesStateIndexPath
+          ? { writesStateIndexPath: pool.writesStateIndexPath }
+          : {}),
+        ...(pool.mappingPath ? { mappingPath: pool.mappingPath } : {}),
+        sourceValueProperty: "value",
+        valueDecoder: pool.valueDecoder,
+        sources: expectedChangeStates.map((state) => {
+          const value = pool.value(state);
+          return {
+            roleId: `change-${pool.id}-${state.ruleStateKey}`,
+            ruleStateKey: state.ruleStateKey,
+            value,
+            variantId: changeVariantId(value),
+            ...(pool.decoded ? { decodedValue: pool.decoded(state) } : {})
+          };
+        })
+      }));
+      const expectedChangeWrites = changePoolDefinitions.flatMap((pool) =>
+        expectedChangeStates.map((state) => {
+          const value = pool.value(state);
+          return {
+            writeId: `${pool.constraintId}-${state.ruleStateKey}`,
+            constraintId: pool.constraintId,
+            stateId: state.ruleStateKey,
+            ruleStateKey: state.ruleStateKey,
+            ruleStateKeyProperty: "ruleStateKey",
+            sourceRoleId: `change-${pool.id}-${state.ruleStateKey}`,
+            sourcePoolId: pool.id,
+            targetRole: pool.targetRole,
+            phase: pool.phase,
+            writesStatePath: pool.writesStatePath,
+            writesStateIndex: pool.writesStateIndex,
+            ...(pool.stateField ? { stateField: pool.stateField } : {}),
+            ...(pool.writesStateIndexPath
+              ? { writesStateIndexPath: pool.writesStateIndexPath }
+              : {}),
+            ...(pool.mappingPath ? { mappingPath: pool.mappingPath } : {}),
+            sourceValueProperty: "value",
+            valueDecoder: pool.valueDecoder,
+            expectedSourceValue: value,
+            expectedDecodedValue: pool.decoded ? pool.decoded(state) : value
+          };
+        })
+      );
+      const expectedLeakContract = {
+        mode: "unordered-field-set-across-emissions",
+        semanticKeys: ["startValue", "stepMagnitude", "direction"],
+        emissionScope: "locked-non-source",
+        scanSurfaces: ["structured-properties", "visible-text"],
+        excludeSourceRoleIds: true,
+        numericMultiplicityAware: true,
+        rejectCompleteStateAcrossEmissions: true,
+        permutationCoverage: [
+          ["startValue", "stepMagnitude", "direction"],
+          ["startValue", "direction", "stepMagnitude"],
+          ["stepMagnitude", "startValue", "direction"],
+          ["stepMagnitude", "direction", "startValue"],
+          ["direction", "startValue", "stepMagnitude"],
+          ["direction", "stepMagnitude", "startValue"]
+        ]
+      };
+      const expectedNativeEvidence = {
+        toolKey: "NO04NT",
+        releasedValueVariantMap: Array.from({ length: 10 }, (_, value) => ({
+          value,
+          variantId: changeVariantId(value)
+        })),
+        expectedSourceRoleIds: expectedChangePools.flatMap((pool) =>
+          pool.sources.map((source) => source.roleId)
+        ),
+        expectedSourceRoleCount: 32,
+        expectedTargetRoleIds: changePoolDefinitions.map(
+          (pool) => pool.targetRole
+        ),
+        expectedTargetRoleCount: 8,
+        renderedBounds: {
+          width: 80,
+          height: 80,
+          sourceConstant: "NUMBER_CARD_RENDERED_SIZE"
+        },
+        minimumTargetBounds: { width: 188, height: 188 },
+        containment: "native-rendered-bounds",
+        requiresExactResolvedSourceIdValueVariantMatch: true,
+        requiresAllSourcesAndTargetsVisibleSimultaneously: true,
+        requiresPairwiseDisjointSourcePools: true,
+        requiresSourceTargetRegionDisjointness: true
+      };
+      const changeSourceModel = changeDecision.sourceModel;
+      const changeSourceWrite = changeDecision.sourceWriteContract;
+      const changeLeak = changeDecision.answerLeakContract;
+      const changeNativeEvidence = changeDecision.nativeEvidenceContract;
+      const sourceRoleIds = (changeSourceModel?.sourcePools ?? []).flatMap(
+        (pool) => (pool.sources ?? []).map((source) => source.roleId)
+      );
+      assert(
+        JSON.stringify(changeDecision.validStateCatalog) ===
+          JSON.stringify(expectedChangeStates) &&
+          expectedChangeStates.every((state) => {
+            const signedStep =
+              state.direction === "increase"
+                ? state.stepMagnitude
+                : -state.stepMagnitude;
+            return (
+              state.sequenceValues[0] === state.startValue &&
+              state.sequenceValues.every(
+                (value) => Number.isInteger(value) && value >= 0 && value <= 9
+              ) &&
+              state.sequenceValues.slice(1).every(
+                (value, index) =>
+                  value - state.sequenceValues[index] === signedStep
+              ) &&
+              state.repairValue === state.sequenceValues[state.wrongIndex] &&
+              state.wrongValue !== state.repairValue
+            );
+          }),
+        `no-family-plan-change-rule-valid-state-catalog-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        changeSourceModel?.toolKey === "NO04NT" &&
+          changeSourceModel.sourceUseMode === "move-once-no-clone" &&
+          changeSourceModel.selectionCorrelation ===
+            "single-ruleStateKey-across-eight-writes" &&
+          changeSourceModel.validStateCount === 4 &&
+          changeSourceModel.sourcePoolCount === 8 &&
+          changeSourceModel.sourcesPerPool === 4 &&
+          changeSourceModel.perStateRoleCount === 8 &&
+          changeSourceModel.physicalSourceRoleCount === 32 &&
+          JSON.stringify(changeSourceModel.sourcePools) ===
+            JSON.stringify(expectedChangePools) &&
+          sourceRoleIds.length === 32 &&
+          new Set(sourceRoleIds).size === 32 &&
+          changeSourceModel.capacity?.requiredPhysicalSources === 32 &&
+          changeSourceModel.capacity.requiredControlWrites === 12 &&
+          changeSourceModel.capacity.requiredApplicationWrites === 16 &&
+          changeSourceModel.capacity.requiredRepairWrites === 4 &&
+          changeSourceModel.capacity.requiredDerivedOutputs === 20 &&
+          changeSourceModel.capacity.selectedPhysicalSourcesPerState === 8 &&
+          changeSourceModel.capacity.requiredTargetActionsPerState === 8 &&
+          changeSourceModel.capacity.cloneOrReuseAssumed === false &&
+          changeSourceModel.capacity.requiresPairwiseDisjointRoleIds === true &&
+          changeSourceModel.validStateCount *
+            changeSourceModel.perStateRoleCount ===
+            changeSourceModel.physicalSourceRoleCount &&
+          changeSourceModel.capacity.requiredControlWrites +
+            changeSourceModel.capacity.requiredDerivedOutputs ===
+            changeSourceModel.capacity.requiredPhysicalSources,
+        `no-family-plan-change-rule-source-capacity-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        JSON.stringify(changeSourceWrite?.cardinality) ===
+          JSON.stringify({
+            validStateCount: 4,
+            sourcePoolCount: 8,
+            writesPerState: 8,
+            writeCount: 32,
+            controlWriteCount: 12,
+            applicationWriteCount: 16,
+            repairWriteCount: 4
+          }) &&
+          JSON.stringify(changeSourceWrite?.writes) ===
+            JSON.stringify(expectedChangeWrites),
+        `no-family-plan-change-rule-state-write-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        JSON.stringify(changeLeak) === JSON.stringify(expectedLeakContract),
+        `no-family-plan-change-rule-answer-leak-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        JSON.stringify(changeNativeEvidence) ===
+          JSON.stringify(expectedNativeEvidence),
+        `no-family-plan-change-rule-native-evidence-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
       assert(
         override.nativeDependency === "engine-core-discovery-required" &&
           changeLayout?.status === "engine-core-required" &&
           changeLayout.tokenSet === "w002-change-rule-v1" &&
           changeLayout.ruleStateControlRoles === stateFields.length &&
-          changeLayout.sequenceTermRoles >= 4 &&
+          changeLayout.sequenceTermRoles === 4 &&
           changeLayout.repairTargetRoles === 1 &&
+          changeLayout.physicalSourceRoles === 32 &&
+          changeLayout.sourcePoolCount === 8 &&
+          changeLayout.sourceRolesPerPool === 4 &&
+          changeLayout.targetActionRoles === 8 &&
+          JSON.stringify(changeLayout.minimumSourceBounds) ===
+            JSON.stringify({ width: 80, height: 80 }) &&
+          JSON.stringify(changeLayout.minimumTargetBounds) ===
+            JSON.stringify({ width: 188, height: 188 }) &&
+          changeLayout.containment === "native-rendered-bounds" &&
+          changeLayout.requiresDisjointSourceTargetRegions === true &&
           changeLayout.allVisibleSimultaneously === true &&
           changeLayout.requiresNativeBoundsEvidence === true,
         `no-family-plan-change-rule-layout-contract-invalid:${archetypeId}:${familyTrackId}`
@@ -483,6 +688,11 @@ export function assertEngineCoreContract(contract, archetypeId) {
               stateFields,
               directionValues: changeDecision.directionValues,
               initialState: changeDecision.initialState,
+              validStateCatalog: changeDecision.validStateCatalog,
+              sourceModel: changeDecision.sourceModel,
+              sourceWriteContract: changeDecision.sourceWriteContract,
+              answerLeakContract: changeDecision.answerLeakContract,
+              nativeEvidenceContract: changeDecision.nativeEvidenceContract,
               distractors: changeDecision.distractors,
               application: changeApplication,
               repair: changeRepair

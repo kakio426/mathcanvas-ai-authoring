@@ -126,7 +126,7 @@ describe("Sol review candidate and scope gates", () => {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(
         report.current.nextReplanWork.solReview.solReplanRequest?.reviewId
-      ).toBe("W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1");
+      ).toBe("W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2");
     } else {
       expect(report.current.nextReplanWork).toBeNull();
     }
@@ -334,7 +334,7 @@ describe("Sol review candidate and scope gates", () => {
     expect(artifact.status).toBe("implemented-verified-pending-family-track");
   });
 
-  it("preserves repeat-repair v12 completion evidence under the v14 contract", () => {
+  it("preserves repeat-repair v12 completion evidence under the v15 contract", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
     );
@@ -347,7 +347,7 @@ describe("Sol review candidate and scope gates", () => {
       contract,
       planned.familyTrackId
     ).artifactContract;
-    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v14");
+    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v15");
     expect(artifactContract.pendingStatus).toBe(
       "planned-pending-engine-core"
     );
@@ -458,13 +458,13 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v14"
+        "W002-SOL-REPLAN-v15"
       );
       const trigger =
         report.current.nextReplanWork.solReview.solReplanRequest;
       if (trigger) {
         expect(trigger.reviewId).toBe(
-          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1"
+          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2"
         );
       } else {
         expect(
@@ -630,11 +630,137 @@ describe("Sol review candidate and scope gates", () => {
       derivation: "replace-with-declared-transition-value",
       requiresOnlyWrongIndexChanges: true
     });
+    expect(change.manifestDecision.validStateCatalog).toEqual([
+      expect.objectContaining({
+        ruleStateKey: "inc-1-by-1",
+        sequenceValues: [1, 2, 3, 4],
+        wrongIndex: 2,
+        wrongValue: 8,
+        repairValue: 3
+      }),
+      expect.objectContaining({
+        ruleStateKey: "inc-3-by-2",
+        sequenceValues: [3, 5, 7, 9],
+        wrongValue: 4,
+        repairValue: 7
+      }),
+      expect.objectContaining({
+        ruleStateKey: "dec-8-by-1",
+        sequenceValues: [8, 7, 6, 5],
+        wrongValue: 2,
+        repairValue: 6
+      }),
+      expect.objectContaining({
+        ruleStateKey: "dec-6-by-2",
+        sequenceValues: [6, 4, 2, 0],
+        wrongValue: 9,
+        repairValue: 2
+      })
+    ]);
+    expect(change.manifestDecision.sourceModel).toMatchObject({
+      toolKey: "NO04NT",
+      sourceUseMode: "move-once-no-clone",
+      validStateCount: 4,
+      sourcePoolCount: 8,
+      sourcesPerPool: 4,
+      perStateRoleCount: 8,
+      physicalSourceRoleCount: 32,
+      capacity: {
+        requiredPhysicalSources: 32,
+        requiredControlWrites: 12,
+        requiredApplicationWrites: 16,
+        requiredRepairWrites: 4,
+        requiredDerivedOutputs: 20,
+        selectedPhysicalSourcesPerState: 8,
+        cloneOrReuseAssumed: false
+      }
+    });
+    expect(change.manifestDecision.sourceModel.sourcePools).toHaveLength(8);
+    expect(
+      change.manifestDecision.sourceModel.sourcePools.flatMap(
+        (pool: { sources: unknown[] }) => pool.sources
+      )
+    ).toHaveLength(32);
+    expect(change.manifestDecision.sourceWriteContract).toMatchObject({
+      cardinality: {
+        validStateCount: 4,
+        sourcePoolCount: 8,
+        writesPerState: 8,
+        writeCount: 32,
+        controlWriteCount: 12,
+        applicationWriteCount: 16,
+        repairWriteCount: 4
+      }
+    });
+    expect(change.manifestDecision.sourceWriteContract.writes).toHaveLength(32);
+    expect(change.manifestDecision.answerLeakContract.permutationCoverage).toHaveLength(6);
+    expect(change.manifestDecision.nativeEvidenceContract).toMatchObject({
+      toolKey: "NO04NT",
+      expectedSourceRoleCount: 32,
+      expectedTargetRoleCount: 8,
+      renderedBounds: { width: 80, height: 80 },
+      minimumTargetBounds: { width: 188, height: 188 },
+      containment: "native-rendered-bounds"
+    });
     expect(change.artifactContract.pendingStatus).toBe(
       "planned-pending-engine-core"
     );
     expect(change.artifactContract.pendingContractRevision).toBe(
-      "W002-SOL-REPLAN-v14"
+      "W002-SOL-REPLAN-v15"
+    );
+
+    const invalidCatalog = JSON.parse(JSON.stringify(contract));
+    invalidCatalog.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.validStateCatalog[0].sequenceValues[3] = 9;
+    expect(() => assertEngineCoreContract(invalidCatalog, "C01")).toThrow(
+      "no-family-plan-change-rule-valid-state-catalog-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const invalidCapacity = JSON.parse(JSON.stringify(contract));
+    invalidCapacity.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.sourceModel.physicalSourceRoleCount = 31;
+    expect(() => assertEngineCoreContract(invalidCapacity, "C01")).toThrow(
+      "no-family-plan-change-rule-source-capacity-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const missingPhysicalRole = JSON.parse(JSON.stringify(contract));
+    missingPhysicalRole.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.sourceModel.sourcePools[7].sources.pop();
+    expect(() => assertEngineCoreContract(missingPhysicalRole, "C01")).toThrow(
+      "no-family-plan-change-rule-source-capacity-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const invalidWrite = JSON.parse(JSON.stringify(contract));
+    invalidWrite.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.sourceWriteContract.writes[12].phase =
+      "rule-selection";
+    expect(() => assertEngineCoreContract(invalidWrite, "C01")).toThrow(
+      "no-family-plan-change-rule-state-write-contract-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const incompleteLeakPermutations = JSON.parse(JSON.stringify(contract));
+    incompleteLeakPermutations.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.answerLeakContract.permutationCoverage.pop();
+    expect(() =>
+      assertEngineCoreContract(incompleteLeakPermutations, "C01")
+    ).toThrow(
+      "no-family-plan-change-rule-answer-leak-contract-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const invalidNativeValueMap = JSON.parse(JSON.stringify(contract));
+    invalidNativeValueMap.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].manifestDecision.nativeEvidenceContract.releasedValueVariantMap[0].variantId =
+      "NO04NT-02";
+    expect(() =>
+      assertEngineCoreContract(invalidNativeValueMap, "C01")
+    ).toThrow(
+      "no-family-plan-change-rule-native-evidence-contract-invalid:C01:pattern.change-rule.construct-v1"
     );
 
     const withoutChangeRef = JSON.parse(JSON.stringify(contract));
@@ -1126,11 +1252,11 @@ describe("Sol review candidate and scope gates", () => {
     const preApproval = report.current.nextReplanWork;
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
-      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v14");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v15");
       const trigger = preApproval.solReview.solReplanRequest;
       if (trigger) {
         expect(trigger.reviewId).toBe(
-          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1"
+          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2"
         );
       } else {
         expect(preApproval.solReview.familyTrackReviewIds).toContain(

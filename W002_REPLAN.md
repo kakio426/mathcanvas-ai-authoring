@@ -1,4 +1,55 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v14)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v15)
+
+## v15 change-rule source/state lifecycle hard-stop
+
+`W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2`는 v14 ENGINE_CORE 후보
+`8265abf`가 native shell을 resolve·compile하지만 학생이 실제로
+`startValue`·`stepMagnitude`·`direction`을 기록하고 네 항·수정 항을
+완성할 원천과 write semantics는 증명하지 못함을 기록한다. v15
+review는 `W002-SOL-REPLAN-SOL-A37`을 supersede하고 이 A2 request를
+`supersedesBlockedReviewId`로 소비해야 한다. target 3개·outline hash·기존
+repeat-rule/repeat-repair approval/evidence는 변경하지 않는다.
+
+v15의 observable-change envelope은 다음 네 개의 유효 상태로 유한하다.
+
+| state ID | 시작값 | 변화량 | 방향 code→의미 | 네 항 | wrong index/value → repair |
+|---|---:|---:|---|---|---|
+| `inc-1-by-1` | 1 | 1 | `1→increase` | `1,2,3,4` | `2/8 → 3` |
+| `inc-3-by-2` | 3 | 2 | `1→increase` | `3,5,7,9` | `2/4 → 7` |
+| `dec-8-by-1` | 8 | 1 | `2→decrease` | `8,7,6,5` | `2/2 → 6` |
+| `dec-6-by-2` | 6 | 2 | `2→decrease` | `6,4,2,0` | `2/9 → 2` |
+
+모든 원천은 released `NO04NT` 0–9 수 카드다. 방향은 잠긴 legend
+`1=늘어남`, `2=줄어듦`과 `enum-map-v1`로 의미를 보이게 고정한다.
+유효 state 마다 start·step·direction 선택 3개, sequence 위치별 4개,
+repair 1개를 별도 physical role로 제공한다. 즉 4 state ×
+8 action = 32 source role이며, 각 constraint의 source pool은 해당 필드/위치의
+4 role로 제한한다. pool 사이 role은 겹치지 않고
+`move-once-no-clone`이며, 선택한 state의 8 source를 동시에 사용해도
+다른 source를 재사용하지 않는다.
+
+각 source는 `ruleStateKey`를 갖고 제어 constraint는
+`phase=rule-selection`, `writesStatePath=studentChangeRuleState`, exact
+`stateField`·`stateIndex`, `sourceValueProperty=value`, 필드별 decoder를 쓴다.
+세 제어는 같은 `ruleStateKey`에서 와야 한다. sequence constraint는
+`phase=apply-declared-change`, `writesStatePath=constructedSequenceState`, exact
+`writesStateIndex`, `sourceValueProperty=value`, selected state key 일치를 강제한다.
+repair constraint는 `phase=repair-declared-change`,
+`writesStatePath=repairedChangeSequenceState`,
+`writesStateIndexPath=misalignedTermIndex`, `mappingPath` 일치를 강제한다.
+
+정답 누출 검사는 locked non-source emission 전체에서
+`startValue`·`stepMagnitude`·`direction`을 **순서와 무관하게** 집계한다.
+구조화 property와 visible text 모두를 검사하고, 동일 상태의 6개 field
+순열을 나눈 locked emission 반례가 모두 차단되어야 한다.
+layout/native 증거는 32 source·8 target의 동시 가시성, `NO04NT`
+0–9 exact source ID/value, number-card rendered bounds, disjoint pool containment을 다룬다.
+
+v15 거버넌스 승인 전·후에도 change-rule state는
+`completedOperations=[]`, `nextOperation=ENGINE_CORE`로 남는다. 새 pending
+artifact는 authority 파일만 결속하며 `8265abf`를 completion evidence로
+재사용하지 않는다. v15 승인 후 위 계약을 구현한 새 bounded
+ENGINE_CORE candidate와 별도 completion transition이 필요하다.
 
 상태: **Sol max 재계획 후보 — reviewer transaction window 승인 대기**
 
