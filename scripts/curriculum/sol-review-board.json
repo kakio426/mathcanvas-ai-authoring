@@ -2916,6 +2916,56 @@
         "후보 currentness와 scope가 정확하다. d608c7f의 direct diff는 선언된 5개 SOL_REPLAN 허용 파일뿐이고 후보 이후 구현 파일 변경은 없다. target 3개, outline hash 61d81952e25b735887b12b66ec0b9993b21b98afeb41ac67224b593cf8cae0b6, revision v10, 세 replan scope와 repeat-repair ENGINE_CORE cursor가 유지된다.",
         "독립 QA는 승인 전 focused 69/69와 전체 pnpm check 84 files/523 tests를 통과했고 build/typecheck, registry/coverage/execution/no-family, native/contract/cognitive, visual/quality P0/P1 0을 확인했다. 그러나 실제 승인 record 투영 뒤 focused test가 22/24로 실패했으므로 candidate d608c7f는 changes-requested이며 수정 후보 전 ENGINE_CORE 구현·상태 전진·coverage 승격·live canary·main push를 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A27",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 27,
+      "candidateCommit": "1b2c80a22d4550b21de6bb01121fe08aadaad868",
+      "changedFiles": [
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A26",
+      "checkedAt": "2026-08-12T02:31:00.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "8823b95bc5e04e5715c65909bfe139c7d30c4fdcac57a69d6b9636c53f3aafb4",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v10",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:1b2c80a22d4550b21de6bb01121fe08aadaad868",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A26",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "tests/sol-review-status.test.ts#keeps-W002-blocker-lineage-in-the-scoped-request-not-legacy-state",
+        "command:git diff-tree --root --no-commit-id --name-only -r 1b2c80a22d4550b21de6bb01121fe08aadaad868 (exact test file only)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (24/24 pre-approval)",
+        "command:post-review pnpm exec vitest run tests/sol-review-status.test.ts (23/24; active-state evidence assertion failure)"
+      ],
+      "findings": [
+        "P0 ACTIVE_SUBWORK_STATE_ALIAS: 실제 A27 approved record를 board에 추가하고 report를 재생성하자 focused test가 23/24로 실패했다. 테스트의 `stateItem`은 여전히 `W002-FAMILY_TRACK-repeat-rule`을 찾으면서 post-approval repeat-repair ENGINE_CORE branch에서 completionEvidence가 undefined이길 기대한다. repeat-rule은 current v10 compatibility evidence를 이미 보유하므로 이 기대는 틀렸고, active repeat-repair state와 선행 repeat-rule state를 혼동한다.",
+        "필수 최소 수정: state item lookup을 `nextOffline.nextFamilySubWork.workItemId` 또는 exact `W002-FAMILY_TRACK-repeat-repair`에 결속해 active repeat-repair의 completedOperations=[]/nextOperation=ENGINE_CORE/completionEvidence 없음만 검증한다. 별도로 repeat-rule state의 v10 compatibility artifact path와 current SHA가 보존됨을 검증해 선행 evidence를 지우는 잘못된 수정도 차단해야 한다.",
+        "A26의 두 P0 중 operation identity와 request pre/post 분기는 개선됐다. post-approval report는 request=null, approved/consumed=true, repeat-repair ENGINE_CORE familyTrackId/scopeId/operationWorkItemId를 올바르게 투영했고 blocker-lineage test는 통과한다.",
+        "후보 exact diff는 tests/sol-review-status.test.ts 한 파일뿐이고 authority source, builder, W002 state, target set, family implementation은 변경하지 않았다. lifecycle authority와 request 소비 로직 자체도 그대로 정합하다.",
+        "승인 전 focused 24/24와 no-family plan은 통과했지만 실제 승인 record 투영 뒤 23/24이므로 candidate 1b2c80a는 changes-requested다. 다음 수정 전 repeat-repair ENGINE_CORE 구현·상태 전진·coverage 승격·main push를 금지한다."
+      ]
     }
   ]
 }
