@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-change-rule-blueprint-predicate-preflight-v15",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.change-rule.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-change-rule",
+  "blockedOperation": "ENGINE_CORE",
+  "blockedContractRevision": "W002-SOL-REPLAN-v15",
+  "blockerCodes": [
+    "ENGINE_CORE_SCOPE_VIOLATION",
+    "BLUEPRINT_VALUE_PREDICATE_NATIVE_BOUNDS_KEY_FORBIDDEN",
+    "RUNTIME_NATIVE_EVIDENCE_UNINSTANTIABLE"
+  ],
+  "summary": "승인된 v15 runtime predicate는 nativeEvidenceContract.renderedBounds와 minimumTargetBounds의 width/height를 exact하게 요구하지만, defineActivityBlueprint와 parseActivityBlueprint의 재귀 금지 키 검사는 valuePredicates.parameters 내부의 width/height도 answer-shape 키로 간주해 거부한다. 현재 ENGINE_CORE 허용 범위에는 packages/contracts/src/vocabulary/blueprint.ts와 그 테스트가 없으므로 32개 NO04NT source와 8개 target을 실제 resolve→compile 경로에 결속할 수 없다.",
+  "evidenceRefs": [
+    "git:085e9ab3688167d7b1e6f3e587b1ca79bd5f2021#W002-SOL_REPLAN-SOL-A38",
+    "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.change-rule.construct-v1.runtimePredicate.parameters.nativeEvidenceContract",
+    "packages/contracts/src/vocabulary/blueprint.ts#assertBlueprintValue",
+    "packages/contracts/src/vocabulary/blueprint.ts#forbiddenKeys",
+    "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts#parseActivityBlueprint",
+    "packages/validator/src/validator.test.ts#changeRuleResolvedNativeFixture",
+    "command:pnpm exec vitest run packages/validator/src/validator.test.ts -> blueprint-key-forbidden:valuePredicates.0.parameters.nativeEvidenceContract.renderedBounds.width",
+    "command:approved ENGINE_CORE allowedFiles excludes packages/contracts/src/vocabulary/blueprint.ts and packages/contracts/src/vocabulary/blueprint.test.ts",
+    "command:git status --short after pausing implementation and before this artifact -> clean"
+  ],
+  "requiredReplan": {
+    "contractSeam": "blueprint-predicate-native-evidence-metadata",
+    "requiredEvidence": [
+      "separate answer-shape keys from contract metadata keys by path so width and height remain forbidden in learner answer data but are allowed in bounded native evidence metadata",
+      "add packages/contracts/src/vocabulary/blueprint.ts and its focused test to the next bounded ENGINE_CORE allowed scope only after SOL_REPLAN approval",
+      "prove defineActivityBlueprint and parseActivityBlueprint both accept the exact v15 runtime predicate without deleting or renaming its native bounds evidence",
+      "retain rejection of width, height, answer, answers, answerKey, correctAnswer, and correctRelation in learner-authored answer-bearing blueprint paths",
+      "exercise the exact 32-source and 8-target v15 predicate through define, resolve, compile, native IDs and validator after the seam is approved",
+      "keep the W002 change-rule cursor at ENGINE_CORE and the v15 artifact planned-pending-engine-core until a new bounded implementation and separate completion transition pass"
+    ],
+    "forbiddenFallbacks": [
+      "removing renderedBounds or minimumTargetBounds from the runtime predicate only for blueprint construction and reinserting them after resolve",
+      "renaming width and height in the runtime predicate without a new authority contract",
+      "weakening the global answer-shape guard for every blueprint path",
+      "editing packages/contracts/src/vocabulary/blueprint.ts under the currently approved ENGINE_CORE scope",
+      "marking the v15 completion artifact implemented or advancing to FAMILY_TRACK"
+    ]
+  },
+  "preservedState": {
+    "changeRuleArtifactStatus": "planned-pending-engine-core",
+    "changeRuleCursor": "ENGINE_CORE",
+    "repeatRuleCompatibilityEvidence": "preserved-current",
+    "repeatRepairCompatibilityEvidence": "preserved-current",
+    "offlineCoverage": "2/3",
+    "liveCoverage": "0/3"
+  },
+  "createdAt": "2026-08-12T10:20:00.000Z"
+}
