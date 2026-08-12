@@ -24,6 +24,13 @@ commit을 모두 무시하지도 않는다. repeat-rule/repeat-repair family sou
 뒤에만 change-rule ENGINE_CORE를 재개한다. 이번 governance 후보에는 change-rule
 schema·validator·layout·family 구현을 섞지 않는다.
 
+clean replay는 `W002-FAMILY_TRACK-repeat-repair-SOL-A4`와 reviewer commit
+`7f034a9cb6eae7fbefa05c63804e18ecc0b98ea1`로 고정했다. 이 commit은 board와 파생
+no-family JSON/Markdown 세 파일만 포함한다. gate는 frozen candidate `2f3ce90`에 대해
+`reviewerCommit=7f034a9`, `postApproval=3 files`로 통과해야 한다. 과거 A3 transaction의
+범위 오류를 전역 FAMILY_TRACK manifest 확장으로 숨기지 않고 A4가 최신 승인 identity를
+대체한다.
+
 ## v13 change-rule ENGINE_CORE 분리
 
 `W002-FAMILY_TRACK-repeat-repair-SOL-A2`에서 repeat-repair family 자체의 교육·수학·

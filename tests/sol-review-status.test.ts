@@ -120,7 +120,7 @@ describe("Sol review candidate and scope gates", () => {
     );
     expect(approvedRepair.reviewStatus).toBe("approved");
     expect(approvedRepair.reviewId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
+      "W002-FAMILY_TRACK-repeat-repair-SOL-A4"
     );
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");

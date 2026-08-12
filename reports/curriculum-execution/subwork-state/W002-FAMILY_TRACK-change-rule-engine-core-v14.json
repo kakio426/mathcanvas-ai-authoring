@@ -22,7 +22,7 @@
     "requiredEvidence": "세 rule-state control, 최소 네 sequence term, 한 repair target의 동시 가시성과 native bounds"
   },
   "implementationFiles": {
-    "W002_REPLAN.md": "d9b491b9ef661bfda40bf104580d90db98042117bdc2a039c75c45d65b21cac8",
+    "W002_REPLAN.md": "979ad5e5cc67069657793c0e2ae42ea47e0df842d0082797aa645bca7d1c9781",
     "scripts/curriculum/no-family-plan.json": "f55196b60a16d781a8b1f96626ad31a73e9f0ee7c966e6f2795fd2817ca9b2a4",
     "scripts/curriculum/build-no-family-plan.mjs": "cd4fd8e12f6f5b054465dc2ac263878504223b962570e0da40ec7afa30d25b5a"
   },
