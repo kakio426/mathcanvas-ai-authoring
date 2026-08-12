@@ -117,11 +117,28 @@ describe("Sol review candidate and scope gates", () => {
       (item: { familyTrackId: string }) =>
         item.familyTrackId === "pattern.declared-repeat.repair-v1"
     );
-    expect(report.current.nextReplanWork?.operation).toBe("SOL_REPLAN");
     expect(blockedRepair.reviewStatus).toBe("blocked");
     expect(blockedRepair.reviewId).toBe(
       "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
     );
+    const pendingReplan = report.current.nextReplanWork;
+    const approvedReplanCursor = report.current.nextOfflineWork;
+    if (pendingReplan?.workItemId === "W002") {
+      expect(pendingReplan.operation).toBe("SOL_REPLAN");
+      expect(pendingReplan.solReview.replanApproved).toBe(false);
+      expect(pendingReplan.solReview.replanConsumed).toBe(false);
+    } else {
+      expect(approvedReplanCursor?.workItemId).toBe("W002");
+      expect(approvedReplanCursor?.operation).toBe("FAMILY_TRACK");
+      expect(approvedReplanCursor?.operationWorkItemId).toBe(
+        "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
+      );
+      expect(approvedReplanCursor?.nextFamilySubWork?.familyTrackId).toBe(
+        "pattern.declared-repeat.repair-v1"
+      );
+      expect(approvedReplanCursor?.solReview.replanApproved).toBe(true);
+      expect(approvedReplanCursor?.solReview.replanConsumed).toBe(true);
+    }
 
     const postApprovalSubWorks = preApprovalSubWorks.map(
       (item: {
