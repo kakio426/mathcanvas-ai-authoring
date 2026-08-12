@@ -2929,6 +2929,53 @@
           "최소 수정: 각 문항에서 풀의 세 의미값으로 가능한 ordered-distinct 6상태를 exhaustive하게 파생하고 same-value 3상태를 rejectable surplus로 두거나, validRuleStates를 예시로 유지한다면 preview·정답을 ‘허용 목록’이 아닌 일반 조건부 기준으로 바꿔야 한다. teacher answer/explanation은 특정 색·모양을 고정하지 말고 ‘규칙칸 두 값이 서로 다름, continuation 1·3은 첫째와 2·4는 둘째와 일치, 같은 두 칸 단위 반복을 설명함’으로 작성하고 제3값 조합 회귀 테스트를 추가한다. 같은 source/test/registry report 범위의 bounded retry이므로 새 SOL_REPLAN은 필요 없다.",
           "판정: 기술 QA 통과만으로 고정 정답과 self-defined decision의 의미 충돌을 덮을 수 없다. A3는 changes-requested이며 수정 후보가 이 conditional rubric과 exact preview를 정렬하기 전 FAMILY_TRACK 승인·coverage 승격·main push를 금지한다."
         ]
+      },
+      {
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "approved",
+        "attempt": 4,
+        "candidateCommit": "c536ef5a4d96bd65c87066887ed5223d76e13e62",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts",
+          "reports/problem-family-registry/latest.json"
+        ],
+        "familyTrackId": "pattern.repeat-unit.construct-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "supersedesReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "checkedAt": "2026-08-12T00:34:36.000Z",
+        "evidenceRefs": [
+          "git:c536ef5a4d96bd65c87066887ed5223d76e13e62",
+          "git:2e9acd7b870696dd331c824359827e73e0ee2c8f",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A23",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts#change.pattern.repeat-rule.construct-v1",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#CONTEXTS",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#generateRepeatRuleConstructionItems",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#problemPreviews",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#answerKey",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#cognitiveManifest",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+          "reports/problem-family-registry/latest.json#pattern.repeat-unit.construct-v1",
+          "command:git diff-tree --no-commit-id --name-only -r c536ef5a4d96bd65c87066887ed5223d76e13e62 (exact 3 FAMILY_TRACK files)",
+          "command:node generated-item exhaustive probe (4 items: 6/6 ordered-distinct valid, 3/3 same-value surplus, 3 copies/value, generic rubric)",
+          "command:pnpm check (84 files/516 tests; registry/cognitive/native/layout/build/typecheck/visual/quality PASS)",
+          "command:git diff --check 2e9acd7..c536ef5"
+        ],
+        "findings": [
+          "승인: candidate c536ef5는 A3 reviewer commit 2e9acd7의 direct child이며 exact 3 changedFiles가 모두 현재 scoped FAMILY_TRACK allowedFiles 안에 있다. candidate 이후 구현 변경은 없고 target source, v9 engine contract, shared compiler/layout, planner·MCP·teacher-ui, released baseline은 수정하지 않았다.",
+          "A3 CONDITIONAL_RUBRIC_MISMATCH 해소: repeat-colors와 repeat-shapes의 두 문항씩 모두 세 semantic value의 ordered-distinct 순서쌍 6개를 validRuleStates로 완전 열거한다. same-value 상태 3개를 surplus로 열거하며 독립 generated-item probe가 네 문항 모두 valid 6/6·surplus 3/3·각 값 물리 복제 3개를 확인했다.",
+          "A3 FIXED_ANSWER 해소: intendedRuleState와 특정 색·모양 정답이 제거됐다. teacher answer는 학생이 고른 서로 다른 두 조각과 순서가 반복 단위를 이룬다는 조건부 기준이고, explanation은 선택한 두 조각을 고른 순서대로 반복하는지를 확인하게 한다. 제3값 조합도 동일한 유효 규칙이며 exact preview의 ‘허용 규칙 상태’와 answerMode=conditional-rubric이 이제 같은 집합을 가리킨다.",
+          "학생 결정과 관찰 증거가 target에 결속된다. 학생은 빈 두 rule slot에 서로 다른 조각과 순서를 직접 구성하고, 같은 studentRuleState의 index-mod-period 관계를 네 continuation slot에 적용한다. 9 source가 모든 여섯 fill-from-pool constraint에 결속되고 3 copies/value는 rule 2칸과 continuation 4칸의 move-once-no-clone 동시 구성을 만족한다.",
+          "native·layout 경계는 유지된다. semantic rule-variant-1..9와 layout rule-source-1..9가 일대일 대응하고, 전용 preset의 2 rule+4 continuation 188px landing surface는 비중첩이며 모든 SM02PB native bounds를 포함한다. repeat-3·수 변화·repair는 prompt guard와 scopeNote에서 다른 family로 차단된다.",
+          "정직한 승인 범위: teacher-rubric은 조건부 교사 확인만 제공하며 학생 텍스트 자동 채점·응답 저장을 주장하지 않는다. exact preview와 scopeNote가 response/save-reopen/live viewport 미증명을 계속 명시하므로 이번 승인은 [2수02-02] repeat-rule construct FAMILY_TRACK의 offline compile-time envelope만 승인하고 current-hash live canary·responseHash·save/reopen·release를 대신하지 않는다.",
+          "QA: 독립 full pnpm check가 84 files/516 tests, build·typecheck, problem-family registry 33/21, curriculum target/coverage, 9-source resolve, W002 layout, cognitive verify, native-spatial ratchet, visual/quality P0/P1 0으로 통과했다. 따라서 A4를 approved로 기록하며 다음 scoped operation으로 진행할 수 있다."
+        ]
       }
     ]
   },
@@ -3089,11 +3136,11 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 43,
-      "approved": 18,
+      "totalRecords": 44,
+      "approved": 19,
       "changesRequested": 22,
       "blocked": 3,
-      "pendingRequiredReviews": 190
+      "pendingRequiredReviews": 191
     },
     "nextOfflineWork": {
       "sequence": 2,
@@ -3367,8 +3414,8 @@
             "AFFORDANCE_DISCOVERY",
             "ENGINE_CORE"
           ],
-          "reviewStatus": "changes-requested",
-          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+          "reviewStatus": "approved",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
           "retryingFamilyTrack": false
         },
         {
@@ -3427,59 +3474,62 @@
         }
       ],
       "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-        "familyId": "pattern.repeat-unit.construct-v1",
-        "familyTrackId": "pattern.repeat-unit.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+        "familyId": "pattern.declared-repeat.repair-v1",
+        "familyTrackId": "pattern.declared-repeat.repair-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-repair",
         "targetOutlineKeys": [
-          "choose-own-arrangement-rule"
+          "construct-repeat-arrangement-following-rule"
         ],
         "assessmentTargetIds": [
-          "change.pattern.repeat-rule.construct-v1"
+          "change.pattern.declared-repeat.repair-v1"
         ],
         "dependencies": [
           "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET"
+          "W002-SOL_REVIEW-TARGET_SET",
+          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
         ],
         "operationSequence": [
-          "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE",
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "changes-requested",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "nextOperation": "ENGINE_CORE",
+        "completedOperations": [],
+        "reviewStatus": "pending",
+        "reviewId": null,
         "retryingFamilyTrack": false
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v9",
-      "operation": "FAMILY_TRACK",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK",
+      "operation": "ENGINE_CORE",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
-        "W002-SOL_REVIEW-TARGET_SET"
+        "W002-SOL_REVIEW-TARGET_SET",
+        "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
       ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts",
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/validator/src/native/registry.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
+        "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
+        "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "reports/curriculum-execution/subwork-state/**"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -3514,11 +3564,11 @@
       "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "changes-requested",
+        "familyTrack": "pending",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
-          "W002-FAMILY_TRACK-repeat-rule-SOL-A3"
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A4"
         ],
         "replan": "approved",
         "replanApproved": true,
@@ -6469,8 +6519,8 @@
             "AFFORDANCE_DISCOVERY",
             "ENGINE_CORE"
           ],
-          "reviewStatus": "changes-requested",
-          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+          "reviewStatus": "approved",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
           "retryingFamilyTrack": false
         },
         {
@@ -6529,59 +6579,62 @@
         }
       ],
       "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-rule",
-        "familyId": "pattern.repeat-unit.construct-v1",
-        "familyTrackId": "pattern.repeat-unit.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "workItemId": "W002-FAMILY_TRACK-repeat-repair",
+        "familyId": "pattern.declared-repeat.repair-v1",
+        "familyTrackId": "pattern.declared-repeat.repair-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-repair",
         "targetOutlineKeys": [
-          "choose-own-arrangement-rule"
+          "construct-repeat-arrangement-following-rule"
         ],
         "assessmentTargetIds": [
-          "change.pattern.repeat-rule.construct-v1"
+          "change.pattern.declared-repeat.repair-v1"
         ],
         "dependencies": [
           "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET"
+          "W002-SOL_REVIEW-TARGET_SET",
+          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
         ],
         "operationSequence": [
-          "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE",
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "changes-requested",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "nextOperation": "ENGINE_CORE",
+        "completedOperations": [],
+        "reviewStatus": "pending",
+        "reviewId": null,
         "retryingFamilyTrack": false
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v9",
-      "operation": "FAMILY_TRACK",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK",
+      "operation": "ENGINE_CORE",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
-        "W002-SOL_REVIEW-TARGET_SET"
+        "W002-SOL_REVIEW-TARGET_SET",
+        "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
       ],
       "allowedFiles": [
-        "fixtures/pedagogy/learning-map.used.json",
-        "packages/templates/src/problem-families/**",
-        "packages/templates/src/problem-families/registry.ts",
-        "packages/templates/src/problem-families/registry.test.ts",
+        "packages/contracts/src/vocabulary/constraints.ts",
+        "packages/contracts/src/vocabulary/constraints.test.ts",
+        "packages/contracts/src/catalog/cognitive-demand.ts",
+        "packages/contracts/src/catalog/cognitive-demand.test.ts",
+        "fixtures/architecture/p1-core-baseline.json",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
+        "packages/validator/src/predicates/registry.ts",
+        "packages/validator/src/validator.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/validator/src/native/registry.ts",
-        "packages/curriculum/src/assessment-targets/**",
-        "reports/curriculum-coverage/**",
-        "reports/problem-family-registry/**",
+        "packages/templates/src/cognitive/registry.test.ts",
+        "scripts/pedagogy/check-cognitive-demand.mjs",
+        "reports/curriculum-execution/subwork-state/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md",
-        "reports/curriculum-execution/subwork-state/**"
+        "reports/curriculum-execution/no-family-plan.md"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -6616,11 +6669,11 @@
       "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "changes-requested",
+        "familyTrack": "pending",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
-          "W002-FAMILY_TRACK-repeat-rule-SOL-A3"
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A4"
         ],
         "replan": "approved",
         "replanApproved": true,
