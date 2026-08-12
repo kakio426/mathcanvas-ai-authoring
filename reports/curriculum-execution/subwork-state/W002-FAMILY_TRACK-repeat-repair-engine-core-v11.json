@@ -6,8 +6,9 @@
   "standardCode": "[2수02-02]",
   "familyTrackId": "pattern.declared-repeat.repair-v1",
   "scopeId": "W002-FAMILY_TRACK-repeat-repair",
-  "replanContractRevision": "W002-SOL-REPLAN-v11",
-  "status": "planned-pending-engine-core",
+  "replanContractRevision": "W002-SOL-REPLAN-v12",
+  "status": "implemented-verified-pending-family-track",
+  "implementationCommit": "b95c1434012f793191cd07dee2b95b3ee75b804a",
   "decisionMode": "construct-rule",
   "runtimePredicateKind": "cognitive.rule-state-contract",
   "contractInvariants": [
@@ -17,7 +18,7 @@
     "continuation constraints read declaredRuleState in index-mod-period order and the repair replacement equals declaredRuleState[repairRuleStateIndex]",
     "only the declared repair index changes between the conditional before and after states; every other index remains invariant",
     "the dedicated w002-repeat-repair-v1 layout exposes twelve sources, two rule slots, four continuation targets, and three repair roles as separate 188px native-safe surfaces",
-    "this bounded ENGINE_CORE candidate does not claim family generation, actual response persistence, save/reopen, live MathCanvas evidence, or FAMILY_TRACK completion"
+    "this bounded ENGINE_CORE completion does not claim family generation, actual response persistence, save/reopen, live MathCanvas evidence, or FAMILY_TRACK completion"
   ],
   "positiveFixture": {
     "fixture": "studentConstructedRepairRuleStatePredicateFixture",

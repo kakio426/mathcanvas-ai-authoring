@@ -20,8 +20,16 @@
     },
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-repair",
-      "completedOperations": [],
-      "nextOperation": "ENGINE_CORE"
+      "completedOperations": [
+        "ENGINE_CORE"
+      ],
+      "nextOperation": "FAMILY_TRACK",
+      "completionEvidenceByOperation": {
+        "ENGINE_CORE": {
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+          "artifactSha256": "46f126351f9c5c837402bd87f7342934e034426d94d95300263cc293b11f2b26"
+        }
+      }
     },
     {
       "workItemId": "W002-FAMILY_TRACK-change-rule",
