@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-change-rule-review-window-preflight-v14",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.change-rule.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-change-rule",
+  "blockedOperation": "ENGINE_CORE",
+  "blockedContractRevision": "W002-SOL-REPLAN-v13",
+  "blockerCodes": [
+    "FROZEN_CANDIDATE_POST_APPROVAL_WINDOW_UNBOUNDED",
+    "INTERVENING_APPROVED_GOVERNANCE_FALSE_SCOPE_VIOLATION",
+    "REVIEW_TRANSACTION_COMMIT_IDENTITY_MISSING"
+  ],
+  "summary": "W002 repeat-repair의 frozen FAMILY_TRACK candidate 2f3ce90은 구현 currentness와 A3 reviewer transaction이 유효하지만 verify-sol-review-gate가 candidate..HEAD 누적 diff 전체를 한 승인 transaction으로 오인해 그 사이 별도로 승인된 W002_REPLAN.md를 FAMILY_TRACK post-approval scope 위반으로 차단한다. A3 gate를 거짓 통과시키거나 change-rule 구현을 섞지 않고 reviewer commit 단위 경계를 권위 계약으로 추가해야 한다.",
+  "evidenceRefs": [
+    "git:2f3ce90da4ca248591bc74b3b1a9d7d36a5ee529",
+    "git:21a00992564e5a18405e7a0f8e5ca4c9661f8153#W002-SOL-REPLAN-SOL-A35",
+    "git:0bf29bea1748cf3dd262f084f6e5b8e83ff0f323#W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+    "scripts/curriculum/verify-sol-review-gate.mjs#changedFilesAfter",
+    "scripts/curriculum/sol-review-status.mjs#reviewCandidateIsCurrent",
+    "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+    "command:pnpm curriculum:sol-review:verify -- --work-item W002 --operation FAMILY_TRACK --family-track-id pattern.declared-repeat.repair-v1 --scope-id W002-FAMILY_TRACK-repeat-repair --candidate 2f3ce90da4ca248591bc74b3b1a9d7d36a5ee529 -> sol-review-gate:post-approval-file-not-allowed:W002_REPLAN.md",
+    "command:git diff 2f3ce90..HEAD over declared-repeat-repair implementation files -> empty",
+    "command:git show --name-only 0bf29be -> reviewer board/test and registry/coverage/execution/no-family reports only"
+  ],
+  "requiredReplan": {
+    "contractSeam": "reviewer-transaction-commit-window",
+    "requiredEvidence": [
+      "locate the first descendant commit that contains the exact immutable review record",
+      "validate only that one reviewer commit diff against postApprovalFilesByOperation",
+      "reject any candidate implementation file mutation between candidate and reviewer parent",
+      "retain reviewCandidateIsCurrent through current HEAD so later implementation mutation remains blocked",
+      "reject a review record that differs from the record first introduced by its reviewer commit",
+      "make the frozen A3 gate pass without adding W002_REPLAN.md to FAMILY_TRACK post-approval scope"
+    ],
+    "forbiddenFallbacks": [
+      "adding W002_REPLAN.md to FAMILY_TRACK post-approval files",
+      "ignoring all candidate-to-review history",
+      "allowing candidate implementation mutation before or after review",
+      "rewriting the A3 review record or candidate identity",
+      "mixing change-rule ENGINE_CORE implementation into the governance fix"
+    ]
+  },
+  "createdAt": "2026-08-12T15:39:00.000Z"
+}
