@@ -3136,6 +3136,65 @@
         "독립 전체 QA는 84 files/523 tests, build/typecheck, registry 33/21, coverage 18/121, cognitive, native/contract, visual/quality P0/P1 0을 통과했다. 기계적 QA 통과는 권위 문서가 다른 blocker SHA를 가리키는 P0를 해제하지 않으므로 candidate 9040e2e는 changes-requested다.",
         "다음 후보 승인 전에는 request A2를 소비한 것으로 간주하거나 ENGINE_CORE 구현 재사용·completion evidence 기록·FAMILY_TRACK 진입·coverage 승격·live canary·main push를 해서는 안 된다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A30",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 30,
+      "candidateCommit": "17ceb5115767ee2946f12b01dfb42e5c63fc9acc",
+      "changedFiles": [
+        "W002_REPLAN.md"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A29",
+      "checkedAt": "2026-08-12T03:42:03.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "a6742b809ea80401ae32f37c6685fd438d7addbfd17c8531f6f0c8adc0408d0c",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v11",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:17ceb5115767ee2946f12b01dfb42e5c63fc9acc",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A29",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+        "W002_REPLAN.md#v11-hard-stop과-재진입-계약",
+        "W002_REPLAN.md#v11-재계획-학생-선언-상태와-조건부-repair-결속",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json",
+        "command:git diff-tree --root --no-commit-id --name-only -r 17ceb5115767ee2946f12b01dfb42e5c63fc9acc (exact W002_REPLAN.md only)",
+        "command:shasum -a 256 W002_REPLAN.md (a6742b809ea80401ae32f37c6685fd438d7addbfd17c8531f6f0c8adc0408d0c)",
+        "command:shasum -a 256 reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json (7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1)",
+        "command:pnpm check (84 files / 523 tests; build/typecheck/registry/coverage/native/cognitive/visual/quality PASS pre-approval)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (24/24 pre-approval)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002 pre-approval)"
+      ],
+      "findings": [
+        "A30은 A29의 P0/P1을 정확히 두 줄로 수정한다. W002_REPLAN.md의 request artifact SHA는 A2 board와 artifact 파일의 실제 SHA `7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1`와 일치하고, 현재 권위 revision·실행 순서를 v11 절과 source plan으로 명확히 한정한다.",
+        "후보 exact diff는 W002_REPLAN.md 한 파일뿐이며 A29에서 검토한 v11 source contract, builder, state, target set, repeat-rule compatibility evidence와 family implementation을 변경하지 않는다. candidate 이후 구현 변경도 없다.",
+        "A30은 A29를 supersede하고 fresh blocker request A2를 exact 소비하며 revision v11, replanTargetSetRequired=false, 세 replan scope와 target 3개/outline hash를 유지한다. 승인 후 request는 historical이 되고 W002 repeat-repair cursor만 ENGINE_CORE로 재개되어야 한다.",
+        "교육 계약은 초기 studentRuleState와 학생 선택 출력 declaredRuleState를 분리하고 indexed selection write, application/continuation/explanation/repair의 동일 declared state 소비, 모든 valid declared state별 conditional after-state mapping을 요구한다. 이는 학생이 직접 정한 반복 규칙에 따라 배열을 고친다는 target을 고정 답으로 위장하지 않게 한다.",
+        "이 승인은 governance/replan v11만 승인한다. 다음 bounded ENGINE_CORE 후보는 12-source positive resolved fixture에서 selection constraints가 phase=rule-selection, writesRuleStatePath=declaredRuleState, ruleStateIndex=0/1을 실제로 저장하고, prefilled declared state·wrong path/index·fixed after state를 validator와 cognitive audit가 fail-closed로 거부함을 증명해야 한다.",
+        "독립 QA는 전체 84 files/523 tests, build/typecheck, registry 33/21, coverage 18/121, native/contract/cognitive, visual/quality P0/P1 0과 focused 24/24를 통과했다. exact preview, response/save/reopen, FAMILY_TRACK, coverage 승격, live canary와 main push는 이번 승인 범위가 아니다."
+      ]
     }
   ]
 }
