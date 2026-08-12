@@ -2966,6 +2966,57 @@
         "후보 exact diff는 tests/sol-review-status.test.ts 한 파일뿐이고 authority source, builder, W002 state, target set, family implementation은 변경하지 않았다. lifecycle authority와 request 소비 로직 자체도 그대로 정합하다.",
         "승인 전 focused 24/24와 no-family plan은 통과했지만 실제 승인 record 투영 뒤 23/24이므로 candidate 1b2c80a는 changes-requested다. 다음 수정 전 repeat-repair ENGINE_CORE 구현·상태 전진·coverage 승격·main push를 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A28",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 28,
+      "candidateCommit": "f414c177a245c42633c2add84282dac1e07e1281",
+      "changedFiles": [
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A27",
+      "checkedAt": "2026-08-12T02:32:30.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "8823b95bc5e04e5715c65909bfe139c7d30c4fdcac57a69d6b9636c53f3aafb4",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v10",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:f414c177a245c42633c2add84282dac1e07e1281",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A27",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
+        "command:git diff-tree --root --no-commit-id --name-only -r f414c177a245c42633c2add84282dac1e07e1281 (exact test file only)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (24/24 pre-approval)",
+        "command:post-review pnpm exec vitest run tests/sol-review-status.test.ts (24/24 approved projection)",
+        "command:post-review pnpm curriculum:no-family-plan (next W002 repeat-repair ENGINE_CORE; replan none)"
+      ],
+      "findings": [
+        "A28은 A27의 유일한 residual P0를 정확히 수정한다. post-approval active state를 nextFamilySubWork.workItemId에 결속해 repeat-repair ENGINE_CORE의 미완료 evidence와 선행 repeat-rule v10 compatibility evidence를 서로 다른 state item에서 검증한다.",
+        "후보 exact diff는 tests/sol-review-status.test.ts 한 파일뿐이며 authority, builder, target, subwork state와 family implementation을 변경하지 않는다.",
+        "실제 approved board projection에서 nextReplanWork=null, W002 operation=ENGINE_CORE, operationWorkItemId=W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE, familyTrackId/scopeId=repeat-repair, request=null, replanApproved/replanConsumed=true를 확인했고 focused 24/24와 no-family plan이 통과했다.",
+        "이 승인은 v10 lifecycle authority와 repeat-repair ENGINE_CORE 재진입만 허용한다. 실제 schema/validator/audit/layout positive fixture와 completion evidence, FAMILY_TRACK, coverage/live evidence 및 main push는 별도 검토 대상이다."
+      ]
     }
   ]
 }
