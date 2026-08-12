@@ -3442,6 +3442,59 @@
         "PRE/POST TRANSITION VERIFIED: 승인 전 registry는 repeat-repair를 blocked/generatable로, [2수02-02] offline coverage는 1/3으로, no-family는 W002 SOL_REPLAN으로 유지한다. A32 소비 후에는 같은 frozen repeat-repair FAMILY_TRACK을 다시 검토할 수 있고, 그 scoped approval 이후 파생 체인은 registry offline-validated → coverage 2/3 → execution 두 offline family → no-family change-rule ENGINE_CORE cursor로 전진한다.",
         "승인은 파생 체인 권한만 승인한다. repeat-repair family 자체는 A1 blocked 상태이며 새 scoped FAMILY_TRACK review가 필요하다. response/save/reopen, live canary, release, main push는 승인 범위가 아니다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A33",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 33,
+      "candidateCommit": "d5b7c1d35ff6eea2ec29f073027bcd8ad2fd2307",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/problem-family-registry/latest.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A32",
+      "checkedAt": "2026-08-12T05:34:26.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "a5760281e8fcd3b28114981e5680d102ee5720753460d63783fd26293ed0cf37",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v12",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:d5b7c1d35ff6eea2ec29f073027bcd8ad2fd2307",
+        "git:6b3a11062e0ece29fb5b529d04be48d8e1269c56#W002-SOL_REPLAN-SOL-A32",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A32",
+        "tests/sol-review-status.test.ts#orders-FAMILY_TRACK-post-approval-reports-from-registry-to-the-next-cursor",
+        "command:pnpm curriculum:sol-review:verify -- --work-item W002 --operation SOL_REPLAN --candidate d5b7c1d35ff6eea2ec29f073027bcd8ad2fd2307 (PASS before post-approval focused replay)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts after A32 projection (25/26; expected nextReplan SOL_REPLAN but received approved nextOffline FAMILY_TRACK)"
+      ],
+      "findings": [
+        "P0 POST-APPROVAL TEST STATE INCOMPLETE: candidate의 새 transition test는 승인 전 W002 nextReplan=SOL_REPLAN 상태를 무조건 요구해 A32 승인·소비 후 합법적인 nextOffline=repeat-repair FAMILY_TRACK 상태에서 실패한다. 따라서 candidate는 pre/post 전이를 주장하면서 실제 post-replan 상태를 회귀 검증하지 못한다.",
+        "MINIMUM FIX: 같은 테스트가 (1) SOL_REPLAN 승인 전 A1 blocker 노출, (2) SOL_REPLAN 승인 후 같은 frozen family의 FAMILY_TRACK 재검토 cursor, (3) scoped FAMILY_TRACK 승인 후 change-rule ENGINE_CORE cursor의 세 상태를 분기해 각각 exact identity로 검증해야 한다. manifest/builder/doc/family source는 수정할 필요가 없다.",
+        "A32의 manifest·derived chain 분석은 유지되지만 latest-attempt-wins 정책상 이 A33 changes-requested가 잘못된 최종 승인을 대체한다. 수정 후보가 focused test와 full check를 승인 전·후 모두 통과하기 전에는 A1을 소비하거나 repeat-repair를 승인하지 않는다."
+      ]
     }
   ]
 }
