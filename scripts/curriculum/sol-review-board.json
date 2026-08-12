@@ -3067,6 +3067,75 @@
         "P1 GOVERNANCE_REGRESSION_FIX_REQUIRED: blocked A2를 투영한 focused status test는 22/24다. 한 assertion은 fresh request가 생겨도 마지막 승인 v10의 replanApproved/replanConsumed=true가 유지되는 상태를 false로 고정하고, 다른 assertion은 latest request ID를 A1로 고정한다. A29는 pre-request approval 상태와 fresh unconsumed A2 trigger를 분리해 request A2, operation SOL_REPLAN, 기존 v10 approved/consumed persistence를 검증해야 한다. 이 실패는 blocked evidence 자체를 숨길 이유가 아니라 새 governance contract에 포함할 회귀다.",
         "이 blocked record는 구현 승인, ENGINE_CORE 완료, coverage 승격, live evidence 또는 main push 권한이 아니다. A29 governance 승인 전에는 aa75d44 구현 재사용·상태 전진·FAMILY_TRACK 진입을 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A29",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "changes-requested",
+      "attempt": 29,
+      "candidateCommit": "9040e2e80d855ce752d6b43ae38a4802ee6701cb",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A28",
+      "checkedAt": "2026-08-12T03:38:33.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "b1bc539a2c244f431605d90abe68ac6361887d480c07d958f6d7690e69f9b036",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v11",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:9040e2e80d855ce752d6b43ae38a4802ee6701cb",
+        "git:36504d2e39437accdabd086eb6d46d50735f99e7#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A28",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+        "W002_REPLAN.md#v11-hard-stop과-재진입-계약",
+        "W002_REPLAN.md#v11-재계획-학생-선언-상태와-조건부-repair-결속",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "tests/sol-review-status.test.ts#keeps-W002-blocker-lineage-in-the-scoped-request-not-legacy-state",
+        "command:git diff-tree --root --no-commit-id --name-only -r 9040e2e80d855ce752d6b43ae38a4802ee6701cb (exact 7 SOL_REPLAN files)",
+        "command:shasum -a 256 W002_REPLAN.md (b1bc539a2c244f431605d90abe68ac6361887d480c07d958f6d7690e69f9b036)",
+        "command:shasum -a 256 reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json (7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1)",
+        "command:pnpm check (84 files / 523 tests; build/typecheck/registry/coverage/native/cognitive/visual/quality PASS)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002)"
+      ],
+      "findings": [
+        "P0 BLOCKER_ARTIFACT_SHA_MISMATCH: W002_REPLAN.md의 v11 hard-stop 절은 A2 artifact 경로 `W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json`을 권위로 선언하지만 SHA를 실제 `7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1`가 아니라 이미 A28에서 소비된 A1 artifact SHA `4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4`로 기록한다. 문서 path/SHA와 board A2 artifact identity가 달라 A29가 정확한 fresh blocker를 소비한다는 감사 결속이 깨지므로 승인할 수 없다.",
+        "필수 최소 수정: W002_REPLAN.md의 request artifact SHA를 A2 실제 SHA `7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1`로 바꾸고, 해당 문서 hash를 새 후보와 review record에 다시 결속한다. path, review ID A2, blocked revision v10, new revision v11이 하나의 identity를 이루는 회귀 assertion도 추가하는 것이 안전하다.",
+        "P1 AUTHORITY_TEXT_STALE: 문서의 `v8 이전 governance의 위치` 절은 현재 권위 revision과 실행 순서를 v10 절이 따른다고 남겨 v11 상단 권위와 모순된다. 현재 권위는 v11 절과 source plan의 revision v11임을 고치고, v9/v10은 repeat-rule compatibility 및 역사 근거로만 한정해야 한다.",
+        "v11 lifecycle 방향 자체는 교육적으로 타당하다. 초기 studentRuleState와 학생 선택 출력 declaredRuleState를 분리하고, indexed selection write, application/continuation/explanation/repair의 declared state 공통 소비, 모든 valid declared state별 replace-at-declared-rule-index after-state mapping을 요구하므로 A2의 두 semantic P0를 구현 전에 fail-closed 권위로 바꾼다.",
+        "builder projection은 manifest/runtime/binding의 lifecycle·application·repair alias, 12-source capacity, 4 continuation, conditional after-state derivation과 planned v11 artifact identity를 검증한다. 다만 실제 constraint phase/write, positive/negative resolved fixture, validator/cognitive audit는 문서대로 후속 ENGINE_CORE에서 증명되어야 하며 이 재계획 후보가 구현 완료를 뜻하지 않는다.",
+        "lineage/state 방향은 맞다. A29는 A28을 supersede하고 fresh request A2를 소비하도록 revision v11·세 scope·replanTargetSetRequired=false를 유지하며, repeat-repair cursor는 ENGINE_CORE pending, repeat-rule v10 compatibility completion evidence는 그대로 보존한다. 후보 exact diff는 선언된 7개 SOL_REPLAN 허용 파일뿐이고 후보 이후 구현 변경은 없다.",
+        "독립 전체 QA는 84 files/523 tests, build/typecheck, registry 33/21, coverage 18/121, cognitive, native/contract, visual/quality P0/P1 0을 통과했다. 기계적 QA 통과는 권위 문서가 다른 blocker SHA를 가리키는 P0를 해제하지 않으므로 candidate 9040e2e는 changes-requested다.",
+        "다음 후보 승인 전에는 request A2를 소비한 것으로 간주하거나 ENGINE_CORE 구현 재사용·completion evidence 기록·FAMILY_TRACK 진입·coverage 승격·live canary·main push를 해서는 안 된다."
+      ]
     }
   ]
 }
