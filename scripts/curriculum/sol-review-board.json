@@ -3195,6 +3195,56 @@
         "이 승인은 governance/replan v11만 승인한다. 다음 bounded ENGINE_CORE 후보는 12-source positive resolved fixture에서 selection constraints가 phase=rule-selection, writesRuleStatePath=declaredRuleState, ruleStateIndex=0/1을 실제로 저장하고, prefilled declared state·wrong path/index·fixed after state를 validator와 cognitive audit가 fail-closed로 거부함을 증명해야 한다.",
         "독립 QA는 전체 84 files/523 tests, build/typecheck, registry 33/21, coverage 18/121, native/contract/cognitive, visual/quality P0/P1 0과 focused 24/24를 통과했다. exact preview, response/save/reopen, FAMILY_TRACK, coverage 승격, live canary와 main push는 이번 승인 범위가 아니다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN_REQUEST",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 3,
+      "candidateCommit": "d7504c30869737fe433a5906c71eea8aa7c63323",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-completion-preflight-v12.json"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+      "checkedAt": "2026-08-12T04:31:25.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      "familyTrackId": "pattern.declared-repeat.repair-v1",
+      "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+      "blockedOperation": "ENGINE_CORE",
+      "blockedContractRevision": "W002-SOL-REPLAN-v11",
+      "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-completion-preflight-v12.json",
+      "blockerArtifactSha256": "f87dbc15eab0a8be30582d9a37962092c68e67cc6249f7f8e23739984f27e90f",
+      "evidenceRefs": [
+        "git:d7504c30869737fe433a5906c71eea8aa7c63323",
+        "git:b95c1434012f793191cd07dee2b95b3ee75b804a",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A30",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-completion-preflight-v12.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+        "reports/curriculum-execution/subwork-state/W002.json#W002-FAMILY_TRACK-repeat-repair",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1.artifactContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "command:git diff-tree --no-commit-id --name-only -r d7504c30869737fe433a5906c71eea8aa7c63323 (exact preflight artifact only)",
+        "command:shasum -a 256 reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-completion-preflight-v12.json (f87dbc15eab0a8be30582d9a37962092c68e67cc6249f7f8e23739984f27e90f)",
+        "command:implementation artifact hash audit (10/10 implementation files current; whole artifact SHA 73d5c66e7f0ec2866fcff973cf376148bdf5f68649c54acfbdc84d38cbecb63a)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts before blocked projection (24/24)",
+        "command:pnpm curriculum:no-family-plan:update && pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002 with request A3)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts after blocked projection (22/24; stale replanApproved=false and request A2 literals)"
+      ],
+      "findings": [
+        "BLOCKED REQUEST IDENTITY: candidate d7504c3은 b95c143 바로 위에서 정확히 repeat-repair completion preflight artifact 한 파일만 추가한다. artifact SHA, W002/[2수02-02], operationWorkItemId, familyTrackId, scopeId, blocked ENGINE_CORE cursor와 마지막 승인 revision v11이 모두 현재 저장소와 일치하며 후보 이후 implementation 변경은 없다.",
+        "P0 ENGINE_CORE_ARTIFACT_COMPLETION_STATUS_UNSPECIFIED: 권위 source artifactContract와 실제 v11 artifact는 status를 `planned-pending-engine-core`로 고정한다. 이 값은 구현 전 계획 상태이므로 완료 증거가 될 수 없지만 별도의 완료 status가 권위 계약에 정의되지 않아 현재 상태로는 정직한 ENGINE_CORE 완료 전이가 불가능하다.",
+        "P0 ENGINE_CORE_COMPLETION_EVIDENCE_UNAUTHORIZABLE: assertEngineCoreCompletionEvidence는 completed ENGINE_CORE에서 artifact.status가 artifactContract.status와 같기만 하면 통과한다. 따라서 현재 계약을 그대로 사용하면 planned artifact를 완료로 오인하고, 실제 artifact를 `implemented-verified-pending-family-track`으로 승격하면 오히려 계약 불일치로 실패한다. pendingStatus와 completionStatus를 분리하고 completion에서 revision·operation identity·10개 구현 파일 current SHA·whole-file SHA를 exact 결속하는 새 SOL_REPLAN authority가 필요하다.",
+        "P0 ACTIVE_SUBWORK_FAMILY_TRACK_PROJECTION_STALE: status test의 FAMILY_TRACK branch는 operationWorkItemId를 repeat-rule로, completed prefix를 [AFFORDANCE_DISCOVERY, ENGINE_CORE]로 하드코딩한다. repeat-repair의 올바른 전이는 `W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK`과 [ENGINE_CORE]이므로 실제 state transition 후 full gate를 통과할 수 없고 잘못된 subwork evidence를 검증하게 된다.",
+        "P1 FRESH_REQUEST_PROJECTION_STALE: blocked A3를 실제 board에 투영하자 focused status test는 22/24다. nextReplanWork에서 마지막 승인 v11의 replanApproved/replanConsumed=true가 유지되는 정상 상태를 false로 고정하고, fresh scoped request ID를 A2로 하드코딩한다. v12 governance test는 pre-approval에서 request A3·기존 승인 persistence·operation SOL_REPLAN을, post-approval에서 request null·repeat-repair ENGINE_CORE를 분리해 검증해야 한다. 이 실패는 blocked 증거를 숨길 이유가 아니라 재계획 범위에 포함할 회귀다.",
+        "구현 자체의 현재성은 차단 원인이 아니다. b95c143 artifact의 10개 implementation file SHA는 10/10 current이고 artifact whole-file SHA는 73d5c66e7f0ec2866fcff973cf376148bdf5f68649c54acfbdc84d38cbecb63a다. 차단 범위는 완료 status/evidence authority와 active-subwork projection governance에 한정한다.",
+        "다음 W002 SOL_REPLAN은 A30과 이 request A3를 exact supersede하고 revision v12를 승인받아야 한다. 기존 세 replanScopes와 target 3개/outline hash를 유지하고, repeat-repair cursor는 ENGINE_CORE pending·completion evidence 없음 상태로 보존한 채 authority/builder/status test만 먼저 정합화해야 한다.",
+        "이 blocked record는 b95c143 구현을 부정하거나 FAMILY_TRACK 구현을 승인하지 않는다. v12 governance 승인과 별도 bounded state transition에서 artifact status=implemented-verified-pending-family-track, revision v12, current whole-file SHA가 W002 state evidence에 결속되기 전에는 ENGINE_CORE 완료·FAMILY_TRACK 진입·coverage 승격·live evidence·main push를 금지한다."
+      ]
     }
   ]
 }
