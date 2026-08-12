@@ -3495,6 +3495,62 @@
         "MINIMUM FIX: 같은 테스트가 (1) SOL_REPLAN 승인 전 A1 blocker 노출, (2) SOL_REPLAN 승인 후 같은 frozen family의 FAMILY_TRACK 재검토 cursor, (3) scoped FAMILY_TRACK 승인 후 change-rule ENGINE_CORE cursor의 세 상태를 분기해 각각 exact identity로 검증해야 한다. manifest/builder/doc/family source는 수정할 필요가 없다.",
         "A32의 manifest·derived chain 분석은 유지되지만 latest-attempt-wins 정책상 이 A33 changes-requested가 잘못된 최종 승인을 대체한다. 수정 후보가 focused test와 full check를 승인 전·후 모두 통과하기 전에는 A1을 소비하거나 repeat-repair를 승인하지 않는다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A34",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 34,
+      "candidateCommit": "9cf27e16f40997d0606683512d19e60408919c36",
+      "changedFiles": [
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A33",
+      "checkedAt": "2026-08-12T05:36:40.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "a5760281e8fcd3b28114981e5680d102ee5720753460d63783fd26293ed0cf37",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v12",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:9cf27e16f40997d0606683512d19e60408919c36",
+        "git:d5b7c1d35ff6eea2ec29f073027bcd8ad2fd2307",
+        "git:eeeca7e3527942980a4f6f4b22f75d37bf79fa9d#W002-SOL_REPLAN-SOL-A33",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A33",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-repair-SOL-A1",
+        "W002_REPLAN.md#v12-FAMILY_TRACK-post-approval-파생-체인-보정",
+        "scripts/curriculum/no-family-plan.json#operationPolicy.postApprovalDerivedReportChainByOperation.FAMILY_TRACK",
+        "tests/sol-review-status.test.ts#orders-FAMILY_TRACK-post-approval-reports-from-registry-to-the-next-cursor",
+        "command:git diff-tree --root --no-commit-id --name-only -r 9cf27e16f40997d0606683512d19e60408919c36 (exact 1 SOL_REPLAN-allowed test file)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts pre-approval (26/26 PASS)",
+        "command:pnpm typecheck (PASS)",
+        "command:pnpm curriculum:no-family-plan pre-approval (97 standards / 24 engines / 84 tracks; next W003; replan W002)",
+        "command:pnpm check pre-approval (86 files / 544 tests; build/typecheck/registry/coverage/native/cognitive/visual/quality PASS)"
+      ],
+      "findings": [
+        "APPROVED CORRECTION: candidate 9cf27e1은 A33이 요청한 exact 1-file test correction이며 SOL_REPLAN allowed scope 안에 있다. d5b7c1d의 manifest, builder, v12 document, derived registry correction과 family implementation을 수정하지 않았다.",
+        "THREE-STATE PROJECTION CLOSED: test는 (1) replan pending에서 A1 blocker와 false/false, (2) A34 승인·소비 후 repeat-repair FAMILY_TRACK exact cursor와 true/true, (3) 새 scoped family approval 뒤 change-rule ENGINE_CORE 전진을 각각 분리해 검증한다. A32의 post-approval false positive가 재발하지 않는다.",
+        "LINEAGE AND REVISION CURRENT: A34는 A33을 supersede하고 A1을 소비하며 v12 document hash와 기존 세 scope를 그대로 결속한다. 새 수학/ENGINE_CORE 계약이 없으므로 revision v12와 기존 completion evidence가 current다.",
+        "DERIVED CHAIN REMAINS FAIL-CLOSED: registry → coverage → execution → no-family exact 순서, FAMILY_TRACK registry postApproval 권한과 누락/역순 negative fixtures는 d5b7c1d에서 유지되고 focused/full QA가 통과했다.",
+        "이 승인은 governance replan만 닫는다. repeat-repair family는 새 scoped FAMILY_TRACK attempt로 frozen implementation candidate를 다시 승인받아야 하며, 그 전에는 coverage 2/3·live evidence·release·push를 주장하지 않는다."
+      ]
     }
   ]
 }
