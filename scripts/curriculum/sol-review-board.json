@@ -3017,6 +3017,56 @@
         "실제 approved board projection에서 nextReplanWork=null, W002 operation=ENGINE_CORE, operationWorkItemId=W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE, familyTrackId/scopeId=repeat-repair, request=null, replanApproved/replanConsumed=true를 확인했고 focused 24/24와 no-family plan이 통과했다.",
         "이 승인은 v10 lifecycle authority와 repeat-repair ENGINE_CORE 재진입만 허용한다. 실제 schema/validator/audit/layout positive fixture와 completion evidence, FAMILY_TRACK, coverage/live evidence 및 main push는 별도 검토 대상이다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN_REQUEST",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 2,
+      "candidateCommit": "08a967a4fbcf0c399dca09715bd1db45fefba9b9",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      "checkedAt": "2026-08-12T03:15:48.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      "familyTrackId": "pattern.declared-repeat.repair-v1",
+      "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+      "blockedOperation": "ENGINE_CORE",
+      "blockedContractRevision": "W002-SOL-REPLAN-v10",
+      "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json",
+      "blockerArtifactSha256": "7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1",
+      "evidenceRefs": [
+        "git:08a967a4fbcf0c399dca09715bd1db45fefba9b9",
+        "git:aa75d44",
+        "git:3b8343282b67d1a27643421dbf8ef741468b8007#W002-SOL_REPLAN-SOL-A28",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A28",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json",
+        "reports/curriculum-execution/subwork-state/W002.json#W002-FAMILY_TRACK-repeat-repair",
+        "scripts/curriculum/no-family-plan.json#operationPolicy.allowedFilesByOperation.SOL_REPLAN_REQUEST",
+        "scripts/curriculum/sol-review-status.mjs#solReplanRequestArtifactIsCurrent",
+        "scripts/curriculum/verify-sol-review-gate.mjs#SOL_REPLAN_REQUEST",
+        "command:git diff-tree --root --no-commit-id --name-only -r 08a967a4fbcf0c399dca09715bd1db45fefba9b9 (exact preflight artifact only)",
+        "command:shasum -a 256 reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json (7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1)",
+        "command:git show aa75d44:packages/validator/src/validator.test.ts (declaredRuleState prefilled; construct-rule slots write studentRuleState)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (22/24; stale A1/pre-request projection assertions identified for A29 governance)",
+        "command:pnpm typecheck (PASS)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002)"
+      ],
+      "findings": [
+        "BLOCKED REQUEST IDENTITY: candidate 08a967a는 정확히 repeat-repair lifecycle preflight artifact 한 파일만 추가하며 후보 이후 구현 변경이 없다. artifact SHA, W002/[2수02-02], operationWorkItemId, familyTrackId, scopeId와 현재 W002 repeat-repair ENGINE_CORE cursor가 모두 일치한다.",
+        "P0 ENGINE_CORE_SCOPE_VIOLATION: aa75d44는 A28이 승인한 ENGINE_CORE 구현 범위를 넘어 authority plan, builder, status projection 파일을 함께 변경했다. 해당 구현 후보를 그대로 승인하거나 범위 외 파일을 숨겨 재사용할 수 없으며, 별도 SOL_REPLAN governance 승인이 먼저 필요하다.",
+        "P0 DECLARED_RULE_STATE_NOT_STUDENT_DERIVED: aa75d44 positive fixture는 declaredRuleState를 정답처럼 미리 채우지만 rule-selection constraint는 studentRuleState만 기록한다. 따라서 학생이 고른 두 값이 선언 상태가 되고 이후 repair의 권위 입력이 된다는 관찰 가능한 인과가 없다.",
+        "P0 DECLARED_REPAIR_AFTER_STATE_UNBOUND: repairedArrangementState가 모든 유효 declared state의 repairRuleStateIndex 값으로부터 조건적으로 도출된다는 executable binding이 없다. 고정 after state나 loose index/envelope 검사는 학생이 선언한 규칙에 따라 어긋난 항목을 고친다는 target 증거를 대체하지 못한다.",
+        "A2는 이미 A28에서 소비된 A1을 되살리는 기록이 아니라, v10 승인 뒤 같은 현재 repeat-repair ENGINE_CORE cursor에서 새로 확인된 lifecycle 실패를 attempt 2로 결속한다. 다음 A29 SOL_REPLAN은 A28과 이 request A2를 정확히 supersede하고 revision v11 authority를 승인받은 뒤에만 별도 ENGINE_CORE 후보를 허용해야 한다.",
+        "최소 v11 gate는 empty initial selection, indexed selection writes to declaredRuleState, application/continuation/explanation/repair의 동일 declared state 소비, 그리고 모든 valid declared state에 대한 deterministic repaired-after transform을 validator, cognitive audit, positive/negative 12-source fixture에 fail-closed로 결속하는 것이다.",
+        "P1 GOVERNANCE_REGRESSION_FIX_REQUIRED: blocked A2를 투영한 focused status test는 22/24다. 한 assertion은 fresh request가 생겨도 마지막 승인 v10의 replanApproved/replanConsumed=true가 유지되는 상태를 false로 고정하고, 다른 assertion은 latest request ID를 A1로 고정한다. A29는 pre-request approval 상태와 fresh unconsumed A2 trigger를 분리해 request A2, operation SOL_REPLAN, 기존 v10 approved/consumed persistence를 검증해야 한다. 이 실패는 blocked evidence 자체를 숨길 이유가 아니라 새 governance contract에 포함할 회귀다.",
+        "이 blocked record는 구현 승인, ENGINE_CORE 완료, coverage 승격, live evidence 또는 main push 권한이 아니다. A29 governance 승인 전에는 aa75d44 구현 재사용·상태 전진·FAMILY_TRACK 진입을 금지한다."
+      ]
     }
   ]
 }
