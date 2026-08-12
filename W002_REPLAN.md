@@ -47,7 +47,7 @@ compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/re
 
 - 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json`
   및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`.
-- request artifact SHA-256: `4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4`.
+- request artifact SHA-256: `7f43d1df43f0615711ce05903c3802b4077e8ba4d5b4512ea1b2ef6d970f30e1`.
 - 재계획 revision: `W002-SOL-REPLAN-v11`, `replanTargetSetRequired=false`.
 - request의 blocked revision: `W002-SOL-REPLAN-v10` (소비할 마지막 승인 revision).
 - constraint capacity: `maxSources=12`, repeat-repair `requiredSources=12`; 두 schema가
@@ -65,7 +65,7 @@ compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/re
 ## v8 이전 governance의 위치
 
 아래 v6/v7/v8 절은 왜 학생 구성 상태·completion evidence·용량 계약이 필요했는지에 대한
-역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v10 절과
+역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v11 절과
 `scripts/curriculum/no-family-plan.json#trackContracts.C01`을 따른다.
 
 이번 v7은 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
