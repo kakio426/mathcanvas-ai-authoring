@@ -3870,6 +3870,62 @@
         "TRANSACTION BOUNDARY: 이 A4 reviewer commit은 board와 FAMILY_TRACK postApprovalDerivedReportChain의 registry→coverage→execution→no-family 파일만 포함해야 한다. tests/sol-review-status.test.ts, W002_REPLAN.md, family source 또는 다른 governance 파일을 섞지 않는다.",
         "정직한 승격 범위는 [2수02-02] offline 2/3 유지, live 0/3 유지다. change-rule ENGINE_CORE, response/save/reopen/live canary 또는 release는 승인하지 않는다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A37",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 37,
+      "candidateCommit": "adf3a481f101c08a8ba592c7cf01b96629e475bd",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v14.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A36",
+      "checkedAt": "2026-08-12T06:59:50.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "979ad5e5cc67069657793c0e2ae42ea47e0df842d0082797aa645bca7d1c9781",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v14",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:adf3a481f101c08a8ba592c7cf01b96629e475bd",
+        "git:f934735ee0417d65568abc1d93cb48e253c5aa05#W002-SOL_REPLAN-SOL-A36",
+        "git:7f034a9cb6eae7fbefa05c63804e18ecc0b98ea1#W002-FAMILY_TRACK-repeat-repair-SOL-A4",
+        "git:34784a4c37576dae157e9cd11c0c1e2e39d20d12#transaction-window-implementation",
+        "W002_REPLAN.md#v14-frozen-candidate-reviewer-transaction-window",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v14.json",
+        "tests/verify-sol-review-gate.test.ts",
+        "tests/sol-review-status.test.ts#W002-FAMILY_TRACK-repeat-repair-SOL-A4",
+        "command:pnpm curriculum:sol-review:verify frozen repeat-repair A4 (PASS; reviewerCommit=7f034a9; postApproval=3)",
+        "command:pnpm exec vitest run tests/verify-sol-review-gate.test.ts tests/sol-review-status.test.ts (30/30 PASS)",
+        "command:pnpm check (87 files / 548 tests; build/typecheck/native/cognitive/visual/quality PASS; P0/P1 0)"
+      ],
+      "findings": [
+        "APPROVED TRANSACTION WINDOW: v14는 exact review record를 최초 도입한 reviewer commit 한 개만 postApproval manifest와 대조하고 candidate→reviewer-parent 및 reviewer 이후 현재 HEAD까지 candidate implementation currentness를 각각 fail-closed 검증한다. 누적 candidate..HEAD 오탐과 implementation mutation 누락을 동시에 해소한다.",
+        "APPROVED CLEAN REPLAY IDENTITY: A36에서 확인한 A3 transaction scope P0는 전역 manifest 확장 없이 A4 reviewer-only commit 7f034a9로 해소됐다. A4는 board와 파생 no-family JSON/MD 세 파일만 포함하며 frozen candidate 2f3ce90 gate가 실제 PASS했다.",
+        "IMMUTABLE REVIEW RECORD: gate는 최초 reviewer commit의 exact review record와 현재 board record가 다르면 거부한다. 새 시도는 attempt/supersedes lineage로 추가하고 과거 record를 수정하지 않는다.",
+        "PRESERVED EDUCATIONAL STATE: repeat-rule 및 repeat-repair family source/evidence와 [2수02-02] offline 2/3·live 0/3, A3 target set·outline hash·세 scope를 변경하지 않는다. change-rule decision/invariant 계약도 v13에서 승인된 내용을 유지한다.",
+        "BOUNDARY: 이 승인은 reviewer gate governance와 change-rule pending artifact identity만 닫는다. change-rule schema·validator·layout·family, exact preview, response/save/reopen/live canary 또는 release는 아직 구현·승인하지 않았다. 다음 cursor는 change-rule ENGINE_CORE다."
+      ]
     }
   ]
 }
