@@ -26,9 +26,9 @@
     "fullyLiveStandards": 1,
     "representativeCellsProven": 1,
     "representativeCellTotal": 12,
-    "canonicalFamilies": 33,
+    "canonicalFamilies": 34,
     "releasedFamilies": 21,
-    "commonParameterFamilies": 7,
+    "commonParameterFamilies": 8,
     "globalTargetCoverageStatus": "unavailable"
   },
   "phases": [
@@ -42,7 +42,7 @@
       "phase": "1",
       "name": "공통 ProblemFamily 기반",
       "status": "complete",
-      "progress": "33 canonical / 21 released"
+      "progress": "34 canonical / 21 released"
     },
     {
       "phase": "2",
@@ -72,7 +72,7 @@
       "phase": "4",
       "name": "전 범위 TeacherRequest·반영 표·실제 미리보기",
       "status": "queued-after-phase-2",
-      "progress": "7/33 common-parameter families"
+      "progress": "8/34 common-parameter families"
     },
     {
       "phase": "5",
@@ -734,6 +734,7 @@
       },
       "linkedFamilyIds": [
         "pattern.create-repeat-unit-explain-v1",
+        "pattern.declared-repeat.repair-v1",
         "pattern.repeat-unit.construct-v1"
       ],
       "releasedFamilyIds": [],

@@ -27,6 +27,7 @@ import {
 } from "@mathcanvas/curriculum";
 import { CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID } from "./domains/data-probability/classification-given-criterion-count.js";
 import { DATA_TABLE_ORGANIZE_FAMILY_ID } from "./domains/data-probability/data-table-organize.js";
+import { DECLARED_REPEAT_REPAIR_FAMILY_ID } from "./domains/change-relationships/declared-repeat-repair.js";
 import { REPEAT_RULE_CONSTRUCTION_FAMILY_ID } from "./domains/change-relationships/repeat-rule-construction.js";
 import { REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID } from "./domains/change-relationships/repeating-pattern-arrangement.js";
 import type {
@@ -36,9 +37,9 @@ import type {
 } from "./types.js";
 
 describe("canonical ProblemFamily registry", () => {
-  it("기존 29개와 네 native family를 canonical ID로 정확히 한 번 감싼다", () => {
+  it("기존 29개와 다섯 native family를 canonical ID로 정확히 한 번 감싼다", () => {
     const manifests = listProblemFamilyManifests();
-    expect(manifests).toHaveLength(33);
+    expect(manifests).toHaveLength(34);
     expect(
       manifests.filter(
         (manifest) => manifest.releaseEvidence.supportState === "released"
@@ -49,6 +50,7 @@ describe("canonical ProblemFamily registry", () => {
         ...Object.values(ACTIVITY_IDS),
         CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
         DATA_TABLE_ORGANIZE_FAMILY_ID,
+        DECLARED_REPEAT_REPAIR_FAMILY_ID,
         REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
         REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
       ])
@@ -60,6 +62,7 @@ describe("canonical ProblemFamily registry", () => {
         ([
           CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
           DATA_TABLE_ORGANIZE_FAMILY_ID,
+          DECLARED_REPEAT_REPAIR_FAMILY_ID,
           REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
           REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
         ] as readonly string[]).includes(manifest.familyId)
@@ -101,6 +104,21 @@ describe("canonical ProblemFamily registry", () => {
       },
       assessmentTargetIds: expect.any(Array),
       releaseEvidence: { supportState: "verified" }
+    });
+    expect(
+      getProblemFamilyManifest(DECLARED_REPEAT_REPAIR_FAMILY_ID)
+    ).toMatchObject({
+      capability: {
+        supportedStandardCodes: ["[2수02-02]"]
+      },
+      assessmentTargetIds: [
+        "change.pattern.declared-repeat.repair-v1"
+      ],
+      releaseEvidence: { supportState: "verified" },
+      solReviewScope: {
+        familyTrackId: DECLARED_REPEAT_REPAIR_FAMILY_ID,
+        scopeId: "W002-FAMILY_TRACK-repeat-repair"
+      }
     });
   });
 

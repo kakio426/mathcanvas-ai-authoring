@@ -481,6 +481,7 @@
       "activityStage": "offline-validated",
       "activityIds": [
         "pattern.create-repeat-unit-explain-v1",
+        "pattern.declared-repeat.repair-v1",
         "pattern.repeat-unit.construct-v1"
       ],
       "releasedActivityIds": [],
@@ -496,7 +497,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 2,
+        "familyCount": 3,
         "releasedFamilyCount": 0
       }
     },
