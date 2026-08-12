@@ -742,6 +742,21 @@
               "requiresIndependentWrongState": true,
               "requiresBeforeAfterComparison": true,
               "evidenceMode": "student-state-dependent"
+            },
+            "stateLifecycle": {
+              "kind": "empty-selection-then-declared-repair",
+              "statePath": "studentRuleState",
+              "phaseOrder": [
+                "rule-selection",
+                "remove-misaligned",
+                "place-replacement"
+              ],
+              "initialState": "empty",
+              "declaredStateCardinality": 2,
+              "declaredStateExamplesPath": "validRuleStateExamples",
+              "selectionConstraintIdPrefix": "construct-rule-slot",
+              "requiresIndexedSelectionWrites": true,
+              "repairRequiresDeclaredState": true
             }
           },
           "runtimePredicate": {
@@ -830,11 +845,41 @@
                 "requiresIndependentWrongState": true,
                 "requiresBeforeAfterComparison": true,
                 "evidenceMode": "student-state-dependent"
+              },
+              "stateLifecycle": {
+                "kind": "empty-selection-then-declared-repair",
+                "statePath": "studentRuleState",
+                "phaseOrder": [
+                  "rule-selection",
+                  "remove-misaligned",
+                  "place-replacement"
+                ],
+                "initialState": "empty",
+                "declaredStateCardinality": 2,
+                "declaredStateExamplesPath": "validRuleStateExamples",
+                "selectionConstraintIdPrefix": "construct-rule-slot",
+                "requiresIndexedSelectionWrites": true,
+                "repairRequiresDeclaredState": true
               }
             }
           },
-          "binding": {
-            "repair": {
+            "binding": {
+              "stateLifecycle": {
+                "kind": "empty-selection-then-declared-repair",
+                "statePath": "studentRuleState",
+                "phaseOrder": [
+                  "rule-selection",
+                  "remove-misaligned",
+                  "place-replacement"
+                ],
+                "initialState": "empty",
+                "declaredStateCardinality": 2,
+                "declaredStateExamplesPath": "validRuleStateExamples",
+                "selectionConstraintIdPrefix": "construct-rule-slot",
+                "requiresIndexedSelectionWrites": true,
+                "repairRequiresDeclaredState": true
+              },
+              "repair": {
               "declaredRuleStatePath": "studentRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",

@@ -136,6 +136,19 @@ export function resolveEngineCoreContract(contract, familyTrackId = null) {
   };
 }
 
+export function replanConsumesRequest({
+  replanReview,
+  replanApproved,
+  replanConsumed
+}) {
+  return (
+    replanReview?.operation === "SOL_REPLAN" &&
+    replanReview.decision === "approved" &&
+    replanApproved === true &&
+    replanConsumed === true
+  );
+}
+
 export function assertEngineCoreContract(contract, archetypeId) {
   const requiresEngineCore = (contract.subWorkItems ?? []).some((item) =>
     item.operationSequence?.includes("ENGINE_CORE")
@@ -395,6 +408,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
     const overrideRuntime = override.runtimePredicate?.parameters;
     const overrideState = overrideDecision?.stateConstruction;
     const overrideApplication = overrideDecision?.application;
+    const overrideLifecycle = overrideDecision?.stateLifecycle;
     assert(
       overrideDecision?.mode === "construct-rule" &&
         overrideDecision.constructionMode === "student-constructed" &&
@@ -420,11 +434,34 @@ export function assertEngineCoreContract(contract, archetypeId) {
       `no-family-plan-engine-core-contract-override-capacity-invalid:${archetypeId}:${familyTrackId}`
     );
     assert(
+      overrideLifecycle &&
+        overrideLifecycle.kind === "empty-selection-then-declared-repair" &&
+        overrideLifecycle.statePath === overrideDecision.ruleStatePath &&
+        JSON.stringify(overrideLifecycle.phaseOrder) ===
+          JSON.stringify([
+            "rule-selection",
+            "remove-misaligned",
+            "place-replacement"
+          ]) &&
+        overrideLifecycle.initialState === overrideState.initialState &&
+        overrideLifecycle.declaredStateCardinality ===
+          overrideState.slotCount &&
+        overrideLifecycle.declaredStateExamplesPath ===
+          overrideDecision.validRuleStatesPath &&
+        overrideLifecycle.selectionConstraintIdPrefix ===
+          overrideDecision.decisionConstraintId &&
+        overrideLifecycle.requiresIndexedSelectionWrites === true &&
+        overrideLifecycle.repairRequiresDeclaredState === true,
+      `no-family-plan-engine-core-contract-override-lifecycle-invalid:${archetypeId}:${familyTrackId}`
+    );
+    assert(
       overrideRuntime &&
         JSON.stringify(overrideRuntime.variantRoles) ===
           JSON.stringify(overrideDecision.variantRoles) &&
         JSON.stringify(overrideRuntime.stateConstruction) ===
           JSON.stringify(overrideState) &&
+        JSON.stringify(overrideRuntime.stateLifecycle) ===
+          JSON.stringify(overrideLifecycle) &&
         JSON.stringify(overrideRuntime.application) ===
           JSON.stringify(overrideApplication) &&
         JSON.stringify(overrideRuntime.verificationRoles) ===
@@ -489,6 +526,11 @@ export function assertEngineCoreContract(contract, archetypeId) {
             replacementConstraintId: repair.replacementConstraintId
           }),
       `no-family-plan-engine-core-contract-override-binding-invalid:${archetypeId}:${familyTrackId}`
+    );
+    assert(
+      JSON.stringify(override.binding.stateLifecycle) ===
+        JSON.stringify(overrideLifecycle),
+      `no-family-plan-engine-core-contract-override-binding-lifecycle-invalid:${archetypeId}:${familyTrackId}`
     );
     const overrideArtifact = override.artifactContract;
     assert(
@@ -1614,15 +1656,19 @@ function buildReport() {
               contract.replanContractRevision
           }
         : null;
-    const consumedReplanRequestId =
+    const consumedReplanRequestId = replanConsumesRequest({
+      replanReview,
+      replanApproved,
+      replanConsumed
+    }) &&
       replanReview?.supersedesBlockedReviewId &&
       (solReviewBoard.reviews ?? []).some(
         (review) =>
           review.reviewId === replanReview.supersedesBlockedReviewId &&
           review.operation === "SOL_REPLAN_REQUEST"
       )
-        ? replanReview.supersedesBlockedReviewId
-        : null;
+      ? replanReview.supersedesBlockedReviewId
+      : null;
     const latestSolReplanRequest = nextSubWorkCursor
       ? latestScopedSolReplanRequest(
           solReviewBoard.reviews,

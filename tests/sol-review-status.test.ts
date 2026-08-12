@@ -29,7 +29,8 @@ const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
 const {
   assertEngineCoreContract,
   assertEngineCoreCompletionEvidence,
-  resolveEngineCoreContract
+  resolveEngineCoreContract,
+  replanConsumesRequest
 } = noFamilyPlanBuilder;
 
 const candidateCommit = "a".repeat(40);
@@ -833,6 +834,41 @@ describe("Sol review candidate and scope gates", () => {
     );
     expect(next?.solReview.replanApproved).toBe(false);
     expect(next?.solReview.replanConsumed).toBe(false);
+  });
+
+  it("does not consume a preflight request until a fully bound replan is approved", () => {
+    const request = {
+      operation: "SOL_REPLAN",
+      decision: "changes-requested"
+    };
+    expect(
+      replanConsumesRequest({
+        replanReview: request,
+        replanApproved: false,
+        replanConsumed: false
+      })
+    ).toBe(false);
+    expect(
+      replanConsumesRequest({
+        replanReview: { ...request, decision: "blocked" },
+        replanApproved: false,
+        replanConsumed: false
+      })
+    ).toBe(false);
+    expect(
+      replanConsumesRequest({
+        replanReview: { ...request, decision: "approved" },
+        replanApproved: true,
+        replanConsumed: false
+      })
+    ).toBe(false);
+    expect(
+      replanConsumesRequest({
+        replanReview: { ...request, decision: "approved" },
+        replanApproved: true,
+        replanConsumed: true
+      })
+    ).toBe(true);
   });
 
   it("ignores the consumed replan's superseded failure identity", () => {

@@ -3563,6 +3563,21 @@
             "requiresIndependentWrongState": true,
             "requiresBeforeAfterComparison": true,
             "evidenceMode": "student-state-dependent"
+          },
+          "stateLifecycle": {
+            "kind": "empty-selection-then-declared-repair",
+            "statePath": "studentRuleState",
+            "phaseOrder": [
+              "rule-selection",
+              "remove-misaligned",
+              "place-replacement"
+            ],
+            "initialState": "empty",
+            "declaredStateCardinality": 2,
+            "declaredStateExamplesPath": "validRuleStateExamples",
+            "selectionConstraintIdPrefix": "construct-rule-slot",
+            "requiresIndexedSelectionWrites": true,
+            "repairRequiresDeclaredState": true
           }
         },
         "runtimePredicate": {
@@ -3687,6 +3702,21 @@
               "requiresIndependentWrongState": true,
               "requiresBeforeAfterComparison": true,
               "evidenceMode": "student-state-dependent"
+            },
+            "stateLifecycle": {
+              "kind": "empty-selection-then-declared-repair",
+              "statePath": "studentRuleState",
+              "phaseOrder": [
+                "rule-selection",
+                "remove-misaligned",
+                "place-replacement"
+              ],
+              "initialState": "empty",
+              "declaredStateCardinality": 2,
+              "declaredStateExamplesPath": "validRuleStateExamples",
+              "selectionConstraintIdPrefix": "construct-rule-slot",
+              "requiresIndexedSelectionWrites": true,
+              "repairRequiresDeclaredState": true
             }
           }
         },
@@ -3701,6 +3731,21 @@
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
           "answerMode": "conditional-rubric",
+          "stateLifecycle": {
+            "kind": "empty-selection-then-declared-repair",
+            "statePath": "studentRuleState",
+            "phaseOrder": [
+              "rule-selection",
+              "remove-misaligned",
+              "place-replacement"
+            ],
+            "initialState": "empty",
+            "declaredStateCardinality": 2,
+            "declaredStateExamplesPath": "validRuleStateExamples",
+            "selectionConstraintIdPrefix": "construct-rule-slot",
+            "requiresIndexedSelectionWrites": true,
+            "repairRequiresDeclaredState": true
+          },
           "repair": {
             "declaredRuleStatePath": "studentRuleState",
             "repairRuleStateIndex": 1,
@@ -3946,7 +3991,12 @@
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
-        "solReplanRequest": null
+        "solReplanRequest": {
+          "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+          "decision": "blocked",
+          "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
+          "blockerArtifactSha256": "4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4"
+        }
       }
     },
     "nextLiveEvidenceWork": {
@@ -6200,6 +6250,21 @@
               "requiresIndependentWrongState": true,
               "requiresBeforeAfterComparison": true,
               "evidenceMode": "student-state-dependent"
+            },
+            "stateLifecycle": {
+              "kind": "empty-selection-then-declared-repair",
+              "statePath": "studentRuleState",
+              "phaseOrder": [
+                "rule-selection",
+                "remove-misaligned",
+                "place-replacement"
+              ],
+              "initialState": "empty",
+              "declaredStateCardinality": 2,
+              "declaredStateExamplesPath": "validRuleStateExamples",
+              "selectionConstraintIdPrefix": "construct-rule-slot",
+              "requiresIndexedSelectionWrites": true,
+              "repairRequiresDeclaredState": true
             }
           },
           "runtimePredicate": {
@@ -6323,10 +6388,40 @@
                 "requiresIndependentWrongState": true,
                 "requiresBeforeAfterComparison": true,
                 "evidenceMode": "student-state-dependent"
+              },
+              "stateLifecycle": {
+                "kind": "empty-selection-then-declared-repair",
+                "statePath": "studentRuleState",
+                "phaseOrder": [
+                  "rule-selection",
+                  "remove-misaligned",
+                  "place-replacement"
+                ],
+                "initialState": "empty",
+                "declaredStateCardinality": 2,
+                "declaredStateExamplesPath": "validRuleStateExamples",
+                "selectionConstraintIdPrefix": "construct-rule-slot",
+                "requiresIndexedSelectionWrites": true,
+                "repairRequiresDeclaredState": true
               }
             }
           },
           "binding": {
+            "stateLifecycle": {
+              "kind": "empty-selection-then-declared-repair",
+              "statePath": "studentRuleState",
+              "phaseOrder": [
+                "rule-selection",
+                "remove-misaligned",
+                "place-replacement"
+              ],
+              "initialState": "empty",
+              "declaredStateCardinality": 2,
+              "declaredStateExamplesPath": "validRuleStateExamples",
+              "selectionConstraintIdPrefix": "construct-rule-slot",
+              "requiresIndexedSelectionWrites": true,
+              "repairRequiresDeclaredState": true
+            },
             "repair": {
               "declaredRuleStatePath": "studentRuleState",
               "repairRuleStateIndex": 1,
@@ -7070,6 +7165,21 @@
             "requiresIndependentWrongState": true,
             "requiresBeforeAfterComparison": true,
             "evidenceMode": "student-state-dependent"
+          },
+          "stateLifecycle": {
+            "kind": "empty-selection-then-declared-repair",
+            "statePath": "studentRuleState",
+            "phaseOrder": [
+              "rule-selection",
+              "remove-misaligned",
+              "place-replacement"
+            ],
+            "initialState": "empty",
+            "declaredStateCardinality": 2,
+            "declaredStateExamplesPath": "validRuleStateExamples",
+            "selectionConstraintIdPrefix": "construct-rule-slot",
+            "requiresIndexedSelectionWrites": true,
+            "repairRequiresDeclaredState": true
           }
         },
         "runtimePredicate": {
@@ -7194,6 +7304,21 @@
               "requiresIndependentWrongState": true,
               "requiresBeforeAfterComparison": true,
               "evidenceMode": "student-state-dependent"
+            },
+            "stateLifecycle": {
+              "kind": "empty-selection-then-declared-repair",
+              "statePath": "studentRuleState",
+              "phaseOrder": [
+                "rule-selection",
+                "remove-misaligned",
+                "place-replacement"
+              ],
+              "initialState": "empty",
+              "declaredStateCardinality": 2,
+              "declaredStateExamplesPath": "validRuleStateExamples",
+              "selectionConstraintIdPrefix": "construct-rule-slot",
+              "requiresIndexedSelectionWrites": true,
+              "repairRequiresDeclaredState": true
             }
           }
         },
@@ -7208,6 +7333,21 @@
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
           "answerMode": "conditional-rubric",
+          "stateLifecycle": {
+            "kind": "empty-selection-then-declared-repair",
+            "statePath": "studentRuleState",
+            "phaseOrder": [
+              "rule-selection",
+              "remove-misaligned",
+              "place-replacement"
+            ],
+            "initialState": "empty",
+            "declaredStateCardinality": 2,
+            "declaredStateExamplesPath": "validRuleStateExamples",
+            "selectionConstraintIdPrefix": "construct-rule-slot",
+            "requiresIndexedSelectionWrites": true,
+            "repairRequiresDeclaredState": true
+          },
           "repair": {
             "declaredRuleStatePath": "studentRuleState",
             "repairRuleStateIndex": 1,
@@ -7453,7 +7593,12 @@
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
-        "solReplanRequest": null
+        "solReplanRequest": {
+          "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+          "decision": "blocked",
+          "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
+          "blockerArtifactSha256": "4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4"
+        }
       }
     },
     {

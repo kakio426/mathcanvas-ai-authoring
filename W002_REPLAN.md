@@ -579,3 +579,25 @@ index의 값은 `1 + 4 / 2 + 1 = 4`개가 필요하다. 3값×3복제의 9 sourc
 - 기존 repeat-rule v9 compatibility artifact는 덮어쓰지 않는다. repair 전용
   `w002-repeat-repair-v1` layout, 실제 native bounds, generator, response/save/reopen
   증거는 다음 ENGINE_CORE/FAMILY_TRACK에서 별도로 검토한다.
+
+## A26 상태 lifecycle 및 request 소비 경계
+
+A25 검토에서 초기 규칙 선택 상태와 repair 시 선언된 규칙 상태를 같은 관찰값으로
+동시에 요구하는 모순이 발견됐다. 따라서 v10 권위 계약에는
+`empty-selection-then-declared-repair` lifecycle을 명시한다. 하나의
+`studentRuleState` 경로를 사용하되 `rule-selection → remove-misaligned →
+place-replacement` phase 순서를 고정하고, 초기 상태는 empty, repair 단계의 선언
+상태는 `validRuleStateExamples`에 결속된 cardinality 2 결과로 구분한다. 이 문서는
+phase를 선언할 뿐이며 validator·audit가 실제 phase별 응답과 positive resolved
+fixture를 통과하기 전에는 repair 구현 완료를 주장하지 않는다.
+
+또한 preflight `SOL_REPLAN_REQUEST`는 **승인된** SOL_REPLAN이 fully bound되고
+실제로 소비될 때만 historical로 전환된다. `changes-requested`, `blocked`, 승인 전
+또는 아직 소비되지 않은 approved record는 request를 계속 노출한다. A25의
+changes-requested 상태에서 request가 사라지는 것은 금지하며, 이후 승인된 A26이
+request를 소비하고 repeat-repair ENGINE_CORE cursor로 재개하는 전후 상태를
+회귀 테스트로 고정한다.
+
+이번 A26은 이 권위·상태 머신·builder 검증만 변경한다. cognitive schema,
+validator/pedagogy audit, native repair layout, 12-source positive resolved
+fixture는 A26 승인 후 별도 ENGINE_CORE 후보에서 구현·검토한다.
