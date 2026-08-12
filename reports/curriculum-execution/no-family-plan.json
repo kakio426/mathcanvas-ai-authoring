@@ -3118,6 +3118,67 @@
           "이 blocked record는 구현 승인·coverage 승격·main push 권한이 아니다. 다음 W002 SOL_REPLAN candidate가 supersedesBlockedReviewId로 `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을 정확히 소비하고 별도 Sol 승인을 받을 때까지 ENGINE_CORE 구현·상태 전진을 금지한다.",
           "독립 QA는 focused 22/22, no-family plan, full pnpm check 84 files/521 tests와 visual/quality P0/P1 0을 확인했다. 기계적 QA 통과는 위 hard-stop을 해제하지 않는다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A25",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 25,
+        "candidateCommit": "d281bcefe883724771fc06428c11c747c1f38c84",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A24",
+        "checkedAt": "2026-08-12T02:02:30.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "02ccf300de02912468450c7eef16d0cebcd96f50ec32200cbdbf34c45fae7547",
+        "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v10",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:d281bcefe883724771fc06428c11c747c1f38c84",
+          "git:10f7b90d143bdc6ee71bb09cec7925f0fd8c4ea7",
+          "git:9f145c2ef4be829a898fa69de52141a46f1cc3be",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+          "W002_REPLAN.md#v10-hard-stop과-재진입-계약",
+          "W002_REPLAN.md#v10-capacity-correction--12-physical-sources",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
+          "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1",
+          "packages/contracts/src/catalog/cognitive-demand.ts#declaredRuleRepairSchema",
+          "packages/validator/src/predicates/registry.ts#cognitive.rule-state-contract",
+          "command:git diff-tree --root --no-commit-id --name-only -r d281bcefe883724771fc06428c11c747c1f38c84 (exact 3 SOL_REPLAN files)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts packages/contracts/src/catalog/cognitive-demand.test.ts packages/validator/src/validator.test.ts (68/68)",
+          "command:pnpm check (84 files / 522 tests; build/typecheck/native/cognitive/visual/quality PASS)",
+          "command:static contradiction reproduction (repair implies studentConstructed; studentRuleState must be both empty and length 2)"
+        ],
+        "findings": [
+          "P0 REPAIR_STATE_PHASE_CONTRADICTION: runtime predicate에서 repair가 존재하면 studentConstructed여야 한다. 같은 `item.values[studentRuleState]`를 `hasEmptyInitialStudentState`가 길이 0으로 요구하는 동시에 repair `beforeAfterBound`는 `declaredState.length === ruleSlotRoles.length` 즉 길이 2로 요구한다. 따라서 현재 v10 계약을 만족하는 resolved repeat-repair item은 존재할 수 없고 ENGINE_CORE 구현은 구조적으로 불가능하다.",
+          "필수 최소 수정: 규칙을 고르는 초기 상태와 repair 단계에서 이미 선언된 규칙 상태를 서로 다른 phase/path로 명시한다. 예를 들어 base construct 계약의 `initialRuleStatePath`는 empty를 유지하고 repair 계약의 `declaredRuleStatePath`는 길이 2의 선택 결과를 소유하게 하거나, 하나의 response lifecycle에서 phase별 상태 전이를 validator가 명시적으로 모델링해야 한다. 단순히 empty 검사를 끄거나 길이 2 검사를 제거하면 학생이 규칙을 직접 정하고 그 규칙에 따라 수정한다는 두 교육 증거 중 하나가 사라지므로 금지한다.",
+          "필수 회귀: 실제 12 physical source, empty initial selection, declared two-value state, 독립 wrong item, remove-to-bank, indexed replacement, conditional after envelope를 갖춘 positive resolved repair fixture가 validator와 cognitive audit를 둘 다 통과해야 한다. 그리고 initial/declared path alias, 빈 declared state, 고정된 single answer state는 negative fixture로 거부해야 한다. 현재 contract test는 Zod shape만 통과시키고 validator.test에는 positive repair fixture가 없어 이 불가능성을 탐지하지 못했다.",
+          "lineage와 capacity 보정은 정합하다. candidate는 A24를 supersede하고 새 request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을 소비하도록 문서화했으며 revision v10, target 3개/outline hash, repeat-repair ENGINE_CORE cursor, 12-source/4-copy authority를 유지한다. state의 legacy blockedReviewId 제거도 board를 blocker authority로 만드는 올바른 수정이다.",
+          "repeat-rule 보호는 정합하다. immutable v9 artifact는 역사 증거로 남고 활성 completion evidence는 current한 v10 compatibility artifact SHA `dc008795249ecedb65afa4428e85acee1782e2f4e615447275b23015df333be0`에 결속되며 13/13 implementation hash가 일치한다. repeat-rule A4 source/test와 교육 범위는 바뀌지 않았다.",
+          "QA는 focused 68/68, no-family plan, full pnpm check 84 files/522 tests 및 visual/quality P0/P1 0을 통과했다. 녹색 테스트는 positive repair lifecycle 부재로 P0를 탐지하지 못하므로 candidate d281bce는 changes-requested이며 수정 후보 전에는 ENGINE_CORE 구현·상태 전진·main push를 금지한다."
+        ]
       }
     ]
   },
@@ -3278,9 +3339,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 46,
+      "totalRecords": 47,
       "approved": 19,
-      "changesRequested": 23,
+      "changesRequested": 24,
       "blocked": 4,
       "pendingRequiredReviews": 190
     },
@@ -3882,12 +3943,7 @@
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
-        "solReplanRequest": {
-          "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
-          "decision": "blocked",
-          "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
-          "blockerArtifactSha256": "4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4"
-        }
+        "solReplanRequest": null
       }
     },
     "nextLiveEvidenceWork": {
@@ -7394,12 +7450,7 @@
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
-        "solReplanRequest": {
-          "reviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
-          "decision": "blocked",
-          "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json",
-          "blockerArtifactSha256": "4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4"
-        }
+        "solReplanRequest": null
       }
     },
     {
