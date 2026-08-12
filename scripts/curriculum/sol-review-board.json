@@ -3245,6 +3245,77 @@
         "다음 W002 SOL_REPLAN은 A30과 이 request A3를 exact supersede하고 revision v12를 승인받아야 한다. 기존 세 replanScopes와 target 3개/outline hash를 유지하고, repeat-repair cursor는 ENGINE_CORE pending·completion evidence 없음 상태로 보존한 채 authority/builder/status test만 먼저 정합화해야 한다.",
         "이 blocked record는 b95c143 구현을 부정하거나 FAMILY_TRACK 구현을 승인하지 않는다. v12 governance 승인과 별도 bounded state transition에서 artifact status=implemented-verified-pending-family-track, revision v12, current whole-file SHA가 W002 state evidence에 결속되기 전에는 ENGINE_CORE 완료·FAMILY_TRACK 진입·coverage 승격·live evidence·main push를 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A31",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 31,
+      "candidateCommit": "6da156f20f70c51a276d5390001bf36e783bb16c",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A30",
+      "checkedAt": "2026-08-12T04:41:41.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "17c6040972b4f2f422530b23899681fb5595d9cec88596601ed04840d7ada007",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v12",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:6da156f20f70c51a276d5390001bf36e783bb16c",
+        "git:17ceb5115767ee2946f12b01dfb42e5c63fc9acc#W002-SOL_REPLAN-SOL-A30",
+        "git:d7504c30869737fe433a5906c71eea8aa7c63323#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A30",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3",
+        "W002_REPLAN.md#v12-completion-status와-상태-전이-계약",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.declared-repeat.repair-v1.artifactContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+        "tests/sol-review-status.test.ts#separates-repeat-repair-pending-artifact-from-v12-completion-evidence",
+        "tests/sol-review-status.test.ts#projects-the-W002-engine-core-contract-into-the-generated-loop-work-item",
+        "reports/curriculum-execution/subwork-state/W002.json#W002-FAMILY_TRACK-repeat-repair",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+        "command:git diff-tree --no-commit-id --name-only -r 6da156f20f70c51a276d5390001bf36e783bb16c (exact 7 SOL_REPLAN files)",
+        "command:shasum -a 256 W002_REPLAN.md (17c6040972b4f2f422530b23899681fb5595d9cec88596601ed04840d7ada007)",
+        "command:repair artifact implementation hash audit (10/10 current; artifact SHA 73d5c66e7f0ec2866fcff973cf376148bdf5f68649c54acfbdc84d38cbecb63a)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts pre-approval projection (25/25)",
+        "command:temporary exact A31 post-approval projection + pnpm exec vitest run tests/sol-review-status.test.ts (25/25; next W002 repeat-repair ENGINE_CORE; request null)",
+        "command:pnpm check (85 files / 540 tests; build/typecheck/registry/coverage/native/cognitive/visual/quality PASS)",
+        "command:pnpm curriculum:no-family-plan pre-approval (97 standards / 24 engines / 84 tracks; next W003; replan W002 v12)"
+      ],
+      "findings": [
+        "APPROVED EXACT SCOPE: candidate 6da156f의 direct diff는 선언된 7개 SOL_REPLAN 허용 파일과 정확히 일치하며 b95c143의 cognitive schema, validator, layout, audit, 10개 implementation file 및 v11 artifact 본문을 수정하지 않는다. 후보 이후 implementation 변경도 없다.",
+        "A3 LINEAGE CONSUMED: A31은 직전 SOL_REPLAN A30을 supersede하고 fresh scoped request A3를 supersedesBlockedReviewId로 정확히 소비한다. revision v12, replanTargetSetRequired=false, 기존 세 replanScopes와 A3 TARGET_SET의 세 target/outline hash는 유지된다.",
+        "PENDING/COMPLETION FAIL-CLOSED: repeat-repair artifact contract는 pendingStatus/v11과 completionStatus/v12를 서로 다른 권위 값으로 고정한다. ENGINE_CORE 미완료에서는 evidence를 금지하고 pending artifact identity·10개 구현 파일 current SHA를 검사하며, 완료에서는 implemented status·v12 revision·operation/work item/standard/family/scope·exact 파일 집합·각 current SHA·whole-file SHA가 모두 맞아야 한다. 현재 pending artifact를 completed state evidence로 제출하는 회귀는 명시적으로 실패한다.",
+        "ACTIVE SUBWORK PROJECTION FIXED: operationWorkItemId와 completed prefix는 active nextFamilySubWork의 operationSequence에서 도출된다. 승인 직후 repeat-repair ENGINE_CORE는 completed=[]/evidence 없음이고, 후속 bounded transition 뒤 repeat-repair FAMILY_TRACK은 exact ID `W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK`과 prefix [ENGINE_CORE]를 요구한다. 과거 repeat-rule literal 재사용 경로는 제거됐다.",
+        "REPEAT-RULE COMPATIBILITY PRESERVED: repeat-rule state는 기존 v10 compatibility artifact path와 current SHA를 그대로 유지하며 repair pending/completion artifact와 별도 검증된다. repair가 repeat-rule evidence로 fallback하거나 이를 덮어쓰는 변경은 없다.",
+        "PRE/POST PROJECTION VERIFIED: 정식 승인 전 report는 request A3·operation SOL_REPLAN·revision v12·replanApproved/replanConsumed=false를 출력했고 focused 25/25를 통과했다. 동일 candidate에 exact A31 승인 record를 임시 투영한 검증에서는 request=null, replanApproved/replanConsumed=true, next W002 repeat-repair ENGINE_CORE·evidence 없음이 출력되며 focused 25/25가 통과했다.",
+        "이 승인은 completion governance v12만 승인한다. 별도 bounded state transition이 artifact를 implemented/v12로 승격하고 current whole-file SHA를 W002 completion evidence에 기록하기 전에는 ENGINE_CORE 완료나 FAMILY_TRACK 진입으로 간주하지 않는다. family generator, exact preview, response/save/reopen, live MathCanvas evidence, coverage 승격과 main push는 승인 범위가 아니다."
+      ]
     }
   ]
 }
