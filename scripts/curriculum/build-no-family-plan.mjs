@@ -86,6 +86,34 @@ function jsonHash(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
+/**
+ * ENGINE_CORE is owned by a concrete family sub-work, not by the broad
+ * archetype. The legacy base contract remains the repeat-rule v9 contract;
+ * every other family must provide an explicit override. Falling back to the
+ * base for repair/change would make the artifact identity lie about the work
+ * that was actually reviewed.
+ */
+export function resolveEngineCoreContract(contract, familyTrackId = null) {
+  const base = contract?.engineCoreContract;
+  if (!base) return null;
+  const baseFamilyTrackId = "pattern.repeat-unit.construct-v1";
+  if (!familyTrackId || familyTrackId === baseFamilyTrackId) return base;
+  const override =
+    contract.engineCoreContractsByFamilyTrack?.[familyTrackId];
+  assert(
+    override && typeof override === "object",
+    `no-family-plan-engine-core-contract-ref-missing:${familyTrackId}`
+  );
+  return {
+    ...base,
+    ...override,
+    layoutContract: {
+      ...base.layoutContract,
+      ...override.layoutContract
+    }
+  };
+}
+
 export function assertEngineCoreContract(contract, archetypeId) {
   const requiresEngineCore = (contract.subWorkItems ?? []).some((item) =>
     item.operationSequence?.includes("ENGINE_CORE")
@@ -306,6 +334,76 @@ export function assertEngineCoreContract(contract, archetypeId) {
       artifactContract.implementationFiles.every(relativePath),
     `no-family-plan-engine-core-artifact-contract-invalid:${archetypeId}`
   );
+
+  const overrides = contract.engineCoreContractsByFamilyTrack ?? {};
+  assert(
+    overrides && typeof overrides === "object" && !Array.isArray(overrides),
+    `no-family-plan-engine-core-contract-overrides-invalid:${archetypeId}`
+  );
+  const plannedFamilyTrackIds = new Set(
+    (contract.subWorkItems ?? []).map((item) => item.familyTrackId)
+  );
+  for (const [familyTrackId, override] of Object.entries(overrides)) {
+    assert(
+      plannedFamilyTrackIds.has(familyTrackId) &&
+        familyTrackId !== "pattern.repeat-unit.construct-v1" &&
+        override &&
+        typeof override === "object" &&
+        override.baseContractFamilyTrackId ===
+          "pattern.repeat-unit.construct-v1" &&
+        typeof override.contractRevision === "string" &&
+        override.layoutContract &&
+        override.layoutContract.tokenSet === "w002-repeat-repair-v1" &&
+        override.layoutContract.sourceRoles === 9 &&
+        override.layoutContract.ruleSlotRoles === 2 &&
+        override.layoutContract.continuationTargetRoles === 4 &&
+        override.layoutContract.misalignedItemRoles === 1 &&
+        override.layoutContract.repairTargetRoles === 1 &&
+        override.layoutContract.repairBankRoles === 1 &&
+        override.layoutContract.minSlotWidth >= 188 &&
+        override.layoutContract.minSlotHeight >= 188 &&
+        override.layoutContract.allVisibleSimultaneously === true &&
+        override.layoutContract.containment === "native-rendered-bounds",
+      `no-family-plan-engine-core-contract-override-layout-invalid:${archetypeId}:${familyTrackId}`
+    );
+    const repair = override.repair;
+    const stableRoleList = (value, minimum = 1) =>
+      Array.isArray(value) &&
+      value.length >= minimum &&
+      new Set(value).size === value.length &&
+      value.every(stableId);
+    assert(
+      repair &&
+        repair.kind === "declared-rule-independent-misplacement" &&
+        repair.declaredRuleStatePath === decision.ruleStatePath &&
+        stableRoleList(repair.wrongItemRoles) &&
+        stableRoleList(repair.repairTargetRoles) &&
+        stableRoleList(repair.repairBankRoles) &&
+        stableId(repair.beforeStatePath) &&
+        stableId(repair.afterStatePath) &&
+        repair.beforeStatePath !== repair.afterStatePath &&
+        stableId(repair.removeConstraintId) &&
+        stableId(repair.replacementConstraintId) &&
+        repair.requiresIndependentWrongState === true &&
+        repair.requiresBeforeAfterComparison === true &&
+        repair.evidenceMode === "student-state-dependent",
+      `no-family-plan-engine-core-contract-override-repair-invalid:${archetypeId}:${familyTrackId}`
+    );
+    const overrideArtifact = override.artifactContract;
+    assert(
+      overrideArtifact &&
+        relativePath(overrideArtifact.artifactPath) &&
+        overrideArtifact.artifactPath !== artifactContract.artifactPath &&
+        overrideArtifact.status ===
+          "implemented-verified-pending-family-track" &&
+        Array.isArray(overrideArtifact.implementationFiles) &&
+        overrideArtifact.implementationFiles.length > 0 &&
+        new Set(overrideArtifact.implementationFiles).size ===
+          overrideArtifact.implementationFiles.length &&
+        overrideArtifact.implementationFiles.every(relativePath),
+      `no-family-plan-engine-core-contract-override-artifact-invalid:${archetypeId}:${familyTrackId}`
+    );
+  }
 }
 
 function familyRevalidationArtifactPath(baseWorkItemId) {
@@ -343,7 +441,11 @@ export function assertEngineCoreCompletionEvidence(
     return;
   }
 
-  const artifactContract = contract.engineCoreContract?.artifactContract;
+  const engineCoreContract = resolveEngineCoreContract(
+    contract,
+    plannedItem.familyTrackId
+  );
+  const artifactContract = engineCoreContract?.artifactContract;
   assert(
     artifactContract &&
       evidence &&
@@ -363,7 +465,9 @@ export function assertEngineCoreCompletionEvidence(
       artifact.standardCode === contract.standardCode &&
       artifact.familyTrackId === plannedItem.familyTrackId &&
       artifact.scopeId === plannedItem.scopeId &&
-      artifact.replanContractRevision === contract.replanContractRevision &&
+      artifact.replanContractRevision ===
+        (engineCoreContract.contractRevision ??
+          contract.replanContractRevision) &&
       artifact.status === artifactContract.status,
     `no-family-plan-subwork-engine-core-evidence-invalid:${plannedItem.workItemId}`
   );
@@ -1541,7 +1645,11 @@ function buildReport() {
       archetypeId: archetype.archetypeId,
       plannedFamilyId: contract.familyId,
       engineClassIds: contract.engineClassIds,
-      engineCoreContract: contract.engineCoreContract ?? null,
+      engineCoreContract:
+        resolveEngineCoreContract(
+          contract,
+          nextSubWork?.familyTrackId ?? null
+        ) ?? null,
       reviewScopes,
       familySubWorkItems: subWorkStatuses,
       nextFamilySubWork: replanConsumed ? nextSubWork : null,

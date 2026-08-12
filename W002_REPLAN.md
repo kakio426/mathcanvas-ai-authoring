@@ -506,3 +506,40 @@ candidate commit, changedFiles를 모두 비교한다. 표준+operation만으로
 - 새 compiler/schema/native tool을 FAMILY_TRACK 안에서 조용히 추가하는 것
 - Sol 승인 전 board/report 상태 승격 또는 main push
 - W002를 숨긴 채 다음 표준만 완료한 것으로 보고하는 것
+
+## v10 재계획 — repeat-repair ENGINE_CORE 계약 분리
+
+v9 승인으로 완료된 것은 `pattern.repeat-unit.construct-v1`의 ENGINE_CORE와
+FAMILY_TRACK뿐이다. 현재 `trackContracts.C01.engineCoreContract`가 세 concrete
+sub-work에 하나의 repeat-rule 계약과 하나의 artifact identity를 투영하고 있어,
+`pattern.declared-repeat.repair-v1`에 이를 재사용하면 builder가
+`workItemId`·`familyTrackId`·`scopeId`를 맞출 수 없고, 맞추도록 덮어쓰면 승인된
+repeat-rule evidence를 훼손한다. 따라서 repeat-repair는 새 계약·새 artifact·새
+native layout을 가져야 한다.
+
+v10의 governance 변경은 다음을 허용한다.
+
+1. `engineCoreContractsByFamilyTrack`로 concrete sub-work별 계약을 선택한다. 현재
+   repeat-rule v9 계약과 artifact는 그대로 보존하고, repeat-repair는 v10 계약을
+   별도로 추가한다. 계약 ref가 없거나 다른 family의 ref로 fallback하는 것은
+   fail-closed다. change-rule 계약은 아직 없으므로 그 cursor는 다시 ENGINE_CORE
+   재계획이 필요하다.
+2. repeat-repair 계약은 선언된 `studentRuleState`를 기준으로 **초기 배열의 독립된
+   misaligned item → bank로 제거 → 빈 repair target에 replacement 배치 → 다음
+   배열과 rule state 대조**의 전후 상태를 요구한다. `beforeStatePath`와
+   `afterStatePath`가 서로 달라야 하고, remove/place-in·replacement
+   fill-from-pool constraint가 같은 item의 role/state에 결속되어야 한다.
+3. `w002-repeat-repair-v1` 전용 layout preset은 misaligned item, repair bank,
+   repair target과 rule/continuation lane을 동시에 표시하고 모든 native rendered
+   bounds를 landing surface 안에 둔다. 기존 `wave16`과 `w002-repeat-rule` preset은
+   수정·재사용하지 않는다.
+4. repeat-repair artifact는
+   `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v10.json`
+   고유 identity를 사용하며, 구현 파일 SHA·artifact SHA·standard/family/scope/
+   operation을 builder가 모두 검증한다. repeat-rule v9 artifact를 repair evidence로
+   제출하면 즉시 거부한다.
+5. 이 v10은 repair core 계약·validator·전용 layout seam만 연다. family generator,
+   exact preview, response/save/reopen, live canary와 release는 ENGINE_CORE 승인
+   범위가 아니며 이후 `FAMILY_TRACK`에서 별도 증거를 제출한다. 공통 compiler
+   payload나 planner/MCP/teacher-ui를 바꿔야 하면 이 candidate를 중단하고 새
+   SOL_REPLAN으로 되돌린다.

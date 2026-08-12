@@ -25,7 +25,8 @@ const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
   semanticSlices;
 const {
   assertEngineCoreContract,
-  assertEngineCoreCompletionEvidence
+  assertEngineCoreCompletionEvidence,
+  resolveEngineCoreContract
 } = noFamilyPlanBuilder;
 
 const candidateCommit = "a".repeat(40);
@@ -255,9 +256,13 @@ describe("Sol review candidate and scope gates", () => {
     const report = JSON.parse(
       readFileSync("reports/curriculum-execution/no-family-plan.json", "utf8")
     );
-    const expected = source.trackContracts.C01.engineCoreContract;
     const workItem = report.workItems.find(
       (item: { workItemId: string }) => item.workItemId === "W002"
+    );
+    const expected = resolveEngineCoreContract(
+      source.trackContracts.C01,
+      workItem.nextFamilySubWork?.familyTrackId ??
+        "pattern.declared-repeat.repair-v1"
     );
     expect(expected).toBeDefined();
     expect(workItem.engineCoreContract).toEqual(expected);
@@ -279,7 +284,7 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v9"
+        "W002-SOL-REPLAN-v10"
       );
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false
@@ -339,6 +344,54 @@ describe("Sol review candidate and scope gates", () => {
         );
       }
     }
+  });
+
+  it("resolves repair ENGINE_CORE by family and never falls back to repeat-rule evidence", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const contract = source.trackContracts.C01;
+    const repairFamily = "pattern.declared-repeat.repair-v1";
+    const repair = resolveEngineCoreContract(contract, repairFamily);
+    const repeat = resolveEngineCoreContract(
+      contract,
+      "pattern.repeat-unit.construct-v1"
+    );
+    expect(repair.artifactContract.artifactPath).toContain(
+      "repeat-repair-engine-core-v10"
+    );
+    expect(repair.artifactContract.artifactPath).not.toBe(
+      repeat.artifactContract.artifactPath
+    );
+    const withoutRepairRef = JSON.parse(JSON.stringify(contract));
+    delete withoutRepairRef.engineCoreContractsByFamilyTrack[repairFamily];
+    expect(() =>
+      resolveEngineCoreContract(withoutRepairRef, repairFamily)
+    ).toThrow(
+      "no-family-plan-engine-core-contract-ref-missing:pattern.declared-repeat.repair-v1"
+    );
+
+    const planned = contract.subWorkItems.find(
+      (item: { workItemId: string }) =>
+        item.workItemId === "W002-FAMILY_TRACK-repeat-repair"
+    );
+    expect(() =>
+      assertEngineCoreCompletionEvidence(
+        {
+          workItemId: planned.workItemId,
+          completedOperations: ["ENGINE_CORE"],
+          nextOperation: "FAMILY_TRACK",
+          completionEvidenceByOperation: {
+            ENGINE_CORE: {
+              artifactPath: repeat.artifactContract.artifactPath,
+              artifactSha256: "0".repeat(64)
+            }
+          }
+        },
+        planned,
+        contract
+      )
+    ).toThrow("no-family-plan-subwork-engine-core-evidence-required");
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
