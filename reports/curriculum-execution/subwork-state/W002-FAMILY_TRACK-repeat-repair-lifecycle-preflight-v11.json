@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-repeat-repair-lifecycle-preflight-v11",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.declared-repeat.repair-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+  "blockedOperation": "ENGINE_CORE",
+  "blockedContractRevision": "W002-SOL-REPLAN-v10",
+  "blockerCodes": [
+    "ENGINE_CORE_SCOPE_VIOLATION",
+    "DECLARED_RULE_STATE_NOT_STUDENT_DERIVED",
+    "DECLARED_REPAIR_AFTER_STATE_UNBOUND"
+  ],
+  "summary": "aa75d44의 repair ENGINE_CORE 후보는 승인된 A28 ENGINE_CORE 파일 범위를 넘어 authority plan·builder·status projection을 함께 변경했고, 정적 declaredRuleState를 미리 채운 채 rule-selection constraint가 studentRuleState만 기록하여 학생의 선언 결과가 repair 단계로 전이된다는 증거가 없다.",
+  "evidenceRefs": [
+    "git:aa75d44",
+    "git:3b8343282b67d1a27643421dbf8ef741468b8007#W002-SOL_REPLAN-SOL-A28",
+    "git:aa75d44:packages/contracts/src/catalog/cognitive-demand.ts",
+    "git:aa75d44:packages/validator/src/validator.test.ts",
+    "git:aa75d44:scripts/curriculum/no-family-plan.json",
+    "git:aa75d44:scripts/curriculum/build-no-family-plan.mjs",
+    "git:aa75d44:tests/sol-review-status.test.ts",
+    "command:approved-A28-ENGINE_CORE-manifest excludes authority-plan/build/status files",
+    "command:positive-repair-fixture has declaredRuleState prefilled while selection constraints write only studentRuleState"
+  ],
+  "requiredReplan": {
+    "contractSeam": "phase-bound-declared-rule-state-selection",
+    "artifactIdentity": "W002-FAMILY_TRACK-repeat-repair-engine-core-v11",
+    "requiredEvidence": [
+      "A29 governance candidate separates authority/source-plan/status changes from ENGINE_CORE implementation",
+      "rule-selection constraints explicitly write indexed values to declaredRuleState",
+      "initial studentRuleState is empty and declaredRuleState is produced by selection evidence, not prefilled answer data",
+      "application, continuation, explanation, and repair read the same declaredRuleState output path",
+      "positive resolved 12-source repair fixture and cognitive audit bind selection writes to declared state before repair",
+      "repairedArrangementState is a deterministic conditional transform of the declared state at repairRuleStateIndex for every valid declared state"
+    ],
+    "forbiddenFallbacks": [
+      "aa75d44 scope expansion as an ENGINE_CORE approval",
+      "pre-filled declaredRuleState without selection-write evidence",
+      "fixed repairedArrangementState that is not derived from declaredRuleState[repairRuleStateIndex]",
+      "repeat-rule v9/v10 artifact reuse or overwrite",
+      "response/save/reopen/live evidence claims"
+    ]
+  },
+  "createdAt": "2026-08-12T12:20:00.000Z"
+}
