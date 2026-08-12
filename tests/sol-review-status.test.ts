@@ -119,7 +119,7 @@ describe("Sol review candidate and scope gates", () => {
     );
     expect(blockedRepair.reviewStatus).toBe("blocked");
     expect(blockedRepair.reviewId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
+      "W002-FAMILY_TRACK-repeat-repair-SOL-A2"
     );
     const pendingReplan = report.current.nextReplanWork;
     const approvedReplanCursor = report.current.nextOfflineWork;
@@ -357,7 +357,7 @@ describe("Sol review candidate and scope gates", () => {
     expect(artifact.status).toBe("implemented-verified-pending-family-track");
   });
 
-  it("separates repeat-repair pending artifact from v12 completion evidence", () => {
+  it("preserves repeat-repair v12 completion evidence under the v13 contract", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
     );
@@ -370,7 +370,7 @@ describe("Sol review candidate and scope gates", () => {
       contract,
       planned.familyTrackId
     ).artifactContract;
-    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v12");
+    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v13");
     expect(artifactContract.pendingStatus).toBe(
       "planned-pending-engine-core"
     );
@@ -467,7 +467,7 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v12"
+        "W002-SOL-REPLAN-v13"
       );
       const trigger =
         report.current.nextReplanWork.solReview.solReplanRequest;
@@ -478,7 +478,7 @@ describe("Sol review candidate and scope gates", () => {
       } else {
         expect(
           report.current.nextReplanWork.solReview.familyTrackReviewIds
-        ).toContain("W002-FAMILY_TRACK-repeat-repair-SOL-A1");
+        ).toContain("W002-FAMILY_TRACK-repeat-repair-SOL-A2");
       }
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false
@@ -611,6 +611,99 @@ describe("Sol review candidate and scope gates", () => {
         contract
       )
     ).toThrow("no-family-plan-subwork-engine-core-evidence-required");
+  });
+
+  it("resolves an educationally separate change-rule ENGINE_CORE contract", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const contract = source.trackContracts.C01;
+    const changeFamily = "pattern.change-rule.construct-v1";
+    const change = resolveEngineCoreContract(contract, changeFamily);
+    expect(change.contractKind).toBe("observable-change");
+    expect(change.familyTrackId).toBe(changeFamily);
+    expect(change.scopeId).toBe("W002-FAMILY_TRACK-change-rule");
+    expect(change.manifestDecision).toMatchObject({
+      mode: "construct-change-rule",
+      ruleStatePath: "studentChangeRuleState",
+      stateFields: ["startValue", "stepMagnitude", "direction"],
+      initialState: "empty",
+      answerMode: "conditional-rubric"
+    });
+    expect(change.manifestDecision.application).toMatchObject({
+      sequenceStatePath: "constructedSequenceState",
+      transition: "next-equals-current-plus-signed-step",
+      minimumVisibleTerms: 4
+    });
+    expect(change.manifestDecision.repair).toMatchObject({
+      wrongIndexPath: "misalignedTermIndex",
+      derivation: "replace-with-declared-transition-value",
+      requiresOnlyWrongIndexChanges: true
+    });
+    expect(change.artifactContract.pendingStatus).toBe(
+      "planned-pending-engine-core"
+    );
+    expect(change.artifactContract.pendingContractRevision).toBe(
+      "W002-SOL-REPLAN-v13"
+    );
+
+    const withoutChangeRef = JSON.parse(JSON.stringify(contract));
+    delete withoutChangeRef.engineCoreContractsByFamilyTrack[changeFamily];
+    expect(() =>
+      resolveEngineCoreContract(withoutChangeRef, changeFamily)
+    ).toThrow(
+      "no-family-plan-engine-core-contract-ref-missing:pattern.change-rule.construct-v1"
+    );
+    expect(() => assertEngineCoreContract(withoutChangeRef, "C01")).toThrow(
+      "no-family-plan-engine-core-contract-override-coverage-invalid:C01"
+    );
+
+    const wrongKind = JSON.parse(JSON.stringify(contract));
+    wrongKind.engineCoreContractsByFamilyTrack[changeFamily] = JSON.parse(
+      JSON.stringify(
+        wrongKind.engineCoreContractsByFamilyTrack[
+          "pattern.declared-repeat.repair-v1"
+        ]
+      )
+    );
+    expect(() => assertEngineCoreContract(wrongKind, "C01")).toThrow(
+      "no-family-plan-engine-core-contract-override-layout-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const wrongPath = JSON.parse(JSON.stringify(contract));
+    wrongPath.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].runtimePredicate.parameters.ruleStatePath = "declaredRuleState";
+    expect(() => assertEngineCoreContract(wrongPath, "C01")).toThrow(
+      "no-family-plan-change-rule-runtime-binding-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const aliasedArtifact = JSON.parse(JSON.stringify(contract));
+    aliasedArtifact.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].artifactContract.artifactPath =
+      aliasedArtifact.engineCoreContractsByFamilyTrack[
+        "pattern.declared-repeat.repair-v1"
+      ].artifactContract.artifactPath;
+    expect(() => assertEngineCoreContract(aliasedArtifact, "C01")).toThrow(
+      "no-family-plan-change-rule-artifact-contract-invalid:C01:pattern.change-rule.construct-v1"
+    );
+
+    const planned = contract.subWorkItems.find(
+      (item: { workItemId: string }) =>
+        item.workItemId === "W002-FAMILY_TRACK-change-rule"
+    );
+    expect(() =>
+      assertEngineCoreCompletionEvidence(
+        {
+          workItemId: planned.workItemId,
+          completedOperations: [],
+          nextOperation: "ENGINE_CORE"
+        },
+        planned,
+        contract
+      )
+    ).not.toThrow();
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
@@ -1043,7 +1136,7 @@ describe("Sol review candidate and scope gates", () => {
     const preApproval = report.current.nextReplanWork;
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
-      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v12");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v13");
       const trigger = preApproval.solReview.solReplanRequest;
       if (trigger) {
         expect(trigger.reviewId).toBe(
@@ -1051,7 +1144,7 @@ describe("Sol review candidate and scope gates", () => {
         );
       } else {
         expect(preApproval.solReview.familyTrackReviewIds).toContain(
-          "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
+          "W002-FAMILY_TRACK-repeat-repair-SOL-A2"
         );
       }
       expect(preApproval.solReview.replanApproved).toBe(false);

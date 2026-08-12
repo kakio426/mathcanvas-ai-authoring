@@ -1,6 +1,46 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v12)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v13)
 
-상태: **Sol max 재계획 후보 — repeat-repair FAMILY_TRACK 파생 보고서 권한 보정 승인 대기**
+상태: **Sol max 재계획 후보 — change-rule 전용 ENGINE_CORE 계약 승인 대기**
+
+## v13 change-rule ENGINE_CORE 분리
+
+`W002-FAMILY_TRACK-repeat-repair-SOL-A2`에서 repeat-repair family 자체의 교육·수학·
+native·preview 검토는 통과했지만, 승인 후 다음 cursor인
+`pattern.change-rule.construct-v1 / ENGINE_CORE`에 고유 계약과 artifact가 없어 파생
+transaction이 fail-closed했다. v13은 이 blocker만 소비하며 repeat-repair frozen family,
+v12 completion artifact와 state evidence, repeat-rule v10 compatibility evidence, A3의
+3-target source·outline hash, 세 review scope를 수정하지 않는다.
+
+새 review는 `W002-SOL_REPLAN-SOL-A34`를 `supersedesReviewId`로,
+`W002-FAMILY_TRACK-repeat-repair-SOL-A2`를 `supersedesBlockedReviewId`로 소비해야 한다.
+v13 승인 전에는 repeat-repair를 offline-validated로 승격하지 않으며 [2수02-02] offline
+coverage는 1/3, live coverage는 0/3으로 유지한다. 승인 뒤에도 repeat-repair family는 같은
+frozen candidate로 새 scoped FAMILY_TRACK review를 통과해야 2/3으로 올라간다.
+
+change-rule은 repeat의 조각 순서나 repair 계약을 상속하지 않는다. 학생 결정은
+`startValue`·`stepMagnitude`·`direction(increase|decrease)`을 직접 정하는 것이고,
+불변량은 모든 인접 항의 차가 선언한 signed step과 같다는 것이다. 관찰 증거는 다음과
+같이 분리한다.
+
+1. 초기 `studentChangeRuleState`는 비어 있고, 학생이 세 field를 모두 선언한다.
+2. 최소 네 항의 `constructedSequenceState`에서 각 인접 차를 선언 상태와 대조한다.
+3. `misalignedTermIndex`의 항만 `replace-with-declared-transition-value`로 바꾸며 다른 항은
+   보존한다.
+4. 정답은 한 고정 수열이 아니라 학생이 선언한 상태에 종속된 conditional rubric이다.
+
+`engineCoreContractsByFamilyTrack`은 `contractKind=declared-repeat-repair`와
+`contractKind=observable-change`를 fail-closed로 분기한다. change-rule ref가 없거나 repair
+ref로 fallback하거나 runtime predicate/binding의 state path가 다르면 builder가 거부한다.
+pending artifact는 v13 authority 세 파일의 현재 SHA만 결속하고 구현 완료를 주장하지
+않는다. completion artifact는 별도 `completionImplementationFiles`의 schema·validator·
+cognitive audit·전용 `w002-change-rule-v1` layout과 native bounds 증거가 모두 current일 때만
+`implemented-verified-pending-family-track`을 허용한다.
+
+v13의 `ENGINE_CORE` allowed/postApproval scope에는 change-rule 전용 layout source/test만
+추가한다. family generator, registry family source, exact preview, response/save/reopen,
+teacher UI, live MathCanvas canary는 이번 재계획 범위가 아니다. 공통 compiler payload나
+새 native tool이 필요하다고 드러나면 범위를 조용히 넓히지 않고 새 SOL_REPLAN으로
+hard-stop한다.
 
 ## v12 FAMILY_TRACK post-approval 파생 체인 보정
 

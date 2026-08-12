@@ -106,6 +106,9 @@ export function resolveEngineCoreContract(contract, familyTrackId = null) {
     override && typeof override === "object",
     `no-family-plan-engine-core-contract-ref-missing:${familyTrackId}`
   );
+  if (override.contractKind === "observable-change") {
+    return override;
+  }
   return {
     ...base,
     ...override,
@@ -381,15 +384,151 @@ export function assertEngineCoreContract(contract, archetypeId) {
   const plannedFamilyTrackIds = new Set(
     (contract.subWorkItems ?? []).map((item) => item.familyTrackId)
   );
+  const expectedOverrideIds = [...(contract.subWorkItems ?? [])]
+    .filter(
+      (item) =>
+        item.familyTrackId !== "pattern.repeat-unit.construct-v1" &&
+        item.operationSequence?.includes("ENGINE_CORE")
+    )
+    .map((item) => item.familyTrackId)
+    .sort();
+  assert(
+    JSON.stringify(Object.keys(overrides).sort()) ===
+      JSON.stringify(expectedOverrideIds),
+    `no-family-plan-engine-core-contract-override-coverage-invalid:${archetypeId}`
+  );
+  const artifactPaths = new Set([artifactContract.artifactPath]);
   for (const [familyTrackId, override] of Object.entries(overrides)) {
     assert(
       plannedFamilyTrackIds.has(familyTrackId) &&
         familyTrackId !== "pattern.repeat-unit.construct-v1" &&
         override &&
         typeof override === "object" &&
+        ["declared-repeat-repair", "observable-change"].includes(
+          override.contractKind
+        ) &&
+        typeof override.contractRevision === "string",
+      `no-family-plan-engine-core-contract-override-identity-invalid:${archetypeId}:${familyTrackId}`
+    );
+    if (override.contractKind === "observable-change") {
+      const changeDecision = override.manifestDecision;
+      const changeApplication = changeDecision?.application;
+      const changeRepair = changeDecision?.repair;
+      const changeRuntime = override.runtimePredicate;
+      const changeBinding = override.binding;
+      const changeArtifact = override.artifactContract;
+      const changeLayout = override.layoutContract;
+      const stateFields = ["startValue", "stepMagnitude", "direction"];
+      assert(
+        familyTrackId === "pattern.change-rule.construct-v1" &&
+          override.familyTrackId === familyTrackId &&
+          override.scopeId === "W002-FAMILY_TRACK-change-rule" &&
+          override.contractRevision === contract.replanContractRevision &&
+          changeDecision?.mode === "construct-change-rule" &&
+          changeDecision.constructionMode === "student-constructed" &&
+          changeDecision.answerMode === "conditional-rubric" &&
+          changeDecision.ruleStatePath === "studentChangeRuleState" &&
+          JSON.stringify(changeDecision.stateFields) ===
+            JSON.stringify(stateFields) &&
+          JSON.stringify(changeDecision.directionValues) ===
+            JSON.stringify(["increase", "decrease"]) &&
+          changeDecision.initialState === "empty" &&
+          changeDecision.requiresStudentDeclaredState === true &&
+          distractorList(changeDecision.distractors) &&
+          changeDecision.distractors.length >= 2 &&
+          Number.isInteger(changeDecision.minimumDistinctStartValues) &&
+          changeDecision.minimumDistinctStartValues >= 2 &&
+          Number.isInteger(changeDecision.minimumDistinctStepMagnitudes) &&
+          changeDecision.minimumDistinctStepMagnitudes >= 2,
+        `no-family-plan-change-rule-decision-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        override.nativeDependency === "engine-core-discovery-required" &&
+          changeLayout?.status === "engine-core-required" &&
+          changeLayout.tokenSet === "w002-change-rule-v1" &&
+          changeLayout.ruleStateControlRoles === stateFields.length &&
+          changeLayout.sequenceTermRoles >= 4 &&
+          changeLayout.repairTargetRoles === 1 &&
+          changeLayout.allVisibleSimultaneously === true &&
+          changeLayout.requiresNativeBoundsEvidence === true,
+        `no-family-plan-change-rule-layout-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        changeApplication?.ruleStatePath === changeDecision.ruleStatePath &&
+          changeApplication.sequenceStatePath === "constructedSequenceState" &&
+          changeApplication.transition ===
+            "next-equals-current-plus-signed-step" &&
+          Number.isInteger(changeApplication.minimumVisibleTerms) &&
+          changeApplication.minimumVisibleTerms >= 4 &&
+          changeApplication.requiresAdjacentDifferenceEvidence === true &&
+          changeApplication.requiresVisibleComparison === true &&
+          changeRepair?.ruleStatePath === changeDecision.ruleStatePath &&
+          changeRepair.beforeStatePath === "initialChangeSequenceState" &&
+          changeRepair.afterStatePath === "repairedChangeSequenceState" &&
+          changeRepair.wrongIndexPath === "misalignedTermIndex" &&
+          changeRepair.derivation ===
+            "replace-with-declared-transition-value" &&
+          changeRepair.requiresConditionalMapping === true &&
+          changeRepair.requiresOnlyWrongIndexChanges === true,
+        `no-family-plan-change-rule-observable-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        changeRuntime?.kind === "cognitive.change-rule-state-contract" &&
+          JSON.stringify(changeRuntime.parameters) ===
+            JSON.stringify({
+              mode: changeDecision.mode,
+              constructionMode: changeDecision.constructionMode,
+              answerMode: changeDecision.answerMode,
+              ruleStatePath: changeDecision.ruleStatePath,
+              stateFields,
+              directionValues: changeDecision.directionValues,
+              initialState: changeDecision.initialState,
+              distractors: changeDecision.distractors,
+              application: changeApplication,
+              repair: changeRepair
+            }) &&
+          changeBinding?.predicateKind === changeRuntime.kind &&
+          changeBinding.ruleStatePath === changeDecision.ruleStatePath &&
+          changeBinding.sequenceStatePath ===
+            changeApplication.sequenceStatePath &&
+          changeBinding.beforeStatePath === changeRepair.beforeStatePath &&
+          changeBinding.afterStatePath === changeRepair.afterStatePath &&
+          changeBinding.answerMode === changeDecision.answerMode,
+        `no-family-plan-change-rule-runtime-binding-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        changeArtifact &&
+          relativePath(changeArtifact.artifactPath) &&
+          !artifactPaths.has(changeArtifact.artifactPath) &&
+          changeArtifact.pendingStatus === "planned-pending-engine-core" &&
+          changeArtifact.pendingContractRevision ===
+            contract.replanContractRevision &&
+          changeArtifact.completionStatus ===
+            "implemented-verified-pending-family-track" &&
+          changeArtifact.completionContractRevision ===
+            contract.replanContractRevision &&
+          Array.isArray(changeArtifact.pendingImplementationFiles) &&
+          changeArtifact.pendingImplementationFiles.length > 0 &&
+          new Set(changeArtifact.pendingImplementationFiles).size ===
+            changeArtifact.pendingImplementationFiles.length &&
+          changeArtifact.pendingImplementationFiles.every(relativePath) &&
+          Array.isArray(changeArtifact.completionImplementationFiles) &&
+          changeArtifact.completionImplementationFiles.length > 0 &&
+          new Set(changeArtifact.completionImplementationFiles).size ===
+            changeArtifact.completionImplementationFiles.length &&
+          changeArtifact.completionImplementationFiles.every(relativePath),
+        `no-family-plan-change-rule-artifact-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      artifactPaths.add(changeArtifact.artifactPath);
+      continue;
+    }
+    assert(
+      override.contractKind === "declared-repeat-repair" &&
+        familyTrackId === "pattern.declared-repeat.repair-v1" &&
+        override.familyTrackId === familyTrackId &&
+        override.scopeId === "W002-FAMILY_TRACK-repeat-repair" &&
         override.baseContractFamilyTrackId ===
           "pattern.repeat-unit.construct-v1" &&
-        typeof override.contractRevision === "string" &&
         override.constraintCapacity?.maxSources === 12 &&
         override.constraintCapacity?.requiredSources === 12 &&
         override.layoutContract &&
@@ -554,7 +693,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
     assert(
       overrideArtifact &&
         relativePath(overrideArtifact.artifactPath) &&
-        overrideArtifact.artifactPath !== artifactContract.artifactPath &&
+        !artifactPaths.has(overrideArtifact.artifactPath) &&
         overrideArtifact.pendingStatus === "planned-pending-engine-core" &&
         overrideArtifact.pendingContractRevision ===
           "W002-SOL-REPLAN-v11" &&
@@ -572,6 +711,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
         overrideArtifact.implementationFiles.every(relativePath),
       `no-family-plan-engine-core-contract-override-artifact-invalid:${archetypeId}:${familyTrackId}`
     );
+    artifactPaths.add(overrideArtifact.artifactPath);
   }
 }
 
@@ -612,7 +752,9 @@ export function assertEngineCoreCompletionEvidence(
         ?.artifactContract;
     if (pendingArtifactContract?.pendingStatus) {
       const expectedFiles = [
-        ...(pendingArtifactContract.implementationFiles ?? [])
+        ...(pendingArtifactContract.pendingImplementationFiles ??
+          pendingArtifactContract.implementationFiles ??
+          [])
       ].sort();
       const artifact = readJson(
         resolve(root, pendingArtifactContract.artifactPath)
@@ -648,7 +790,11 @@ export function assertEngineCoreCompletionEvidence(
     plannedItem.familyTrackId
   );
   const artifactContract = engineCoreContract?.artifactContract;
-  const expectedFiles = [...(artifactContract?.implementationFiles ?? [])].sort();
+  const expectedFiles = [
+    ...(artifactContract?.completionImplementationFiles ??
+      artifactContract?.implementationFiles ??
+      [])
+  ].sort();
   assert(
     artifactContract &&
       evidence &&
