@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-change-rule-semantic-binding-preflight-v14",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.change-rule.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-change-rule",
+  "blockedOperation": "ENGINE_CORE",
+  "blockedContractRevision": "W002-SOL-REPLAN-v14",
+  "blockerCodes": [
+    "CHANGE_RULE_SOURCE_VALUE_DOMAIN_CAPACITY_UNBOUND",
+    "CHANGE_RULE_STATE_WRITE_SEMANTICS_UNBOUND",
+    "CHANGE_RULE_SPLIT_ANSWER_LEAK_ORDER_DEPENDENT"
+  ],
+  "summary": "Candidate 8265abf structurally resolves, compiles, and validates a native shell, but the approved v14 contract does not bind field-specific source values or enough physical capacity to the eight student actions, does not prove that selections write the constructed and repaired state, and permits an order-dependent split-answer leak. ENGINE_CORE completion and FAMILY_TRACK entry must remain blocked until a new Sol-approved contract closes those seams.",
+  "evidenceRefs": [
+    "git:8265abff05dfe795091c164137529f39135ffd34",
+    "W002_REPLAN.md#v13-change-rule-engine-core-분리",
+    "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.change-rule.construct-v1",
+    "packages/validator/src/validator.test.ts#changeRuleResolvedNativeFixture",
+    "packages/validator/src/predicates/registry.ts#cognitive.change-rule-state-contract",
+    "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.ts",
+    "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.test.ts",
+    "command:pnpm exec vitest run packages/contracts/src/catalog/cognitive-demand.test.ts packages/templates/src/cognitive/registry.test.ts packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.test.ts packages/validator/src/validator.test.ts (4 files / 68 tests PASS)",
+    "command:sha256 verification of repeat-rule v10 compatibility artifact and repeat-repair v11 artifact (all implementation hashes current)",
+    "command:git status --short at 8265abf (clean before this artifact-only candidate)"
+  ],
+  "requiredReplan": {
+    "contractSeam": "observable-change-source-state-lifecycle",
+    "requiredEvidence": [
+      "define field-specific source domains or released native controls that can actually write startValue, stepMagnitude, and direction, including increase and decrease",
+      "define physical source use and capacity for three rule controls, four sequence terms, and one repair action without relying on unproved cloning or reuse",
+      "bind every selection to an exact sourceValueProperty or equivalent typed decoder and an exact writesStatePath, field or index",
+      "bind sequence application and wrong-index repair actions to constructedSequenceState and repairedChangeSequenceState, then reject fixtures whose static conditional mapping is correct but whose actions cannot produce those states",
+      "make split-answer leak detection independent of emission ordering and add reordered multi-emission negative tests",
+      "exercise the revised contract through actual resolve, compile, native emission IDs, source IDs, validator, and cognitive audit paths"
+    ],
+    "forbiddenFallbacks": [
+      "treating three numeric SM02PB variants as an implicit decoder for start value, step magnitude, and increase or decrease direction",
+      "sharing three move-once native objects across eight simultaneous targets without an approved cloning or reuse contract",
+      "accepting a correct static validRepairedChangeStatesByRuleState table as proof that student actions write either runtime state",
+      "keeping an answer-leak scan whose result changes when locked hint emissions are reordered",
+      "advancing the W002 cursor or marking the v14 completion artifact implemented before a new SOL_REPLAN approval"
+    ]
+  },
+  "secondaryFindings": [
+    {
+      "priority": "P1",
+      "code": "CHANGE_RULE_NATIVE_BOUNDS_EVIDENCE_WRONG_TOOL",
+      "finding": "The dedicated layout test checks NUMBER_CARD_RENDERED_SIZE while the native fixture emits SM02PB. Replace it with all released PATTERN_BLOCK_VARIANTS/patternBlockBounds evidence and assert exact resolved source IDs and semantic source properties."
+    }
+  ],
+  "preservedState": {
+    "changeRuleArtifactStatus": "planned-pending-engine-core",
+    "changeRuleCursor": "ENGINE_CORE",
+    "repeatRuleCompatibilityEvidence": "preserved-current",
+    "repeatRepairCompatibilityEvidence": "preserved-current",
+    "offlineCoverage": "2/3",
+    "liveCoverage": "0/3"
+  },
+  "createdAt": "2026-08-12T09:15:00.000Z"
+}
