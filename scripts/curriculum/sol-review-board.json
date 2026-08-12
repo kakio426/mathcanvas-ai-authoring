@@ -3607,6 +3607,71 @@
         "REQUIRED BOUNDED SOL_REPLAN: 이 A2를 supersedesBlockedReviewId로 소비하고 change-rule 전용 engineCoreContractsByFamilyTrack entry, artifact contract와 W002 state pending cursor를 governance 범위에서 먼저 추가해야 한다. repeat-repair frozen implementation은 수정하지 않으며 그 뒤 다시 scoped FAMILY_TRACK review를 해야 한다.",
         "현재 정직한 상태는 repeat-repair blocked/generatable, [2수02-02] offline 1/3, live 0/3이다. 중간 생성된 2/3 reports는 이 blocked record를 반영해 원복해야 하며 live/release를 주장하지 않는다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A35",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 35,
+      "candidateCommit": "43d452bac26019a2c3a57b926cc3fe5c2ef1a65b",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v13.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A34",
+      "checkedAt": "2026-08-12T06:09:05.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "2de20e0480cd4aedd2e73cd7d9c2fb1496fdd36f1a29fb30781f4468ded6da7b",
+      "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A2",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v13",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:43d452bac26019a2c3a57b926cc3fe5c2ef1a65b",
+        "git:d312a932f811b45a053fad6854c2f2d33b33661a#W002-FAMILY_TRACK-repeat-repair-SOL-A2",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A34",
+        "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-repair-SOL-A2",
+        "W002_REPLAN.md#v13-change-rule-ENGINE_CORE-분리",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.change-rule.construct-v1",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v13.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "tests/sol-review-status.test.ts#resolves-an-educationally-separate-change-rule-ENGINE_CORE-contract",
+        "command:git diff-tree --no-commit-id --name-only -r 43d452bac26019a2c3a57b926cc3fe5c2ef1a65b (exact 8 SOL_REPLAN-allowed files)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (27/27 PASS)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002)",
+        "command:pnpm check (86 files / 545 tests; build/typecheck/native/cognitive/visual/quality PASS; P0/P1 0)",
+        "command:change-rule pending artifact implementationFiles 3/3 current SHA"
+      ],
+      "findings": [
+        "APPROVED BOUNDED REPLAN: candidate 43d452b의 exact 8 files는 SOL_REPLAN manifest 안에 있고 repeat-repair frozen family source·registry code·coverage source를 수정하지 않는다. A35는 A34와 A2 blocker를 정확히 supersede하며 v13 document hash와 기존 세 scope를 결속한다.",
+        "EDUCATIONAL CONTRACT SEPARATION APPROVED: change-rule은 repeat 조각 순서를 상속하지 않고 학생이 startValue·stepMagnitude·direction을 직접 선언한다. 모든 인접 차가 같은 signed step이라는 불변량, 최소 네 항의 비교, 선언 상태에 종속된 오답 항 하나의 조건부 repair를 observable evidence로 고정한다. 방향 반전과 변화량 불일치를 서로 다른 misconception alternative로 둔다.",
+        "FAIL-CLOSED FAMILY OWNERSHIP APPROVED: builder는 non-base ENGINE_CORE sub-work와 override key를 exact 일치시키고 contractKind·familyTrackId·scopeId·runtime/binding path·artifact path uniqueness를 검증한다. change ref 누락, repair ref 재사용, state path 불일치, cross-family artifact alias가 모두 회귀 테스트에서 거부된다.",
+        "PENDING/COMPLETION BOUNDARY APPROVED: v13 pending artifact는 governance authority 3파일 SHA만 current로 결속하고 engine 구현·layout·family·preview·response/save/reopen·live evidence를 주장하지 않는다. 완료 시에는 별도 completionImplementationFiles와 전용 w002-change-rule-v1 native-bounds 증거가 필요하다.",
+        "HISTORICAL EVIDENCE PRESERVED: W002 state revision만 v13으로 올리고 repeat-rule v10 compatibility evidence와 repeat-repair v12 artifact/evidence 값은 그대로다. A35 승인만으로 repeat-repair가 승인되지 않으며 같은 frozen candidate의 새 scoped FAMILY_TRACK approval 뒤에만 2/3으로 전진한다.",
+        "현재 정직한 제품 상태는 [2수02-02] offline 1/3, live 0/3이다. 이번 승인은 governance replan만 닫으며 change-rule ENGINE_CORE 구현과 family 생성, exact preview, lifecycle, live canary 또는 release를 승인하지 않는다."
+      ]
     }
   ]
 }
