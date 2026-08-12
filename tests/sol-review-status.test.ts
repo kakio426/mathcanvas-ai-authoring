@@ -312,7 +312,11 @@ describe("Sol review candidate and scope gates", () => {
           "utf8"
         )
       );
-      const stateItem = state.items.find(
+      const activeStateItem = state.items.find(
+        (item: { workItemId: string }) =>
+          item.workItemId === nextOffline.nextFamilySubWork?.workItemId
+      );
+      const repeatRuleStateItem = state.items.find(
         (item: { workItemId: string }) =>
           item.workItemId === "W002-FAMILY_TRACK-repeat-rule"
       );
@@ -330,7 +334,11 @@ describe("Sol review candidate and scope gates", () => {
         expect(nextOffline.nextFamilySubWork?.scopeId).toBe(
           "W002-FAMILY_TRACK-repeat-repair"
         );
-        expect(stateItem?.completionEvidenceByOperation).toBeUndefined();
+        expect(activeStateItem?.completionEvidenceByOperation).toBeUndefined();
+        expect(
+          repeatRuleStateItem?.completionEvidenceByOperation?.ENGINE_CORE
+            ?.artifactPath
+        ).toContain("repeat-rule-engine-core-v10-compat");
       } else {
         expect(nextOffline?.operationWorkItemId).toBe(
           "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK"
@@ -338,12 +346,12 @@ describe("Sol review candidate and scope gates", () => {
         expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
           "FAMILY_TRACK"
         );
-        expect(stateItem?.completedOperations).toEqual([
+        expect(activeStateItem?.completedOperations).toEqual([
           "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE"
         ]);
         const evidence =
-          stateItem?.completionEvidenceByOperation?.ENGINE_CORE;
+          activeStateItem?.completionEvidenceByOperation?.ENGINE_CORE;
         const artifactPath =
           expected.artifactContract.artifactPath;
         expect(evidence?.artifactPath).toBe(artifactPath);
