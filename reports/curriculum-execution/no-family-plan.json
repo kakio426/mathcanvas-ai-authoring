@@ -2885,6 +2885,50 @@
           "승인 경계: 이 결정은 schema/layout seam을 구현할 권한만 부여한다. repeat-rule family source, generator/envelope, answer/preview, student response, save/reopen, live canary, coverage/release는 승인하지 않는다. ENGINE_CORE 후보가 manifest 밖 compiler/planner/MCP/UI를 요구하거나 global baseline을 무관 변경에 결속하면 즉시 새 SOL_REPLAN으로 중단한다.",
           "QA: 독립 focused 19/19, typecheck, no-family plan과 exact diff가 통과했고 candidate full pnpm check 81 files/511 tests 및 모든 audit gate PASS가 보고됐다."
         ]
+      },
+      {
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 3,
+        "candidateCommit": "688af49f6e694030eb100e89c21457baac16a4cc",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts",
+          "reports/problem-family-registry/latest.json"
+        ],
+        "familyTrackId": "pattern.repeat-unit.construct-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-rule",
+        "supersedesReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "checkedAt": "2026-08-12T00:26:51.000Z",
+        "evidenceRefs": [
+          "git:688af49f6e694030eb100e89c21457baac16a4cc",
+          "git:5cc2907039fde44919f0980dcfc0f1e7936da31e",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A23",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts#change.pattern.repeat-rule.construct-v1",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#CONTEXTS",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#generateRepeatRuleConstructionItems",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#problemPreviews",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.ts#cognitiveManifest",
+          "packages/templates/src/problem-families/domains/change-relationships/repeat-rule-construction.test.ts",
+          "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
+          "command:git diff-tree --no-commit-id --name-only -r 688af49f6e694030eb100e89c21457baac16a4cc (exact 3 FAMILY_TRACK files)",
+          "command:node generated-item probe (3 pool values -> 6 ordered-distinct states; only 2 listed, 4 missing; fixed teacher answer)",
+          "command:pnpm check (84 files/516 tests; build/typecheck/native/cognitive/visual/quality PASS)",
+          "command:git diff --check 5cc2907..688af49"
+        ],
+        "findings": [
+          "P0 CONDITIONAL_RUBRIC_MISMATCH: blueprint와 cognitive manifest는 세 가지 값 중 서로 다른 두 값을 순서 있게 자유 선택하는 allowsAnyOrderedSelection=true 계약이다. 그러나 각 item의 validRuleStates와 exact preview ‘교사용 허용 규칙 상태’는 사전에 고른 두 값의 순열 2개만 허용으로 제시한다. repeat-colors 첫 문항의 독립 probe에서는 가능한 6개 중 [4,6], [5,6], [6,4], [6,5] 네 상태가 누락됐다.",
+          "P0 FIXED_ANSWER_CONTRADICTS_STUDENT_DECISION: correctAnswerText와 answerExplanation은 학생 응답을 저장·관찰하지 않는데도 ‘학생이 고른’ 규칙을 compile-time intendedRuleState(예: 초록 삼각형→주황 정사각형)로 고정한다. 테스트도 answers[0].answer에 ‘초록 삼각형’이 포함되도록 요구한다. 제3값을 포함한 유효한 학생 규칙을 오답처럼 보이게 하므로 [2수02-02]의 ‘자신이 정한 규칙’, target의 성분·순서 직접 결정, answerMode=conditional-rubric을 동시에 위반한다.",
+          "통과한 구조 증거: semantic rule-variant-1..9는 layout rule-source-1..9에 일대일 결속되고, 각 item은 세 값의 물리 블록을 3개씩 제공한다. 여섯 fill-from-pool target은 모두 9 source를 사용하며 전용 preset은 2 rule+4 continuation의 188px landing surface를 동시에 비중첩 배치한다. no-clone capacity와 native SM02PB containment, target ID·learning-map·두 context 결정성은 full QA에서 통과했다.",
+          "정직한 범위 표시는 유지 가능하다: teacher-rubric은 학생 텍스트 입력·자동 채점·저장을 주장하지 않고 scopeNote/preview가 response·save/reopen·live viewport 미증명을 명시한다. 이번 수정 요청은 그 경계를 넓히지 않으며 실제 학생 응답 lifecycle이나 canary를 이번 FAMILY_TRACK 승인 근거로 요구하지 않는다.",
+          "최소 수정: 각 문항에서 풀의 세 의미값으로 가능한 ordered-distinct 6상태를 exhaustive하게 파생하고 same-value 3상태를 rejectable surplus로 두거나, validRuleStates를 예시로 유지한다면 preview·정답을 ‘허용 목록’이 아닌 일반 조건부 기준으로 바꿔야 한다. teacher answer/explanation은 특정 색·모양을 고정하지 말고 ‘규칙칸 두 값이 서로 다름, continuation 1·3은 첫째와 2·4는 둘째와 일치, 같은 두 칸 단위 반복을 설명함’으로 작성하고 제3값 조합 회귀 테스트를 추가한다. 같은 source/test/registry report 범위의 bounded retry이므로 새 SOL_REPLAN은 필요 없다.",
+          "판정: 기술 QA 통과만으로 고정 정답과 self-defined decision의 의미 충돌을 덮을 수 없다. A3는 changes-requested이며 수정 후보가 이 conditional rubric과 exact preview를 정렬하기 전 FAMILY_TRACK 승인·coverage 승격·main push를 금지한다."
+        ]
       }
     ]
   },
@@ -3045,9 +3089,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 42,
+      "totalRecords": 43,
       "approved": 18,
-      "changesRequested": 21,
+      "changesRequested": 22,
       "blocked": 3,
       "pendingRequiredReviews": 190
     },
@@ -3323,8 +3367,8 @@
             "AFFORDANCE_DISCOVERY",
             "ENGINE_CORE"
           ],
-          "reviewStatus": "blocked",
-          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          "reviewStatus": "changes-requested",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
           "retryingFamilyTrack": false
         },
         {
@@ -3408,8 +3452,8 @@
           "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE"
         ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "reviewStatus": "changes-requested",
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
         "retryingFamilyTrack": false
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
@@ -3470,11 +3514,11 @@
       "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "blocked",
+        "familyTrack": "changes-requested",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
         "familyTrackReviewIds": [
-          "W002-FAMILY_TRACK-repeat-rule-SOL-A2"
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A3"
         ],
         "replan": "approved",
         "replanApproved": true,
@@ -6425,8 +6469,8 @@
             "AFFORDANCE_DISCOVERY",
             "ENGINE_CORE"
           ],
-          "reviewStatus": "blocked",
-          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          "reviewStatus": "changes-requested",
+          "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
           "retryingFamilyTrack": false
         },
         {
@@ -6510,8 +6554,8 @@
           "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE"
         ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "reviewStatus": "changes-requested",
+        "reviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
         "retryingFamilyTrack": false
       },
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
@@ -6572,11 +6616,11 @@
       "actionClass": "offline-in-progress",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "blocked",
+        "familyTrack": "changes-requested",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
-        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A3",
         "familyTrackReviewIds": [
-          "W002-FAMILY_TRACK-repeat-rule-SOL-A2"
+          "W002-FAMILY_TRACK-repeat-rule-SOL-A3"
         ],
         "replan": "approved",
         "replanApproved": true,
