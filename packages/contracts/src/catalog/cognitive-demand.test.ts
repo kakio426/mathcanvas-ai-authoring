@@ -217,7 +217,7 @@ describe("construct-rule cognitive decision contract", () => {
     const manifest = studentConstructedManifest();
     const repair = {
       kind: "declared-rule-independent-misplacement" as const,
-      declaredRuleStatePath: "declaredRuleState",
+      declaredRuleStatePath: "studentRuleState",
       repairRuleStateIndex: 1,
       wrongItemProperty: "orderedValues",
       wrongItemRoles: ["repair-target"],
@@ -256,7 +256,7 @@ describe("construct-rule cognitive decision contract", () => {
     repairReadyManifest.decision.stateConstruction!.minimumCopiesPerDistinctValue = 4;
     const repair = {
       kind: "declared-rule-independent-misplacement" as const,
-      declaredRuleStatePath: "declaredRuleState",
+      declaredRuleStatePath: "studentRuleState",
       repairRuleStateIndex: 1,
       wrongItemProperty: "orderedValues",
       wrongItemRoles: ["misaligned-item"],
@@ -271,30 +271,10 @@ describe("construct-rule cognitive decision contract", () => {
       requiresBeforeAfterComparison: true as const,
       evidenceMode: "student-state-dependent" as const
     };
-    const stateLifecycle = {
-      kind: "empty-selection-then-declared-repair" as const,
-      statePath: "studentRuleState",
-      declaredStatePath: "declaredRuleState",
-      phaseOrder: [
-        "rule-selection",
-        "remove-misaligned",
-        "place-replacement"
-      ] as ["rule-selection", "remove-misaligned", "place-replacement"],
-      initialState: "empty" as const,
-      declaredStateCardinality: 2,
-      declaredStateExamplesPath: "validRuleStateExamples",
-      selectionConstraintIdPrefix: "construct-rule-slot",
-      requiresIndexedSelectionWrites: true as const,
-      repairRequiresDeclaredState: true as const
-    };
     expect(
       defineCognitiveDemandManifest({
         ...repairReadyManifest,
-        decision: {
-          ...repairReadyManifest.decision,
-          repair,
-          stateLifecycle
-        },
+        decision: { ...repairReadyManifest.decision, repair },
         verification: {
           ...repairReadyManifest.verification,
           roles: [

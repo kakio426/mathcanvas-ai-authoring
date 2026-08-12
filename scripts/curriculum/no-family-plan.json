@@ -728,7 +728,7 @@
             ],
             "repair": {
               "kind": "declared-rule-independent-misplacement",
-              "declaredRuleStatePath": "declaredRuleState",
+              "declaredRuleStatePath": "studentRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": ["misaligned-item"],
@@ -746,7 +746,6 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
-              "declaredStatePath": "declaredRuleState",
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -832,7 +831,7 @@
               ],
               "repair": {
                 "kind": "declared-rule-independent-misplacement",
-                "declaredRuleStatePath": "declaredRuleState",
+                "declaredRuleStatePath": "studentRuleState",
                 "repairRuleStateIndex": 1,
                 "wrongItemProperty": "orderedValues",
                 "wrongItemRoles": ["misaligned-item"],
@@ -850,7 +849,6 @@
               "stateLifecycle": {
                 "kind": "empty-selection-then-declared-repair",
                 "statePath": "studentRuleState",
-                "declaredStatePath": "declaredRuleState",
                 "phaseOrder": [
                   "rule-selection",
                   "remove-misaligned",
@@ -867,9 +865,8 @@
           },
             "binding": {
               "stateLifecycle": {
-                  "kind": "empty-selection-then-declared-repair",
-                  "statePath": "studentRuleState",
-                  "declaredStatePath": "declaredRuleState",
+                "kind": "empty-selection-then-declared-repair",
+                "statePath": "studentRuleState",
                 "phaseOrder": [
                   "rule-selection",
                   "remove-misaligned",
@@ -883,7 +880,7 @@
                 "repairRequiresDeclaredState": true
               },
               "repair": {
-              "declaredRuleStatePath": "declaredRuleState",
+              "declaredRuleStatePath": "studentRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": ["misaligned-item"],
@@ -898,7 +895,7 @@
           },
           "repair": {
             "kind": "declared-rule-independent-misplacement",
-            "declaredRuleStatePath": "declaredRuleState",
+            "declaredRuleStatePath": "studentRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": ["misaligned-item"],

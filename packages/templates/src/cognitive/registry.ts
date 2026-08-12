@@ -1538,9 +1538,6 @@ export function expectedCognitiveRuntimePredicate(
       parameters.studentInputRoles = [];
       parameters.stateConstruction = manifest.decision.stateConstruction;
       parameters.application = manifest.decision.application;
-      if (manifest.decision.stateLifecycle !== undefined) {
-        parameters.stateLifecycle = manifest.decision.stateLifecycle;
-      }
       if (manifest.decision.repair !== undefined) {
         parameters.repair = manifest.decision.repair;
       }

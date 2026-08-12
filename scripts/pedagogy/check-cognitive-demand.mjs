@@ -696,7 +696,6 @@ for (const manifest of manifests) {
 
       if (decision.repair) {
         const repair = decision.repair;
-        const lifecycle = decision.stateLifecycle;
         const repairRoles = [
           ...repair.wrongItemRoles,
           ...repair.repairTargetRoles,
@@ -718,13 +717,7 @@ for (const manifest of manifests) {
           (constraint) => constraint.id === repair.replacementConstraintId
         );
         const repairContractValid =
-          lifecycle?.kind === "empty-selection-then-declared-repair" &&
-          lifecycle.statePath === decision.ruleStatePath &&
-          lifecycle.declaredStatePath !== lifecycle.statePath &&
-          repair.declaredRuleStatePath === lifecycle.declaredStatePath &&
-          lifecycle.initialState === construction?.initialState &&
-          lifecycle.declaredStateCardinality === construction?.slotCount &&
-          lifecycle.declaredStateExamplesPath === decision.validRuleStatesPath &&
+          repair.declaredRuleStatePath === decision.ruleStatePath &&
           repair.wrongItemProperty === decision.variantProperty &&
           repair.repairRuleStateIndex >= 0 &&
           repair.repairRuleStateIndex < decision.ruleSlotRoles.length &&
@@ -769,14 +762,10 @@ for (const manifest of manifests) {
           ) &&
           removeConstraint.target.role === repair.repairBankRoles[0] &&
           replacementConstraint.target.role === repair.repairTargetRoles[0] &&
-          removeConstraint.parameters?.initialRuleStatePath ===
+          removeConstraint.parameters?.ruleStatePath ===
             decision.ruleStatePath &&
-          removeConstraint.parameters?.declaredRuleStatePath ===
-            repair.declaredRuleStatePath &&
-          replacementConstraint.parameters?.initialRuleStatePath ===
+          replacementConstraint.parameters?.ruleStatePath ===
             decision.ruleStatePath &&
-          replacementConstraint.parameters?.declaredRuleStatePath ===
-            repair.declaredRuleStatePath &&
           removeConstraint.parameters?.repairRuleStateIndex ===
             repair.repairRuleStateIndex &&
           replacementConstraint.parameters?.repairRuleStateIndex ===
