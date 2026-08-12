@@ -594,7 +594,14 @@ for (const manifest of manifests) {
       ).size;
       const expectedVerificationRoles = [
         ...decision.ruleSlotRoles,
-        ...(application?.continuationTargetRoles ?? [])
+        ...(application?.continuationTargetRoles ?? []),
+        ...(decision.repair
+          ? [
+              ...decision.repair.wrongItemRoles,
+              ...decision.repair.repairTargetRoles,
+              ...decision.repair.repairBankRoles
+            ]
+          : [])
       ];
       const constructionContractValid =
         decision.answerMode === "conditional-rubric" &&
@@ -626,7 +633,8 @@ for (const manifest of manifests) {
         construction.minimumCopiesPerDistinctValue >=
           1 +
             application.continuationTargetRoles.length /
-              application.period &&
+              application.period +
+            (decision.repair?.repairTargetRoles.length ?? 0) &&
         application.evidenceMode === "student-state-dependent" &&
         JSON.stringify(manifest.verification.roles) ===
           JSON.stringify(expectedVerificationRoles) &&
@@ -684,6 +692,90 @@ for (const manifest of manifests) {
       ) {
         failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
         failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
+      }
+
+      if (decision.repair) {
+        const repair = decision.repair;
+        const repairRoles = [
+          ...repair.wrongItemRoles,
+          ...repair.repairTargetRoles,
+          ...repair.repairBankRoles
+        ];
+        const wrongRoles = repair.wrongItemRoles.map((role) =>
+          roleByName.get(role)
+        );
+        const targetRoles = repair.repairTargetRoles.map((role) =>
+          roleByName.get(role)
+        );
+        const bankRoles = repair.repairBankRoles.map((role) =>
+          roleByName.get(role)
+        );
+        const removeConstraint = blueprint.constraints.find(
+          (constraint) => constraint.id === repair.removeConstraintId
+        );
+        const replacementConstraint = blueprint.constraints.find(
+          (constraint) => constraint.id === repair.replacementConstraintId
+        );
+        const repairContractValid =
+          repair.declaredRuleStatePath === decision.ruleStatePath &&
+          repair.wrongItemProperty === decision.variantProperty &&
+          repair.repairRuleStateIndex >= 0 &&
+          repair.repairRuleStateIndex < decision.ruleSlotRoles.length &&
+          repair.beforeStatePath !== repair.afterStatePath &&
+          repair.beforeStatePath !== repair.validAfterStateExamplesPath &&
+          repair.afterStatePath !== repair.validAfterStateExamplesPath &&
+          new Set(repairRoles).size === repairRoles.length &&
+          repairRoles.every(
+            (role) =>
+              !decision.ruleSlotRoles.includes(role) &&
+              !(application?.continuationTargetRoles ?? []).includes(role)
+          ) &&
+          wrongRoles.every(
+            (role) =>
+              role?.scope === "each-item" &&
+              role.movable &&
+              !role.locked
+          ) &&
+          targetRoles.every(
+            (role) =>
+              role?.scope === "each-item" &&
+              role.locked &&
+              !role.movable
+          ) &&
+          bankRoles.every(
+            (role) =>
+              role?.scope === "each-item" &&
+              role.locked &&
+              !role.movable
+          ) &&
+          removeConstraint?.kind === "place-in" &&
+          replacementConstraint?.kind === "fill-from-pool" &&
+          removeConstraint.requiresStudentAction &&
+          replacementConstraint.requiresStudentAction &&
+          sameSet(
+            removeConstraint.sources.map((source) => source.role),
+            repair.wrongItemRoles
+          ) &&
+          sameSet(
+            replacementConstraint.sources.map((source) => source.role),
+            decision.variantRoles
+          ) &&
+          removeConstraint.target.role === repair.repairBankRoles[0] &&
+          replacementConstraint.target.role === repair.repairTargetRoles[0] &&
+          removeConstraint.parameters?.ruleStatePath ===
+            decision.ruleStatePath &&
+          replacementConstraint.parameters?.ruleStatePath ===
+            decision.ruleStatePath &&
+          removeConstraint.parameters?.repairRuleStateIndex ===
+            repair.repairRuleStateIndex &&
+          replacementConstraint.parameters?.repairRuleStateIndex ===
+            repair.repairRuleStateIndex &&
+          JSON.stringify(manifest.verification.roles) ===
+            JSON.stringify(expectedVerificationRoles);
+        if (!repairContractValid) {
+          failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
+          failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
+        }
       }
 
       const roleBoundValue = (role, item, property) => {
@@ -775,14 +867,20 @@ for (const manifest of manifests) {
             const sourceCapacityValid =
               sourceValues.length >=
                 decision.ruleSlotRoles.length +
-                  application.continuationTargetRoles.length &&
+                  application.continuationTargetRoles.length +
+                  (decision.repair?.repairTargetRoles.length ?? 0) &&
               distinctSourceValues.length >=
                 construction.minimumDistinctPoolValues &&
               distinctSourceValues.every(
                 (value) =>
                   sourceValues.filter((candidate) =>
                     sameValue(candidate, value)
-                  ).length >= construction.minimumCopiesPerDistinctValue
+                  ).length >= construction.minimumCopiesPerDistinctValue &&
+                  construction.minimumCopiesPerDistinctValue >=
+                    1 +
+                      application.continuationTargetRoles.length /
+                        application.period +
+                      (decision.repair?.repairTargetRoles.length ?? 0)
               );
             const examplesValid =
               Array.isArray(currentState) &&

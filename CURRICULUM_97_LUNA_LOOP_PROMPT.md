@@ -55,6 +55,8 @@ pnpm curriculum:program
 5. `FAMILY_TRACK` — 승인된 track 하나의 generator·capability·runtime·cognitive·envelope
 6. `SOL_REVIEW` — Sol max가 한 standard·한 operation의 교육·구조 증거를 독립 검토
 7. `SOL_REPLAN` — blocked item의 범위·schema·native 의존성을 재계획하고 재개 조건을 고정
+   - 현재 operation 자체가 review-gated가 아닌 단계의 hard-stop이면 먼저
+     blocked-only `SOL_REPLAN_REQUEST` preflight artifact를 만든다.
 8. `STANDARD_BINDING` — 같은 gradeBand의 후속 standard target/envelope pack을 기존 core에 결속
 9. `LIVE_EVIDENCE` — 명시적으로 승인된 create-only canary·조작·저장·재열기
 10. `BATCH_CLOSEOUT` — 해당 batch의 보고서·회귀·증거만 마감
@@ -86,6 +88,20 @@ phase-state·파생 report가 갱신되지 않은 상태에서 같은 단계를 
 `FAMILY_TRACK` review가 `changes-requested`이면 cursor를 구현 단계로 되돌려 새 candidate를 만들고,
 `blocked`이면 새 `SOL_REPLAN`으로 승격한다. `completedOperations`는 operation sequence의
 정확한 prefix여야 하며 누락·중복·순서 변경은 게이트 오류다.
+
+`ENGINE_CORE`·`AFFORDANCE_DISCOVERY` 등 별도 승인 review가 없는 단계에서
+contract/schema/native hard-stop이 발견되면 과거 `FAMILY_TRACK` blocker를
+재사용하거나 operation 이름을 FAMILY_TRACK으로 위장하지 않는다. 현재 generated
+`operationWorkItemId + familyTrackId + scopeId + nextOperation + contractRevision`을
+기록한 preflight artifact **한 파일만** local candidate commit으로 만들고,
+Sol이 `SOL_REPLAN_REQUEST` / `blocked` record로 artifact SHA와 candidate
+currentness를 검증한다. 그 request ID를 새 `SOL_REPLAN.supersedesBlockedReviewId`가
+소비하기 전에는 plan/schema/core 구현을 재개하지 않는다. 소비된 request는
+historical이며 같은 ID로 두 번째 replan을 열 수 없다.
+`blockedContractRevision`은 실패가 발생한 마지막 승인 revision을 기록한다.
+새 request operation 자체를 처음 추가하는 경우에는 governance candidate를 먼저
+commit하고, 그 위에 preflight artifact 한 파일만 별도 candidate로 commit한다.
+artifact candidate와 Sol request record 사이에는 구현 파일 변경을 끼우지 않는다.
 
 `TARGET_SET`, `FAMILY_TRACK`, `SOL_REPLAN`, `FAMILY_REVALIDATION`은 Luna의 자체 QA만으로 완료할 수 없다. Luna는 변경과
 focused QA를 수행한 뒤 **아직 push하지 않은 local candidate commit**을 만들고
@@ -228,9 +244,15 @@ generated timestamp만 바뀐 unrelated audit 파일은 내용을 확인한 뒤 
 
 - 일반 operation은 모든 gate가 통과했을 때 한 work item을 한 atomic commit으로 만든다.
 - `TARGET_SET`·`FAMILY_TRACK`·`SOL_REPLAN`·`FAMILY_REVALIDATION`은 Luna가 local candidate commit을 만든 뒤 push하지 않고 종료한다.
+- `SOL_REPLAN_REQUEST`는 예외적으로 승인 후보가 아니라 **blocked-only 증거
+  candidate**다. 구현 변경을 포함하지 않고 scoped preflight artifact 하나만
+  커밋하며, Sol board+파생 report commit 뒤에도 push하지 않는다.
 - Sol max가 candidate commit hash에 결속된 `approved` record를 남긴 뒤에만
   `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation <TARGET_SET|FAMILY_TRACK|SOL_REPLAN|FAMILY_REVALIDATION> --candidate <sha>`를 실행하고 `git push origin main`을 한다.
   `FAMILY_TRACK`에는 `--family-track-id <id> --scope-id <id>`를 추가한다.
+- blocked request의 무결성은
+  `pnpm curriculum:sol-review:verify -- --work-item <Wxxx> --operation SOL_REPLAN_REQUEST --family-track-id <id> --scope-id <id> --candidate <sha>`로
+  확인할 수 있지만, 이 PASS는 승인 또는 push 권한이 아니다.
 - `changes-requested`이면 기존 candidate를 재사용하지 말고 새 attempt·새 candidate commit으로 다시 검토받는다.
 - candidate 이후에는 Sol board와 파생 report만 변경할 수 있다. 구현 파일이 candidate 이후
   바뀌면 승인 기록은 stale이며 새 candidate·review가 필요하다.

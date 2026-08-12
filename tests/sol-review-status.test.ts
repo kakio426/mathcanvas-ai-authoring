@@ -11,6 +11,7 @@ import * as noFamilyPlanBuilder from "../scripts/curriculum/build-no-family-plan
 const {
   effectiveFamilyLifecycleStage,
   familyRevalidationSupersedes,
+  latestScopedSolReplanRequest,
   nativeFamilyReviewStatus,
   replanTriggerForFlow,
   replanTriggerReview,
@@ -19,6 +20,8 @@ const {
   reviewCandidateIsCurrent,
   reviewImplementationFiles,
   reviewScopeMatches,
+  solReplanRequestArtifactIsCurrent,
+  solReplanRequestMatchesCursor,
   validateOperationCursor
 } = solReviewStatus;
 const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
@@ -653,6 +656,161 @@ describe("Sol review candidate and scope gates", () => {
         nextSubWorkOperation: "FAMILY_TRACK"
       })
     ).toBe("SOL_REPLAN");
+  });
+
+  it("routes only a current scoped SOL_REPLAN_REQUEST for the exact operation cursor", () => {
+    const blockerArtifactPath =
+      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json";
+    const blockerArtifactSha256 = createHash("sha256")
+      .update(readFileSync(blockerArtifactPath))
+      .digest("hex");
+    const cursor = {
+      workItemId: "W002",
+      standardCode: "[2수02-02]",
+      operationWorkItemId:
+        "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      familyTrackId: "pattern.declared-repeat.repair-v1",
+      scopeId: "W002-FAMILY_TRACK-repeat-repair",
+      nextOperation: "ENGINE_CORE",
+      contractRevision: "W002-SOL-REPLAN-v9"
+    };
+    const request = review({
+      reviewId: "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      workItemId: "W002",
+      operation: "SOL_REPLAN_REQUEST",
+      decision: "blocked",
+      operationWorkItemId: cursor.operationWorkItemId,
+      familyTrackId: cursor.familyTrackId,
+      scopeId: cursor.scopeId,
+      blockedOperation: cursor.nextOperation,
+      blockedContractRevision: cursor.contractRevision,
+      blockerArtifactPath,
+      blockerArtifactSha256
+    });
+    const candidateIsCurrent = () => true;
+
+    expect(solReplanRequestArtifactIsCurrent(request)).toBe(true);
+    expect(
+      solReplanRequestMatchesCursor(
+        request,
+        cursor,
+        candidateIsCurrent
+      )
+    ).toBe(true);
+    expect(
+      latestScopedSolReplanRequest(
+        [request],
+        cursor,
+        null,
+        candidateIsCurrent
+      )
+    ).toBe(request);
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: review({
+          reviewId: "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          decision: "blocked"
+        }),
+        replanConsumed: true,
+        latestSolReplanRequest: request
+      })
+    ).toBe(request);
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: review({
+          reviewId: "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          decision: "blocked"
+        }),
+        replanConsumed: false,
+        latestSolReplanRequest: request
+      })
+    ).toBe(request);
+
+    expect(
+      solReplanRequestMatchesCursor(
+        request,
+        { ...cursor, operationWorkItemId: "W002-other-ENGINE_CORE" },
+        candidateIsCurrent
+      )
+    ).toBe(false);
+    expect(
+      solReplanRequestMatchesCursor(
+        request,
+        { ...cursor, nextOperation: "FAMILY_TRACK" },
+        candidateIsCurrent
+      )
+    ).toBe(false);
+    expect(
+      latestScopedSolReplanRequest(
+        [request],
+        cursor,
+        request.reviewId,
+        candidateIsCurrent
+      )
+    ).toBe(null);
+    expect(
+      replanTriggerForFlow({
+        rawTrigger: request,
+        replanConsumed: true,
+        latestSolReplanRequest: request,
+        nextSubWorkOperation: "ENGINE_CORE"
+      })
+    ).toBe(null);
+  });
+
+  it("rejects stale, non-blocked, and artifact-mismatched SOL_REPLAN_REQUEST records", () => {
+    const blockerArtifactPath =
+      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json";
+    const artifactSha256 = createHash("sha256")
+      .update(readFileSync(blockerArtifactPath))
+      .digest("hex");
+    const baseRequest = review({
+      workItemId: "W002",
+      operation: "SOL_REPLAN_REQUEST",
+      decision: "blocked",
+      operationWorkItemId:
+        "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      familyTrackId: "pattern.declared-repeat.repair-v1",
+      scopeId: "W002-FAMILY_TRACK-repeat-repair",
+      blockedOperation: "ENGINE_CORE",
+      blockedContractRevision: "W002-SOL-REPLAN-v9",
+      blockerArtifactPath,
+      blockerArtifactSha256: artifactSha256
+    });
+    expect(
+      solReplanRequestArtifactIsCurrent({
+        ...baseRequest,
+        decision: "approved"
+      })
+    ).toBe(false);
+    expect(
+      solReplanRequestArtifactIsCurrent({
+        ...baseRequest,
+        blockerArtifactSha256: "0".repeat(64)
+      })
+    ).toBe(false);
+    expect(
+      solReplanRequestArtifactIsCurrent({
+        ...baseRequest,
+        familyTrackId: "pattern.change-rule.construct-v1"
+      })
+    ).toBe(false);
+    expect(
+      solReplanRequestMatchesCursor(
+        baseRequest,
+        {
+          workItemId: "W002",
+          standardCode: "[2수02-02]",
+          operationWorkItemId:
+            "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+          familyTrackId: "pattern.declared-repeat.repair-v1",
+          scopeId: "W002-FAMILY_TRACK-repeat-repair",
+          nextOperation: "ENGINE_CORE",
+          contractRevision: "W002-SOL-REPLAN-v9"
+        },
+        () => false
+      )
+    ).toBe(false);
   });
 
   it("ignores the consumed replan's superseded failure identity", () => {

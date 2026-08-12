@@ -120,6 +120,9 @@
         "reports/problem-family-registry/**",
         "reports/curriculum-execution/**"
       ],
+      "SOL_REPLAN_REQUEST": [
+        "reports/curriculum-execution/subwork-state/*-preflight-*.json"
+      ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
         "reports/problem-family-registry/latest.json",
@@ -257,6 +260,10 @@
         "reports/problem-family-registry/**",
         "reports/curriculum-execution/**"
       ],
+      "SOL_REPLAN_REQUEST": [
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md"
+      ],
       "FAMILY_REVALIDATION": [
         "reports/curriculum-execution/family-revalidation/**",
         "reports/problem-family-registry/latest.json",
@@ -279,6 +286,7 @@
       "TARGET_SET",
       "FAMILY_TRACK",
       "SOL_REPLAN",
+      "SOL_REPLAN_REQUEST",
       "FAMILY_REVALIDATION"
     ],
     "reviewBeforeStatus": [
@@ -310,6 +318,15 @@
         "artifactPath",
         "fingerprintSha256",
         "supersedesFamilyTrackReviewId"
+      ],
+      "solReplanRequestRequires": [
+        "familyTrackId",
+        "scopeId",
+        "operationWorkItemId",
+        "blockedOperation",
+        "blockedContractRevision",
+        "blockerArtifactPath",
+        "blockerArtifactSha256"
       ],
       "scopeKey": [
         "standardCode",
@@ -3297,7 +3314,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     "nextReplanWork": {
@@ -3318,11 +3336,11 @@
         "contractRevision": "W002-SOL-REPLAN-v10",
         "constraintCapacity": {
           "maxSources": 12,
-          "requiredSources": 9
+          "requiredSources": 12
         },
         "layoutContract": {
           "tokenSet": "w002-repeat-repair-v1",
-          "sourceRoles": 9,
+          "sourceRoles": 12,
           "ruleSlotRoles": 2,
           "continuationTargetRoles": 4,
           "minSlotWidth": 188,
@@ -3348,7 +3366,10 @@
             "rule-variant-6",
             "rule-variant-7",
             "rule-variant-8",
-            "rule-variant-9"
+            "rule-variant-9",
+            "rule-variant-10",
+            "rule-variant-11",
+            "rule-variant-12"
           ],
           "ruleSlotRoles": [
             "rule-slot-1",
@@ -3370,7 +3391,10 @@
               "rule-variant-6",
               "rule-variant-7",
               "rule-variant-8",
-              "rule-variant-9"
+              "rule-variant-9",
+              "rule-variant-10",
+              "rule-variant-11",
+              "rule-variant-12"
             ],
             "slotRoles": [
               "rule-slot-1",
@@ -3379,7 +3403,7 @@
             "slotCount": 2,
             "minimumDistinctValues": 2,
             "minimumDistinctPoolValues": 3,
-            "minimumCopiesPerDistinctValue": 3,
+            "minimumCopiesPerDistinctValue": 4,
             "sourceUseMode": "move-once-no-clone",
             "allowsAnyOrderedSelection": true,
             "initialState": "empty"
@@ -3408,7 +3432,30 @@
               "predicateKind": "cognitive.rule-state-contract",
               "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
             }
-          ]
+          ],
+          "repair": {
+            "kind": "declared-rule-independent-misplacement",
+            "declaredRuleStatePath": "studentRuleState",
+            "repairRuleStateIndex": 1,
+            "wrongItemProperty": "orderedValues",
+            "wrongItemRoles": [
+              "misaligned-item"
+            ],
+            "repairTargetRoles": [
+              "repair-target"
+            ],
+            "repairBankRoles": [
+              "repair-bank"
+            ],
+            "beforeStatePath": "initialArrangementState",
+            "afterStatePath": "repairedArrangementState",
+            "validAfterStateExamplesPath": "validRepairedArrangementStates",
+            "removeConstraintId": "remove-misaligned-item",
+            "replacementConstraintId": "repair-misaligned-item",
+            "requiresIndependentWrongState": true,
+            "requiresBeforeAfterComparison": true,
+            "evidenceMode": "student-state-dependent"
+          }
         },
         "runtimePredicate": {
           "kind": "cognitive.rule-state-contract",
@@ -3429,7 +3476,10 @@
               "rule-variant-6",
               "rule-variant-7",
               "rule-variant-8",
-              "rule-variant-9"
+              "rule-variant-9",
+              "rule-variant-10",
+              "rule-variant-11",
+              "rule-variant-12"
             ],
             "ruleSlotRoles": [
               "rule-slot-1",
@@ -3447,7 +3497,10 @@
               "continuation-slot-1",
               "continuation-slot-2",
               "continuation-slot-3",
-              "continuation-slot-4"
+              "continuation-slot-4",
+              "misaligned-item",
+              "repair-target",
+              "repair-bank"
             ],
             "minimumValidStates": 2,
             "minimumSurplus": 2,
@@ -3462,7 +3515,10 @@
                 "rule-variant-6",
                 "rule-variant-7",
                 "rule-variant-8",
-                "rule-variant-9"
+                "rule-variant-9",
+                "rule-variant-10",
+                "rule-variant-11",
+                "rule-variant-12"
               ],
               "slotRoles": [
                 "rule-slot-1",
@@ -3471,7 +3527,7 @@
               "slotCount": 2,
               "minimumDistinctValues": 2,
               "minimumDistinctPoolValues": 3,
-              "minimumCopiesPerDistinctValue": 3,
+              "minimumCopiesPerDistinctValue": 4,
               "sourceUseMode": "move-once-no-clone",
               "allowsAnyOrderedSelection": true,
               "initialState": "empty"
@@ -3500,7 +3556,30 @@
                 "predicateKind": "cognitive.rule-state-contract",
                 "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
               }
-            ]
+            ],
+            "repair": {
+              "kind": "declared-rule-independent-misplacement",
+              "declaredRuleStatePath": "studentRuleState",
+              "repairRuleStateIndex": 1,
+              "wrongItemProperty": "orderedValues",
+              "wrongItemRoles": [
+                "misaligned-item"
+              ],
+              "repairTargetRoles": [
+                "repair-target"
+              ],
+              "repairBankRoles": [
+                "repair-bank"
+              ],
+              "beforeStatePath": "initialArrangementState",
+              "afterStatePath": "repairedArrangementState",
+              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "removeConstraintId": "remove-misaligned-item",
+              "replacementConstraintId": "repair-misaligned-item",
+              "requiresIndependentWrongState": true,
+              "requiresBeforeAfterComparison": true,
+              "evidenceMode": "student-state-dependent"
+            }
           }
         },
         "binding": {
@@ -3513,7 +3592,26 @@
           ],
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
-          "answerMode": "conditional-rubric"
+          "answerMode": "conditional-rubric",
+          "repair": {
+            "declaredRuleStatePath": "studentRuleState",
+            "repairRuleStateIndex": 1,
+            "wrongItemProperty": "orderedValues",
+            "wrongItemRoles": [
+              "misaligned-item"
+            ],
+            "repairTargetRoles": [
+              "repair-target"
+            ],
+            "repairBankRoles": [
+              "repair-bank"
+            ],
+            "beforeStatePath": "initialArrangementState",
+            "afterStatePath": "repairedArrangementState",
+            "validAfterStateExamplesPath": "validRepairedArrangementStates",
+            "removeConstraintId": "remove-misaligned-item",
+            "replacementConstraintId": "repair-misaligned-item"
+          }
         },
         "artifactContract": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v10.json",
@@ -3535,6 +3633,8 @@
         "repair": {
           "kind": "declared-rule-independent-misplacement",
           "declaredRuleStatePath": "studentRuleState",
+          "repairRuleStateIndex": 1,
+          "wrongItemProperty": "orderedValues",
           "wrongItemRoles": [
             "misaligned-item"
           ],
@@ -3546,6 +3646,7 @@
           ],
           "beforeStatePath": "initialArrangementState",
           "afterStatePath": "repairedArrangementState",
+          "validAfterStateExamplesPath": "validRepairedArrangementStates",
           "removeConstraintId": "remove-misaligned-item",
           "replacementConstraintId": "repair-misaligned-item",
           "requiresIndependentWrongState": true,
@@ -3736,7 +3837,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     "nextLiveEvidenceWork": {
@@ -3807,7 +3909,8 @@
         "replanConsumed": true,
         "familyRevalidation": "approved",
         "revalidationApproved": true,
-        "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1"
+        "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1",
+        "solReplanRequest": null
       }
     }
   },
@@ -5647,7 +5750,7 @@
       "replanContractRevision": "W002-SOL-REPLAN-v10",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
-        "contractRevision": "W002-SOL-REPLAN-v9",
+        "contractRevision": "W002-SOL-REPLAN-v10",
         "constraintCapacity": {
           "maxSources": 12,
           "requiredSources": 9
@@ -5845,7 +5948,7 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
           "status": "implemented-verified-pending-family-track",
           "implementationFiles": [
             "packages/contracts/src/vocabulary/constraints.ts",
@@ -5868,9 +5971,13 @@
         "pattern.declared-repeat.repair-v1": {
           "baseContractFamilyTrackId": "pattern.repeat-unit.construct-v1",
           "contractRevision": "W002-SOL-REPLAN-v10",
+          "constraintCapacity": {
+            "maxSources": 12,
+            "requiredSources": 12
+          },
           "layoutContract": {
             "tokenSet": "w002-repeat-repair-v1",
-            "sourceRoles": 9,
+            "sourceRoles": 12,
             "ruleSlotRoles": 2,
             "continuationTargetRoles": 4,
             "misalignedItemRoles": 1,
@@ -5881,9 +5988,262 @@
             "allVisibleSimultaneously": true,
             "containment": "native-rendered-bounds"
           },
+          "manifestDecision": {
+            "mode": "construct-rule",
+            "constructionMode": "student-constructed",
+            "answerMode": "conditional-rubric",
+            "ruleStatePath": "studentRuleState",
+            "decisionConstraintId": "construct-rule-slot",
+            "variantRoles": [
+              "rule-variant-1",
+              "rule-variant-2",
+              "rule-variant-3",
+              "rule-variant-4",
+              "rule-variant-5",
+              "rule-variant-6",
+              "rule-variant-7",
+              "rule-variant-8",
+              "rule-variant-9",
+              "rule-variant-10",
+              "rule-variant-11",
+              "rule-variant-12"
+            ],
+            "ruleSlotRoles": [
+              "rule-slot-1",
+              "rule-slot-2"
+            ],
+            "variantProperty": "orderedValues",
+            "validRuleStatesPath": "validRuleStateExamples",
+            "surplusPath": "surplusRuleStateExamples",
+            "minimumValidStates": 2,
+            "minimumSurplus": 2,
+            "stateConstruction": {
+              "kind": "ordered-distinct-subset-from-pool",
+              "sourceRoles": [
+                "rule-variant-1",
+                "rule-variant-2",
+                "rule-variant-3",
+                "rule-variant-4",
+                "rule-variant-5",
+                "rule-variant-6",
+                "rule-variant-7",
+                "rule-variant-8",
+                "rule-variant-9",
+                "rule-variant-10",
+                "rule-variant-11",
+                "rule-variant-12"
+              ],
+              "slotRoles": [
+                "rule-slot-1",
+                "rule-slot-2"
+              ],
+              "slotCount": 2,
+              "minimumDistinctValues": 2,
+              "minimumDistinctPoolValues": 3,
+              "minimumCopiesPerDistinctValue": 4,
+              "sourceUseMode": "move-once-no-clone",
+              "allowsAnyOrderedSelection": true,
+              "initialState": "empty"
+            },
+            "application": {
+              "ruleStatePath": "studentRuleState",
+              "continuationTargetRoles": [
+                "continuation-slot-1",
+                "continuation-slot-2",
+                "continuation-slot-3",
+                "continuation-slot-4"
+              ],
+              "period": 2,
+              "minimumTargetCount": 4,
+              "requiresVisibleComparison": true,
+              "requiresSimultaneousRuleAndContinuation": true,
+              "ruleStateIndexMode": "index-mod-period",
+              "evidenceMode": "student-state-dependent"
+            },
+            "distractors": [
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+              },
+              {
+                "predicateKind": "cognitive.rule-state-contract",
+                "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
+              }
+            ],
+            "repair": {
+              "kind": "declared-rule-independent-misplacement",
+              "declaredRuleStatePath": "studentRuleState",
+              "repairRuleStateIndex": 1,
+              "wrongItemProperty": "orderedValues",
+              "wrongItemRoles": [
+                "misaligned-item"
+              ],
+              "repairTargetRoles": [
+                "repair-target"
+              ],
+              "repairBankRoles": [
+                "repair-bank"
+              ],
+              "beforeStatePath": "initialArrangementState",
+              "afterStatePath": "repairedArrangementState",
+              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "removeConstraintId": "remove-misaligned-item",
+              "replacementConstraintId": "repair-misaligned-item",
+              "requiresIndependentWrongState": true,
+              "requiresBeforeAfterComparison": true,
+              "evidenceMode": "student-state-dependent"
+            }
+          },
+          "runtimePredicate": {
+            "parameters": {
+              "mode": "construct-rule",
+              "constructionMode": "student-constructed",
+              "answerMode": "conditional-rubric",
+              "ruleStatePath": "studentRuleState",
+              "decisionConstraintId": "construct-rule-slot",
+              "validRuleStatesPath": "validRuleStateExamples",
+              "surplusPath": "surplusRuleStateExamples",
+              "variantRoles": [
+                "rule-variant-1",
+                "rule-variant-2",
+                "rule-variant-3",
+                "rule-variant-4",
+                "rule-variant-5",
+                "rule-variant-6",
+                "rule-variant-7",
+                "rule-variant-8",
+                "rule-variant-9",
+                "rule-variant-10",
+                "rule-variant-11",
+                "rule-variant-12"
+              ],
+              "ruleSlotRoles": [
+                "rule-slot-1",
+                "rule-slot-2"
+              ],
+              "variantProperty": "orderedValues",
+              "continuationRuleStatePath": "studentRuleState",
+              "explanationRuleStatePath": "studentRuleState",
+              "predictionRole": "prediction-box",
+              "explanationRole": "teacher-rubric",
+              "studentInputRoles": [],
+              "verificationRoles": [
+                "rule-slot-1",
+                "rule-slot-2",
+                "continuation-slot-1",
+                "continuation-slot-2",
+                "continuation-slot-3",
+                "continuation-slot-4",
+                "misaligned-item",
+                "repair-target",
+                "repair-bank"
+              ],
+              "minimumValidStates": 2,
+              "minimumSurplus": 2,
+              "stateConstruction": {
+                "kind": "ordered-distinct-subset-from-pool",
+                "sourceRoles": [
+                  "rule-variant-1",
+                  "rule-variant-2",
+                  "rule-variant-3",
+                  "rule-variant-4",
+                  "rule-variant-5",
+                  "rule-variant-6",
+                  "rule-variant-7",
+                  "rule-variant-8",
+                  "rule-variant-9",
+                  "rule-variant-10",
+                  "rule-variant-11",
+                  "rule-variant-12"
+                ],
+                "slotRoles": [
+                  "rule-slot-1",
+                  "rule-slot-2"
+                ],
+                "slotCount": 2,
+                "minimumDistinctValues": 2,
+                "minimumDistinctPoolValues": 3,
+                "minimumCopiesPerDistinctValue": 4,
+                "sourceUseMode": "move-once-no-clone",
+                "allowsAnyOrderedSelection": true,
+                "initialState": "empty"
+              },
+              "application": {
+                "ruleStatePath": "studentRuleState",
+                "continuationTargetRoles": [
+                  "continuation-slot-1",
+                  "continuation-slot-2",
+                  "continuation-slot-3",
+                  "continuation-slot-4"
+                ],
+                "period": 2,
+                "minimumTargetCount": 4,
+                "requiresVisibleComparison": true,
+                "requiresSimultaneousRuleAndContinuation": true,
+                "ruleStateIndexMode": "index-mod-period",
+                "evidenceMode": "student-state-dependent"
+              },
+              "distractors": [
+                {
+                  "predicateKind": "cognitive.rule-state-contract",
+                  "misconception": "같은 조각만 고르거나 두 조각의 순서를 중간에 바꾼다."
+                },
+                {
+                  "predicateKind": "cognitive.rule-state-contract",
+                  "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
+                }
+              ],
+              "repair": {
+                "kind": "declared-rule-independent-misplacement",
+                "declaredRuleStatePath": "studentRuleState",
+                "repairRuleStateIndex": 1,
+                "wrongItemProperty": "orderedValues",
+                "wrongItemRoles": [
+                  "misaligned-item"
+                ],
+                "repairTargetRoles": [
+                  "repair-target"
+                ],
+                "repairBankRoles": [
+                  "repair-bank"
+                ],
+                "beforeStatePath": "initialArrangementState",
+                "afterStatePath": "repairedArrangementState",
+                "validAfterStateExamplesPath": "validRepairedArrangementStates",
+                "removeConstraintId": "remove-misaligned-item",
+                "replacementConstraintId": "repair-misaligned-item",
+                "requiresIndependentWrongState": true,
+                "requiresBeforeAfterComparison": true,
+                "evidenceMode": "student-state-dependent"
+              }
+            }
+          },
+          "binding": {
+            "repair": {
+              "declaredRuleStatePath": "studentRuleState",
+              "repairRuleStateIndex": 1,
+              "wrongItemProperty": "orderedValues",
+              "wrongItemRoles": [
+                "misaligned-item"
+              ],
+              "repairTargetRoles": [
+                "repair-target"
+              ],
+              "repairBankRoles": [
+                "repair-bank"
+              ],
+              "beforeStatePath": "initialArrangementState",
+              "afterStatePath": "repairedArrangementState",
+              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "removeConstraintId": "remove-misaligned-item",
+              "replacementConstraintId": "repair-misaligned-item"
+            }
+          },
           "repair": {
             "kind": "declared-rule-independent-misplacement",
             "declaredRuleStatePath": "studentRuleState",
+            "repairRuleStateIndex": 1,
+            "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
               "misaligned-item"
             ],
@@ -5895,6 +6255,7 @@
             ],
             "beforeStatePath": "initialArrangementState",
             "afterStatePath": "repairedArrangementState",
+            "validAfterStateExamplesPath": "validRepairedArrangementStates",
             "removeConstraintId": "remove-misaligned-item",
             "replacementConstraintId": "repair-misaligned-item",
             "requiresIndependentWrongState": true,
@@ -6460,7 +6821,8 @@
         "replanConsumed": true,
         "familyRevalidation": "approved",
         "revalidationApproved": true,
-        "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1"
+        "revalidationArtifact": "5028dcf9aabdd244c04c29273c2a62c65cbea4028c9afd0c2c591fef9194a3c1",
+        "solReplanRequest": null
       }
     },
     {
@@ -6481,11 +6843,11 @@
         "contractRevision": "W002-SOL-REPLAN-v10",
         "constraintCapacity": {
           "maxSources": 12,
-          "requiredSources": 9
+          "requiredSources": 12
         },
         "layoutContract": {
           "tokenSet": "w002-repeat-repair-v1",
-          "sourceRoles": 9,
+          "sourceRoles": 12,
           "ruleSlotRoles": 2,
           "continuationTargetRoles": 4,
           "minSlotWidth": 188,
@@ -6511,7 +6873,10 @@
             "rule-variant-6",
             "rule-variant-7",
             "rule-variant-8",
-            "rule-variant-9"
+            "rule-variant-9",
+            "rule-variant-10",
+            "rule-variant-11",
+            "rule-variant-12"
           ],
           "ruleSlotRoles": [
             "rule-slot-1",
@@ -6533,7 +6898,10 @@
               "rule-variant-6",
               "rule-variant-7",
               "rule-variant-8",
-              "rule-variant-9"
+              "rule-variant-9",
+              "rule-variant-10",
+              "rule-variant-11",
+              "rule-variant-12"
             ],
             "slotRoles": [
               "rule-slot-1",
@@ -6542,7 +6910,7 @@
             "slotCount": 2,
             "minimumDistinctValues": 2,
             "minimumDistinctPoolValues": 3,
-            "minimumCopiesPerDistinctValue": 3,
+            "minimumCopiesPerDistinctValue": 4,
             "sourceUseMode": "move-once-no-clone",
             "allowsAnyOrderedSelection": true,
             "initialState": "empty"
@@ -6571,7 +6939,30 @@
               "predicateKind": "cognitive.rule-state-contract",
               "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
             }
-          ]
+          ],
+          "repair": {
+            "kind": "declared-rule-independent-misplacement",
+            "declaredRuleStatePath": "studentRuleState",
+            "repairRuleStateIndex": 1,
+            "wrongItemProperty": "orderedValues",
+            "wrongItemRoles": [
+              "misaligned-item"
+            ],
+            "repairTargetRoles": [
+              "repair-target"
+            ],
+            "repairBankRoles": [
+              "repair-bank"
+            ],
+            "beforeStatePath": "initialArrangementState",
+            "afterStatePath": "repairedArrangementState",
+            "validAfterStateExamplesPath": "validRepairedArrangementStates",
+            "removeConstraintId": "remove-misaligned-item",
+            "replacementConstraintId": "repair-misaligned-item",
+            "requiresIndependentWrongState": true,
+            "requiresBeforeAfterComparison": true,
+            "evidenceMode": "student-state-dependent"
+          }
         },
         "runtimePredicate": {
           "kind": "cognitive.rule-state-contract",
@@ -6592,7 +6983,10 @@
               "rule-variant-6",
               "rule-variant-7",
               "rule-variant-8",
-              "rule-variant-9"
+              "rule-variant-9",
+              "rule-variant-10",
+              "rule-variant-11",
+              "rule-variant-12"
             ],
             "ruleSlotRoles": [
               "rule-slot-1",
@@ -6610,7 +7004,10 @@
               "continuation-slot-1",
               "continuation-slot-2",
               "continuation-slot-3",
-              "continuation-slot-4"
+              "continuation-slot-4",
+              "misaligned-item",
+              "repair-target",
+              "repair-bank"
             ],
             "minimumValidStates": 2,
             "minimumSurplus": 2,
@@ -6625,7 +7022,10 @@
                 "rule-variant-6",
                 "rule-variant-7",
                 "rule-variant-8",
-                "rule-variant-9"
+                "rule-variant-9",
+                "rule-variant-10",
+                "rule-variant-11",
+                "rule-variant-12"
               ],
               "slotRoles": [
                 "rule-slot-1",
@@ -6634,7 +7034,7 @@
               "slotCount": 2,
               "minimumDistinctValues": 2,
               "minimumDistinctPoolValues": 3,
-              "minimumCopiesPerDistinctValue": 3,
+              "minimumCopiesPerDistinctValue": 4,
               "sourceUseMode": "move-once-no-clone",
               "allowsAnyOrderedSelection": true,
               "initialState": "empty"
@@ -6663,7 +7063,30 @@
                 "predicateKind": "cognitive.rule-state-contract",
                 "misconception": "선택한 규칙과 무관하게 마지막 조각만 반복한다."
               }
-            ]
+            ],
+            "repair": {
+              "kind": "declared-rule-independent-misplacement",
+              "declaredRuleStatePath": "studentRuleState",
+              "repairRuleStateIndex": 1,
+              "wrongItemProperty": "orderedValues",
+              "wrongItemRoles": [
+                "misaligned-item"
+              ],
+              "repairTargetRoles": [
+                "repair-target"
+              ],
+              "repairBankRoles": [
+                "repair-bank"
+              ],
+              "beforeStatePath": "initialArrangementState",
+              "afterStatePath": "repairedArrangementState",
+              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "removeConstraintId": "remove-misaligned-item",
+              "replacementConstraintId": "repair-misaligned-item",
+              "requiresIndependentWrongState": true,
+              "requiresBeforeAfterComparison": true,
+              "evidenceMode": "student-state-dependent"
+            }
           }
         },
         "binding": {
@@ -6676,7 +7099,26 @@
           ],
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
-          "answerMode": "conditional-rubric"
+          "answerMode": "conditional-rubric",
+          "repair": {
+            "declaredRuleStatePath": "studentRuleState",
+            "repairRuleStateIndex": 1,
+            "wrongItemProperty": "orderedValues",
+            "wrongItemRoles": [
+              "misaligned-item"
+            ],
+            "repairTargetRoles": [
+              "repair-target"
+            ],
+            "repairBankRoles": [
+              "repair-bank"
+            ],
+            "beforeStatePath": "initialArrangementState",
+            "afterStatePath": "repairedArrangementState",
+            "validAfterStateExamplesPath": "validRepairedArrangementStates",
+            "removeConstraintId": "remove-misaligned-item",
+            "replacementConstraintId": "repair-misaligned-item"
+          }
         },
         "artifactContract": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v10.json",
@@ -6698,6 +7140,8 @@
         "repair": {
           "kind": "declared-rule-independent-misplacement",
           "declaredRuleStatePath": "studentRuleState",
+          "repairRuleStateIndex": 1,
+          "wrongItemProperty": "orderedValues",
           "wrongItemRoles": [
             "misaligned-item"
           ],
@@ -6709,6 +7153,7 @@
           ],
           "beforeStatePath": "initialArrangementState",
           "afterStatePath": "repairedArrangementState",
+          "validAfterStateExamplesPath": "validRepairedArrangementStates",
           "removeConstraintId": "remove-misaligned-item",
           "replacementConstraintId": "repair-misaligned-item",
           "requiresIndependentWrongState": true,
@@ -6899,7 +7344,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -6976,7 +7422,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7053,7 +7500,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7137,7 +7585,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7221,7 +7670,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7305,7 +7755,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7389,7 +7840,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7480,7 +7932,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7564,7 +8017,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7649,7 +8103,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7726,7 +8181,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7803,7 +8259,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7887,7 +8344,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -7964,7 +8422,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8048,7 +8507,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8125,7 +8585,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8202,7 +8663,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8286,7 +8748,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8371,7 +8834,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8455,7 +8919,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8532,7 +8997,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8616,7 +9082,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8693,7 +9160,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8777,7 +9245,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8855,7 +9324,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -8932,7 +9402,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9009,7 +9480,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9093,7 +9565,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9170,7 +9643,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9247,7 +9721,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9331,7 +9806,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9409,7 +9885,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9493,7 +9970,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9570,7 +10048,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9654,7 +10133,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9731,7 +10211,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9808,7 +10289,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9886,7 +10368,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -9963,7 +10446,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10040,7 +10524,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10117,7 +10602,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10208,7 +10694,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10285,7 +10772,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10362,7 +10850,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10446,7 +10935,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10523,7 +11013,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10600,7 +11091,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10684,7 +11176,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10761,7 +11254,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10838,7 +11332,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10915,7 +11410,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -10992,7 +11488,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11076,7 +11573,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11153,7 +11651,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11237,7 +11736,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11316,7 +11816,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11393,7 +11894,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11470,7 +11972,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11547,7 +12050,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11624,7 +12128,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11708,7 +12213,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11792,7 +12298,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11869,7 +12376,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -11953,7 +12461,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12031,7 +12540,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12115,7 +12625,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12200,7 +12711,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12277,7 +12789,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12354,7 +12867,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12431,7 +12945,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12508,7 +13023,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12592,7 +13108,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12670,7 +13187,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12747,7 +13265,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12831,7 +13350,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12909,7 +13429,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -12988,7 +13509,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13066,7 +13588,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13165,7 +13688,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13249,7 +13773,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13333,7 +13858,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13417,7 +13943,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13494,7 +14021,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13571,7 +14099,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13649,7 +14178,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13733,7 +14263,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13811,7 +14342,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13888,7 +14420,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -13965,7 +14498,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14043,7 +14577,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14128,7 +14663,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14212,7 +14748,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14296,7 +14833,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14373,7 +14911,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14451,7 +14990,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     },
     {
@@ -14529,7 +15069,8 @@
         "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
-        "revalidationArtifact": null
+        "revalidationArtifact": null,
+        "solReplanRequest": null
       }
     }
   ]

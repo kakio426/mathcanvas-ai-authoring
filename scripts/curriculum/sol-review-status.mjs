@@ -143,9 +143,25 @@ export function replanTriggerForFlow({
   rawTrigger,
   replanConsumed,
   latestFamilyRevalidationReview = null,
-  scopedFamilyTrackReviews = []
+  scopedFamilyTrackReviews = [],
+  latestSolReplanRequest = null
 }) {
-  if (!replanConsumed) return rawTrigger ?? null;
+  if (!replanConsumed) {
+    if (
+      latestSolReplanRequest &&
+      latestSolReplanRequest.reviewId !== rawTrigger?.reviewId
+    ) {
+      return latestSolReplanRequest;
+    }
+    return rawTrigger ?? latestSolReplanRequest ?? null;
+  }
+  if (
+    latestSolReplanRequest &&
+    latestSolReplanRequest.reviewId !== rawTrigger?.reviewId &&
+    latestSolReplanRequest.decision === "blocked"
+  ) {
+    return latestSolReplanRequest;
+  }
   if (
     latestFamilyRevalidationReview &&
     latestFamilyRevalidationReview.reviewId !== rawTrigger?.reviewId &&
@@ -161,6 +177,105 @@ export function replanTriggerForFlow({
         review?.reviewId !== rawTrigger?.reviewId &&
         review?.decision === "blocked"
     ) ?? null
+  );
+}
+
+function sha256File(path) {
+  return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+/**
+ * A SOL_REPLAN_REQUEST is a blocked-only, scoped preflight record. It does
+ * not approve implementation or authorize a push; it gives a later
+ * SOL_REPLAN an exact, current failure identity to supersede instead of
+ * resurrecting a blocker that an earlier replan already consumed.
+ */
+export function solReplanRequestArtifactIsCurrent(review) {
+  if (
+    !review ||
+    review.operation !== "SOL_REPLAN_REQUEST" ||
+    review.decision !== "blocked" ||
+    typeof review.blockerArtifactPath !== "string" ||
+    !/^[a-f0-9]{64}$/.test(review.blockerArtifactSha256 ?? "")
+  ) {
+    return false;
+  }
+  try {
+    const artifactRoot = resolve(
+      root,
+      "reports/curriculum-execution/subwork-state"
+    );
+    const artifactPath = resolve(root, review.blockerArtifactPath);
+    if (
+      !artifactPath.startsWith(`${artifactRoot}/`) ||
+      !existsSync(artifactPath) ||
+      sha256File(artifactPath) !== review.blockerArtifactSha256
+    ) {
+      return false;
+    }
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    return (
+      artifact.schemaVersion === "1.0.0" &&
+      artifact.operation === "SOL_REPLAN_REQUEST" &&
+      artifact.status === "blocked-needs-sol-replan" &&
+      artifact.workItemId === review.workItemId &&
+      artifact.operationWorkItemId === review.operationWorkItemId &&
+      artifact.standardCode === review.standardCode &&
+      artifact.familyTrackId === review.familyTrackId &&
+      artifact.scopeId === review.scopeId &&
+      artifact.blockedOperation === review.blockedOperation &&
+      artifact.blockedContractRevision === review.blockedContractRevision &&
+      Array.isArray(artifact.blockerCodes) &&
+      artifact.blockerCodes.length > 0 &&
+      new Set(artifact.blockerCodes).size === artifact.blockerCodes.length &&
+      artifact.blockerCodes.every(
+        (code) => typeof code === "string" && code.length > 0
+      ) &&
+      Array.isArray(artifact.evidenceRefs) &&
+      artifact.evidenceRefs.length > 0 &&
+      artifact.evidenceRefs.every(
+        (evidence) => typeof evidence === "string" && evidence.length > 0
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function solReplanRequestMatchesCursor(
+  review,
+  cursor,
+  candidateChecker = reviewCandidateIsCurrent
+) {
+  return (
+    review?.operation === "SOL_REPLAN_REQUEST" &&
+    review?.decision === "blocked" &&
+    review.workItemId === cursor?.workItemId &&
+    review.standardCode === cursor?.standardCode &&
+    review.operationWorkItemId === cursor?.operationWorkItemId &&
+    review.familyTrackId === cursor?.familyTrackId &&
+    review.scopeId === cursor?.scopeId &&
+    review.blockedOperation === cursor?.nextOperation &&
+    review.blockedContractRevision === cursor?.contractRevision &&
+    candidateChecker(review) &&
+    solReplanRequestArtifactIsCurrent(review)
+  );
+}
+
+export function latestScopedSolReplanRequest(
+  reviews,
+  cursor,
+  consumedRequestId = null,
+  candidateChecker = reviewCandidateIsCurrent
+) {
+  return (
+    [...(reviews ?? [])]
+      .filter(
+        (review) =>
+          review.reviewId !== consumedRequestId &&
+          solReplanRequestMatchesCursor(review, cursor, candidateChecker)
+      )
+      .sort((left, right) => right.attempt - left.attempt)[0] ?? null
   );
 }
 

@@ -509,6 +509,12 @@ candidate commit, changedFiles를 모두 비교한다. 표준+operation만으로
 
 ## v10 재계획 — repeat-repair ENGINE_CORE 계약 분리
 
+현재 v10 후보는 `SOL_REPLAN_REQUEST` preflight를 먼저 소비해야 한다. 기존
+repeat-rule A2 blocker는 v9 A23이 이미 소비했으므로 새 repeat-repair blocker
+artifact `W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json`과
+별도 blocked request record 없이는 v10을 재계획으로 승인하지 않는다. 이 문서의
+v10 repair 계약은 아직 구현 완료를 뜻하지 않는다.
+
 v9 승인으로 완료된 것은 `pattern.repeat-unit.construct-v1`의 ENGINE_CORE와
 FAMILY_TRACK뿐이다. 현재 `trackContracts.C01.engineCoreContract`가 세 concrete
 sub-work에 하나의 repeat-rule 계약과 하나의 artifact identity를 투영하고 있어,
@@ -543,3 +549,18 @@ v10의 governance 변경은 다음을 허용한다.
    범위가 아니며 이후 `FAMILY_TRACK`에서 별도 증거를 제출한다. 공통 compiler
    payload나 planner/MCP/teacher-ui를 바꿔야 하면 이 candidate를 중단하고 새
    SOL_REPLAN으로 되돌린다.
+
+## v10 capacity correction — 12 physical sources
+
+repeat-repair는 rule slot 2개, continuation 4개, 독립 repair target 1개를
+`move-once-no-clone`으로 동시에 구성한다. 따라서 선택된 두 의미값 중 repair
+index의 값은 `1 + 4 / 2 + 1 = 4`개가 필요하다. 3값×3복제의 9 source는 이
+상태를 만들 수 없으므로 권위 계약을 3값×4복제의 **12 source**로 고정한다.
+
+- repair override: `constraintCapacity.requiredSources=12`, `sourceRoles=12`,
+  `minimumCopiesPerDistinctValue=4`.
+- builder·Zod·validator·pedagogy audit는 continuation 수와 repair target 수를
+  포함한 copy capacity를 fail-closed로 계산한다.
+- 기존 repeat-rule v9 compatibility artifact는 덮어쓰지 않는다. repair 전용
+  `w002-repeat-repair-v1` layout, 실제 native bounds, generator, response/save/reopen
+  증거는 다음 ENGINE_CORE/FAMILY_TRACK에서 별도로 검토한다.

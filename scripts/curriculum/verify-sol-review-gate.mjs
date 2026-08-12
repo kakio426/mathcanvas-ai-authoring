@@ -1,7 +1,10 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { reviewImplementationFiles } from "./sol-review-status.mjs";
+import {
+  reviewImplementationFiles,
+  solReplanRequestArtifactIsCurrent
+} from "./sol-review-status.mjs";
 
 const root = resolve(new URL("../..", import.meta.url).pathname);
 const reportPath = resolve(root, "reports/curriculum-execution/no-family-plan.json");
@@ -77,7 +80,8 @@ if (
   operation !== "TARGET_SET" &&
   operation !== "FAMILY_TRACK" &&
   operation !== "SOL_REPLAN" &&
-  operation !== "FAMILY_REVALIDATION"
+  operation !== "FAMILY_REVALIDATION" &&
+  operation !== "SOL_REPLAN_REQUEST"
 ) {
   fail("operation-not-review-gated");
 }
@@ -89,6 +93,9 @@ if (operation === "FAMILY_TRACK" && !familyTrackId) {
 }
 if (operation === "FAMILY_REVALIDATION" && !familyTrackId) {
   fail("family-revalidation-review-scope-required");
+}
+if (operation === "SOL_REPLAN_REQUEST" && !familyTrackId) {
+  fail("sol-replan-request-review-scope-required");
 }
 
 const workItem = report.workItems.find(
@@ -104,14 +111,28 @@ const reviews = board.reviews
     (review) =>
       review.standardCode === workItem.standardCode &&
       review.operation === operation &&
-      (!["FAMILY_TRACK", "FAMILY_REVALIDATION"].includes(operation) ||
+      (![
+        "FAMILY_TRACK",
+        "FAMILY_REVALIDATION",
+        "SOL_REPLAN_REQUEST"
+      ].includes(operation) ||
         (review.familyTrackId === familyTrackId &&
           review.scopeId === scopeId))
   )
   .sort((left, right) => right.attempt - left.attempt);
 const review = reviews[0];
 if (!review) fail(`review-missing:${workItem.standardCode}:${operation}`);
-if (review.decision !== "approved") fail(`review-not-approved:${review.decision}`);
+if (
+  operation === "SOL_REPLAN_REQUEST"
+    ? review.decision !== "blocked"
+    : review.decision !== "approved"
+) {
+  fail(
+    operation === "SOL_REPLAN_REQUEST"
+      ? `replan-request-not-blocked:${review.decision}`
+      : `review-not-approved:${review.decision}`
+  );
+}
 if (review.candidateCommit !== candidateCommit) {
   fail(`candidate-mismatch:${review.candidateCommit}:${candidateCommit}`);
 }
@@ -135,6 +156,39 @@ if (operation === "FAMILY_REVALIDATION") {
     review.replanContractRevision !== workItem.replanContractRevision
   ) {
     fail("family-revalidation-contract-revision-mismatch");
+  }
+}
+if (operation === "SOL_REPLAN_REQUEST") {
+  const blockedSubWork = (workItem.familySubWorkItems ?? []).find(
+    (subWorkItem) =>
+      subWorkItem.familyTrackId === familyTrackId &&
+      subWorkItem.scopeId === scopeId
+  );
+  const latestApprovedReplan = [...(board.reviews ?? [])]
+    .filter(
+      (candidate) =>
+        candidate.standardCode === workItem.standardCode &&
+        candidate.operation === "SOL_REPLAN" &&
+        candidate.decision === "approved"
+    )
+    .sort((left, right) => right.attempt - left.attempt)[0];
+  if (
+    review.familyTrackId !== familyTrackId ||
+    review.scopeId !== scopeId ||
+    !blockedSubWork ||
+    review.blockedOperation !== blockedSubWork.nextOperation ||
+    review.operationWorkItemId !==
+      `${blockedSubWork.workItemId}-${blockedSubWork.nextOperation}` ||
+    !latestApprovedReplan ||
+    review.blockedContractRevision !==
+      latestApprovedReplan.replanContractRevision ||
+    typeof review.operationWorkItemId !== "string" ||
+    typeof review.blockedContractRevision !== "string" ||
+    typeof review.blockerArtifactPath !== "string" ||
+    !/^[a-f0-9]{64}$/.test(review.blockerArtifactSha256 ?? "") ||
+    !solReplanRequestArtifactIsCurrent(review)
+  ) {
+    fail("sol-replan-request-evidence-missing-or-stale");
   }
 }
 if (
@@ -214,5 +268,9 @@ if (!afterCandidateFiles.includes("reports/curriculum-execution/no-family-plan.j
 }
 
 console.log(
-  `sol-review gate PASS: ${workItem.workItemId} ${operation} candidate=${candidateCommit} attempt=${review.attempt}; postApproval=${afterCandidateFiles.length} files`
+  `${
+    operation === "SOL_REPLAN_REQUEST"
+      ? "sol-replan request integrity"
+      : "sol-review gate"
+  } PASS: ${workItem.workItemId} ${operation} candidate=${candidateCommit} attempt=${review.attempt}; postApproval=${afterCandidateFiles.length} files`
 );

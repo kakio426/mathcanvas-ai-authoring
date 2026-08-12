@@ -11,6 +11,9 @@
 - `TARGET_SET`: officialGoal, 학생 결정, 불변량, 관찰 증거, 오개념, target 완전성
 - `FAMILY_TRACK`: learning-map 결속, family 경계, native affordance, 결정성, preview·정답·해설, 교육적 상호작용
 - `SOL_REPLAN`: blocked 원인의 재계획 범위, target ownership, phase cursor, revision/hash 소비 조건
+- `SOL_REPLAN_REQUEST`: 현재 scoped cursor에서 발견된 구현 불가능 조건을
+  blocked-only preflight artifact와 candidate commit에 결속한다. 이 기록은 승인이나
+  push 권한이 아니라 다음 `SOL_REPLAN`이 소비할 새 실패 identity다.
 - `FAMILY_REVALIDATION`: stale family의 scoped fingerprint artifact와 implementation-file hash가 현재인지
 
 현재 work item의 입력은 다음 파일에서 읽는다.
@@ -106,6 +109,25 @@ execution, no-family 순서로 모두 재생성해야 한다. Sol post-approval 
 `SOL_REPLAN`은 blocked standard의 재개 계약만 검토하며 별도 `operationWorkItemId`와
 candidate/allowedFiles를 사용한다. 기존 `FAMILY_TRACK` attempt를 재사용하거나 A5로
 기록하지 않는다.
+`ENGINE_CORE`처럼 별도 승인 review가 없는 단계에서 새 schema·affordance·contract
+hard-stop이 발견되면 이미 소비된 과거 blocker를 되살리지 않는다. Luna는 구현 파일을
+더 고치지 않고 preflight artifact 하나만 candidate commit으로 만들며, Sol은 이를
+`SOL_REPLAN_REQUEST` / `decision: "blocked"`로 검토한다. record에는
+`operationWorkItemId`, `familyTrackId`, `scopeId`, `blockedOperation`,
+`blockedContractRevision`, `blockerArtifactPath`, `blockerArtifactSha256`를
+모두 기록한다. artifact와 record가 현재 generated sub-work cursor에 정확히
+일치하지 않거나 candidate가 stale이면 재계획 trigger로 사용할 수 없다.
+이 blocked request는 `approved` 값을 가질 수 없으며 상태·coverage·push를
+승격하지 않는다. 다음 `SOL_REPLAN` review가
+`supersedesBlockedReviewId`로 이 request ID를 정확히 소비한 뒤에는 historical
+evidence가 되며 같은 ID로 재차 SOL_REPLAN을 열 수 없다.
+새 operation을 처음 도입하는 bootstrap에서는 governance/replan candidate를 먼저
+commit하고, 그 위에 preflight artifact만 담은 별도 candidate commit을 만든다.
+artifact candidate 이후 request review 전에는 구현 파일을 더 변경하지 않는다.
+Sol은 artifact candidate에 blocked request record를 결속한 뒤, 앞선 governance
+candidate의 SOL_REPLAN review가 그 request ID를 소비하는지를 같은 tree에서
+검증한다. `blockedContractRevision`은 hard-stop 당시 마지막으로 승인·소비된
+revision이며, 아직 승인되지 않은 수정 candidate의 revision으로 바꾸지 않는다.
 수정 요청 뒤에는 이전 승인 기록을 지우지 않고 `attempt`를 올린 새 record와 새
 candidate commit을 만든다. 가장 높은 attempt가 현재 결정이며,
 `pnpm curriculum:sol-review:verify`는 candidate hash·changed files·현재 branch 및

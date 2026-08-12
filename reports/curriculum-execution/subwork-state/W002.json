@@ -14,8 +14,8 @@
       "nextOperation": "FAMILY_TRACK",
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
-          "artifactSha256": "88e393aa98741f83107fb90fec380022a6f09129a4a4c02dcbf4b3f07327cdf8"
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
+          "artifactSha256": "dc008795249ecedb65afa4428e85acee1782e2f4e615447275b23015df333be0"
         }
       }
     },

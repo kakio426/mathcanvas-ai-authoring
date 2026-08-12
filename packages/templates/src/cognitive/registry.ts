@@ -1538,6 +1538,9 @@ export function expectedCognitiveRuntimePredicate(
       parameters.studentInputRoles = [];
       parameters.stateConstruction = manifest.decision.stateConstruction;
       parameters.application = manifest.decision.application;
+      if (manifest.decision.repair !== undefined) {
+        parameters.repair = manifest.decision.repair;
+      }
     }
     return {
       kind: "cognitive.rule-state-contract",

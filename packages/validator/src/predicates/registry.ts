@@ -3231,6 +3231,26 @@ const handlers: Record<string, Handler> = {
       value && typeof value === "object" && !Array.isArray(value)
         ? (value as Record<string, unknown>)
         : undefined;
+    type RepairContract = {
+      kind: string;
+      declaredRuleStatePath: string;
+      wrongItemRoles: string[];
+      repairTargetRoles: string[];
+      repairBankRoles: string[];
+      beforeStatePath: string;
+      afterStatePath: string;
+      validAfterStateExamplesPath: string;
+      repairRuleStateIndex: number;
+      wrongItemProperty: string;
+      removeConstraintId: string;
+      replacementConstraintId: string;
+      requiresIndependentWrongState: boolean;
+      requiresBeforeAfterComparison: boolean;
+      evidenceMode: string;
+    };
+    const repair = record(
+      parameter(predicate, "repair")
+    ) as RepairContract | undefined;
     const stableStringList = (
       value: unknown,
       minimum: number
@@ -3287,6 +3307,54 @@ const handlers: Record<string, Handler> = {
       typeof applicationRecord?.period === "number"
         ? applicationRecord.period
         : undefined;
+    const repairRoleLists = repair
+      ? [
+          repair.wrongItemRoles,
+          repair.repairTargetRoles,
+          repair.repairBankRoles
+        ]
+      : [];
+    const repairRoles = repair
+      ? repairRoleLists.flatMap((roles) =>
+          Array.isArray(roles)
+            ? roles.filter((role): role is string => typeof role === "string")
+            : []
+        )
+      : [];
+    const repairShapeValid =
+      repair === undefined ||
+      (repair.kind === "declared-rule-independent-misplacement" &&
+        repair.declaredRuleStatePath === ruleStatePath &&
+        stableStringList(repair.wrongItemRoles, 1) &&
+        stableStringList(repair.repairTargetRoles, 1) &&
+        stableStringList(repair.repairBankRoles, 1) &&
+        typeof repair.beforeStatePath === "string" &&
+        typeof repair.afterStatePath === "string" &&
+        repair.beforeStatePath !== repair.afterStatePath &&
+        typeof repair.removeConstraintId === "string" &&
+        typeof repair.replacementConstraintId === "string" &&
+        repair.requiresIndependentWrongState === true &&
+        repair.requiresBeforeAfterComparison === true &&
+        repair.evidenceMode === "student-state-dependent" &&
+        new Set(repairRoles).size === repairRoles.length &&
+        repairRoles.every(
+          (role) =>
+            !ruleSlotRoles.includes(role) &&
+            !(
+              Array.isArray(applicationContinuationTargetRoles) &&
+              applicationContinuationTargetRoles.includes(role)
+            )
+        ));
+    const expectedVerificationRoles = repair
+      ? [
+          ...ruleSlotRoles,
+          ...(applicationContinuationTargetRoles ?? []),
+          ...repairRoles
+        ]
+      : [
+          ...ruleSlotRoles,
+          ...(applicationContinuationTargetRoles ?? [])
+        ];
     const constructionValid =
       !studentConstructed ||
       (constructionMode === "student-constructed" &&
@@ -3370,10 +3438,9 @@ const handlers: Record<string, Handler> = {
           ) ||
           !applicationContinuationTargetRolesValid ||
           JSON.stringify(verificationRoles) !==
-            JSON.stringify([
-              ...ruleSlotRoles,
-              ...(applicationContinuationTargetRoles ?? [])
-            ]))) ||
+            JSON.stringify(expectedVerificationRoles))) ||
+      !repairShapeValid ||
+      (repair !== undefined && !studentConstructed) ||
       !Array.isArray(distractors) ||
       distractors.length < (studentConstructed ? 2 : 1) ||
       distinctDistractorCount < (studentConstructed ? 2 : 1) ||
@@ -3592,6 +3659,161 @@ const handlers: Record<string, Handler> = {
         );
       }
 
+      if (repair !== undefined) {
+        const wrongItems = repair.wrongItemRoles.map((role) =>
+          byRole(resolved, item.id, role)
+        );
+        const repairTargets = repair.repairTargetRoles.map((role) =>
+          byRole(resolved, item.id, role)
+        );
+        const repairBanks = repair.repairBankRoles.map((role) =>
+          byRole(resolved, item.id, role)
+        );
+        const wrongIds = wrongItems
+          .filter((emission): emission is ResolvedEmission => emission !== undefined)
+          .map((emission) => emission.id);
+        const targetIds = repairTargets
+          .filter((emission): emission is ResolvedEmission => emission !== undefined)
+          .map((emission) => emission.id);
+        const bankIds = repairBanks
+          .filter((emission): emission is ResolvedEmission => emission !== undefined)
+          .map((emission) => emission.id);
+        const repairRolePresence =
+          wrongItems.length === repair.wrongItemRoles.length &&
+          repairTargets.length === repair.repairTargetRoles.length &&
+          repairBanks.length === repair.repairBankRoles.length &&
+          wrongItems.every((emission) => emission !== undefined) &&
+          repairTargets.every((emission) => emission !== undefined) &&
+          repairBanks.every((emission) => emission !== undefined);
+        const wrongStateIndependent = wrongItems.every(
+          (emission) =>
+            emission !== undefined &&
+            emission.movable &&
+            !emission.locked &&
+            hasConcreteInitialState(emission)
+        );
+        const repairTargetsOpen = repairTargets.every(
+          (emission) =>
+            emission !== undefined &&
+            emission.locked &&
+            !emission.movable &&
+            !hasConcreteInitialState(emission)
+        );
+        const repairBanksAvailable = repairBanks.every(
+          (emission) => emission !== undefined && emission.id !== undefined
+        );
+        const beforeState = item.values[repair.beforeStatePath];
+        const afterState = item.values[repair.afterStatePath];
+        const declaredState = item.values[repair.declaredRuleStatePath];
+        const validAfterStates = orderedRuleStateList(
+          item.values[repair.validAfterStateExamplesPath]
+        );
+        const wrongValue =
+          wrongItems[0]?.toolIntent.properties[repair.wrongItemProperty];
+        const declaredRuleIndexValid =
+          repair.repairRuleStateIndex >= 0 &&
+          repair.repairRuleStateIndex < ruleSlotRoles.length;
+        const wrongValueIsIndependent =
+          wrongValue !== undefined &&
+          validRuleStates?.every(
+            (state) =>
+              !sameValue(state[repair.repairRuleStateIndex], wrongValue)
+          );
+        const afterEnvelopeValid =
+          Array.isArray(beforeState) &&
+          Array.isArray(afterState) &&
+          Array.isArray(validAfterStates) &&
+          validAfterStates.length >= 2 &&
+          validAfterStates.every(
+            (state) =>
+              state.length === ruleSlotRoles.length &&
+              canComposeRuleState(state, variantValues) &&
+              !sameValue(
+                state[repair.repairRuleStateIndex],
+                wrongValue
+              )
+          ) &&
+          validAfterStates.some((state) =>
+            sameValue(
+              afterState[repair.repairRuleStateIndex],
+              state[repair.repairRuleStateIndex]
+            )
+          );
+        const beforeAfterBound =
+          Array.isArray(beforeState) &&
+          Array.isArray(afterState) &&
+          !sameValue(beforeState, afterState) &&
+          declaredState !== undefined &&
+          Array.isArray(declaredState) &&
+          declaredState.length === ruleSlotRoles.length &&
+          sameValue(
+            beforeState[repair.repairRuleStateIndex],
+            wrongValue
+          );
+        const findConstraint = (id: string) =>
+          resolved.constraints.find(
+            (constraint) => constraint.id === `${id}:${item.id}`
+          );
+        const removeConstraint = findConstraint(repair.removeConstraintId);
+        const replacementConstraint = findConstraint(
+          repair.replacementConstraintId
+        );
+        const exactSources = (
+          constraint: (typeof resolved.constraints)[number] | undefined,
+          ids: readonly string[]
+        ) =>
+          constraint !== undefined &&
+          JSON.stringify(constraint.sourceIds) === JSON.stringify(ids);
+        const removeValid =
+          removeConstraint?.kind === "place-in" &&
+          removeConstraint.requiresStudentAction &&
+          !removeConstraint.satisfiedInitially &&
+          exactSources(removeConstraint, wrongIds) &&
+          removeConstraint.targetId === bankIds[0] &&
+          removeConstraint.parameters.ruleStatePath === ruleStatePath &&
+          removeConstraint.parameters.repairRuleStateIndex ===
+            repair.repairRuleStateIndex &&
+          removeConstraint.parameters.wrongItemProperty ===
+            repair.wrongItemProperty &&
+          removeConstraint.parameters.beforeStatePath === repair.beforeStatePath &&
+          removeConstraint.parameters.afterStatePath === repair.afterStatePath;
+        const replacementValid =
+          replacementConstraint?.kind === "fill-from-pool" &&
+          replacementConstraint.requiresStudentAction &&
+          !replacementConstraint.satisfiedInitially &&
+          exactSources(replacementConstraint, variantIds) &&
+          replacementConstraint.targetId === targetIds[0] &&
+          replacementConstraint.parameters.ruleStatePath === ruleStatePath &&
+          replacementConstraint.parameters.repairRuleStateIndex ===
+            repair.repairRuleStateIndex &&
+          replacementConstraint.parameters.wrongItemProperty ===
+            repair.wrongItemProperty &&
+          replacementConstraint.parameters.beforeStatePath === repair.beforeStatePath &&
+          replacementConstraint.parameters.afterStatePath === repair.afterStatePath &&
+          replacementConstraint.parameters.validAfterStateExamplesPath ===
+            repair.validAfterStateExamplesPath;
+        const repairValid =
+          repairShapeValid &&
+          declaredRuleIndexValid &&
+          repairRolePresence &&
+          wrongStateIndependent &&
+          wrongValueIsIndependent &&
+          repairTargetsOpen &&
+          repairBanksAvailable &&
+          beforeAfterBound &&
+          afterEnvelopeValid &&
+          removeValid &&
+          replacementValid;
+        if (!repairValid) {
+          issue(
+            issues,
+            "cognitive-rule-repair-missing",
+            "pedagogy",
+            `${item.id}에 선언한 규칙과 어긋난 항을 제거하고 새 칸에 다시 놓는 전체 조작이 없습니다.`
+          );
+        }
+      }
+
       const hasEmptyInitialStudentState =
         studentConstructed &&
         Array.isArray(initialStudentRuleState) &&
@@ -3602,20 +3824,27 @@ const handlers: Record<string, Handler> = {
             sameValue(candidate, value)
           ) === index
       );
-      const physicalPoolCapacityValid =
-        studentConstructed &&
+    const physicalPoolCapacityValid =
+      studentConstructed &&
         constructionMinimumDistinctPoolValues !== undefined &&
         constructionMinimumCopiesPerDistinctValue !== undefined &&
         variantValues.length >=
           ruleSlotRoles.length +
-            (applicationMinimumTargetCount ?? Number.POSITIVE_INFINITY) &&
+            (applicationMinimumTargetCount ?? Number.POSITIVE_INFINITY) +
+            (repair?.repairTargetRoles.length ?? 0) &&
         distinctVariantValues.length >=
           constructionMinimumDistinctPoolValues &&
         distinctVariantValues.every(
           (value) =>
             variantValues.filter((candidate) =>
               sameValue(candidate, value)
-            ).length >= constructionMinimumCopiesPerDistinctValue
+            ).length >=
+              constructionMinimumCopiesPerDistinctValue &&
+            constructionMinimumCopiesPerDistinctValue >=
+              1 +
+                (applicationContinuationTargetRoles?.length ?? 0) /
+                  (applicationPeriod ?? Number.POSITIVE_INFINITY) +
+                (repair?.repairTargetRoles.length ?? 0)
         );
       const canComposeApplicationState = (state: unknown[]) => {
         const period = applicationPeriod;
@@ -3777,6 +4006,10 @@ const handlers: Record<string, Handler> = {
         );
       }
       if (
+        (studentConstructed &&
+          (verificationRoles.length !== expectedVerificationRoles.length ||
+            JSON.stringify(verificationRoles) !==
+              JSON.stringify(expectedVerificationRoles))) ||
         verificationRoles.some(
           (role) => !byRole(resolved, item.id, role)
         )

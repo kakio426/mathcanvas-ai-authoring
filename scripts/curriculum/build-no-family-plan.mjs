@@ -10,7 +10,9 @@ import {
   replanTriggerForFlow,
   resolveFlowOperation,
   validateOperationCursor,
-  replanTriggerReview
+  replanTriggerReview,
+  latestScopedSolReplanRequest,
+  solReplanRequestArtifactIsCurrent
 } from "./sol-review-status.mjs";
 import { semanticSliceIsCurrent } from "./revalidation-semantic-slice.mjs";
 
@@ -107,6 +109,26 @@ export function resolveEngineCoreContract(contract, familyTrackId = null) {
   return {
     ...base,
     ...override,
+    manifestDecision: {
+      ...base.manifestDecision,
+      ...override.manifestDecision
+    },
+    runtimePredicate: {
+      ...base.runtimePredicate,
+      ...override.runtimePredicate,
+      parameters: {
+        ...base.runtimePredicate?.parameters,
+        ...override.runtimePredicate?.parameters
+      }
+    },
+    constraintCapacity: {
+      ...base.constraintCapacity,
+      ...override.constraintCapacity
+    },
+    binding: {
+      ...base.binding,
+      ...override.binding
+    },
     layoutContract: {
       ...base.layoutContract,
       ...override.layoutContract
@@ -251,7 +273,8 @@ export function assertEngineCoreContract(contract, archetypeId) {
       decision.stateConstruction.minimumCopiesPerDistinctValue >=
         1 +
           decision.application.continuationTargetRoles.length /
-            decision.application.period &&
+            decision.application.period +
+          (decision.repair?.repairTargetRoles?.length ?? 0) &&
       orderedCapacity(
         decision.variantRoles.length,
         decision.ruleSlotRoles.length
@@ -352,9 +375,11 @@ export function assertEngineCoreContract(contract, archetypeId) {
         override.baseContractFamilyTrackId ===
           "pattern.repeat-unit.construct-v1" &&
         typeof override.contractRevision === "string" &&
+        override.constraintCapacity?.maxSources === 12 &&
+        override.constraintCapacity?.requiredSources === 12 &&
         override.layoutContract &&
         override.layoutContract.tokenSet === "w002-repeat-repair-v1" &&
-        override.layoutContract.sourceRoles === 9 &&
+        override.layoutContract.sourceRoles === 12 &&
         override.layoutContract.ruleSlotRoles === 2 &&
         override.layoutContract.continuationTargetRoles === 4 &&
         override.layoutContract.misalignedItemRoles === 1 &&
@@ -366,7 +391,54 @@ export function assertEngineCoreContract(contract, archetypeId) {
         override.layoutContract.containment === "native-rendered-bounds",
       `no-family-plan-engine-core-contract-override-layout-invalid:${archetypeId}:${familyTrackId}`
     );
-    const repair = override.repair;
+    const overrideDecision = override.manifestDecision;
+    const overrideRuntime = override.runtimePredicate?.parameters;
+    const overrideState = overrideDecision?.stateConstruction;
+    const overrideApplication = overrideDecision?.application;
+    assert(
+      overrideDecision?.mode === "construct-rule" &&
+        overrideDecision.constructionMode === "student-constructed" &&
+        overrideDecision.answerMode === "conditional-rubric" &&
+        stableId(overrideDecision.ruleStatePath) &&
+        stableId(overrideDecision.decisionConstraintId) &&
+        stringList(overrideDecision.variantRoles, 12) &&
+        overrideDecision.variantRoles.length === 12 &&
+        stringList(overrideDecision.ruleSlotRoles, 2) &&
+        overrideDecision.variantProperty === decision.variantProperty &&
+        overrideState?.sourceRoles.length === 12 &&
+        overrideState.minimumCopiesPerDistinctValue === 4 &&
+        overrideState.sourceRoles.length ===
+          overrideState.minimumDistinctPoolValues *
+            overrideState.minimumCopiesPerDistinctValue &&
+        overrideApplication?.continuationTargetRoles.length === 4 &&
+        overrideApplication.minimumTargetCount === 4 &&
+        overrideState.minimumCopiesPerDistinctValue >=
+          1 +
+            overrideApplication.continuationTargetRoles.length /
+              overrideApplication.period +
+            1,
+      `no-family-plan-engine-core-contract-override-capacity-invalid:${archetypeId}:${familyTrackId}`
+    );
+    assert(
+      overrideRuntime &&
+        JSON.stringify(overrideRuntime.variantRoles) ===
+          JSON.stringify(overrideDecision.variantRoles) &&
+        JSON.stringify(overrideRuntime.stateConstruction) ===
+          JSON.stringify(overrideState) &&
+        JSON.stringify(overrideRuntime.application) ===
+          JSON.stringify(overrideApplication) &&
+        JSON.stringify(overrideRuntime.verificationRoles) ===
+          JSON.stringify([
+            ...overrideDecision.ruleSlotRoles,
+            ...overrideApplication.continuationTargetRoles,
+            "misaligned-item",
+            "repair-target",
+            "repair-bank"
+          ]),
+      `no-family-plan-engine-core-contract-override-runtime-invalid:${archetypeId}:${familyTrackId}`
+    );
+    const repair =
+      override.repair ?? override.manifestDecision?.repair;
     const stableRoleList = (value, minimum = 1) =>
       Array.isArray(value) &&
       value.length >= minimum &&
@@ -376,11 +448,16 @@ export function assertEngineCoreContract(contract, archetypeId) {
       repair &&
         repair.kind === "declared-rule-independent-misplacement" &&
         repair.declaredRuleStatePath === decision.ruleStatePath &&
+        repair.repairRuleStateIndex === 1 &&
+        repair.wrongItemProperty === decision.variantProperty &&
         stableRoleList(repair.wrongItemRoles) &&
         stableRoleList(repair.repairTargetRoles) &&
         stableRoleList(repair.repairBankRoles) &&
         stableId(repair.beforeStatePath) &&
         stableId(repair.afterStatePath) &&
+        stableId(repair.validAfterStateExamplesPath) &&
+        repair.beforeStatePath !== repair.validAfterStateExamplesPath &&
+        repair.afterStatePath !== repair.validAfterStateExamplesPath &&
         repair.beforeStatePath !== repair.afterStatePath &&
         stableId(repair.removeConstraintId) &&
         stableId(repair.replacementConstraintId) &&
@@ -388,6 +465,30 @@ export function assertEngineCoreContract(contract, archetypeId) {
         repair.requiresBeforeAfterComparison === true &&
         repair.evidenceMode === "student-state-dependent",
       `no-family-plan-engine-core-contract-override-repair-invalid:${archetypeId}:${familyTrackId}`
+    );
+    assert(
+      override.manifestDecision?.repair &&
+        JSON.stringify(override.manifestDecision.repair) ===
+          JSON.stringify(repair) &&
+        override.runtimePredicate?.parameters?.repair &&
+        JSON.stringify(override.runtimePredicate.parameters.repair) ===
+          JSON.stringify(repair) &&
+        override.binding?.repair &&
+        JSON.stringify(override.binding.repair) ===
+          JSON.stringify({
+            declaredRuleStatePath: repair.declaredRuleStatePath,
+            repairRuleStateIndex: repair.repairRuleStateIndex,
+            wrongItemProperty: repair.wrongItemProperty,
+            wrongItemRoles: repair.wrongItemRoles,
+            repairTargetRoles: repair.repairTargetRoles,
+            repairBankRoles: repair.repairBankRoles,
+            beforeStatePath: repair.beforeStatePath,
+            afterStatePath: repair.afterStatePath,
+            validAfterStateExamplesPath: repair.validAfterStateExamplesPath,
+            removeConstraintId: repair.removeConstraintId,
+            replacementConstraintId: repair.replacementConstraintId
+          }),
+      `no-family-plan-engine-core-contract-override-binding-invalid:${archetypeId}:${familyTrackId}`
     );
     const overrideArtifact = override.artifactContract;
     assert(
@@ -749,6 +850,7 @@ function buildReport() {
       source.solReview.requiredAfter.includes("TARGET_SET") &&
       source.solReview.requiredAfter.includes("FAMILY_TRACK") &&
       source.solReview.reviewOperations.includes("SOL_REPLAN") &&
+      source.solReview.reviewOperations.includes("SOL_REPLAN_REQUEST") &&
       source.solReview.reviewOperations.includes("FAMILY_REVALIDATION") &&
       source.solReview.transactionPolicy?.candidateOwner === "Luna" &&
       source.solReview.transactionPolicy?.reviewOwner === "Sol" &&
@@ -765,6 +867,16 @@ function buildReport() {
           "artifactPath",
           "fingerprintSha256",
           "supersedesFamilyTrackReviewId"
+        ]) &&
+      JSON.stringify(source.solReview.scopePolicy?.solReplanRequestRequires) ===
+        JSON.stringify([
+          "familyTrackId",
+          "scopeId",
+          "operationWorkItemId",
+          "blockedOperation",
+          "blockedContractRevision",
+          "blockerArtifactPath",
+          "blockerArtifactSha256"
         ]) &&
       JSON.stringify(source.solReview.scopePolicy?.scopeKey) ===
         JSON.stringify(["standardCode", "operation", "familyTrackId", "scopeId"]),
@@ -1091,6 +1203,21 @@ function buildReport() {
         `no-family-plan-sol-replan-record:${review.reviewId}`
       );
     }
+    if (review.operation === "SOL_REPLAN_REQUEST") {
+      assert(
+        review.decision === "blocked" &&
+          typeof review.familyTrackId === "string" &&
+          typeof review.scopeId === "string" &&
+          typeof review.operationWorkItemId === "string" &&
+          review.operationWorkItemId.startsWith(`${review.workItemId}-`) &&
+          review.blockedOperation === "ENGINE_CORE" &&
+          typeof review.blockedContractRevision === "string" &&
+          typeof review.blockerArtifactPath === "string" &&
+          /^[a-f0-9]{64}$/.test(review.blockerArtifactSha256 ?? "") &&
+          solReplanRequestArtifactIsCurrent(review),
+        `no-family-plan-sol-replan-request-record:${review.reviewId}`
+      );
+    }
     if (review.operation === "TARGET_SET") {
       if (
         review.supersedesReplanReviewId !== undefined ||
@@ -1389,6 +1516,10 @@ function buildReport() {
       return "pending";
     })();
     const replanReview = solReviewByKey.get(reviewKey(code, "SOL_REPLAN"));
+    const approvedReplanReview =
+      (solReviewHistoryByKey.get(reviewKey(code, "SOL_REPLAN")) ?? [])
+        .filter((review) => review.decision === "approved")
+        .at(-1) ?? null;
     const replanDocumentPath = contract.replanDocumentPath;
     const blockedFamilyTrackReview =
       familyTrackReviews.find((review) => review?.decision === "blocked") ??
@@ -1469,6 +1600,36 @@ function buildReport() {
     const nextSubWork = subWorkStatuses.find(
       (subWorkItem) => subWorkItem.reviewStatus !== "approved"
     ) ?? null;
+    const nextSubWorkCursor =
+      nextSubWork
+        ? {
+            workItemId: baseWorkItemId,
+            standardCode: code,
+            operationWorkItemId: `${nextSubWork.workItemId}-${nextSubWork.nextOperation}`,
+            familyTrackId: nextSubWork.familyTrackId,
+            scopeId: nextSubWork.scopeId,
+            nextOperation: nextSubWork.nextOperation,
+            contractRevision:
+              approvedReplanReview?.replanContractRevision ??
+              contract.replanContractRevision
+          }
+        : null;
+    const consumedReplanRequestId =
+      replanReview?.supersedesBlockedReviewId &&
+      (solReviewBoard.reviews ?? []).some(
+        (review) =>
+          review.reviewId === replanReview.supersedesBlockedReviewId &&
+          review.operation === "SOL_REPLAN_REQUEST"
+      )
+        ? replanReview.supersedesBlockedReviewId
+        : null;
+    const latestSolReplanRequest = nextSubWorkCursor
+      ? latestScopedSolReplanRequest(
+          solReviewBoard.reviews,
+          nextSubWorkCursor,
+          consumedReplanRequestId
+        )
+      : null;
     const scopedFamilyTrackStatus = (() => {
       const decisions = scopedFamilyTrackReviews
         .filter(Boolean)
@@ -1560,7 +1721,8 @@ function buildReport() {
       rawTrigger: replanTrigger,
       replanConsumed,
       latestFamilyRevalidationReview,
-      scopedFamilyTrackReviews
+      scopedFamilyTrackReviews,
+      latestSolReplanRequest
     });
     const flowOperation = resolveFlowOperation({
       flowReplanTrigger,
@@ -1687,7 +1849,17 @@ function buildReport() {
         replanConsumed,
         familyRevalidation: familyRevalidationStatus,
         revalidationApproved,
-        revalidationArtifact: revalidationArtifact?.fingerprintSha256 ?? null
+        revalidationArtifact: revalidationArtifact?.fingerprintSha256 ?? null,
+        solReplanRequest: latestSolReplanRequest
+          ? {
+              reviewId: latestSolReplanRequest.reviewId,
+              decision: latestSolReplanRequest.decision,
+              blockerArtifactPath:
+                latestSolReplanRequest.blockerArtifactPath,
+              blockerArtifactSha256:
+                latestSolReplanRequest.blockerArtifactSha256
+            }
+          : null
       }
     };
   });

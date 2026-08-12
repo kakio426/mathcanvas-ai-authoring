@@ -41,6 +41,72 @@ const constructDecisionSchema = z
   })
   .strict();
 
+const declaredRuleRepairSchema = z
+  .object({
+    kind: z.literal("declared-rule-independent-misplacement"),
+    declaredRuleStatePath: stableIdSchema,
+    repairRuleStateIndex: z.number().int().min(0).max(11),
+    wrongItemProperty: stableIdSchema,
+    wrongItemRoles: z
+      .array(stableIdSchema)
+      .min(1)
+      .max(4)
+      .refine((values) => new Set(values).size === values.length),
+    repairTargetRoles: z
+      .array(stableIdSchema)
+      .min(1)
+      .max(4)
+      .refine((values) => new Set(values).size === values.length),
+    repairBankRoles: z
+      .array(stableIdSchema)
+      .min(1)
+      .max(4)
+      .refine((values) => new Set(values).size === values.length),
+    beforeStatePath: stableIdSchema,
+    afterStatePath: stableIdSchema,
+    validAfterStateExamplesPath: stableIdSchema,
+    removeConstraintId: stableIdSchema,
+    replacementConstraintId: stableIdSchema,
+    requiresIndependentWrongState: z.literal(true),
+    requiresBeforeAfterComparison: z.literal(true),
+    evidenceMode: z.literal("student-state-dependent")
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    if (value.beforeStatePath === value.afterStatePath) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["afterStatePath"],
+        message: "수정 전·후 상태 경로는 달라야 합니다."
+      });
+    }
+    if (
+      value.beforeStatePath === value.validAfterStateExamplesPath ||
+      value.afterStatePath === value.validAfterStateExamplesPath
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["validAfterStateExamplesPath"],
+        message: "수정 전·후 상태 예시 경로는 관찰 상태 경로와 달라야 합니다."
+      });
+    }
+    const roleSets = [
+      value.wrongItemRoles,
+      value.repairTargetRoles,
+      value.repairBankRoles
+    ];
+    if (
+      new Set(roleSets.flat()).size !==
+      roleSets.reduce((sum, roles) => sum + roles.length, 0)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["wrongItemRoles"],
+        message: "오답·수정칸·바구니 역할은 서로 겹치면 안 됩니다."
+      });
+    }
+  });
+
 const constructRuleDecisionSchema = z
   .object({
     mode: z.literal("construct-rule"),
@@ -107,6 +173,7 @@ const constructRuleDecisionSchema = z
       })
       .strict()
       .optional(),
+    repair: declaredRuleRepairSchema.optional(),
     distractors: z.array(distractorSchema).min(1).max(7)
   })
   .strict();
@@ -245,12 +312,26 @@ export const cognitiveDemandManifestSchema = z
       construction.minimumCopiesPerDistinctValue <
         1 +
           application.continuationTargetRoles.length /
-            application.period ||
+            application.period +
+          (decision.repair?.repairTargetRoles.length ?? 0) ||
       JSON.stringify(manifest.verification.roles) !==
-        JSON.stringify([
-          ...decision.ruleSlotRoles,
-          ...application.continuationTargetRoles
-        ])
+        JSON.stringify(
+          decision.repair
+            ? [
+                ...decision.ruleSlotRoles,
+                ...application.continuationTargetRoles,
+                ...decision.repair.wrongItemRoles,
+                ...decision.repair.repairTargetRoles,
+                ...decision.repair.repairBankRoles
+              ]
+            : [
+                ...decision.ruleSlotRoles,
+                ...application.continuationTargetRoles
+              ]
+        ) ||
+      (decision.repair !== undefined &&
+        (decision.repair.declaredRuleStatePath !== decision.ruleStatePath ||
+          decision.repair.wrongItemProperty !== decision.variantProperty))
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

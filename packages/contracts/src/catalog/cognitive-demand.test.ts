@@ -212,4 +212,80 @@ describe("construct-rule cognitive decision contract", () => {
     };
     expect(() => defineCognitiveDemandManifest(manifest)).toThrow();
   });
+
+  it("rejects a repair contract with overlapping roles or state paths", () => {
+    const manifest = studentConstructedManifest();
+    const repair = {
+      kind: "declared-rule-independent-misplacement" as const,
+      declaredRuleStatePath: "studentRuleState",
+      repairRuleStateIndex: 1,
+      wrongItemProperty: "orderedValues",
+      wrongItemRoles: ["repair-target"],
+      repairTargetRoles: ["repair-target"],
+      repairBankRoles: ["repair-bank"],
+      beforeStatePath: "initialArrangementState",
+      afterStatePath: "repairedArrangementState",
+      validAfterStateExamplesPath: "validRepairedArrangementStates",
+      removeConstraintId: "remove-misaligned-item",
+      replacementConstraintId: "repair-misaligned-item",
+      requiresIndependentWrongState: true as const,
+      requiresBeforeAfterComparison: true as const,
+      evidenceMode: "student-state-dependent" as const
+    };
+    expect(() =>
+      defineCognitiveDemandManifest({
+        ...manifest,
+        decision: { ...manifest.decision, repair }
+      })
+    ).toThrow();
+  });
+
+  it("accepts a well-shaped repair contract when verification roles are exact", () => {
+    const manifest = studentConstructedManifest();
+    const repairReadyManifest = structuredClone(manifest);
+    repairReadyManifest.decision.variantRoles.push(
+      "rule-variant-10",
+      "rule-variant-11",
+      "rule-variant-12"
+    );
+    repairReadyManifest.decision.stateConstruction!.sourceRoles.push(
+      "rule-variant-10",
+      "rule-variant-11",
+      "rule-variant-12"
+    );
+    repairReadyManifest.decision.stateConstruction!.minimumCopiesPerDistinctValue = 4;
+    const repair = {
+      kind: "declared-rule-independent-misplacement" as const,
+      declaredRuleStatePath: "studentRuleState",
+      repairRuleStateIndex: 1,
+      wrongItemProperty: "orderedValues",
+      wrongItemRoles: ["misaligned-item"],
+      repairTargetRoles: ["repair-target"],
+      repairBankRoles: ["repair-bank"],
+      beforeStatePath: "initialArrangementState",
+      afterStatePath: "repairedArrangementState",
+      validAfterStateExamplesPath: "validRepairedArrangementStates",
+      removeConstraintId: "remove-misaligned-item",
+      replacementConstraintId: "repair-misaligned-item",
+      requiresIndependentWrongState: true as const,
+      requiresBeforeAfterComparison: true as const,
+      evidenceMode: "student-state-dependent" as const
+    };
+    expect(
+      defineCognitiveDemandManifest({
+        ...repairReadyManifest,
+        decision: { ...repairReadyManifest.decision, repair },
+        verification: {
+          ...repairReadyManifest.verification,
+          roles: [
+            ...repairReadyManifest.decision.ruleSlotRoles,
+            ...(repairReadyManifest.decision.application?.continuationTargetRoles ?? []),
+            "misaligned-item",
+            "repair-target",
+            "repair-bank"
+          ]
+        }
+      }).decision
+    ).toMatchObject({ repair });
+  });
 });
