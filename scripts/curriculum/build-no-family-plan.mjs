@@ -1168,6 +1168,12 @@ function buildReport() {
       source.solReview.transactionPolicy?.reviewerPushes === false &&
       source.solReview.transactionPolicy?.allowedPostApprovalFilesAreManifestBound ===
         true &&
+      source.solReview.transactionPolicy?.postApprovalWindow ===
+        "reviewer-commit-only" &&
+      source.solReview.transactionPolicy?.candidateImplementationCurrentness ===
+        "candidate-to-reviewer-parent-and-head" &&
+      source.solReview.transactionPolicy?.reviewRecordIdentity ===
+        "immutable-from-first-reviewer-commit" &&
       JSON.stringify(source.solReview.scopePolicy?.familyTrackRequires) ===
         JSON.stringify(["familyTrackId", "scopeId"]) &&
       JSON.stringify(source.solReview.scopePolicy?.familyRevalidationRequires) ===

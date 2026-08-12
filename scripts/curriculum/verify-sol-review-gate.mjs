@@ -1,7 +1,9 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import {
+  reviewCandidateIsCurrent,
   reviewImplementationFiles,
   solReplanRequestArtifactIsCurrent
 } from "./sol-review-status.mjs";
@@ -60,12 +62,92 @@ function changedFilesAt(commit) {
     .filter(Boolean);
 }
 
-function changedFilesAfter(commit) {
-  return git("diff", "--name-only", `${commit}..HEAD`)
-    .split("\n")
-    .filter(Boolean);
+function lines(value) {
+  return value.split("\n").filter(Boolean);
 }
 
+function boardAtCommit(commit, runGit = git) {
+  try {
+    return JSON.parse(
+      runGit("show", `${commit}:scripts/curriculum/sol-review-board.json`)
+    );
+  } catch {
+    return null;
+  }
+}
+
+function sameReviewRecord(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+/**
+ * Return the exact reviewer-owned commit that first introduced this immutable
+ * review record. Intervening, independently approved commits are outside this
+ * review's post-approval transaction.
+ */
+export function locateReviewTransaction({
+  review,
+  candidateCommit,
+  head = "HEAD",
+  runGit = git
+}) {
+  const boardCommits = lines(
+    runGit(
+      "rev-list",
+      "--reverse",
+      "--ancestry-path",
+      `${candidateCommit}..${head}`,
+      "--",
+      "scripts/curriculum/sol-review-board.json"
+    )
+  );
+  for (const commit of boardCommits) {
+    const historicalReview = boardAtCommit(commit, runGit)?.reviews?.find(
+      (candidate) => candidate.reviewId === review.reviewId
+    );
+    if (!historicalReview) continue;
+    if (!sameReviewRecord(historicalReview, review)) {
+      fail(`review-record-mutated-after-transaction:${review.reviewId}`);
+    }
+    const reviewerParent = runGit("rev-parse", `${commit}^`);
+    return {
+      reviewerCommit: commit,
+      reviewerParent,
+      candidateToReviewerParentFiles: lines(
+        runGit("diff", "--name-only", `${candidateCommit}..${reviewerParent}`)
+      ),
+      reviewerTransactionFiles: lines(
+        runGit(
+          "diff-tree",
+          "--root",
+          "--no-commit-id",
+          "--name-only",
+          "-r",
+          commit
+        )
+      )
+    };
+  }
+  fail(`sol-reviewer-commit-not-found:${review.reviewId}`);
+}
+
+export function candidateImplementationMutationsBeforeReview({
+  review,
+  candidateFiles,
+  candidateToReviewerParentFiles
+}) {
+  const implementationFiles = new Set(
+    reviewImplementationFiles({
+      ...review,
+      changedFiles: candidateFiles
+    })
+  );
+  return candidateToReviewerParentFiles.filter((file) =>
+    implementationFiles.has(file)
+  );
+}
+
+export function runGate() {
 const report = readJson(reportPath);
 const board = readJson(boardPath);
 const workItemId = arg("--work-item");
@@ -239,7 +321,25 @@ const postApprovalPatterns = [
   "scripts/curriculum/sol-review-board.json",
 ];
 if (!postApprovalPatterns.length) fail(`post-approval-manifest-missing:${operation}`);
-const afterCandidateFiles = changedFilesAfter(candidateCommit);
+const reviewTransaction = locateReviewTransaction({
+  review,
+  candidateCommit
+});
+const mutationsBeforeReview = candidateImplementationMutationsBeforeReview({
+  review,
+  candidateFiles,
+  candidateToReviewerParentFiles:
+    reviewTransaction.candidateToReviewerParentFiles
+});
+if (mutationsBeforeReview.length) {
+  fail(
+    `candidate-implementation-mutated-before-review:${mutationsBeforeReview.join(",")}`
+  );
+}
+if (!reviewCandidateIsCurrent(review)) {
+  fail("candidate-implementation-not-current");
+}
+const afterCandidateFiles = reviewTransaction.reviewerTransactionFiles;
 if (!afterCandidateFiles.length) fail("sol-commit-missing-after-candidate");
 assertFilesAllowed(
   afterCandidateFiles,
@@ -272,5 +372,13 @@ console.log(
     operation === "SOL_REPLAN_REQUEST"
       ? "sol-replan request integrity"
       : "sol-review gate"
-  } PASS: ${workItem.workItemId} ${operation} candidate=${candidateCommit} attempt=${review.attempt}; postApproval=${afterCandidateFiles.length} files`
+  } PASS: ${workItem.workItemId} ${operation} candidate=${candidateCommit} attempt=${review.attempt}; reviewerCommit=${reviewTransaction.reviewerCommit}; postApproval=${afterCandidateFiles.length} files`
 );
+}
+
+if (
+  process.argv[1] &&
+  pathToFileURL(resolve(process.argv[1])).href === import.meta.url
+) {
+  runGate();
+}

@@ -66,7 +66,10 @@
       "reviewOwner": "Sol",
       "derivedReportCommitOwner": "Sol",
       "reviewerPushes": false,
-      "allowedPostApprovalFilesAreManifestBound": true
+      "allowedPostApprovalFilesAreManifestBound": true,
+      "postApprovalWindow": "reviewer-commit-only",
+      "candidateImplementationCurrentness": "candidate-to-reviewer-parent-and-head",
+      "reviewRecordIdentity": "immutable-from-first-reviewer-commit"
     },
     "decisionValues": ["approved", "changes-requested", "blocked"],
     "scopePolicy": {
@@ -156,6 +159,7 @@
         "scripts/curriculum/sol-review-status.mjs",
         "scripts/curriculum/revalidation-semantic-slice.mjs",
         "scripts/curriculum/verify-sol-review-gate.mjs",
+        "tests/verify-sol-review-gate.test.ts",
         "scripts/curriculum/sol-review-board.json",
         "packages/contracts/src/problem-family.ts",
         "packages/contracts/src/problem-family.test.ts",
@@ -515,7 +519,7 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v13",
+      "replanContractRevision": "W002-SOL-REPLAN-v14",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "contractRevision": "W002-SOL-REPLAN-v10",
@@ -1017,7 +1021,7 @@
           "contractKind": "observable-change",
           "familyTrackId": "pattern.change-rule.construct-v1",
           "scopeId": "W002-FAMILY_TRACK-change-rule",
-          "contractRevision": "W002-SOL-REPLAN-v13",
+          "contractRevision": "W002-SOL-REPLAN-v14",
           "nativeDependency": "engine-core-discovery-required",
           "layoutContract": {
             "status": "engine-core-required",
@@ -1115,11 +1119,11 @@
             "answerMode": "conditional-rubric"
           },
           "artifactContract": {
-            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v13.json",
+            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v14.json",
             "pendingStatus": "planned-pending-engine-core",
-            "pendingContractRevision": "W002-SOL-REPLAN-v13",
+            "pendingContractRevision": "W002-SOL-REPLAN-v14",
             "completionStatus": "implemented-verified-pending-family-track",
-            "completionContractRevision": "W002-SOL-REPLAN-v13",
+            "completionContractRevision": "W002-SOL-REPLAN-v14",
             "pendingImplementationFiles": [
               "W002_REPLAN.md",
               "scripts/curriculum/no-family-plan.json",

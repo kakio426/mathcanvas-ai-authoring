@@ -1,6 +1,28 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v13)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v14)
 
-상태: **Sol max 재계획 후보 — change-rule 전용 ENGINE_CORE 계약 승인 대기**
+상태: **Sol max 재계획 후보 — reviewer transaction window 승인 대기**
+
+## v14 frozen candidate reviewer transaction window
+
+`W002-FAMILY_TRACK-repeat-repair-SOL-A3`의 frozen candidate `2f3ce90`과 reviewer
+commit `0bf29be` 사이에는 별도로 승인된 W002 governance 작업이 있다. 기존
+`verify-sol-review-gate`는 `candidate..HEAD` 누적 diff 전체를 A3 post-approval
+transaction으로 해석해, A35에서 정식 승인된 `W002_REPLAN.md`까지 FAMILY_TRACK 범위
+위반으로 오인한다. v14는 request
+`W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1`만 소비해 이 transaction 경계를 고친다.
+
+게이트는 exact review record가 최초 등장한 descendant commit을 reviewer commit으로
+식별하고, 그 한 commit의 diff만 operation의 postApproval manifest와 대조한다. 동시에
+candidate에서 reviewer parent까지 candidate implementation 파일이 바뀌면 거부하고,
+현재 HEAD에서도 `reviewCandidateIsCurrent`가 false면 거부한다. 최초 reviewer commit의
+record와 현재 board record가 다르면 감사 기록 변조로 거부한다.
+
+이 보정은 `W002_REPLAN.md`를 FAMILY_TRACK postApproval scope에 추가하지 않으며, 중간
+commit을 모두 무시하지도 않는다. repeat-rule/repeat-repair family source와 승인,
+[2수02-02] offline 2/3·live 0/3, 세 target·outline hash·세 scope, repeat evidence는
+그대로 보존한다. v14 승인 후 A3 gate를 exact frozen candidate로 다시 실행해 PASS한
+뒤에만 change-rule ENGINE_CORE를 재개한다. 이번 governance 후보에는 change-rule
+schema·validator·layout·family 구현을 섞지 않는다.
 
 ## v13 change-rule ENGINE_CORE 분리
 
