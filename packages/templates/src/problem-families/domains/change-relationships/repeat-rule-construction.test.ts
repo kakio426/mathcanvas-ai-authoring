@@ -136,14 +136,18 @@ describe("[2수02-02] repeat rule construction native family", () => {
 
     const firstItem = result.resolved.items[0]!;
     expect(firstItem.values.studentRuleState).toEqual([]);
-    expect(firstItem.values.intendedRuleState).toEqual([4, 5]);
     expect(firstItem.values.validRuleStates).toEqual([
       [4, 5],
-      [5, 4]
+      [4, 6],
+      [5, 4],
+      [5, 6],
+      [6, 4],
+      [6, 5]
     ]);
     expect(firstItem.values.surplusRuleStates).toEqual([
       [4, 4],
-      [5, 5]
+      [5, 5],
+      [6, 6]
     ]);
     expect(firstItem.values.questionText).not.toContain("초록");
 
@@ -243,7 +247,7 @@ describe("[2수02-02] repeat rule construction native family", () => {
     const previews = buildRegisteredProblemPreviews(result.resolved);
     const applied = buildRegisteredAppliedProblemParameters(result.resolved);
     expect(answers).toHaveLength(2);
-    expect(answers[0]?.answer).toContain("초록 삼각형");
+    expect(answers[0]?.answer).toContain("서로 다른 두 조각");
     expect(previews?.[0]?.statements).toEqual([
       expect.stringContaining("빈 규칙 칸"),
       "초기 상태: 두 규칙 칸은 비어 있고 학생이 패턴 블록을 직접 고릅니다.",
@@ -268,8 +272,8 @@ describe("[2수02-02] repeat rule construction native family", () => {
     expect(outputs.every((output) => output.report.issues.length === 0)).toBe(
       true
     );
-    expect(outputs[0]?.resolved.items[0]?.values.intendedRuleState).toEqual([4, 5]);
-    expect(outputs[1]?.resolved.items[0]?.values.intendedRuleState).toEqual([2, 3]);
+    expect(outputs[0]?.resolved.items[0]?.values.validRuleStates).toHaveLength(6);
+    expect(outputs[1]?.resolved.items[0]?.values.validRuleStates).toHaveLength(6);
     expect(outputs[0]?.compiled.payloadHash).not.toBe(
       outputs[1]?.compiled.payloadHash
     );
@@ -278,11 +282,13 @@ describe("[2수02-02] repeat rule construction native family", () => {
     ).toEqual([
       [
         [4, 4],
-        [5, 5]
+        [5, 5],
+        [6, 6]
       ],
       [
         [2, 2],
-        [3, 3]
+        [3, 3],
+        [1, 1]
       ]
     ]);
   });

@@ -54,7 +54,6 @@ export type RepeatRuleConstructionContextId =
   (typeof REPEAT_RULE_CONSTRUCTION_CONTEXT_IDS)[number];
 
 type RuleItemSpec = Readonly<{
-  ruleState: readonly [number, number];
   validRuleStates: readonly (readonly [number, number])[];
   surplusRuleStates: readonly (readonly [number, number])[];
   variants: readonly [
@@ -87,30 +86,17 @@ const CONTEXTS: Readonly<
     unitLabel: "색깔 두 조각",
     items: [
       {
-        ruleState: [4, 5],
         validRuleStates: [
           [4, 5],
-          [5, 4]
-        ],
-        surplusRuleStates: [
-          [4, 4],
-          [5, 5]
-        ],
-        variants: [4, 5, 6, 4, 5, 6, 4, 5, 6],
-        questionText:
-          "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
-        answerExplanation:
-          "초록과 주황을 한 단위로 정하고 두 조각의 순서를 고정하면, 어느 위치에서 시작해도 같은 두 조각이 반복됩니다."
-      },
-      {
-        ruleState: [4, 6],
-        validRuleStates: [
           [4, 6],
-          [6, 4]
+          [5, 4],
+          [5, 6],
+          [6, 4],
+          [6, 5]
         ],
         surplusRuleStates: [
           [4, 4],
+          [5, 5],
           [6, 6]
         ],
         variants: [4, 5, 6, 4, 5, 6, 4, 5, 6],
@@ -118,7 +104,28 @@ const CONTEXTS: Readonly<
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
         continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
-          "초록과 보라를 한 단위로 정하고 두 조각의 순서를 고정하면, 두 조각이 번갈아 반복됩니다."
+          "서로 다른 두 조각을 고른 순서대로 한 단위로 정하고, 두 조각이 같은 순서로 반복되는지 확인합니다."
+      },
+      {
+        validRuleStates: [
+          [4, 6],
+          [4, 5],
+          [5, 4],
+          [5, 6],
+          [6, 4],
+          [6, 5]
+        ],
+        surplusRuleStates: [
+          [4, 4],
+          [5, 5],
+          [6, 6]
+        ],
+        variants: [4, 5, 6, 4, 5, 6, 4, 5, 6],
+        questionText:
+          "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
+        answerExplanation:
+          "서로 다른 두 조각을 고른 순서대로 한 단위로 정하고, 두 조각이 번갈아 반복되는지 확인합니다."
       }
     ]
   },
@@ -127,30 +134,17 @@ const CONTEXTS: Readonly<
     unitLabel: "모양 두 조각",
     items: [
       {
-        ruleState: [2, 3],
         validRuleStates: [
           [2, 3],
-          [3, 2]
-        ],
-        surplusRuleStates: [
-          [2, 2],
-          [3, 3]
-        ],
-        variants: [1, 2, 3, 1, 2, 3, 1, 2, 3],
-        questionText:
-          "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
-        answerExplanation:
-          "파랑과 빨강을 한 단위로 정하고 두 조각의 순서를 고정하면, 같은 순서가 계속 반복됩니다."
-      },
-      {
-        ruleState: [2, 1],
-        validRuleStates: [
           [2, 1],
-          [1, 2]
+          [3, 2],
+          [3, 1],
+          [1, 2],
+          [1, 3]
         ],
         surplusRuleStates: [
           [2, 2],
+          [3, 3],
           [1, 1]
         ],
         variants: [1, 2, 3, 1, 2, 3, 1, 2, 3],
@@ -158,7 +152,28 @@ const CONTEXTS: Readonly<
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
         continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
-          "파랑과 노랑을 한 단위로 정하고 두 조각의 순서를 고정하면, 두 조각이 번갈아 반복됩니다."
+          "서로 다른 두 조각을 고른 순서대로 한 단위로 정하고, 같은 순서가 계속 반복되는지 확인합니다."
+      },
+      {
+        validRuleStates: [
+          [2, 1],
+          [2, 3],
+          [1, 2],
+          [1, 3],
+          [3, 2],
+          [3, 1]
+        ],
+        surplusRuleStates: [
+          [2, 2],
+          [1, 1],
+          [3, 3]
+        ],
+        variants: [1, 2, 3, 1, 2, 3, 1, 2, 3],
+        questionText:
+          "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
+        answerExplanation:
+          "서로 다른 두 조각을 고른 순서대로 한 단위로 정하고, 두 조각이 번갈아 반복되는지 확인합니다."
       }
     ]
   }
@@ -706,7 +721,6 @@ export function generateRepeatRuleConstructionItems(
   );
   return context.items.map((spec, index) => {
     const variants = shuffle(spec.variants, random);
-    const answerRule = stateText(spec.ruleState);
     return {
       id: `${REPEAT_RULE_CONSTRUCTION_FAMILY_ID}-${parameters.contextId}-${index + 1}`,
       order: index + 1,
@@ -720,10 +734,10 @@ export function generateRepeatRuleConstructionItems(
         continuationText: spec.continuationText,
         poolLabel: "패턴 블록",
         studentRuleState: [],
-        intendedRuleState: [...spec.ruleState],
         validRuleStates: spec.validRuleStates.map((state) => [...state]),
         surplusRuleStates: spec.surplusRuleStates.map((state) => [...state]),
-        correctAnswerText: `학생이 고른 서로 다른 두 조각과 순서: ${answerRule}`,
+        correctAnswerText:
+          "학생이 고른 서로 다른 두 조각과 순서가 반복 단위를 이룹니다.",
         answerExplanation: spec.answerExplanation,
         verificationText:
           "두 규칙 칸의 블록과 순서를 바꾸어도 다음 배열에서 같은 순서가 반복되는지 확인하세요.",
