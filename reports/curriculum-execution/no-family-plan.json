@@ -4141,6 +4141,66 @@
           "FORBIDDEN SCOPE EXPANSION: W002_REPLAN.md를 FAMILY_TRACK postApprovalFiles에 추가하거나 candidate 이후 모든 파일을 무시하는 방식은 금지한다. exact reviewer commit, immutable review record, before/after implementation currentness를 함께 검증해야 한다.",
           "이 blocked request는 change-rule ENGINE_CORE 구현, A3 승인 취소, offline coverage 하향, response/save/reopen/live evidence 또는 push 권한이 아니다. 다음 SOL_REPLAN이 이 request ID를 정확히 소비하고 governance-only gate fix를 승인할 때까지 change-rule 구현을 시작하지 않는다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A36",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 36,
+        "candidateCommit": "34784a4c37576dae157e9cd11c0c1e2e39d20d12",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md",
+          "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v14.json",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "scripts/curriculum/build-no-family-plan.mjs",
+          "scripts/curriculum/no-family-plan.json",
+          "scripts/curriculum/verify-sol-review-gate.mjs",
+          "tests/sol-review-status.test.ts",
+          "tests/verify-sol-review-gate.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A35",
+        "checkedAt": "2026-08-12T06:52:49.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "d9b491b9ef661bfda40bf104580d90db98042117bdc2a039c75c45d65b21cac8",
+        "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v14",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:34784a4c37576dae157e9cd11c0c1e2e39d20d12",
+          "git:f6e2583bc884ed62f8e4fa9def0bcd09acc9c45b#W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1",
+          "git:0bf29bea1748cf3dd262f084f6e5b8e83ff0f323#W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+          "scripts/curriculum/verify-sol-review-gate.mjs#locateReviewTransaction",
+          "tests/verify-sol-review-gate.test.ts",
+          "command:pnpm exec vitest run tests/verify-sol-review-gate.test.ts tests/sol-review-status.test.ts (30/30 PASS)",
+          "command:pnpm check (87 files / 548 tests; all gates and audits PASS before formal A3 gate)",
+          "command:pnpm curriculum:sol-review:verify repeat-repair A3 -> post-approval-file-not-allowed:tests/sol-review-status.test.ts"
+        ],
+        "findings": [
+          "TRANSACTION WINDOW FIX APPROVED IN ISOLATION: candidate 34784a4는 exact review record를 최초 도입한 reviewer commit만 postApproval manifest로 검사하고, candidate→reviewer-parent 및 현재 HEAD까지 candidate implementation currentness를 별도로 fail-closed 검증한다. 중간 정식 governance commit을 누적 A3 scope로 오인하던 원래 P0는 해소됐다.",
+          "P0 REVIEWER_TRANSACTION_SCOPE_STILL_INVALID: 실제 A3 reviewer commit 0bf29be에는 board와 registry→coverage→execution→no-family 파생 파일 외에 tests/sol-review-status.test.ts가 함께 들어 있다. 이 파일은 FAMILY_TRACK postApproval manifest 밖이므로 exact transaction gate는 올바르게 거부한다.",
+          "전역 FAMILY_TRACK postApproval manifest에 tests/sol-review-status.test.ts를 추가해서는 안 된다. reviewer가 구현/거버넌스 테스트를 함께 바꾸는 권한을 모든 family 승인에 확장하고 transaction 분리를 무력화한다.",
+          "최소 수정은 A3 review record의 권위 승인 commit identity를 별도 reviewer-only replay commit으로 재결속하거나, immutable review record와 파생 report만 담은 새 scoped FAMILY_TRACK attempt를 만들고 status test 변경은 선행 governance commit으로 분리하는 것이다. 새 attempt는 frozen 2f3ce90 candidate implementation currentness와 A3 교육 findings를 재사용하되 새 reviewer transaction diff는 manifest 파일만 포함해야 한다.",
+          "v14은 changes-requested이며 change-rule ENGINE_CORE 구현, family 생성, response/save/reopen/live evidence 또는 push를 승인하지 않는다. offline 2/3·live 0/3 및 repeat-rule/repeat-repair 승인 evidence는 보존한다."
+        ]
       }
     ]
   },
@@ -4301,9 +4361,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 63,
+      "totalRecords": 64,
       "approved": 26,
-      "changesRequested": 28,
+      "changesRequested": 29,
       "blocked": 9,
       "pendingRequiredReviews": 190
     },
@@ -4722,7 +4782,7 @@
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
           "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
         ],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
@@ -8288,7 +8348,7 @@
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
           "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
         ],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
