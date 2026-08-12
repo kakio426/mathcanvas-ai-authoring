@@ -100,8 +100,8 @@ describe("Sol review candidate and scope gates", () => {
       (family: { familyId: string }) =>
         family.familyId === "pattern.declared-repeat.repair-v1"
     );
-    expect(repair.solReviewStatus).toBe("blocked");
-    expect(repair.lifecycleStage).toBe("generatable");
+    expect(repair.solReviewStatus).toBe("approved");
+    expect(repair.lifecycleStage).toBe("offline-validated");
 
     const execution = JSON.parse(
       readFileSync("reports/curriculum-execution/latest.json", "utf8")
@@ -109,51 +109,21 @@ describe("Sol review candidate and scope gates", () => {
     const w002 = execution.breadthQueue.find(
       (row: { code: string }) => row.code === "[2수02-02]"
     );
-    expect(w002.offlineCoveredTargetCount).toBe(1);
-    const preApprovalSubWorks = report.workItems.find(
+    expect(w002.offlineCoveredTargetCount).toBe(2);
+    expect(w002.liveCoveredTargetCount).toBe(0);
+    const currentSubWorks = report.workItems.find(
       (item: { workItemId: string }) => item.workItemId === "W002"
     ).familySubWorkItems;
-    const blockedRepair = preApprovalSubWorks.find(
+    const approvedRepair = currentSubWorks.find(
       (item: { familyTrackId: string }) =>
         item.familyTrackId === "pattern.declared-repeat.repair-v1"
     );
-    expect(blockedRepair.reviewStatus).toBe("blocked");
-    expect(blockedRepair.reviewId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair-SOL-A2"
+    expect(approvedRepair.reviewStatus).toBe("approved");
+    expect(approvedRepair.reviewId).toBe(
+      "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
     );
-    const pendingReplan = report.current.nextReplanWork;
-    const approvedReplanCursor = report.current.nextOfflineWork;
-    if (pendingReplan?.workItemId === "W002") {
-      expect(pendingReplan.operation).toBe("SOL_REPLAN");
-      expect(pendingReplan.solReview.replanApproved).toBe(false);
-      expect(pendingReplan.solReview.replanConsumed).toBe(false);
-    } else {
-      expect(approvedReplanCursor?.workItemId).toBe("W002");
-      expect(approvedReplanCursor?.operation).toBe("FAMILY_TRACK");
-      expect(approvedReplanCursor?.operationWorkItemId).toBe(
-        "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
-      );
-      expect(approvedReplanCursor?.nextFamilySubWork?.familyTrackId).toBe(
-        "pattern.declared-repeat.repair-v1"
-      );
-      expect(approvedReplanCursor?.solReview.replanApproved).toBe(true);
-      expect(approvedReplanCursor?.solReview.replanConsumed).toBe(true);
-    }
-
-    const postApprovalSubWorks = preApprovalSubWorks.map(
-      (item: {
-        familyTrackId: string;
-        reviewStatus: string;
-        nextOperation: string;
-      }) => ({
-        ...item,
-        reviewStatus:
-          item.familyTrackId === "pattern.declared-repeat.repair-v1"
-            ? "approved"
-            : item.reviewStatus
-      })
-    );
-    const nextAfterApproval = postApprovalSubWorks.find(
+    expect(report.current.nextReplanWork).toBeNull();
+    const nextAfterApproval = currentSubWorks.find(
       (item: { reviewStatus: string }) => item.reviewStatus !== "approved"
     );
     expect(nextAfterApproval.familyTrackId).toBe(
@@ -444,18 +414,32 @@ describe("Sol review candidate and scope gates", () => {
     expect(source.planningGuardrails).toContain(
       "operation manifest 밖의 exact changedFiles는 SCOPE_VIOLATION finding을 가진 blocked review로만 보존하며 승인·post-approval 권한을 넓히지 않는다."
     );
-    expect(
-      workItem.engineCoreContract.runtimePredicate.parameters
-        .continuationRuleStatePath
-    ).toBe("declaredRuleState");
-    expect(
-      workItem.engineCoreContract.runtimePredicate.parameters
-        .explanationRuleStatePath
-    ).toBe("declaredRuleState");
-    expect(
-      workItem.engineCoreContract.manifestDecision.stateLifecycle
-        .selectionOutputStatePath
-    ).toBe("declaredRuleState");
+    if (workItem.engineCoreContract.contractKind === "observable-change") {
+      expect(
+        workItem.engineCoreContract.runtimePredicate.parameters.ruleStatePath
+      ).toBe("studentChangeRuleState");
+      expect(
+        workItem.engineCoreContract.manifestDecision.application
+          .sequenceStatePath
+      ).toBe("constructedSequenceState");
+      expect(workItem.engineCoreContract.manifestDecision.repair).toMatchObject({
+        wrongIndexPath: "misalignedTermIndex",
+        requiresOnlyWrongIndexChanges: true
+      });
+    } else {
+      expect(
+        workItem.engineCoreContract.runtimePredicate.parameters
+          .continuationRuleStatePath
+      ).toBe("declaredRuleState");
+      expect(
+        workItem.engineCoreContract.runtimePredicate.parameters
+          .explanationRuleStatePath
+      ).toBe("declaredRuleState");
+      expect(
+        workItem.engineCoreContract.manifestDecision.stateLifecycle
+          .selectionOutputStatePath
+      ).toBe("declaredRuleState");
+    }
     const currentProjection = [
       report.current.nextOfflineWork,
       report.current.nextReplanWork
@@ -530,18 +514,17 @@ describe("Sol review candidate and scope gates", () => {
       ).toContain("repeat-rule-engine-core-v10-compat");
 
       if (nextOffline?.operation === "ENGINE_CORE") {
+        const engineCoreFamily = nextOffline.nextFamilySubWork?.familyTrackId;
         expect(nextOffline.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE"
+          `${nextOffline.nextFamilySubWork?.workItemId}-ENGINE_CORE`
         );
         expect(nextOffline.nextFamilySubWork?.nextOperation).toBe(
           "ENGINE_CORE"
         );
-        expect(nextOffline.nextFamilySubWork?.familyTrackId).toBe(
-          "pattern.declared-repeat.repair-v1"
-        );
-        expect(nextOffline.nextFamilySubWork?.scopeId).toBe(
-          "W002-FAMILY_TRACK-repeat-repair"
-        );
+        expect([
+          "pattern.declared-repeat.repair-v1",
+          "pattern.change-rule.construct-v1"
+        ]).toContain(engineCoreFamily);
         expect(activeStateItem?.completionEvidenceByOperation).toBeUndefined();
       } else {
         expect(nextOffline?.operationWorkItemId).toBe(
@@ -1158,13 +1141,13 @@ describe("Sol review candidate and scope gates", () => {
       postApproval?.operation
     );
     expect(postApproval?.operationWorkItemId).toBe(
-      `W002-FAMILY_TRACK-repeat-repair-${postApproval?.operation}`
+      `${postApproval?.nextFamilySubWork?.workItemId}-${postApproval?.operation}`
     );
     expect(postApproval?.nextFamilySubWork?.familyTrackId).toBe(
-      "pattern.declared-repeat.repair-v1"
+      "pattern.change-rule.construct-v1"
     );
     expect(postApproval?.nextFamilySubWork?.scopeId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair"
+      "W002-FAMILY_TRACK-change-rule"
     );
     expect(postApproval?.solReview.solReplanRequest).toBeNull();
     expect(postApproval?.solReview.replanApproved).toBe(true);

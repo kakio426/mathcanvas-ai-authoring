@@ -62,7 +62,7 @@
 | [2수01-10] | 1-2 | 수와 연산 | live-released | - | number.multiplication.group-array-meaning-v1 | number.multiplication.group-array-meaning-v1 | 2-1-6 |
 | [2수01-11] | 1-2 | 수와 연산 | mapped | - | - | - | 2-2-2 |
 | [2수02-01] | 1-2 | 변화와 관계 | live-released | live 2/2; reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 2/2입니다. | pattern.repeat-unit.pattern-blocks-v1 | pattern.repeat-unit.pattern-blocks-v1 | 1-2-5, 2-2-6 |
-| [2수02-02] | 1-2 | 변화와 관계 | offline-validated | live 0/3; reviewed-complete target set 기준입니다. offline-validated 이상은 1/3, live-released는 0/3입니다. | pattern.create-repeat-unit-explain-v1, pattern.declared-repeat.repair-v1, pattern.repeat-unit.construct-v1 | - | 1-2-5, 2-2-6 |
+| [2수02-02] | 1-2 | 변화와 관계 | offline-validated | live 0/3; reviewed-complete target set 기준입니다. offline-validated 이상은 2/3, live-released는 0/3입니다. | pattern.create-repeat-unit-explain-v1, pattern.declared-repeat.repair-v1, pattern.repeat-unit.construct-v1 | - | 1-2-5, 2-2-6 |
 | [2수03-01] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-2-3, 2-1-2 |
 | [2수03-02] | 1-2 | 도형과 측정 | mapped | - | - | - | 2-1-2 |
 | [2수03-03] | 1-2 | 도형과 측정 | mapped | - | - | - | 1-1-2, 1-2-3, 2-1-2 |

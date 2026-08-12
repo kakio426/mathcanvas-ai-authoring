@@ -702,8 +702,8 @@
       },
       "renderRecipeKind": "native-render-recipe",
       "supportState": "verified",
-      "lifecycleStage": "generatable",
-      "solReviewStatus": "blocked",
+      "lifecycleStage": "offline-validated",
+      "solReviewStatus": "approved",
       "blueprintContentHash": "a27cbc2d07c3f47f160c043f2dd93efe055d2e874ef99033beba56fb187da909",
       "assessmentTargetIds": [
         "change.pattern.declared-repeat.repair-v1"

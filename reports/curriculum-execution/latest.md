@@ -4,7 +4,7 @@
 - 공식 분모: **121개 성취기준**
 - 대표 격자: **1/12 pipeline-proven**
 - reviewed target set: **4/121**
-- 현재 검토된 target: **11개 · offline 5 · live 2**
+- 현재 검토된 target: **11개 · offline 6 · live 2**
 - 전역 target coverage: **unavailable**
 - 남은 성취기준 작업 queue: **120개**
 
@@ -27,7 +27,7 @@
 | 1 | 공통 ProblemFamily 기반 | complete | 34 canonical / 21 released |
 | 2 | 학년군×영역 대표 격자 | in-progress | 1/12 pipeline-proven |
 | 3A | 121개 AssessmentTargetSet 완전 분해 | in-progress | 4/121 |
-| 3B | 필수 target family·offline 검증 | in-progress | 5/11 reviewed targets; global denominator incomplete |
+| 3B | 필수 target family·offline 검증 | in-progress | 6/11 reviewed targets; global denominator incomplete |
 | 3C | 현재 해시 live create·저장·재열기 | in-progress | 2/11 reviewed targets; global denominator incomplete |
 | 4 | 전 범위 TeacherRequest·반영 표·실제 미리보기 | queued-after-phase-2 | 8/34 common-parameter families |
 | 5 | 문항 단위 수정·최종 제품 릴리스 | queued | not globally measured |
