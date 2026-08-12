@@ -16,6 +16,7 @@ import { wave13BrokenRulerLayoutPreset } from "./wave13-broken-ruler-v1.js";
 import { wave14PlaceValueTenExchangeLayoutPreset } from "./wave14-place-value-ten-exchange-v1.js";
 import { wave16RepeatingPatternLayoutPreset } from "./wave16-repeating-pattern-v1.js";
 import { w002RepeatRuleConstructionLayoutPreset } from "./w002-repeat-rule-construction-v1.js";
+import { w002RepeatRepairLayoutPreset } from "./w002-repeat-repair-v1.js";
 import { wave17MultiplicationArrayLayoutPreset } from "./wave17-multiplication-array-v1.js";
 import { wave17ProbabilityBagLayoutPreset } from "./wave17-probability-bag-v1.js";
 import { wave19FactorPairArrayLayoutPreset } from "./wave19-factor-pair-array-v1.js";
@@ -276,6 +277,7 @@ const rawPresets: Readonly<Record<string, LayoutPreset>> = {
     wave14PlaceValueTenExchangeLayoutPreset,
   "wave16-repeating-pattern-v1": wave16RepeatingPatternLayoutPreset,
   "w002-repeat-rule-construction-v1": w002RepeatRuleConstructionLayoutPreset,
+  "w002-repeat-repair-v1": w002RepeatRepairLayoutPreset,
   "wave17-multiplication-array-v1": wave17MultiplicationArrayLayoutPreset,
   "wave17-probability-bag-v1": wave17ProbabilityBagLayoutPreset,
   "wave19-factor-pair-array-v1": wave19FactorPairArrayLayoutPreset,

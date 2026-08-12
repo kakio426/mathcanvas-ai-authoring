@@ -21,17 +21,17 @@
   "implementationFiles": {
     "packages/contracts/src/vocabulary/constraints.ts": "90f792b310501079f1c327946e4894cb735795a8dcba602127483c3bbd108e88",
     "packages/contracts/src/vocabulary/constraints.test.ts": "6369e7350f74d8523e951f5d9fcd6159c60621de366b099c4b6879c68f29dc2d",
-    "packages/contracts/src/catalog/cognitive-demand.ts": "ec619a3e92b418838f69146484e3b275d61aafbbde804380c7cd56bf693e4437",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "692cf24c6db97e9dc52292ef508bc731953d1ec3eb8c6ad228fa432a107559eb",
+    "packages/contracts/src/catalog/cognitive-demand.ts": "197e600b00c25fb13e910001a348cf49e8400bf58558a522ff3c77534ca2d88f",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "afe2cf8f3f7293b9fdaae422a9e7361b6ca89717487bb3da8e8c806a2e309e5f",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts": "5c653d0b19843393769fd3f83691a14ac2c890b1e3aa761db529428b471dca77",
-    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "9bcb99b94acd287e56becbbf675c764e83fe965038d2963f8b3def1ea4da9f07",
+    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "0b2b18c5d9bae586d71117a08a7664b8fdfadcbe297dad430943a47b3d42a84e",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts": "792abed25ef91a7af5cea0f7adfe694796b642c0f4ee5fb90805363ea7bfa353",
     "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts": "7a67c88625755627bdafb0ddf38f387c6efbb9bb9a1dfe9dbc3a956855e1dd98",
-    "packages/validator/src/predicates/registry.ts": "20fd4d795ec7ed1f422adf5cf65ead7e93cb0a0da1621cc053a57b6bb82912d8",
-    "packages/validator/src/validator.test.ts": "005a0e1699bbfeeb2e2399f86537788e5bbae52b187ad6141502e73f6583f07b",
-    "packages/templates/src/cognitive/registry.ts": "95ee445cd0184a8025f62d73dfcf37b615c7b2f88dc671c52b4acb0d2ae6221e",
-    "packages/templates/src/cognitive/registry.test.ts": "3e3899813dbb1076b3feb0539ad18c4a0368c7749bc9911dcef682b5d51faa1e",
-    "scripts/pedagogy/check-cognitive-demand.mjs": "c46ce302e2c6778f7b848521ddf28ca56dea436d966a12dfe4e962962197c3ab"
+    "packages/validator/src/predicates/registry.ts": "4ecb118c13020e0afe81c95f8b0f391d1dce3e3afede93fcb8f85a4311684dc5",
+    "packages/validator/src/validator.test.ts": "b907aa844d7161685a45506d81dd5c17688d4e4e7b33d627c97ae37f3e81e4df",
+    "packages/templates/src/cognitive/registry.ts": "34eba169615521e8278f129c24330b804e58aff3c1951985daf8df58699e7281",
+    "packages/templates/src/cognitive/registry.test.ts": "b20c4056655cce9397910d8610614317d69a9f2cf83a00f49a174b2076aa490b",
+    "scripts/pedagogy/check-cognitive-demand.mjs": "cec5bdc6888d8ed77b766ebeb754f64907d588f6d488bd3fcdba99b4ac57038f"
   },
   "verification": {
     "compatibilityFocusedTests": "45/45 + repeat-rule projection",

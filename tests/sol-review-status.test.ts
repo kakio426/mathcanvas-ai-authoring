@@ -341,13 +341,12 @@ describe("Sol review candidate and scope gates", () => {
         ).toContain("repeat-rule-engine-core-v10-compat");
       } else {
         expect(nextOffline?.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK"
+          "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
         );
         expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
           "FAMILY_TRACK"
         );
         expect(activeStateItem?.completedOperations).toEqual([
-          "AFFORDANCE_DISCOVERY",
           "ENGINE_CORE"
         ]);
         const evidence =
@@ -853,9 +852,9 @@ describe("Sol review candidate and scope gates", () => {
 
     const postApproval = report.current.nextOfflineWork;
     expect(postApproval?.workItemId).toBe("W002");
-    expect(postApproval?.operation).toBe("ENGINE_CORE");
+    expect(postApproval?.operation).toBe("FAMILY_TRACK");
     expect(postApproval?.operationWorkItemId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE"
+      "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
     );
     expect(postApproval?.nextFamilySubWork?.familyTrackId).toBe(
       "pattern.declared-repeat.repair-v1"

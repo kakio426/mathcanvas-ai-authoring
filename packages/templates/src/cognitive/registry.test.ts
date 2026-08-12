@@ -199,4 +199,85 @@ describe("cognitive runtime predicate binding", () => {
       "correctValuePath"
     );
   });
+
+  it("projects the repair phase lifecycle and separate declared-state path", () => {
+    const repairManifest = defineCognitiveDemandManifest({
+      ...manifest,
+      decision: {
+        ...manifest.decision,
+        constructionMode: "student-constructed",
+        answerMode: "conditional-rubric",
+        ruleStatePath: "studentRuleState",
+        variantRoles: Array.from({ length: 12 }, (_, index) => `rule-variant-${index + 1}`),
+        validRuleStatesPath: "validRuleStateExamples",
+        surplusPath: "surplusRuleStateExamples",
+        minimumSurplus: 2,
+        stateConstruction: {
+          kind: "ordered-distinct-subset-from-pool",
+          sourceRoles: Array.from({ length: 12 }, (_, index) => `rule-variant-${index + 1}`),
+          slotRoles: ["rule-slot-1", "rule-slot-2"],
+          slotCount: 2,
+          minimumDistinctValues: 2,
+          minimumDistinctPoolValues: 3,
+          minimumCopiesPerDistinctValue: 4,
+          sourceUseMode: "move-once-no-clone",
+          allowsAnyOrderedSelection: true,
+          initialState: "empty"
+        },
+        application: {
+          ruleStatePath: "studentRuleState",
+          continuationTargetRoles: ["continuation-slot-1", "continuation-slot-2", "continuation-slot-3", "continuation-slot-4"],
+          period: 2,
+          minimumTargetCount: 4,
+          requiresVisibleComparison: true,
+          requiresSimultaneousRuleAndContinuation: true,
+          ruleStateIndexMode: "index-mod-period",
+          evidenceMode: "student-state-dependent"
+        },
+        stateLifecycle: {
+          kind: "empty-selection-then-declared-repair",
+          statePath: "studentRuleState",
+          declaredStatePath: "declaredRuleState",
+          phaseOrder: ["rule-selection", "remove-misaligned", "place-replacement"],
+          initialState: "empty",
+          declaredStateCardinality: 2,
+          declaredStateExamplesPath: "validRuleStateExamples",
+          selectionConstraintIdPrefix: "construct-rule-slot",
+          requiresIndexedSelectionWrites: true,
+          repairRequiresDeclaredState: true
+        },
+        repair: {
+          kind: "declared-rule-independent-misplacement",
+          declaredRuleStatePath: "declaredRuleState",
+          repairRuleStateIndex: 1,
+          wrongItemProperty: "orderedValues",
+          wrongItemRoles: ["misaligned-item"],
+          repairTargetRoles: ["repair-target"],
+          repairBankRoles: ["repair-bank"],
+          beforeStatePath: "initialArrangementState",
+          afterStatePath: "repairedArrangementState",
+          validAfterStateExamplesPath: "validRepairedArrangementStates",
+          removeConstraintId: "remove-misaligned-item",
+          replacementConstraintId: "repair-misaligned-item",
+          requiresIndependentWrongState: true,
+          requiresBeforeAfterComparison: true,
+          evidenceMode: "student-state-dependent"
+        },
+        distractors: [
+          { predicateKind: "cognitive.rule-state-contract", misconception: "어긋난 조각도 같은 규칙이라고 본다." },
+          { predicateKind: "cognitive.rule-state-contract", misconception: "고친 뒤 다음 무늬의 순서를 확인하지 않는다." }
+        ]
+      } as never,
+      verification: {
+        kind: "data-representation",
+        roles: ["rule-slot-1", "rule-slot-2", "continuation-slot-1", "continuation-slot-2", "continuation-slot-3", "continuation-slot-4", "misaligned-item", "repair-target", "repair-bank"],
+        invariant: "선언한 규칙에 맞게 어긋난 항을 고친다."
+      },
+      explanation: { regionRole: "teacher-rubric" }
+    });
+    expect(expectedCognitiveRuntimePredicate(repairManifest).parameters).toMatchObject({
+      stateLifecycle: { statePath: "studentRuleState", declaredStatePath: "declaredRuleState" },
+      repair: { declaredRuleStatePath: "declaredRuleState" }
+    });
+  });
 });

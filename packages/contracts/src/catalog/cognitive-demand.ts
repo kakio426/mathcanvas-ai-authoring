@@ -107,6 +107,25 @@ const declaredRuleRepairSchema = z
     }
   });
 
+const repairStateLifecycleSchema = z
+  .object({
+    kind: z.literal("empty-selection-then-declared-repair"),
+    statePath: stableIdSchema,
+    phaseOrder: z.tuple([
+      z.literal("rule-selection"),
+      z.literal("remove-misaligned"),
+      z.literal("place-replacement")
+    ]),
+    initialState: z.literal("empty"),
+    declaredStatePath: stableIdSchema,
+    declaredStateCardinality: z.number().int().min(2).max(12),
+    declaredStateExamplesPath: stableIdSchema,
+    selectionConstraintIdPrefix: stableIdSchema,
+    requiresIndexedSelectionWrites: z.literal(true),
+    repairRequiresDeclaredState: z.literal(true)
+  })
+  .strict();
+
 const constructRuleDecisionSchema = z
   .object({
     mode: z.literal("construct-rule"),
@@ -173,6 +192,7 @@ const constructRuleDecisionSchema = z
       })
       .strict()
       .optional(),
+    stateLifecycle: repairStateLifecycleSchema.optional(),
     repair: declaredRuleRepairSchema.optional(),
     distractors: z.array(distractorSchema).min(1).max(7)
   })
@@ -281,6 +301,28 @@ export const cognitiveDemandManifestSchema = z
     }
     const construction = decision.stateConstruction;
     const application = decision.application;
+    if (decision.repair !== undefined) {
+      const lifecycle = decision.stateLifecycle;
+      if (
+        lifecycle === undefined ||
+        lifecycle.statePath !== decision.ruleStatePath ||
+        lifecycle.declaredStatePath === lifecycle.statePath ||
+        decision.repair.declaredRuleStatePath !== lifecycle.declaredStatePath ||
+        lifecycle.initialState !== construction.initialState ||
+        lifecycle.declaredStateCardinality !== construction.slotCount ||
+        lifecycle.declaredStateExamplesPath !==
+          decision.validRuleStatesPath ||
+        lifecycle.selectionConstraintIdPrefix !==
+          decision.decisionConstraintId
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["decision", "stateLifecycle"],
+          message:
+            "repair의 초기·선언 상태 phase lifecycle이 구성 결정과 결속되지 않았습니다."
+        });
+      }
+    }
     const distinctDistractorKeys = new Set(
       decision.distractors.map((distractor) =>
         distractor.misconception.normalize("NFKC").trim()
@@ -330,7 +372,12 @@ export const cognitiveDemandManifestSchema = z
               ]
         ) ||
       (decision.repair !== undefined &&
-        (decision.repair.declaredRuleStatePath !== decision.ruleStatePath ||
+        (decision.stateLifecycle === undefined ||
+          decision.stateLifecycle.declaredStatePath ===
+            decision.stateLifecycle.statePath ||
+          decision.repair.declaredRuleStatePath !==
+            decision.stateLifecycle.declaredStatePath ||
+          decision.repair.declaredRuleStatePath === decision.ruleStatePath ||
           decision.repair.wrongItemProperty !== decision.variantProperty))
     ) {
       ctx.addIssue({

@@ -475,6 +475,193 @@ function studentConstructedRuleStatePredicateFixture(): ResolvedActivity {
   return resolved;
 }
 
+function studentConstructedRepairRuleStatePredicateFixture(): ResolvedActivity {
+  const resolved = studentConstructedRuleStatePredicateFixture();
+  const item = resolved.items[0]!;
+  const values = ["red", "blue", "green"];
+  const variantIds = Array.from({ length: 12 }, (_, index) =>
+    `item-1-rule-variant-${index + 1}`
+  );
+  item.values = {
+    studentRuleState: [],
+    declaredRuleState: ["red", "blue"],
+    validRuleStateExamples: values.flatMap((left) =>
+      values
+        .filter((right) => right !== left)
+        .map((right) => [left, right])
+    ),
+    surplusRuleStateExamples: [["red", "red"], ["blue", "blue"]],
+    initialArrangementState: ["red", "yellow"],
+    repairedArrangementState: ["red", "blue"],
+    validRepairedArrangementStates: values.flatMap((left) =>
+      values
+        .filter((right) => right !== left)
+        .map((right) => [left, right])
+    )
+  };
+  resolved.emissions = resolved.emissions.filter(
+    (emission) =>
+      !emission.role.startsWith("rule-variant-") &&
+      !emission.role.startsWith("continuation-slot-") &&
+      ![
+        "rule-slot-1",
+        "rule-slot-2",
+        "prediction-box",
+        "teacher-rubric",
+        "explanation-box"
+      ].includes(emission.role)
+  );
+  const sourceEmissions = variantIds.map((id, index) => ({
+    id,
+    role: `rule-variant-${index + 1}`,
+    itemId: "item-1",
+    bounds: { x: index * 40, y: 0, width: 188, height: 188 },
+    locked: false,
+    movable: true,
+    instructionalIntent: "규칙 후보 조각",
+    toolIntent: {
+      kind: "pattern-block",
+      toolKey: "SM02PB",
+      properties: { variant: (index % 6) + 1, orderedValues: values[Math.floor(index / 4)] }
+    }
+  }));
+  const emptyNative = (id: string, role: string) => ({
+    id,
+    role,
+    itemId: "item-1",
+    bounds: { x: 0, y: 0, width: 188, height: 188 },
+    locked: true,
+    movable: false,
+    instructionalIntent: "학생이 채울 칸",
+    toolIntent: {
+      kind: "pattern-block" as const,
+      toolKey: "SM02PB" as const,
+      properties: {}
+    }
+  });
+  resolved.emissions.push(
+    ...sourceEmissions,
+    emptyNative("item-1-rule-slot-1", "rule-slot-1"),
+    emptyNative("item-1-rule-slot-2", "rule-slot-2"),
+    ...[1, 2, 3, 4].map((index) =>
+      emptyNative(`item-1-continuation-slot-${index}`, `continuation-slot-${index}`)
+    ),
+    {
+      ...sourceEmissions[8]!,
+      id: "item-1-misaligned-item",
+      role: "misaligned-item",
+      toolIntent: {
+        kind: "pattern-block" as const,
+        toolKey: "SM02PB" as const,
+        properties: { variant: 6, orderedValues: "yellow" }
+      }
+    },
+    emptyNative("item-1-repair-target", "repair-target"),
+    emptyNative("item-1-repair-bank", "repair-bank"),
+    emptyNative("item-1-prediction", "prediction-box"),
+    emptyNative("item-1-teacher-rubric", "teacher-rubric")
+  );
+  const predicate = resolved.valuePredicates[0]!;
+  predicate.parameters = {
+    mode: "construct-rule",
+    constructionMode: "student-constructed",
+    answerMode: "conditional-rubric",
+    ruleStatePath: "studentRuleState",
+    decisionConstraintId: "construct-rule-slot",
+    validRuleStatesPath: "validRuleStateExamples",
+    surplusPath: "surplusRuleStateExamples",
+    variantRoles: Array.from({ length: 12 }, (_, index) => `rule-variant-${index + 1}`),
+    ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
+    variantProperty: "orderedValues",
+    continuationRuleStatePath: "studentRuleState",
+    explanationRuleStatePath: "studentRuleState",
+    predictionRole: "prediction-box",
+    explanationRole: "teacher-rubric",
+    studentInputRoles: [],
+    verificationRoles: [
+      "rule-slot-1", "rule-slot-2",
+      "continuation-slot-1", "continuation-slot-2", "continuation-slot-3", "continuation-slot-4",
+      "misaligned-item", "repair-target", "repair-bank"
+    ],
+    minimumValidStates: 2,
+    minimumSurplus: 2,
+    stateConstruction: {
+      kind: "ordered-distinct-subset-from-pool",
+      sourceRoles: Array.from({ length: 12 }, (_, index) => `rule-variant-${index + 1}`),
+      slotRoles: ["rule-slot-1", "rule-slot-2"],
+      slotCount: 2,
+      minimumDistinctValues: 2,
+      minimumDistinctPoolValues: 3,
+      minimumCopiesPerDistinctValue: 4,
+      sourceUseMode: "move-once-no-clone",
+      allowsAnyOrderedSelection: true,
+      initialState: "empty"
+    },
+    application: {
+      ruleStatePath: "studentRuleState",
+      continuationTargetRoles: ["continuation-slot-1", "continuation-slot-2", "continuation-slot-3", "continuation-slot-4"],
+      period: 2,
+      minimumTargetCount: 4,
+      requiresVisibleComparison: true,
+      requiresSimultaneousRuleAndContinuation: true,
+      ruleStateIndexMode: "index-mod-period",
+      evidenceMode: "student-state-dependent"
+    },
+    stateLifecycle: {
+      kind: "empty-selection-then-declared-repair",
+      statePath: "studentRuleState",
+      declaredStatePath: "declaredRuleState",
+      phaseOrder: ["rule-selection", "remove-misaligned", "place-replacement"],
+      initialState: "empty",
+      declaredStateCardinality: 2,
+      declaredStateExamplesPath: "validRuleStateExamples",
+      selectionConstraintIdPrefix: "construct-rule-slot",
+      requiresIndexedSelectionWrites: true,
+      repairRequiresDeclaredState: true
+    },
+    repair: {
+      kind: "declared-rule-independent-misplacement",
+      declaredRuleStatePath: "declaredRuleState",
+      repairRuleStateIndex: 1,
+      wrongItemProperty: "orderedValues",
+      wrongItemRoles: ["misaligned-item"],
+      repairTargetRoles: ["repair-target"],
+      repairBankRoles: ["repair-bank"],
+      beforeStatePath: "initialArrangementState",
+      afterStatePath: "repairedArrangementState",
+      validAfterStateExamplesPath: "validRepairedArrangementStates",
+      removeConstraintId: "remove-misaligned-item",
+      replacementConstraintId: "repair-misaligned-item",
+      requiresIndependentWrongState: true,
+      requiresBeforeAfterComparison: true,
+      evidenceMode: "student-state-dependent"
+    },
+    distractors: [
+      { predicateKind: "cognitive.rule-state-contract", misconception: "어긋난 조각도 같은 규칙이라고 본다." },
+      { predicateKind: "cognitive.rule-state-contract", misconception: "고친 뒤 다음 무늬의 순서를 확인하지 않는다." }
+    ]
+  };
+  resolved.constraints = [
+    ...[1, 2].map((index) => ({
+      id: `construct-rule-slot-${index}:item-1`, kind: "fill-from-pool", sourceIds: variantIds,
+      targetId: `item-1-rule-slot-${index}`, parameters: { ruleStatePath: "studentRuleState" }, requiresStudentAction: true, satisfiedInitially: false
+    })),
+    ...[1, 2, 3, 4].map((index) => ({
+      id: `apply-rule-slot-${index}:item-1`, kind: "fill-from-pool", sourceIds: variantIds,
+      targetId: `item-1-continuation-slot-${index}`, parameters: { ruleStatePath: "studentRuleState", ruleStateIndex: (index - 1) % 2 }, requiresStudentAction: true, satisfiedInitially: false
+    })),
+    {
+      id: "remove-misaligned-item:item-1", kind: "place-in", sourceIds: ["item-1-misaligned-item"], targetId: "item-1-repair-bank",
+      parameters: { initialRuleStatePath: "studentRuleState", declaredRuleStatePath: "declaredRuleState", repairRuleStateIndex: 1, wrongItemProperty: "orderedValues", beforeStatePath: "initialArrangementState", afterStatePath: "repairedArrangementState" }, requiresStudentAction: true, satisfiedInitially: false
+    },
+    {
+      id: "repair-misaligned-item:item-1", kind: "fill-from-pool", sourceIds: variantIds, targetId: "item-1-repair-target",
+      parameters: { initialRuleStatePath: "studentRuleState", declaredRuleStatePath: "declaredRuleState", repairRuleStateIndex: 1, wrongItemProperty: "orderedValues", beforeStatePath: "initialArrangementState", afterStatePath: "repairedArrangementState", validAfterStateExamplesPath: "validRepairedArrangementStates" }, requiresStudentAction: true, satisfiedInitially: false
+    }
+  ] as never;
+  return resolved;
+}
+
 describe("생성 전 검증", () => {
   it("construct-rule은 두 유효 상태·잉여 상태·열린 구성 조작을 검증한다", () => {
     const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
@@ -574,6 +761,40 @@ describe("생성 전 검증", () => {
       issues
     );
     expect(issues).toEqual([]);
+  });
+
+  it("repeat-repair는 빈 선택→선언 상태→오류 항 제거·대체의 전체 phase를 검증한다", () => {
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(
+      studentConstructedRepairRuleStatePredicateFixture(),
+      issues
+    );
+    expect(issues).toEqual([]);
+  });
+
+  it("repeat-repair는 초기 상태와 선언 상태를 같은 경로로 위조하면 차단한다", () => {
+    const resolved = studentConstructedRepairRuleStatePredicateFixture();
+    const predicate = resolved.valuePredicates[0]!;
+    (predicate.parameters as Record<string, unknown>).repair = {
+      ...(predicate.parameters.repair as Record<string, unknown>),
+      declaredRuleStatePath: "studentRuleState"
+    };
+    expect(() => validateRegisteredPredicates(resolved, [])).toThrow(
+      "predicate-parameter-invalid:cognitive.rule-state-contract"
+    );
+  });
+
+  it("repeat-repair는 제거·대체 제약이 선언 상태 phase에 결속되지 않으면 차단한다", () => {
+    const resolved = studentConstructedRepairRuleStatePredicateFixture();
+    const remove = resolved.constraints.find((constraint) =>
+      constraint.id.startsWith("remove-misaligned-item:")
+    )!;
+    delete (remove.parameters as Record<string, unknown>).declaredRuleStatePath;
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toContain(
+      "cognitive-rule-repair-missing"
+    );
   });
 
   it("student-constructed 확장의 일부 필드는 legacy branch로 우회할 수 없다", () => {

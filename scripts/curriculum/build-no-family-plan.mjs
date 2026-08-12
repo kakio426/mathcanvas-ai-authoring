@@ -409,6 +409,8 @@ export function assertEngineCoreContract(contract, archetypeId) {
     const overrideState = overrideDecision?.stateConstruction;
     const overrideApplication = overrideDecision?.application;
     const overrideLifecycle = overrideDecision?.stateLifecycle;
+    const overrideRepair =
+      override.repair ?? override.manifestDecision?.repair;
     assert(
       overrideDecision?.mode === "construct-rule" &&
         overrideDecision.constructionMode === "student-constructed" &&
@@ -437,6 +439,10 @@ export function assertEngineCoreContract(contract, archetypeId) {
       overrideLifecycle &&
         overrideLifecycle.kind === "empty-selection-then-declared-repair" &&
         overrideLifecycle.statePath === overrideDecision.ruleStatePath &&
+        stableId(overrideLifecycle.declaredStatePath) &&
+        overrideLifecycle.declaredStatePath !== overrideLifecycle.statePath &&
+        overrideRepair?.declaredRuleStatePath ===
+          overrideLifecycle.declaredStatePath &&
         JSON.stringify(overrideLifecycle.phaseOrder) ===
           JSON.stringify([
             "rule-selection",
@@ -474,8 +480,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
           ]),
       `no-family-plan-engine-core-contract-override-runtime-invalid:${archetypeId}:${familyTrackId}`
     );
-    const repair =
-      override.repair ?? override.manifestDecision?.repair;
+    const repair = overrideRepair;
     const stableRoleList = (value, minimum = 1) =>
       Array.isArray(value) &&
       value.length >= minimum &&
@@ -484,7 +489,8 @@ export function assertEngineCoreContract(contract, archetypeId) {
     assert(
       repair &&
         repair.kind === "declared-rule-independent-misplacement" &&
-        repair.declaredRuleStatePath === decision.ruleStatePath &&
+        repair.declaredRuleStatePath !== decision.ruleStatePath &&
+        repair.declaredRuleStatePath === overrideLifecycle?.declaredStatePath &&
         repair.repairRuleStateIndex === 1 &&
         repair.wrongItemProperty === decision.variantProperty &&
         stableRoleList(repair.wrongItemRoles) &&

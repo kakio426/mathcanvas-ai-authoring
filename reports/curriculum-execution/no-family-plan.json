@@ -3632,7 +3632,7 @@
           ],
           "repair": {
             "kind": "declared-rule-independent-misplacement",
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
@@ -3656,6 +3656,7 @@
           "stateLifecycle": {
             "kind": "empty-selection-then-declared-repair",
             "statePath": "studentRuleState",
+            "declaredStatePath": "declaredRuleState",
             "phaseOrder": [
               "rule-selection",
               "remove-misaligned",
@@ -3771,7 +3772,7 @@
             ],
             "repair": {
               "kind": "declared-rule-independent-misplacement",
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": [
@@ -3795,6 +3796,7 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
+              "declaredStatePath": "declaredRuleState",
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -3823,6 +3825,7 @@
           "stateLifecycle": {
             "kind": "empty-selection-then-declared-repair",
             "statePath": "studentRuleState",
+            "declaredStatePath": "declaredRuleState",
             "phaseOrder": [
               "rule-selection",
               "remove-misaligned",
@@ -3836,7 +3839,7 @@
             "repairRequiresDeclaredState": true
           },
           "repair": {
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
@@ -3874,7 +3877,7 @@
         "baseContractFamilyTrackId": "pattern.repeat-unit.construct-v1",
         "repair": {
           "kind": "declared-rule-independent-misplacement",
-          "declaredRuleStatePath": "studentRuleState",
+          "declaredRuleStatePath": "declaredRuleState",
           "repairRuleStateIndex": 1,
           "wrongItemProperty": "orderedValues",
           "wrongItemRoles": [
@@ -3962,8 +3965,10 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "ENGINE_CORE",
-          "completedOperations": [],
+          "nextOperation": "FAMILY_TRACK",
+          "completedOperations": [
+            "ENGINE_CORE"
+          ],
           "reviewStatus": "pending",
           "reviewId": null,
           "retryingFamilyTrack": false
@@ -4017,8 +4022,10 @@
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "ENGINE_CORE",
-        "completedOperations": [],
+        "nextOperation": "FAMILY_TRACK",
+        "completedOperations": [
+          "ENGINE_CORE"
+        ],
         "reviewStatus": "pending",
         "reviewId": null,
         "retryingFamilyTrack": false
@@ -4026,35 +4033,28 @@
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v10",
-      "operation": "ENGINE_CORE",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      "operation": "FAMILY_TRACK",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
         "W002-SOL_REVIEW-TARGET_SET",
         "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
       ],
       "allowedFiles": [
-        "packages/contracts/src/vocabulary/constraints.ts",
-        "packages/contracts/src/vocabulary/constraints.test.ts",
-        "packages/contracts/src/catalog/cognitive-demand.ts",
-        "packages/contracts/src/catalog/cognitive-demand.test.ts",
-        "fixtures/architecture/p1-core-baseline.json",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.test.ts",
-        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
-        "packages/validator/src/predicates/registry.ts",
-        "packages/validator/src/validator.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/cognitive/registry.test.ts",
-        "scripts/pedagogy/check-cognitive-demand.mjs",
-        "reports/curriculum-execution/subwork-state/**",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,
@@ -6336,7 +6336,7 @@
             ],
             "repair": {
               "kind": "declared-rule-independent-misplacement",
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": [
@@ -6360,6 +6360,7 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
+              "declaredStatePath": "declaredRuleState",
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -6474,7 +6475,7 @@
               ],
               "repair": {
                 "kind": "declared-rule-independent-misplacement",
-                "declaredRuleStatePath": "studentRuleState",
+                "declaredRuleStatePath": "declaredRuleState",
                 "repairRuleStateIndex": 1,
                 "wrongItemProperty": "orderedValues",
                 "wrongItemRoles": [
@@ -6498,6 +6499,7 @@
               "stateLifecycle": {
                 "kind": "empty-selection-then-declared-repair",
                 "statePath": "studentRuleState",
+                "declaredStatePath": "declaredRuleState",
                 "phaseOrder": [
                   "rule-selection",
                   "remove-misaligned",
@@ -6516,6 +6518,7 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
+              "declaredStatePath": "declaredRuleState",
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -6529,7 +6532,7 @@
               "repairRequiresDeclaredState": true
             },
             "repair": {
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": [
@@ -6550,7 +6553,7 @@
           },
           "repair": {
             "kind": "declared-rule-independent-misplacement",
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
@@ -7251,7 +7254,7 @@
           ],
           "repair": {
             "kind": "declared-rule-independent-misplacement",
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
@@ -7275,6 +7278,7 @@
           "stateLifecycle": {
             "kind": "empty-selection-then-declared-repair",
             "statePath": "studentRuleState",
+            "declaredStatePath": "declaredRuleState",
             "phaseOrder": [
               "rule-selection",
               "remove-misaligned",
@@ -7390,7 +7394,7 @@
             ],
             "repair": {
               "kind": "declared-rule-independent-misplacement",
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": [
@@ -7414,6 +7418,7 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
+              "declaredStatePath": "declaredRuleState",
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -7442,6 +7447,7 @@
           "stateLifecycle": {
             "kind": "empty-selection-then-declared-repair",
             "statePath": "studentRuleState",
+            "declaredStatePath": "declaredRuleState",
             "phaseOrder": [
               "rule-selection",
               "remove-misaligned",
@@ -7455,7 +7461,7 @@
             "repairRequiresDeclaredState": true
           },
           "repair": {
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": [
@@ -7493,7 +7499,7 @@
         "baseContractFamilyTrackId": "pattern.repeat-unit.construct-v1",
         "repair": {
           "kind": "declared-rule-independent-misplacement",
-          "declaredRuleStatePath": "studentRuleState",
+          "declaredRuleStatePath": "declaredRuleState",
           "repairRuleStateIndex": 1,
           "wrongItemProperty": "orderedValues",
           "wrongItemRoles": [
@@ -7581,8 +7587,10 @@
             "FAMILY_TRACK",
             "SOL_REVIEW"
           ],
-          "nextOperation": "ENGINE_CORE",
-          "completedOperations": [],
+          "nextOperation": "FAMILY_TRACK",
+          "completedOperations": [
+            "ENGINE_CORE"
+          ],
           "reviewStatus": "pending",
           "reviewId": null,
           "retryingFamilyTrack": false
@@ -7636,8 +7644,10 @@
           "FAMILY_TRACK",
           "SOL_REVIEW"
         ],
-        "nextOperation": "ENGINE_CORE",
-        "completedOperations": [],
+        "nextOperation": "FAMILY_TRACK",
+        "completedOperations": [
+          "ENGINE_CORE"
+        ],
         "reviewStatus": "pending",
         "reviewId": null,
         "retryingFamilyTrack": false
@@ -7645,35 +7655,28 @@
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v10",
-      "operation": "ENGINE_CORE",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+      "operation": "FAMILY_TRACK",
+      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK",
       "dependencyWorkItemIds": [
         "W002-SOL_REPLAN",
         "W002-SOL_REVIEW-TARGET_SET",
         "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
       ],
       "allowedFiles": [
-        "packages/contracts/src/vocabulary/constraints.ts",
-        "packages/contracts/src/vocabulary/constraints.test.ts",
-        "packages/contracts/src/catalog/cognitive-demand.ts",
-        "packages/contracts/src/catalog/cognitive-demand.test.ts",
-        "fixtures/architecture/p1-core-baseline.json",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/registry.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-rule-construction-v1.test.ts",
-        "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.test.ts",
-        "packages/mathcanvas-compiler/src/resolve/constraint-source-capacity.test.ts",
-        "packages/validator/src/predicates/registry.ts",
-        "packages/validator/src/validator.test.ts",
+        "fixtures/pedagogy/learning-map.used.json",
+        "packages/templates/src/problem-families/**",
+        "packages/templates/src/problem-families/registry.ts",
+        "packages/templates/src/problem-families/registry.test.ts",
         "packages/templates/src/cognitive/registry.ts",
-        "packages/templates/src/cognitive/registry.test.ts",
-        "scripts/pedagogy/check-cognitive-demand.mjs",
-        "reports/curriculum-execution/subwork-state/**",
+        "packages/validator/src/native/registry.ts",
+        "packages/curriculum/src/assessment-targets/**",
+        "reports/curriculum-coverage/**",
+        "reports/problem-family-registry/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
-        "reports/curriculum-execution/no-family-plan.md"
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/**"
       ],
       "reviewGate": null,
       "learningMapBound": true,

@@ -3231,6 +3231,9 @@ const handlers: Record<string, Handler> = {
       value && typeof value === "object" && !Array.isArray(value)
         ? (value as Record<string, unknown>)
         : undefined;
+    const stateLifecycle = record(
+      parameter(predicate, "stateLifecycle")
+    );
     type RepairContract = {
       kind: string;
       declaredRuleStatePath: string;
@@ -3324,7 +3327,8 @@ const handlers: Record<string, Handler> = {
     const repairShapeValid =
       repair === undefined ||
       (repair.kind === "declared-rule-independent-misplacement" &&
-        repair.declaredRuleStatePath === ruleStatePath &&
+        repair.declaredRuleStatePath !== ruleStatePath &&
+        repair.declaredRuleStatePath === stateLifecycle?.declaredStatePath &&
         stableStringList(repair.wrongItemRoles, 1) &&
         stableStringList(repair.repairTargetRoles, 1) &&
         stableStringList(repair.repairBankRoles, 1) &&
@@ -3345,6 +3349,26 @@ const handlers: Record<string, Handler> = {
               applicationContinuationTargetRoles.includes(role)
             )
         ));
+    const lifecycleValid =
+      repair === undefined ||
+      (stateLifecycle?.kind ===
+        "empty-selection-then-declared-repair" &&
+        stateLifecycle.statePath === ruleStatePath &&
+        typeof stateLifecycle.declaredStatePath === "string" &&
+        stateLifecycle.declaredStatePath !== stateLifecycle.statePath &&
+        repair?.declaredRuleStatePath === stateLifecycle.declaredStatePath &&
+        JSON.stringify(stateLifecycle.phaseOrder) ===
+          JSON.stringify([
+            "rule-selection",
+            "remove-misaligned",
+            "place-replacement"
+          ]) &&
+        stateLifecycle.initialState === construction?.initialState &&
+        stateLifecycle.declaredStateCardinality === construction?.slotCount &&
+        stateLifecycle.declaredStateExamplesPath === validRuleStatesPath &&
+        stateLifecycle.selectionConstraintIdPrefix === decisionConstraintId &&
+        stateLifecycle.requiresIndexedSelectionWrites === true &&
+        stateLifecycle.repairRequiresDeclaredState === true);
     const expectedVerificationRoles = repair
       ? [
           ...ruleSlotRoles,
@@ -3440,6 +3464,7 @@ const handlers: Record<string, Handler> = {
           JSON.stringify(verificationRoles) !==
             JSON.stringify(expectedVerificationRoles))) ||
       !repairShapeValid ||
+      !lifecycleValid ||
       (repair !== undefined && !studentConstructed) ||
       !Array.isArray(distractors) ||
       distractors.length < (studentConstructed ? 2 : 1) ||
@@ -3483,6 +3508,9 @@ const handlers: Record<string, Handler> = {
         item.values[ruleStatePath]
       );
       const initialStudentRuleState = item.values[ruleStatePath];
+      const declaredStudentRuleState = repair
+        ? item.values[repair.declaredRuleStatePath]
+        : undefined;
       const variantValues = variants
         .map((variant) => variant?.toolIntent.properties[variantProperty])
         .filter((value): value is unknown => value !== undefined);
@@ -3704,7 +3732,7 @@ const handlers: Record<string, Handler> = {
         );
         const beforeState = item.values[repair.beforeStatePath];
         const afterState = item.values[repair.afterStatePath];
-        const declaredState = item.values[repair.declaredRuleStatePath];
+        const declaredState = declaredStudentRuleState;
         const validAfterStates = orderedRuleStateList(
           item.values[repair.validAfterStateExamplesPath]
         );
@@ -3750,6 +3778,14 @@ const handlers: Record<string, Handler> = {
             beforeState[repair.repairRuleStateIndex],
             wrongValue
           );
+        const phaseStateBound =
+          lifecycleValid &&
+          Array.isArray(initialStudentRuleState) &&
+          initialStudentRuleState.length === 0 &&
+          Array.isArray(declaredState) &&
+          declaredState.length ===
+            (stateLifecycle?.declaredStateCardinality ?? -1) &&
+          validRuleStatesPath === stateLifecycle?.declaredStateExamplesPath;
         const findConstraint = (id: string) =>
           resolved.constraints.find(
             (constraint) => constraint.id === `${id}:${item.id}`
@@ -3770,7 +3806,9 @@ const handlers: Record<string, Handler> = {
           !removeConstraint.satisfiedInitially &&
           exactSources(removeConstraint, wrongIds) &&
           removeConstraint.targetId === bankIds[0] &&
-          removeConstraint.parameters.ruleStatePath === ruleStatePath &&
+          removeConstraint.parameters.initialRuleStatePath === ruleStatePath &&
+          removeConstraint.parameters.declaredRuleStatePath ===
+            repair.declaredRuleStatePath &&
           removeConstraint.parameters.repairRuleStateIndex ===
             repair.repairRuleStateIndex &&
           removeConstraint.parameters.wrongItemProperty ===
@@ -3783,7 +3821,9 @@ const handlers: Record<string, Handler> = {
           !replacementConstraint.satisfiedInitially &&
           exactSources(replacementConstraint, variantIds) &&
           replacementConstraint.targetId === targetIds[0] &&
-          replacementConstraint.parameters.ruleStatePath === ruleStatePath &&
+          replacementConstraint.parameters.initialRuleStatePath === ruleStatePath &&
+          replacementConstraint.parameters.declaredRuleStatePath ===
+            repair.declaredRuleStatePath &&
           replacementConstraint.parameters.repairRuleStateIndex ===
             repair.repairRuleStateIndex &&
           replacementConstraint.parameters.wrongItemProperty ===
@@ -3801,6 +3841,7 @@ const handlers: Record<string, Handler> = {
           repairTargetsOpen &&
           repairBanksAvailable &&
           beforeAfterBound &&
+          phaseStateBound &&
           afterEnvelopeValid &&
           removeValid &&
           replacementValid;
