@@ -3926,6 +3926,50 @@
         "PRESERVED EDUCATIONAL STATE: repeat-rule 및 repeat-repair family source/evidence와 [2수02-02] offline 2/3·live 0/3, A3 target set·outline hash·세 scope를 변경하지 않는다. change-rule decision/invariant 계약도 v13에서 승인된 내용을 유지한다.",
         "BOUNDARY: 이 승인은 reviewer gate governance와 change-rule pending artifact identity만 닫는다. change-rule schema·validator·layout·family, exact preview, response/save/reopen/live canary 또는 release는 아직 구현·승인하지 않았다. 다음 cursor는 change-rule ENGINE_CORE다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN_REQUEST",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 2,
+      "candidateCommit": "8a545d138113565d9998a9733c9320f35bf76ee5",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-semantic-binding-preflight-v14.json"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1",
+      "checkedAt": "2026-08-12T09:12:16.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+      "familyTrackId": "pattern.change-rule.construct-v1",
+      "scopeId": "W002-FAMILY_TRACK-change-rule",
+      "blockedOperation": "ENGINE_CORE",
+      "blockedContractRevision": "W002-SOL-REPLAN-v14",
+      "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-semantic-binding-preflight-v14.json",
+      "blockerArtifactSha256": "4acf6b5dad1e63062d5611192edd1d62905fa13852dbe02aa07165893004b9ac",
+      "evidenceRefs": [
+        "git:8a545d138113565d9998a9733c9320f35bf76ee5",
+        "git:8265abff05dfe795091c164137529f39135ffd34",
+        "git:73bdb839c281baaa308a83cde8937c4185aeb95c#W002-SOL_REPLAN-SOL-A37",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-change-rule-SOL-A1",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-semantic-binding-preflight-v14.json",
+        "packages/validator/src/validator.test.ts#changeRuleResolvedNativeFixture",
+        "packages/validator/src/predicates/registry.ts#cognitive.change-rule-state-contract",
+        "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.test.ts",
+        "command:git diff-tree --no-commit-id --name-only -r 8a545d138113565d9998a9733c9320f35bf76ee5 (exact preflight artifact only)",
+        "command:shasum -a 256 preflight artifact (4acf6b5dad1e63062d5611192edd1d62905fa13852dbe02aa07165893004b9ac)",
+        "command:pnpm exec vitest run cognitive-demand.test.ts cognitive/registry.test.ts w002-change-rule-v1.test.ts validator.test.ts (4 files / 68 tests PASS)",
+        "command:compatibility artifact whole-file and implementation hashes verified current"
+      ],
+      "findings": [
+        "BLOCKED REQUEST IDENTITY: candidate 8a545d1은 8265abf 구현 후에 정확히 change-rule semantic-binding preflight artifact 한 파일만 추가한다. W002/[2수02-02], operationWorkItemId, familyTrackId, scopeId, ENGINE_CORE cursor와 마지막 승인 revision v14가 current하며 candidate 이후 implementation 변경은 없다.",
+        "P0 SOURCE_VALUE_DOMAIN_AND_CAPACITY_UNBOUND: native fixture는 SM02PB 원천 3개의 variant/orderedValues 1·2·3을 startValue·stepMagnitude·direction 제어 3개, sequence 4개, repair 1개의 같은 source pool로 재사용한다. field별 source domain·sourceValueProperty·decoder와 move-once/reuse 용량 계약이 없어 direction=increase|decrease와 startValue=4를 기록할 수 없고 3개 native object로 8 target lifecycle을 구성할 수 없다. resolve→compile PASS는 ID 존재의 구조 증거일 뿐 수학 상태 생성 증거가 아니다.",
+        "P0 STUDENT_ACTION_STATE_WRITE_UNBOUND: signed-step과 validRepairedChangeStatesByRuleState의 정적 mapping은 수학적으로 일치하지만 sequence/repair constraint가 writesStatePath, sourceValueProperty, 선택값→항 변환, repair 결과 write를 강제하지 않는다. 학생 drag가 constructedSequenceState나 repairedChangeSequenceState를 생성하지 못해도 정적 mapping만 맞으면 통과하므로 관찰 증거 계약이 성립하지 않는다.",
+        "P0 SPLIT_ANSWER_LEAK_ORDER_DEPENDENT: containsVisibleOrderedRuleStateAcrossProperties는 emission properties를 이은 문자열에서 [startValue, stepMagnitude, direction] 순서로만 탐색한다. 잠긴 힌트를 direction→start→step 순으로 나누면 같은 완전한 상태가 보여도 우회하며, 현재 change-rule validator tests와 synthetic audit self-check에 reordered split 반례가 없다.",
+        "P1 NATIVE_BOUNDS_EVIDENCE_WRONG_TOOL: w002-change-rule-v1 layout test는 실제 source tool SM02PB가 아닌 NUMBER_CARD_RENDERED_SIZE를 검사한다. 현재 188px은 기존 variant를 담지만 PATTERN_BLOCK_VARIANTS/patternBlockBounds 전체와 exact resolved source IDs/value properties를 고정한 증거가 필요하다.",
+        "BOUNDARY: 이 record는 8265abf를 승인하거나 삭제하지 않고 repeat-rule/repeat-repair compatibility evidence, offline 2/3, live 0/3을 보존한다. 새 SOL_REPLAN이 이 request ID를 supersedesBlockedReviewId로 소비하고 source/state lifecycle 계약을 별도 승인하기 전에는 change-rule ENGINE_CORE 완료 artifact, cursor 전진, FAMILY_TRACK, response/save/reopen/live 증거 또는 push를 금지한다."
+      ]
     }
   ]
 }
