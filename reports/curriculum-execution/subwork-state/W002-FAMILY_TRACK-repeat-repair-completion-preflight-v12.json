@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-repeat-repair-completion-preflight-v12",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.declared-repeat.repair-v1",
+  "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+  "blockedOperation": "ENGINE_CORE",
+  "blockedContractRevision": "W002-SOL-REPLAN-v11",
+  "blockerCodes": [
+    "ENGINE_CORE_ARTIFACT_COMPLETION_STATUS_UNSPECIFIED",
+    "ENGINE_CORE_COMPLETION_EVIDENCE_UNAUTHORIZABLE",
+    "ACTIVE_SUBWORK_FAMILY_TRACK_PROJECTION_STALE"
+  ],
+  "summary": "b95c143의 bounded ENGINE_CORE 구현과 10개 구현 파일 hash는 현재지만 v11 artifact는 planned-pending-engine-core로 남아 있어 완료 evidence의 권위 상태가 정의되지 않았고, 현재 상태 projection 테스트는 repeat-rule work item을 하드코딩하여 repeat-repair FAMILY_TRACK 전이를 검증하지 못한다.",
+  "evidenceRefs": [
+    "git:b95c1434012f793191cd07dee2b95b3ee75b804a",
+    "git:106f1350f2443d12dde56c69d1e6438ae42a75af#W002-SOL_REPLAN-SOL-A30",
+    "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+    "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+    "tests/sol-review-status.test.ts#post-approval-FAMILY_TRACK-projection",
+    "command:artifact-status=planned-pending-engine-core",
+    "command:active-repeat-repair-FAMILY_TRACK-operationWorkItemId-differs-from-repeat-rule"
+  ],
+  "requiredReplan": {
+    "contractSeam": "engine-core-completion-status-and-active-subwork-family-track-projection",
+    "artifactIdentity": "W002-FAMILY_TRACK-repeat-repair-engine-core-v11",
+    "requiredEvidence": [
+      "planned-pending-engine-core is accepted only before ENGINE_CORE completion and can never satisfy completion evidence",
+      "implemented-verified-pending-family-track is the explicit completion status and is required for completed ENGINE_CORE evidence",
+      "completion artifact revision is W002-SOL-REPLAN-v12 and implementation file set plus current SHA are exact",
+      "state completion evidence binds artifact path, whole-file SHA, operation identity, family/scope and revision",
+      "post-transition projection derives operationWorkItemId and completed prefix from the active repeat-repair subwork rather than repeat-rule literals",
+      "repeat-rule v10 compatibility evidence remains separately preserved"
+    ],
+    "forbiddenFallbacks": [
+      "treating planned-pending-engine-core as completed evidence",
+      "reusing repeat-rule FAMILY_TRACK operation identity for repeat-repair",
+      "advancing W002 to FAMILY_TRACK without current artifact and state evidence",
+      "response/save/reopen/live MathCanvas evidence claims"
+    ]
+  },
+  "createdAt": "2026-08-12T13:30:00.000Z"
+}
