@@ -2980,6 +2980,83 @@
           "정직한 승인 범위: teacher-rubric은 조건부 교사 확인만 제공하며 학생 텍스트 자동 채점·응답 저장을 주장하지 않는다. exact preview와 scopeNote가 response/save-reopen/live viewport 미증명을 계속 명시하므로 이번 승인은 [2수02-02] repeat-rule construct FAMILY_TRACK의 offline compile-time envelope만 승인하고 current-hash live canary·responseHash·save/reopen·release를 대신하지 않는다.",
           "QA: 독립 full pnpm check가 84 files/516 tests, build·typecheck, problem-family registry 33/21, curriculum target/coverage, 9-source resolve, W002 layout, cognitive verify, native-spatial ratchet, visual/quality P0/P1 0으로 통과했다. 따라서 A4를 approved로 기록하며 다음 scoped operation으로 진행할 수 있다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A24",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "changes-requested",
+        "attempt": 24,
+        "candidateCommit": "a6f170a3d804a60bc86c9bacd805262e855bf576",
+        "changedFiles": [
+          "W002_REPLAN.md",
+          "reports/curriculum-coverage/latest.json",
+          "reports/curriculum-coverage/latest.md",
+          "reports/curriculum-execution/latest.json",
+          "reports/curriculum-execution/latest.md",
+          "reports/curriculum-execution/no-family-plan.json",
+          "reports/curriculum-execution/no-family-plan.md",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "reports/problem-family-registry/latest.json",
+          "reports/problem-family-registry/latest.md",
+          "scripts/curriculum/build-no-family-plan.mjs",
+          "scripts/curriculum/no-family-plan.json",
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A23",
+        "checkedAt": "2026-08-12T00:56:02.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "98ccd79d58ae4306a2538a21c61c7967ddba853aeff08a6255f9e6e4618b4e7e",
+        "supersedesBlockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v10",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:a6f170a3d804a60bc86c9bacd805262e855bf576",
+          "git:4fd7e5a7db36b43a979bba99fdc24eb129bbd178",
+          "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN-SOL-A23",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-rule-SOL-A2",
+          "W002_REPLAN.md#v10-재계획--repeat-repair-engine_core-계약-분리",
+          "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack",
+          "scripts/curriculum/build-no-family-plan.mjs#resolveEngineCoreContract",
+          "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+          "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreCompletionEvidence",
+          "scripts/curriculum/sol-review-status.mjs#replanTriggerForFlow",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts#change.pattern.declared-repeat.repair-v1",
+          "reports/curriculum-execution/subwork-state/W002.json",
+          "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v9.json",
+          "tests/sol-review-status.test.ts#resolves-repair-ENGINE_CORE-by-family-and-never-falls-back-to-repeat-rule-evidence",
+          "command:git diff-tree --no-commit-id --name-only -r a6f170a3d804a60bc86c9bacd805262e855bf576 (exact 13 SOL_REPLAN files)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts (20/20)",
+          "command:pnpm typecheck",
+          "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks; next W003; replan W002 v10)",
+          "command:pnpm check (84 files/517 tests; build/typecheck/native/cognitive/visual/quality PASS)",
+          "command:git diff --check 4fd7e5a7..a6f170a"
+        ],
+        "findings": [
+          "P0 REPLAN_TRIGGER_LINEAGE: repeat-repair ENGINE_CORE hard-stop 뒤 생성된 새 scoped blocker review가 없다. candidate는 W002 state의 blockedReviewId를 v9 A23가 이미 소비한 repeat-rule preflight `W002-FAMILY_TRACK-repeat-rule-SOL-A2`로 유지하고 contract revision만 v10으로 올렸다. 최신 A23 review의 supersedesBlockedReviewId도 같은 A2라서 builder는 승인 revision/hash 불일치를 이용해 역사적 blocker를 raw trigger로 다시 노출한다. 이는 consumed replan의 original blocker는 historical이며 새 scoped blocker만 SOL_REPLAN을 유발한다는 replanTriggerForFlow 계약을 우회한다. repeat-repair ENGINE_CORE preflight 전용 blocker identity/operation을 정식 board·status·gate 계약에 추가하고 v10이 그 새 ID를 소비해야 한다. A4 승인이나 이미 소비된 A2를 재사용해서는 안 된다.",
+          "P0 REPAIR_RUNTIME_AUTHORITY_MISSING: `resolveEngineCoreContract`는 v9 base의 manifestDecision, runtimePredicate, binding을 그대로 shallow merge하므로 projected repair contract도 student-constructed construct-rule 및 기존 rule/continuation verification만 실제 validator authority로 가진다. 새 repair 객체는 builder에서 role 이름과 boolean 존재만 검사하고 manifest/cognitive/runtime predicate에 결속되지 않는다. inherited verificationRoles에도 misaligned-item, repair-target, repair-bank가 없다. 따라서 wrong item 제거, replacement, before/after 비교를 구현하지 않은 core도 현재 artifact contract를 통과할 수 있다.",
+          "필수 계약 보정: repeat-repair override가 독립 runtime predicate 또는 명시적 composite predicate를 소유하게 하고, remove/place-in과 replacement fill-from-pool의 exact kind/source/target/initial satisfaction, wrong/target/bank role count equality·상호 배타성, beforeStatePath와 afterStatePath의 관찰 가능한 binding, declaredRuleStatePath와 continuation/repair의 동일 state 결속, repair roles를 포함한 exact verification union을 builder·schema·audit에서 fail-closed로 검증한다. `requiresIndependentWrongState`는 단순 boolean이 아니라 허용된 모든 declared rule state에서 wrong item이 실제 오답임을 증명하는 생성 불변량이어야 한다.",
+          "P1 CROSS_FAMILY_REGRESSION_GAP: missing repeat-repair ref는 현재 test에서 거부되고 unresolved change-rule ref도 resolver에서 거부되지만, test는 change-rule이 repair override를 잘못 가리키는 경우와 override owner identity 불일치를 검증하지 않는다. override 자체에 exact familyTrackId/scope 또는 typed contract kind를 넣고 wrong-family ref, duplicate artifact path, base artifact alias를 모두 negative fixture로 고정해야 한다. 현재 assert loop는 어떤 non-base planned family key에도 repair 전용 layout/repair shape만 요구하므로 향후 change-rule 계약을 같은 abstraction으로 안전하게 추가할 수 없다.",
+          "보존된 증거: base engineCoreContract에 contractRevision v9를 명시하고 completion validator가 resolved contract revision을 읽도록 바꿔 repeat-rule v9 artifact path, SHA, workItem/family/scope identity와 A4 FAMILY_TRACK 승인은 현재 no-family plan에서 계속 유효하다. repair ref가 없으면 fail-closed하며 repeat-rule artifact를 repair completion evidence로 넣는 regression도 거부된다.",
+          "기계적 정합성: candidate exact 13 files는 현재 SOL_REPLAN manifest 안에 있고 source/state contract revision v10, generated nextReplan W002, nextOffline W003, target source·outline hash·3-target denominator 불변은 일치한다. 그러나 queue가 SOL_REPLAN으로 내려간 원인이 새 repair blocker가 아니라 소비된 A2의 재사용이므로 이 상태를 승인 근거로 사용할 수 없다.",
+          "QA: focused 20/20, typecheck, no-family plan, diff check와 독립 full pnpm check 84 files/517 tests가 모두 통과했고 visual/quality P0/P1 0이다. 테스트 녹색은 위 lineage와 repair predicate 미결속을 탐지하지 못하므로 candidate a6f170a는 changes-requested이며 새 blocker provenance와 executable repair authority가 갖춰지기 전 ENGINE_CORE 구현·상태 전진·main push를 금지한다."
+        ]
       }
     ]
   },
@@ -3140,9 +3217,9 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 44,
+      "totalRecords": 45,
       "approved": 19,
-      "changesRequested": 22,
+      "changesRequested": 23,
       "blocked": 3,
       "pendingRequiredReviews": 190
     },
@@ -3654,7 +3731,7 @@
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4"
         ],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
@@ -6817,7 +6894,7 @@
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4"
         ],
-        "replan": "approved",
+        "replan": "changes-requested",
         "replanApproved": false,
         "replanConsumed": false,
         "familyRevalidation": "pending",
