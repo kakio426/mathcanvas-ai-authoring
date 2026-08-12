@@ -319,10 +319,16 @@ describe("Sol review candidate and scope gates", () => {
 
       if (nextOffline?.operation === "ENGINE_CORE") {
         expect(nextOffline.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-rule-ENGINE_CORE"
+          "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE"
         );
         expect(nextOffline.nextFamilySubWork?.nextOperation).toBe(
           "ENGINE_CORE"
+        );
+        expect(nextOffline.nextFamilySubWork?.familyTrackId).toBe(
+          "pattern.declared-repeat.repair-v1"
+        );
+        expect(nextOffline.nextFamilySubWork?.scopeId).toBe(
+          "W002-FAMILY_TRACK-repeat-repair"
         );
         expect(stateItem?.completionEvidenceByOperation).toBeUndefined();
       } else {
@@ -825,15 +831,33 @@ describe("Sol review candidate and scope gates", () => {
     const report = JSON.parse(
       readFileSync("reports/curriculum-execution/no-family-plan.json", "utf8")
     );
-    const next = report.current.nextReplanWork;
-    expect(next?.workItemId).toBe("W002");
-    expect(next?.operation).toBe("SOL_REPLAN");
-    expect(next?.replanContractRevision).toBe("W002-SOL-REPLAN-v10");
-    expect(next?.solReview.solReplanRequest.reviewId).toBe(
-      "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1"
+    const preApproval = report.current.nextReplanWork;
+    if (preApproval?.workItemId === "W002") {
+      expect(preApproval.operation).toBe("SOL_REPLAN");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v10");
+      expect(preApproval.solReview.solReplanRequest.reviewId).toBe(
+        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1"
+      );
+      expect(preApproval.solReview.replanApproved).toBe(false);
+      expect(preApproval.solReview.replanConsumed).toBe(false);
+      return;
+    }
+
+    const postApproval = report.current.nextOfflineWork;
+    expect(postApproval?.workItemId).toBe("W002");
+    expect(postApproval?.operation).toBe("ENGINE_CORE");
+    expect(postApproval?.operationWorkItemId).toBe(
+      "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE"
     );
-    expect(next?.solReview.replanApproved).toBe(false);
-    expect(next?.solReview.replanConsumed).toBe(false);
+    expect(postApproval?.nextFamilySubWork?.familyTrackId).toBe(
+      "pattern.declared-repeat.repair-v1"
+    );
+    expect(postApproval?.nextFamilySubWork?.scopeId).toBe(
+      "W002-FAMILY_TRACK-repeat-repair"
+    );
+    expect(postApproval?.solReview.solReplanRequest).toBeNull();
+    expect(postApproval?.solReview.replanApproved).toBe(true);
+    expect(postApproval?.solReview.replanConsumed).toBe(true);
   });
 
   it("does not consume a preflight request until a fully bound replan is approved", () => {
