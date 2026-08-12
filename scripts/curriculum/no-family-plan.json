@@ -474,7 +474,7 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v11",
+      "replanContractRevision": "W002-SOL-REPLAN-v12",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "contractRevision": "W002-SOL-REPLAN-v10",
@@ -652,7 +652,7 @@
       "engineCoreContractsByFamilyTrack": {
         "pattern.declared-repeat.repair-v1": {
           "baseContractFamilyTrackId": "pattern.repeat-unit.construct-v1",
-          "contractRevision": "W002-SOL-REPLAN-v11",
+          "contractRevision": "W002-SOL-REPLAN-v12",
           "constraintCapacity": {
             "maxSources": 12,
             "requiredSources": 12
@@ -951,7 +951,10 @@
           },
           "artifactContract": {
             "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
-            "status": "planned-pending-engine-core",
+            "pendingStatus": "planned-pending-engine-core",
+            "pendingContractRevision": "W002-SOL-REPLAN-v11",
+            "completionStatus": "implemented-verified-pending-family-track",
+            "completionContractRevision": "W002-SOL-REPLAN-v12",
             "implementationFiles": [
               "packages/contracts/src/catalog/cognitive-demand.ts",
               "packages/contracts/src/catalog/cognitive-demand.test.ts",

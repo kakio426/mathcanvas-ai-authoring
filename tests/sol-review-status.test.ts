@@ -253,6 +253,73 @@ describe("Sol review candidate and scope gates", () => {
     expect(artifact.status).toBe("implemented-verified-pending-family-track");
   });
 
+  it("separates repeat-repair pending artifact from v12 completion evidence", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const contract = source.trackContracts.C01;
+    const planned = contract.subWorkItems.find(
+      (item: { workItemId: string }) =>
+        item.workItemId === "W002-FAMILY_TRACK-repeat-repair"
+    );
+    const artifactContract = resolveEngineCoreContract(
+      contract,
+      planned.familyTrackId
+    ).artifactContract;
+    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v12");
+    expect(artifactContract.pendingStatus).toBe(
+      "planned-pending-engine-core"
+    );
+    expect(artifactContract.pendingContractRevision).toBe(
+      "W002-SOL-REPLAN-v11"
+    );
+    expect(artifactContract.completionStatus).toBe(
+      "implemented-verified-pending-family-track"
+    );
+    expect(artifactContract.completionContractRevision).toBe(
+      "W002-SOL-REPLAN-v12"
+    );
+
+    const artifactPath = artifactContract.artifactPath;
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    const artifactSha256 = createHash("sha256")
+      .update(readFileSync(artifactPath))
+      .digest("hex");
+    const pending = {
+      workItemId: planned.workItemId,
+      completedOperations: [],
+      nextOperation: "ENGINE_CORE"
+    };
+    const completed = {
+      workItemId: planned.workItemId,
+      completedOperations: ["ENGINE_CORE"],
+      nextOperation: "FAMILY_TRACK",
+      completionEvidenceByOperation: {
+        ENGINE_CORE: { artifactPath, artifactSha256 }
+      }
+    };
+
+    if (artifact.status === artifactContract.pendingStatus) {
+      expect(artifact.replanContractRevision).toBe(
+        artifactContract.pendingContractRevision
+      );
+      expect(() =>
+        assertEngineCoreCompletionEvidence(pending, planned, contract)
+      ).not.toThrow();
+      expect(() =>
+        assertEngineCoreCompletionEvidence(completed, planned, contract)
+      ).toThrow("no-family-plan-subwork-engine-core-evidence-invalid");
+    } else {
+      expect(artifact.status).toBe(artifactContract.completionStatus);
+      expect(artifact.replanContractRevision).toBe(
+        artifactContract.completionContractRevision
+      );
+      expect(() =>
+        assertEngineCoreCompletionEvidence(completed, planned, contract)
+      ).not.toThrow();
+    }
+  });
+
   it("projects the W002 engine-core contract into the generated loop work item", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
@@ -296,8 +363,11 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v11"
+        "W002-SOL-REPLAN-v12"
       );
+      expect(
+        report.current.nextReplanWork.solReview.solReplanRequest.reviewId
+      ).toBe("W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3");
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false
       );
@@ -328,6 +398,24 @@ describe("Sol review candidate and scope gates", () => {
         (item: { workItemId: string }) =>
           item.workItemId === "W002-FAMILY_TRACK-repeat-rule"
       );
+      const activePlannedItem = workItem.familySubWorkItems.find(
+        (item: { workItemId: string }) =>
+          item.workItemId === nextOffline.nextFamilySubWork?.workItemId
+      );
+      expect(activePlannedItem).toBeDefined();
+      expect(nextOffline.operationWorkItemId).toBe(
+        `${activePlannedItem.workItemId}-${nextOffline.operation}`
+      );
+      const completedPrefix = activePlannedItem.operationSequence.slice(
+        0,
+        activePlannedItem.operationSequence.indexOf(nextOffline.operation)
+      );
+      expect(activeStateItem?.completedOperations).toEqual(completedPrefix);
+      expect(activeStateItem?.nextOperation).toBe(nextOffline.operation);
+      expect(
+        repeatRuleStateItem?.completionEvidenceByOperation?.ENGINE_CORE
+          ?.artifactPath
+      ).toContain("repeat-rule-engine-core-v10-compat");
 
       if (nextOffline?.operation === "ENGINE_CORE") {
         expect(nextOffline.operationWorkItemId).toBe(
@@ -343,21 +431,14 @@ describe("Sol review candidate and scope gates", () => {
           "W002-FAMILY_TRACK-repeat-repair"
         );
         expect(activeStateItem?.completionEvidenceByOperation).toBeUndefined();
-        expect(
-          repeatRuleStateItem?.completionEvidenceByOperation?.ENGINE_CORE
-            ?.artifactPath
-        ).toContain("repeat-rule-engine-core-v10-compat");
       } else {
         expect(nextOffline?.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-rule-FAMILY_TRACK"
+          "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
         );
         expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
           "FAMILY_TRACK"
         );
-        expect(activeStateItem?.completedOperations).toEqual([
-          "AFFORDANCE_DISCOVERY",
-          "ENGINE_CORE"
-        ]);
+        expect(activeStateItem?.completedOperations).toEqual(["ENGINE_CORE"]);
         const evidence =
           activeStateItem?.completionEvidenceByOperation?.ENGINE_CORE;
         const artifactPath =
@@ -850,9 +931,9 @@ describe("Sol review candidate and scope gates", () => {
     const preApproval = report.current.nextReplanWork;
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
-      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v11");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v12");
       expect(preApproval.solReview.solReplanRequest.reviewId).toBe(
-        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2"
+        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3"
       );
       expect(preApproval.solReview.replanApproved).toBe(false);
       expect(preApproval.solReview.replanConsumed).toBe(false);
@@ -861,9 +942,11 @@ describe("Sol review candidate and scope gates", () => {
 
     const postApproval = report.current.nextOfflineWork;
     expect(postApproval?.workItemId).toBe("W002");
-    expect(postApproval?.operation).toBe("ENGINE_CORE");
+    expect(["ENGINE_CORE", "FAMILY_TRACK"]).toContain(
+      postApproval?.operation
+    );
     expect(postApproval?.operationWorkItemId).toBe(
-      "W002-FAMILY_TRACK-repeat-repair-ENGINE_CORE"
+      `W002-FAMILY_TRACK-repeat-repair-${postApproval?.operation}`
     );
     expect(postApproval?.nextFamilySubWork?.familyTrackId).toBe(
       "pattern.declared-repeat.repair-v1"

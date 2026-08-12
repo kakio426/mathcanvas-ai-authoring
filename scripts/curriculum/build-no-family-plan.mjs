@@ -555,7 +555,16 @@ export function assertEngineCoreContract(contract, archetypeId) {
       overrideArtifact &&
         relativePath(overrideArtifact.artifactPath) &&
         overrideArtifact.artifactPath !== artifactContract.artifactPath &&
-        overrideArtifact.status === "planned-pending-engine-core" &&
+        overrideArtifact.pendingStatus === "planned-pending-engine-core" &&
+        overrideArtifact.pendingContractRevision ===
+          "W002-SOL-REPLAN-v11" &&
+        overrideArtifact.completionStatus ===
+          "implemented-verified-pending-family-track" &&
+        overrideArtifact.completionContractRevision ===
+          override.contractRevision &&
+        overrideArtifact.pendingStatus !== overrideArtifact.completionStatus &&
+        overrideArtifact.pendingContractRevision !==
+          overrideArtifact.completionContractRevision &&
         Array.isArray(overrideArtifact.implementationFiles) &&
         overrideArtifact.implementationFiles.length > 0 &&
         new Set(overrideArtifact.implementationFiles).size ===
@@ -598,6 +607,39 @@ export function assertEngineCoreCompletionEvidence(
       evidence === undefined,
       `no-family-plan-subwork-engine-core-evidence-before-completion:${plannedItem.workItemId}`
     );
+    const pendingArtifactContract =
+      contract.engineCoreContractsByFamilyTrack?.[plannedItem.familyTrackId]
+        ?.artifactContract;
+    if (pendingArtifactContract?.pendingStatus) {
+      const expectedFiles = [
+        ...(pendingArtifactContract.implementationFiles ?? [])
+      ].sort();
+      const artifact = readJson(
+        resolve(root, pendingArtifactContract.artifactPath)
+      );
+      const actualFiles = Object.keys(artifact.implementationFiles ?? {}).sort();
+      assert(
+        artifact.schemaVersion === "1.0.0" &&
+          artifact.operation === "ENGINE_CORE" &&
+          artifact.workItemId === plannedItem.workItemId &&
+          artifact.operationWorkItemId ===
+            `${plannedItem.workItemId}-ENGINE_CORE` &&
+          artifact.standardCode === contract.standardCode &&
+          artifact.familyTrackId === plannedItem.familyTrackId &&
+          artifact.scopeId === plannedItem.scopeId &&
+          artifact.replanContractRevision ===
+            pendingArtifactContract.pendingContractRevision &&
+          artifact.status === pendingArtifactContract.pendingStatus &&
+          JSON.stringify(actualFiles) === JSON.stringify(expectedFiles),
+        `no-family-plan-subwork-engine-core-pending-artifact-invalid:${plannedItem.workItemId}`
+      );
+      for (const file of expectedFiles) {
+        assert(
+          sha256File(file) === artifact.implementationFiles[file],
+          `no-family-plan-subwork-engine-core-implementation-stale:${plannedItem.workItemId}:${file}`
+        );
+      }
+    }
     return;
   }
 
@@ -606,6 +648,7 @@ export function assertEngineCoreCompletionEvidence(
     plannedItem.familyTrackId
   );
   const artifactContract = engineCoreContract?.artifactContract;
+  const expectedFiles = [...(artifactContract?.implementationFiles ?? [])].sort();
   assert(
     artifactContract &&
       evidence &&
@@ -626,12 +669,13 @@ export function assertEngineCoreCompletionEvidence(
       artifact.familyTrackId === plannedItem.familyTrackId &&
       artifact.scopeId === plannedItem.scopeId &&
       artifact.replanContractRevision ===
-        (engineCoreContract.contractRevision ??
+        (artifactContract.completionContractRevision ??
+          engineCoreContract.contractRevision ??
           contract.replanContractRevision) &&
-      artifact.status === artifactContract.status,
+      artifact.status ===
+        (artifactContract.completionStatus ?? artifactContract.status),
     `no-family-plan-subwork-engine-core-evidence-invalid:${plannedItem.workItemId}`
   );
-  const expectedFiles = [...artifactContract.implementationFiles].sort();
   const actualFiles = Object.keys(artifact.implementationFiles ?? {}).sort();
   assert(
     JSON.stringify(actualFiles) === JSON.stringify(expectedFiles),

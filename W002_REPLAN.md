@@ -1,13 +1,14 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v11)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v12)
 
-상태: **Sol max 재계획 후보 — repeat-repair lifecycle v11 승인 대기**
+상태: **Sol max 재계획 후보 — repeat-repair completion governance v12 승인 대기**
 
-v11은 A28 승인 뒤 발견된 두 hard-stop을 정식으로 소비한다. 새 preflight
-request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`는 A1을 supersede하며,
-v11 SOL_REPLAN 후보는 A2를 `supersedesBlockedReviewId`로 정확히 소비해야 한다.
-`aa75d44`의 구현 파일은 이 후보에 포함하지 않는다. authority plan·builder·status
-projection은 이 거버넌스 후보에서만 바뀌고, cognitive schema·validator·layout·positive
-fixture는 A29 승인 후 별도 ENGINE_CORE 후보에서 변경한다.
+v12는 A30이 승인한 lifecycle v11과 `b95c143`의 bounded ENGINE_CORE 구현을
+바꾸지 않는다. 새 preflight request
+`W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3`는 A2를 supersede하며, v12
+SOL_REPLAN 후보 A31은 A30과 A3를 각각 `supersedesReviewId`와
+`supersedesBlockedReviewId`로 정확히 소비해야 한다. cognitive schema·validator·layout·
+positive fixture 10개 구현 파일과 v11 artifact 본문은 이 governance 후보에서 수정하지
+않는다.
 
 학생 상태 계약은 초기 `studentRuleState`와 학생 선택 결과인
 `declaredRuleState`를 분리한다. rule-selection constraint는 indexed slot별로
@@ -16,16 +17,13 @@ fixture는 A29 승인 후 별도 ENGINE_CORE 후보에서 변경한다.
 정답 목록 중 하나가 아니라 `declaredRuleState[repairRuleStateIndex]`를 사용한
 조건부 mapping(`replace-at-declared-rule-index`)으로 검증해야 한다.
 
-v11은 마지막 승인 revision v10의 repeat-rule ENGINE_CORE 증거를 보존하면서,
-새 preflight request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`을
-(`SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을 supersede) `supersedesBlockedReviewId`로 정확히 소비하는 재계획이다. A3 TARGET_SET의 세
-target·outline hash·learning-map 결속은 바꾸지 않는다. v9/v10 completion artifact는
-역사 자료로만 남기며 v11 repair evidence로 재사용하지 않는다. 이 request의
-`blockedContractRevision`은 마지막 승인 revision인 `W002-SOL-REPLAN-v10`이고,
-새 권위 계약은 `W002-SOL-REPLAN-v11`이다.
+v12는 마지막 승인 revision v11의 repeat-repair ENGINE_CORE contract와 repeat-rule
+compatibility evidence를 보존한다. A3 TARGET_SET의 세 target·outline hash·learning-map
+결속도 바꾸지 않는다. request A3의 `blockedContractRevision`은 v11이고 새 권위 계약은
+`W002-SOL-REPLAN-v12`다.
 
 request 소비 review가 승인·소비되기 전에는 W002 repeat-repair cursor를
-`ENGINE_CORE`에서 전진시키지 않는다. 이 문서의 v11은 계약·거버넌스 승인이지
+`ENGINE_CORE`에서 전진시키지 않는다. 이 문서의 v12는 계약·거버넌스 승인이지
 repeat-repair family 구현, exact preview, response/save/reopen, live canary 또는
 release 승인이 아니다.
 
@@ -43,7 +41,36 @@ compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/re
 테스트를 추가한다. family generator·teacher UI·response/save-reopen은 여전히 이
 재계획 범위 밖이다.
 
-## v11 hard-stop과 재진입 계약
+## v12 completion status와 상태 전이 계약
+
+- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-completion-preflight-v12.json`
+  및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3`.
+- request artifact SHA-256: `f87dbc15eab0a8be30582d9a37962092c68e67cc6249f7f8e23739984f27e90f`.
+- 재계획 revision: `W002-SOL-REPLAN-v12`, `replanTargetSetRequired=false`.
+- request의 blocked revision: `W002-SOL-REPLAN-v11`.
+- repair artifact 경로는 기존
+  `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json`을
+  유지한다. `pendingStatus=planned-pending-engine-core`,
+  `pendingContractRevision=W002-SOL-REPLAN-v11`,
+  `completionStatus=implemented-verified-pending-family-track`,
+  `completionContractRevision=W002-SOL-REPLAN-v12`를 서로 다른 권위 값으로 둔다.
+- repeat-repair가 `ENGINE_CORE` 미완료일 때는 completion evidence를 금지하고, artifact는
+  pending status·v11 revision·정확한 10개 implementation file current SHA를 가져야 한다.
+  pending artifact는 어떤 경우에도 완료 evidence로 인정하지 않는다.
+- 완료 전이는 artifact를 completion status·v12 revision으로 승격한 뒤 그 파일의 현재
+  whole-file SHA를 `completionEvidenceByOperation.ENGINE_CORE`에 결속해야 한다. builder는
+  operation/work item/standard/family/scope/revision/status, implementation file 집합과 각
+  current SHA, whole-file SHA를 모두 exact 검사한다.
+- v12 governance 승인만으로 W002 state를 완료 처리하지 않는다. 승인 뒤에도
+  repeat-repair는 `completedOperations=[]`, `nextOperation=ENGINE_CORE`, evidence 없음이다.
+  별도 bounded state transition이 위 증거를 기록한 뒤에만
+  `completedOperations=[ENGINE_CORE]`, `nextOperation=FAMILY_TRACK`이 된다.
+- status projection은 active `nextFamilySubWork`에서 operationWorkItemId와 완료 prefix를
+  도출한다. repeat-repair FAMILY_TRACK의 exact identity는
+  `W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK`, 완료 prefix는 `[ENGINE_CORE]`이다.
+  repeat-rule v10 compatibility artifact와 state evidence는 별도로 그대로 보존한다.
+
+## v11 hard-stop과 재진입 계약 (historical authority)
 
 - 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json`
   및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`.
@@ -65,7 +92,7 @@ compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/re
 ## v8 이전 governance의 위치
 
 아래 v6/v7/v8 절은 왜 학생 구성 상태·completion evidence·용량 계약이 필요했는지에 대한
-역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v11 절과
+역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v12 절과
 `scripts/curriculum/no-family-plan.json#trackContracts.C01`을 따른다.
 
 이번 v7은 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된

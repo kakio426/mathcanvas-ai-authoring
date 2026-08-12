@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "workItemId": "W002",
   "standardCode": "[2수02-02]",
-  "contractRevision": "W002-SOL-REPLAN-v11",
+  "contractRevision": "W002-SOL-REPLAN-v12",
   "items": [
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-rule",
