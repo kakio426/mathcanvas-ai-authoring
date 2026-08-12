@@ -4035,6 +4035,49 @@
         "QA AND REGRESSION GATES: focused status suite 27/27, full pnpm check 88 files/556 tests, build/typecheck/native/cognitive/visual/quality 및 no-family 97/24/84가 통과했다. negative fixtures는 catalog 산술, capacity/missing source, write phase, permutation coverage, native value map과 runtime projection drift를 거부한다.",
         "PENDING BOUNDARY: 이 승인은 governance authority와 v15 pending artifact만 승인한다. 현재 3-source v14 layout이나 candidate 8265abf를 32-source completion evidence로 재사용하지 않으며 change-rule state는 completedOperations=[]/nextOperation=ENGINE_CORE다. 새 bounded ENGINE_CORE가 32 source+8 target 실제 native emission/layout/validator/audit를 증명하기 전 FAMILY_TRACK, exact preview, response/save/reopen/live canary 또는 release를 주장할 수 없다. repeat-rule/repeat-repair evidence, offline 2/3와 live 0/3은 보존한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN_REQUEST",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 3,
+      "candidateCommit": "e243a0b4388099379450a1c77e09aceb366c24f8",
+      "changedFiles": [
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-blueprint-preflight-v15.json"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2",
+      "checkedAt": "2026-08-12T10:25:00.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+      "familyTrackId": "pattern.change-rule.construct-v1",
+      "scopeId": "W002-FAMILY_TRACK-change-rule",
+      "blockedOperation": "ENGINE_CORE",
+      "blockedContractRevision": "W002-SOL-REPLAN-v15",
+      "blockerArtifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-blueprint-preflight-v15.json",
+      "blockerArtifactSha256": "688290f3ed68862908717abf1eed4100423c71c60116f224e46642f1a24975b9",
+      "evidenceRefs": [
+        "git:e243a0b4388099379450a1c77e09aceb366c24f8",
+        "git:085e9ab3688167d7b1e6f3e587b1ca79bd5f2021#W002-SOL_REPLAN-SOL-A38",
+        "scripts/curriculum/sol-review-board.json#W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-blueprint-preflight-v15.json",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.change-rule.construct-v1.runtimePredicate.parameters.nativeEvidenceContract",
+        "packages/contracts/src/vocabulary/blueprint.ts#assertBlueprintValue",
+        "packages/mathcanvas-compiler/src/resolve/resolve-activity.ts#parseActivityBlueprint",
+        "packages/validator/src/validator.test.ts#changeRuleResolvedNativeFixture",
+        "command:git diff-tree --no-commit-id --name-only -r e243a0b4388099379450a1c77e09aceb366c24f8 (exact preflight artifact only)",
+        "command:shasum -a 256 preflight artifact (688290f3ed68862908717abf1eed4100423c71c60116f224e46642f1a24975b9)",
+        "command:pnpm exec vitest run packages/validator/src/validator.test.ts -> blueprint-key-forbidden:valuePredicates.0.parameters.nativeEvidenceContract.renderedBounds.width",
+        "command:git status --short at e243a0b before reviewer edits (clean)"
+      ],
+      "findings": [
+        "BLOCKED REQUEST IDENTITY: candidate e243a0b은 A38 승인 HEAD 위에 exact preflight artifact 한 파일만 추가한다. W002/[2수02-02], operationWorkItemId, familyTrackId, scopeId, ENGINE_CORE cursor와 revision v15가 current하며 candidate 이후 implementation 변경은 없다.",
+        "P0 BLUEPRINT VALUE-PREDICATE CONTRACT COLLISION: v15 runtime predicate는 nativeEvidenceContract.renderedBounds와 minimumTargetBounds의 width/height를 exact하게 요구한다. 하지만 defineActivityBlueprint와 parseActivityBlueprint의 assertBlueprintValue는 valuePredicates.parameters 내부까지 재귀하여 width/height를 answer-shape 금지 키로 거부한다. 따라서 exact v15 predicate를 가진 blueprint는 resolve 전 `blueprint-key-forbidden:...renderedBounds.width`로 실패한다.",
+        "P0 CURRENT ENGINE_CORE SCOPE CANNOT FIX: 승인된 ENGINE_CORE allowedFiles에는 packages/contracts/src/vocabulary/blueprint.ts와 focused test가 없다. predicate에서 bounds를 삭제한 뒤 resolve 후 재삽입하거나 키를 임의 변경하면 A38 권위/runtime hash를 위조하므로 scope 확대 없이 실제 32-source/8-target native 증거를 결속할 수 없다.",
+        "MINIMUM SAFE REPLAN: 다음 SOL_REPLAN은 learner answer-bearing paths의 width/height 금지는 보존하되 bounded contract metadata path만 허용하는 path-sensitive guard를 권위화하고 blueprint source/test를 bounded ENGINE_CORE 범위에 추가해야 한다. define/parse 양 경로의 positive exact-v15 fixture와 answer-data negative fixture가 필요하다.",
+        "PRESERVED BOUNDARY: 중간 ENGINE_CORE diff는 승인·커밋하지 않고 stash에 보존했다. change-rule artifact는 planned-pending-engine-core, cursor는 ENGINE_CORE, repeat-rule/repeat-repair evidence와 offline 2/3·live 0/3을 유지한다. 새 SOL_REPLAN 승인 전 completion transition, FAMILY_TRACK, response/save/reopen/live 주장 또는 push를 금지한다."
+      ]
     }
   ]
 }

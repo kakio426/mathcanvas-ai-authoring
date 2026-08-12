@@ -33,8 +33,8 @@
 
 ## 지금 선택된 작업
 
-- offline: [2수02-02] · C01 · cover-unbound-reviewed-targets
-- Sol 재계획: 없음
+- offline: [4수03-01] · G01 · review-target-set-and-design-family
+- Sol 재계획: [2수02-02] · C01 · sol-replan-required
 - live evidence: [2수04-02] · D01A
 
 ## Sol 독립 검토 게이트
@@ -42,7 +42,7 @@
 - reviewer: **gpt-5.6-sol / max**
 - required after: **TARGET_SET · FAMILY_TRACK**
 - board: **scripts/curriculum/sol-review-board.json**
-- 승인 기록: **29개** · 수정 요청: **29개** · 차단: **10개** · pending: **191개**
+- 승인 기록: **29개** · 수정 요청: **29개** · 차단: **11개** · pending: **191개**
 - Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.
 - 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.
 
@@ -51,9 +51,9 @@
 | 상태 | 성취기준 수 |
 |---|---:|
 | planned-no-family | 95 |
-| offline-in-progress | 1 |
+| offline-in-progress | 0 |
 | sol-review-required | 0 |
-| blocked-needs-sol-replan | 0 |
+| blocked-needs-sol-replan | 1 |
 | live-evidence | 1 |
 | complete | 0 |
 
@@ -208,7 +208,7 @@
 | work | operation | batch | 성취기준 | 학년군 | 영역 | track | engine | target 초안 hash | 역할 | Sol 검토 | 현재 동작 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | W001-LIVE_EVIDENCE | LIVE_EVIDENCE | B01 | [2수04-02] | 1-2 | 자료와 가능성 | D01A | R22 | 0aa4ab91ce14 (2) | anchor | target approved / family approved | capture-current-hash-live-evidence |
-| W002-FAMILY_TRACK-change-rule-ENGINE_CORE | ENGINE_CORE | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | 61d81952e25b (3) | anchor | target approved / family pending | cover-unbound-reviewed-targets |
+| W002-FAMILY_TRACK-change-rule-SOL_REPLAN | SOL_REPLAN | B01 | [2수02-02] | 1-2 | 변화와 관계 | C01 | R08 | 61d81952e25b (3) | anchor | target approved / family pending | sol-replan-required |
 | W003-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [4수03-01] | 3-4 | 도형과 측정 | G01 | R11 | 8acfb50ecf52 (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W004-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B08 | [2수03-01] | 1-2 | 도형과 측정 | G02 | R13 | 1157cc20fa2c (2) | anchor | target pending / family pending | review-target-set-and-design-family |
 | W005-LEARNING_MAP_BINDING | LEARNING_MAP_BINDING | B03 | [4수04-02] | 3-4 | 자료와 가능성 | D02A | R22 | 4998a2001117 (3) | anchor | target pending / family pending | review-target-set-and-design-family |
