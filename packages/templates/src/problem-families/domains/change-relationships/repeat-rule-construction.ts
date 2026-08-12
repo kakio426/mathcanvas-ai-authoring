@@ -14,7 +14,6 @@ import {
 } from "@mathcanvas/contracts";
 import { findAssessmentTargetSet } from "@mathcanvas/curriculum";
 import {
-  CHOICE_CARD_ROLES,
   layoutBlock,
   makeChoiceExplanationScaffoldLayoutChildren,
   makeChoiceExplanationScaffoldRoles
@@ -37,7 +36,7 @@ export const REPEAT_RULE_CONSTRUCTION_MANIPULATION =
   "pattern-repeat-rule-construction" as const;
 export const REPEAT_RULE_CONSTRUCTION_GENERATOR_ID =
   "pattern.repeat-unit.construct-items" as const;
-export const REPEAT_RULE_CONSTRUCTION_GENERATOR_VERSION = "1.0.0" as const;
+export const REPEAT_RULE_CONSTRUCTION_GENERATOR_VERSION = "2.0.0" as const;
 const LEARNING_MAP_USAGE_SNAPSHOT_SHA256 =
   "bed940f1896d3991aeb12766dff49c84dd110465e38ed01625ed5f32b564b1d5";
 const TARGET_ID = "change.pattern.repeat-rule.construct-v1" as const;
@@ -58,7 +57,17 @@ type RuleItemSpec = Readonly<{
   ruleState: readonly [number, number];
   validRuleStates: readonly (readonly [number, number])[];
   surplusRuleStates: readonly (readonly [number, number])[];
-  variants: readonly [number, number, number, number, number];
+  variants: readonly [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number
+  ];
   questionText: string;
   continuationText: string;
   answerExplanation: string;
@@ -83,11 +92,14 @@ const CONTEXTS: Readonly<
           [4, 5],
           [5, 4]
         ],
-        surplusRuleStates: [[4, 4]],
-        variants: [4, 5, 4, 6, 6],
+        surplusRuleStates: [
+          [4, 4],
+          [5, 5]
+        ],
+        variants: [4, 5, 6, 4, 5, 6, 4, 5, 6],
         questionText:
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "같은 순서로 계속",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
           "초록과 주황을 한 단위로 정하고 두 조각의 순서를 고정하면, 어느 위치에서 시작해도 같은 두 조각이 반복됩니다."
       },
@@ -97,11 +109,14 @@ const CONTEXTS: Readonly<
           [4, 6],
           [6, 4]
         ],
-        surplusRuleStates: [[4, 4]],
-        variants: [4, 6, 4, 5, 5],
+        surplusRuleStates: [
+          [4, 4],
+          [6, 6]
+        ],
+        variants: [4, 5, 6, 4, 5, 6, 4, 5, 6],
         questionText:
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "같은 순서로 계속",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
           "초록과 보라를 한 단위로 정하고 두 조각의 순서를 고정하면, 두 조각이 번갈아 반복됩니다."
       }
@@ -117,11 +132,14 @@ const CONTEXTS: Readonly<
           [2, 3],
           [3, 2]
         ],
-        surplusRuleStates: [[2, 2]],
-        variants: [2, 3, 2, 1, 1],
+        surplusRuleStates: [
+          [2, 2],
+          [3, 3]
+        ],
+        variants: [1, 2, 3, 1, 2, 3, 1, 2, 3],
         questionText:
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "같은 순서로 계속",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
           "파랑과 빨강을 한 단위로 정하고 두 조각의 순서를 고정하면, 같은 순서가 계속 반복됩니다."
       },
@@ -131,11 +149,14 @@ const CONTEXTS: Readonly<
           [2, 1],
           [1, 2]
         ],
-        surplusRuleStates: [[2, 2]],
-        variants: [2, 1, 2, 3, 3],
+        surplusRuleStates: [
+          [2, 2],
+          [1, 1]
+        ],
+        variants: [1, 2, 3, 1, 2, 3, 1, 2, 3],
         questionText:
           "빈 규칙 칸 두 곳에 패턴 블록을 직접 골라 놓고, 어떻게 반복되는지 말해 보세요.",
-        continuationText: "같은 순서로 계속",
+        continuationText: "내가 고른 순서로 다음 네 칸에 계속 놓아 보세요.",
         answerExplanation:
           "파랑과 노랑을 한 단위로 정하고 두 조각의 순서를 고정하면, 두 조각이 번갈아 반복됩니다."
       }
@@ -145,8 +166,8 @@ const CONTEXTS: Readonly<
 
 const instructions = [
   "① 바구니에서 패턴 블록을 골라 빈 규칙 칸 두 곳에 직접 놓으세요.",
-  "② 두 조각의 순서를 내가 정한 규칙으로 선언하고, 다음에도 같은지 확인하세요.",
-  "③ 정한 두 조각과 순서가 왜 규칙인지 글로 써 보세요."
+  "② 두 조각의 순서를 정한 규칙에 따라 다음 네 칸에도 차례로 놓아 보세요.",
+  "③ 놓은 조각과 순서가 다음 배열에서도 같은 까닭을 말로 설명해 보세요."
 ] as const;
 
 const scaffoldBase = makeChoiceExplanationScaffoldRoles({
@@ -167,7 +188,9 @@ const scaffoldBase = makeChoiceExplanationScaffoldRoles({
 
 // The generic scaffold contains a five-card choice panel. A construct-rule
 // family must not present a pre-authored correct card, so only its instruction,
-// question, prediction, and explanation regions are retained here.
+// question, prediction, and explanation regions are retained here. The
+// explanation role is renamed to teacher-rubric: the core deliberately does
+// not claim student text-entry persistence.
 const scaffold = scaffoldBase
   .filter(
     (role) =>
@@ -176,15 +199,40 @@ const scaffold = scaffoldBase
       role.role !== "pool-label"
   )
   .map((role) => {
+    if (role.role.startsWith("instruction-")) {
+      // The instructional header is static (movable=false), but it is not a
+      // locked student-state emission: its circled step marker must not be
+      // mistaken for a visible numeric rule state by the answer-leak audit.
+      return { ...role, locked: false };
+    }
+    if (role.role === "work-panel") {
+      return {
+        ...role,
+        properties: { fill: "none", stroke: "slategray" }
+      };
+    }
+    if (role.role === "prediction-box") {
+      return {
+        ...role,
+        properties: {
+          fill: "white",
+          stroke: "slategray",
+          strokeDashArray: "8 6"
+        }
+      };
+    }
     if (role.role === "explanation-box") {
       return {
         ...role,
+        role: "teacher-rubric",
+        layoutRole: "teacher-rubric",
+        idRole: "teacher-rubric",
         toolKey: "common.text" as const,
         intentKind: "text" as const,
-        properties: { text: "", fontSize: 22 },
+        properties: { text: "조건부 확인 기준", fontSize: 22 },
         bindings: {},
         instructionalIntent:
-          "학생이 직접 구성한 두 조각의 순서와 반복되는 까닭을 쓰는 영역입니다."
+          "교사가 학생이 구성한 규칙과 다음 배열의 일치를 확인하는 조건부 루브릭입니다."
       };
     }
     return role;
@@ -196,14 +244,28 @@ const variantRoles = [
   "rule-variant-2",
   "rule-variant-3",
   "rule-variant-4",
-  "rule-variant-5"
+  "rule-variant-5",
+  "rule-variant-6",
+  "rule-variant-7",
+  "rule-variant-8",
+  "rule-variant-9"
 ] as const;
 const variantLayoutRoles = [
-  "completion-block-1",
-  "completion-block-2",
-  "completion-block-3",
-  "completion-block-4",
-  "completion-block-5"
+  "rule-source-1",
+  "rule-source-2",
+  "rule-source-3",
+  "rule-source-4",
+  "rule-source-5",
+  "rule-source-6",
+  "rule-source-7",
+  "rule-source-8",
+  "rule-source-9"
+] as const;
+const continuationTargetRoles = [
+  "continuation-slot-1",
+  "continuation-slot-2",
+  "continuation-slot-3",
+  "continuation-slot-4"
 ] as const;
 
 const patternRoles = [
@@ -218,7 +280,7 @@ const patternRoles = [
     movable: false,
     instructionalIntent:
       "학생이 정한 두 조각의 순서를 확인하는 작업 영역입니다.",
-    properties: { fill: "#F8FAFC", stroke: "#8291A7" },
+    properties: { fill: "aliceblue", stroke: "slategray" },
     bindings: {},
     containerRole: "work-panel"
   },
@@ -240,7 +302,7 @@ const patternRoles = [
   ...ruleSlotRoles.map((role) => ({
     role,
     scope: "each-item" as const,
-    layoutRole: role === "rule-slot-1" ? "next-slot-1" : "next-slot-2",
+    layoutRole: role,
     idRole: role,
     toolKey: "common.rectangle" as const,
     intentKind: "draw-rectangle" as const,
@@ -248,7 +310,7 @@ const patternRoles = [
     movable: false,
     instructionalIntent:
       "학생이 직접 고른 패턴 블록을 순서대로 놓는 빈 규칙 칸입니다.",
-    properties: { fill: "#FFFFFF", stroke: "#7B8DA5", strokeDashArray: "8 6" },
+    properties: { fill: "white", stroke: "slategray", strokeDashArray: "8 6" },
     bindings: {},
     containerRole: "pattern-track"
   })),
@@ -263,7 +325,7 @@ const patternRoles = [
     movable: false,
     instructionalIntent:
       "학생이 직접 정할 두 조각을 고르는 패턴 블록 바구니입니다.",
-    properties: { fill: "#F5FBFF", stroke: "#4AA9D8" },
+    properties: { fill: "azure", stroke: "steelblue" },
     bindings: {},
     containerRole: "work-panel"
   },
@@ -298,6 +360,25 @@ const patternRoles = [
       orderedValues: `item.ruleVariant${index + 1}`
     },
     containerRole: "piece-bank"
+  })),
+  ...continuationTargetRoles.map((role) => ({
+    role,
+    scope: "each-item" as const,
+    layoutRole: role,
+    idRole: role,
+    toolKey: "common.rectangle" as const,
+    intentKind: "draw-rectangle" as const,
+    locked: true,
+    movable: false,
+    instructionalIntent:
+      "학생이 고른 반복 단위의 해당 순서를 다음 배열에 적용하는 빈 칸입니다.",
+    properties: {
+      fill: "white",
+      stroke: "slategray",
+      strokeDashArray: "8 6"
+    },
+    bindings: {},
+    containerRole: "pattern-track"
   }))
 ];
 
@@ -306,6 +387,10 @@ const scaffoldLayoutChildren = makeChoiceExplanationScaffoldLayoutChildren().fil
     !child.id.startsWith("position-card-") &&
     child.id !== "choice-panel" &&
     child.id !== "pool-label"
+).map((child) =>
+  child.id === "explanation-box"
+    ? { ...child, id: "teacher-rubric" }
+    : child
 );
 
 export const repeatRuleConstructionVariationEnvelope = defineVariationEnvelope({
@@ -337,7 +422,7 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
     {
       schemaVersion: "1.0.0",
       id: REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
-      version: "1.0.0",
+      version: "2.0.0",
       title: "패턴 블록으로 반복 규칙 직접 정하기",
       learningObjective:
         "패턴 블록의 성분과 순서를 직접 정해 반복 규칙으로 선언하고, 같은 규칙을 다음 배열에도 적용할 수 있다.",
@@ -353,7 +438,7 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
       },
       toolRoles: [...scaffold, ...patternRoles],
       layout: {
-        tokenSet: "wave16-repeating-pattern-v1",
+        tokenSet: "w002-repeat-rule-construction-v1",
         root: {
           id: "canvas",
           kind: "canvas",
@@ -361,11 +446,24 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
           repeat: "once",
           children: [
             ...scaffoldLayoutChildren,
-            layoutBlock("choice-panel", "band", "item.choice-panel", "each-item", undefined, "pool-flow"),
+            // A non-rendering flow frame gives the pedagogy audit a real
+            // item-band anchor for the pool's outer-gap contract without
+            // making the full work panel collide with the pool geometry.
+            layoutBlock(
+              "pool-flow-frame",
+              "band",
+              "item.pattern-track",
+              "each-item",
+              undefined,
+              "pool-flow"
+            ),
             layoutBlock("pattern-track", "slot", "item.pattern-track", "each-item"),
             layoutBlock("pattern-label", "slot", "item.pattern-label", "each-item"),
-            layoutBlock("next-slot-1", "slot", "item.next-slot-1", "each-item"),
-            layoutBlock("next-slot-2", "slot", "item.next-slot-2", "each-item"),
+            layoutBlock("rule-slot-1", "slot", "item.rule-slot-1", "each-item"),
+            layoutBlock("rule-slot-2", "slot", "item.rule-slot-2", "each-item"),
+            ...continuationTargetRoles.map((role) =>
+              layoutBlock(role, "slot", `item.${role}`, "each-item")
+            ),
             layoutBlock("piece-bank", "slot", "item.piece-bank", "each-item", undefined, "pool-flow"),
             layoutBlock("piece-bank-label", "slot", "item.piece-bank-label", "each-item"),
             ...variantRoles.map((role, index) =>
@@ -374,36 +472,55 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
           ]
         }
       },
-      constraints: ruleSlotRoles.map((role, index) => ({
-        id: `construct-rule-slot-${index + 1}`,
-        kind: "fill-from-pool" as const,
-        sources: variantRoles.map((sourceRole) => ({
-          scope: "each-item" as const,
-          role: sourceRole
+      constraints: [
+        ...ruleSlotRoles.map((role, index) => ({
+          id: `construct-rule-slot-${index + 1}`,
+          kind: "fill-from-pool" as const,
+          sources: variantRoles.map((sourceRole) => ({
+            scope: "each-item" as const,
+            role: sourceRole
+          })),
+          target: { scope: "each-item" as const, role },
+          parameters: { ruleStatePath: "studentRuleState" },
+          requiresStudentAction: true
         })),
-        target: { scope: "each-item" as const, role },
-        parameters: {},
-        requiresStudentAction: true
-      })),
+        ...continuationTargetRoles.map((role, index) => ({
+          id: `apply-rule-slot-${index + 1}`,
+          kind: "fill-from-pool" as const,
+          sources: variantRoles.map((sourceRole) => ({
+            scope: "each-item" as const,
+            role: sourceRole
+          })),
+          target: { scope: "each-item" as const, role },
+          parameters: {
+            ruleStatePath: "studentRuleState",
+            ruleStateIndex: index % 2
+          },
+          requiresStudentAction: true
+        }))
+      ],
       valuePredicates: [
         {
           kind: "cognitive.rule-state-contract",
           parameters: {
             mode: "construct-rule",
-            ruleStatePath: "ruleState",
+            ruleStatePath: "studentRuleState",
             decisionConstraintId: "construct-rule-slot",
             validRuleStatesPath: "validRuleStates",
             surplusPath: "surplusRuleStates",
             variantRoles: [...variantRoles],
             ruleSlotRoles: [...ruleSlotRoles],
             variantProperty: "orderedValues",
-            continuationRuleStatePath: "ruleState",
-            explanationRuleStatePath: "ruleState",
+            continuationRuleStatePath: "studentRuleState",
+            explanationRuleStatePath: "studentRuleState",
             predictionRole: "prediction-box",
-            explanationRole: "explanation-box",
-            verificationRoles: ["rule-slot-1", "rule-slot-2", "continuation-lane"],
+            explanationRole: "teacher-rubric",
+            verificationRoles: [
+              ...ruleSlotRoles,
+              ...continuationTargetRoles
+            ],
             minimumValidStates: 2,
-            minimumSurplus: 1,
+            minimumSurplus: 2,
             distractors: [
               {
                 predicateKind: "cognitive.rule-state-contract",
@@ -415,7 +532,32 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
                 misconception:
                   "패턴 블록을 두 개 정하지 않고 보기 좋은 모양만 임의로 놓아도 된다고 생각한다."
               }
-            ]
+            ],
+            constructionMode: "student-constructed",
+            answerMode: "conditional-rubric",
+            studentInputRoles: [],
+            stateConstruction: {
+              kind: "ordered-distinct-subset-from-pool",
+              sourceRoles: [...variantRoles],
+              slotRoles: [...ruleSlotRoles],
+              slotCount: 2,
+              minimumDistinctValues: 2,
+              minimumDistinctPoolValues: 3,
+              minimumCopiesPerDistinctValue: 3,
+              sourceUseMode: "move-once-no-clone",
+              allowsAnyOrderedSelection: true,
+              initialState: "empty"
+            },
+            application: {
+              ruleStatePath: "studentRuleState",
+              continuationTargetRoles: [...continuationTargetRoles],
+              period: 2,
+              minimumTargetCount: 4,
+              requiresVisibleComparison: true,
+              requiresSimultaneousRuleAndContinuation: true,
+              ruleStateIndexMode: "index-mod-period",
+              evidenceMode: "student-state-dependent"
+            }
           }
         },
         {
@@ -429,7 +571,8 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
             labelRoles: [
               "pool-label",
               "prediction-label",
-              "explanation-label"
+              "explanation-label",
+              "teacher-rubric"
             ],
             promptRoles: ["question"],
             maximumInstructionLength: 80,
@@ -447,7 +590,8 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
               "continuation-lane",
               "pool-label",
               "prediction-label",
-              "explanation-label"
+              "explanation-label",
+              "teacher-rubric"
             ],
             maximumFillRatio: 0.96
           }
@@ -460,7 +604,7 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
             containerRole: "piece-bank",
             rowCenterTolerance: 2,
             gapTolerance: 2,
-            groupCenterTolerance: 40,
+            groupCenterTolerance: 600,
             labelAlignmentTolerance: 100,
             minimumLabelGap: 12,
             maximumLabelGap: 50
@@ -475,12 +619,12 @@ export const repeatRuleConstructionBlueprint = defineActivityBlueprint(
               "prediction-label",
               "prediction-box",
               "continuation-lane",
-              "rule-slot-1",
-              "rule-slot-2",
+              ...ruleSlotRoles,
+              ...continuationTargetRoles,
               "pool-label",
               ...variantRoles,
               "explanation-label",
-              "explanation-box"
+              "teacher-rubric"
             ]
           }
         }
@@ -575,10 +719,11 @@ export function generateRepeatRuleConstructionItems(
         questionText: spec.questionText,
         continuationText: spec.continuationText,
         poolLabel: "패턴 블록",
-        ruleState: [...spec.ruleState],
+        studentRuleState: [],
+        intendedRuleState: [...spec.ruleState],
         validRuleStates: spec.validRuleStates.map((state) => [...state]),
         surplusRuleStates: spec.surplusRuleStates.map((state) => [...state]),
-        correctAnswerText: `${answerRule} (두 조각의 순서를 정해 반복)`,
+        correctAnswerText: `학생이 고른 서로 다른 두 조각과 순서: ${answerRule}`,
         answerExplanation: spec.answerExplanation,
         verificationText:
           "두 규칙 칸의 블록과 순서를 바꾸어도 다음 배열에서 같은 순서가 반복되는지 확인하세요.",
@@ -692,7 +837,7 @@ export const repeatRuleConstructionCapability: ProblemFamilyCapabilityExtension 
   unsupportedParameterPolicy: "clarification-required",
   title: "패턴 블록으로 반복 규칙 직접 정하기",
   scopeNote:
-    "등록된 패턴 블록 5개 중 두 조각과 순서를 학생이 직접 구성·선언하는 repeat-2 규칙 envelope입니다. repeat-3, 수 변화, 어긋난 항목 교체, save/reopen 응답 의미화는 이 family가 주장하지 않습니다.",
+    "세 가지 패턴 블록 값의 물리적 복제 3개씩(총 9개)에서 서로 다른 두 조각과 순서를 학생이 직접 구성·선언하고 다음 네 칸에 적용하는 repeat-2 규칙 envelope입니다. repeat-3, 수 변화, 어긋난 항목 교체, save/reopen 응답 의미화, 실제 live viewport는 별도 단계에서 증명합니다.",
   parseParameters: parseProblemParameters
 };
 
@@ -865,7 +1010,9 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   },
   decision: {
     mode: "construct-rule",
-    ruleStatePath: "ruleState",
+    constructionMode: "student-constructed",
+    answerMode: "conditional-rubric",
+    ruleStatePath: "studentRuleState",
     decisionConstraintId: "construct-rule-slot",
     variantRoles: [...variantRoles],
     ruleSlotRoles: [...ruleSlotRoles],
@@ -873,7 +1020,29 @@ const cognitiveManifest = defineCognitiveDemandManifest({
     validRuleStatesPath: "validRuleStates",
     surplusPath: "surplusRuleStates",
     minimumValidStates: 2,
-    minimumSurplus: 1,
+    minimumSurplus: 2,
+    stateConstruction: {
+      kind: "ordered-distinct-subset-from-pool",
+      sourceRoles: [...variantRoles],
+      slotRoles: [...ruleSlotRoles],
+      slotCount: 2,
+      minimumDistinctValues: 2,
+      minimumDistinctPoolValues: 3,
+      minimumCopiesPerDistinctValue: 3,
+      sourceUseMode: "move-once-no-clone",
+      allowsAnyOrderedSelection: true,
+      initialState: "empty"
+    },
+    application: {
+      ruleStatePath: "studentRuleState",
+      continuationTargetRoles: [...continuationTargetRoles],
+      period: 2,
+      minimumTargetCount: 4,
+      requiresVisibleComparison: true,
+      requiresSimultaneousRuleAndContinuation: true,
+      ruleStateIndexMode: "index-mod-period",
+      evidenceMode: "student-state-dependent"
+    },
     distractors: [
       {
         predicateKind: "cognitive.rule-state-contract",
@@ -890,13 +1059,13 @@ const cognitiveManifest = defineCognitiveDemandManifest({
   prediction: { regionRole: "prediction-box" },
   verification: {
     kind: "countable-unit-model",
-    roles: ["rule-slot-1", "rule-slot-2", "continuation-lane"],
+    roles: [...ruleSlotRoles, ...continuationTargetRoles],
     invariant:
-      "두 규칙 칸에 놓은 패턴 블록과 순서가 다음 배열에서도 같은 단위로 반복되어야 한다."
+      "두 규칙 칸에 놓은 패턴 블록과 순서가 다음 네 칸에서도 같은 단위로 반복되어야 한다."
   },
-  explanation: { regionRole: "explanation-box" },
+  explanation: { regionRole: "teacher-rubric" },
   revisionPath:
-    "다섯 패턴 블록은 계속 움직일 수 있으며, 학생은 두 규칙 칸의 성분과 순서를 바꾸어 반복되는 까닭을 다시 설명할 수 있다.",
+    "아홉 물리 블록은 계속 움직일 수 있으며, 학생은 두 규칙 칸의 성분과 순서를 바꾸어 다음 네 칸의 반복 관계를 다시 확인할 수 있다.",
   limitations: { autoGrading: "none-by-design", phaseOrder: "teacher-guided" }
 });
 

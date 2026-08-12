@@ -97,16 +97,31 @@ describe("[2수02-02] repeat rule construction native family", () => {
     const manifest = assertCognitiveManifestBound(repeatRuleConstructionBlueprint);
     expect(manifest.decision).toMatchObject({
       mode: "construct-rule",
-      ruleStatePath: "ruleState",
+      constructionMode: "student-constructed",
+      answerMode: "conditional-rubric",
+      ruleStatePath: "studentRuleState",
       variantProperty: "orderedValues",
       variantRoles: [
         "rule-variant-1",
         "rule-variant-2",
         "rule-variant-3",
         "rule-variant-4",
-        "rule-variant-5"
+        "rule-variant-5",
+        "rule-variant-6",
+        "rule-variant-7",
+        "rule-variant-8",
+        "rule-variant-9"
       ],
       ruleSlotRoles: ["rule-slot-1", "rule-slot-2"]
+    });
+    if (manifest.decision.mode !== "construct-rule") {
+      throw new Error("repeat-rule-construction-manifest-mode-drift");
+    }
+    expect(manifest.decision.stateConstruction).toMatchObject({
+      sourceUseMode: "move-once-no-clone",
+      minimumDistinctPoolValues: 3,
+      minimumCopiesPerDistinctValue: 3,
+      initialState: "empty"
     });
     expect(manifest.mathematicalDecision).toContain("직접 구성");
     expect(
@@ -120,12 +135,16 @@ describe("[2수02-02] repeat rule construction native family", () => {
     });
 
     const firstItem = result.resolved.items[0]!;
-    expect(firstItem.values.ruleState).toEqual([4, 5]);
+    expect(firstItem.values.studentRuleState).toEqual([]);
+    expect(firstItem.values.intendedRuleState).toEqual([4, 5]);
     expect(firstItem.values.validRuleStates).toEqual([
       [4, 5],
       [5, 4]
     ]);
-    expect(firstItem.values.surplusRuleStates).toEqual([[4, 4]]);
+    expect(firstItem.values.surplusRuleStates).toEqual([
+      [4, 4],
+      [5, 5]
+    ]);
     expect(firstItem.values.questionText).not.toContain("초록");
 
     const ruleSlots = ["rule-slot-1", "rule-slot-2"].map((role) =>
@@ -143,13 +162,38 @@ describe("[2수02-02] repeat rule construction native family", () => {
               `construct-rule-slot-${index + 1}:${firstItem.id}` &&
             constraint.kind === "fill-from-pool" &&
             constraint.targetId === slot?.id &&
-            constraint.sourceIds.length === 5 &&
+            constraint.sourceIds.length === 9 &&
             !constraint.satisfiedInitially
         )
       )
     ).toBe(true);
 
-    const variants = [1, 2, 3, 4, 5].map((index) =>
+    const continuationSlots = [1, 2, 3, 4].map((index) =>
+      result.resolved.emissions.find(
+        (emission) =>
+          emission.role === `continuation-slot-${index}` &&
+          emission.itemId === firstItem.id
+      )
+    );
+    expect(continuationSlots).toHaveLength(4);
+    expect(
+      continuationSlots.every((slot) => slot?.locked && !slot.movable)
+    ).toBe(true);
+    expect(
+      continuationSlots.every((slot, index) =>
+        result.resolved.constraints.some(
+          (constraint) =>
+            constraint.id === `apply-rule-slot-${index + 1}:${firstItem.id}` &&
+            constraint.targetId === slot?.id &&
+            constraint.sourceIds.length === 9 &&
+            constraint.parameters.ruleStatePath === "studentRuleState" &&
+            constraint.parameters.ruleStateIndex === index % 2 &&
+            !constraint.satisfiedInitially
+        )
+      )
+    ).toBe(true);
+
+    const variants = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) =>
       result.resolved.emissions.find(
         (emission) =>
           emission.role === `rule-variant-${index}` &&
@@ -164,6 +208,31 @@ describe("[2수02-02] repeat rule construction native family", () => {
         (variant) => typeof variant?.toolIntent.properties.orderedValues === "number"
       )
     ).toBe(true);
+    expect(
+      variants.map((_, index) =>
+        repeatRuleConstructionBlueprint.toolRoles.find(
+          (role) => role.role === `rule-variant-${index + 1}`
+        )?.layoutRole
+      )
+    ).toEqual([
+      "rule-source-1",
+      "rule-source-2",
+      "rule-source-3",
+      "rule-source-4",
+      "rule-source-5",
+      "rule-source-6",
+      "rule-source-7",
+      "rule-source-8",
+      "rule-source-9"
+    ]);
+    const sourceValues = variants.map(
+      (variant) => variant?.toolIntent.properties.orderedValues
+    );
+    expect(
+      [...new Set(sourceValues)].map(
+        (value) => sourceValues.filter((candidate) => candidate === value).length
+      )
+    ).toEqual([3, 3, 3]);
     expect(
       result.resolved.emissions.some(
         (emission) => emission.role.startsWith("position-card-")
@@ -182,7 +251,7 @@ describe("[2수02-02] repeat rule construction native family", () => {
       expect.stringContaining("교사용 허용 규칙 상태:"),
       expect.stringContaining("교사용 거부 상태:"),
       "규칙 칸: rule-slot-1, rule-slot-2",
-      expect.stringContaining("같은 순서로 계속"),
+      expect.stringContaining("다음 네 칸에 계속"),
       expect.stringContaining("실제 응답·저장·재열기")
     ]);
     expect(applied).toEqual({
@@ -199,14 +268,23 @@ describe("[2수02-02] repeat rule construction native family", () => {
     expect(outputs.every((output) => output.report.issues.length === 0)).toBe(
       true
     );
-    expect(outputs[0]?.resolved.items[0]?.values.ruleState).toEqual([4, 5]);
-    expect(outputs[1]?.resolved.items[0]?.values.ruleState).toEqual([2, 3]);
+    expect(outputs[0]?.resolved.items[0]?.values.intendedRuleState).toEqual([4, 5]);
+    expect(outputs[1]?.resolved.items[0]?.values.intendedRuleState).toEqual([2, 3]);
     expect(outputs[0]?.compiled.payloadHash).not.toBe(
       outputs[1]?.compiled.payloadHash
     );
     expect(
       outputs.map((output) => output.resolved.items[0]?.values.surplusRuleStates)
-    ).toEqual([[[4, 4]], [[2, 2]]]);
+    ).toEqual([
+      [
+        [4, 4],
+        [5, 5]
+      ],
+      [
+        [2, 2],
+        [3, 3]
+      ]
+    ]);
   });
 
   it("같은 seed는 결정적이며 지원하지 않는 범위는 침묵 없이 거부한다", () => {
