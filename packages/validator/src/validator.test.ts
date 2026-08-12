@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
+  MATHCANVAS_PROJECT_CATEGORIES,
+  defineActivityBlueprint,
   recommendationSchema,
   sha256Hex,
   type ResolvedActivity,
@@ -760,6 +762,550 @@ function studentConstructedRepairRuleStatePredicateFixture(): ResolvedActivity {
     }
   ] as never;
   return resolved;
+}
+
+function changeRulePredicateFixture(): ResolvedActivity {
+  const itemId = "item-1";
+  const semanticStates = [1, 4].flatMap((startValue) =>
+    [2, 3].flatMap((stepMagnitude) =>
+      ["increase", "decrease"].map((direction) => ({
+        startValue,
+        stepMagnitude,
+        direction
+      }))
+    )
+  );
+  const emission = (
+    id: string,
+    role: string,
+    properties: Record<string, unknown>,
+    locked = true,
+    movable = false,
+    toolKey = "common.rectangle"
+  ) => ({
+    id,
+    role,
+    itemId,
+    bounds: { x: 0, y: 0, width: 188, height: 188 },
+    locked,
+    movable,
+    instructionalIntent: "변화 규칙 검증 역할",
+    toolIntent: {
+      kind: toolKey === "SM02PB" ? "pattern-block" : "draw-rectangle",
+      toolKey,
+      properties:
+        toolKey === "SM02PB"
+          ? properties
+          : { fill: "white", stroke: "slategray", ...properties }
+    }
+  });
+  const expected = (state: (typeof semanticStates)[number]) => {
+    const signed = state.direction === "increase"
+      ? state.stepMagnitude
+      : -state.stepMagnitude;
+    return Array.from(
+      { length: 4 },
+      (_, index) => state.startValue + signed * index
+    );
+  };
+  const values = {
+    studentChangeRuleState: [],
+    validChangeRuleStates: semanticStates,
+    validRepairedChangeStatesByRuleState: semanticStates.map((state) => {
+      const afterState = expected(state);
+      const beforeState = [...afterState];
+      beforeState[2] = 999;
+      return {
+        ruleState: state,
+        beforeState,
+        afterState,
+        wrongIndex: 2
+      };
+    }),
+    constructedSequenceState: [],
+    initialChangeSequenceState: [],
+    repairedChangeSequenceState: [],
+    misalignedTermIndex: 2
+  };
+  const controls = [
+    ["start-value-control", "startValue"],
+    ["step-magnitude-control", "stepMagnitude"],
+    ["direction-control", "direction"]
+  ].map(([role]) => emission(`item-1-${role}`, role!, {}));
+  const sequence = [1, 2, 3, 4].map((index) =>
+    emission(`item-1-sequence-term-${index}`, `sequence-term-${index}`, {})
+  );
+  const verification = [
+    emission("item-1-repair-target", "repair-target", {}),
+    emission("item-1-prediction", "prediction-box", {}),
+    emission("item-1-rubric", "teacher-rubric", {})
+  ];
+  const controlRoles = [
+    "start-value-control",
+    "step-magnitude-control",
+    "direction-control"
+  ];
+  const sequenceRoles = [
+    "sequence-term-1",
+    "sequence-term-2",
+    "sequence-term-3",
+    "sequence-term-4"
+  ];
+  const allSources = [
+    "item-1-rule-source-1",
+    "item-1-rule-source-2",
+    "item-1-rule-source-3"
+  ];
+  const sources = allSources.map((id, index) =>
+    emission(
+      id,
+      `rule-source-${index + 1}`,
+      { variant: index + 1, orderedValues: index + 1 },
+      false,
+      true,
+      "SM02PB"
+    )
+  );
+  const constraints = [
+    ...controlRoles.map((role, index) => ({
+      id: `select-change-rule-${index + 1}:item-1`,
+      kind: "fill-from-pool",
+      sourceIds: allSources,
+      targetId: `item-1-${role}`,
+      parameters: {
+        phase: "rule-selection",
+        writesStatePath: "studentChangeRuleState",
+        stateField: ["startValue", "stepMagnitude", "direction"][index],
+        stateIndex: index
+      },
+      requiresStudentAction: true,
+      satisfiedInitially: false
+    })),
+    ...sequenceRoles.map((role, index) => ({
+      id: `apply-change-rule-${index + 1}:item-1`,
+      kind: "fill-from-pool",
+      sourceIds: allSources,
+      targetId: `item-1-${role}`,
+      parameters: {
+        phase: "apply-declared-change",
+        ruleStatePath: "studentChangeRuleState",
+        sequenceStatePath: "constructedSequenceState",
+        sequenceIndex: index,
+        transition: "next-equals-current-plus-signed-step"
+      },
+      requiresStudentAction: true,
+      satisfiedInitially: false
+    })),
+    {
+      id: "repair-change-rule:item-1",
+      kind: "fill-from-pool",
+      sourceIds: allSources,
+      targetId: "item-1-repair-target",
+      parameters: {
+        phase: "repair-declared-change",
+        ruleStatePath: "studentChangeRuleState",
+        beforeStatePath: "initialChangeSequenceState",
+        afterStatePath: "repairedChangeSequenceState",
+        wrongIndexPath: "misalignedTermIndex",
+        mappingPath: "validRepairedChangeStatesByRuleState"
+      },
+      requiresStudentAction: true,
+      satisfiedInitially: false
+    }
+  ];
+  return {
+    schemaVersion: "1.0.0",
+    id: "change-rule-activity",
+    seed: "change-rule-seed",
+    title: "변화 규칙 검증",
+    learningObjective: "시작값과 signed step으로 변화 규칙을 구성한다.",
+    curriculumReferences: [resolveCurriculum("[2수02-02]").record],
+    recommendationSnapshot: {
+      schemaVersion: CONTRACT_SCHEMA_VERSION,
+      requestId: "change-rule-validator-request",
+      supported: true,
+      templateId: "pattern.change-rule.construct-v1",
+      gradeBand: "1-2",
+      recommendedGrade: 2,
+      standardCode: "[2수02-02]",
+      learningGoal: "시작값과 변화량으로 변화 규칙을 구성한다.",
+      prerequisites: [],
+      problemCount: 1,
+      difficulty: "normal",
+      manipulation: "change-rule-construction",
+      rationale: ["검증용 변화 규칙 활동입니다."],
+      confidence: 0.98,
+      caveats: [],
+      blockingReasons: [],
+      curriculum: resolveCurriculum("[2수02-02]").record
+    },
+    binding: {
+      blueprintId: "pattern.change-rule.construct-v1",
+      blueprintVersion: "1.0.0",
+      blueprintContentHash: "a".repeat(64),
+      generatorId: "change-rule-generator",
+      generatorVersion: "1.0.0",
+      seed: "change-rule-seed",
+      variation: { contextId: "change-rule" }
+    },
+    items: [
+      {
+        id: itemId,
+        order: 1,
+        kind: "pattern",
+        values,
+        provenance: {
+          generatorId: "change-rule-generator",
+          generatorVersion: "1.0.0",
+          seed: "change-rule-seed"
+        }
+      }
+    ],
+    emissions: [...controls, ...sequence, ...verification, ...sources],
+    constraints,
+    layout: {
+      width: 3000,
+      height: 1760,
+      viewBox: [0, 0, 3000, 1760],
+      minGap: 20
+    },
+    instructions: ["시작값·변화량·방향을 정하고 규칙을 확인하세요."],
+    payload: {
+      categoryId: "4l_eHBivNq",
+      tags: ["변화 규칙"],
+      studyLevel: "elementary",
+      isShowMenuOnActivity: true,
+      grade: 2,
+      difficulty: "normal"
+    },
+    provenance: {
+      generatedAt: "2026-08-12T00:00:00.000Z",
+      requestId: "change-rule-validator-request",
+      curriculumSourceIds: ["curriculum-2su02-02"],
+      auxiliarySnapshotSha: "b".repeat(40)
+    },
+    legacy: {
+      sourceActivitySpecVersion: "1.0.0",
+      templateId: "pattern.change-rule.construct-v1",
+      templateVersion: "1.0.0"
+    },
+    valuePredicates: [
+      {
+        kind: "cognitive.change-rule-state-contract",
+        parameters: {
+          mode: "construct-change-rule",
+          constructionMode: "student-constructed",
+          answerMode: "conditional-rubric",
+          ruleStatePath: "studentChangeRuleState",
+          stateFields: ["startValue", "stepMagnitude", "direction"],
+          directionValues: ["increase", "decrease"],
+          initialState: "empty",
+          distractors: [
+            {
+              predicateKind: "cognitive.change-rule-state-contract",
+              misconception: "증가와 감소 방향을 반대로 적용한다."
+            },
+            {
+              predicateKind: "cognitive.change-rule-state-contract",
+              misconception: "선언한 변화량 대신 다른 간격을 적용한다."
+            }
+          ],
+          application: {
+            ruleStatePath: "studentChangeRuleState",
+            sequenceStatePath: "constructedSequenceState",
+            minimumVisibleTerms: 4,
+            transition: "next-equals-current-plus-signed-step",
+            requiresAdjacentDifferenceEvidence: true,
+            requiresVisibleComparison: true
+          },
+          repair: {
+            ruleStatePath: "studentChangeRuleState",
+            beforeStatePath: "initialChangeSequenceState",
+            afterStatePath: "repairedChangeSequenceState",
+            wrongIndexPath: "misalignedTermIndex",
+            derivation: "replace-with-declared-transition-value",
+            requiresConditionalMapping: true,
+            requiresOnlyWrongIndexChanges: true
+          }
+        }
+      }
+    ]
+  } as unknown as ResolvedActivity;
+}
+
+function changeRuleResolvedNativeFixture() {
+  const curriculum = resolveCurriculum("[2수02-02]");
+  const states = [1, 4].flatMap((startValue) =>
+    [2, 3].flatMap((stepMagnitude) =>
+      ["increase", "decrease"].map((direction) => ({
+        startValue,
+        stepMagnitude,
+        direction
+      }))
+    )
+  );
+  const sequenceFor = (state: (typeof states)[number]) => {
+    const signed = state.direction === "increase"
+      ? state.stepMagnitude
+      : -state.stepMagnitude;
+    return Array.from({ length: 4 }, (_, index) =>
+      state.startValue + signed * index
+    );
+  };
+  const block = (id: string, preset: string) => ({
+    id,
+    kind: "slot" as const,
+    preset,
+    repeat: "each-item" as const,
+    children: []
+  });
+  const sourceRoles = ["rule-source-1", "rule-source-2", "rule-source-3"];
+  const sourceBindings = sourceRoles.map((role, index) => ({
+    role,
+    scope: "each-item" as const,
+    layoutRole: role,
+    idRole: role,
+    toolKey: "SM02PB" as const,
+    intentKind: "pattern-block" as const,
+    locked: false,
+    movable: true,
+    instructionalIntent: "학생이 선택할 수 있는 변화 규칙 원천입니다.",
+    properties: {},
+    bindings: {
+      variant: `item.ruleSource${index + 1}`,
+      orderedValues: `item.ruleSource${index + 1}`
+    },
+    containerRole: "source-panel"
+  }));
+  const emptyRectangle = (role: string) => ({
+    role,
+    scope: "each-item" as const,
+    layoutRole: role,
+    idRole: role,
+    toolKey: "common.rectangle" as const,
+    intentKind: "draw-rectangle" as const,
+    locked: true,
+    movable: false,
+    instructionalIntent: "학생이 채울 빈 변화 규칙 칸입니다.",
+    properties: { fill: "white", stroke: "slategray", strokeDashArray: "8 6" },
+    bindings: {},
+    containerRole: "item-panel"
+  });
+  const containerRectangle = (
+    role: string,
+    layoutRole: string,
+    containerRole?: string
+  ) => ({
+    role,
+    scope: "each-item" as const,
+    layoutRole,
+    idRole: role,
+    toolKey: "common.rectangle" as const,
+    intentKind: "draw-rectangle" as const,
+    locked: true,
+    movable: false,
+    instructionalIntent: "활동 영역을 구분하는 고정 컨테이너입니다.",
+    properties: { fill: "#F8FAFC", stroke: "#CBD5E1" },
+    bindings: {},
+    ...(containerRole ? { containerRole } : {})
+  });
+  const controlRoles = [
+    "start-value-control",
+    "step-magnitude-control",
+    "direction-control"
+  ];
+  const sequenceRoles = [
+    "sequence-term-1",
+    "sequence-term-2",
+    "sequence-term-3",
+    "sequence-term-4"
+  ];
+  const recommendation = recommendationSchema.parse({
+    schemaVersion: CONTRACT_SCHEMA_VERSION,
+    requestId: "change-rule-native-request",
+    supported: true,
+    blockingReasons: [],
+    templateId: "pattern.change-rule.construct-v1",
+    gradeBand: curriculum.record.gradeBand,
+    standardCode: curriculum.record.code,
+    learningGoal: "시작값과 변화량으로 변화 규칙을 구성한다.",
+    prerequisites: curriculum.record.prerequisites,
+    rationale: ["실제 resolve→compile 검증용입니다."],
+    confidence: 1,
+    caveats: [],
+    recommendedGrade: 2,
+    manipulation: "change-rule-construction",
+    difficulty: "normal",
+    problemCount: 1,
+    curriculum: curriculum.record
+  });
+  const blueprint = defineActivityBlueprint({
+    schemaVersion: "1.0.0",
+    id: "pattern.change-rule.construct-v1",
+    version: "1.0.0",
+    title: "변화 규칙 native fixture",
+    learningObjective: "시작값과 변화량으로 변화 규칙을 구성한다.",
+    curriculumBinding: {
+      standardCode: curriculum.record.code,
+      domain: "변화와 관계",
+      officialGoal: curriculum.record.officialGoal
+    },
+    generator: {
+      id: "change-rule-native-fixture",
+      version: "1.0.0",
+      parameters: {}
+    },
+    toolRoles: [
+      containerRectangle("item-panel", "item-panel"),
+      containerRectangle("source-panel", "source-panel", "item-panel"),
+      ...sourceBindings,
+      ...controlRoles.map(emptyRectangle),
+      ...sequenceRoles.map(emptyRectangle),
+      emptyRectangle("repair-target"),
+      {
+        role: "prediction-box",
+        scope: "each-item" as const,
+        layoutRole: "prediction-box",
+        idRole: "prediction-box",
+        toolKey: "common.text" as const,
+        intentKind: "text" as const,
+        locked: true,
+        movable: false,
+        instructionalIntent: "학생의 선언을 대조합니다.",
+        properties: { text: "학생이 정한 규칙을 확인합니다.", fontSize: 20 },
+        bindings: {},
+        containerRole: "item-panel"
+      },
+      {
+        role: "teacher-rubric",
+        scope: "each-item" as const,
+        layoutRole: "explanation-box",
+        idRole: "teacher-rubric",
+        toolKey: "common.text" as const,
+        intentKind: "text" as const,
+        locked: true,
+        movable: false,
+        instructionalIntent: "교사가 조건부 루브릭을 확인합니다.",
+        properties: { text: "선언한 signed step과 인접 차가 일치하는지 확인합니다.", fontSize: 20 },
+        bindings: {},
+        containerRole: "item-panel"
+      }
+    ],
+    layout: {
+      tokenSet: "w002-change-rule-v1",
+      root: {
+        id: "canvas",
+        kind: "canvas",
+        preset: "canvas.root",
+        repeat: "once",
+        children: [
+          block("item-panel", "item.panel"),
+          block("source-panel", "item.source-panel"),
+          ...sourceRoles.map((role) => block(role, `item.${role}`)),
+          ...controlRoles.map((role) => block(role, `item.${role}`)),
+          ...sequenceRoles.map((role) => block(role, `item.${role}`)),
+          block("repair-target", "item.repair-target"),
+          block("prediction-box", "item.prediction-box"),
+          block("explanation-box", "item.explanation-box")
+        ]
+      }
+    },
+    constraints: [
+      ...controlRoles.map((role, index) => ({
+        id: `select-change-rule-${index + 1}`,
+        kind: "fill-from-pool" as const,
+        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
+        target: { scope: "each-item" as const, role },
+        parameters: {
+          phase: "rule-selection",
+          writesStatePath: "studentChangeRuleState",
+          stateField: ["startValue", "stepMagnitude", "direction"][index],
+          stateIndex: index
+        },
+        requiresStudentAction: true
+      })),
+      ...sequenceRoles.map((role, index) => ({
+        id: `apply-change-rule-${index + 1}`,
+        kind: "fill-from-pool" as const,
+        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
+        target: { scope: "each-item" as const, role },
+        parameters: {
+          phase: "apply-declared-change",
+          ruleStatePath: "studentChangeRuleState",
+          sequenceStatePath: "constructedSequenceState",
+          sequenceIndex: index,
+          transition: "next-equals-current-plus-signed-step"
+        },
+        requiresStudentAction: true
+      })),
+      {
+        id: "repair-change-rule",
+        kind: "fill-from-pool" as const,
+        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
+        target: { scope: "each-item" as const, role: "repair-target" },
+        parameters: {
+          phase: "repair-declared-change",
+          ruleStatePath: "studentChangeRuleState",
+          beforeStatePath: "initialChangeSequenceState",
+          afterStatePath: "repairedChangeSequenceState",
+          wrongIndexPath: "misalignedTermIndex",
+          mappingPath: "validRepairedChangeStatesByRuleState"
+        },
+        requiresStudentAction: true
+      }
+    ],
+    valuePredicates: [changeRulePredicateFixture().valuePredicates[0]!],
+    instructions: ["시작값·변화량·방향을 정하고 네 항에 적용하세요."],
+    payload: {
+      categoryId: MATHCANVAS_PROJECT_CATEGORIES["변화와 관계"].categoryId,
+      tags: ["변화 규칙"],
+      studyLevel: "elementary",
+      isShowMenuOnActivity: true
+    },
+    variationDefaults: {}
+  });
+  const items = [{
+    id: "change-rule-native-fixture-item-1",
+    order: 1,
+    kind: "pattern",
+    values: {
+      ruleSource1: 1,
+      ruleSource2: 2,
+      ruleSource3: 3,
+      studentChangeRuleState: [],
+      constructedSequenceState: [],
+      initialChangeSequenceState: [],
+      repairedChangeSequenceState: [],
+      misalignedTermIndex: 2,
+      validChangeRuleStates: states,
+      validRepairedChangeStatesByRuleState: states.map((ruleState) => {
+        const expected = sequenceFor(ruleState);
+        const before = [...expected];
+        before[2] = 999;
+        return { ruleState, beforeState: before, afterState: expected, wrongIndex: 2 };
+      })
+    },
+    provenance: {
+      generatorId: "change-rule-native-fixture",
+      generatorVersion: "1.0.0",
+      seed: "change-rule-native-fixture-seed"
+    }
+  }];
+  const plan = {
+    blueprint,
+    items,
+    recommendation,
+    options: {
+      activityId: "change-rule-native-fixture-activity",
+      seed: "change-rule-native-fixture-seed",
+      generatedAt: "2026-08-12T00:00:00.000Z",
+      templateVersion: blueprint.version,
+      variation: {}
+    }
+  } as Parameters<typeof resolveActivity>[0];
+  const resolved = resolveActivity(plan);
+  const compiled = compileActivity(resolved);
+  return { resolved, compiled };
 }
 
 describe("생성 전 검증", () => {
@@ -1981,5 +2527,49 @@ describe("생성 전 검증", () => {
         label.bounds.width = 100;
       })
     ).toContain("text-region-overflow-risk");
+  });
+
+  it("change-rule은 세 선언 필드·signed-step 적용·조건부 오류 교정을 검증한다", () => {
+    const resolved = changeRulePredicateFixture();
+    const compiled = compileActivity(resolved);
+    const report = validateForCreation(resolved, compiled, new Date("2026-08-12T00:00:00.000Z"));
+    expect(report.canCreate).toBe(true);
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues).toEqual([]);
+  });
+
+  it("change-rule은 고정된 sequence나 mapping 불일치를 거부한다", () => {
+    const resolved = changeRulePredicateFixture();
+    resolved.emissions.find(
+      (emission) => emission.role === "sequence-term-1"
+    )!.toolIntent.properties.variant = 1;
+    const mapping = resolved.items[0]!.values
+      .validRepairedChangeStatesByRuleState as Array<Record<string, unknown>>;
+    mapping[0]!.afterState = [1, 3, 99, 7];
+    const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
+    validateRegisteredPredicates(resolved, issues);
+    expect(issues.map((entry) => entry.code)).toEqual(
+      expect.arrayContaining([
+        "cognitive-change-rule-application-missing",
+        "cognitive-change-rule-envelope-invalid"
+      ])
+    );
+  });
+
+  it("change-rule은 실제 resolve·compile·native validation 경로에서도 통과한다", () => {
+    const { resolved, compiled } = changeRuleResolvedNativeFixture();
+    const report = validateForCreation(
+      resolved,
+      compiled,
+      new Date("2026-08-12T00:00:00.000Z")
+    );
+    expect(report.issues).toEqual([]);
+    expect(report.canCreate).toBe(true);
+    expect(
+      compiled.payload.contentsJson.filter((object) =>
+        typeof object.svgId === "string" && object.svgId.startsWith("SM02PB-")
+      )
+    ).toHaveLength(3);
   });
 });

@@ -46,16 +46,16 @@
     "audit-synthetic-positive-and-structural-envelope-mutations"
   ],
   "implementationFiles": {
-    "packages/contracts/src/catalog/cognitive-demand.ts": "1e21419e47e9653094ad5190554324eb5b67c9bccf08ec608d7a119d8a99fff6",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "8eeaf79931998efb6eaf149702aa5ad4bbba45478dec707361f2f6e2c07d9d01",
+    "packages/contracts/src/catalog/cognitive-demand.ts": "8a0aca1ce4112c1baf89a900497abe65b703007ddf3a4a22364013ba67d83a39",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "7ab871d502494a127f25702d4919c33d2b0e28c9e417d72ad6c9a9c083068e0a",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.ts": "b6eb40534dc0681b12bf2fc13f6dee76442461629c5028f1bd2d18e9396a65ee",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.test.ts": "607b310adc5a371abf308aeb47fa0d65fb81c7859b9b399c010ce3eae584e292",
-    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "0b2b18c5d9bae586d71117a08a7664b8fdfadcbe297dad430943a47b3d42a84e",
-    "packages/validator/src/predicates/registry.ts": "63d7022ebd149a5492b1ab4d96581c3e0d60bb5b8bc9e5449eb9c1dd84eec801",
-    "packages/validator/src/validator.test.ts": "b1386d6a22777dcba8d3f9878f87aa3323730d94dbe39d04890fd821ddc1eed2",
-    "packages/templates/src/cognitive/registry.ts": "f934d50fb9edd5f716e68b57211109932a857bc10a22a2eb1f301a61b3e9171c",
-    "packages/templates/src/cognitive/registry.test.ts": "6565342b428b0ca78396fb7a87c37c40006f7c56f51f565d6367a836a407ec3b",
-    "scripts/pedagogy/check-cognitive-demand.mjs": "cc6e4d0660cdee2113eb18d4197364238a8bc20377aed2db71dcedb7063af85b"
+    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "13c31238134eb09d5787d978e3c8960a412e7844e67bef87ccd60a8c211d63f7",
+    "packages/validator/src/predicates/registry.ts": "3ea9158cd519061b5ac9163dfe0ba39bf406693268583c902d394d12ee516cd7",
+    "packages/validator/src/validator.test.ts": "d965c74e755bcb96c8b14f67597dd313d009fd4de94c1d7c29a102c16cb2bd25",
+    "packages/templates/src/cognitive/registry.ts": "1355e35c873175348cdb7f5dc3b9c47f3c9f89d04a60a8699a6673bd2a8807db",
+    "packages/templates/src/cognitive/registry.test.ts": "2ac20d46793600bee8732f9baed6a8b3447553ca57e0a295156080444443fa5d",
+    "scripts/pedagogy/check-cognitive-demand.mjs": "80d3e583f8e222ccb2bbe9584e4c7ce25a2cb64e6601afbb57dd4ae293a57d18"
   },
   "verification": {
     "focusedTests": "63/63",

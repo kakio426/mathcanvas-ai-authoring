@@ -755,7 +755,87 @@ const declaredRepairAuditSelfCheck = () => {
   });
 };
 
+const changeRuleAuditSelfCheck = () => {
+  const states = [1, 4].flatMap((startValue) =>
+    [2, 3].flatMap((stepMagnitude) =>
+      ["increase", "decrease"].map((direction) => ({
+        startValue,
+        stepMagnitude,
+        direction
+      }))
+    )
+  );
+  const sequenceFor = (state) => {
+    const step = state.direction === "increase"
+      ? state.stepMagnitude
+      : -state.stepMagnitude;
+    return Array.from({ length: 4 }, (_, index) =>
+      state.startValue + step * index
+    );
+  };
+  const item = {
+    values: {
+      studentChangeRuleState: [],
+      constructedSequenceState: [],
+      initialChangeSequenceState: [],
+      repairedChangeSequenceState: [],
+      validChangeRuleStates: states,
+      validRepairedChangeStatesByRuleState: states.map((ruleState) => {
+        const expected = sequenceFor(ruleState);
+        const before = [...expected];
+        before[2] = 999;
+        return { ruleState, beforeState: before, afterState: expected, wrongIndex: 2 };
+      })
+    }
+  };
+  const mappingIsBijection = (value) => {
+    if (!Array.isArray(value) || value.length !== states.length) return false;
+    const keys = value.map((entry) => JSON.stringify(entry.ruleState));
+    if (new Set(keys).size !== states.length) return false;
+    return states.every((ruleState) => {
+      const entry = value.find(
+        (candidate) => JSON.stringify(candidate.ruleState) === JSON.stringify(ruleState)
+      );
+      const expected = sequenceFor(ruleState);
+      return (
+        entry &&
+        Array.isArray(entry.beforeState) &&
+        Array.isArray(entry.afterState) &&
+        entry.beforeState.length === expected.length &&
+        entry.afterState.length === expected.length &&
+        entry.beforeState[2] !== expected[2] &&
+        entry.afterState[2] === expected[2] &&
+        entry.afterState.every((value, index) =>
+          index === 2 ? value === expected[index] : value === entry.beforeState[index]
+        )
+      );
+    });
+  };
+  const valid =
+    Array.isArray(item.values.studentChangeRuleState) &&
+    item.values.studentChangeRuleState.length === 0 &&
+    states.length === 8 &&
+    new Set(states.map((state) => state.startValue)).size >= 2 &&
+    new Set(states.map((state) => state.stepMagnitude)).size >= 2 &&
+    states.some((state) => state.direction === "increase") &&
+    states.some((state) => state.direction === "decrease") &&
+    mappingIsBijection(item.values.validRepairedChangeStatesByRuleState);
+  if (!valid) failures.push("change-rule-audit-self-check-positive");
+
+  const wrong = structuredClone(item);
+  wrong.values.validRepairedChangeStatesByRuleState[0].afterState[0] += 1;
+  if (mappingIsBijection(wrong.values.validRepairedChangeStatesByRuleState)) {
+    failures.push("change-rule-audit-self-check-mapping-mutation");
+  }
+  const prefilled = structuredClone(item);
+  prefilled.values.studentChangeRuleState = [states[0]];
+  if (prefilled.values.studentChangeRuleState.length === 0) {
+    failures.push("change-rule-audit-self-check-prefilled-state");
+  }
+};
+
 declaredRepairAuditSelfCheck();
+changeRuleAuditSelfCheck();
 
 for (const gateId of COGNITIVE_GATE_IDS) {
   const docs = await readFile(
@@ -940,7 +1020,13 @@ for (const manifest of manifests) {
       ? manifest.decision.candidateRoles
       : manifest.decision.mode === "construct-rule"
         ? manifest.decision.variantRoles
-        : manifest.decision.pieceRoles;
+        : manifest.decision.mode === "construct-change-rule"
+          ? [
+              "start-value-control",
+              "step-magnitude-control",
+              "direction-control"
+            ]
+          : manifest.decision.pieceRoles;
   const decisionMembers = decisionMemberRoles.map((role) =>
     roleByName.get(role)
   );
@@ -1072,6 +1158,273 @@ for (const manifest of manifests) {
     ) {
       failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
       failures.push(`G4_NO_TRIVIAL_PATH:${blueprint.id}`);
+    }
+  } else if (manifest.decision.mode === "construct-change-rule") {
+    const decision = manifest.decision;
+    const controlRoles = [
+      "start-value-control",
+      "step-magnitude-control",
+      "direction-control"
+    ];
+    const sequenceRoles = [
+      "sequence-term-1",
+      "sequence-term-2",
+      "sequence-term-3",
+      "sequence-term-4"
+    ];
+    const allRequiredRoles = [
+      ...controlRoles,
+      ...sequenceRoles,
+      "repair-target"
+    ];
+    const controls = controlRoles.map((role) => roleByName.get(role));
+    const sequenceTerms = sequenceRoles.map((role) => roleByName.get(role));
+    const repairTarget = roleByName.get("repair-target");
+    const controlConstraints = controlRoles.map((role) =>
+      blueprint.constraints.find(
+        (constraint) =>
+          constraint.kind === "fill-from-pool" &&
+          constraint.target.role === role
+      )
+    );
+    const sequenceConstraints = sequenceRoles.map((role) =>
+      blueprint.constraints.find(
+        (constraint) =>
+          constraint.kind === "fill-from-pool" &&
+          constraint.target.role === role
+      )
+    );
+    const repairConstraint = blueprint.constraints.find(
+      (constraint) =>
+        constraint.kind === "fill-from-pool" &&
+        constraint.target.role === "repair-target"
+    );
+    itemDecisionConstraints.push(
+      ...controlConstraints,
+      ...sequenceConstraints,
+      repairConstraint
+    );
+    const roleShapeValid =
+      controls.every(
+        (role) =>
+          role?.scope === "each-item" &&
+          role.locked &&
+          !role.movable
+      ) &&
+      sequenceTerms.every(
+        (role) =>
+          role?.scope === "each-item" &&
+          role.locked &&
+          !role.movable
+      ) &&
+      repairTarget?.scope === "each-item" &&
+      repairTarget.locked &&
+      !repairTarget.movable;
+    const sourceRoles = [
+      ...new Set(
+        controlConstraints.flatMap((constraint) =>
+          constraint?.sources.map((source) => source.role) ?? []
+        )
+      )
+    ].map((role) => roleByName.get(role));
+    const sourcePoolValid =
+      sourceRoles.length >= 3 &&
+      sourceRoles.every(
+        (role) =>
+          role?.scope === "each-item" &&
+          role.movable &&
+          !role.locked &&
+          role.toolKey === "SM02PB" &&
+          (role.bindings.variant !== undefined ||
+            role.bindings.orderedValues !== undefined)
+      );
+    const sourceRoleSet = sourceRoles.map((role) => role?.role);
+    const everyConstraintUsesSameSourcePool = [
+      ...sequenceConstraints,
+      repairConstraint
+    ].every(
+      (constraint) =>
+        constraint !== undefined &&
+        sameSet(
+          constraint.sources.map((source) => source.role),
+          sourceRoleSet
+        )
+    );
+    const constraintShapeValid =
+      controlConstraints.every(
+        (constraint, index) =>
+          constraint?.requiresStudentAction === true &&
+          constraint.target.role === controlRoles[index] &&
+          constraint.parameters?.phase === "rule-selection" &&
+          constraint.parameters?.writesStatePath === decision.ruleStatePath &&
+          constraint.parameters?.stateField === decision.stateFields[index] &&
+          constraint.parameters?.stateIndex === index
+      ) &&
+      sequenceConstraints.every(
+        (constraint, index) =>
+          constraint?.requiresStudentAction === true &&
+          constraint.target.role === sequenceRoles[index] &&
+          constraint.parameters?.phase === "apply-declared-change" &&
+          constraint.parameters?.ruleStatePath === decision.ruleStatePath &&
+          constraint.parameters?.sequenceStatePath ===
+            decision.application.sequenceStatePath &&
+          constraint.parameters?.sequenceIndex === index &&
+          constraint.parameters?.transition === decision.application.transition
+      ) &&
+      repairConstraint?.requiresStudentAction === true &&
+      repairConstraint.target.role === "repair-target" &&
+      repairConstraint.parameters?.phase === "repair-declared-change" &&
+      repairConstraint.parameters?.ruleStatePath === decision.ruleStatePath &&
+      repairConstraint.parameters?.beforeStatePath ===
+        decision.repair.beforeStatePath &&
+      repairConstraint.parameters?.afterStatePath ===
+        decision.repair.afterStatePath &&
+      repairConstraint.parameters?.wrongIndexPath ===
+        decision.repair.wrongIndexPath &&
+      repairConstraint.parameters?.mappingPath ===
+        "validRepairedChangeStatesByRuleState";
+    const distinctMisconceptions = new Set(
+      decision.distractors.map((entry) =>
+        entry.misconception.normalize("NFKC").trim()
+      )
+    ).size;
+    if (
+      !roleShapeValid ||
+      !sourcePoolValid ||
+      !everyConstraintUsesSameSourcePool ||
+      !constraintShapeValid ||
+      distinctMisconceptions !== decision.distractors.length ||
+      JSON.stringify(manifest.verification.roles) !==
+        JSON.stringify(allRequiredRoles)
+    ) {
+      failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
+      failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
+    }
+    let changeEnvelopeInvalid = false;
+    let changeAnswerVisible = false;
+    enumerateRegisteredVariationEnvelope(blueprint.id).forEach(
+      (variation, variationIndex) => {
+        const items = generateRegisteredBlueprintItems(
+          blueprint,
+          `cognitive-change-rule-${blueprint.id}-${variationIndex + 1}`,
+          variation
+        );
+        items.forEach((item) => {
+          const state = item.values[decision.ruleStatePath];
+          const validStates = Array.isArray(item.values.validChangeRuleStates)
+            ? item.values.validChangeRuleStates
+            : undefined;
+          const mappings = Array.isArray(
+            item.values.validRepairedChangeStatesByRuleState
+          )
+            ? item.values.validRepairedChangeStatesByRuleState
+            : undefined;
+          const validStateKeys = validStates?.map((entry) =>
+            JSON.stringify([
+              entry?.startValue,
+              entry?.stepMagnitude,
+              entry?.direction
+            ])
+          );
+          const mappingKeys = mappings?.map((entry) =>
+            JSON.stringify([
+              entry?.ruleState?.startValue,
+              entry?.ruleState?.stepMagnitude,
+              entry?.ruleState?.direction
+            ])
+          );
+          const declaredWrongIndex = item.values[decision.repair.wrongIndexPath];
+          const mappingValid =
+            validStates !== undefined &&
+            mappings !== undefined &&
+            validStates.length >= 4 &&
+            mappings.length === validStates.length &&
+            new Set(validStateKeys).size === validStates.length &&
+            new Set(mappingKeys).size === mappings.length &&
+            validStates.every((rule) => {
+              const signed =
+                rule.direction === "increase"
+                  ? rule.stepMagnitude
+                  : -rule.stepMagnitude;
+              const expected = Array.from(
+                { length: decision.application.minimumVisibleTerms },
+                (_, index) => rule.startValue + signed * index
+              );
+              const key = JSON.stringify([
+                rule.startValue,
+                rule.stepMagnitude,
+                rule.direction
+              ]);
+              const mapping = mappings.find(
+                (entry) =>
+                  JSON.stringify([
+                    entry?.ruleState?.startValue,
+                    entry?.ruleState?.stepMagnitude,
+                    entry?.ruleState?.direction
+                  ]) === key
+              );
+              const before = mapping?.beforeState;
+              const after = mapping?.afterState;
+              const wrongIndex = mapping?.wrongIndex;
+              return (
+                Array.isArray(before) &&
+                Array.isArray(after) &&
+                before.length === expected.length &&
+                after.length === expected.length &&
+                Number.isInteger(wrongIndex) &&
+                Number.isInteger(declaredWrongIndex) &&
+                wrongIndex === declaredWrongIndex &&
+                wrongIndex >= 0 &&
+                wrongIndex < expected.length &&
+                before.every((value, index) =>
+                  index === wrongIndex
+                    ? value !== expected[index]
+                    : value === expected[index]
+                ) &&
+                after.every((value, index) => value === expected[index])
+              );
+            });
+          if (
+            !Array.isArray(state) ||
+            state.length !== 0 ||
+            !validStates ||
+            validStates.length < 4 ||
+            new Set(validStates.map((entry) => entry.startValue)).size < 2 ||
+            new Set(validStates.map((entry) => entry.stepMagnitude)).size < 2 ||
+            !validStates.some((entry) => entry.direction === "increase") ||
+            !validStates.some((entry) => entry.direction === "decrease") ||
+            !mappingValid ||
+            item.values[decision.application.sequenceStatePath]?.length !== 0 ||
+            item.values[decision.repair.beforeStatePath]?.length !== 0 ||
+            item.values[decision.repair.afterStatePath]?.length !== 0 ||
+            !Number.isInteger(declaredWrongIndex) ||
+            declaredWrongIndex < 0 ||
+            declaredWrongIndex >= decision.application.minimumVisibleTerms
+          ) {
+            changeEnvelopeInvalid = true;
+          }
+          if (
+            validStates?.some((rule) =>
+              blueprint.toolRoles.some(
+                (role) =>
+                  role.locked &&
+                  !allRequiredRoles.includes(role.role) &&
+                  (containsVisibleAnswer(role.properties, rule.startValue) ||
+                    containsVisibleAnswer(role.properties, rule.stepMagnitude) ||
+                    containsVisibleAnswer(role.properties, rule.direction))
+              )
+            )
+          ) {
+            changeAnswerVisible = true;
+          }
+        });
+      }
+    );
+    if (changeEnvelopeInvalid) {
+      failures.push(`G2_DISTRACTOR_SURPLUS:${blueprint.id}`);
+    }
+    if (changeAnswerVisible) {
+      failures.push(`G3_ANSWER_HIDDEN:${blueprint.id}`);
     }
   } else {
     const pieces = (
@@ -1498,7 +1851,13 @@ for (const manifest of manifests) {
             ? manifest.decision.candidateRoles
             : manifest.decision.mode === "construct-rule"
               ? manifest.decision.variantRoles
-              : manifest.decision.pieceRoles
+              : manifest.decision.mode === "construct-change-rule"
+                ? [
+                    "start-value-control",
+                    "step-magnitude-control",
+                    "direction-control"
+                  ]
+                : manifest.decision.pieceRoles
         ).includes(distractor.role)
     ) ||
     manifest.decision.distractors.some(
@@ -1515,7 +1874,8 @@ for (const manifest of manifests) {
   }
 
   const studentConstructedManifest =
-    manifest.decision.mode === "construct-rule" &&
+    (manifest.decision.mode === "construct-rule" ||
+      manifest.decision.mode === "construct-change-rule") &&
     manifest.decision.constructionMode === "student-constructed";
   const answerPath = studentConstructedManifest
     ? undefined
@@ -1523,6 +1883,8 @@ for (const manifest of manifests) {
       ? manifest.decision.correctValuePath
       : manifest.decision.mode === "construct-rule"
         ? manifest.decision.ruleStatePath
+        : manifest.decision.mode === "construct-change-rule"
+          ? undefined
         : manifest.decision.solutionSetPath;
   const boundAnswer = blueprint.toolRoles.some(
     (role) =>
@@ -1603,7 +1965,8 @@ for (const manifest of manifests) {
     !blueprint.valuePredicates.some(
       (predicate) =>
         predicate.kind === "cognitive.release-contract" ||
-        predicate.kind === "cognitive.rule-state-contract"
+        predicate.kind === "cognitive.rule-state-contract" ||
+        predicate.kind === "cognitive.change-rule-state-contract"
     ) ||
     itemDecisionConstraints.length === 0 ||
     itemDecisionConstraints.some(

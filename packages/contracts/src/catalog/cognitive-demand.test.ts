@@ -353,3 +353,84 @@ describe("construct-rule cognitive decision contract", () => {
     expect(() => defineCognitiveDemandManifest(manifest)).toThrow();
   });
 });
+
+describe("construct-change-rule cognitive decision contract", () => {
+  const changeManifest = () => ({
+    ...constructRuleManifest(),
+    decision: {
+      mode: "construct-change-rule" as const,
+      constructionMode: "student-constructed" as const,
+      answerMode: "conditional-rubric" as const,
+      ruleStatePath: "studentChangeRuleState",
+      stateFields: ["startValue", "stepMagnitude", "direction"] as const,
+      directionValues: ["increase", "decrease"] as const,
+      minimumDistinctStartValues: 2,
+      minimumDistinctStepMagnitudes: 2,
+      initialState: "empty" as const,
+      requiresStudentDeclaredState: true as const,
+      distractors: [
+        {
+          predicateKind: "cognitive.change-rule-state-contract",
+          misconception: "증가와 감소 방향을 반대로 적용한다."
+        },
+        {
+          predicateKind: "cognitive.change-rule-state-contract",
+          misconception: "선언한 변화량과 다른 간격을 적용한다."
+        }
+      ],
+      application: {
+        ruleStatePath: "studentChangeRuleState",
+        sequenceStatePath: "constructedSequenceState",
+        minimumVisibleTerms: 4,
+        transition: "next-equals-current-plus-signed-step" as const,
+        requiresAdjacentDifferenceEvidence: true as const,
+        requiresVisibleComparison: true as const
+      },
+      repair: {
+        ruleStatePath: "studentChangeRuleState",
+        beforeStatePath: "initialChangeSequenceState",
+        afterStatePath: "repairedChangeSequenceState",
+        wrongIndexPath: "misalignedTermIndex",
+        derivation: "replace-with-declared-transition-value" as const,
+        requiresConditionalMapping: true as const,
+        requiresOnlyWrongIndexChanges: true as const
+      }
+    },
+    verification: {
+      kind: "data-representation" as const,
+      roles: [
+        "start-value-control",
+        "step-magnitude-control",
+        "direction-control",
+        "sequence-term-1",
+        "sequence-term-2",
+        "sequence-term-3",
+        "sequence-term-4",
+        "repair-target"
+      ],
+      invariant: "모든 인접 항의 차가 학생이 선언한 signed step과 같다."
+    },
+    explanation: { regionRole: "teacher-rubric" }
+  });
+
+  it("accepts a student-declared signed-step change contract", () => {
+    expect(defineCognitiveDemandManifest(changeManifest()).decision).toMatchObject({
+      mode: "construct-change-rule",
+      ruleStatePath: "studentChangeRuleState",
+      initialState: "empty"
+    });
+  });
+
+  it("rejects aliased state paths and duplicate misconception alternatives", () => {
+    const aliased = changeManifest();
+    aliased.decision.repair.afterStatePath = "initialChangeSequenceState";
+    expect(() => defineCognitiveDemandManifest(aliased)).toThrow();
+
+    const duplicated = changeManifest();
+    duplicated.decision.distractors[1] = {
+      predicateKind: "cognitive.change-rule-state-contract",
+      misconception: duplicated.decision.distractors[0]!.misconception
+    };
+    expect(() => defineCognitiveDemandManifest(duplicated)).toThrow();
+  });
+});

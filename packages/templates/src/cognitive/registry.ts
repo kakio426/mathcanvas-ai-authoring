@@ -1513,6 +1513,23 @@ export function listCognitiveDemandManifests(): readonly CognitiveDemandManifest
 export function expectedCognitiveRuntimePredicate(
   manifest: CognitiveDemandManifest
 ): { kind: string; parameters: Record<string, unknown> } {
+  if (manifest.decision.mode === "construct-change-rule") {
+    return {
+      kind: "cognitive.change-rule-state-contract",
+      parameters: {
+        mode: manifest.decision.mode,
+        constructionMode: manifest.decision.constructionMode,
+        answerMode: manifest.decision.answerMode,
+        ruleStatePath: manifest.decision.ruleStatePath,
+        stateFields: manifest.decision.stateFields,
+        directionValues: manifest.decision.directionValues,
+        initialState: manifest.decision.initialState,
+        distractors: manifest.decision.distractors,
+        application: manifest.decision.application,
+        repair: manifest.decision.repair
+      }
+    };
+  }
   if (manifest.decision.mode === "construct-rule") {
     const appliedRuleStatePath =
       manifest.decision.application?.ruleStatePath ??

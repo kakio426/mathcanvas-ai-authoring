@@ -209,6 +209,50 @@ const constructRuleDecisionSchema = z
   })
   .strict();
 
+const constructChangeRuleDecisionSchema = z
+  .object({
+    mode: z.literal("construct-change-rule"),
+    constructionMode: z.literal("student-constructed"),
+    answerMode: z.literal("conditional-rubric"),
+    ruleStatePath: stableIdSchema,
+    stateFields: z.tuple([
+      z.literal("startValue"),
+      z.literal("stepMagnitude"),
+      z.literal("direction")
+    ]).readonly(),
+    directionValues: z.tuple([
+      z.literal("increase"),
+      z.literal("decrease")
+    ]).readonly(),
+    minimumDistinctStartValues: z.number().int().min(2).max(8),
+    minimumDistinctStepMagnitudes: z.number().int().min(2).max(8),
+    initialState: z.literal("empty"),
+    requiresStudentDeclaredState: z.literal(true),
+    distractors: z.array(distractorSchema).min(2).max(7),
+    application: z
+      .object({
+        ruleStatePath: stableIdSchema,
+        sequenceStatePath: stableIdSchema,
+        minimumVisibleTerms: z.number().int().min(4).max(12),
+        transition: z.literal("next-equals-current-plus-signed-step"),
+        requiresAdjacentDifferenceEvidence: z.literal(true),
+        requiresVisibleComparison: z.literal(true)
+      })
+      .strict(),
+    repair: z
+      .object({
+        ruleStatePath: stableIdSchema,
+        beforeStatePath: stableIdSchema,
+        afterStatePath: stableIdSchema,
+        wrongIndexPath: stableIdSchema,
+        derivation: z.literal("replace-with-declared-transition-value"),
+        requiresConditionalMapping: z.literal(true),
+        requiresOnlyWrongIndexChanges: z.literal(true)
+      })
+      .strict()
+  })
+  .strict();
+
 export const COGNITIVE_GATE_IDS = [
   "G0_MANIFEST_BOUND",
   "G1_DECISION_EXISTS",
@@ -247,7 +291,8 @@ export const cognitiveDemandManifestSchema = z
     decision: z.discriminatedUnion("mode", [
       selectOneDecisionSchema,
       constructDecisionSchema,
-      constructRuleDecisionSchema
+      constructRuleDecisionSchema,
+      constructChangeRuleDecisionSchema
     ]),
     prediction: z.object({ regionRole: stableIdSchema }).strict(),
     verification: z
@@ -278,6 +323,42 @@ export const cognitiveDemandManifestSchema = z
   })
   .strict()
   .superRefine((manifest, ctx) => {
+    if (manifest.decision.mode === "construct-change-rule") {
+      const decision = manifest.decision;
+      const misconceptionKeys = new Set(
+        decision.distractors.map((entry) =>
+          entry.misconception.normalize("NFKC").trim()
+        )
+      );
+      const expectedRoles = [
+        "start-value-control",
+        "step-magnitude-control",
+        "direction-control",
+        "sequence-term-1",
+        "sequence-term-2",
+        "sequence-term-3",
+        "sequence-term-4",
+        "repair-target"
+      ];
+      if (
+        misconceptionKeys.size !== decision.distractors.length ||
+        decision.application.ruleStatePath !== decision.ruleStatePath ||
+        decision.repair.ruleStatePath !== decision.ruleStatePath ||
+        decision.application.sequenceStatePath === decision.ruleStatePath ||
+        decision.repair.beforeStatePath === decision.repair.afterStatePath ||
+        decision.repair.beforeStatePath === decision.ruleStatePath ||
+        decision.repair.afterStatePath === decision.ruleStatePath ||
+        JSON.stringify(manifest.verification.roles) !==
+          JSON.stringify(expectedRoles)
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["decision"],
+          message: "변화 규칙 선언·적용·수정 경로와 관찰 역할은 서로 정확히 결속되어야 합니다."
+        });
+      }
+      return;
+    }
     if (manifest.decision.mode !== "construct-rule") return;
     const decision = manifest.decision;
     const extensionPresent =

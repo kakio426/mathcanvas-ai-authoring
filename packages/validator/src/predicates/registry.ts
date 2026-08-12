@@ -467,6 +467,469 @@ const handlers: Record<string, Handler> = {
       }
     }
   },
+  "cognitive.change-rule-state-contract": (
+    resolved,
+    predicate,
+    issues
+  ) => {
+    const record = (value: unknown): Record<string, unknown> | undefined =>
+      value && typeof value === "object" && !Array.isArray(value)
+        ? (value as Record<string, unknown>)
+        : undefined;
+    const mode = stringParameter(predicate, "mode");
+    const constructionMode = stringParameter(predicate, "constructionMode");
+    const answerMode = stringParameter(predicate, "answerMode");
+    const ruleStatePath = stringParameter(predicate, "ruleStatePath");
+    const stateFields = stringArrayParameter(predicate, "stateFields", 3);
+    const directionValues = stringArrayParameter(
+      predicate,
+      "directionValues",
+      2
+    );
+    const initialState = stringParameter(predicate, "initialState");
+    const distractors = parameter(predicate, "distractors");
+    const application = record(parameter(predicate, "application"));
+    const repair = record(parameter(predicate, "repair"));
+    const controlRoles = [
+      "start-value-control",
+      "step-magnitude-control",
+      "direction-control"
+    ];
+    const sequenceRoles = [
+      "sequence-term-1",
+      "sequence-term-2",
+      "sequence-term-3",
+      "sequence-term-4"
+    ];
+    const verificationRoles = [
+      ...controlRoles,
+      ...sequenceRoles,
+      "repair-target"
+    ];
+    const distinctMisconceptions = Array.isArray(distractors)
+      ? new Set(
+          distractors.map((entry) =>
+            record(entry)?.misconception &&
+            typeof record(entry)?.misconception === "string"
+              ? String(record(entry)!.misconception)
+                  .normalize("NFKC")
+                  .trim()
+              : ""
+          )
+        ).size
+      : 0;
+    const applicationRuleStatePath = application?.ruleStatePath;
+    const sequenceStatePath = application?.sequenceStatePath;
+    const repairRuleStatePath = repair?.ruleStatePath;
+    const validApplication =
+      application !== undefined &&
+      applicationRuleStatePath === ruleStatePath &&
+      typeof sequenceStatePath === "string" &&
+      sequenceStatePath !== ruleStatePath &&
+      application.minimumVisibleTerms === sequenceRoles.length &&
+      application.transition ===
+        "next-equals-current-plus-signed-step" &&
+      application.requiresAdjacentDifferenceEvidence === true &&
+      application.requiresVisibleComparison === true;
+    const validRepair =
+      repair !== undefined &&
+      repairRuleStatePath === ruleStatePath &&
+      typeof repair.beforeStatePath === "string" &&
+      typeof repair.afterStatePath === "string" &&
+      typeof repair.wrongIndexPath === "string" &&
+      repair.beforeStatePath !== repair.afterStatePath &&
+      repair.beforeStatePath !== ruleStatePath &&
+      repair.afterStatePath !== ruleStatePath &&
+      repair.derivation === "replace-with-declared-transition-value" &&
+      repair.requiresConditionalMapping === true &&
+      repair.requiresOnlyWrongIndexChanges === true;
+    if (
+      mode !== "construct-change-rule" ||
+      constructionMode !== "student-constructed" ||
+      answerMode !== "conditional-rubric" ||
+      JSON.stringify(stateFields) !==
+        JSON.stringify(["startValue", "stepMagnitude", "direction"]) ||
+      JSON.stringify(directionValues) !==
+        JSON.stringify(["increase", "decrease"]) ||
+      initialState !== "empty" ||
+      !validApplication ||
+      !validRepair ||
+      !Array.isArray(distractors) ||
+      distractors.length < 2 ||
+      distinctMisconceptions !== distractors.length
+    ) {
+      throw new Error(
+        `predicate-parameter-invalid:${predicate.kind}:change-rule-contract`
+      );
+    }
+
+    const numericSequence = (value: unknown): number[] | undefined =>
+      Array.isArray(value) &&
+      value.length >= sequenceRoles.length &&
+      value.every(
+        (entry) => typeof entry === "number" && Number.isFinite(entry)
+      )
+        ? (value as number[])
+        : undefined;
+    const stateKey = (state: Record<string, unknown>): string =>
+      JSON.stringify([
+        state.startValue,
+        state.stepMagnitude,
+        state.direction
+      ]);
+    const signedStep = (state: Record<string, unknown>): number | undefined => {
+      if (
+        typeof state.stepMagnitude !== "number" ||
+        !Number.isFinite(state.stepMagnitude) ||
+        state.stepMagnitude <= 0 ||
+        (state.direction !== "increase" && state.direction !== "decrease")
+      ) {
+        return undefined;
+      }
+      return state.direction === "increase"
+        ? state.stepMagnitude
+        : -state.stepMagnitude;
+    };
+    const expectedSequence = (
+      state: Record<string, unknown>,
+      length: number
+    ): number[] | undefined => {
+      const step = signedStep(state);
+      if (
+        step === undefined ||
+        typeof state.startValue !== "number" ||
+        !Number.isFinite(state.startValue)
+      ) {
+        return undefined;
+      }
+      return Array.from(
+        { length },
+        (_, index) => state.startValue as number + step * index
+      );
+    };
+    const concrete = (emission: ResolvedEmission | undefined): boolean =>
+      emission
+        ? Object.entries(emission.toolIntent.properties).some(
+            ([key, value]) =>
+              /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
+                key
+              ) &&
+              value !== undefined &&
+              value !== null &&
+              value !== ""
+          )
+        : true;
+    const openConstraint = (
+      itemId: string,
+      targetId: string,
+      phase: string,
+      expected: Record<string, unknown>,
+      expectedSourceIds: readonly string[]
+    ) => {
+      const constraint = resolved.constraints.find(
+        (candidate) =>
+          candidate.targetId === targetId &&
+          candidate.id.endsWith(`:${itemId}`)
+      );
+      if (
+        !constraint ||
+        !constraint.requiresStudentAction ||
+        constraint.satisfiedInitially ||
+        !["fill-from-pool", "select-one-of"].includes(constraint.kind) ||
+        JSON.stringify(constraint.sourceIds) !==
+          JSON.stringify(expectedSourceIds) ||
+        constraint.parameters.phase !== phase ||
+        Object.entries(expected).some(
+          ([key, value]) =>
+            !sameValue(constraint.parameters[key], value)
+        )
+      ) {
+        return false;
+      }
+      return true;
+    };
+
+    for (const item of resolved.items) {
+      const state = item.values[ruleStatePath];
+      const validStatesRaw = item.values.validChangeRuleStates;
+      const mappingsRaw = item.values.validRepairedChangeStatesByRuleState;
+      const validStates = Array.isArray(validStatesRaw)
+        ? validStatesRaw.map(record)
+        : undefined;
+      const mappings = Array.isArray(mappingsRaw)
+        ? mappingsRaw.map(record)
+        : undefined;
+      const controls = controlRoles.map((role) =>
+        byRole(resolved, item.id, role)
+      );
+      const sequenceTargets = sequenceRoles.map((role) =>
+        byRole(resolved, item.id, role)
+      );
+      const repairTarget = byRole(resolved, item.id, "repair-target");
+      const itemConstraintSuffix = `:${item.id}`;
+      const sourceIds = resolved.constraints.find((constraint) =>
+        constraint.id.endsWith(itemConstraintSuffix)
+      )?.sourceIds;
+      const sourceEmissions = sourceIds?.map((sourceId) =>
+        resolved.emissions.find((emission) => emission.id === sourceId)
+      );
+      const sourcePoolValid =
+        sourceIds !== undefined &&
+        sourceIds.length >= 3 &&
+        new Set(sourceIds).size === sourceIds.length &&
+        sourceEmissions?.every(
+          (emission) =>
+            emission !== undefined &&
+            emission.movable &&
+            !emission.locked &&
+            emission.toolIntent.toolKey === "SM02PB" &&
+            concrete(emission)
+        ) === true;
+      const sourceRoleIds = sourceIds ?? [];
+      const allStudentConstraintsUseSourcePool = resolved.constraints
+        .filter((constraint) => constraint.id.endsWith(itemConstraintSuffix))
+        .filter((constraint) => constraint.requiresStudentAction)
+        .every(
+          (constraint) =>
+            JSON.stringify(constraint.sourceIds) ===
+            JSON.stringify(sourceRoleIds)
+        );
+      const rolesPresent =
+        controls.every((emission) => emission !== undefined) &&
+        sequenceTargets.every((emission) => emission !== undefined) &&
+        repairTarget !== undefined;
+      const controlsOpen = controls.every(
+        (emission) =>
+          emission !== undefined &&
+          emission.locked &&
+          !emission.movable &&
+          !concrete(emission)
+      );
+      const sequenceOpen = sequenceTargets.every(
+        (emission, index) =>
+          emission !== undefined &&
+          emission.locked &&
+          !emission.movable &&
+          !concrete(emission) &&
+          openConstraint(item.id, emission.id, "apply-declared-change", {
+            ruleStatePath,
+            sequenceStatePath,
+            sequenceIndex: index,
+            transition: application.transition
+          }, sourceIds ?? [])
+      );
+      const controlConstraintsOpen = controls.every((emission, index) =>
+        emission !== undefined &&
+        openConstraint(item.id, emission.id, "rule-selection", {
+          writesStatePath: ruleStatePath,
+          stateField: stateFields[index],
+          stateIndex: index
+        }, sourceIds ?? [])
+      );
+      const repairOpen =
+        repairTarget !== undefined &&
+        repairTarget.locked &&
+        !repairTarget.movable &&
+        !concrete(repairTarget) &&
+        openConstraint(item.id, repairTarget.id, "repair-declared-change", {
+          ruleStatePath,
+          beforeStatePath: repair.beforeStatePath,
+          afterStatePath: repair.afterStatePath,
+          wrongIndexPath: repair.wrongIndexPath,
+          mappingPath: "validRepairedChangeStatesByRuleState"
+        }, sourceIds ?? []);
+      const validStateObjects = validStates?.filter(
+        (entry): entry is Record<string, unknown> => entry !== undefined
+      );
+      const stateShapeValid =
+        validStateObjects !== undefined &&
+        validStateObjects.length >= 4 &&
+        validStateObjects.every(
+          (entry) =>
+            typeof entry.startValue === "number" &&
+            typeof entry.stepMagnitude === "number" &&
+            entry.stepMagnitude > 0 &&
+            directionValues.includes(String(entry.direction))
+        );
+      const distinctStarts = new Set(
+        validStateObjects?.map((entry) => String(entry.startValue))
+      ).size;
+      const distinctSteps = new Set(
+        validStateObjects?.map((entry) => String(entry.stepMagnitude))
+      ).size;
+      const directions = new Set(
+        validStateObjects?.map((entry) => String(entry.direction))
+      );
+      const validStateKeys = validStateObjects?.map(stateKey);
+      const validStateSet = new Set(validStateKeys);
+      const mappingByKey = new Map(
+        mappings
+          ?.filter(
+            (entry): entry is Record<string, unknown> =>
+              entry !== undefined &&
+              record(entry.ruleState) !== undefined
+          )
+          .map((entry) => [stateKey(record(entry.ruleState)!), entry]) ?? []
+      );
+      const mappingValid =
+        mappings !== undefined &&
+        validStateObjects !== undefined &&
+        mappings.length === validStateObjects.length &&
+        mappingByKey.size === mappings.length &&
+        validStateObjects.every((rule) => {
+          const mapping = mappingByKey.get(stateKey(rule));
+          const before = mapping && numericSequence(mapping.beforeState);
+          const after = mapping && numericSequence(mapping.afterState);
+          const wrongIndex = mapping?.wrongIndex;
+          const declaredWrongIndex = item.values[String(repair.wrongIndexPath)];
+          const expected = expectedSequence(rule, sequenceRoles.length);
+          if (
+            !before ||
+            !after ||
+            !expected ||
+            typeof wrongIndex !== "number" ||
+            !Number.isInteger(wrongIndex) ||
+            typeof declaredWrongIndex !== "number" ||
+            !Number.isInteger(declaredWrongIndex) ||
+            wrongIndex !== declaredWrongIndex ||
+            wrongIndex < 0 ||
+            wrongIndex >= expected.length ||
+            before.length !== after.length
+          ) {
+            return false;
+          }
+          return (
+            before.every((value, index) =>
+              index === wrongIndex
+                ? value !== expected[index]
+                : value === expected[index]
+            ) &&
+            after.every((value, index) => value === expected[index])
+          );
+        });
+      const distinctStartsForEnvelope = new Set(
+        validStateObjects?.map((entry) => String(entry.startValue))
+      ).size;
+      const distinctStepsForEnvelope = new Set(
+        validStateObjects?.map((entry) => String(entry.stepMagnitude))
+      ).size;
+      const expectedCartesianStateCount =
+        distinctStartsForEnvelope * distinctStepsForEnvelope * directionValues.length;
+      const emptyStatePaths: string[] = [
+        ruleStatePath,
+        String(sequenceStatePath),
+        String(repair.beforeStatePath),
+        String(repair.afterStatePath)
+      ];
+      const emptyRuntimeStates = emptyStatePaths.every(
+        (path) => Array.isArray(item.values[path]) && item.values[path].length === 0
+      );
+      const answerLeak = validStateObjects?.some((rule) =>
+        resolved.emissions.some(
+          (emission) =>
+            (emission.itemId === item.id || emission.itemId === undefined) &&
+            !controlRoles.includes(emission.role) &&
+            !sequenceRoles.includes(emission.role) &&
+            emission.role !== "repair-target" &&
+            containsVisibleOrderedRuleState(
+              emission.toolIntent.properties,
+              [rule.startValue, rule.stepMagnitude, rule.direction]
+            )
+          )
+      );
+      const splitAnswerLeak = resolved.emissions
+        .filter(
+          (emission) =>
+            (emission.itemId === item.id || emission.itemId === undefined) &&
+            !controlRoles.includes(emission.role) &&
+            !sequenceRoles.includes(emission.role) &&
+            emission.role !== "repair-target" &&
+            !sourceIds?.includes(emission.id)
+        )
+        .map((emission) => emission.toolIntent.properties)
+        .length > 0 &&
+        validStateObjects?.some((rule) =>
+          containsVisibleOrderedRuleStateAcrossProperties(
+            resolved.emissions
+              .filter(
+                (emission) =>
+                  (emission.itemId === item.id || emission.itemId === undefined) &&
+                  !controlRoles.includes(emission.role) &&
+                  !sequenceRoles.includes(emission.role) &&
+                  emission.role !== "repair-target" &&
+                  !sourceIds?.includes(emission.id)
+              )
+              .map((emission) => emission.toolIntent.properties),
+            [rule.startValue, rule.stepMagnitude, rule.direction]
+          )
+        ) === true;
+      if (
+        !Array.isArray(state) ||
+        state.length !== 0 ||
+        !rolesPresent ||
+        !controlsOpen ||
+        !controlConstraintsOpen ||
+        !sourcePoolValid ||
+        !allStudentConstraintsUseSourcePool ||
+        !emptyRuntimeStates
+      ) {
+        issue(
+          issues,
+          "cognitive-change-rule-decision-missing",
+          "pedagogy",
+          `${item.id}에 시작값·변화량·방향을 학생이 직접 선언하는 열린 결정이 없습니다.`
+        );
+      }
+      if (
+        !stateShapeValid ||
+        distinctStarts < 2 ||
+        distinctSteps < 2 ||
+        !directions.has("increase") ||
+        !directions.has("decrease") ||
+        (validStateObjects?.length ?? 0) < expectedCartesianStateCount ||
+        validStateSet.size !== (validStateObjects?.length ?? 0) ||
+        !mappingValid
+      ) {
+        issue(
+          issues,
+          "cognitive-change-rule-envelope-invalid",
+          "mathematics",
+          `${item.id}에 서로 다른 signed-step 상태와 조건부 교정 mapping이 충분하지 않습니다.`
+        );
+      }
+      if (!sequenceOpen || !repairOpen) {
+        issue(
+          issues,
+          "cognitive-change-rule-application-missing",
+          "pedagogy",
+          `${item.id}에 선언한 변화 규칙을 네 항에 적용하고 오류 항만 교체하는 열린 조작이 없습니다.`
+        );
+      }
+      if (answerLeak || splitAnswerLeak) {
+        issue(
+          issues,
+          "cognitive-change-rule-answer-visible",
+          "pedagogy",
+          `${item.id}의 특정 시작값·변화량·방향 조합이 학생 행동 전에 노출됩니다.`
+        );
+      }
+      if (
+        verificationRoles.some(
+          (role) => !byRole(resolved, item.id, role)
+        ) ||
+        !byRole(resolved, item.id, "prediction-box") ||
+        (!byRole(resolved, item.id, "teacher-rubric") &&
+          !byRole(resolved, item.id, "explanation-box"))
+      ) {
+        issue(
+          issues,
+          "cognitive-change-rule-verification-missing",
+          "pedagogy",
+          `${item.id}에 선언 상태와 인접 차·교정 전후를 대조할 관찰 영역이 없습니다.`
+        );
+      }
+    }
+  },
   "ratio.no-duplicate": (resolved, predicate, issues) => {
     const seen = new Set<string>();
     for (const item of resolved.items) {

@@ -14,7 +14,7 @@
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
-          "artifactSha256": "4e7dc7df28e0cde34e9722de7420d24f1cebfe008fdb34357ed847d64684dd7f"
+          "artifactSha256": "c633b654e941546647ea535d6b866a463ac5efe5650f1de5c48f6e5b995dd894"
         }
       }
     },
@@ -27,7 +27,7 @@
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
-          "artifactSha256": "46f126351f9c5c837402bd87f7342934e034426d94d95300263cc293b11f2b26"
+          "artifactSha256": "732cdb78f6c624bda8d15800638aa1fa8d695e065bb1dd74a40446761e38e897"
         }
       }
     },
