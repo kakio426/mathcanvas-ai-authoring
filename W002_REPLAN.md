@@ -1,42 +1,57 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v9)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v10)
 
-상태: **Sol max 재계획 검토 대기 — CONTRACT_CAPACITY·LAYOUT_CAPACITY hard-stop 해소**
+상태: **Sol max 재계획 후보 — repeat-repair preflight request 소비 대기**
 
-v9는 A2 `W002-FAMILY_TRACK-repeat-rule-SOL-A2`의 preflight blocked를 소비하는
-최소 재계획이다. A3 TARGET_SET의 세 target·outline hash·learning-map 결속은 바꾸지
-않고, repeat-rule cursor를 `AFFORDANCE_DISCOVERY` 완료·`ENGINE_CORE` 대기로 되감는다.
-v8 completion artifact는 역사 자료로만 남기며 v9 evidence로 재사용하지 않는다.
-v9 승인·소비 전에는 W002를 FAMILY_TRACK으로 전진시키지 않는다.
+v10은 마지막 승인 revision v9의 repeat-rule ENGINE_CORE 증거를 보존하면서,
+새 preflight request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을
+`supersedesBlockedReviewId`로 정확히 소비하는 재계획이다. A3 TARGET_SET의 세
+target·outline hash·learning-map 결속은 바꾸지 않는다. v9 completion artifact는
+역사 자료로만 남기며 v10 repair evidence로 재사용하지 않는다. 이 request의
+`blockedContractRevision`은 마지막 승인 revision인 `W002-SOL-REPLAN-v9`이고,
+새 권위 계약은 `W002-SOL-REPLAN-v10`이다.
 
-이번 hard-stop은 두 공통 seam을 동시에 다룬다. 승인된 core는 9개의 physical source
-role과 rule slot 2개·continuation target 4개를 동시에 요구하지만, 기존 blueprint
-constraint schema는 source를 8개로 제한하고 wave16 preset은 188×188 target을 2개만
-제공한다. source를 8개로 줄이거나 기존 wave16을 억지로 재사용하는 것은 capacity·
-observability 계약을 위조하므로 금지한다.
+request 소비 review가 승인·소비되기 전에는 W002 repeat-repair cursor를
+`ENGINE_CORE`에서 전진시키지 않는다. 이 문서의 v10은 계약·거버넌스 승인이지
+repeat-repair family 구현, exact preview, response/save/reopen, live canary 또는
+release 승인이 아니다.
 
-v9가 허용하는 공통 변경은 다음뿐이다: declarative/resolved constraint source 상한을
-명시적 12로 대칭 확장하고 9-source 회귀를 추가한다; architecture baseline을 갱신한다;
-wave16을 수정하지 않고 `w002-repeat-rule-construction-v1` 전용 preset·registry·
-containment/resolve 테스트를 추가한다. family generator·teacher UI·response/save-reopen은
-여전히 이 재계획 범위 밖이다.
+v9에서 확인한 공통 seam은 9개의 repeat-rule physical source와 rule slot 2개·
+continuation target 4개를 동시에 요구했지만, 기존 blueprint constraint schema는
+source를 8개로 제한하고 wave16 preset은 188×188 target을 2개만 제공했다. 이 역사적
+문제를 source 8개 축소나 wave16 재사용으로 숨기지 않고 v9에서 해소했다. v10의
+repeat-repair는 여기에 독립 misaligned item과 replacement target을 추가하므로
+선택된 값별 4개 복제가 필요하고, 12-source 계약을 별도로 소유한다.
 
-## v9 hard-stop과 재진입 계약
+v10이 허용하는 공통 변경은 다음뿐이다: declarative/resolved constraint source 상한을
+명시적 12로 대칭 확장하고 9-source repeat-rule 회귀와 12-source repair 회귀를 함께
+유지한다; architecture baseline을 갱신한다; wave16을 수정하지 않고 repeat-rule
+compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/resolve
+테스트를 추가한다. family generator·teacher UI·response/save-reopen은 여전히 이
+재계획 범위 밖이다.
 
-- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-preflight-blocker.json`
-  및 review `W002-FAMILY_TRACK-repeat-rule-SOL-A2`.
-- 재계획 revision: `W002-SOL-REPLAN-v9`, `replanTargetSetRequired=false`.
-- constraint capacity: `maxSources=12`, `requiredSources=9`; 두 schema가 같은 상한을 사용하고
-  9는 통과·13은 거부해야 한다.
-- layout capacity: tokenSet `w002-repeat-rule-construction-v1`; source 9, rule slot 2,
-  continuation 4; 각 target 최소 188×188, 모두 동시에 보이며 native rendered bounds를
-  containment 검사한다.
-- v9 승인 후 순서: `ENGINE_CORE` 공통 seam·전용 preset 구현 → 새 v9 artifact/current SHA
-  검증 → repeat-rule FAMILY_TRACK 재진입. v8 artifact를 상태 cursor에 다시 기록하지 않는다.
+## v10 hard-stop과 재진입 계약
+
+- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json`
+  및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`.
+- request artifact SHA-256: `4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4`.
+- 재계획 revision: `W002-SOL-REPLAN-v10`, `replanTargetSetRequired=false`.
+- request의 blocked revision: `W002-SOL-REPLAN-v9` (소비할 마지막 승인 revision).
+- constraint capacity: `maxSources=12`, repeat-repair `requiredSources=12`; 두 schema가
+  같은 상한을 사용하고 12는 통과·13은 거부해야 한다.
+- layout capacity: repeat-rule compatibility는 tokenSet
+  `w002-repeat-rule-construction-v1`·source 9를 보존하고, repeat-repair는
+  `w002-repeat-repair-v1`·source 12·rule slot 2·continuation 4·misaligned 1·repair
+  target 1·bank 1을 사용한다. 각 target 최소 188×188, 모두 동시에 보이며 native
+  rendered bounds를 containment 검사한다.
+- v10 승인 후 순서: repeat-rule v9 compatibility evidence를 보존한 채 repeat-repair
+  `ENGINE_CORE` 계약·전용 preset의 구현 후보를 만들고, artifact/current SHA를 독립
+  검증한 뒤에만 repeat-repair FAMILY_TRACK으로 진입한다. v9 artifact를 repair evidence로
+  기록하거나 덮어쓰지 않는다.
 
 ## v8 이전 governance의 위치
 
 아래 v6/v7/v8 절은 왜 학생 구성 상태·completion evidence·용량 계약이 필요했는지에 대한
-역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v9 절과
+역사적 근거다. 현재 권위 revision과 실행 순서는 이 문서의 v10 절과
 `scripts/curriculum/no-family-plan.json#trackContracts.C01`을 따른다.
 
 이번 v7은 v3의 세 target 분해와 A3 TARGET_SET 승인을 바꾸지 않는다. A3에서 승인된
@@ -113,7 +128,7 @@ Sol 검토 `W002-FAMILY_TRACK-SOL-A4`에서 `blocked` 되었다.
 W002의 두 초안 target은 A3에서 다음 세 개의 reviewed target으로 이미 분해·승인·소비되었다.
 기존 v8 문단의 재계획 계약 revision은 `W002-SOL-REPLAN-v8`이었다. A3 TARGET_SET이
 승인한 target-outline hash와 source 결속은 그대로 유지되지만, v8 completion evidence는
-현재 v9에서 역사 자료로만 취급한다.
+현재 v10에서 역사 자료로만 취급한다.
 
 ## v8 governance amendment — ENGINE_CORE completion evidence (historical)
 
@@ -168,9 +183,9 @@ repeat-only family가 change target을 등록하거나, change family가 repeat 
 
 A3 `W002-TARGET_SET-SOL-A3`는 세 target slice·outline hash·adapter의 자기
 slice 결속을 이미 승인했고, v7 직전 상태에서 소비되었다. `replanTargetSetRequired=false`이므로
-v9의 승인·소비는 TARGET_SET을 다시 열지 않고 `ENGINE_CORE`로 재개한다.
-v9 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
-그중 하나라도 바꿔야 하면 현재 v9 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
+v10의 승인·소비는 TARGET_SET을 다시 열지 않고 repeat-repair `ENGINE_CORE`로 재개한다.
+v10 후보는 target source, target IDs, outline hash, coverage 분모를 변경하지 않는다.
+그중 하나라도 바꿔야 하면 현재 v10 후보에 섞지 말고 새 `SOL_REPLAN` 후 별도
 `TARGET_SET` 후보를 만든다.
 
 ## 3. 재개 작업 순서
@@ -415,7 +430,7 @@ role 이름을 쓰더라도 키·의미·path 결속은 이 shape를 바꾸지 �
 명시하고, preview/answer가 미래 응답을 증명한다고 말하지 않는다.
 
 ENGINE_CORE 후보에서 위 seam이 공통 compiler·planner·MCP·teacher-ui 변경을
-요구하면 이 v9 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
+요구하면 이 v10 범위를 초과한 것으로 간주하고 즉시 다시 SOL_REPLAN으로 멈춘다.
 그 경우 `pattern.repeat-unit.construct-v1` 구현을 partial release로 올리지 않는다.
 
 ## 4. 구현 불변량

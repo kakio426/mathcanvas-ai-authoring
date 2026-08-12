@@ -813,6 +813,28 @@ describe("Sol review candidate and scope gates", () => {
     ).toBe(false);
   });
 
+  it("keeps W002 blocker lineage in the scoped request, not legacy state", () => {
+    const state = JSON.parse(
+      readFileSync(
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "utf8"
+      )
+    );
+    expect(state.blockedReviewId).toBeUndefined();
+    const report = JSON.parse(
+      readFileSync("reports/curriculum-execution/no-family-plan.json", "utf8")
+    );
+    const next = report.current.nextReplanWork;
+    expect(next?.workItemId).toBe("W002");
+    expect(next?.operation).toBe("SOL_REPLAN");
+    expect(next?.replanContractRevision).toBe("W002-SOL-REPLAN-v10");
+    expect(next?.solReview.solReplanRequest.reviewId).toBe(
+      "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1"
+    );
+    expect(next?.solReview.replanApproved).toBe(false);
+    expect(next?.solReview.replanConsumed).toBe(false);
+  });
+
   it("ignores the consumed replan's superseded failure identity", () => {
     const sameFamilyRevalidation = review({
       reviewId: "W002-FAMILY_REVALIDATION-repeat-rule-SOL-A2",

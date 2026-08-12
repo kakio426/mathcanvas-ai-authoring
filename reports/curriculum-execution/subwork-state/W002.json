@@ -3,7 +3,6 @@
   "workItemId": "W002",
   "standardCode": "[2수02-02]",
   "contractRevision": "W002-SOL-REPLAN-v10",
-  "blockedReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A2",
   "items": [
     {
       "workItemId": "W002-FAMILY_TRACK-repeat-rule",
