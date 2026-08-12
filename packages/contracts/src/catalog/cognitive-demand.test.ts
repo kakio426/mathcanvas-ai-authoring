@@ -144,6 +144,86 @@ const studentConstructedManifest = () => {
   };
 };
 
+const repairReadyManifest = () => {
+  const manifest = structuredClone(studentConstructedManifest());
+  manifest.decision.variantRoles.push(
+    "rule-variant-10",
+    "rule-variant-11",
+    "rule-variant-12"
+  );
+  manifest.decision.stateConstruction!.sourceRoles.push(
+    "rule-variant-10",
+    "rule-variant-11",
+    "rule-variant-12"
+  );
+  manifest.decision.stateConstruction!.minimumCopiesPerDistinctValue = 4;
+  manifest.decision.application!.ruleStatePath = "declaredRuleState";
+  const stateLifecycle = {
+    kind: "empty-selection-then-declared-repair" as const,
+    statePath: "studentRuleState",
+    selectionPhase: "rule-selection" as const,
+    selectionOutputStatePath: "declaredRuleState",
+    writesDeclaredState: true as const,
+    phaseOrder: [
+      "rule-selection",
+      "remove-misaligned",
+      "place-replacement"
+    ] as [
+      "rule-selection",
+      "remove-misaligned",
+      "place-replacement"
+    ],
+    initialState: "empty" as const,
+    declaredStateCardinality: 2,
+    declaredStateExamplesPath: "validRuleStateExamples",
+    selectionConstraintIdPrefix: "construct-rule-slot",
+    requiresIndexedSelectionWrites: true as const,
+    repairRequiresDeclaredState: true as const
+  };
+  const repair = {
+    kind: "declared-rule-independent-misplacement" as const,
+    declaredRuleStatePath: "declaredRuleState",
+    repairRuleStateIndex: 1,
+    wrongItemProperty: "orderedValues",
+    wrongItemRoles: ["misaligned-item"],
+    repairTargetRoles: ["repair-target"],
+    repairBankRoles: ["repair-bank"],
+    beforeStatePath: "initialArrangementState",
+    afterStatePath: "repairedArrangementState",
+    validAfterStateExamplesPath:
+      "validRepairedArrangementStatesByDeclaredRuleState",
+    afterStateDerivation: {
+      kind: "replace-at-declared-rule-index" as const,
+      declaredRuleStatePath: "declaredRuleState",
+      repairRuleStateIndex: 1,
+      requiresConditionalMapping: true as const
+    },
+    removeConstraintId: "remove-misaligned-item",
+    replacementConstraintId: "repair-misaligned-item",
+    requiresIndependentWrongState: true as const,
+    requiresBeforeAfterComparison: true as const,
+    evidenceMode: "student-state-dependent" as const
+  };
+  return {
+    ...manifest,
+    decision: {
+      ...manifest.decision,
+      repair,
+      stateLifecycle
+    },
+    verification: {
+      ...manifest.verification,
+      roles: [
+        ...manifest.decision.ruleSlotRoles,
+        ...(manifest.decision.application?.continuationTargetRoles ?? []),
+        ...repair.wrongItemRoles,
+        ...repair.repairTargetRoles,
+        ...repair.repairBankRoles
+      ]
+    }
+  };
+};
+
 describe("construct-rule cognitive decision contract", () => {
   it("accepts an ordered rule-state decision with bound distractors", () => {
     const manifest = constructRuleManifest();
@@ -214,78 +294,62 @@ describe("construct-rule cognitive decision contract", () => {
   });
 
   it("rejects a repair contract with overlapping roles or state paths", () => {
-    const manifest = studentConstructedManifest();
-    const repair = {
-      kind: "declared-rule-independent-misplacement" as const,
-      declaredRuleStatePath: "studentRuleState",
-      repairRuleStateIndex: 1,
-      wrongItemProperty: "orderedValues",
-      wrongItemRoles: ["repair-target"],
-      repairTargetRoles: ["repair-target"],
-      repairBankRoles: ["repair-bank"],
-      beforeStatePath: "initialArrangementState",
-      afterStatePath: "repairedArrangementState",
-      validAfterStateExamplesPath: "validRepairedArrangementStates",
-      removeConstraintId: "remove-misaligned-item",
-      replacementConstraintId: "repair-misaligned-item",
-      requiresIndependentWrongState: true as const,
-      requiresBeforeAfterComparison: true as const,
-      evidenceMode: "student-state-dependent" as const
-    };
+    const manifest = repairReadyManifest();
+    manifest.decision.repair.wrongItemRoles = ["repair-target"];
     expect(() =>
-      defineCognitiveDemandManifest({
-        ...manifest,
-        decision: { ...manifest.decision, repair }
-      })
+      defineCognitiveDemandManifest(manifest)
     ).toThrow();
   });
 
   it("accepts a well-shaped repair contract when verification roles are exact", () => {
-    const manifest = studentConstructedManifest();
-    const repairReadyManifest = structuredClone(manifest);
-    repairReadyManifest.decision.variantRoles.push(
-      "rule-variant-10",
-      "rule-variant-11",
-      "rule-variant-12"
-    );
-    repairReadyManifest.decision.stateConstruction!.sourceRoles.push(
-      "rule-variant-10",
-      "rule-variant-11",
-      "rule-variant-12"
-    );
-    repairReadyManifest.decision.stateConstruction!.minimumCopiesPerDistinctValue = 4;
-    const repair = {
-      kind: "declared-rule-independent-misplacement" as const,
-      declaredRuleStatePath: "studentRuleState",
-      repairRuleStateIndex: 1,
-      wrongItemProperty: "orderedValues",
-      wrongItemRoles: ["misaligned-item"],
-      repairTargetRoles: ["repair-target"],
-      repairBankRoles: ["repair-bank"],
-      beforeStatePath: "initialArrangementState",
-      afterStatePath: "repairedArrangementState",
-      validAfterStateExamplesPath: "validRepairedArrangementStates",
-      removeConstraintId: "remove-misaligned-item",
-      replacementConstraintId: "repair-misaligned-item",
-      requiresIndependentWrongState: true as const,
-      requiresBeforeAfterComparison: true as const,
-      evidenceMode: "student-state-dependent" as const
-    };
+    const manifest = repairReadyManifest();
     expect(
-      defineCognitiveDemandManifest({
-        ...repairReadyManifest,
-        decision: { ...repairReadyManifest.decision, repair },
-        verification: {
-          ...repairReadyManifest.verification,
-          roles: [
-            ...repairReadyManifest.decision.ruleSlotRoles,
-            ...(repairReadyManifest.decision.application?.continuationTargetRoles ?? []),
-            "misaligned-item",
-            "repair-target",
-            "repair-bank"
-          ]
-        }
-      }).decision
-    ).toMatchObject({ repair });
+      defineCognitiveDemandManifest(manifest).decision
+    ).toMatchObject({
+      repair: manifest.decision.repair,
+      stateLifecycle: manifest.decision.stateLifecycle,
+      application: { ruleStatePath: "declaredRuleState" }
+    });
+  });
+
+  it("requires repair and lifecycle together and binds every declared-state path", () => {
+    const withoutLifecycle = repairReadyManifest();
+    delete (withoutLifecycle.decision as { stateLifecycle?: unknown })
+      .stateLifecycle;
+    expect(() => defineCognitiveDemandManifest(withoutLifecycle)).toThrow();
+
+    const withoutRepair = repairReadyManifest();
+    delete (withoutRepair.decision as { repair?: unknown }).repair;
+    expect(() => defineCognitiveDemandManifest(withoutRepair)).toThrow();
+
+    const wrongApplicationPath = repairReadyManifest();
+    wrongApplicationPath.decision.application!.ruleStatePath =
+      "studentRuleState";
+    expect(() =>
+      defineCognitiveDemandManifest(wrongApplicationPath)
+    ).toThrow();
+
+    const wrongDerivation = repairReadyManifest();
+    wrongDerivation.decision.repair.afterStateDerivation.repairRuleStateIndex =
+      0;
+    expect(() => defineCognitiveDemandManifest(wrongDerivation)).toThrow();
+  });
+
+  it("rejects repair roles that overlap any decision or application role", () => {
+    for (const overlappingRole of [
+      "rule-variant-1",
+      "rule-slot-1",
+      "continuation-slot-1"
+    ]) {
+      const manifest = repairReadyManifest();
+      manifest.decision.repair.repairTargetRoles = [overlappingRole];
+      expect(() => defineCognitiveDemandManifest(manifest)).toThrow();
+    }
+  });
+
+  it("requires exactly one wrong item, repair target, and repair bank", () => {
+    const manifest = repairReadyManifest();
+    manifest.decision.repair.wrongItemRoles.push("misaligned-item-2");
+    expect(() => defineCognitiveDemandManifest(manifest)).toThrow();
   });
 });

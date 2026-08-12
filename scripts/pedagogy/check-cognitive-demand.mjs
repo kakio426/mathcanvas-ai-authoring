@@ -209,6 +209,554 @@ const containsVisibleOrderedRuleStateAcrossProperties = (
   return containsVisibleOrderedRuleState(values.join(" "), state);
 };
 
+const declaredRepairLifecycleContractValid = ({
+  decision,
+  verificationRoles,
+  roleByName,
+  constraints
+}) => {
+  const lifecycle = decision.stateLifecycle;
+  const repair = decision.repair;
+  const application = decision.application;
+  if (!lifecycle || !repair || !application) return false;
+  const appliedRuleStatePath = lifecycle.selectionOutputStatePath;
+  const repairRoles = [
+    ...repair.wrongItemRoles,
+    ...repair.repairTargetRoles,
+    ...repair.repairBankRoles
+  ];
+  const allSemanticRoles = [
+    ...decision.variantRoles,
+    ...decision.ruleSlotRoles,
+    ...application.continuationTargetRoles,
+    ...repairRoles
+  ];
+  const roleShapeValid =
+    repair.wrongItemRoles.length === 1 &&
+    repair.repairTargetRoles.length === 1 &&
+    repair.repairBankRoles.length === 1 &&
+    repair.wrongItemRoles.every((role) => {
+      const entry = roleByName.get(role);
+      return (
+        entry?.scope === "each-item" && entry.movable && !entry.locked
+      );
+    }) &&
+    [...repair.repairTargetRoles, ...repair.repairBankRoles].every(
+      (role) => {
+        const entry = roleByName.get(role);
+        return (
+          entry?.scope === "each-item" &&
+          entry.locked &&
+          !entry.movable &&
+          !containsConcreteInitialState(entry.properties ?? {})
+        );
+      }
+    );
+  const selectionValid = decision.ruleSlotRoles.every((role, index) => {
+    const constraint = constraints.find(
+      (entry) =>
+        entry.id === `${decision.decisionConstraintId}-${index + 1}`
+    );
+    return (
+      constraint?.kind === "fill-from-pool" &&
+      constraint.requiresStudentAction &&
+      constraint.target.role === role &&
+      sameSet(
+        constraint.sources.map((source) => source.role),
+        decision.variantRoles
+      ) &&
+      constraint.parameters?.phase === lifecycle.selectionPhase &&
+      constraint.parameters?.initialRuleStatePath === lifecycle.statePath &&
+      constraint.parameters?.writesRuleStatePath === appliedRuleStatePath &&
+      constraint.parameters?.ruleStateIndex === index &&
+      constraint.parameters?.sourceValueProperty === decision.variantProperty
+    );
+  });
+  const continuationValid = application.continuationTargetRoles.every(
+    (role, index) => {
+      const target = roleByName.get(role);
+      const constraint = constraints.find(
+        (entry) =>
+          entry.kind === "fill-from-pool" && entry.target.role === role
+      );
+      return (
+        target?.scope === "each-item" &&
+        target.locked &&
+        !target.movable &&
+        target.toolKey !== "common.text" &&
+        !containsConcreteInitialState(target.properties ?? {}) &&
+        constraint?.requiresStudentAction &&
+        sameSet(
+          constraint.sources.map((source) => source.role),
+          decision.variantRoles
+        ) &&
+        constraint.parameters?.phase === "apply-declared-rule" &&
+        constraint.parameters?.ruleStatePath === appliedRuleStatePath &&
+        constraint.parameters?.ruleStateIndex === index % application.period &&
+        constraint.parameters?.sourceValueProperty === decision.variantProperty
+      );
+    }
+  );
+  const removeConstraint = constraints.find(
+    (constraint) => constraint.id === repair.removeConstraintId
+  );
+  const replacementConstraint = constraints.find(
+    (constraint) => constraint.id === repair.replacementConstraintId
+  );
+  const removeValid =
+    removeConstraint?.kind === "place-in" &&
+    removeConstraint.requiresStudentAction &&
+    sameSet(
+      removeConstraint.sources.map((source) => source.role),
+      repair.wrongItemRoles
+    ) &&
+    removeConstraint.target.role === repair.repairBankRoles[0] &&
+    removeConstraint.parameters?.phase === "remove-misaligned" &&
+    removeConstraint.parameters?.declaredRuleStatePath ===
+      appliedRuleStatePath &&
+    removeConstraint.parameters?.repairRuleStateIndex ===
+      repair.repairRuleStateIndex &&
+    removeConstraint.parameters?.wrongItemProperty ===
+      repair.wrongItemProperty &&
+    removeConstraint.parameters?.beforeStatePath === repair.beforeStatePath &&
+    removeConstraint.parameters?.afterStatePath === repair.afterStatePath;
+  const replacementValid =
+    replacementConstraint?.kind === "fill-from-pool" &&
+    replacementConstraint.requiresStudentAction &&
+    sameSet(
+      replacementConstraint.sources.map((source) => source.role),
+      decision.variantRoles
+    ) &&
+    replacementConstraint.target.role === repair.repairTargetRoles[0] &&
+    replacementConstraint.parameters?.phase === "place-replacement" &&
+    replacementConstraint.parameters?.declaredRuleStatePath ===
+      appliedRuleStatePath &&
+    replacementConstraint.parameters?.repairRuleStateIndex ===
+      repair.repairRuleStateIndex &&
+    replacementConstraint.parameters?.sourceValueProperty ===
+      decision.variantProperty &&
+    replacementConstraint.parameters?.wrongItemProperty ===
+      repair.wrongItemProperty &&
+    replacementConstraint.parameters?.beforeStatePath ===
+      repair.beforeStatePath &&
+    replacementConstraint.parameters?.afterStatePath === repair.afterStatePath &&
+    replacementConstraint.parameters?.validAfterStateExamplesPath ===
+      repair.validAfterStateExamplesPath &&
+    replacementConstraint.parameters?.writesStatePath ===
+      repair.afterStatePath &&
+    replacementConstraint.parameters?.conditionalMappingPath ===
+      repair.validAfterStateExamplesPath;
+  return (
+    lifecycle.kind === "empty-selection-then-declared-repair" &&
+    lifecycle.statePath === decision.ruleStatePath &&
+    lifecycle.selectionPhase === "rule-selection" &&
+    appliedRuleStatePath !== decision.ruleStatePath &&
+    lifecycle.writesDeclaredState === true &&
+    sameValue(lifecycle.phaseOrder, [
+      "rule-selection",
+      "remove-misaligned",
+      "place-replacement"
+    ]) &&
+    lifecycle.initialState === "empty" &&
+    lifecycle.declaredStateCardinality === decision.ruleSlotRoles.length &&
+    lifecycle.declaredStateExamplesPath === decision.validRuleStatesPath &&
+    lifecycle.selectionConstraintIdPrefix === decision.decisionConstraintId &&
+    lifecycle.requiresIndexedSelectionWrites === true &&
+    lifecycle.repairRequiresDeclaredState === true &&
+    application.ruleStatePath === appliedRuleStatePath &&
+    repair.declaredRuleStatePath === appliedRuleStatePath &&
+    repair.afterStateDerivation?.kind ===
+      "replace-at-declared-rule-index" &&
+    repair.afterStateDerivation.declaredRuleStatePath ===
+      appliedRuleStatePath &&
+    repair.afterStateDerivation.repairRuleStateIndex ===
+      repair.repairRuleStateIndex &&
+    repair.afterStateDerivation.requiresConditionalMapping === true &&
+    repair.wrongItemProperty === decision.variantProperty &&
+    repair.repairRuleStateIndex >= 0 &&
+    repair.repairRuleStateIndex < decision.ruleSlotRoles.length &&
+    repair.beforeStatePath !== repair.afterStatePath &&
+    repair.beforeStatePath !== repair.validAfterStateExamplesPath &&
+    repair.afterStatePath !== repair.validAfterStateExamplesPath &&
+    new Set(allSemanticRoles).size === allSemanticRoles.length &&
+    roleShapeValid &&
+    selectionValid &&
+    continuationValid &&
+    removeValid &&
+    replacementValid &&
+    sameValue(verificationRoles, [
+      ...decision.ruleSlotRoles,
+      ...application.continuationTargetRoles,
+      ...repairRoles
+    ])
+  );
+};
+
+const declaredRepairItemEnvelopeValid = ({
+  decision,
+  item,
+  sourceValues,
+  wrongValue
+}) => {
+  const lifecycle = decision.stateLifecycle;
+  const repair = decision.repair;
+  if (!lifecycle || !repair || wrongValue === undefined) return false;
+  const validStates = orderedStateList(
+    item.values[decision.validRuleStatesPath]
+  );
+  const rawMappings = item.values[repair.validAfterStateExamplesPath];
+  if (!validStates || !Array.isArray(rawMappings)) return false;
+  const distinctSourceValues = sourceValues.filter(
+    (value, index) =>
+      value !== undefined &&
+      sourceValues.findIndex((candidate) => sameValue(candidate, value)) ===
+        index
+  );
+  const expectedStates = distinctSourceValues.flatMap((left) =>
+    distinctSourceValues
+      .filter((right) => !sameValue(left, right))
+      .map((right) => [left, right])
+  );
+  const validStateKeys = validStates.map((state) => JSON.stringify(state));
+  const mappingKeys = rawMappings.map((entry) =>
+    JSON.stringify(entry?.declaredRuleState)
+  );
+  const mappingValid =
+    rawMappings.length === validStates.length &&
+    new Set(mappingKeys).size === rawMappings.length &&
+    validStates.every((validState) => {
+      const matches = rawMappings.filter((entry) =>
+        sameValue(entry?.declaredRuleState, validState)
+      );
+      if (matches.length !== 1) return false;
+      const entry = matches[0];
+      if (
+        !Array.isArray(entry.beforeState) ||
+        !Array.isArray(entry.afterState) ||
+        entry.beforeState.length !== validState.length ||
+        entry.afterState.length !== validState.length
+      ) {
+        return false;
+      }
+      return validState.every((value, index) =>
+        index === repair.repairRuleStateIndex
+          ? sameValue(entry.beforeState[index], wrongValue) &&
+            !sameValue(entry.beforeState[index], value) &&
+            sameValue(entry.afterState[index], value)
+          : sameValue(entry.beforeState[index], value) &&
+            sameValue(entry.afterState[index], value)
+      );
+    });
+  return (
+    Array.isArray(item.values[lifecycle.statePath]) &&
+    item.values[lifecycle.statePath].length === 0 &&
+    Array.isArray(item.values[lifecycle.selectionOutputStatePath]) &&
+    item.values[lifecycle.selectionOutputStatePath].length === 0 &&
+    Array.isArray(item.values[repair.beforeStatePath]) &&
+    item.values[repair.beforeStatePath].length === 0 &&
+    Array.isArray(item.values[repair.afterStatePath]) &&
+    item.values[repair.afterStatePath].length === 0 &&
+    validStates.length === expectedStates.length &&
+    new Set(validStateKeys).size === validStates.length &&
+    expectedStates.every((state) =>
+      validStates.some((candidate) => sameValue(candidate, state))
+    ) &&
+    distinctSourceValues.every((value) => !sameValue(value, wrongValue)) &&
+    mappingValid
+  );
+};
+
+const declaredRepairAuditSelfCheck = () => {
+  const semanticValues = [2, 3, 5];
+  const variants = Array.from({ length: 12 }, (_, index) => ({
+    role: `rule-variant-${index + 1}`,
+    scope: "each-item",
+    movable: true,
+    locked: false,
+    toolKey: "SM02PB",
+    properties: { orderedValues: semanticValues[Math.floor(index / 4)] }
+  }));
+  const fixedRole = (role) => ({
+    role,
+    scope: "each-item",
+    movable: false,
+    locked: true,
+    toolKey: "SM02PB",
+    properties: {}
+  });
+  const decision = {
+    mode: "construct-rule",
+    constructionMode: "student-constructed",
+    answerMode: "conditional-rubric",
+    ruleStatePath: "studentRuleState",
+    decisionConstraintId: "construct-rule-slot",
+    variantRoles: variants.map((entry) => entry.role),
+    ruleSlotRoles: ["rule-slot-1", "rule-slot-2"],
+    variantProperty: "orderedValues",
+    validRuleStatesPath: "validRuleStateExamples",
+    surplusPath: "surplusRuleStateExamples",
+    minimumValidStates: 2,
+    minimumSurplus: 2,
+    stateConstruction: {
+      kind: "ordered-distinct-subset-from-pool",
+      sourceRoles: variants.map((entry) => entry.role),
+      slotRoles: ["rule-slot-1", "rule-slot-2"],
+      slotCount: 2,
+      minimumDistinctValues: 2,
+      minimumDistinctPoolValues: 3,
+      minimumCopiesPerDistinctValue: 4,
+      sourceUseMode: "move-once-no-clone",
+      allowsAnyOrderedSelection: true,
+      initialState: "empty"
+    },
+    application: {
+      ruleStatePath: "declaredRuleState",
+      continuationTargetRoles: Array.from(
+        { length: 4 },
+        (_, index) => `continuation-slot-${index + 1}`
+      ),
+      period: 2,
+      minimumTargetCount: 4,
+      requiresVisibleComparison: true,
+      requiresSimultaneousRuleAndContinuation: true,
+      ruleStateIndexMode: "index-mod-period",
+      evidenceMode: "student-state-dependent"
+    },
+    repair: {
+      kind: "declared-rule-independent-misplacement",
+      declaredRuleStatePath: "declaredRuleState",
+      repairRuleStateIndex: 1,
+      wrongItemProperty: "orderedValues",
+      wrongItemRoles: ["misaligned-item"],
+      repairTargetRoles: ["repair-target"],
+      repairBankRoles: ["repair-bank"],
+      beforeStatePath: "initialArrangementState",
+      afterStatePath: "repairedArrangementState",
+      validAfterStateExamplesPath:
+        "validRepairedArrangementStatesByDeclaredRuleState",
+      afterStateDerivation: {
+        kind: "replace-at-declared-rule-index",
+        declaredRuleStatePath: "declaredRuleState",
+        repairRuleStateIndex: 1,
+        requiresConditionalMapping: true
+      },
+      removeConstraintId: "remove-misaligned-item",
+      replacementConstraintId: "repair-misaligned-item",
+      requiresIndependentWrongState: true,
+      requiresBeforeAfterComparison: true,
+      evidenceMode: "student-state-dependent"
+    },
+    stateLifecycle: {
+      kind: "empty-selection-then-declared-repair",
+      statePath: "studentRuleState",
+      selectionPhase: "rule-selection",
+      selectionOutputStatePath: "declaredRuleState",
+      writesDeclaredState: true,
+      phaseOrder: [
+        "rule-selection",
+        "remove-misaligned",
+        "place-replacement"
+      ],
+      initialState: "empty",
+      declaredStateCardinality: 2,
+      declaredStateExamplesPath: "validRuleStateExamples",
+      selectionConstraintIdPrefix: "construct-rule-slot",
+      requiresIndexedSelectionWrites: true,
+      repairRequiresDeclaredState: true
+    }
+  };
+  const sourceRefs = variants.map((entry) => ({ role: entry.role }));
+  const constraints = [
+    ...decision.ruleSlotRoles.map((role, index) => ({
+      id: `construct-rule-slot-${index + 1}`,
+      kind: "fill-from-pool",
+      sources: sourceRefs,
+      target: { role },
+      requiresStudentAction: true,
+      parameters: {
+        phase: "rule-selection",
+        initialRuleStatePath: "studentRuleState",
+        writesRuleStatePath: "declaredRuleState",
+        ruleStateIndex: index,
+        sourceValueProperty: "orderedValues"
+      }
+    })),
+    ...decision.application.continuationTargetRoles.map((role, index) => ({
+      id: `apply-rule-slot-${index + 1}`,
+      kind: "fill-from-pool",
+      sources: sourceRefs,
+      target: { role },
+      requiresStudentAction: true,
+      parameters: {
+        phase: "apply-declared-rule",
+        ruleStatePath: "declaredRuleState",
+        ruleStateIndex: index % 2,
+        sourceValueProperty: "orderedValues"
+      }
+    })),
+    {
+      id: "remove-misaligned-item",
+      kind: "place-in",
+      sources: [{ role: "misaligned-item" }],
+      target: { role: "repair-bank" },
+      requiresStudentAction: true,
+      parameters: {
+        phase: "remove-misaligned",
+        declaredRuleStatePath: "declaredRuleState",
+        repairRuleStateIndex: 1,
+        wrongItemProperty: "orderedValues",
+        beforeStatePath: "initialArrangementState",
+        afterStatePath: "repairedArrangementState"
+      }
+    },
+    {
+      id: "repair-misaligned-item",
+      kind: "fill-from-pool",
+      sources: sourceRefs,
+      target: { role: "repair-target" },
+      requiresStudentAction: true,
+      parameters: {
+        phase: "place-replacement",
+        declaredRuleStatePath: "declaredRuleState",
+        repairRuleStateIndex: 1,
+        sourceValueProperty: "orderedValues",
+        wrongItemProperty: "orderedValues",
+        beforeStatePath: "initialArrangementState",
+        afterStatePath: "repairedArrangementState",
+        validAfterStateExamplesPath:
+          "validRepairedArrangementStatesByDeclaredRuleState",
+        writesStatePath: "repairedArrangementState",
+        conditionalMappingPath:
+          "validRepairedArrangementStatesByDeclaredRuleState"
+      }
+    }
+  ];
+  const roles = [
+    ...variants,
+    ...decision.ruleSlotRoles.map(fixedRole),
+    ...decision.application.continuationTargetRoles.map(fixedRole),
+    {
+      role: "misaligned-item",
+      scope: "each-item",
+      movable: true,
+      locked: false,
+      toolKey: "SM02PB",
+      properties: { orderedValues: 6 }
+    },
+    fixedRole("repair-target"),
+    fixedRole("repair-bank")
+  ];
+  const validStates = semanticValues.flatMap((left) =>
+    semanticValues
+      .filter((right) => right !== left)
+      .map((right) => [left, right])
+  );
+  const item = {
+    values: {
+      studentRuleState: [],
+      declaredRuleState: [],
+      validRuleStateExamples: validStates,
+      surplusRuleStateExamples: [[2, 2], [3, 3], [5, 5]],
+      initialArrangementState: [],
+      repairedArrangementState: [],
+      validRepairedArrangementStatesByDeclaredRuleState: validStates.map(
+        (state) => ({
+          declaredRuleState: state,
+          beforeState: [state[0], 6],
+          afterState: [...state]
+        })
+      )
+    }
+  };
+  const verificationRoles = [
+    ...decision.ruleSlotRoles,
+    ...decision.application.continuationTargetRoles,
+    ...decision.repair.wrongItemRoles,
+    ...decision.repair.repairTargetRoles,
+    ...decision.repair.repairBankRoles
+  ];
+  const contractInput = {
+    decision,
+    verificationRoles,
+    roleByName: new Map(roles.map((role) => [role.role, role])),
+    constraints
+  };
+  if (
+    !declaredRepairLifecycleContractValid(contractInput) ||
+    !declaredRepairItemEnvelopeValid({
+      decision,
+      item,
+      sourceValues: variants.map((entry) => entry.properties.orderedValues),
+      wrongValue: 6
+    })
+  ) {
+    failures.push("declared-repair-audit-self-check-positive");
+  }
+  const structuralMutations = [
+    (input) => {
+      input.constraints[0].parameters.phase = "place-replacement";
+    },
+    (input) => {
+      input.constraints[0].parameters.writesRuleStatePath =
+        "studentRuleState";
+    },
+    (input) => {
+      input.constraints[1].parameters.ruleStateIndex = 0;
+    },
+    (input) => {
+      input.constraints[2].parameters.ruleStatePath = "studentRuleState";
+    },
+    (input) => {
+      input.constraints.at(-1).parameters.conditionalMappingPath =
+        "validRuleStateExamples";
+    }
+  ];
+  structuralMutations.forEach((mutate, index) => {
+    const copy = structuredClone({ decision, verificationRoles, constraints });
+    mutate(copy);
+    if (
+      declaredRepairLifecycleContractValid({
+        ...copy,
+        roleByName: contractInput.roleByName
+      })
+    ) {
+      failures.push(`declared-repair-audit-self-check-structural-${index + 1}`);
+    }
+  });
+  const envelopeMutations = [
+    (copy) => {
+      copy.values.declaredRuleState = [2, 3];
+    },
+    (copy) => {
+      copy.values.validRepairedArrangementStatesByDeclaredRuleState.pop();
+    },
+    (copy) => {
+      copy.values.validRepairedArrangementStatesByDeclaredRuleState[0].beforeState =
+        [5, 6];
+    },
+    (copy) => {
+      copy.values.validRepairedArrangementStatesByDeclaredRuleState[0].afterState =
+        [2, 5];
+    }
+  ];
+  envelopeMutations.forEach((mutate, index) => {
+    const copy = structuredClone(item);
+    mutate(copy);
+    if (
+      declaredRepairItemEnvelopeValid({
+        decision,
+        item: copy,
+        sourceValues: variants.map((entry) => entry.properties.orderedValues),
+        wrongValue: 6
+      })
+    ) {
+      failures.push(`declared-repair-audit-self-check-envelope-${index + 1}`);
+    }
+  });
+};
+
+declaredRepairAuditSelfCheck();
+
 for (const gateId of COGNITIVE_GATE_IDS) {
   const docs = await readFile(
     new URL("../../docs/COGNITIVE_DEMAND_GATES.md", import.meta.url),
@@ -587,6 +1135,9 @@ for (const manifest of manifests) {
       const decision = manifest.decision;
       const construction = decision.stateConstruction;
       const application = decision.application;
+      const appliedRuleStatePath =
+        decision.stateLifecycle?.selectionOutputStatePath ??
+        decision.ruleStatePath;
       const distinctDistractorCount = new Set(
         decision.distractors.map((distractor) =>
           distractor.misconception.normalize("NFKC").trim()
@@ -621,7 +1172,7 @@ for (const manifest of manifests) {
             construction.minimumCopiesPerDistinctValue &&
         construction.allowsAnyOrderedSelection === true &&
         construction.initialState === "empty" &&
-        application?.ruleStatePath === decision.ruleStatePath &&
+        application?.ruleStatePath === appliedRuleStatePath &&
         application.period === decision.ruleSlotRoles.length &&
         application.minimumTargetCount >= 4 &&
         application.minimumTargetCount ===
@@ -668,9 +1219,13 @@ for (const manifest of manifests) {
               decision.variantRoles
             ) &&
             constraint.parameters?.ruleStatePath ===
-              decision.ruleStatePath &&
+              appliedRuleStatePath &&
             constraint.parameters?.ruleStateIndex ===
-              index % (application?.period ?? Number.MAX_SAFE_INTEGER)
+              index % (application?.period ?? Number.MAX_SAFE_INTEGER) &&
+            (!decision.repair ||
+              (constraint.parameters?.phase === "apply-declared-rule" &&
+                constraint.parameters?.sourceValueProperty ===
+                  decision.variantProperty))
           );
         }
       );
@@ -678,10 +1233,26 @@ for (const manifest of manifests) {
         (entry) => entry !== undefined && !containsConcreteInitialState(entry.properties)
       );
       const slotConstraintContractValid = itemDecisionConstraints.every(
-        (constraint, index) =>
-          constraint !== undefined &&
-          constraint.target.role === decision.ruleSlotRoles[index] &&
-          constraint.parameters?.ruleStatePath === decision.ruleStatePath
+        (constraint, index) => {
+          if (
+            constraint === undefined ||
+            constraint.target.role !== decision.ruleSlotRoles[index]
+          ) {
+            return false;
+          }
+          return decision.repair
+            ? constraint.parameters?.phase ===
+                decision.stateLifecycle?.selectionPhase &&
+                constraint.parameters?.initialRuleStatePath ===
+                  decision.ruleStatePath &&
+                constraint.parameters?.writesRuleStatePath ===
+                  appliedRuleStatePath &&
+                constraint.parameters?.ruleStateIndex === index &&
+                constraint.parameters?.sourceValueProperty ===
+                  decision.variantProperty
+            : constraint.parameters?.ruleStatePath ===
+                decision.ruleStatePath;
+        }
       );
       itemDecisionConstraints.push(...continuationConstraints);
       if (
@@ -694,88 +1265,17 @@ for (const manifest of manifests) {
         failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
       }
 
-      if (decision.repair) {
-        const repair = decision.repair;
-        const repairRoles = [
-          ...repair.wrongItemRoles,
-          ...repair.repairTargetRoles,
-          ...repair.repairBankRoles
-        ];
-        const wrongRoles = repair.wrongItemRoles.map((role) =>
-          roleByName.get(role)
-        );
-        const targetRoles = repair.repairTargetRoles.map((role) =>
-          roleByName.get(role)
-        );
-        const bankRoles = repair.repairBankRoles.map((role) =>
-          roleByName.get(role)
-        );
-        const removeConstraint = blueprint.constraints.find(
-          (constraint) => constraint.id === repair.removeConstraintId
-        );
-        const replacementConstraint = blueprint.constraints.find(
-          (constraint) => constraint.id === repair.replacementConstraintId
-        );
-        const repairContractValid =
-          repair.declaredRuleStatePath === decision.ruleStatePath &&
-          repair.wrongItemProperty === decision.variantProperty &&
-          repair.repairRuleStateIndex >= 0 &&
-          repair.repairRuleStateIndex < decision.ruleSlotRoles.length &&
-          repair.beforeStatePath !== repair.afterStatePath &&
-          repair.beforeStatePath !== repair.validAfterStateExamplesPath &&
-          repair.afterStatePath !== repair.validAfterStateExamplesPath &&
-          new Set(repairRoles).size === repairRoles.length &&
-          repairRoles.every(
-            (role) =>
-              !decision.ruleSlotRoles.includes(role) &&
-              !(application?.continuationTargetRoles ?? []).includes(role)
-          ) &&
-          wrongRoles.every(
-            (role) =>
-              role?.scope === "each-item" &&
-              role.movable &&
-              !role.locked
-          ) &&
-          targetRoles.every(
-            (role) =>
-              role?.scope === "each-item" &&
-              role.locked &&
-              !role.movable
-          ) &&
-          bankRoles.every(
-            (role) =>
-              role?.scope === "each-item" &&
-              role.locked &&
-              !role.movable
-          ) &&
-          removeConstraint?.kind === "place-in" &&
-          replacementConstraint?.kind === "fill-from-pool" &&
-          removeConstraint.requiresStudentAction &&
-          replacementConstraint.requiresStudentAction &&
-          sameSet(
-            removeConstraint.sources.map((source) => source.role),
-            repair.wrongItemRoles
-          ) &&
-          sameSet(
-            replacementConstraint.sources.map((source) => source.role),
-            decision.variantRoles
-          ) &&
-          removeConstraint.target.role === repair.repairBankRoles[0] &&
-          replacementConstraint.target.role === repair.repairTargetRoles[0] &&
-          removeConstraint.parameters?.ruleStatePath ===
-            decision.ruleStatePath &&
-          replacementConstraint.parameters?.ruleStatePath ===
-            decision.ruleStatePath &&
-          removeConstraint.parameters?.repairRuleStateIndex ===
-            repair.repairRuleStateIndex &&
-          replacementConstraint.parameters?.repairRuleStateIndex ===
-            repair.repairRuleStateIndex &&
-          JSON.stringify(manifest.verification.roles) ===
-            JSON.stringify(expectedVerificationRoles);
-        if (!repairContractValid) {
+      if (
+        decision.repair &&
+        !declaredRepairLifecycleContractValid({
+          decision,
+          verificationRoles: manifest.verification.roles,
+          roleByName,
+          constraints: blueprint.constraints
+        })
+      ) {
           failures.push(`G1_DECISION_EXISTS:${blueprint.id}`);
           failures.push(`G7_SELF_VERIFIABLE:${blueprint.id}`);
-        }
       }
 
       const roleBoundValue = (role, item, property) => {
@@ -824,6 +1324,26 @@ for (const manifest of manifests) {
             const sourceValues = decision.variantRoles.map((role) =>
               roleBoundValue(roleByName.get(role), item, decision.variantProperty)
             );
+            if (decision.repair) {
+              const wrongRole = roleByName.get(
+                decision.repair.wrongItemRoles[0]
+              );
+              const wrongValue = roleBoundValue(
+                wrongRole,
+                item,
+                decision.repair.wrongItemProperty
+              );
+              if (
+                !declaredRepairItemEnvelopeValid({
+                  decision,
+                  item,
+                  sourceValues,
+                  wrongValue
+                })
+              ) {
+                studentConstructedEnvelopeInvalid = true;
+              }
+            }
             const validKeys = validStates?.map((state) => JSON.stringify(state));
             const distinctValid =
               validKeys && new Set(validKeys).size === validKeys.length;

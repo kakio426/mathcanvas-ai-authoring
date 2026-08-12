@@ -49,22 +49,27 @@ const declaredRuleRepairSchema = z
     wrongItemProperty: stableIdSchema,
     wrongItemRoles: z
       .array(stableIdSchema)
-      .min(1)
-      .max(4)
+      .length(1)
       .refine((values) => new Set(values).size === values.length),
     repairTargetRoles: z
       .array(stableIdSchema)
-      .min(1)
-      .max(4)
+      .length(1)
       .refine((values) => new Set(values).size === values.length),
     repairBankRoles: z
       .array(stableIdSchema)
-      .min(1)
-      .max(4)
+      .length(1)
       .refine((values) => new Set(values).size === values.length),
     beforeStatePath: stableIdSchema,
     afterStatePath: stableIdSchema,
     validAfterStateExamplesPath: stableIdSchema,
+    afterStateDerivation: z
+      .object({
+        kind: z.literal("replace-at-declared-rule-index"),
+        declaredRuleStatePath: stableIdSchema,
+        repairRuleStateIndex: z.number().int().min(0).max(11),
+        requiresConditionalMapping: z.literal(true)
+      })
+      .strict(),
     removeConstraintId: stableIdSchema,
     replacementConstraintId: stableIdSchema,
     requiresIndependentWrongState: z.literal(true),
@@ -106,6 +111,31 @@ const declaredRuleRepairSchema = z
       });
     }
   });
+
+const declaredRuleStateLifecycleSchema = z
+  .object({
+    kind: z.literal("empty-selection-then-declared-repair"),
+    statePath: stableIdSchema,
+    selectionPhase: z.literal("rule-selection"),
+    selectionOutputStatePath: stableIdSchema,
+    writesDeclaredState: z.literal(true),
+    phaseOrder: z.tuple([
+      z.literal("rule-selection"),
+      z.literal("remove-misaligned"),
+      z.literal("place-replacement")
+    ]),
+    initialState: z.literal("empty"),
+    declaredStateCardinality: z.number().int().min(2).max(12),
+    declaredStateExamplesPath: stableIdSchema,
+    selectionConstraintIdPrefix: stableIdSchema,
+    requiresIndexedSelectionWrites: z.literal(true),
+    repairRequiresDeclaredState: z.literal(true)
+  })
+  .strict()
+  .refine(
+    (value) => value.statePath !== value.selectionOutputStatePath,
+    "초기 규칙 상태와 학생이 선언한 규칙 상태 경로는 달라야 합니다."
+  );
 
 const constructRuleDecisionSchema = z
   .object({
@@ -174,6 +204,7 @@ const constructRuleDecisionSchema = z
       .strict()
       .optional(),
     repair: declaredRuleRepairSchema.optional(),
+    stateLifecycle: declaredRuleStateLifecycleSchema.optional(),
     distractors: z.array(distractorSchema).min(1).max(7)
   })
   .strict();
@@ -253,7 +284,9 @@ export const cognitiveDemandManifestSchema = z
       decision.constructionMode !== undefined ||
       decision.answerMode !== undefined ||
       decision.stateConstruction !== undefined ||
-      decision.application !== undefined;
+      decision.application !== undefined ||
+      decision.repair !== undefined ||
+      decision.stateLifecycle !== undefined;
     if (!extensionPresent) return;
     const requiredFields = [
       ["constructionMode", decision.constructionMode],
@@ -281,6 +314,27 @@ export const cognitiveDemandManifestSchema = z
     }
     const construction = decision.stateConstruction;
     const application = decision.application;
+    const repair = decision.repair;
+    const lifecycle = decision.stateLifecycle;
+    if ((repair === undefined) !== (lifecycle === undefined)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["decision", repair === undefined ? "repair" : "stateLifecycle"],
+        message: "선언 규칙 수정 계약은 repair와 stateLifecycle을 함께 선언해야 합니다."
+      });
+      return;
+    }
+    const applicationRuleStatePath =
+      lifecycle?.selectionOutputStatePath ?? decision.ruleStatePath;
+    const allSemanticRoleSets = [
+      decision.variantRoles,
+      decision.ruleSlotRoles,
+      application.continuationTargetRoles,
+      ...(repair
+        ? [repair.wrongItemRoles, repair.repairTargetRoles, repair.repairBankRoles]
+        : [])
+    ];
+    const semanticRoles = allSemanticRoleSets.flat();
     const distinctDistractorKeys = new Set(
       decision.distractors.map((distractor) =>
         distractor.misconception.normalize("NFKC").trim()
@@ -302,7 +356,7 @@ export const cognitiveDemandManifestSchema = z
       decision.variantRoles.length <
         construction.minimumDistinctPoolValues *
           construction.minimumCopiesPerDistinctValue ||
-      application.ruleStatePath !== decision.ruleStatePath ||
+      application.ruleStatePath !== applicationRuleStatePath ||
       application.period !== decision.ruleSlotRoles.length ||
       application.minimumTargetCount !==
         application.continuationTargetRoles.length ||
@@ -329,9 +383,20 @@ export const cognitiveDemandManifestSchema = z
                 ...application.continuationTargetRoles
               ]
         ) ||
-      (decision.repair !== undefined &&
-        (decision.repair.declaredRuleStatePath !== decision.ruleStatePath ||
-          decision.repair.wrongItemProperty !== decision.variantProperty))
+      new Set(semanticRoles).size !== semanticRoles.length ||
+      (repair !== undefined &&
+        lifecycle !== undefined &&
+        (lifecycle.statePath !== decision.ruleStatePath ||
+          lifecycle.initialState !== construction.initialState ||
+          lifecycle.declaredStateCardinality !== construction.slotCount ||
+          lifecycle.declaredStateExamplesPath !== decision.validRuleStatesPath ||
+          lifecycle.selectionConstraintIdPrefix !== decision.decisionConstraintId ||
+          repair.declaredRuleStatePath !== lifecycle.selectionOutputStatePath ||
+          repair.wrongItemProperty !== decision.variantProperty ||
+          repair.afterStateDerivation.declaredRuleStatePath !==
+            repair.declaredRuleStatePath ||
+          repair.afterStateDerivation.repairRuleStateIndex !==
+            repair.repairRuleStateIndex))
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

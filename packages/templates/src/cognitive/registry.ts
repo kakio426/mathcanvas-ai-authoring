@@ -1514,6 +1514,9 @@ export function expectedCognitiveRuntimePredicate(
   manifest: CognitiveDemandManifest
 ): { kind: string; parameters: Record<string, unknown> } {
   if (manifest.decision.mode === "construct-rule") {
+    const appliedRuleStatePath =
+      manifest.decision.application?.ruleStatePath ??
+      manifest.decision.ruleStatePath;
     const parameters: Record<string, unknown> = {
       mode: manifest.decision.mode,
       ruleStatePath: manifest.decision.ruleStatePath,
@@ -1523,8 +1526,8 @@ export function expectedCognitiveRuntimePredicate(
       variantRoles: manifest.decision.variantRoles,
       ruleSlotRoles: manifest.decision.ruleSlotRoles,
       variantProperty: manifest.decision.variantProperty,
-      continuationRuleStatePath: manifest.decision.ruleStatePath,
-      explanationRuleStatePath: manifest.decision.ruleStatePath,
+      continuationRuleStatePath: appliedRuleStatePath,
+      explanationRuleStatePath: appliedRuleStatePath,
       predictionRole: manifest.prediction.regionRole,
       explanationRole: manifest.explanation.regionRole,
       verificationRoles: manifest.verification.roles,
@@ -1540,6 +1543,7 @@ export function expectedCognitiveRuntimePredicate(
       parameters.application = manifest.decision.application;
       if (manifest.decision.repair !== undefined) {
         parameters.repair = manifest.decision.repair;
+        parameters.stateLifecycle = manifest.decision.stateLifecycle;
       }
     }
     return {
