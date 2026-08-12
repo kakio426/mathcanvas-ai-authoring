@@ -1,41 +1,55 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v10)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v11)
 
-상태: **Sol max 재계획 후보 — repeat-repair preflight request 소비 대기**
+상태: **Sol max 재계획 후보 — repeat-repair lifecycle v11 승인 대기**
 
-v10은 마지막 승인 revision v9의 repeat-rule ENGINE_CORE 증거를 보존하면서,
-새 preflight request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을
-`supersedesBlockedReviewId`로 정확히 소비하는 재계획이다. A3 TARGET_SET의 세
-target·outline hash·learning-map 결속은 바꾸지 않는다. v9 completion artifact는
-역사 자료로만 남기며 v10 repair evidence로 재사용하지 않는다. 이 request의
-`blockedContractRevision`은 마지막 승인 revision인 `W002-SOL-REPLAN-v9`이고,
-새 권위 계약은 `W002-SOL-REPLAN-v10`이다.
+v11은 A28 승인 뒤 발견된 두 hard-stop을 정식으로 소비한다. 새 preflight
+request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`는 A1을 supersede하며,
+v11 SOL_REPLAN 후보는 A2를 `supersedesBlockedReviewId`로 정확히 소비해야 한다.
+`aa75d44`의 구현 파일은 이 후보에 포함하지 않는다. authority plan·builder·status
+projection은 이 거버넌스 후보에서만 바뀌고, cognitive schema·validator·layout·positive
+fixture는 A29 승인 후 별도 ENGINE_CORE 후보에서 변경한다.
+
+학생 상태 계약은 초기 `studentRuleState`와 학생 선택 결과인
+`declaredRuleState`를 분리한다. rule-selection constraint는 indexed slot별로
+`declaredRuleState`에 값을 쓰고, continuation·explanation·repair는 그 출력만 읽는다.
+`declaredRuleState`를 item 초기 값에 미리 넣는 것은 금지한다. repair 후 상태는 고정된
+정답 목록 중 하나가 아니라 `declaredRuleState[repairRuleStateIndex]`를 사용한
+조건부 mapping(`replace-at-declared-rule-index`)으로 검증해야 한다.
+
+v11은 마지막 승인 revision v10의 repeat-rule ENGINE_CORE 증거를 보존하면서,
+새 preflight request `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`을
+(`SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`을 supersede) `supersedesBlockedReviewId`로 정확히 소비하는 재계획이다. A3 TARGET_SET의 세
+target·outline hash·learning-map 결속은 바꾸지 않는다. v9/v10 completion artifact는
+역사 자료로만 남기며 v11 repair evidence로 재사용하지 않는다. 이 request의
+`blockedContractRevision`은 마지막 승인 revision인 `W002-SOL-REPLAN-v10`이고,
+새 권위 계약은 `W002-SOL-REPLAN-v11`이다.
 
 request 소비 review가 승인·소비되기 전에는 W002 repeat-repair cursor를
-`ENGINE_CORE`에서 전진시키지 않는다. 이 문서의 v10은 계약·거버넌스 승인이지
+`ENGINE_CORE`에서 전진시키지 않는다. 이 문서의 v11은 계약·거버넌스 승인이지
 repeat-repair family 구현, exact preview, response/save/reopen, live canary 또는
 release 승인이 아니다.
 
 v9에서 확인한 공통 seam은 9개의 repeat-rule physical source와 rule slot 2개·
 continuation target 4개를 동시에 요구했지만, 기존 blueprint constraint schema는
 source를 8개로 제한하고 wave16 preset은 188×188 target을 2개만 제공했다. 이 역사적
-문제를 source 8개 축소나 wave16 재사용으로 숨기지 않고 v9에서 해소했다. v10의
+문제를 source 8개 축소나 wave16 재사용으로 숨기지 않고 v9에서 해소했다. v11의
 repeat-repair는 여기에 독립 misaligned item과 replacement target을 추가하므로
 선택된 값별 4개 복제가 필요하고, 12-source 계약을 별도로 소유한다.
 
-v10이 허용하는 공통 변경은 다음뿐이다: declarative/resolved constraint source 상한을
+v11이 허용하는 공통 변경은 다음뿐이다: declarative/resolved constraint source 상한을
 명시적 12로 대칭 확장하고 9-source repeat-rule 회귀와 12-source repair 회귀를 함께
 유지한다; architecture baseline을 갱신한다; wave16을 수정하지 않고 repeat-rule
 compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/resolve
 테스트를 추가한다. family generator·teacher UI·response/save-reopen은 여전히 이
 재계획 범위 밖이다.
 
-## v10 hard-stop과 재진입 계약
+## v11 hard-stop과 재진입 계약
 
-- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json`
-  및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1`.
+- 차단 근거: `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json`
+  및 request review `W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2`.
 - request artifact SHA-256: `4879b23566fbf8986dfc73150d5454e12f7a7e8a4429ca7d24936ea2a1e462f4`.
-- 재계획 revision: `W002-SOL-REPLAN-v10`, `replanTargetSetRequired=false`.
-- request의 blocked revision: `W002-SOL-REPLAN-v9` (소비할 마지막 승인 revision).
+- 재계획 revision: `W002-SOL-REPLAN-v11`, `replanTargetSetRequired=false`.
+- request의 blocked revision: `W002-SOL-REPLAN-v10` (소비할 마지막 승인 revision).
 - constraint capacity: `maxSources=12`, repeat-repair `requiredSources=12`; 두 schema가
   같은 상한을 사용하고 12는 통과·13은 거부해야 한다.
 - layout capacity: repeat-rule compatibility는 tokenSet
@@ -43,7 +57,7 @@ compatibility와 `w002-repeat-repair-v1` 전용 preset·registry·containment/re
   `w002-repeat-repair-v1`·source 12·rule slot 2·continuation 4·misaligned 1·repair
   target 1·bank 1을 사용한다. 각 target 최소 188×188, 모두 동시에 보이며 native
   rendered bounds를 containment 검사한다.
-- v10 승인 후 순서: repeat-rule v9 compatibility evidence를 보존한 채 repeat-repair
+- v11 승인 후 순서: repeat-rule v10 compatibility evidence를 보존한 채 repeat-repair
   `ENGINE_CORE` 계약·전용 preset의 구현 후보를 만들고, artifact/current SHA를 독립
   검증한 뒤에만 repeat-repair FAMILY_TRACK으로 진입한다. v9 artifact를 repair evidence로
   기록하거나 덮어쓰지 않는다.
@@ -601,3 +615,27 @@ request를 소비하고 repeat-repair ENGINE_CORE cursor로 재개하는 전후 
 이번 A26은 이 권위·상태 머신·builder 검증만 변경한다. cognitive schema,
 validator/pedagogy audit, native repair layout, 12-source positive resolved
 fixture는 A26 승인 후 별도 ENGINE_CORE 후보에서 구현·검토한다.
+
+## v11 재계획 — 학생 선언 상태와 조건부 repair 결속
+
+v11의 권위 변경은 v10의 12-source·전용 layout capacity를 유지하면서 phase의
+실제 데이터 흐름을 고정한다.
+
+- `stateLifecycle.selectionPhase`는 `rule-selection`이고,
+  `selectionOutputStatePath`는 `declaredRuleState`여야 한다.
+- 각 `construct-rule-slot-*` constraint는 `phase=rule-selection`,
+  `writesRuleStatePath=declaredRuleState`, `ruleStateIndex=0/1`을 가져야 하며,
+  두 write의 결과가 valid declared state와 정확히 일치해야 한다.
+- 초기 `studentRuleState`는 빈 배열이어야 한다. declared output을 item 값에 미리
+  넣고 selection evidence가 없는 fixture는 승인하지 않는다.
+- `application.ruleStatePath`, continuation/explanation path, repair의
+  `declaredRuleStatePath`는 모두 `declaredRuleState`로 동일해야 한다.
+- `repair.afterStateDerivation`은 `replace-at-declared-rule-index`이며,
+  `declaredRuleStatePath`·`repairRuleStateIndex`와 일치하고
+  `requiresConditionalMapping=true`여야 한다. 모든 valid declared state에 대해
+  수정 후 상태가 해당 index 값으로 계산되는 mapping과, mismatch·다른 index 변경·
+  replacement value 불일치 negative fixture를 요구한다.
+- v11 artifact 경로는
+  `reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json`이며,
+  승인 전에는 `planned-pending-engine-core` 상태다. v10 artifact를 덮어쓰거나
+  repeat-rule compatibility evidence를 재사용하지 않는다.

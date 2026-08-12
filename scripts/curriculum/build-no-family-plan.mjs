@@ -354,7 +354,9 @@ export function assertEngineCoreContract(contract, archetypeId) {
       JSON.stringify(binding.ruleSlotRoles) ===
         JSON.stringify(decision.ruleSlotRoles) &&
       binding.studentRuleStatePath === decision.ruleStatePath &&
-      binding.applicationRuleStatePath === decision.ruleStatePath &&
+      binding.applicationRuleStatePath === decision.application?.ruleStatePath &&
+      binding.continuationRuleStatePath === decision.application?.ruleStatePath &&
+      binding.explanationRuleStatePath === decision.application?.ruleStatePath &&
       binding.answerMode === decision.answerMode,
     `no-family-plan-engine-core-binding-invalid:${archetypeId}`
   );
@@ -424,6 +426,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
         overrideState.sourceRoles.length ===
           overrideState.minimumDistinctPoolValues *
             overrideState.minimumCopiesPerDistinctValue &&
+        overrideApplication?.ruleStatePath === "declaredRuleState" &&
         overrideApplication?.continuationTargetRoles.length === 4 &&
         overrideApplication.minimumTargetCount === 4 &&
         overrideState.minimumCopiesPerDistinctValue >=
@@ -444,6 +447,9 @@ export function assertEngineCoreContract(contract, archetypeId) {
             "place-replacement"
           ]) &&
         overrideLifecycle.initialState === overrideState.initialState &&
+        overrideLifecycle.selectionPhase === "rule-selection" &&
+        overrideLifecycle.selectionOutputStatePath === "declaredRuleState" &&
+        overrideLifecycle.writesDeclaredState === true &&
         overrideLifecycle.declaredStateCardinality ===
           overrideState.slotCount &&
         overrideLifecycle.declaredStateExamplesPath ===
@@ -464,6 +470,10 @@ export function assertEngineCoreContract(contract, archetypeId) {
           JSON.stringify(overrideLifecycle) &&
         JSON.stringify(overrideRuntime.application) ===
           JSON.stringify(overrideApplication) &&
+        overrideRuntime.continuationRuleStatePath ===
+          overrideApplication.ruleStatePath &&
+        overrideRuntime.explanationRuleStatePath ===
+          overrideApplication.ruleStatePath &&
         JSON.stringify(overrideRuntime.verificationRoles) ===
           JSON.stringify([
             ...overrideDecision.ruleSlotRoles,
@@ -476,6 +486,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
     );
     const repair =
       override.repair ?? override.manifestDecision?.repair;
+    const afterStateDerivation = repair?.afterStateDerivation;
     const stableRoleList = (value, minimum = 1) =>
       Array.isArray(value) &&
       value.length >= minimum &&
@@ -484,7 +495,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
     assert(
       repair &&
         repair.kind === "declared-rule-independent-misplacement" &&
-        repair.declaredRuleStatePath === decision.ruleStatePath &&
+        repair.declaredRuleStatePath === "declaredRuleState" &&
         repair.repairRuleStateIndex === 1 &&
         repair.wrongItemProperty === decision.variantProperty &&
         stableRoleList(repair.wrongItemRoles) &&
@@ -500,6 +511,12 @@ export function assertEngineCoreContract(contract, archetypeId) {
         stableId(repair.replacementConstraintId) &&
         repair.requiresIndependentWrongState === true &&
         repair.requiresBeforeAfterComparison === true &&
+        afterStateDerivation?.kind === "replace-at-declared-rule-index" &&
+        afterStateDerivation.declaredRuleStatePath ===
+          repair.declaredRuleStatePath &&
+        afterStateDerivation.repairRuleStateIndex ===
+          repair.repairRuleStateIndex &&
+        afterStateDerivation.requiresConditionalMapping === true &&
         repair.evidenceMode === "student-state-dependent",
       `no-family-plan-engine-core-contract-override-repair-invalid:${archetypeId}:${familyTrackId}`
     );
@@ -522,6 +539,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
             beforeStatePath: repair.beforeStatePath,
             afterStatePath: repair.afterStatePath,
             validAfterStateExamplesPath: repair.validAfterStateExamplesPath,
+            afterStateDerivation,
             removeConstraintId: repair.removeConstraintId,
             replacementConstraintId: repair.replacementConstraintId
           }),
@@ -537,8 +555,7 @@ export function assertEngineCoreContract(contract, archetypeId) {
       overrideArtifact &&
         relativePath(overrideArtifact.artifactPath) &&
         overrideArtifact.artifactPath !== artifactContract.artifactPath &&
-        overrideArtifact.status ===
-          "implemented-verified-pending-family-track" &&
+        overrideArtifact.status === "planned-pending-engine-core" &&
         Array.isArray(overrideArtifact.implementationFiles) &&
         overrideArtifact.implementationFiles.length > 0 &&
         new Set(overrideArtifact.implementationFiles).size ===

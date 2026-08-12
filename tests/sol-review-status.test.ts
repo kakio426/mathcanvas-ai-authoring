@@ -276,7 +276,15 @@ describe("Sol review candidate and scope gates", () => {
     expect(
       workItem.engineCoreContract.runtimePredicate.parameters
         .continuationRuleStatePath
-    ).toBe(workItem.engineCoreContract.manifestDecision.ruleStatePath);
+    ).toBe("declaredRuleState");
+    expect(
+      workItem.engineCoreContract.runtimePredicate.parameters
+        .explanationRuleStatePath
+    ).toBe("declaredRuleState");
+    expect(
+      workItem.engineCoreContract.manifestDecision.stateLifecycle
+        .selectionOutputStatePath
+    ).toBe("declaredRuleState");
     const currentProjection = [
       report.current.nextOfflineWork,
       report.current.nextReplanWork
@@ -288,7 +296,7 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v10"
+        "W002-SOL-REPLAN-v11"
       );
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false
@@ -376,7 +384,7 @@ describe("Sol review candidate and scope gates", () => {
       "pattern.repeat-unit.construct-v1"
     );
     expect(repair.artifactContract.artifactPath).toContain(
-      "repeat-repair-engine-core-v10"
+      "repeat-repair-engine-core-v11"
     );
     expect(repair.artifactContract.artifactPath).not.toBe(
       repeat.artifactContract.artifactPath
@@ -675,7 +683,7 @@ describe("Sol review candidate and scope gates", () => {
 
   it("routes only a current scoped SOL_REPLAN_REQUEST for the exact operation cursor", () => {
     const blockerArtifactPath =
-      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json";
+      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json";
     const blockerArtifactSha256 = createHash("sha256")
       .update(readFileSync(blockerArtifactPath))
       .digest("hex");
@@ -687,10 +695,10 @@ describe("Sol review candidate and scope gates", () => {
       familyTrackId: "pattern.declared-repeat.repair-v1",
       scopeId: "W002-FAMILY_TRACK-repeat-repair",
       nextOperation: "ENGINE_CORE",
-      contractRevision: "W002-SOL-REPLAN-v9"
+      contractRevision: "W002-SOL-REPLAN-v10"
     };
     const request = review({
-      reviewId: "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1",
+      reviewId: "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2",
       workItemId: "W002",
       operation: "SOL_REPLAN_REQUEST",
       decision: "blocked",
@@ -775,7 +783,7 @@ describe("Sol review candidate and scope gates", () => {
 
   it("rejects stale, non-blocked, and artifact-mismatched SOL_REPLAN_REQUEST records", () => {
     const blockerArtifactPath =
-      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-preflight-v10.json";
+      "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-lifecycle-preflight-v11.json";
     const artifactSha256 = createHash("sha256")
       .update(readFileSync(blockerArtifactPath))
       .digest("hex");
@@ -788,7 +796,7 @@ describe("Sol review candidate and scope gates", () => {
       familyTrackId: "pattern.declared-repeat.repair-v1",
       scopeId: "W002-FAMILY_TRACK-repeat-repair",
       blockedOperation: "ENGINE_CORE",
-      blockedContractRevision: "W002-SOL-REPLAN-v9",
+      blockedContractRevision: "W002-SOL-REPLAN-v10",
       blockerArtifactPath,
       blockerArtifactSha256: artifactSha256
     });
@@ -821,7 +829,7 @@ describe("Sol review candidate and scope gates", () => {
           familyTrackId: "pattern.declared-repeat.repair-v1",
           scopeId: "W002-FAMILY_TRACK-repeat-repair",
           nextOperation: "ENGINE_CORE",
-          contractRevision: "W002-SOL-REPLAN-v9"
+          contractRevision: "W002-SOL-REPLAN-v10"
         },
         () => false
       )
@@ -842,9 +850,9 @@ describe("Sol review candidate and scope gates", () => {
     const preApproval = report.current.nextReplanWork;
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
-      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v10");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v11");
       expect(preApproval.solReview.solReplanRequest.reviewId).toBe(
-        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A1"
+        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A2"
       );
       expect(preApproval.solReview.replanApproved).toBe(false);
       expect(preApproval.solReview.replanConsumed).toBe(false);

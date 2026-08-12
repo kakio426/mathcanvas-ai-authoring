@@ -474,7 +474,7 @@
       "engineClassIds": ["R08"],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v10",
+      "replanContractRevision": "W002-SOL-REPLAN-v11",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "contractRevision": "W002-SOL-REPLAN-v10",
@@ -625,6 +625,8 @@
           "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
           "studentRuleStatePath": "studentRuleState",
           "applicationRuleStatePath": "studentRuleState",
+          "continuationRuleStatePath": "studentRuleState",
+          "explanationRuleStatePath": "studentRuleState",
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
@@ -650,7 +652,7 @@
       "engineCoreContractsByFamilyTrack": {
         "pattern.declared-repeat.repair-v1": {
           "baseContractFamilyTrackId": "pattern.repeat-unit.construct-v1",
-          "contractRevision": "W002-SOL-REPLAN-v10",
+          "contractRevision": "W002-SOL-REPLAN-v11",
           "constraintCapacity": {
             "maxSources": 12,
             "requiredSources": 12
@@ -704,7 +706,7 @@
               "initialState": "empty"
             },
             "application": {
-              "ruleStatePath": "studentRuleState",
+              "ruleStatePath": "declaredRuleState",
               "continuationTargetRoles": [
                 "continuation-slot-1", "continuation-slot-2",
                 "continuation-slot-3", "continuation-slot-4"
@@ -728,7 +730,7 @@
             ],
             "repair": {
               "kind": "declared-rule-independent-misplacement",
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": ["misaligned-item"],
@@ -736,7 +738,13 @@
               "repairBankRoles": ["repair-bank"],
               "beforeStatePath": "initialArrangementState",
               "afterStatePath": "repairedArrangementState",
-              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "validAfterStateExamplesPath": "validRepairedArrangementStatesByDeclaredRuleState",
+              "afterStateDerivation": {
+                "kind": "replace-at-declared-rule-index",
+                "declaredRuleStatePath": "declaredRuleState",
+                "repairRuleStateIndex": 1,
+                "requiresConditionalMapping": true
+              },
               "removeConstraintId": "remove-misaligned-item",
               "replacementConstraintId": "repair-misaligned-item",
               "requiresIndependentWrongState": true,
@@ -746,6 +754,9 @@
             "stateLifecycle": {
               "kind": "empty-selection-then-declared-repair",
               "statePath": "studentRuleState",
+              "selectionPhase": "rule-selection",
+              "selectionOutputStatePath": "declaredRuleState",
+              "writesDeclaredState": true,
               "phaseOrder": [
                 "rule-selection",
                 "remove-misaligned",
@@ -776,8 +787,8 @@
               ],
               "ruleSlotRoles": ["rule-slot-1", "rule-slot-2"],
               "variantProperty": "orderedValues",
-              "continuationRuleStatePath": "studentRuleState",
-              "explanationRuleStatePath": "studentRuleState",
+              "continuationRuleStatePath": "declaredRuleState",
+              "explanationRuleStatePath": "declaredRuleState",
               "predictionRole": "prediction-box",
               "explanationRole": "teacher-rubric",
               "studentInputRoles": [],
@@ -807,7 +818,7 @@
                 "initialState": "empty"
               },
               "application": {
-                "ruleStatePath": "studentRuleState",
+                "ruleStatePath": "declaredRuleState",
                 "continuationTargetRoles": [
                   "continuation-slot-1", "continuation-slot-2",
                   "continuation-slot-3", "continuation-slot-4"
@@ -831,7 +842,7 @@
               ],
               "repair": {
                 "kind": "declared-rule-independent-misplacement",
-                "declaredRuleStatePath": "studentRuleState",
+                "declaredRuleStatePath": "declaredRuleState",
                 "repairRuleStateIndex": 1,
                 "wrongItemProperty": "orderedValues",
                 "wrongItemRoles": ["misaligned-item"],
@@ -839,7 +850,13 @@
                 "repairBankRoles": ["repair-bank"],
                 "beforeStatePath": "initialArrangementState",
                 "afterStatePath": "repairedArrangementState",
-                "validAfterStateExamplesPath": "validRepairedArrangementStates",
+                "validAfterStateExamplesPath": "validRepairedArrangementStatesByDeclaredRuleState",
+                "afterStateDerivation": {
+                  "kind": "replace-at-declared-rule-index",
+                  "declaredRuleStatePath": "declaredRuleState",
+                  "repairRuleStateIndex": 1,
+                  "requiresConditionalMapping": true
+                },
                 "removeConstraintId": "remove-misaligned-item",
                 "replacementConstraintId": "repair-misaligned-item",
                 "requiresIndependentWrongState": true,
@@ -849,6 +866,9 @@
               "stateLifecycle": {
                 "kind": "empty-selection-then-declared-repair",
                 "statePath": "studentRuleState",
+                "selectionPhase": "rule-selection",
+                "selectionOutputStatePath": "declaredRuleState",
+                "writesDeclaredState": true,
                 "phaseOrder": [
                   "rule-selection",
                   "remove-misaligned",
@@ -864,9 +884,16 @@
             }
           },
             "binding": {
+              "studentRuleStatePath": "studentRuleState",
+              "applicationRuleStatePath": "declaredRuleState",
+              "continuationRuleStatePath": "declaredRuleState",
+              "explanationRuleStatePath": "declaredRuleState",
               "stateLifecycle": {
                 "kind": "empty-selection-then-declared-repair",
                 "statePath": "studentRuleState",
+                "selectionPhase": "rule-selection",
+                "selectionOutputStatePath": "declaredRuleState",
+                "writesDeclaredState": true,
                 "phaseOrder": [
                   "rule-selection",
                   "remove-misaligned",
@@ -880,7 +907,7 @@
                 "repairRequiresDeclaredState": true
               },
               "repair": {
-              "declaredRuleStatePath": "studentRuleState",
+              "declaredRuleStatePath": "declaredRuleState",
               "repairRuleStateIndex": 1,
               "wrongItemProperty": "orderedValues",
               "wrongItemRoles": ["misaligned-item"],
@@ -888,14 +915,20 @@
               "repairBankRoles": ["repair-bank"],
               "beforeStatePath": "initialArrangementState",
               "afterStatePath": "repairedArrangementState",
-              "validAfterStateExamplesPath": "validRepairedArrangementStates",
+              "validAfterStateExamplesPath": "validRepairedArrangementStatesByDeclaredRuleState",
+              "afterStateDerivation": {
+                "kind": "replace-at-declared-rule-index",
+                "declaredRuleStatePath": "declaredRuleState",
+                "repairRuleStateIndex": 1,
+                "requiresConditionalMapping": true
+              },
               "removeConstraintId": "remove-misaligned-item",
               "replacementConstraintId": "repair-misaligned-item"
             }
           },
           "repair": {
             "kind": "declared-rule-independent-misplacement",
-            "declaredRuleStatePath": "studentRuleState",
+            "declaredRuleStatePath": "declaredRuleState",
             "repairRuleStateIndex": 1,
             "wrongItemProperty": "orderedValues",
             "wrongItemRoles": ["misaligned-item"],
@@ -903,7 +936,13 @@
             "repairBankRoles": ["repair-bank"],
             "beforeStatePath": "initialArrangementState",
             "afterStatePath": "repairedArrangementState",
-            "validAfterStateExamplesPath": "validRepairedArrangementStates",
+            "validAfterStateExamplesPath": "validRepairedArrangementStatesByDeclaredRuleState",
+            "afterStateDerivation": {
+              "kind": "replace-at-declared-rule-index",
+              "declaredRuleStatePath": "declaredRuleState",
+              "repairRuleStateIndex": 1,
+              "requiresConditionalMapping": true
+            },
             "removeConstraintId": "remove-misaligned-item",
             "replacementConstraintId": "repair-misaligned-item",
             "requiresIndependentWrongState": true,
@@ -911,8 +950,8 @@
             "evidenceMode": "student-state-dependent"
           },
           "artifactContract": {
-            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v10.json",
-            "status": "implemented-verified-pending-family-track",
+            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+            "status": "planned-pending-engine-core",
             "implementationFiles": [
               "packages/contracts/src/catalog/cognitive-demand.ts",
               "packages/contracts/src/catalog/cognitive-demand.test.ts",
