@@ -911,6 +911,67 @@ function fileMatches(pattern, file) {
   return expression.test(file);
 }
 
+const FAMILY_TRACK_POST_APPROVAL_DERIVED_REPORT_CHAIN = [
+  {
+    id: "problem-family-registry",
+    command: "pnpm problem-family:update",
+    paths: [
+      "reports/problem-family-registry/latest.json",
+      "reports/problem-family-registry/latest.md"
+    ]
+  },
+  {
+    id: "curriculum-coverage",
+    command: "pnpm curriculum:coverage:update",
+    paths: [
+      "reports/curriculum-coverage/latest.json",
+      "reports/curriculum-coverage/latest.md"
+    ]
+  },
+  {
+    id: "curriculum-execution",
+    command: "node scripts/curriculum/build-execution-program.mjs --write",
+    paths: [
+      "reports/curriculum-execution/latest.json",
+      "reports/curriculum-execution/latest.md"
+    ]
+  },
+  {
+    id: "no-family-plan",
+    command: "pnpm curriculum:no-family-plan:update",
+    paths: [
+      "reports/curriculum-execution/no-family-plan.json",
+      "reports/curriculum-execution/no-family-plan.md"
+    ]
+  }
+];
+
+export function assertFamilyTrackPostApprovalDerivedReportChain(
+  operationPolicy
+) {
+  const chain =
+    operationPolicy?.postApprovalDerivedReportChainByOperation?.FAMILY_TRACK;
+  assert(
+    JSON.stringify(chain) ===
+      JSON.stringify(FAMILY_TRACK_POST_APPROVAL_DERIVED_REPORT_CHAIN),
+    "no-family-plan-family-track-post-approval-chain"
+  );
+  const allowed = operationPolicy.allowedFilesByOperation.FAMILY_TRACK ?? [];
+  const postApproval =
+    operationPolicy.postApprovalFilesByOperation.FAMILY_TRACK ?? [];
+  for (const file of chain.flatMap((step) => step.paths)) {
+    assert(
+      allowed.some((pattern) => fileMatches(pattern, file)),
+      `no-family-plan-family-track-derived-file-not-allowed:${file}`
+    );
+    assert(
+      postApproval.some((pattern) => fileMatches(pattern, file)),
+      `no-family-plan-family-track-derived-file-not-post-approval:${file}`
+    );
+  }
+  return chain;
+}
+
 function actionClass(nextAction) {
   if (nextAction === "complete") return "complete";
   if (nextAction === "sol-replan-required") {
@@ -1197,6 +1258,7 @@ function buildReport() {
       ),
     "no-family-plan-operation-manifest-policy"
   );
+  assertFamilyTrackPostApprovalDerivedReportChain(source.operationPolicy);
   const allowedSolDecisions = new Set(source.solReview.decisionValues);
   const reviewOperations = new Set(source.solReview.reviewOperations);
   const solReviewByKey = new Map();

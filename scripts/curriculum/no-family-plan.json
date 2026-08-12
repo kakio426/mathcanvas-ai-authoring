@@ -284,6 +284,7 @@
       "FAMILY_TRACK": [
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
+        "reports/problem-family-registry/**",
         "reports/curriculum-coverage/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
@@ -326,6 +327,42 @@
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ]
+    },
+    "postApprovalDerivedReportChainByOperation": {
+      "FAMILY_TRACK": [
+        {
+          "id": "problem-family-registry",
+          "command": "pnpm problem-family:update",
+          "paths": [
+            "reports/problem-family-registry/latest.json",
+            "reports/problem-family-registry/latest.md"
+          ]
+        },
+        {
+          "id": "curriculum-coverage",
+          "command": "pnpm curriculum:coverage:update",
+          "paths": [
+            "reports/curriculum-coverage/latest.json",
+            "reports/curriculum-coverage/latest.md"
+          ]
+        },
+        {
+          "id": "curriculum-execution",
+          "command": "node scripts/curriculum/build-execution-program.mjs --write",
+          "paths": [
+            "reports/curriculum-execution/latest.json",
+            "reports/curriculum-execution/latest.md"
+          ]
+        },
+        {
+          "id": "no-family-plan",
+          "command": "pnpm curriculum:no-family-plan:update",
+          "paths": [
+            "reports/curriculum-execution/no-family-plan.json",
+            "reports/curriculum-execution/no-family-plan.md"
+          ]
+        }
       ]
     }
   },

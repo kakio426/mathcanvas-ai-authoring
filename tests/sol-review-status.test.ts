@@ -27,6 +27,7 @@ const {
 const { buildSemanticSlice, semanticSliceHash, semanticSliceIsCurrent } =
   semanticSlices;
 const {
+  assertFamilyTrackPostApprovalDerivedReportChain,
   assertEngineCoreContract,
   assertEngineCoreCompletionEvidence,
   resolveEngineCoreContract,
@@ -58,6 +59,92 @@ function manifest(scope?: Record<string, string>) {
 }
 
 describe("Sol review candidate and scope gates", () => {
+  it("orders FAMILY_TRACK post-approval reports from registry to the next cursor", () => {
+    const source = JSON.parse(
+      readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
+    );
+    const report = JSON.parse(
+      readFileSync("reports/curriculum-execution/no-family-plan.json", "utf8")
+    );
+    const chain = assertFamilyTrackPostApprovalDerivedReportChain(
+      source.operationPolicy
+    );
+    expect(chain.map((step: { id: string }) => step.id)).toEqual([
+      "problem-family-registry",
+      "curriculum-coverage",
+      "curriculum-execution",
+      "no-family-plan"
+    ]);
+    const missingRegistry = JSON.parse(
+      JSON.stringify(source.operationPolicy)
+    );
+    missingRegistry.postApprovalFilesByOperation.FAMILY_TRACK =
+      missingRegistry.postApprovalFilesByOperation.FAMILY_TRACK.filter(
+        (pattern: string) => pattern !== "reports/problem-family-registry/**"
+      );
+    expect(() =>
+      assertFamilyTrackPostApprovalDerivedReportChain(missingRegistry)
+    ).toThrow(
+      "no-family-plan-family-track-derived-file-not-post-approval:reports/problem-family-registry/latest.json"
+    );
+    const wrongOrder = JSON.parse(JSON.stringify(source.operationPolicy));
+    wrongOrder.postApprovalDerivedReportChainByOperation.FAMILY_TRACK.reverse();
+    expect(() =>
+      assertFamilyTrackPostApprovalDerivedReportChain(wrongOrder)
+    ).toThrow("no-family-plan-family-track-post-approval-chain");
+
+    const registry = JSON.parse(
+      readFileSync("reports/problem-family-registry/latest.json", "utf8")
+    );
+    const repair = registry.families.find(
+      (family: { familyId: string }) =>
+        family.familyId === "pattern.declared-repeat.repair-v1"
+    );
+    expect(repair.solReviewStatus).toBe("blocked");
+    expect(repair.lifecycleStage).toBe("generatable");
+
+    const execution = JSON.parse(
+      readFileSync("reports/curriculum-execution/latest.json", "utf8")
+    );
+    const w002 = execution.breadthQueue.find(
+      (row: { code: string }) => row.code === "[2수02-02]"
+    );
+    expect(w002.offlineCoveredTargetCount).toBe(1);
+    const preApprovalSubWorks = report.workItems.find(
+      (item: { workItemId: string }) => item.workItemId === "W002"
+    ).familySubWorkItems;
+    const blockedRepair = preApprovalSubWorks.find(
+      (item: { familyTrackId: string }) =>
+        item.familyTrackId === "pattern.declared-repeat.repair-v1"
+    );
+    expect(report.current.nextReplanWork?.operation).toBe("SOL_REPLAN");
+    expect(blockedRepair.reviewStatus).toBe("blocked");
+    expect(blockedRepair.reviewId).toBe(
+      "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
+    );
+
+    const postApprovalSubWorks = preApprovalSubWorks.map(
+      (item: {
+        familyTrackId: string;
+        reviewStatus: string;
+        nextOperation: string;
+      }) => ({
+        ...item,
+        reviewStatus:
+          item.familyTrackId === "pattern.declared-repeat.repair-v1"
+            ? "approved"
+            : item.reviewStatus
+      })
+    );
+    const nextAfterApproval = postApprovalSubWorks.find(
+      (item: { reviewStatus: string }) => item.reviewStatus !== "approved"
+    );
+    expect(nextAfterApproval.familyTrackId).toBe(
+      "pattern.change-rule.construct-v1"
+    );
+    expect(nextAfterApproval.nextOperation).toBe("ENGINE_CORE");
+  });
+
   it("fails closed for incomplete student-constructed rule contracts", () => {
     const source = JSON.parse(
       readFileSync("scripts/curriculum/no-family-plan.json", "utf8")
@@ -365,9 +452,17 @@ describe("Sol review candidate and scope gates", () => {
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
         "W002-SOL-REPLAN-v12"
       );
-      expect(
-        report.current.nextReplanWork.solReview.solReplanRequest.reviewId
-      ).toBe("W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3");
+      const trigger =
+        report.current.nextReplanWork.solReview.solReplanRequest;
+      if (trigger) {
+        expect(trigger.reviewId).toBe(
+          "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3"
+        );
+      } else {
+        expect(
+          report.current.nextReplanWork.solReview.familyTrackReviewIds
+        ).toContain("W002-FAMILY_TRACK-repeat-repair-SOL-A1");
+      }
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
         false
       );
@@ -932,9 +1027,16 @@ describe("Sol review candidate and scope gates", () => {
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
       expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v12");
-      expect(preApproval.solReview.solReplanRequest.reviewId).toBe(
-        "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3"
-      );
+      const trigger = preApproval.solReview.solReplanRequest;
+      if (trigger) {
+        expect(trigger.reviewId).toBe(
+          "W002-SOL_REPLAN_REQUEST-repeat-repair-SOL-A3"
+        );
+      } else {
+        expect(preApproval.solReview.familyTrackReviewIds).toContain(
+          "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
+        );
+      }
       expect(preApproval.solReview.replanApproved).toBe(false);
       expect(preApproval.solReview.replanConsumed).toBe(false);
       return;

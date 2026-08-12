@@ -231,6 +231,7 @@
       "FAMILY_TRACK": [
         "packages/templates/src/problem-families/**",
         "packages/templates/src/problem-families/registry.ts",
+        "reports/problem-family-registry/**",
         "reports/curriculum-coverage/**",
         "reports/curriculum-execution/latest.json",
         "reports/curriculum-execution/latest.md",
@@ -273,6 +274,42 @@
         "reports/curriculum-execution/latest.md",
         "reports/curriculum-execution/no-family-plan.json",
         "reports/curriculum-execution/no-family-plan.md"
+      ]
+    },
+    "postApprovalDerivedReportChainByOperation": {
+      "FAMILY_TRACK": [
+        {
+          "id": "problem-family-registry",
+          "command": "pnpm problem-family:update",
+          "paths": [
+            "reports/problem-family-registry/latest.json",
+            "reports/problem-family-registry/latest.md"
+          ]
+        },
+        {
+          "id": "curriculum-coverage",
+          "command": "pnpm curriculum:coverage:update",
+          "paths": [
+            "reports/curriculum-coverage/latest.json",
+            "reports/curriculum-coverage/latest.md"
+          ]
+        },
+        {
+          "id": "curriculum-execution",
+          "command": "node scripts/curriculum/build-execution-program.mjs --write",
+          "paths": [
+            "reports/curriculum-execution/latest.json",
+            "reports/curriculum-execution/latest.md"
+          ]
+        },
+        {
+          "id": "no-family-plan",
+          "command": "pnpm curriculum:no-family-plan:update",
+          "paths": [
+            "reports/curriculum-execution/no-family-plan.json",
+            "reports/curriculum-execution/no-family-plan.md"
+          ]
+        }
       ]
     }
   },
@@ -4469,40 +4506,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-repair",
-        "familyId": "pattern.declared-repeat.repair-v1",
-        "familyTrackId": "pattern.declared-repeat.repair-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-repair",
-        "targetOutlineKeys": [
-          "construct-repeat-arrangement-following-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.declared-repeat.repair-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET",
-          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
-        ],
-        "operationSequence": [
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A1",
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v12",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -4577,8 +4586,8 @@
           "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
@@ -8177,40 +8186,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-repeat-repair",
-        "familyId": "pattern.declared-repeat.repair-v1",
-        "familyTrackId": "pattern.declared-repeat.repair-v1",
-        "scopeId": "W002-FAMILY_TRACK-repeat-repair",
-        "targetOutlineKeys": [
-          "construct-repeat-arrangement-following-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.declared-repeat.repair-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET",
-          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
-        ],
-        "operationSequence": [
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "FAMILY_TRACK",
-        "completedOperations": [
-          "ENGINE_CORE"
-        ],
-        "reviewStatus": "blocked",
-        "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A1",
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
       "replanContractRevision": "W002-SOL-REPLAN-v12",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-repeat-repair-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -8285,8 +8266,8 @@
           "W002-FAMILY_TRACK-repeat-repair-SOL-A1"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,

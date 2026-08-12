@@ -1,6 +1,33 @@
 # W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v12)
 
-상태: **Sol max 재계획 후보 — repeat-repair completion governance v12 승인 대기**
+상태: **Sol max 재계획 후보 — repeat-repair FAMILY_TRACK 파생 보고서 권한 보정 승인 대기**
+
+## v12 FAMILY_TRACK post-approval 파생 체인 보정
+
+`W002-FAMILY_TRACK-repeat-repair-SOL-A1`은 family의 교육·수학·native·preview
+검토 때문이 아니라, 승인 뒤 가장 먼저 갱신해야 하는
+`reports/problem-family-registry/**`가 `FAMILY_TRACK` post-approval manifest에서
+빠져 있어 `blocked` 되었다. 이 보정은 새 수학 계약이 아니므로 revision을 v13으로
+올리지 않는다. `W002-SOL-REPLAN-v12`, A3의 세 target, 아래 세 review scope,
+repeat-rule compatibility evidence와 repeat-repair ENGINE_CORE completion evidence를
+그대로 보존한다.
+
+새 SOL_REPLAN review는 `W002-SOL_REPLAN-SOL-A31`을 `supersedesReviewId`로,
+`W002-FAMILY_TRACK-repeat-repair-SOL-A1`을 `supersedesBlockedReviewId`로 소비해야
+한다. 승인 뒤 파생 파일은 반드시 다음 순서로 갱신한다.
+
+1. problem-family registry
+2. curriculum coverage
+3. curriculum execution
+4. no-family plan
+
+`operationPolicy.postApprovalDerivedReportChainByOperation.FAMILY_TRACK`이 이 순서와
+각 exact JSON/Markdown 경로·명령을 소유하며 builder는 모든 경로가 FAMILY_TRACK의
+allowedFiles와 postApprovalFiles 양쪽에 포함됐는지 fail-closed 검증한다. 이
+governance 승인은 family 자체를 승인하지 않는다. 같은 frozen family candidate를 새
+scoped FAMILY_TRACK attempt로 다시 검토해 승인한 뒤에만 registry가
+`offline-validated`, coverage가 2/3, execution이 두 offline family, no-family cursor가
+`pattern.change-rule.construct-v1 / ENGINE_CORE`로 순서대로 전진할 수 있다.
 
 v12는 A30이 승인한 lifecycle v11과 `b95c143`의 bounded ENGINE_CORE 구현을
 바꾸지 않는다. 새 preflight request
