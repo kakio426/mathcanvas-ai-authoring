@@ -4201,6 +4201,52 @@
           "최소 수정은 A3 review record의 권위 승인 commit identity를 별도 reviewer-only replay commit으로 재결속하거나, immutable review record와 파생 report만 담은 새 scoped FAMILY_TRACK attempt를 만들고 status test 변경은 선행 governance commit으로 분리하는 것이다. 새 attempt는 frozen 2f3ce90 candidate implementation currentness와 A3 교육 findings를 재사용하되 새 reviewer transaction diff는 manifest 파일만 포함해야 한다.",
           "v14은 changes-requested이며 change-rule ENGINE_CORE 구현, family 생성, response/save/reopen/live evidence 또는 push를 승인하지 않는다. offline 2/3·live 0/3 및 repeat-rule/repeat-repair 승인 evidence는 보존한다."
         ]
+      },
+      {
+        "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A4",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "FAMILY_TRACK",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "approved",
+        "attempt": 4,
+        "candidateCommit": "2f3ce90da4ca248591bc74b3b1a9d7d36a5ee529",
+        "changedFiles": [
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+          "packages/templates/src/problem-families/registry.test.ts",
+          "reports/curriculum-coverage/latest.json",
+          "reports/curriculum-coverage/latest.md",
+          "reports/curriculum-execution/latest.json",
+          "reports/curriculum-execution/latest.md",
+          "reports/problem-family-registry/latest.json",
+          "reports/problem-family-registry/latest.md"
+        ],
+        "familyTrackId": "pattern.declared-repeat.repair-v1",
+        "scopeId": "W002-FAMILY_TRACK-repeat-repair",
+        "supersedesReviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+        "checkedAt": "2026-08-12T06:55:16.000Z",
+        "evidenceRefs": [
+          "git:2f3ce90da4ca248591bc74b3b1a9d7d36a5ee529",
+          "git:0bf29bea1748cf3dd262f084f6e5b8e83ff0f323#W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+          "git:34784a4c37576dae157e9cd11c0c1e2e39d20d12#reviewer-transaction-window",
+          "scripts/curriculum/sol-review-board.json#W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+          "packages/curriculum/src/assessment-targets/repeating-pattern-2su02-02.ts#change.pattern.declared-repeat.repair-v1",
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.test.ts",
+          "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
+          "command:git diff 2f3ce90..HEAD over four implementation files (empty)",
+          "command:git diff-tree --root --no-commit-id --name-only -r 2f3ce90 (exact 10 candidate files)",
+          "command:pnpm check at A4 baseline (87 files / 548 tests; all gates PASS before reviewer transaction)"
+        ],
+        "findings": [
+          "APPROVED CLEAN REPLAY: A4는 frozen candidate 2f3ce90과 exact 10 changedFiles를 그대로 재검토하며 A3 이후 네 implementation source/test가 byte-identical이다. A3의 교육·수학·native·preview 판정은 그대로 유효하고 A4는 reviewer transaction만 manifest-bound로 분리한다.",
+          "TARGET/MATHEMATICS PRESERVED: family는 change.pattern.declared-repeat.repair-v1 하나만 소유한다. 두 context×두 item, 12 physical source, ordered-distinct valid 6·same-value surplus 3, 빈 초기 state와 indexed declaration 2·remove 1·conditional replacement 1·continuation 4의 여덟 constraint가 유지된다.",
+          "CONDITIONAL EVIDENCE PRESERVED: 학생 선택이 declaredRuleState에 기록되고 여섯 state별 before=[state0,wrong]→after=[state0,state1]로 repair된다. 특정 색·순서·고정 정답이나 자동채점·학생 텍스트 저장을 주장하지 않는다.",
+          "TRANSACTION BOUNDARY: 이 A4 reviewer commit은 board와 FAMILY_TRACK postApprovalDerivedReportChain의 registry→coverage→execution→no-family 파일만 포함해야 한다. tests/sol-review-status.test.ts, W002_REPLAN.md, family source 또는 다른 governance 파일을 섞지 않는다.",
+          "정직한 승격 범위는 [2수02-02] offline 2/3 유지, live 0/3 유지다. change-rule ENGINE_CORE, response/save/reopen/live canary 또는 release는 승인하지 않는다."
+        ]
       }
     ]
   },
@@ -4361,8 +4407,8 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 64,
-      "approved": 26,
+      "totalRecords": 65,
+      "approved": 27,
       "changesRequested": 29,
       "blocked": 9,
       "pendingRequiredReviews": 190
@@ -4671,7 +4717,7 @@
             "ENGINE_CORE"
           ],
           "reviewStatus": "approved",
-          "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+          "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A4",
           "retryingFamilyTrack": false
         },
         {
@@ -4780,7 +4826,7 @@
         "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
-          "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
+          "W002-FAMILY_TRACK-repeat-repair-SOL-A4"
         ],
         "replan": "changes-requested",
         "replanApproved": false,
@@ -8237,7 +8283,7 @@
             "ENGINE_CORE"
           ],
           "reviewStatus": "approved",
-          "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A3",
+          "reviewId": "W002-FAMILY_TRACK-repeat-repair-SOL-A4",
           "retryingFamilyTrack": false
         },
         {
@@ -8346,7 +8392,7 @@
         "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
           "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
-          "W002-FAMILY_TRACK-repeat-repair-SOL-A3"
+          "W002-FAMILY_TRACK-repeat-repair-SOL-A4"
         ],
         "replan": "changes-requested",
         "replanApproved": false,
