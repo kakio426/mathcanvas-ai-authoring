@@ -1,19 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   MATHCANVAS_PROJECT_CATEGORIES,
-  PROBLEM_FAMILY_SCHEMA_VERSION
+  PROBLEM_FAMILY_SCHEMA_VERSION,
+  type Recommendation
 } from "@mathcanvas/contracts";
 import { compileActivity, resolveActivity } from "@mathcanvas/compiler";
+import { resolveCurriculum } from "@mathcanvas/curriculum";
 import { recommendActivity } from "@mathcanvas/planner";
 import { validateForCreation } from "@mathcanvas/validator";
-import {
-  buildRegisteredAppliedProblemParameters,
-  buildRegisteredProblemPreviews,
-  buildRegisteredTeacherAnswerKey,
-  prepareRegisteredActivityForEnvelopeValidation
-} from "../../../registry.js";
-import { assertCognitiveManifestBound } from "../../../cognitive/registry.js";
-import { validateProblemParameters } from "../../registry.js";
 import {
   CHANGE_RULE_CONTEXT_IDS,
   CHANGE_RULE_CONSTRUCTION_FAMILY_ID,
@@ -51,13 +45,32 @@ function recommend(input: {
 }
 
 function resolveEnvelope(contextId: ChangeRuleContextId) {
-  const recommendation = recommend({ contextId });
-  const plan = prepareRegisteredActivityForEnvelopeValidation(
-    {
-      ...recommendation,
-      supported: true,
-      blockingReasons: []
+  const recommendation = {
+    schemaVersion: "1.0.0",
+    requestId: "change-rule-construction-module-test",
+    supported: true,
+    templateId: CHANGE_RULE_CONSTRUCTION_FAMILY_ID,
+    gradeBand: "1-2",
+    recommendedGrade: 2,
+    standardCode: "[2수02-02]",
+    learningGoal: changeRuleConstructionProblemFamilyModule.source.learningGoal,
+    prerequisites: [],
+    problemCount: 2,
+    difficulty: "normal",
+    manipulation: CHANGE_RULE_CONSTRUCTION_MANIPULATION,
+    problemParameters: {
+      schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
+      familyId: CHANGE_RULE_CONSTRUCTION_FAMILY_ID,
+      values: { contextId }
     },
+    rationale: ["차단된 family의 모듈 단위 envelope를 회귀 검증합니다."],
+    confidence: 1,
+    caveats: [],
+    blockingReasons: [],
+    curriculum: resolveCurriculum("[2수02-02]").record
+  } satisfies Recommendation;
+  const plan = changeRuleConstructionProblemFamilyModule.runtime.prepare(
+    recommendation,
     {
       seed: "change-rule-construction-envelope-seed",
       generatedAt,
@@ -78,13 +91,11 @@ describe("[2수02-02] change rule construction native family", () => {
   it("학생이 시작값·변화량·방향을 직접 구성하고 네 항과 오류 교정을 연결한다", () => {
     const result = resolveEnvelope("change-counts");
     expect(result.recommendation).toMatchObject({
-      supported: false,
+      supported: true,
       templateId: CHANGE_RULE_CONSTRUCTION_FAMILY_ID,
       standardCode: "[2수02-02]",
       manipulation: CHANGE_RULE_CONSTRUCTION_MANIPULATION,
-      blockingReasons: [
-        "이 활동은 새 화면을 확인하는 중이라 실제 생성에는 아직 공개되지 않았습니다."
-      ]
+      blockingReasons: []
     });
     expect(result.report.issues).toEqual([]);
     expect(result.report.canCreate).toBe(true);
@@ -93,7 +104,10 @@ describe("[2수02-02] change rule construction native family", () => {
       MATHCANVAS_PROJECT_CATEGORIES["변화와 관계"].categoryId
     );
 
-    const manifest = assertCognitiveManifestBound(changeRuleConstructionBlueprint);
+    const manifest = changeRuleConstructionProblemFamilyModule.cognitiveManifest;
+    expect(manifest.blueprintContentHash).toBe(
+      changeRuleConstructionBlueprint.contentHash
+    );
     expect(manifest).toMatchObject({
       mathematicalDecision: expect.stringContaining("직접 선언"),
       decision: {
@@ -178,9 +192,18 @@ describe("[2수02-02] change rule construction native family", () => {
       )
     ).toBe(true);
 
-    const answers = buildRegisteredTeacherAnswerKey(result.resolved);
-    const previews = buildRegisteredProblemPreviews(result.resolved);
-    const applied = buildRegisteredAppliedProblemParameters(result.resolved);
+    const answers =
+      changeRuleConstructionProblemFamilyModule.runtime.answerKey(
+        result.resolved
+      );
+    const previews =
+      changeRuleConstructionProblemFamilyModule.runtime.problemPreviews?.(
+        result.resolved
+      );
+    const applied =
+      changeRuleConstructionProblemFamilyModule.runtime.appliedProblemParameters?.(
+        result.resolved
+      );
     expect(answers).toHaveLength(2);
     expect(answers[0]?.answer).toContain("조건부");
     expect(answers[0]?.answer).not.toContain("1, 2, 3, 4");
@@ -211,21 +234,17 @@ describe("[2수02-02] change rule construction native family", () => {
     );
   });
 
-  it("범위 밖 repeat·자동채점·고정 정답 주장은 거부한다", () => {
+  it("전역 planner에서는 격리하고 모듈의 범위 밖 입력은 계속 거부한다", () => {
     expect(() =>
       recommend({
         contextId: "change-counts",
         prompt: "repeat-3 규칙으로 만들어 주세요."
       })
-    ).toThrow("수의 시작값");
+    ).toThrow(
+      `problem-parameters-unsupported:${CHANGE_RULE_CONSTRUCTION_FAMILY_ID}`
+    );
     expect(() =>
-      recommend({
-        contextId: "change-counts",
-        prompt: "자동 채점과 응답 저장이 되는 고정 정답 문제를 만들어 주세요."
-      })
-    ).toThrow("자동");
-    expect(() =>
-      validateProblemParameters({
+      changeRuleConstructionProblemFamilyModule.capability?.parseParameters({
         schemaVersion: PROBLEM_FAMILY_SCHEMA_VERSION,
         familyId: CHANGE_RULE_CONSTRUCTION_FAMILY_ID,
         values: { contextId: "change-counts", extra: true }
