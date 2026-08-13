@@ -70,6 +70,14 @@ const PLACE_VALUE_FILL_BY_VALUE = {
 
 const ANALOG_CLOCK_DESIGN_DIAMETER = 360;
 
+function displayScale(value: number | undefined, toolKey: string): number {
+  const scale = value ?? 1;
+  if (!Number.isFinite(scale) || scale < 1 || scale > 2) {
+    throw new Error(`native-display-scale-invalid:${toolKey}:${String(value)}`);
+  }
+  return scale;
+}
+
 const objectCommon = {
   rx: 0,
   ry: 0,
@@ -166,6 +174,7 @@ export function makeNumberCardObject(
     throw new Error(`Unsupported number card value: ${intent.value}`);
   }
   assertReleasedModuleVariant("NO04NT", svgId);
+  const scale = displayScale(intent.displayScale, intent.toolKey);
   const halfSize = NUMBER_CARD_RENDERED_SIZE / 2;
   const x = placement.x + placement.width / 2;
   const y = placement.y + placement.height / 2;
@@ -180,6 +189,9 @@ export function makeNumberCardObject(
     id: placement.id,
     fill: "#2194FF",
     svgId,
+    scale,
+    sizeScale: scale,
+    initSizeScale: scale,
     parent: { variation: 25 },
     isEyeOn: false,
     isHFlip: false,
@@ -206,6 +218,7 @@ export function makePlaceValueModelObject(
     throw new Error(`place-value-model-unsupported-value:${intent.value}`);
   }
   assertReleasedModuleVariant("NO04PD", svgId);
+  const scale = displayScale(intent.displayScale, intent.toolKey);
   const radius = PLACE_VALUE_MODEL_RENDERED_DIAMETER / 2;
   const x = placement.x + placement.width / 2;
   const y = placement.y + placement.height / 2;
@@ -220,6 +233,9 @@ export function makePlaceValueModelObject(
     id: placement.id,
     fill: PLACE_VALUE_FILL_BY_VALUE[intent.value],
     svgId,
+    scale,
+    sizeScale: scale,
+    initSizeScale: scale,
     parent: {},
     count: 1,
     n: intent.value,

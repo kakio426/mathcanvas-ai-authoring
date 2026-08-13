@@ -21,6 +21,8 @@ export type NumberCardIntent = {
   readonly toolKey: "NO04NT";
   readonly value: number;
   readonly balanceSide?: "left" | "right";
+  /** MathCanvas native resize scale. Omit to preserve the released 80 px card. */
+  readonly displayScale?: number;
 };
 
 export type BalanceScaleIntent = {
@@ -42,6 +44,8 @@ export type PlaceValueModelIntent = {
   readonly kind: "place-value-model";
   readonly toolKey: "NO04PD";
   readonly value: 1 | 10 | 100;
+  /** MathCanvas native resize scale. Omit to preserve the released 120 px disk. */
+  readonly displayScale?: number;
 };
 
 export type PatternBlockIntent = {

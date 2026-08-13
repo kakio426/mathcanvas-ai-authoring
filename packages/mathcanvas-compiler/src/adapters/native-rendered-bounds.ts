@@ -21,6 +21,14 @@ export const PLACE_VALUE_MODEL_RENDERED_DIAMETER = 120;
 // with an oversized layout token, so collision checks must use the real card.
 export const NUMBER_CARD_RENDERED_SIZE = 80;
 
+function normalizedDisplayScale(value: number | undefined, toolKey: string): number {
+  const scale = value ?? 1;
+  if (!Number.isFinite(scale) || scale < 1 || scale > 2) {
+    throw new Error(`native-display-scale-invalid:${toolKey}:${String(value)}`);
+  }
+  return scale;
+}
+
 // MathCanvas input-text renders with a 1.5 line-height and its editor-owned
 // textarea contributes 8 canvas units of vertical chrome to scrollHeight.
 // Using fontSize alone (or the old 1.25 estimate) makes the persisted
@@ -134,7 +142,8 @@ export function resolveNativeRenderedBounds(
     };
   }
   if (intent.kind === "place-value-model") {
-    const diameter = PLACE_VALUE_MODEL_RENDERED_DIAMETER;
+    const diameter = PLACE_VALUE_MODEL_RENDERED_DIAMETER *
+      normalizedDisplayScale(intent.displayScale, intent.toolKey);
     return {
       x: placement.x + placement.width / 2 - diameter / 2,
       y: placement.y + placement.height / 2 - diameter / 2,
@@ -143,7 +152,8 @@ export function resolveNativeRenderedBounds(
     };
   }
   if (intent.kind === "number-card") {
-    const size = NUMBER_CARD_RENDERED_SIZE;
+    const size = NUMBER_CARD_RENDERED_SIZE *
+      normalizedDisplayScale(intent.displayScale, intent.toolKey);
     return {
       x: placement.x + placement.width / 2 - size / 2,
       y: placement.y + placement.height / 2 - size / 2,

@@ -31,7 +31,10 @@ export interface TeacherSession {
   creations: Map<string, StoredCreation>;
 }
 
-const SESSION_TTL_MS = 2 * 60 * 60 * 1000;
+// A teacher may leave the preparation desk open through a school day. Keeping
+// this local-only session alive avoids a confusing dead tab after lunch; the
+// MathCanvas login itself still has its own independent authentication expiry.
+export const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
 const CARD_TTL_MS = 30 * 60 * 1000;
 export const APPROVAL_TTL_MS = 10 * 60 * 1000;
 

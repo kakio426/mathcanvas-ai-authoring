@@ -24,6 +24,7 @@ import type {
 } from "../shared/contract.js";
 import {
   APPROVAL_TTL_MS,
+  SESSION_TTL_MS,
   TeacherSessionStore,
   type TeacherSession
 } from "./session.js";
@@ -680,7 +681,7 @@ const server = createServer(async (request, response) => {
       session = sessions.create();
       response.writeHead(303, {
         location: "/",
-        "set-cookie": `${cookieName}=${encodeURIComponent(session.id)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=7200`
+        "set-cookie": `${cookieName}=${encodeURIComponent(session.id)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}`
       });
       response.end();
       return;

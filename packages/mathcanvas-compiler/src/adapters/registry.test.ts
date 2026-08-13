@@ -475,6 +475,49 @@ describe("fail-closed tool adapter registry", () => {
       ]
     });
 
+    const enlargedNumberCard = {
+      ...numberCardIntent,
+      displayScale: 2
+    } as const;
+    const enlargedPlaceValue = {
+      ...placeValueIntent,
+      displayScale: 1.6
+    } as const;
+    expect(
+      resolveNativeRenderedBounds(enlargedNumberCard, oversizedPlacement)
+    ).toEqual({
+      x: 140,
+      y: 220,
+      width: 160,
+      height: 160
+    });
+    expect(
+      compileNativeTool(enlargedNumberCard, oversizedPlacement).object
+    ).toMatchObject({ scale: 2, sizeScale: 2, initSizeScale: 2 });
+    expect(
+      resolveNativeRenderedBounds(enlargedPlaceValue, oversizedPlacement)
+    ).toEqual({
+      x: 124,
+      y: 204,
+      width: 192,
+      height: 192
+    });
+    expect(
+      compileNativeTool(enlargedPlaceValue, oversizedPlacement).object
+    ).toMatchObject({ scale: 1.6, sizeScale: 1.6, initSizeScale: 1.6 });
+    expect(() =>
+      compileNativeTool(
+        { ...numberCardIntent, displayScale: 2.01 },
+        oversizedPlacement
+      )
+    ).toThrow("native-display-scale-invalid:NO04NT:2.01");
+    expect(() =>
+      resolveNativeRenderedBounds(
+        { ...placeValueIntent, displayScale: 0.99 },
+        oversizedPlacement
+      )
+    ).toThrow("native-display-scale-invalid:NO04PD:0.99");
+
     const clockIntent = {
       kind: "analog-clock",
       toolKey: "SM02AD",

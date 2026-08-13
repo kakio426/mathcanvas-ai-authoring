@@ -141,7 +141,7 @@ function nativeRoles(renderer: PortfolioRenderer): ActivityBlueprintBody["toolRo
           locked: false,
           movable: true,
           instructionalIntent: "수 카드를 움직여 수와 관계를 비교합니다.",
-          properties: {},
+          properties: { displayScale: 2 },
           bindings: { value: `item.nativeValue${index}` }
         }
       )),
@@ -166,7 +166,7 @@ function nativeRoles(renderer: PortfolioRenderer): ActivityBlueprintBody["toolRo
         locked: false,
         movable: true,
         instructionalIntent: "일·십·백 모형을 움직여 자릿값 관계를 확인합니다.",
-        properties: {},
+        properties: { displayScale: 1.6 },
         bindings: { value: `item.placeValue${index}` }
       }
     ));
@@ -274,7 +274,7 @@ function nativeLayout(renderer: PortfolioRenderer) {
         layoutBlock(
           `native-model-${index}`,
           "slot",
-          `item.native-source-${index}`,
+          `item.native-number-source-${index}`,
           "each-item"
         )
       ),
@@ -286,12 +286,32 @@ function nativeLayout(renderer: PortfolioRenderer) {
       )
     ];
   }
+  if (renderer === "place-value") {
+    return [1, 2, 3].map((index) =>
+      layoutBlock(
+        `native-model-${index}`,
+        "slot",
+        `item.native-place-${index}`,
+        "each-item"
+      )
+    );
+  }
   if (renderer === "fraction") {
     return [
-      layoutBlock("native-model-1", "slot", "item.native-1", "each-item"),
-      layoutBlock("native-model-2", "slot", "item.native-2", "each-item"),
-      layoutBlock("native-target", "slot", "item.native-wide-2", "each-item")
+      layoutBlock("native-model-1", "slot", "item.native-fraction-1", "each-item"),
+      layoutBlock("native-model-2", "slot", "item.native-fraction-2", "each-item"),
+      layoutBlock("native-target", "slot", "item.native-fraction-target", "each-item")
     ];
+  }
+  if (renderer === "pattern") {
+    return [1, 2, 3, 4].map((index) =>
+      layoutBlock(
+        `native-model-${index}`,
+        "slot",
+        `item.native-pattern-${index}`,
+        "each-item"
+      )
+    );
   }
   if (renderer === "table-graph") {
     return [
@@ -303,12 +323,26 @@ function nativeLayout(renderer: PortfolioRenderer) {
       )
     ];
   }
+  if (renderer === "geometry") {
+    return [1, 2, 3].map((index) =>
+      layoutBlock(
+        `native-model-${index}`,
+        "slot",
+        `item.native-geometry-${index}`,
+        "each-item"
+      )
+    );
+  }
+  if (renderer === "clock") {
+    return [
+      layoutBlock("native-model-1", "slot", "item.native-clock", "each-item")
+    ];
+  }
   return nativeRoles(renderer).map((role, index) => {
-    const wide = renderer === "clock";
     return layoutBlock(
       role.role,
       "slot",
-      wide ? `item.native-wide-${index + 1}` : `item.native-${index + 1}`,
+      `item.native-pattern-${index + 1}`,
       "each-item"
     );
   });

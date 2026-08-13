@@ -132,6 +132,100 @@ const learnerCopyRoles = new Set([
 ]);
 const normalizeStudentText = (value) => value.normalize("NFKC").trim();
 const hasTerminalPunctuation = (value) => /[.?!요죠까다]$/u.test(value);
+const containsBounds = (container, child, inset = 0) =>
+  child.x >= container.x + inset &&
+  child.y >= container.y + inset &&
+  child.x + child.width <= container.x + container.width - inset &&
+  child.y + child.height <= container.y + container.height - inset;
+const distance = (left, right) =>
+  Math.hypot(
+    Number(right?.[0]) - Number(left?.[0]),
+    Number(right?.[1]) - Number(left?.[1])
+  );
+
+const inspectNativeUsability = (record, resolved, compiled) => {
+  const objectsById = new Map(
+    compiled.payload.contentsJson.map((object) => [object?.id, object])
+  );
+  const itemResults = resolved.items.map((item) => {
+    const emissionByRole = new Map(
+      resolved.emissions
+        .filter((emission) => emission.id.startsWith(`${item.id}-`))
+        .map((emission) => [emission.role, emission])
+    );
+    const panel = emissionByRole.get("array-panel")?.bounds;
+    const nativeEmissions = [...emissionByRole.values()].filter(
+      (emission) => emission.role.startsWith("native-")
+    );
+    const nativeElementsContained = Boolean(panel) && nativeEmissions.every(
+      (emission) => containsBounds(
+        panel,
+        emission.renderedBounds ?? emission.bounds,
+        12
+      )
+    );
+
+    let nativeElementsUsable = false;
+    if (record.rendererKind === "number-card") {
+      nativeElementsUsable = nativeEmissions
+        .filter((emission) => emission.role.startsWith("native-model-"))
+        .every((emission) =>
+          Math.min(
+            emission.renderedBounds?.width ?? 0,
+            emission.renderedBounds?.height ?? 0
+          ) >= 160
+        );
+    } else if (record.rendererKind === "place-value") {
+      nativeElementsUsable = nativeEmissions.every((emission) =>
+        Math.min(
+          emission.renderedBounds?.width ?? 0,
+          emission.renderedBounds?.height ?? 0
+        ) >= 192
+      );
+    } else if (record.rendererKind === "geometry") {
+      nativeElementsUsable = nativeEmissions.every((emission) => {
+        const coordinates = objectsById.get(emission.id)?.coordinates;
+        return Array.isArray(coordinates) &&
+          coordinates.length >= 2 &&
+          distance(coordinates[0], coordinates[1]) >= 140;
+      });
+    } else if (record.rendererKind === "clock") {
+      nativeElementsUsable = nativeEmissions.every((emission) =>
+        Math.min(emission.bounds.width, emission.bounds.height) >= 260
+      );
+    } else if (record.rendererKind === "fraction") {
+      nativeElementsUsable = nativeEmissions.every((emission) =>
+        Math.max(
+          emission.renderedBounds?.width ?? emission.bounds.width,
+          emission.renderedBounds?.height ?? emission.bounds.height
+        ) >= 180
+      );
+    } else if (record.rendererKind === "pattern") {
+      nativeElementsUsable = nativeEmissions.every((emission) =>
+        Math.max(
+          emission.renderedBounds?.width ?? 0,
+          emission.renderedBounds?.height ?? 0
+        ) >= 130
+      );
+    } else if (record.rendererKind === "table-graph") {
+      const table = emissionByRole.get("native-model-1")?.bounds;
+      nativeElementsUsable = Boolean(panel && table) &&
+        panel.y + panel.height - (table.y + table.height) >= 100 &&
+        table.width >= 1200 && table.height >= 150;
+    }
+    return { nativeElementsContained, nativeElementsUsable };
+  });
+
+  return {
+    nativeElementsContained: itemResults.every(
+      (result) => result.nativeElementsContained
+    ),
+    nativeElementsUsable: itemResults.every(
+      (result) => result.nativeElementsUsable
+    )
+  };
+};
+
 for (const manifest of manifests) {
   const record = recordByFamilyId.get(manifest.familyId);
   if (!record) {
@@ -255,6 +349,7 @@ for (const manifest of manifests) {
             (name) => typeof name === "string" && name.trim().length > 0
           )
       );
+    const nativeUsability = inspectNativeUsability(record, resolved, compiled);
     rows.push({
       workItemId: record.workItemId,
       standardCode: record.standardCode,
@@ -277,6 +372,7 @@ for (const manifest of manifests) {
       registeredEvidencePromptsVisible,
       visibleCopyComplete,
       tableCopyComplete,
+      ...nativeUsability,
       canCreate: validation.canCreate,
       issues: validation.issues
     });
@@ -296,6 +392,15 @@ for (const manifest of manifests) {
       approvalViewSha256: null,
       itemCoverageExact: false,
       serverTagContractExact: false,
+      internalCodeHidden: false,
+      questionsElementary: false,
+      choicesElementary: false,
+      registeredCorrectChoicesVisible: false,
+      registeredEvidencePromptsVisible: false,
+      visibleCopyComplete: false,
+      tableCopyComplete: false,
+      nativeElementsContained: false,
+      nativeElementsUsable: false,
       canCreate: false,
       issues: [
         {
@@ -320,6 +425,8 @@ const passedRows = rows.filter(
     row.registeredEvidencePromptsVisible &&
     row.visibleCopyComplete &&
     row.tableCopyComplete &&
+    row.nativeElementsContained &&
+    row.nativeElementsUsable &&
     row.canCreate &&
     row.resolvedItemCount === row.targetOutlineCount
 );
@@ -365,6 +472,7 @@ const markdown = [
   `- 목표 윤곽 문항: ${report.summary.passedTargetOutlineCount}/${report.summary.expectedTargetOutlineCount}`,
   `- 실제 화면 유형: ${report.summary.rendererCount}`,
   `- 엔진 계열: ${report.summary.engineClassCount}`,
+  `- 조작물 크기·확인 영역 포함: ${passedRows.filter((row) => row.nativeElementsUsable && row.nativeElementsContained).length}/${report.summary.expectedStandardCount}`,
   `- 실패: ${report.summary.failedStandardCount}`,
   "",
   "| 작업 | 성취기준 | 화면 | 엔진 | 문항 | 생성 |",
