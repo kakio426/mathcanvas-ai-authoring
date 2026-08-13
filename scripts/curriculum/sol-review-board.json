@@ -4189,6 +4189,49 @@
         "APPROVED EXACT SCOPE: the candidate changes only tests/sol-review-status.test.ts, which is explicitly allowed for SOL_REPLAN. It does not expand ENGINE_CORE implementation scope, alter family source, register change-rule content, or promote coverage/live evidence.",
         "PRESERVED BOUNDARY: W002 remains change-rule ENGINE_CORE pending with no completion transition, FAMILY_TRACK approval, exact preview, response/save/reopen, live evidence, release, or push. The 95df3eb bounded implementation remains subject to the pending artifact/currentness transition."
       ]
+    },
+    {
+      "reviewId": "W002-FAMILY_TRACK-change-rule-SOL-A1",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "FAMILY_TRACK",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "blocked",
+      "attempt": 1,
+      "candidateCommit": "fe60d3beae1fd9c95618f5867813de5dd07f50bb",
+      "changedFiles": [
+        "packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.test.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+        "packages/templates/src/problem-families/registry.test.ts"
+      ],
+      "familyTrackId": "pattern.change-rule.construct-v1",
+      "scopeId": "W002-FAMILY_TRACK-change-rule",
+      "supersedesReviewId": null,
+      "checkedAt": "2026-08-13T10:20:00.000Z",
+      "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-FAMILY_TRACK",
+      "evidenceRefs": [
+        "git:fe60d3beae1fd9c95618f5867813de5dd07f50bb",
+        "git:07b2e8f#W002 change-rule ENGINE_CORE v16 completion transition",
+        "git:2ff751a0e2c8b2488e33480d6c60aed263cace7d#W002-SOL_REPLAN-SOL-A40",
+        "packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.test.ts",
+        "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-audit-role-contract-preflight-v16.json",
+        "command:pnpm exec vitest run change-rule-construction.test.ts registry.test.ts -> 7/7 PASS",
+        "command:pnpm typecheck -> PASS",
+        "command:pnpm cognitive:verify -> cognitive-demand-failed:G1_DECISION_EXISTS,G7_SELF_VERIFIABLE,G8_PER_ITEM_STRUGGLE:pattern.change-rule.construct-v1",
+        "command:pnpm problem-family:update -> 35 registered / 21 released",
+        "command:git diff 2f3ce90..fe60d3b -> shared change-relationships/index.ts changed, prior repeat-repair review currentness becomes stale"
+      ],
+      "findings": [
+        "BLOCKED COGNITIVE_AUDIT_TARGET_ROLE_ALIAS_CONFLICT: v16 authority/validator/family blueprint use canonical targets rule-control-start, rule-control-step, rule-control-direction, while scripts/pedagogy/check-cognitive-demand.mjs construct-change-rule branch hard-codes start-value-control, step-magnitude-control, direction-control. No single emission set can satisfy both without hidden duplicate aliases or an unapproved core contract change.",
+        "BLOCKED COGNITIVE_AUDIT_WRITE_INDEX_FIELD_CONFLICT: v16 blueprint constraints project writesStateIndex, while the audit branch checks stateIndex. The registered family therefore passes native resolve/validator tests but fails the actual dist-backed cognitive audit path with G1_DECISION_EXISTS, G7_SELF_VERIFIABLE, and G8_PER_ITEM_STRUGGLE.",
+        "REGISTERED-AUDIT REPRODUCTION: candidate family focused native tests and registry tests pass 7/7, typecheck passes, but pnpm cognitive:verify fails for pattern.change-rule.construct-v1. This is not a reason to skip the cognitive gate or to call the family verified.",
+        "SHARED-REGISTRY CURRENTNESS HARD-STOP: registering this new family changes the shared change-relationships/index.ts and registry test. The previously approved repeat-repair candidate 2f3ce90 includes that shared index in its exact changedFiles, so reviewCandidateIsCurrent now marks repeat-repair stale and the derived plan routes to FAMILY_REVALIDATION. A family registration cannot silently invalidate an unrelated approved family; per-standard semantic slice or explicit revalidation is required.",
+        "PRESERVED BOUNDARY: v16 change-rule ENGINE_CORE artifact remains implemented-verified-pending-family-track, offline coverage remains 2/3, live coverage 0/3, and no response/save/reopen/live/release or push is claimed. The family source is blocked until canonical audit role/index projection and shared-registry currentness are governed."
+      ]
     }
   ]
 }
