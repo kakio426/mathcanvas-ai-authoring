@@ -42,7 +42,7 @@
 - reviewer: **gpt-5.6-sol / max**
 - required after: **TARGET_SET · FAMILY_TRACK**
 - board: **scripts/curriculum/sol-review-board.json**
-- 승인 기록: **30개** · 수정 요청: **29개** · 차단: **11개** · pending: **191개**
+- 승인 기록: **31개** · 수정 요청: **29개** · 차단: **11개** · pending: **191개**
 - Sol은 구현 파일을 수정하지 않고 승인·수정요청·차단만 기록한다.
 - 승인 기록 없이 reviewed-complete·offline-validated·live-released 승격과 main push를 할 수 없다.
 

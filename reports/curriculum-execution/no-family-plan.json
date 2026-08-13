@@ -4523,6 +4523,53 @@
           "QA AND REGRESSION GATES: focused status suite 27/27, typecheck, no-family 97/24/84와 독립 full pnpm check 88 files/556 tests가 모두 통과했고 build/native/cognitive/visual/quality P0/P1은 0이다.",
           "PENDING BOUNDARY: 이 승인은 governance authority와 v16 pending artifact만 승인한다. change-rule은 completedOperations=[]/nextOperation=ENGINE_CORE이며 보존된 구현 stash는 아직 승인되지 않았다. bounded ENGINE_CORE가 blueprint guard positive/negative, 실제 32-source+8-target layout, validator/audit와 current completion artifact를 증명하기 전 FAMILY_TRACK, response/save/reopen/live 또는 push를 주장할 수 없다."
         ]
+      },
+      {
+        "reviewId": "W002-SOL_REPLAN-SOL-A40",
+        "workItemId": "W002",
+        "standardCode": "[2수02-02]",
+        "operation": "SOL_REPLAN",
+        "reviewer": "gpt-5.6-sol / max",
+        "decision": "approved",
+        "attempt": 40,
+        "candidateCommit": "3fee83e2d0dbe950b05d2938b53fb427f69098c1",
+        "changedFiles": [
+          "tests/sol-review-status.test.ts"
+        ],
+        "supersedesReviewId": "W002-SOL_REPLAN-SOL-A39",
+        "checkedAt": "2026-08-13T00:51:19.000Z",
+        "replanDocumentPath": "W002_REPLAN.md",
+        "replanDocumentSha256": "06cb91eec2ed1b2b09495836eda284d09747fa91151c3fa3fedd8991c25bae97",
+        "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3",
+        "replanOwner": "Luna",
+        "replanContractRevision": "W002-SOL-REPLAN-v16",
+        "replanScopes": [
+          {
+            "familyTrackId": "pattern.repeat-unit.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+          },
+          {
+            "familyTrackId": "pattern.declared-repeat.repair-v1",
+            "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+          },
+          {
+            "familyTrackId": "pattern.change-rule.construct-v1",
+            "scopeId": "W002-FAMILY_TRACK-change-rule"
+          }
+        ],
+        "evidenceRefs": [
+          "git:3fee83e2d0dbe950b05d2938b53fb427f69098c1",
+          "git:b697b160073a587e90fb541bd62da59e90d2afe9#W002-SOL_REPLAN-SOL-A39",
+          "tests/sol-review-status.test.ts#pending-and-completed-engine-core-projection",
+          "command:git diff-tree --root --no-commit-id --name-only -r 3fee83e2d0dbe950b05d2938b53fb427f69098c1 (exact 1 governance file)",
+          "command:pnpm exec vitest run tests/sol-review-status.test.ts (27/27 PASS)",
+          "command:pnpm check (89 files / 560 tests; build/typecheck/native/cognitive/visual/quality PASS; P0/P1 0)"
+        ],
+        "findings": [
+          "APPROVED GOVERNANCE PROJECTION: the candidate keeps the v16 ENGINE_CORE cursor pending while the status suite also accepts the bounded post-completion projection. The active subwork identity is derived from the current family subwork rather than hard-coded to repeat-repair, and completion evidence is validated only for a completed state.",
+          "APPROVED EXACT SCOPE: the candidate changes only tests/sol-review-status.test.ts, which is explicitly allowed for SOL_REPLAN. It does not expand ENGINE_CORE implementation scope, alter family source, register change-rule content, or promote coverage/live evidence.",
+          "PRESERVED BOUNDARY: W002 remains change-rule ENGINE_CORE pending with no completion transition, FAMILY_TRACK approval, exact preview, response/save/reopen, live evidence, release, or push. The 95df3eb bounded implementation remains subject to the pending artifact/currentness transition."
+        ]
       }
     ]
   },
@@ -4683,8 +4730,8 @@
       "complete": 0
     },
     "solReviewSummary": {
-      "totalRecords": 70,
-      "approved": 30,
+      "totalRecords": 71,
+      "approved": 31,
       "changesRequested": 29,
       "blocked": 11,
       "pendingRequiredReviews": 191
