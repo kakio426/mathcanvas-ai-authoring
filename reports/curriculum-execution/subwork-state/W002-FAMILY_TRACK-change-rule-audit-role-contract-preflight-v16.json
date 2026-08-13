@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactId": "W002-change-rule-audit-role-contract-preflight-v16",
+  "operation": "SOL_REPLAN_REQUEST",
+  "status": "blocked-needs-sol-replan",
+  "workItemId": "W002",
+  "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-FAMILY_TRACK",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.change-rule.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-change-rule",
+  "blockedOperation": "FAMILY_TRACK",
+  "blockedContractRevision": "W002-SOL-REPLAN-v16",
+  "blockerCodes": [
+    "COGNITIVE_AUDIT_TARGET_ROLE_ALIAS_CONFLICT",
+    "COGNITIVE_AUDIT_WRITE_INDEX_FIELD_CONFLICT"
+  ],
+  "summary": "등록된 change-rule family의 native resolve·compile·validator envelope는 통과하지만, 실제 cognitive audit 등록 경로는 공통 validator와 양립하지 않는 control role 및 write-index 계약을 요구하여 pnpm cognitive:verify를 실패시킨다. validator와 v16 authority는 rule-control-start/rule-control-step/rule-control-direction 및 writesStateIndex를 사용하고, audit은 start-value-control/step-magnitude-control/direction-control 및 stateIndex를 하드코딩한다. 숨은 alias emission·중복 target·audit 우회로 닫지 말고 하나의 canonical role/field projection을 먼저 승인해야 한다.",
+  "evidenceRefs": [
+    "git:07b2e8f",
+    "stash:w002-change-rule-family-prototype-before-audit-contract-replan",
+    "packages/validator/src/predicates/registry.ts#validateBoundedChangeRuleStateContract",
+    "scripts/pedagogy/check-cognitive-demand.mjs#construct-change-rule branch",
+    "scripts/pedagogy/check-cognitive-demand.mjs#start-value-control and stateIndex",
+    "packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.ts#v16 prototype",
+    "command:pnpm cognitive:verify -> cognitive-demand-failed:G1_DECISION_EXISTS,G7_SELF_VERIFIABLE,G8_PER_ITEM_STRUGGLE:pattern.change-rule.construct-v1",
+    "command:pnpm exec vitest run packages/templates/src/problem-families/domains/change-relationships/change-rule-construction.test.ts -> 3/3 PASS before audit registration gate",
+    "command:pnpm typecheck -> PASS before audit registration gate"
+  ],
+  "requiredReplan": {
+    "contractSeam": "change-rule-audit-role-and-write-index-projection",
+    "requiredEvidence": [
+      "choose one canonical control-role set and use it identically in cognitive schema, validator, audit, family blueprint, verification roles, and native layout",
+      "choose one canonical write-index field and project it identically from source plan to blueprint constraints, resolved validator, and cognitive audit",
+      "register the family through the actual dist-backed cognitive:verify path and prove G1/G7/G8 plus learning-map evidence binding pass",
+      "retain the existing v16 32-source NO04NT, 8-target, native bounds, answer-leak, and conditional repair evidence without changing the completed artifact silently",
+      "add negative regression fixtures for role alias drift, writesStateIndex/stateIndex drift, missing target constraints, and duplicate hidden aliases"
+    ],
+    "forbiddenFallbacks": [
+      "adding hidden duplicate start-value-control aliases or overlapping targets solely to satisfy the audit",
+      "dropping cognitive.change-rule-state-contract or skipping the registered cognitive audit",
+      "forking the role/index contract only inside the family while retaining the v16 authority claim",
+      "marking the family offline-validated, released, live, or response/save-reopen verified before the audit and scoped FAMILY_TRACK review pass"
+    ]
+  },
+  "preservedState": {
+    "changeRuleArtifactStatus": "implemented-verified-pending-family-track",
+    "changeRuleCursor": "FAMILY_TRACK",
+    "repeatRuleCompatibilityEvidence": "preserved-current",
+    "repeatRepairCompatibilityEvidence": "preserved-current",
+    "offlineCoverage": "2/3",
+    "liveCoverage": "0/3"
+  },
+  "createdAt": "2026-08-13T10:15:00.000Z"
+}
