@@ -4,7 +4,7 @@
 - 공식 분모: **121개 성취기준**
 - 대표 격자: **1/12 pipeline-proven**
 - reviewed target set: **4/121**
-- 현재 검토된 target: **11개 · offline 5 · live 2**
+- 현재 검토된 target: **11개 · offline 6 · live 2**
 - 전역 target coverage: **unavailable**
 - 남은 성취기준 작업 queue: **120개**
 
@@ -24,12 +24,12 @@
 | 단계 | 목표 | 상태 | 현재 증거 |
 |---|---|---|---|
 | 0 | 공식 분모와 카탈로그 권위 | complete | 121/121 |
-| 1 | 공통 ProblemFamily 기반 | complete | 35 canonical / 21 released |
+| 1 | 공통 ProblemFamily 기반 | complete | 34 canonical / 21 released |
 | 2 | 학년군×영역 대표 격자 | in-progress | 1/12 pipeline-proven |
 | 3A | 121개 AssessmentTargetSet 완전 분해 | in-progress | 4/121 |
-| 3B | 필수 target family·offline 검증 | in-progress | 5/11 reviewed targets; global denominator incomplete |
+| 3B | 필수 target family·offline 검증 | in-progress | 6/11 reviewed targets; global denominator incomplete |
 | 3C | 현재 해시 live create·저장·재열기 | in-progress | 2/11 reviewed targets; global denominator incomplete |
-| 4 | 전 범위 TeacherRequest·반영 표·실제 미리보기 | queued-after-phase-2 | 9/35 common-parameter families |
+| 4 | 전 범위 TeacherRequest·반영 표·실제 미리보기 | queued-after-phase-2 | 8/34 common-parameter families |
 | 5 | 문항 단위 수정·최종 제품 릴리스 | queued | not globally measured |
 
 ## 지금 자동으로 선택된 작업
@@ -61,8 +61,7 @@
 |---|---:|
 | 현재 해시 canary·저장·재열기 | 1 |
 | 완료 | 1 |
-| 미지원 reviewed target family 추가 | 1 |
-| 연결 target의 offline 검증 완료 | 1 |
+| 미지원 reviewed target family 추가 | 2 |
 | target 완전 분해 → released family 결속 | 17 |
 | target 완전 분해 → offline family 검증·출시 | 5 |
 | target 완전 분해 → 새 family 설계 | 95 |
@@ -87,7 +86,7 @@
 | 10 | 1 | [4수01-06] | 3-4 | 수와 연산 | target 완전 분해 → released family 결속 | number.division.partial-quotients.construction-v1, number.division.quotient-remainder.claim-evidence-v1 |
 | 11 | 1 | [6수03-02] | 5-6 | 도형과 측정 | target 완전 분해 → released family 결속 | geometry.symmetry.equal-distance.claim-evidence-v1 |
 | 12 | 2 | [2수04-02] | 1-2 | 자료와 가능성 | 현재 해시 canary·저장·재열기 | data.early-table.organize-v1 |
-| 13 | 2 | [2수02-02] | 1-2 | 변화와 관계 | 연결 target의 offline 검증 완료 | pattern.change-rule.construct-v1, pattern.create-repeat-unit-explain-v1, pattern.declared-repeat.repair-v1, pattern.repeat-unit.construct-v1 |
+| 13 | 2 | [2수02-02] | 1-2 | 변화와 관계 | 미지원 reviewed target family 추가 | pattern.create-repeat-unit-explain-v1, pattern.declared-repeat.repair-v1, pattern.repeat-unit.construct-v1 |
 | 14 | 2 | [4수03-01] | 3-4 | 도형과 측정 | target 완전 분해 → 새 family 설계 | 새 family 필요 |
 | 15 | 2 | [6수01-01] | 5-6 | 수와 연산 | target 완전 분해 → offline family 검증·출시 | number.mixed-calculation.order.claim-evidence-v1 |
 | 16 | 2 | [2수03-01] | 1-2 | 도형과 측정 | target 완전 분해 → 새 family 설계 | 새 family 필요 |

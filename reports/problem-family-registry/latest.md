@@ -1,9 +1,9 @@
 # ProblemFamily registry 보고서
 
-- canonical family: **35개**
+- canonical family: **34개**
 - released family: **21개**
-- 공통 ProblemParameters 지원 family: **9개**
-- native module family: **6개**
+- 공통 ProblemParameters 지원 family: **8개**
+- native module family: **5개**
 - released payload hash 기준선: **21개**
 
 > family 수는 AssessmentTarget coverage가 아닙니다. reviewed target 분해 전까지 target coverage는 산정하지 않습니다.
@@ -36,9 +36,8 @@
 | number.multiplication.group-array-meaning-v1 | 수와 연산 | [2수01-10] | legacy-blueprint-adapter | live-released | itemsPerGroup, groupCount, contextObjectId, misconceptionId |
 | number.multiplication.partial-products.construction-v1 | 수와 연산 | [4수01-04] | legacy-blueprint-adapter | offline-validated | - |
 | number.place-value.regroup-ten-bundles-v1 | 수와 연산 | [2수01-02] | legacy-blueprint-adapter | live-released | - |
-| pattern.change-rule.construct-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | generatable | contextId |
 | pattern.create-repeat-unit-explain-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | generatable | contextId |
-| pattern.declared-repeat.repair-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | generatable | contextId |
+| pattern.declared-repeat.repair-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | offline-validated | contextId |
 | pattern.repeat-unit.construct-v1 | 변화와 관계 | [2수02-02] | native-render-recipe | offline-validated | contextId |
 | pattern.repeat-unit.pattern-blocks-v1 | 변화와 관계 | [2수02-01] | legacy-blueprint-adapter | live-released | - |
 | probability.compare.bag-ratios-v1 | 자료와 가능성 | [6수04-04] | legacy-blueprint-adapter | live-released | - |

@@ -125,8 +125,11 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(
-        report.current.nextReplanWork.solReview.solReplanRequest?.reviewId
-      ).toBe("W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3");
+        report.current.nextReplanWork.solReview.familyTrackReviewIds
+      ).toContain("W002-FAMILY_TRACK-change-rule-SOL-A1");
+      expect(
+        report.current.nextReplanWork.nextFamilySubWork?.reviewId
+      ).toBe("W002-FAMILY_TRACK-change-rule-SOL-A1");
     } else {
       expect(report.current.nextReplanWork).toBeNull();
     }
@@ -471,13 +474,13 @@ describe("Sol review candidate and scope gates", () => {
       } else {
         expect(
           report.current.nextReplanWork.solReview.familyTrackReviewIds
-        ).toContain("W002-FAMILY_TRACK-repeat-repair-SOL-A2");
+        ).toContain("W002-FAMILY_TRACK-change-rule-SOL-A1");
       }
       expect(report.current.nextReplanWork.solReview.replanApproved).toBe(
-        false
+        true
       );
       expect(report.current.nextReplanWork.solReview.replanConsumed).toBe(
-        false
+        true
       );
     } else {
       const nextOffline = report.current.nextOfflineWork;
@@ -1325,11 +1328,11 @@ describe("Sol review candidate and scope gates", () => {
         );
       } else {
         expect(preApproval.solReview.familyTrackReviewIds).toContain(
-          "W002-FAMILY_TRACK-repeat-repair-SOL-A2"
+          "W002-FAMILY_TRACK-change-rule-SOL-A1"
         );
       }
-      expect(preApproval.solReview.replanApproved).toBe(false);
-      expect(preApproval.solReview.replanConsumed).toBe(false);
+      expect(preApproval.solReview.replanApproved).toBe(true);
+      expect(preApproval.solReview.replanConsumed).toBe(true);
       return;
     }
 
