@@ -17,7 +17,7 @@ import {
 const root = resolve(import.meta.dirname, "../..");
 const origin = "https://mathcanvas.vivasam.com";
 const generatedAt = "2026-08-13T12:00:00.000Z";
-const demoPrefix = "MathCanvas 97 최종 회사 시연본";
+const demoPrefix = "초등 수학 학생용 활동 완성";
 const stateDirectory = resolveStateDirectory();
 const profileDirectory = resolve(stateDirectory, "chrome-profile");
 const devToolsPortPath = resolve(profileDirectory, "DevToolsActivePort");
@@ -100,11 +100,29 @@ const summarizeContentsDiff = (expectedObjects, actualObjects) => {
   }).slice(0, 3);
 };
 
+const frameFirstActivity = async (page, firstItemPrefix) => {
+  const question = page.locator(`[id="${firstItemPrefix}-question"]`).first();
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const bounds = await question.boundingBox();
+    if (!bounds) throw new Error("portfolio-demo-first-question-not-rendered");
+    const dragDistance = Math.max(-420, Math.min(420, 155 - bounds.y));
+    if (Math.abs(dragDistance) < 12) return;
+    await page.keyboard.down("Space");
+    await page.mouse.move(800, 420);
+    await page.mouse.down();
+    await page.mouse.move(800, 420 + dragDistance, { steps: 20 });
+    await page.mouse.up();
+    await page.keyboard.up("Space");
+    await page.waitForTimeout(180);
+  }
+};
+
 const saveAndReopenInteraction = async ({
   page,
   projectId,
   payload,
   visibleObjectIds,
+  firstItemPrefix,
   screenshotPath
 }) => {
   const movableObjects = payload.contentsJson.filter(
@@ -255,6 +273,7 @@ const saveAndReopenInteraction = async ({
         })
     );
   }
+  await frameFirstActivity(page, firstItemPrefix);
   await page.screenshot({ path: screenshotPath, fullPage: false });
   return {
     objectId: movableObject.id,
@@ -300,24 +319,36 @@ if (!context) {
     viewport: { width: 1600, height: 1000 }
   });
 }
-const page = context.pages()[0] ?? (await context.newPage());
+// 기존 로그인 Chrome의 빈 탭이나 중단된 검사 탭을 재사용하면 navigation/fetch가
+// 끝나지 않는 경우가 있다. 로그인 context만 공유하고 검사용 탭은 항상 새로 만든다.
+const page = await context.newPage();
+page.setDefaultTimeout(30_000);
 const results = [];
 try {
+  console.log("portfolio live demo: opening MathCanvas");
   await page.goto(`${origin}/ko/myCanvas`, {
     waitUntil: "domcontentloaded",
     timeout: 30_000
   });
   const authStatus = await page.evaluate(async () =>
-    (await fetch("/api/auth/me", { credentials: "include", cache: "no-store" })).status
+    (
+      await fetch("/api/auth/me", {
+        credentials: "include",
+        cache: "no-store",
+        signal: AbortSignal.timeout(30_000)
+      })
+    ).status
   );
   if (authStatus !== 200) throw new Error(`mathcanvas-auth-required:${authStatus}`);
+  console.log("portfolio live demo: login confirmed");
 
   for (const record of representatives) {
+    console.log(`portfolio live demo: preparing ${record.rendererKind}`);
     const requestId = `portfolio-live-${record.rendererKind}`;
     const recommendation = recommendActivity({
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId,
-      prompt: `${record.standardCode} 회사 시연용 핵심 판단과 자료 확인 활동을 만들어 주세요.`,
+      prompt: `${record.standardCode} 학생이 읽고 바로 할 수 있는 수학 활동을 만들어 주세요.`,
       requestedStandardCode: record.standardCode,
       requestedFamilyId: record.familyId,
       requestedGrade: Number(record.gradeBand[0]),
@@ -342,32 +373,11 @@ try {
     }
     const payload = {
       ...compiled.payload,
-      projectTitle: `${demoPrefix} · ${record.rendererKind} · ${record.standardCode}`
+      projectTitle: `${demoPrefix} · ${record.gradeBand}학년 · ${record.domain}`
     };
     const createResult = await page.evaluate(async ({ payload, title }) => {
       const token = window.localStorage.getItem("accessToken");
       const authorization = token ? { Authorization: `Bearer ${token}` } : {};
-      const query = new URLSearchParams({
-        projectTitle: title,
-        offset: "1",
-        limit: "100",
-        sortCondition: "createdAt",
-        sortOrder: "desc"
-      });
-      const existingResponse = await fetch(`/api/project?${query.toString()}`, {
-        headers: authorization,
-        credentials: "include",
-        cache: "no-store"
-      });
-      if (!existingResponse.ok) {
-        return { ok: false, status: existingResponse.status, phase: "query" };
-      }
-      const existingBody = await existingResponse.json();
-      const exact = (existingBody.list ?? []).find(
-        (candidate) =>
-          candidate.projectTitle === title && typeof candidate.projectId === "string"
-      );
-      if (exact) return { ok: true, projectId: exact.projectId, reused: true };
       const response = await fetch("/api/project", {
         method: "POST",
         headers: {
@@ -375,7 +385,8 @@ try {
           ...authorization
         },
         credentials: "include",
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(30_000)
       });
       const body = await response.json().catch(() => ({}));
       return {
@@ -396,7 +407,8 @@ try {
     const reopened = await page.evaluate(async (projectId) => {
       const response = await fetch(`/api/project/${encodeURIComponent(projectId)}`, {
         credentials: "include",
-        cache: "no-store"
+        cache: "no-store",
+        signal: AbortSignal.timeout(30_000)
       });
       return response.ok
         ? { ok: true, payload: await response.json(), status: response.status }
@@ -442,6 +454,7 @@ try {
       { timeout: 30_000 }
     );
     await page.waitForTimeout(800);
+    await frameFirstActivity(page, firstItemPrefix);
     const screenshotPath = resolve(outputDirectory, `${record.rendererKind}.png`);
     await mkdir(outputDirectory, { recursive: true });
     await page.screenshot({ path: screenshotPath, fullPage: false });
@@ -452,6 +465,7 @@ try {
             projectId: createResult.projectId,
             payload,
             visibleObjectIds,
+            firstItemPrefix,
             screenshotPath: resolve(outputDirectory, "number-card-after-save.png")
           })
         : null;
@@ -473,6 +487,7 @@ try {
       screenshotPath,
       interaction
     });
+    console.log(`portfolio live demo: verified ${record.rendererKind}`);
   }
 } finally {
   if (connectedToLoginChrome) browser?._connection?.close();

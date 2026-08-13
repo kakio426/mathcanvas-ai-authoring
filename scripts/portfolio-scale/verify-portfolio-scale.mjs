@@ -30,6 +30,81 @@ const raw = JSON.parse(
     "utf8"
   )
 );
+const studentQuestions = JSON.parse(
+  await readFile(
+    resolve(
+      root,
+      "packages/templates/src/problem-families/portfolio-scale.student-questions.json"
+    ),
+    "utf8"
+  )
+);
+const studentSupport = JSON.parse(
+  await readFile(
+    resolve(
+      root,
+      "packages/templates/src/problem-families/portfolio-scale.student-support.json"
+    ),
+    "utf8"
+  )
+);
+const expectedTargetOutlineKeys = raw.records.flatMap((record) =>
+  record.targetOutlines.map((target) => target.key)
+);
+if (
+  new Set(expectedTargetOutlineKeys).size !== expectedTargetOutlineKeys.length ||
+  Object.keys(studentQuestions).length !== expectedTargetOutlineKeys.length ||
+  expectedTargetOutlineKeys.some(
+    (key) => typeof studentQuestions[key] !== "string"
+  ) ||
+  Object.keys(studentQuestions).some(
+    (key) => !expectedTargetOutlineKeys.includes(key)
+  )
+) {
+  throw new Error("portfolio-student-question-registry-not-exact");
+}
+if (
+  Object.keys(studentSupport).length !== expectedTargetOutlineKeys.length ||
+  expectedTargetOutlineKeys.some((key) => {
+    const entry = studentSupport[key];
+    return !entry ||
+      typeof entry.correctChoice !== "string" ||
+      typeof entry.evidencePrompt !== "string";
+  }) ||
+  Object.keys(studentSupport).some(
+    (key) => !expectedTargetOutlineKeys.includes(key)
+  )
+) {
+  throw new Error("portfolio-student-support-registry-not-exact");
+}
+const normalizedStudentSupport = Object.values(studentSupport).flatMap((entry) => [
+  entry.correctChoice.normalize("NFKC").trim(),
+  entry.evidencePrompt.normalize("NFKC").trim()
+]);
+if (
+  normalizedStudentSupport.some(
+    (text, index) =>
+      text.length < 8 ||
+      text.length > (index % 2 === 0 ? 42 : 50) ||
+      !/[.]$/u.test(text)
+  )
+) {
+  throw new Error("portfolio-student-support-registry-not-elementary");
+}
+const normalizedStudentQuestions = Object.values(studentQuestions).map((question) =>
+  question.normalize("NFKC").trim()
+);
+if (
+  new Set(normalizedStudentQuestions).size !== expectedTargetOutlineKeys.length ||
+  normalizedStudentQuestions.some(
+    (question) =>
+      question.length < 10 ||
+      question.length > 60 ||
+      !/[?]$/u.test(question)
+  )
+) {
+  throw new Error("portfolio-student-question-registry-not-elementary");
+}
 const recordByFamilyId = new Map(
   raw.records.map((record) => [record.familyId, record])
 );
@@ -38,6 +113,25 @@ const manifests = listProblemFamilyManifests()
   .sort((left, right) => left.familyId.localeCompare(right.familyId));
 
 const rows = [];
+const forbiddenStudentCopy =
+  /(R\d{2}|D\d{2}[A-Z]?|목표 윤곽|엔진|아키타입|검증|불변량|membership|피연산자|등분제|포함제|정례|반례|이동 벡터|원자료|집계|변인|확인할 생각|수학 자료|문제의 조건|…)/iu;
+const learnerCopyRoles = new Set([
+  "instruction-predict",
+  "instruction-verify",
+  "instruction-explain",
+  "question",
+  "prediction-label",
+  "pool-label",
+  "explanation-label",
+  "group-label",
+  "array-text",
+  "position-card-1",
+  "position-card-2",
+  "position-card-3",
+  "position-card-4"
+]);
+const normalizeStudentText = (value) => value.normalize("NFKC").trim();
+const hasTerminalPunctuation = (value) => /[.?!요죠까다]$/u.test(value);
 for (const manifest of manifests) {
   const record = recordByFamilyId.get(manifest.familyId);
   if (!record) {
@@ -48,7 +142,7 @@ for (const manifest of manifests) {
     const recommendation = recommendActivity({
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: `portfolio-verify-${record.workItemId.toLowerCase()}`,
-      prompt: `${record.standardCode} 핵심 판단과 자료 확인 활동을 만들어 주세요.`,
+      prompt: `${record.standardCode} 학생이 읽고 바로 할 수 있는 수학 활동을 만들어 주세요.`,
       requestedStandardCode: record.standardCode,
       requestedFamilyId: manifest.familyId,
       requestedGrade: manifest.capability.recommendedGrade,
@@ -78,6 +172,89 @@ for (const manifest of manifests) {
     const expectedKeys = record.targetOutlines.map((target) => target.key);
     const itemCoverageExact =
       JSON.stringify(outlineKeys) === JSON.stringify(expectedKeys);
+    const learnerTextObjects = compiled.payload.contentsJson.filter((object) => {
+      if (typeof object?.text !== "string" || object.text.trim().length === 0) {
+        return false;
+      }
+      if (typeof object?.id !== "string") return false;
+      return [...learnerCopyRoles].some(
+        (role) => object.id === role || object.id.endsWith(`-${role}`)
+      );
+    });
+    const internalCodeHidden = learnerTextObjects.every(
+      (object) => !forbiddenStudentCopy.test(normalizeStudentText(object.text))
+    );
+    const questions = learnerTextObjects.filter((object) =>
+      typeof object?.id === "string" && object.id.endsWith("-question")
+    );
+    const compiledQuestionTexts = questions
+      .map((object) => normalizeStudentText(object.text))
+      .sort();
+    const registeredQuestionTexts = record.targetOutlines
+      .map((target) => normalizeStudentText(studentQuestions[target.key]))
+      .sort();
+    const questionsElementary =
+      questions.length === record.targetOutlines.length &&
+      JSON.stringify(compiledQuestionTexts) ===
+        JSON.stringify(registeredQuestionTexts) &&
+      questions.every(
+        (object) => {
+          const text = normalizeStudentText(object.text);
+          return text.length >= 10 &&
+            text.length <= 60 &&
+            /[?]$/u.test(text);
+        }
+      );
+    const choices = learnerTextObjects.filter(
+      (object) =>
+        typeof object?.id === "string" &&
+        /-position-card-[1-4]$/u.test(object.id)
+    );
+    const choicesElementary =
+      choices.length === record.targetOutlines.length * 4 &&
+      choices.every((object) => {
+        const text = normalizeStudentText(object.text);
+        return text.length >= 8 && text.length <= 36 && hasTerminalPunctuation(text);
+      });
+    const expectedCorrectChoices = record.targetOutlines
+      .map((target) => normalizeStudentText(studentSupport[target.key].correctChoice));
+    const registeredCorrectChoicesVisible = expectedCorrectChoices.every(
+      (correctChoice) => choices.some(
+        (object) => normalizeStudentText(object.text) === correctChoice
+      )
+    );
+    const evidencePrompts = learnerTextObjects.filter((object) =>
+      typeof object?.id === "string" && object.id.endsWith("-array-text")
+    );
+    const compiledEvidencePromptTexts = evidencePrompts
+      .map((object) => normalizeStudentText(object.text))
+      .sort();
+    const registeredEvidencePromptTexts = record.targetOutlines
+      .map((target) => normalizeStudentText(studentSupport[target.key].evidencePrompt))
+      .sort();
+    const registeredEvidencePromptsVisible =
+      evidencePrompts.length === record.targetOutlines.length &&
+      JSON.stringify(compiledEvidencePromptTexts) ===
+        JSON.stringify(registeredEvidencePromptTexts);
+    const visibleCopyComplete =
+      learnerTextObjects.length >= record.targetOutlines.length * 8 &&
+      learnerTextObjects.every((object) => {
+        const text = normalizeStudentText(object.text);
+        return text.length > 0 && !/[\r\n]/u.test(text);
+      });
+    const tableNativeObjects = compiled.payload.contentsJson.filter(
+      (object) => object?.svgId === "DP02TG-02"
+    );
+    const tableCopyComplete =
+      record.rendererKind !== "table-graph" ||
+      tableNativeObjects.every(
+        (object) =>
+          Array.isArray(object.name) &&
+          object.name.length === 6 &&
+          object.name.every(
+            (name) => typeof name === "string" && name.trim().length > 0
+          )
+      );
     rows.push({
       workItemId: record.workItemId,
       standardCode: record.standardCode,
@@ -93,6 +270,13 @@ for (const manifest of manifests) {
       approvalViewSha256: sha256Hex(projectRegisteredApprovalView(resolved)),
       itemCoverageExact,
       serverTagContractExact,
+      internalCodeHidden,
+      questionsElementary,
+      choicesElementary,
+      registeredCorrectChoicesVisible,
+      registeredEvidencePromptsVisible,
+      visibleCopyComplete,
+      tableCopyComplete,
       canCreate: validation.canCreate,
       issues: validation.issues
     });
@@ -129,6 +313,13 @@ const passedRows = rows.filter(
     row.recommendationSupported &&
     row.itemCoverageExact &&
     row.serverTagContractExact &&
+    row.internalCodeHidden &&
+    row.questionsElementary &&
+    row.choicesElementary &&
+    row.registeredCorrectChoicesVisible &&
+    row.registeredEvidencePromptsVisible &&
+    row.visibleCopyComplete &&
+    row.tableCopyComplete &&
     row.canCreate &&
     row.resolvedItemCount === row.targetOutlineCount
 );

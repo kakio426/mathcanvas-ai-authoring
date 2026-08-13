@@ -318,6 +318,11 @@ const sharedTargetAggregationFiles = new Set([
   "packages/curriculum/src/repeating-pattern-assessment-targets.test.ts"
 ]);
 
+const sharedFamilyAggregationFiles = new Set([
+  "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+  "packages/templates/src/problem-families/registry.test.ts"
+]);
+
 export function reviewImplementationFiles(review) {
   return (review.changedFiles ?? []).filter(
     (file) =>
@@ -325,6 +330,10 @@ export function reviewImplementationFiles(review) {
       !(
         review.operation === "TARGET_SET" &&
         sharedTargetAggregationFiles.has(file)
+      ) &&
+      !(
+        review.operation === "FAMILY_TRACK" &&
+        sharedFamilyAggregationFiles.has(file)
       )
   );
 }

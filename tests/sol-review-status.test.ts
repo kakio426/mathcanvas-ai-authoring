@@ -923,6 +923,23 @@ describe("Sol review candidate and scope gates", () => {
     ]);
   });
 
+  it("does not invalidate a family review when another family updates shared registry files", () => {
+    expect(
+      reviewImplementationFiles({
+        operation: "FAMILY_TRACK",
+        changedFiles: [
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.test.ts",
+          "packages/templates/src/problem-families/domains/change-relationships/index.ts",
+          "packages/templates/src/problem-families/registry.test.ts"
+        ]
+      })
+    ).toEqual([
+      "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.ts",
+      "packages/templates/src/problem-families/domains/change-relationships/declared-repeat-repair.test.ts"
+    ]);
+  });
+
   it("requires both familyTrackId and scopeId for a scoped family review", () => {
     const scope = {
       familyTrackId: "pattern.repeat-unit.construct-v1",

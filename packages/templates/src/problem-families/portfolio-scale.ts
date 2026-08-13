@@ -26,6 +26,8 @@ import type {
   ProblemFamilyRegistrySource
 } from "./types.js";
 import rawData from "./portfolio-scale.generated.json" with { type: "json" };
+import rawStudentQuestions from "./portfolio-scale.student-questions.json" with { type: "json" };
+import rawStudentSupport from "./portfolio-scale.student-support.json" with { type: "json" };
 
 type PortfolioRenderer =
   | "number-card"
@@ -76,25 +78,30 @@ const data = rawData as unknown as Readonly<{
   targetOutlineCount: number;
   records: readonly PortfolioRecord[];
 }>;
+const studentQuestions = rawStudentQuestions as Readonly<Record<string, string>>;
+const studentSupport = rawStudentSupport as Readonly<Record<string, Readonly<{
+  correctChoice: string;
+  evidencePrompt: string;
+}>>>;
 
 const CANDIDATE_ROLES = CHOICE_CARD_ROLES.slice(0, 4);
 const INSTRUCTIONS = [
-  "① 생각 카드 하나를 골라 ‘내가 고른 생각’ 칸에 놓으세요.",
-  "② 오른쪽 수학 자료를 움직이거나 살펴보고 선택과 맞는지 확인하세요.",
-  "③ 맞지 않으면 카드를 바꾸고, 확인한 관계를 말로 설명하세요."
+  "① 문제를 읽고 맞다고 생각하는 카드를 골라 빈칸에 놓으세요.",
+  "② 아래 그림이나 표를 보고 고른 카드가 맞는지 확인하세요.",
+  "③ 생각이 바뀌면 다른 카드를 놓고 그 까닭을 말해 보세요."
 ] as const;
 
 const scaffold = makeChoiceExplanationScaffoldRoles({
   instructions: INSTRUCTIONS,
   instructionalIntents: [
     "자료를 확인하기 전에 학생 자신의 판단을 먼저 드러냅니다.",
-    "엔진별 수학 자료로 선택한 생각을 스스로 확인하게 합니다.",
+    "그림이나 표를 살펴보며 고른 답을 스스로 확인하게 합니다.",
     "자료와 맞지 않는 생각을 바꾸고 확인 근거를 교사에게 말하게 합니다."
   ],
-  questionIntent: "성취기준 목표 윤곽에서 학생이 내려야 할 핵심 판단을 묻습니다.",
-  predictionLabel: "내가 고른 생각",
-  poolLabel: "생각 카드",
-  explanationLabel: "말로 설명할 관계",
+  questionIntent: "학생이 그림이나 표를 보고 직접 판단할 수 있는 한 가지 질문을 묻습니다.",
+  predictionLabel: "내가 고른 카드",
+  poolLabel: "골라 볼 카드",
+  explanationLabel: "그렇게 생각한 까닭",
   candidateCount: 4,
   centerCandidates: true,
   fontSizes: { instruction: 29, question: 27, label: 24, candidate: 21 }
@@ -316,11 +323,498 @@ function shuffle<T>(values: readonly T[], random: () => number): T[] {
   return output;
 }
 
-function concise(text: string, maximumLength: number): string {
-  const normalized = text.replace(/\s+/gu, " ").trim();
-  return normalized.length <= maximumLength
-    ? normalized
-    : `${normalized.slice(0, maximumLength - 1).trimEnd()}…`;
+type StudentCopy = Readonly<{
+  question: string;
+  correctChoice: string;
+  evidenceLabel: string;
+  evidencePrompt: string;
+}>;
+
+const RENDERER_COPY: Readonly<Record<PortfolioRenderer, Readonly<{
+  evidenceLabel: string;
+}>>> = {
+  "number-card": {
+    evidenceLabel: "수 카드"
+  },
+  "place-value": {
+    evidenceLabel: "자릿값 모형"
+  },
+  fraction: {
+    evidenceLabel: "분수 모형"
+  },
+  pattern: {
+    evidenceLabel: "무늬 블록"
+  },
+  "table-graph": {
+    evidenceLabel: "표와 그래프"
+  },
+  geometry: {
+    evidenceLabel: "도형 그림"
+  },
+  clock: {
+    evidenceLabel: "시계"
+  },
+  "relation-board": {
+    evidenceLabel: "수와 모양"
+  }
+};
+
+const STUDENT_COPY_OVERRIDES: Readonly<Record<string, StudentCopy>> = {
+  "organize-classified-data-in-table": {
+    question: "과일을 같은 종류끼리 모아 표로 나타내려면 어떻게 해야 할까요?",
+    correctChoice: "과일을 하나씩 세어 알맞은 칸에 써요.",
+    evidenceLabel: "좋아하는 과일 표",
+    evidencePrompt: "과일별 개수와 전체 개수가 맞는지 살펴보세요."
+  },
+  "explain-table-usefulness": {
+    question: "과일 표를 쓰면 무엇을 쉽게 알 수 있을까요?",
+    correctChoice: "어떤 과일이 많고 적은지 바로 알 수 있어요.",
+    evidenceLabel: "좋아하는 과일 표",
+    evidencePrompt: "가장 많은 과일과 가장 적은 과일을 찾아보세요."
+  },
+  "choose-own-arrangement-rule": {
+    question: "어떤 두 블록을 어떤 차례로 되풀이할까요?",
+    correctChoice: "두 블록과 되풀이할 차례를 먼저 정해요.",
+    evidenceLabel: "무늬 블록",
+    evidencePrompt: "고른 두 블록이 같은 차례로 되풀이되는지 살펴보세요."
+  },
+  "construct-repeat-arrangement-following-rule": {
+    question: "정한 차례대로 블록을 더 놓으려면 어떻게 해야 할까요?",
+    correctChoice: "처음 정한 두 블록의 차례를 계속 지켜요.",
+    evidenceLabel: "무늬 블록",
+    evidencePrompt: "처음 두 블록과 다음 블록의 차례를 비교해 보세요."
+  },
+  "construct-change-arrangement-following-rule": {
+    question: "수들이 같은 만큼 커지거나 작아지게 하려면 어떻게 해야 할까요?",
+    correctChoice: "이웃한 두 수가 얼마씩 달라지는지 살펴봐요.",
+    evidenceLabel: "수의 규칙",
+    evidencePrompt: "앞 수와 다음 수가 얼마씩 달라지는지 살펴보세요."
+  },
+  "match-everyday-objects-to-solid-shapes": {
+    question: "공, 캔, 상자는 어떤 모양과 닮았을까요?",
+    correctChoice: "물건의 겉모양을 천천히 돌려 보며 살펴봐요.",
+    evidenceLabel: "입체 모양",
+    evidencePrompt: "둥근 면과 평평한 면이 있는지 살펴보세요."
+  },
+  "compose-shapes-with-solid-objects": {
+    question: "상자와 캔 모양을 어떻게 놓으면 새 모양이 될까요?",
+    correctChoice: "넓고 평평한 면이 아래로 오게 놓아요.",
+    evidenceLabel: "입체 모양",
+    evidencePrompt: "모양이 쓰러지지 않고 잘 서 있는지 살펴보세요."
+  },
+  "recognize-number-purpose-and-zero": {
+    question: "아무것도 없을 때 쓰는 수는 무엇일까요?",
+    correctChoice: "하나도 없으면 0으로 나타내요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "물건의 수와 수 카드가 맞는지 살펴보세요."
+  },
+  "count-cardinality-to-one-hundred": {
+    question: "물건의 수를 빠뜨리지 않고 세려면 어떻게 해야 할까요?",
+    correctChoice: "물건을 하나씩 짚으며 한 번만 세어요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "마지막에 말한 수와 물건의 수가 같은지 살펴보세요."
+  },
+  "read-and-write-numbers-to-one-hundred": {
+    question: "수 카드에 적힌 수는 어떻게 읽을까요?",
+    correctChoice: "십의 자리와 일의 자리를 차례로 살펴봐요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "숫자와 읽는 말이 서로 맞는지 살펴보세요."
+  },
+  "represent-classified-data-with-symbol-graph": {
+    question: "조사한 물건 하나를 기호 하나로 나타내려면 어떻게 놓을까요?",
+    correctChoice: "물건마다 기호를 하나씩 알맞은 칸에 놓아요.",
+    evidenceLabel: "기호그래프",
+    evidencePrompt: "물건 수와 기호 수가 같은지 살펴보세요."
+  },
+  "explain-symbol-graph-usefulness": {
+    question: "기호그래프를 보면 무엇을 쉽게 알 수 있을까요?",
+    correctChoice: "어느 것이 많고 적은지 바로 알 수 있어요.",
+    evidenceLabel: "기호그래프",
+    evidencePrompt: "기호가 가장 많은 칸과 적은 칸을 찾아보세요."
+  },
+  "construct-solid-with-cubes": {
+    question: "쌓기나무로 주어진 모양을 어떻게 만들까요?",
+    correctChoice: "아래 칸부터 놓고 위에 차례로 쌓아요.",
+    evidenceLabel: "쌓기나무",
+    evidencePrompt: "그림과 같은 자리에 쌓기나무가 있는지 살펴보세요."
+  },
+  "describe-cube-positions-and-directions": {
+    question: "빨간 쌓기나무는 파란 쌓기나무의 어디에 있을까요?",
+    correctChoice: "기준 쌓기나무를 먼저 찾고 위치를 말해요.",
+    evidenceLabel: "쌓기나무",
+    evidencePrompt: "위, 아래, 앞, 뒤, 옆 중 알맞은 말을 골라 보세요."
+  },
+  "match-everyday-objects-to-plane-shapes": {
+    question: "접시, 창문, 표지판은 어떤 모양과 닮았을까요?",
+    correctChoice: "물건의 가장자리 모양을 따라 살펴봐요.",
+    evidenceLabel: "평면 모양",
+    evidencePrompt: "삼각형, 사각형, 원 중 닮은 모양을 찾아보세요."
+  },
+  "compose-new-shapes-from-plane-shapes": {
+    question: "삼각형과 사각형 조각을 어떻게 이어 새 모양을 만들까요?",
+    correctChoice: "조각이 겹치지 않도록 변끼리 맞대어 놓아요.",
+    evidenceLabel: "도형 조각",
+    evidencePrompt: "조각 사이에 빈틈이나 겹친 곳이 없는지 살펴보세요."
+  },
+  "understand-number-sequence-to-four-digits": {
+    question: "수들이 같은 만큼 커질 때 빈칸에는 어떤 수가 들어갈까요?",
+    correctChoice: "이웃한 두 수가 얼마씩 달라지는지 살펴봐요.",
+    evidenceLabel: "수의 차례",
+    evidencePrompt: "앞 수와 다음 수의 차이가 같은지 살펴보세요."
+  },
+  "compare-numbers-to-four-digits": {
+    question: "두 수 중 어느 수가 더 클까요?",
+    correctChoice: "가장 높은 자리의 숫자부터 비교해요.",
+    evidenceLabel: "자릿값 모형",
+    evidencePrompt: "천, 백, 십, 일의 자리 순서로 비교해 보세요."
+  },
+  "recognize-basic-plane-shapes-intuitively": {
+    question: "이 모양은 삼각형, 사각형, 원 중 무엇일까요?",
+    correctChoice: "곧은 선과 꼭짓점의 수를 살펴봐요.",
+    evidenceLabel: "평면 모양",
+    evidencePrompt: "변과 꼭짓점이 몇 개인지 살펴보세요."
+  },
+  "draw-basic-plane-shapes": {
+    question: "주어진 이름에 맞는 모양을 어떻게 그릴까요?",
+    correctChoice: "변과 꼭짓점의 수가 맞게 그려요.",
+    evidenceLabel: "평면 모양",
+    evidencePrompt: "그린 모양의 변과 꼭짓점을 세어 보세요."
+  },
+  "model-addition-situations": {
+    question: "두 무리를 합치면 모두 몇 개인지 어떻게 나타낼까요?",
+    correctChoice: "두 무리의 수를 더해 덧셈식으로 나타내요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "두 부분의 수와 전체 수가 맞는지 살펴보세요."
+  },
+  "model-subtraction-situations": {
+    question: "전체에서 몇 개를 덜어 내면 몇 개가 남을까요?",
+    correctChoice: "전체 수에서 덜어 낸 수를 빼요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "남은 물건의 수와 뺄셈 결과를 비교해 보세요."
+  },
+  "connect-add-sub-actions-to-expressions": {
+    question: "합치는 장면과 덜어 내는 장면에는 어떤 식이 맞을까요?",
+    correctChoice: "합치면 덧셈, 덜어 내면 뺄셈으로 나타내요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "장면의 행동과 계산 기호가 맞는지 살펴보세요."
+  },
+  "find-common-properties-of-triangles": {
+    question: "여러 삼각형에 모두 있는 것은 무엇일까요?",
+    correctChoice: "곧은 변과 꼭짓점을 하나씩 세어 봐요.",
+    evidenceLabel: "삼각형",
+    evidencePrompt: "모든 삼각형에 변과 꼭짓점이 3개인지 살펴보세요."
+  },
+  "find-common-properties-of-quadrilaterals": {
+    question: "여러 사각형에 모두 있는 것은 무엇일까요?",
+    correctChoice: "곧은 변과 꼭짓점을 하나씩 세어 봐요.",
+    evidenceLabel: "사각형",
+    evidencePrompt: "모든 사각형에 변과 꼭짓점이 4개인지 살펴보세요."
+  },
+  "understand-and-calculate-two-digit-addition": {
+    question: "두 자리 수의 덧셈은 어떻게 계산할까요?",
+    correctChoice: "일의 자리끼리, 십의 자리끼리 더해요.",
+    evidenceLabel: "자릿값 모형",
+    evidencePrompt: "일이 10개 모이면 십 1개로 바꾸세요."
+  },
+  "understand-and-calculate-two-digit-subtraction": {
+    question: "두 자리 수의 뺄셈은 어떻게 계산할까요?",
+    correctChoice: "일의 자리끼리, 십의 자리끼리 빼요.",
+    evidenceLabel: "자릿값 모형",
+    evidencePrompt: "일이 모자라면 십 1개를 일 10개로 바꾸세요."
+  },
+  "compare-object-lengths": {
+    question: "두 물건 중 어느 것이 더 길까요?",
+    correctChoice: "두 물건의 한쪽 끝을 같은 곳에 맞춰요.",
+    evidenceLabel: "길이 비교",
+    evidencePrompt: "반대쪽 끝이 더 멀리 간 물건을 찾아보세요."
+  },
+  "compare-container-capacities": {
+    question: "두 그릇 중 어느 그릇에 더 많이 담을 수 있을까요?",
+    correctChoice: "같은 컵으로 몇 번 담기는지 비교해요.",
+    evidenceLabel: "들이 비교",
+    evidencePrompt: "같은 컵이 더 많이 들어가는 그릇을 찾아보세요."
+  },
+  "compare-object-masses": {
+    question: "두 물건 중 어느 것이 더 무거울까요?",
+    correctChoice: "두 물건을 같은 저울에 놓아 비교해요.",
+    evidenceLabel: "무게 비교",
+    evidencePrompt: "저울에서 더 아래로 내려간 쪽을 살펴보세요."
+  },
+  "compare-surface-areas": {
+    question: "두 종이 중 어느 쪽이 더 넓을까요?",
+    correctChoice: "두 종이를 겹치거나 같은 조각으로 덮어 봐요.",
+    evidenceLabel: "넓이 비교",
+    evidencePrompt: "남는 부분이나 필요한 조각 수를 비교해 보세요."
+  },
+  "construct-related-addition-subtraction-facts": {
+    question: "같은 세 수로 덧셈식과 뺄셈식을 어떻게 만들까요?",
+    correctChoice: "두 작은 수를 더해 큰 수가 되게 놓아요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "세 수가 두 식에서 같은 뜻으로 쓰였는지 살펴보세요."
+  },
+  "use-inverse-relation-to-check": {
+    question: "덧셈과 뺄셈의 답은 어떻게 다시 확인할까요?",
+    correctChoice: "덧셈은 뺄셈으로, 뺄셈은 덧셈으로 확인해요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "거꾸로 계산했을 때 처음 수가 나오는지 살펴보세요."
+  },
+  "calculate-addition-of-three-numbers": {
+    question: "세 수의 덧셈은 어떤 두 수부터 더하면 쉬울까요?",
+    correctChoice: "10이 되는 두 수나 더하기 쉬운 두 수부터 더해요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "더하는 차례를 바꾸어도 합이 같은지 살펴보세요."
+  },
+  "calculate-mixed-three-number-add-sub": {
+    question: "덧셈과 뺄셈이 섞인 식은 어느 쪽부터 계산할까요?",
+    correctChoice: "왼쪽에서 오른쪽으로 차례대로 계산해요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "첫 계산의 답을 다음 계산에 바르게 썼는지 살펴보세요."
+  },
+  "construct-add-sub-equation-with-box": {
+    question: "모르는 수가 있는 자리에 무엇을 놓아 식을 만들까요?",
+    correctChoice: "모르는 수의 자리에 네모를 놓아요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "장면의 수와 식의 수가 서로 맞는지 살펴보세요."
+  },
+  "solve-box-value": {
+    question: "네모 안에는 어떤 수가 들어갈까요?",
+    correctChoice: "덧셈은 뺄셈으로, 뺄셈은 덧셈으로 거꾸로 계산해요.",
+    evidenceLabel: "수 카드",
+    evidencePrompt: "찾은 수를 식에 넣어 계산해 보세요."
+  },
+  "understand-time-calendar-unit-relations": {
+    question: "분, 시간, 일, 주 중 알맞은 시간 단위는 무엇일까요?",
+    correctChoice: "얼마나 오래 걸리는 일인지 생각해 단위를 골라요.",
+    evidenceLabel: "시간과 달력",
+    evidencePrompt: "60분은 1시간, 7일은 1주인지 살펴보세요."
+  },
+  "apply-time-unit-relations-in-context": {
+    question: "생활 속 기간을 알맞은 시간 단위로 어떻게 바꿀까요?",
+    correctChoice: "시간 단위가 몇 묶음인지 차례로 세어요.",
+    evidenceLabel: "시간과 달력",
+    evidencePrompt: "바꾼 뒤에도 같은 기간인지 살펴보세요."
+  },
+  "understand-meter-centimeter-relation": {
+    question: "1미터는 몇 센티미터일까요?",
+    correctChoice: "1미터를 1센티미터씩 나누어 세어요.",
+    evidenceLabel: "길이 단위",
+    evidencePrompt: "1미터 안에 1센티미터가 100개인지 살펴보세요."
+  },
+  "convert-mixed-meter-centimeter-to-centimeter": {
+    question: "몇 미터 몇 센티미터를 센티미터로 어떻게 바꿀까요?",
+    correctChoice: "1미터를 100센티미터로 바꾸어 더해요.",
+    evidenceLabel: "길이 단위",
+    evidencePrompt: "미터 묶음과 남은 센티미터를 함께 세어 보세요."
+  },
+  "convert-centimeter-to-mixed-meter-centimeter": {
+    question: "센티미터를 몇 미터 몇 센티미터로 어떻게 바꿀까요?",
+    correctChoice: "센티미터를 100개씩 묶어 미터로 바꿔요.",
+    evidenceLabel: "길이 단위",
+    evidencePrompt: "100센티미터 묶음과 남은 수를 살펴보세요."
+  },
+  "construct-and-relate-multiplication-facts": {
+    question: "같은 수씩 묶인 것을 곱셈으로 어떻게 나타낼까요?",
+    correctChoice: "한 묶음의 수와 묶음 수를 곱해요.",
+    evidenceLabel: "묶음과 곱셈",
+    evidencePrompt: "모든 묶음에 같은 수가 들어 있는지 살펴보세요."
+  },
+  "calculate-one-digit-products": {
+    question: "한 자리 수의 곱은 어떻게 구할까요?",
+    correctChoice: "같은 수를 묶음 수만큼 더해 보아요.",
+    evidenceLabel: "곱셈구구",
+    evidencePrompt: "묶음 그림과 곱셈의 답이 같은지 살펴보세요."
+  },
+  "estimate-length-with-benchmarks": {
+    question: "이 물건의 길이는 얼마쯤일까요?",
+    correctChoice: "알고 있는 기준 길이와 나란히 비교해요.",
+    evidenceLabel: "길이 어림",
+    evidencePrompt: "1센티미터나 1미터 기준과 비교해 보세요."
+  },
+  "check-and-calibrate-length-sense": {
+    question: "어림한 길이와 잰 길이가 다르면 어떻게 고칠까요?",
+    correctChoice: "두 길이의 차이를 보고 다음 어림을 고쳐요.",
+    evidenceLabel: "길이 어림",
+    evidencePrompt: "어림한 값과 실제로 잰 값을 비교해 보세요."
+  },
+  "add-lengths-in-context": {
+    question: "두 길이를 이어 붙이면 모두 얼마나 될까요?",
+    correctChoice: "같은 길이 단위끼리 더해요.",
+    evidenceLabel: "길이 카드",
+    evidencePrompt: "두 길이와 더한 길이가 맞는지 살펴보세요."
+  },
+  "subtract-lengths-in-context": {
+    question: "두 길이의 차이는 얼마나 될까요?",
+    correctChoice: "두 길이의 시작점을 맞추고 남는 길이를 구해요.",
+    evidenceLabel: "길이 카드",
+    evidencePrompt: "긴 길이에서 짧은 길이를 뺀 값인지 살펴보세요."
+  }
+};
+
+const BANNED_STUDENT_TERMS =
+  /(R\d{2}|D\d{2}[A-Z]?|목표 윤곽|엔진|아키타입|검증|불변량|membership|피연산자|등분제|포함제|정례|반례|이동 벡터|원자료|집계|변인|확인할 생각|수학 자료|문제의 조건|…)/iu;
+
+function targetConcept(targetKey: string, renderer: PortfolioRenderer): string {
+  return /fraction/u.test(targetKey) ? "분수 띠" :
+    /decimal/u.test(targetKey) ? "소수 카드" :
+    /triangle/u.test(targetKey) ? "삼각형 그림" :
+    /quadrilateral/u.test(targetKey) ? "사각형 그림" :
+    /circle|circumference|radius|diameter|pi/u.test(targetKey) ? "원 그림" :
+    /angle/u.test(targetKey) ? "각 그림" :
+    /cube|cuboid|solid|prism|pyramid|cylinder|cone|sphere/u.test(targetKey) ? "입체도형 그림" :
+    /area/u.test(targetKey) ? "넓이 그림" :
+    /perimeter/u.test(targetKey) ? "둘레 그림" :
+    /volume/u.test(targetKey) ? "부피 모형" :
+    /length|meter|centimeter|millimeter|kilometer/u.test(targetKey) ? "길이와 자" :
+    /capacity|liter|milliliter/u.test(targetKey) ? "들이 눈금" :
+    /mass|kilogram|gram|tonne/u.test(targetKey) ? "저울과 무게" :
+    /clock|time|minute|second|calendar/u.test(targetKey) ? "시계와 달력" :
+    /table|graph|data|mean/u.test(targetKey) ? "표와 그래프" :
+    /pattern|rule|arrangement/u.test(targetKey) ? "수와 모양의 규칙" :
+    /add|subtract|calculation/u.test(targetKey) ? "계산식" :
+    /multiply|multiplication/u.test(targetKey) ? "곱셈 그림" :
+    /divide|division|quotient/u.test(targetKey) ? "나눗셈 그림" :
+    /ratio|proportion/u.test(targetKey) ? "비와 비율" :
+    /likelihood/u.test(targetKey) ? "가능성 그림" :
+    /number|rounding|multiple/u.test(targetKey) ? "수 카드" :
+    RENDERER_COPY[renderer].evidenceLabel;
+}
+
+function targetDistractors(
+  targetKey: string,
+  gradeBand: PortfolioRecord["gradeBand"]
+): readonly [string, string, string] {
+  if (/table|graph|data|mean/u.test(targetKey)) {
+    return [
+      "가장 큰 수 하나만 보고 답해요.",
+      "표의 제목과 단위는 보지 않아요.",
+      "전체 수가 달라도 그대로 답해요."
+    ];
+  }
+  if (/fraction/u.test(targetKey)) {
+    return [
+      "전체 크기가 달라도 색칠한 칸 수만 봐요.",
+      "분모가 크면 무조건 큰 분수라고 생각해요.",
+      "분수 띠의 시작점을 맞추지 않고 비교해요."
+    ];
+  }
+  if (/decimal/u.test(targetKey)) {
+    return [
+      "소수점을 맞추지 않고 숫자만 봐요.",
+      "자릿값이 달라도 같은 자리라고 생각해요.",
+      "답의 크기를 어림하지 않고 계산해요."
+    ];
+  }
+  if (/pattern|rule|arrangement/u.test(targetKey)) {
+    return [
+      "처음 보이는 모양대로 아무렇게나 놓아요.",
+      "되풀이되는 차례를 중간에 바꾸어요.",
+      "빠지거나 다른 모양이 있어도 그대로 두어요."
+    ];
+  }
+  if (/triangle|quadrilateral|circle|angle|line|ray|segment|polygon|shape|cube|cuboid|solid|prism|pyramid|cylinder|cone|sphere/u.test(targetKey)) {
+    return [
+      "눈에 띄는 한 부분만 보고 이름을 정해요.",
+      "변과 꼭짓점의 수는 세지 않아요.",
+      "돌리거나 뒤집으면 다른 모양이라고 생각해요."
+    ];
+  }
+  if (/clock|time|minute|second|calendar/u.test(targetKey)) {
+    return [
+      "시침과 분침을 서로 바꾸어 읽어요.",
+      "60분과 1시간은 다르다고 생각해요.",
+      "얼마나 오래 걸리는지는 생각하지 않아요."
+    ];
+  }
+  if (/length|meter|centimeter|millimeter|kilometer|capacity|liter|milliliter|mass|kilogram|gram|tonne|area|perimeter|volume/u.test(targetKey)) {
+    return [
+      "단위는 보지 않고 숫자만 비교해요.",
+      "눈금의 시작점이 달라도 그대로 재요.",
+      "재려는 크기와 맞지 않는 단위를 골라요."
+    ];
+  }
+  if (/number|place|rounding|multiple|range|sequence/u.test(targetKey)) {
+    return [
+      "숫자가 놓인 자리는 보지 않고 읽어요.",
+      "가장 낮은 자리부터 크기를 비교해요.",
+      "앞뒤 수의 차이가 달라도 그대로 이어 써요."
+    ];
+  }
+  if (/add|subtract|calculate|compute|solve|multiply|multiplication|product|divide|division|quotient/u.test(targetKey)) {
+    return [
+      "숫자의 자리를 맞추지 않고 왼쪽부터 계산해요.",
+      "단위는 보지 않고 숫자만 계산해요.",
+      "한 번 계산한 답은 다시 보지 않아요."
+    ];
+  }
+  if (/compare|distinguish|classify|identify|select|choose|recognize|judge/u.test(targetKey)) {
+    return [
+      "눈에 띄는 한 곳만 보고 바로 골라요.",
+      "서로 다른 곳은 보지 않고 같은 곳만 봐요.",
+      "이름만 보고 모양이나 수는 보지 않아요."
+    ];
+  }
+  if (/construct|draw|represent|compose|tile|model|set/u.test(targetKey)) {
+    return [
+      "처음 떠오른 모양대로 바로 만들어요.",
+      "차례를 바꾸어도 괜찮다고 생각해요.",
+      "빠진 곳이나 겹친 곳은 그대로 두어요."
+    ];
+  }
+  if (/measure|estimate|convert|relate|connect|match/u.test(targetKey)) {
+    return [
+      "단위는 보지 않고 숫자만 비교해요.",
+      "눈금의 시작점이 달라도 그대로 재요.",
+      "바꾸기 전과 뒤의 양은 비교하지 않아요."
+    ];
+  }
+  if (/explain|describe|justify|infer|reason|explore/u.test(targetKey)) {
+    return [
+      "답만 말하고 왜 그런지는 말하지 않아요.",
+      "그림은 보지 않고 떠오른 말만 해요.",
+      "한 곳만 보고 모두 그렇다고 생각해요."
+    ];
+  }
+  if (/find|locate|count|read|interpret|order/u.test(targetKey)) {
+    return [
+      "눈에 띄는 한 곳만 보고 바로 답해요.",
+      "처음과 끝만 보고 가운데는 건너뛰어요.",
+      gradeBand === "1-2"
+        ? "같은 것을 두 번 세어도 괜찮다고 생각해요."
+        : "빠뜨린 곳이 있어도 그대로 답을 정해요."
+    ];
+  }
+  return [
+    "한 곳만 보고 모두 같다고 생각해요.",
+    "차례나 단위가 달라도 그대로 답해요.",
+    gradeBand === "1-2"
+      ? "빠진 곳이 있어도 그대로 답을 정해요."
+      : "다른 방법으로 답을 다시 살펴보지 않아요."
+  ];
+}
+
+function makeStudentCopy(record: PortfolioRecord, target: TargetOutline): StudentCopy {
+  const override = STUDENT_COPY_OVERRIDES[target.key];
+  const registeredQuestion = studentQuestions[target.key];
+  const registeredSupport = studentSupport[target.key];
+  if (!registeredQuestion || !registeredSupport) {
+    throw new Error(`portfolio-student-copy-missing:${record.familyId}:${target.key}`);
+  }
+  const studentCopy = {
+    question: registeredQuestion,
+    correctChoice: registeredSupport.correctChoice,
+    evidenceLabel: override?.evidenceLabel ?? targetConcept(target.key, record.rendererKind),
+    evidencePrompt: registeredSupport.evidencePrompt
+  };
+  const visibleCopy = [
+    registeredQuestion,
+    studentCopy.correctChoice,
+    studentCopy.evidenceLabel,
+    studentCopy.evidencePrompt
+  ];
+  if (visibleCopy.some((text) => BANNED_STUDENT_TERMS.test(text))) {
+    throw new Error(`portfolio-student-copy-forbidden:${record.familyId}:${target.key}`);
+  }
+  return studentCopy;
 }
 
 function generateItems(record: PortfolioRecord, difficulty: Difficulty, seed: string): ResolvedItem[] {
@@ -329,11 +823,11 @@ function generateItems(record: PortfolioRecord, difficulty: Difficulty, seed: st
   }
   const random = createSeededRandom(`${seed}:${record.familyId}`);
   return record.targetOutlines.map((target, index) => {
+    const studentCopy = makeStudentCopy(record, target);
+    const distractors = targetDistractors(target.key, record.gradeBand);
     const candidates = shuffle([
-      "자료의 관계·단위·전체 조건이 모두 맞는다.",
-      "눈에 보이는 수 하나만 같으면 모두 맞는다.",
-      "단위나 순서는 달라도 결과만 같으면 된다.",
-      "처음 생각은 자료와 비교하지 않아도 된다."
+      studentCopy.correctChoice,
+      ...distractors
     ], random);
     return {
       id: `${record.standardSlug}-${target.key}`,
@@ -341,14 +835,12 @@ function generateItems(record: PortfolioRecord, difficulty: Difficulty, seed: st
       kind: `portfolio-${record.rendererKind}-diagnostic`,
       values: {
         orderLabel: `${index + 1}번`,
-        questionText: `“${concise(target.studentDecision, 24)}”을 확인할 생각은 무엇인가요?`,
-        evidenceLabelText: `${record.engineClassIds.join("+")} · ${record.archetypeId} 자료`,
-        evidenceText: `확인: ${concise(target.observableEvidence, 24)}`,
-        targetDecisionText: target.studentDecision,
-        targetEvidenceText: target.observableEvidence,
-        correctValueText: "자료의 관계·단위·전체 조건이 모두 맞는다.",
-        correctAnswerText: "핵심 조건을 모두 확인한 생각",
-        answerExplanation: `${target.invariant} 화면에서는 ${target.observableEvidence}`,
+        questionText: studentCopy.question,
+        evidenceLabelText: studentCopy.evidenceLabel,
+        evidenceText: studentCopy.evidencePrompt,
+        correctValueText: studentCopy.correctChoice,
+        correctAnswerText: studentCopy.correctChoice,
+        answerExplanation: `${studentCopy.correctChoice} ${studentCopy.evidencePrompt}`,
         targetOutlineKey: target.key,
         misconceptionClass: target.misconceptionClass,
         nativeValue1: 1,
@@ -364,10 +856,18 @@ function generateItems(record: PortfolioRecord, difficulty: Difficulty, seed: st
         patternVariant2: 2,
         patternVariant3: 1,
         patternVariant4: 2,
-        nativeTitle: "확인 자료",
-        nativeCategories: ["가", "나", "다"],
-        nativeDataValues: [2, 3, 1],
-        nativeCategoryAxis: "범주",
+        nativeTitle: record.gradeBand === "1-2"
+          ? "좋아하는 과일 조사"
+          : record.gradeBand === "3-4"
+            ? "요일별 조사"
+            : "모둠별 조사",
+        nativeCategories: record.gradeBand === "1-2"
+          ? ["사과", "바나나", "포도", "딸기", "수박", "귤"]
+          : record.gradeBand === "3-4"
+            ? ["월", "화", "수", "목", "금", "토"]
+            : ["1모둠", "2모둠", "3모둠", "4모둠", "5모둠", "6모둠"],
+        nativeDataValues: [2, 3, 1, 4, 2, 1],
+        nativeCategoryAxis: record.gradeBand === "1-2" ? "과일" : "구분",
         nativeValueColumn: "개수",
         nativeGridValue: 1,
         nativeGridlineCount: 5,
@@ -405,8 +905,8 @@ function makeModule(record: PortfolioRecord): ProblemFamilyNativeModule {
     schemaVersion: "1.0.0",
     id: record.familyId,
     version: "1.0.0",
-    title: `${record.standardCode} 핵심 판단과 자료 확인`,
-    learningObjective: `${record.officialGoal}의 ${record.targetOutlines.length}개 목표 윤곽을 자료와 비교해 설명할 수 있다.`,
+    title: `${record.domain} 문제를 그림과 자료로 풀기`,
+    learningObjective: `${record.officialGoal} 내용을 학생 눈높이의 ${record.targetOutlines.length}개 문제로 연습한다.`,
     curriculumBinding: {
       standardCode: record.standardCode,
       domain: record.domain,
@@ -717,10 +1217,8 @@ function makeModule(record: PortfolioRecord): ProblemFamilyNativeModule {
       problemNumber: item.order,
       statements: [
         String(item.values.questionText),
-        String(item.values.targetDecisionText),
         String(item.values.evidenceLabelText),
-        String(item.values.targetEvidenceText),
-        `목표 윤곽: ${String(item.values.targetOutlineKey)}`
+        String(item.values.evidenceText)
       ]
     }));
 

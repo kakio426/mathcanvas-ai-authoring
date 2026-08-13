@@ -42,7 +42,7 @@ export const portfolioScaleLayoutPreset: LayoutPreset = {
     "item.array-panel": { scope: "item", x: 90, y: 545, width: 1420, height: 280 },
     "item.group-label": { scope: "item", x: 130, y: 558, width: 550, height: 42 },
     "item.array-text": { scope: "item", x: 130, y: 610, width: 590, height: 180 },
-    "item.array-text-table": { scope: "item", x: 130, y: 610, width: 590, height: 55 },
+    "item.array-text-table": { scope: "item", x: 130, y: 606, width: 590, height: 32 },
     "item.native-target": { scope: "item", x: 735, y: 610, width: 715, height: 190 },
     "item.native-number-target": { scope: "item", x: 875, y: 610, width: 190, height: 190 },
     "item.native-source-1": { scope: "item", x: 1090, y: 650, width: 90, height: 90 },
@@ -55,7 +55,7 @@ export const portfolioScaleLayoutPreset: LayoutPreset = {
     "item.native-4": { scope: "item", x: 1300, y: 615, width: 170, height: 170 },
     "item.native-wide-1": { scope: "item", x: 760, y: 610, width: 340, height: 190 },
     "item.native-wide-2": { scope: "item", x: 1120, y: 610, width: 340, height: 190 },
-    "item.native-table-wide": { scope: "item", x: 215, y: 675, width: 1250, height: 125 },
+    "item.native-table-wide": { scope: "item", x: 215, y: 650, width: 1250, height: 150 },
     "item.explanation-label": { scope: "item", x: 125, y: 858, width: 520, height: 42 },
     "item.explanation-box": { scope: "item", x: 105, y: 850, width: 1395, height: 185 }
   }
