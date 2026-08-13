@@ -143,6 +143,8 @@
       "ENGINE_CORE": [
         "packages/contracts/src/vocabulary/constraints.ts",
         "packages/contracts/src/vocabulary/constraints.test.ts",
+        "packages/contracts/src/vocabulary/blueprint.ts",
+        "packages/contracts/src/vocabulary/blueprint.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
         "fixtures/architecture/p1-core-baseline.json",
@@ -211,6 +213,8 @@
       "ENGINE_CORE": [
         "packages/contracts/src/vocabulary/constraints.ts",
         "packages/contracts/src/vocabulary/constraints.test.ts",
+        "packages/contracts/src/vocabulary/blueprint.ts",
+        "packages/contracts/src/vocabulary/blueprint.test.ts",
         "packages/contracts/src/catalog/cognitive-demand.ts",
         "packages/contracts/src/catalog/cognitive-demand.test.ts",
         "fixtures/architecture/p1-core-baseline.json",
@@ -4619,7 +4623,7 @@
       "approved": 29,
       "changesRequested": 29,
       "blocked": 11,
-      "pendingRequiredReviews": 191
+      "pendingRequiredReviews": 190
     },
     "nextOfflineWork": {
       "sequence": 3,
@@ -4717,8 +4721,41 @@
         "contractKind": "observable-change",
         "familyTrackId": "pattern.change-rule.construct-v1",
         "scopeId": "W002-FAMILY_TRACK-change-rule",
-        "contractRevision": "W002-SOL-REPLAN-v15",
+        "contractRevision": "W002-SOL-REPLAN-v16",
         "nativeDependency": "engine-core-discovery-required",
+        "blueprintPredicateMetadataContract": {
+          "guardMode": "exact-path-contract-metadata-v1",
+          "sourcePath": "packages/contracts/src/vocabulary/blueprint.ts",
+          "testPath": "packages/contracts/src/vocabulary/blueprint.test.ts",
+          "allowedMetadataPaths": [
+            "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+            "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+            "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+            "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+          ],
+          "allowedMetadataKeys": [
+            "width",
+            "height"
+          ],
+          "preservedForbiddenKeys": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "contentsJson",
+            "canvasOption",
+            "answer",
+            "answers",
+            "answerKey",
+            "correctAnswer",
+            "correctRelation",
+            "items",
+            "generatedItems",
+            "script"
+          ],
+          "requiresDefineParseParity": true,
+          "requiresAnswerBearingNegativeFixtures": true
+        },
         "layoutContract": {
           "status": "engine-core-required",
           "tokenSet": "w002-change-rule-v1",
@@ -7075,11 +7112,11 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v15.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
           "pendingStatus": "planned-pending-engine-core",
-          "pendingContractRevision": "W002-SOL-REPLAN-v15",
+          "pendingContractRevision": "W002-SOL-REPLAN-v16",
           "completionStatus": "implemented-verified-pending-family-track",
-          "completionContractRevision": "W002-SOL-REPLAN-v15",
+          "completionContractRevision": "W002-SOL-REPLAN-v16",
           "pendingImplementationFiles": [
             "W002_REPLAN.md",
             "scripts/curriculum/no-family-plan.json",
@@ -7087,6 +7124,8 @@
           ],
           "completionImplementationFiles": [
             "fixtures/architecture/p1-core-baseline.json",
+            "packages/contracts/src/vocabulary/blueprint.ts",
+            "packages/contracts/src/vocabulary/blueprint.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
             "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.ts",
@@ -7202,38 +7241,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-change-rule",
-        "familyId": "pattern.change-rule.construct-v1",
-        "familyTrackId": "pattern.change-rule.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-change-rule",
-        "targetOutlineKeys": [
-          "construct-change-arrangement-following-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.change-rule.construct-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET",
-          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
-        ],
-        "operationSequence": [
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "ENGINE_CORE",
-        "completedOperations": [],
-        "reviewStatus": "pending",
-        "reviewId": null,
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v15",
+      "replanContractRevision": "W002-SOL-REPLAN-v16",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -7301,7 +7314,7 @@
       "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "pending",
+        "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
         "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
@@ -7309,8 +7322,8 @@
           "W002-FAMILY_TRACK-repeat-repair-SOL-A4"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,
@@ -9228,7 +9241,7 @@
       ],
       "standardCode": "[2수02-02]",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v15",
+      "replanContractRevision": "W002-SOL-REPLAN-v16",
       "replanTargetSetRequired": false,
       "engineCoreContract": {
         "contractRevision": "W002-SOL-REPLAN-v10",
@@ -9854,8 +9867,41 @@
           "contractKind": "observable-change",
           "familyTrackId": "pattern.change-rule.construct-v1",
           "scopeId": "W002-FAMILY_TRACK-change-rule",
-          "contractRevision": "W002-SOL-REPLAN-v15",
+          "contractRevision": "W002-SOL-REPLAN-v16",
           "nativeDependency": "engine-core-discovery-required",
+          "blueprintPredicateMetadataContract": {
+            "guardMode": "exact-path-contract-metadata-v1",
+            "sourcePath": "packages/contracts/src/vocabulary/blueprint.ts",
+            "testPath": "packages/contracts/src/vocabulary/blueprint.test.ts",
+            "allowedMetadataPaths": [
+              "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+              "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+              "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+              "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+            ],
+            "allowedMetadataKeys": [
+              "width",
+              "height"
+            ],
+            "preservedForbiddenKeys": [
+              "x",
+              "y",
+              "width",
+              "height",
+              "contentsJson",
+              "canvasOption",
+              "answer",
+              "answers",
+              "answerKey",
+              "correctAnswer",
+              "correctRelation",
+              "items",
+              "generatedItems",
+              "script"
+            ],
+            "requiresDefineParseParity": true,
+            "requiresAnswerBearingNegativeFixtures": true
+          },
           "layoutContract": {
             "status": "engine-core-required",
             "tokenSet": "w002-change-rule-v1",
@@ -12212,11 +12258,11 @@
             "answerMode": "conditional-rubric"
           },
           "artifactContract": {
-            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v15.json",
+            "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
             "pendingStatus": "planned-pending-engine-core",
-            "pendingContractRevision": "W002-SOL-REPLAN-v15",
+            "pendingContractRevision": "W002-SOL-REPLAN-v16",
             "completionStatus": "implemented-verified-pending-family-track",
-            "completionContractRevision": "W002-SOL-REPLAN-v15",
+            "completionContractRevision": "W002-SOL-REPLAN-v16",
             "pendingImplementationFiles": [
               "W002_REPLAN.md",
               "scripts/curriculum/no-family-plan.json",
@@ -12224,6 +12270,8 @@
             ],
             "completionImplementationFiles": [
               "fixtures/architecture/p1-core-baseline.json",
+              "packages/contracts/src/vocabulary/blueprint.ts",
+              "packages/contracts/src/vocabulary/blueprint.test.ts",
               "packages/contracts/src/catalog/cognitive-demand.ts",
               "packages/contracts/src/catalog/cognitive-demand.test.ts",
               "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.ts",
@@ -12801,8 +12849,41 @@
         "contractKind": "observable-change",
         "familyTrackId": "pattern.change-rule.construct-v1",
         "scopeId": "W002-FAMILY_TRACK-change-rule",
-        "contractRevision": "W002-SOL-REPLAN-v15",
+        "contractRevision": "W002-SOL-REPLAN-v16",
         "nativeDependency": "engine-core-discovery-required",
+        "blueprintPredicateMetadataContract": {
+          "guardMode": "exact-path-contract-metadata-v1",
+          "sourcePath": "packages/contracts/src/vocabulary/blueprint.ts",
+          "testPath": "packages/contracts/src/vocabulary/blueprint.test.ts",
+          "allowedMetadataPaths": [
+            "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+            "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+            "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+            "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+          ],
+          "allowedMetadataKeys": [
+            "width",
+            "height"
+          ],
+          "preservedForbiddenKeys": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "contentsJson",
+            "canvasOption",
+            "answer",
+            "answers",
+            "answerKey",
+            "correctAnswer",
+            "correctRelation",
+            "items",
+            "generatedItems",
+            "script"
+          ],
+          "requiresDefineParseParity": true,
+          "requiresAnswerBearingNegativeFixtures": true
+        },
         "layoutContract": {
           "status": "engine-core-required",
           "tokenSet": "w002-change-rule-v1",
@@ -15159,11 +15240,11 @@
           "answerMode": "conditional-rubric"
         },
         "artifactContract": {
-          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v15.json",
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
           "pendingStatus": "planned-pending-engine-core",
-          "pendingContractRevision": "W002-SOL-REPLAN-v15",
+          "pendingContractRevision": "W002-SOL-REPLAN-v16",
           "completionStatus": "implemented-verified-pending-family-track",
-          "completionContractRevision": "W002-SOL-REPLAN-v15",
+          "completionContractRevision": "W002-SOL-REPLAN-v16",
           "pendingImplementationFiles": [
             "W002_REPLAN.md",
             "scripts/curriculum/no-family-plan.json",
@@ -15171,6 +15252,8 @@
           ],
           "completionImplementationFiles": [
             "fixtures/architecture/p1-core-baseline.json",
+            "packages/contracts/src/vocabulary/blueprint.ts",
+            "packages/contracts/src/vocabulary/blueprint.test.ts",
             "packages/contracts/src/catalog/cognitive-demand.ts",
             "packages/contracts/src/catalog/cognitive-demand.test.ts",
             "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.ts",
@@ -15286,38 +15369,12 @@
           "retryingFamilyTrack": false
         }
       ],
-      "nextFamilySubWork": {
-        "workItemId": "W002-FAMILY_TRACK-change-rule",
-        "familyId": "pattern.change-rule.construct-v1",
-        "familyTrackId": "pattern.change-rule.construct-v1",
-        "scopeId": "W002-FAMILY_TRACK-change-rule",
-        "targetOutlineKeys": [
-          "construct-change-arrangement-following-rule"
-        ],
-        "assessmentTargetIds": [
-          "change.pattern.change-rule.construct-v1"
-        ],
-        "dependencies": [
-          "W002-SOL_REPLAN",
-          "W002-SOL_REVIEW-TARGET_SET",
-          "W002-FAMILY_TRACK-repeat-rule-SOL_REVIEW"
-        ],
-        "operationSequence": [
-          "ENGINE_CORE",
-          "FAMILY_TRACK",
-          "SOL_REVIEW"
-        ],
-        "nextOperation": "ENGINE_CORE",
-        "completedOperations": [],
-        "reviewStatus": "pending",
-        "reviewId": null,
-        "retryingFamilyTrack": false
-      },
+      "nextFamilySubWork": null,
       "subWorkStatePath": "reports/curriculum-execution/subwork-state/W002.json",
       "replanDocumentPath": "W002_REPLAN.md",
-      "replanContractRevision": "W002-SOL-REPLAN-v15",
+      "replanContractRevision": "W002-SOL-REPLAN-v16",
       "operation": "SOL_REPLAN",
-      "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-SOL_REPLAN",
+      "operationWorkItemId": "W002-SOL_REPLAN",
       "dependencyWorkItemIds": [
         "W002-FAMILY_TRACK",
         "W002-SOL_REVIEW-FAMILY_TRACK"
@@ -15385,7 +15442,7 @@
       "actionClass": "blocked-needs-sol-replan",
       "solReview": {
         "targetSet": "approved",
-        "familyTrack": "pending",
+        "familyTrack": "blocked",
         "targetSetReviewId": "W002-TARGET_SET-SOL-A3",
         "familyTrackReviewId": "W002-FAMILY_TRACK-repeat-rule-SOL-A4",
         "familyTrackReviewIds": [
@@ -15393,8 +15450,8 @@
           "W002-FAMILY_TRACK-repeat-repair-SOL-A4"
         ],
         "replan": "approved",
-        "replanApproved": true,
-        "replanConsumed": true,
+        "replanApproved": false,
+        "replanConsumed": false,
         "familyRevalidation": "pending",
         "revalidationApproved": false,
         "revalidationArtifact": null,

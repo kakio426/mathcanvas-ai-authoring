@@ -1,4 +1,40 @@
-# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v15)
+# W002 `[2수02-02]` 재계획 — 반복·변화 규칙 배열 (v16)
+
+## v16 blueprint predicate metadata seam
+
+`W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3`는 v15의 exact runtime
+predicate가 `nativeEvidenceContract.renderedBounds`와
+`minimumTargetBounds`의 `width`·`height`를 요구하지만, blueprint의 재귀
+금지 키 검사가 해당 contract metadata까지 learner answer shape로 취급해
+`defineActivityBlueprint`와 `parseActivityBlueprint` 양쪽에서 거부함을
+기록한다. v16 review는 마지막 승인 `W002-SOL_REPLAN-SOL-A38`과 이 A3
+request를 각각 supersede/consume한다.
+
+v16은 v15의 세 target, 네 change state, 8 source pool×4 state=32개
+NO04NT physical role, 8개 student action, signed-step/conditional repair,
+answer-leak 및 80×80→188×188 native containment 계약을 바꾸지 않는다.
+변경하는 것은 blueprint guard의 경계뿐이다.
+
+- learner answer-bearing blueprint 값에서는 기존 금지 키 전체를 그대로
+  거부한다.
+- 예외는 value predicate contract metadata의 다음 네 exact path뿐이다:
+  `nativeEvidenceContract.renderedBounds.{width,height}`와
+  `nativeEvidenceContract.minimumTargetBounds.{width,height}`.
+- wildcard로 다른 `width`·`height`를 허용하거나 predicate를 resolve 뒤에
+  다시 주입하는 방식은 금지한다.
+- `defineActivityBlueprint`와 `parseActivityBlueprint`가 같은 판정을 내리고,
+  tool properties·generator parameters·variation defaults·일반 predicate
+  parameters의 answer-shaped bounds는 계속 실패해야 한다.
+
+따라서 v16 ENGINE_CORE 범위에
+`packages/contracts/src/vocabulary/blueprint.ts`와 새 focused
+`packages/contracts/src/vocabulary/blueprint.test.ts`를 추가한다. 새 v16
+pending artifact는 이 두 파일을 포함한 implementation hash를 요구하며,
+현재 change-rule state는 계속 `completedOperations=[]`,
+`nextOperation=ENGINE_CORE`로 남는다. 실제 32-source blueprint의
+define→parse→resolve→compile→native validator 증거와 별도 completion
+transition이 통과하기 전 FAMILY_TRACK·response/save/reopen·live 승격은
+허용하지 않는다.
 
 ## v15 change-rule source/state lifecycle hard-stop
 

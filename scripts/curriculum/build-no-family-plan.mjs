@@ -552,6 +552,36 @@ export function assertEngineCoreContract(contract, archetypeId) {
         requiresPairwiseDisjointSourcePools: true,
         requiresSourceTargetRegionDisjointness: true
       };
+      const expectedBlueprintPredicateMetadataContract = {
+        guardMode: "exact-path-contract-metadata-v1",
+        sourcePath: "packages/contracts/src/vocabulary/blueprint.ts",
+        testPath: "packages/contracts/src/vocabulary/blueprint.test.ts",
+        allowedMetadataPaths: [
+          "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+          "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+          "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+          "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+        ],
+        allowedMetadataKeys: ["width", "height"],
+        preservedForbiddenKeys: [
+          "x",
+          "y",
+          "width",
+          "height",
+          "contentsJson",
+          "canvasOption",
+          "answer",
+          "answers",
+          "answerKey",
+          "correctAnswer",
+          "correctRelation",
+          "items",
+          "generatedItems",
+          "script"
+        ],
+        requiresDefineParseParity: true,
+        requiresAnswerBearingNegativeFixtures: true
+      };
       const changeSourceModel = changeDecision.sourceModel;
       const changeSourceWrite = changeDecision.sourceWriteContract;
       const changeLeak = changeDecision.answerLeakContract;
@@ -636,6 +666,11 @@ export function assertEngineCoreContract(contract, archetypeId) {
         JSON.stringify(changeNativeEvidence) ===
           JSON.stringify(expectedNativeEvidence),
         `no-family-plan-change-rule-native-evidence-contract-invalid:${archetypeId}:${familyTrackId}`
+      );
+      assert(
+        JSON.stringify(override.blueprintPredicateMetadataContract) ===
+          JSON.stringify(expectedBlueprintPredicateMetadataContract),
+        `no-family-plan-change-rule-blueprint-metadata-contract-invalid:${archetypeId}:${familyTrackId}`
       );
       assert(
         override.nativeDependency === "engine-core-discovery-required" &&
@@ -726,7 +761,13 @@ export function assertEngineCoreContract(contract, archetypeId) {
           changeArtifact.completionImplementationFiles.length > 0 &&
           new Set(changeArtifact.completionImplementationFiles).size ===
             changeArtifact.completionImplementationFiles.length &&
-          changeArtifact.completionImplementationFiles.every(relativePath),
+          changeArtifact.completionImplementationFiles.every(relativePath) &&
+          changeArtifact.completionImplementationFiles.includes(
+            expectedBlueprintPredicateMetadataContract.sourcePath
+          ) &&
+          changeArtifact.completionImplementationFiles.includes(
+            expectedBlueprintPredicateMetadataContract.testPath
+          ),
         `no-family-plan-change-rule-artifact-contract-invalid:${archetypeId}:${familyTrackId}`
       );
       artifactPaths.add(changeArtifact.artifactPath);

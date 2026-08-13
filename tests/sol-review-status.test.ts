@@ -126,7 +126,7 @@ describe("Sol review candidate and scope gates", () => {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(
         report.current.nextReplanWork.solReview.solReplanRequest?.reviewId
-      ).toBe("W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2");
+      ).toBe("W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3");
     } else {
       expect(report.current.nextReplanWork).toBeNull();
     }
@@ -347,7 +347,7 @@ describe("Sol review candidate and scope gates", () => {
       contract,
       planned.familyTrackId
     ).artifactContract;
-    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v15");
+    expect(contract.replanContractRevision).toBe("W002-SOL-REPLAN-v16");
     expect(artifactContract.pendingStatus).toBe(
       "planned-pending-engine-core"
     );
@@ -458,13 +458,13 @@ describe("Sol review candidate and scope gates", () => {
     if (report.current.nextReplanWork?.workItemId === "W002") {
       expect(report.current.nextReplanWork.operation).toBe("SOL_REPLAN");
       expect(report.current.nextReplanWork.replanContractRevision).toBe(
-        "W002-SOL-REPLAN-v15"
+        "W002-SOL-REPLAN-v16"
       );
       const trigger =
         report.current.nextReplanWork.solReview.solReplanRequest;
       if (trigger) {
         expect(trigger.reviewId).toBe(
-          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2"
+          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3"
         );
       } else {
         expect(
@@ -702,11 +702,51 @@ describe("Sol review candidate and scope gates", () => {
       minimumTargetBounds: { width: 188, height: 188 },
       containment: "native-rendered-bounds"
     });
+    expect(change.blueprintPredicateMetadataContract).toEqual({
+      guardMode: "exact-path-contract-metadata-v1",
+      sourcePath: "packages/contracts/src/vocabulary/blueprint.ts",
+      testPath: "packages/contracts/src/vocabulary/blueprint.test.ts",
+      allowedMetadataPaths: [
+        "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+        "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+        "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+        "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+      ],
+      allowedMetadataKeys: ["width", "height"],
+      preservedForbiddenKeys: [
+        "x",
+        "y",
+        "width",
+        "height",
+        "contentsJson",
+        "canvasOption",
+        "answer",
+        "answers",
+        "answerKey",
+        "correctAnswer",
+        "correctRelation",
+        "items",
+        "generatedItems",
+        "script"
+      ],
+      requiresDefineParseParity: true,
+      requiresAnswerBearingNegativeFixtures: true
+    });
     expect(change.artifactContract.pendingStatus).toBe(
       "planned-pending-engine-core"
     );
     expect(change.artifactContract.pendingContractRevision).toBe(
-      "W002-SOL-REPLAN-v15"
+      "W002-SOL-REPLAN-v16"
+    );
+
+    const missingMetadataPath = JSON.parse(JSON.stringify(contract));
+    missingMetadataPath.engineCoreContractsByFamilyTrack[
+      changeFamily
+    ].blueprintPredicateMetadataContract.allowedMetadataPaths.pop();
+    expect(() =>
+      assertEngineCoreContract(missingMetadataPath, "C01")
+    ).toThrow(
+      "no-family-plan-change-rule-blueprint-metadata-contract-invalid:C01:pattern.change-rule.construct-v1"
     );
 
     const invalidCatalog = JSON.parse(JSON.stringify(contract));
@@ -1252,11 +1292,11 @@ describe("Sol review candidate and scope gates", () => {
     const preApproval = report.current.nextReplanWork;
     if (preApproval?.workItemId === "W002") {
       expect(preApproval.operation).toBe("SOL_REPLAN");
-      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v15");
+      expect(preApproval.replanContractRevision).toBe("W002-SOL-REPLAN-v16");
       const trigger = preApproval.solReview.solReplanRequest;
       if (trigger) {
         expect(trigger.reviewId).toBe(
-          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A2"
+          "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3"
         );
       } else {
         expect(preApproval.solReview.familyTrackReviewIds).toContain(

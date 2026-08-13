@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "operation": "ENGINE_CORE",
+  "workItemId": "W002-FAMILY_TRACK-change-rule",
+  "operationWorkItemId": "W002-FAMILY_TRACK-change-rule-ENGINE_CORE",
+  "standardCode": "[2수02-02]",
+  "familyTrackId": "pattern.change-rule.construct-v1",
+  "scopeId": "W002-FAMILY_TRACK-change-rule",
+  "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
+  "replanContractRevision": "W002-SOL-REPLAN-v16",
+  "status": "planned-pending-engine-core",
+  "contractKind": "observable-change",
+  "studentDecision": "시작값, 변화량, 증가·감소 방향을 직접 정한다.",
+  "invariant": "모든 인접 항의 차는 학생이 선언한 signed step과 같다.",
+  "observableEvidence": [
+    "빈 studentChangeRuleState에 startValue, stepMagnitude, direction을 학생이 선언한다.",
+    "최소 네 항의 인접 차를 선언 상태와 화면에서 대조한다.",
+    "misalignedTermIndex의 항만 선언한 관계로 고치고 나머지 항은 보존한다."
+  ],
+  "nativeDependency": {
+    "status": "engine-core-discovery-required",
+    "plannedTokenSet": "w002-change-rule-v1",
+    "requiredEvidence": "NO04NT 32 physical source role과 8 target action의 exact ID/value/variant, 80x80 rendered bounds, 188x188 target containment, source-pool 및 source-target 비중첩"
+  },
+  "blueprintPredicateMetadataDependency": {
+    "status": "engine-core-required",
+    "guardMode": "exact-path-contract-metadata-v1",
+    "allowedMetadataPathCount": 4,
+    "requiredEvidence": "defineActivityBlueprint와 parseActivityBlueprint가 exact v16 native bounds metadata를 수용하면서 learner answer-bearing width/height는 계속 거부한다."
+  },
+  "implementationFiles": {
+    "W002_REPLAN.md": "06cb91eec2ed1b2b09495836eda284d09747fa91151c3fa3fedd8991c25bae97",
+    "scripts/curriculum/no-family-plan.json": "d2eaca70c33733ad80ed355ce51888e68a6acc1e67da96225118f9335efc90c7",
+    "scripts/curriculum/build-no-family-plan.mjs": "2d9f299fe8095dd0e698a76b6c3e6f3b3307b043d6fb03f17e1fa311695945fa"
+  },
+  "verification": {
+    "status": "governance-only",
+    "reviewWindow": "reviewer-commit-only",
+    "engineCoreImplementation": "not started",
+    "familyTrack": "not authorized",
+    "exactPreview": "not implemented",
+    "responseSaveReopen": "not claimed",
+    "liveEvidence": "not claimed"
+  }
+}
