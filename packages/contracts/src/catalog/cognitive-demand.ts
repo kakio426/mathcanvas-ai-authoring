@@ -209,7 +209,200 @@ const constructRuleDecisionSchema = z
   })
   .strict();
 
-const constructChangeRuleDecisionSchema = z
+const changeRuleStateSchema = z
+  .object({
+    ruleStateKey: stableIdSchema,
+    startValue: z.number().int().min(0).max(9),
+    stepMagnitude: z.number().int().min(1).max(9),
+    directionCode: z.union([z.literal(1), z.literal(2)]),
+    direction: z.enum(["increase", "decrease"]),
+    sequenceValues: z.array(z.number().int().min(0).max(9)).length(4),
+    wrongIndex: z.number().int().min(0).max(3),
+    wrongValue: z.number().int().min(0).max(9),
+    repairValue: z.number().int().min(0).max(9)
+  })
+  .strict();
+
+const changeRuleSourceSchema = z
+  .object({
+    roleId: stableIdSchema,
+    ruleStateKey: stableIdSchema,
+    value: z.number().int().min(0).max(9),
+    variantId: z.string().regex(/^NO04NT-(?:0[1-9]|10)$/),
+    decodedValue: z.union([
+      z.number().int().min(0).max(9),
+      z.enum(["increase", "decrease"])
+    ]).optional()
+  })
+  .strict();
+
+const changeRuleSourcePoolSchema = z
+  .object({
+    id: stableIdSchema,
+    targetRole: stableIdSchema,
+    toolKey: z.literal("NO04NT"),
+    phase: z.enum([
+      "rule-selection",
+      "apply-declared-change",
+      "repair-declared-change"
+    ]),
+    writesStatePath: stableIdSchema,
+    writesStateIndex: z.number().int().min(0).max(3),
+    writesStateIndexPath: stableIdSchema.optional(),
+    mappingPath: stableIdSchema.optional(),
+    stateField: z.enum(["startValue", "stepMagnitude", "direction"]).optional(),
+    sourceValueProperty: z.literal("value"),
+    valueDecoder: z.enum([
+      "integer-0-9-v1",
+      "positive-integer-1-9-v1",
+      "direction-code-v1"
+    ]),
+    sources: z.array(changeRuleSourceSchema).length(4)
+  })
+  .strict();
+
+const changeRuleSourceModelSchema = z
+  .object({
+    toolKey: z.literal("NO04NT"),
+    sourceUseMode: z.literal("move-once-no-clone"),
+    selectionCorrelation: z.literal("single-ruleStateKey-across-eight-writes"),
+    validStateCount: z.literal(4),
+    sourcePoolCount: z.literal(8),
+    sourcesPerPool: z.literal(4),
+    perStateRoleCount: z.literal(8),
+    physicalSourceRoleCount: z.literal(32),
+    sourcePools: z.array(changeRuleSourcePoolSchema).length(8),
+    capacity: z
+      .object({
+        requiredPhysicalSources: z.literal(32),
+        requiredControlWrites: z.literal(12),
+        requiredApplicationWrites: z.literal(16),
+        requiredRepairWrites: z.literal(4),
+        requiredDerivedOutputs: z.literal(20),
+        selectedPhysicalSourcesPerState: z.literal(8),
+        requiredTargetActionsPerState: z.literal(8),
+        cloneOrReuseAssumed: z.literal(false),
+        requiresPairwiseDisjointRoleIds: z.literal(true)
+      })
+      .strict()
+  })
+  .strict();
+
+const changeRuleWriteSchema = z
+  .object({
+    writeId: stableIdSchema,
+    constraintId: stableIdSchema,
+    stateId: stableIdSchema,
+    ruleStateKey: stableIdSchema,
+    ruleStateKeyProperty: z.literal("ruleStateKey"),
+    sourceRoleId: stableIdSchema,
+    sourcePoolId: stableIdSchema,
+    targetRole: stableIdSchema,
+    phase: z.enum([
+      "rule-selection",
+      "apply-declared-change",
+      "repair-declared-change"
+    ]),
+    writesStatePath: stableIdSchema,
+    writesStateIndex: z.number().int().min(0).max(3),
+    writesStateIndexPath: stableIdSchema.optional(),
+    mappingPath: stableIdSchema.optional(),
+    stateField: z.enum(["startValue", "stepMagnitude", "direction"]).optional(),
+    sourceValueProperty: z.literal("value"),
+    valueDecoder: z.enum([
+      "integer-0-9-v1",
+      "positive-integer-1-9-v1",
+      "direction-code-v1"
+    ]),
+    expectedSourceValue: z.number().int().min(0).max(9),
+    expectedDecodedValue: z.union([
+      z.number().int().min(0).max(9),
+      z.enum(["increase", "decrease"])
+    ])
+  })
+  .strict();
+
+const changeRuleSourceWriteContractSchema = z
+  .object({
+    cardinality: z
+      .object({
+        validStateCount: z.literal(4),
+        sourcePoolCount: z.literal(8),
+        writesPerState: z.literal(8),
+        writeCount: z.literal(32),
+        controlWriteCount: z.literal(12),
+        applicationWriteCount: z.literal(16),
+        repairWriteCount: z.literal(4)
+      })
+      .strict(),
+    writes: z.array(changeRuleWriteSchema).length(32)
+  })
+  .strict();
+
+const changeRuleAnswerLeakContractSchema = z
+  .object({
+    mode: z.literal("unordered-field-set-across-emissions"),
+    semanticKeys: z.tuple([
+      z.literal("startValue"),
+      z.literal("stepMagnitude"),
+      z.literal("direction")
+    ]),
+    emissionScope: z.literal("locked-non-source"),
+    scanSurfaces: z.tuple([
+      z.literal("structured-properties"),
+      z.literal("visible-text")
+    ]),
+    excludeSourceRoleIds: z.literal(true),
+    numericMultiplicityAware: z.literal(true),
+    rejectCompleteStateAcrossEmissions: z.literal(true),
+    permutationCoverage: z
+      .array(
+        z.tuple([
+          z.enum(["startValue", "stepMagnitude", "direction"]),
+          z.enum(["startValue", "stepMagnitude", "direction"]),
+          z.enum(["startValue", "stepMagnitude", "direction"])
+        ])
+      )
+      .length(6)
+  })
+  .strict();
+
+const changeRuleNativeEvidenceContractSchema = z
+  .object({
+    toolKey: z.literal("NO04NT"),
+    releasedValueVariantMap: z
+      .array(
+        z
+          .object({
+            value: z.number().int().min(0).max(9),
+            variantId: z.string().regex(/^NO04NT-(?:0[1-9]|10)$/)
+          })
+          .strict()
+      )
+      .length(10),
+    expectedSourceRoleIds: z.array(stableIdSchema).length(32),
+    expectedSourceRoleCount: z.literal(32),
+    expectedTargetRoleIds: z.array(stableIdSchema).length(8),
+    expectedTargetRoleCount: z.literal(8),
+    renderedBounds: z
+      .object({
+        width: z.literal(80),
+        height: z.literal(80),
+        sourceConstant: z.literal("NUMBER_CARD_RENDERED_SIZE")
+      })
+      .strict(),
+    minimumTargetBounds: z
+      .object({ width: z.literal(188), height: z.literal(188) })
+      .strict(),
+    containment: z.literal("native-rendered-bounds"),
+    requiresExactResolvedSourceIdValueVariantMatch: z.literal(true),
+    requiresAllSourcesAndTargetsVisibleSimultaneously: z.literal(true),
+    requiresPairwiseDisjointSourcePools: z.literal(true),
+    requiresSourceTargetRegionDisjointness: z.literal(true)
+  })
+  .strict();
+
+export const changeRuleDecisionSchema = z
   .object({
     mode: z.literal("construct-change-rule"),
     constructionMode: z.literal("student-constructed"),
@@ -228,6 +421,11 @@ const constructChangeRuleDecisionSchema = z
     minimumDistinctStepMagnitudes: z.number().int().min(2).max(8),
     initialState: z.literal("empty"),
     requiresStudentDeclaredState: z.literal(true),
+    validStateCatalog: z.array(changeRuleStateSchema).length(4),
+    sourceModel: changeRuleSourceModelSchema,
+    sourceWriteContract: changeRuleSourceWriteContractSchema,
+    answerLeakContract: changeRuleAnswerLeakContractSchema,
+    nativeEvidenceContract: changeRuleNativeEvidenceContractSchema,
     distractors: z.array(distractorSchema).min(2).max(7),
     application: z
       .object({
@@ -252,6 +450,107 @@ const constructChangeRuleDecisionSchema = z
       .strict()
   })
   .strict();
+
+export const changeRuleRuntimeParametersSchema = changeRuleDecisionSchema.omit({
+  minimumDistinctStartValues: true,
+  minimumDistinctStepMagnitudes: true,
+  requiresStudentDeclaredState: true
+});
+
+export function isBoundedChangeRuleDecision(
+  decision: z.infer<typeof changeRuleDecisionSchema>
+): boolean {
+    const stateByKey = new Map(
+      decision.validStateCatalog.map((state) => [state.ruleStateKey, state])
+    );
+    const sourcePools = decision.sourceModel.sourcePools;
+    const sources = sourcePools.flatMap((pool) => pool.sources);
+    const sourceByRole = new Map(sources.map((source) => [source.roleId, source]));
+    const writeByRole = new Map(
+      decision.sourceWriteContract.writes.map((write) => [write.sourceRoleId, write])
+    );
+    const stateKeys = [...stateByKey.keys()];
+    const targetRoles = sourcePools.map((pool) => pool.targetRole);
+    const poolIds = sourcePools.map((pool) => pool.id);
+    const exactVariant = (value: number) =>
+      `NO04NT-${String(value + 1).padStart(2, "0")}`;
+    const catalogValid = decision.validStateCatalog.every((state) => {
+      const signedStep = state.direction === "increase"
+        ? state.stepMagnitude
+        : -state.stepMagnitude;
+      return (
+        state.directionCode === (state.direction === "increase" ? 1 : 2) &&
+        state.sequenceValues.every(
+          (value, index) => value === state.startValue + signedStep * index
+        ) &&
+        state.repairValue === state.sequenceValues[state.wrongIndex] &&
+        state.wrongValue !== state.repairValue
+      );
+    });
+    const poolShapeValid =
+      new Set(stateKeys).size === 4 &&
+      new Set(poolIds).size === 8 &&
+      new Set(targetRoles).size === 8 &&
+      new Set(sources.map((source) => source.roleId)).size === 32 &&
+      sourcePools.every(
+        (pool) =>
+          new Set(pool.sources.map((source) => source.ruleStateKey)).size === 4 &&
+          pool.sources.every(
+            (source) =>
+              stateByKey.has(source.ruleStateKey) &&
+              source.variantId === exactVariant(source.value)
+          )
+      );
+    const writesValid =
+      new Set(decision.sourceWriteContract.writes.map((write) => write.writeId)).size === 32 &&
+      writeByRole.size === 32 &&
+      decision.sourceWriteContract.writes.every((write) => {
+        const source = sourceByRole.get(write.sourceRoleId);
+        const pool = sourcePools.find((entry) => entry.id === write.sourcePoolId);
+        return (
+          source !== undefined &&
+          pool !== undefined &&
+          write.stateId === write.ruleStateKey &&
+          write.ruleStateKey === source.ruleStateKey &&
+          write.targetRole === pool.targetRole &&
+          write.phase === pool.phase &&
+          write.writesStatePath === pool.writesStatePath &&
+          write.writesStateIndex === pool.writesStateIndex &&
+          write.stateField === pool.stateField &&
+          write.writesStateIndexPath === pool.writesStateIndexPath &&
+          write.mappingPath === pool.mappingPath &&
+          write.valueDecoder === pool.valueDecoder &&
+          write.expectedSourceValue === source.value &&
+          (source.decodedValue === undefined ||
+            source.decodedValue === write.expectedDecodedValue)
+        );
+      });
+    const permutationKeys = decision.answerLeakContract.permutationCoverage.map(
+      (entry) => [...entry].sort().join("|")
+    );
+    const nativeValid =
+      new Set(decision.nativeEvidenceContract.expectedSourceRoleIds).size === 32 &&
+      decision.nativeEvidenceContract.expectedSourceRoleIds.every((role) =>
+        sourceByRole.has(role)
+      ) &&
+      new Set(decision.nativeEvidenceContract.expectedTargetRoleIds).size === 8 &&
+      decision.nativeEvidenceContract.expectedTargetRoleIds.every((role) =>
+        targetRoles.includes(role)
+      ) &&
+      decision.nativeEvidenceContract.releasedValueVariantMap.every(
+        ({ value, variantId }) => variantId === exactVariant(value)
+      );
+    return (
+      catalogValid &&
+      poolShapeValid &&
+      writesValid &&
+      new Set(permutationKeys).size === 1 &&
+      new Set(
+        decision.answerLeakContract.permutationCoverage.map((entry) => entry.join("|"))
+      ).size === 6 &&
+      nativeValid
+    );
+}
 
 export const COGNITIVE_GATE_IDS = [
   "G0_MANIFEST_BOUND",
@@ -292,7 +591,7 @@ export const cognitiveDemandManifestSchema = z
       selectOneDecisionSchema,
       constructDecisionSchema,
       constructRuleDecisionSchema,
-      constructChangeRuleDecisionSchema
+      changeRuleDecisionSchema
     ]),
     prediction: z.object({ regionRole: stableIdSchema }).strict(),
     verification: z
@@ -325,15 +624,22 @@ export const cognitiveDemandManifestSchema = z
   .superRefine((manifest, ctx) => {
     if (manifest.decision.mode === "construct-change-rule") {
       const decision = manifest.decision;
+      if (!isBoundedChangeRuleDecision(decision)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["decision", "sourceModel"],
+          message: "변화 규칙의 상태·32개 실물 수 카드·8개 쓰기 경로·native 증거가 서로 정확히 결속되어야 합니다."
+        });
+      }
       const misconceptionKeys = new Set(
         decision.distractors.map((entry) =>
           entry.misconception.normalize("NFKC").trim()
         )
       );
       const expectedRoles = [
-        "start-value-control",
-        "step-magnitude-control",
-        "direction-control",
+        "rule-control-start",
+        "rule-control-step",
+        "rule-control-direction",
         "sequence-term-1",
         "sequence-term-2",
         "sequence-term-3",

@@ -48,7 +48,7 @@
     },
     {
       "path": "packages/contracts/src/vocabulary/blueprint.ts",
-      "sha256": "c8e6f2e8274ef9c95ffe88330c6e820e7192b2c8ac73bc26541a3786d0b3806d"
+      "sha256": "3aaf2ec9eedddda61eb5660acc6aed1e43fad7f04fa57ce7fafedfb4a29e14b0"
     },
     {
       "path": "packages/contracts/src/vocabulary/constraints.ts",
@@ -147,5 +147,5 @@
       "sha256": "43f9978635b41d999b96a3404e9630eeea86690749e1be17550ee14b5178da75"
     }
   ],
-  "manifestHash": "a38709a9fe8c0aa64b351ed080a80b177fb3e91d01427abe761277275f48ee2d"
+  "manifestHash": "a2633e9d85c17db2cf82bab5be6023e4c0624a267a0b705baee77b1eee51f65e"
 }

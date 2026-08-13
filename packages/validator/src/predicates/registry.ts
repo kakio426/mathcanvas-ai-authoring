@@ -1,5 +1,7 @@
 import {
   buildDivisionGroupingTeacherIntentCanonicalStory,
+  changeRuleRuntimeParametersSchema,
+  isBoundedChangeRuleDecision,
   type DivisionGroupingTeacherIntentCanonicalStory,
   type ResolvedActivity,
   type ResolvedEmission,
@@ -298,6 +300,48 @@ function containsVisibleOrderedRuleStateAcrossProperties(
   });
 }
 
+function containsUnorderedChangeRuleStateAcrossProperties(
+  properties: readonly Record<string, unknown>[],
+  state: Readonly<Record<"startValue" | "stepMagnitude" | "direction", unknown>>
+): boolean {
+  const semanticKeys = ["startValue", "stepMagnitude", "direction"] as const;
+  const structured = new Map<string, unknown[]>();
+  const texts: string[] = [];
+  const collect = (value: unknown, key?: string): void => {
+    if (key && semanticKeys.includes(key as (typeof semanticKeys)[number])) {
+      const values = structured.get(key) ?? [];
+      values.push(value);
+      structured.set(key, values);
+    }
+    if (typeof value === "string") {
+      if (key && /(?:text|latex|label|title|expression)$/iu.test(key)) {
+        texts.push(value.normalize("NFKC"));
+      }
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((entry) => collect(entry, key));
+      return;
+    }
+    if (value && typeof value === "object") {
+      Object.entries(value as Record<string, unknown>).forEach(
+        ([childKey, child]) => collect(child, childKey)
+      );
+    }
+  };
+  properties.forEach((entry) => collect(entry));
+  return semanticKeys.every((key) => {
+    const expected = state[key];
+    if ((structured.get(key) ?? []).some((value) => sameValue(value, expected))) {
+      return true;
+    }
+    const escaped = String(expected).replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+    return texts.some((text) =>
+      new RegExp(`${key}\\s*[:=]\\s*${escaped}(?:\\b|$)`, "iu").test(text)
+    );
+  });
+}
+
 type NumericPair = readonly [number, number];
 
 function numericPairList(value: unknown): NumericPair[] | undefined {
@@ -399,7 +443,197 @@ function sameStringSet(
   );
 }
 
+function validateBoundedChangeRuleStateContract(
+  resolved: ResolvedActivity,
+  predicate: ValuePredicate,
+  issues: ValidationIssue[]
+): void {
+  const parsed = changeRuleRuntimeParametersSchema.safeParse(predicate.parameters);
+  const decision = parsed.success
+    ? {
+        ...parsed.data,
+        minimumDistinctStartValues: 2 as const,
+        minimumDistinctStepMagnitudes: 2 as const,
+        requiresStudentDeclaredState: true as const
+      }
+    : undefined;
+  if (!decision || !isBoundedChangeRuleDecision(decision)) {
+    throw new Error(
+      `predicate-parameter-invalid:${predicate.kind}:change-rule-v15-contract`
+    );
+  }
+  const sourceRoles = decision.sourceModel.sourcePools.flatMap((pool) =>
+    pool.sources.map((source) => source.roleId)
+  );
+  const targetRoles = decision.sourceModel.sourcePools.map(
+    (pool) => pool.targetRole
+  );
+  const sourceRoleSet = new Set(sourceRoles);
+  const targetRoleSet = new Set(targetRoles);
+  const concrete = (emission: ResolvedEmission | undefined): boolean =>
+    emission
+      ? Object.entries(emission.toolIntent.properties).some(
+          ([key, value]) =>
+            /(?:variant|value|orderedValues|pattern|color|shape|expression|text|label)$/iu.test(
+              key
+            ) &&
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        )
+      : true;
+
+  for (const item of resolved.items) {
+    const itemEmissions = resolved.emissions.filter(
+      (emission) => emission.itemId === item.id
+    );
+    const emissionByRole = new Map(
+      itemEmissions.map((emission) => [emission.role, emission])
+    );
+    const sourcesValid = decision.sourceModel.sourcePools.every((pool) =>
+      pool.sources.every((source) => {
+        const emission = emissionByRole.get(source.roleId);
+        return (
+          emission !== undefined &&
+          emission.toolIntent.toolKey === "NO04NT" &&
+          emission.toolIntent.kind === "number-card" &&
+          emission.movable &&
+          !emission.locked &&
+          emission.toolIntent.properties.value === source.value
+        );
+      })
+    );
+    const targetEmissions = targetRoles.map((role) => emissionByRole.get(role));
+    const targetsOpen = targetEmissions.every(
+      (emission) =>
+        emission !== undefined &&
+        emission.locked &&
+        !emission.movable &&
+        !concrete(emission)
+    );
+    const constraintsValid = decision.sourceModel.sourcePools.every((pool) => {
+      const write = decision.sourceWriteContract.writes.find(
+        (entry) => entry.sourcePoolId === pool.id
+      );
+      const target = emissionByRole.get(pool.targetRole);
+      if (!write || !target) return false;
+      const constraint = resolved.constraints.find(
+        (entry) =>
+          entry.id === `${write.constraintId}:${item.id}` ||
+          (entry.targetId === target.id && entry.id.startsWith(write.constraintId))
+      );
+      const actualSourceRoles = constraint?.sourceIds.map(
+        (sourceId) => resolved.emissions.find((emission) => emission.id === sourceId)?.role
+      );
+      const expectedParameters: Record<string, unknown> = {
+        phase: pool.phase,
+        writesStatePath: pool.writesStatePath,
+        writesStateIndex: pool.writesStateIndex,
+        ruleStateKeyProperty: "ruleStateKey",
+        selectionCorrelation: "single-ruleStateKey-across-eight-writes",
+        sourceValueProperty: pool.sourceValueProperty,
+        valueDecoder: pool.valueDecoder
+      };
+      if (pool.stateField !== undefined) {
+        expectedParameters.stateField = pool.stateField;
+      }
+      if (pool.writesStateIndexPath !== undefined) {
+        expectedParameters.writesStateIndexPath = pool.writesStateIndexPath;
+      }
+      if (pool.mappingPath !== undefined) {
+        expectedParameters.mappingPath = pool.mappingPath;
+      }
+      return (
+        constraint !== undefined &&
+        constraint.kind === "fill-from-pool" &&
+        constraint.requiresStudentAction &&
+        !constraint.satisfiedInitially &&
+        sameValue(
+          actualSourceRoles,
+          pool.sources.map((source) => source.roleId)
+        ) &&
+        Object.entries(expectedParameters).every(([key, value]) =>
+          sameValue(constraint.parameters[key], value)
+        )
+      );
+    });
+    const statesEmpty = [
+      decision.ruleStatePath,
+      decision.application.sequenceStatePath,
+      decision.repair.beforeStatePath,
+      decision.repair.afterStatePath
+    ].every(
+      (path) => Array.isArray(item.values[path]) && item.values[path].length === 0
+    );
+    const validCatalog = sameValue(
+      item.values.validChangeRuleStates,
+      decision.validStateCatalog
+    );
+    const expectedRepairMap = Object.fromEntries(
+      decision.validStateCatalog.map((state) => [
+        state.ruleStateKey,
+        state.repairValue
+      ])
+    );
+    const mappingsValid = sameValue(
+      item.values.validRepairValueByRuleStateKey,
+      expectedRepairMap
+    ) && decision.validStateCatalog.every(
+      (state) => item.values[decision.repair.wrongIndexPath] === state.wrongIndex
+    );
+    const roleIdsValid =
+      itemEmissions.filter((emission) => sourceRoleSet.has(emission.role)).length === 32 &&
+      targetEmissions.filter(Boolean).length === 8;
+    if (!sourcesValid || !targetsOpen || !constraintsValid || !statesEmpty || !roleIdsValid) {
+      issue(
+        issues,
+        "cognitive-change-rule-decision-missing",
+        "pedagogy",
+        `${item.id}에 32개 실물 수 카드로 세 필드와 네 항·수정 항을 쓰는 열린 결정이 없습니다.`
+      );
+    }
+    if (!validCatalog || !mappingsValid) {
+      issue(
+        issues,
+        "cognitive-change-rule-envelope-invalid",
+        "mathematics",
+        `${item.id}의 네 signed-step 상태나 조건부 교정값이 v15 권위 catalog와 다릅니다.`
+      );
+    }
+    const lockedNonSources = itemEmissions.filter(
+      (emission) => emission.locked && !sourceRoleSet.has(emission.role)
+    );
+    const answerLeak = decision.validStateCatalog.some((state) =>
+      containsUnorderedChangeRuleStateAcrossProperties(
+        lockedNonSources.map((emission) => emission.toolIntent.properties),
+        state
+      )
+    );
+    if (answerLeak) {
+      issue(
+        issues,
+        "cognitive-change-rule-answer-visible",
+        "pedagogy",
+        `${item.id}의 특정 시작값·변화량·방향 조합이 순서를 나눠 숨긴 locked emission에도 노출됩니다.`
+      );
+    }
+    if (
+      targetRoles.some((role) => !targetRoleSet.has(role) || !emissionByRole.has(role)) ||
+      !emissionByRole.has("prediction-box") ||
+      (!emissionByRole.has("teacher-rubric") && !emissionByRole.has("explanation-box"))
+    ) {
+      issue(
+        issues,
+        "cognitive-change-rule-verification-missing",
+        "pedagogy",
+        `${item.id}에 선언 상태와 인접 차·교정값을 대조할 관찰 영역이 없습니다.`
+      );
+    }
+  }
+}
+
 const handlers: Record<string, Handler> = {
+  "cognitive.change-rule-state-contract": validateBoundedChangeRuleStateContract,
   "ratio.equivalent": (resolved, predicate, issues) => {
     for (const item of resolved.items) {
       const pair = ratioPair(item.values, predicate);
@@ -467,7 +701,7 @@ const handlers: Record<string, Handler> = {
       }
     }
   },
-  "cognitive.change-rule-state-contract": (
+  "internal.legacy-change-rule-state-contract": (
     resolved,
     predicate,
     issues

@@ -1524,6 +1524,11 @@ export function expectedCognitiveRuntimePredicate(
         stateFields: manifest.decision.stateFields,
         directionValues: manifest.decision.directionValues,
         initialState: manifest.decision.initialState,
+        validStateCatalog: manifest.decision.validStateCatalog,
+        sourceModel: manifest.decision.sourceModel,
+        sourceWriteContract: manifest.decision.sourceWriteContract,
+        answerLeakContract: manifest.decision.answerLeakContract,
+        nativeEvidenceContract: manifest.decision.nativeEvidenceContract,
         distractors: manifest.decision.distractors,
         application: manifest.decision.application,
         repair: manifest.decision.repair

@@ -46,15 +46,15 @@
     "audit-synthetic-positive-and-structural-envelope-mutations"
   ],
   "implementationFiles": {
-    "packages/contracts/src/catalog/cognitive-demand.ts": "8a0aca1ce4112c1baf89a900497abe65b703007ddf3a4a22364013ba67d83a39",
-    "packages/contracts/src/catalog/cognitive-demand.test.ts": "7ab871d502494a127f25702d4919c33d2b0e28c9e417d72ad6c9a9c083068e0a",
+    "packages/contracts/src/catalog/cognitive-demand.ts": "4bc1c6afe65bbf0a9824af8349e9ad1adc347b67d155f5a2903f128a351f2546",
+    "packages/contracts/src/catalog/cognitive-demand.test.ts": "f34afe05085c5777d00e0715b956ef543f7327c80949360d50b321e5fa741a2f",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.ts": "b6eb40534dc0681b12bf2fc13f6dee76442461629c5028f1bd2d18e9396a65ee",
     "packages/mathcanvas-compiler/src/layout-presets/w002-repeat-repair-v1.test.ts": "607b310adc5a371abf308aeb47fa0d65fb81c7859b9b399c010ce3eae584e292",
     "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "13c31238134eb09d5787d978e3c8960a412e7844e67bef87ccd60a8c211d63f7",
-    "packages/validator/src/predicates/registry.ts": "3ea9158cd519061b5ac9163dfe0ba39bf406693268583c902d394d12ee516cd7",
-    "packages/validator/src/validator.test.ts": "d965c74e755bcb96c8b14f67597dd313d009fd4de94c1d7c29a102c16cb2bd25",
-    "packages/templates/src/cognitive/registry.ts": "1355e35c873175348cdb7f5dc3b9c47f3c9f89d04a60a8699a6673bd2a8807db",
-    "packages/templates/src/cognitive/registry.test.ts": "2ac20d46793600bee8732f9baed6a8b3447553ca57e0a295156080444443fa5d",
+    "packages/validator/src/predicates/registry.ts": "c8285cbcd2ff8527b3d04ba98f3982731348ad0a49b56ba3a2e4cf0220d0bb0d",
+    "packages/validator/src/validator.test.ts": "3eb2ac0b6ea2e667eb4ab85e437bccdc63d58ba7eaaafa93ad2542913b8ebed8",
+    "packages/templates/src/cognitive/registry.ts": "720686d94b0ea203a0d8913982a9d2a40fab9a8c2ef214a586189f4b02bfa81b",
+    "packages/templates/src/cognitive/registry.test.ts": "594f5f031b7f3f352d2af116f8d198958f9e73a6da6b25a0f684628ac5ad3e7b",
     "scripts/pedagogy/check-cognitive-demand.mjs": "80d3e583f8e222ccb2bbe9584e4c7ce25a2cb64e6601afbb57dd4ae293a57d18"
   },
   "verification": {

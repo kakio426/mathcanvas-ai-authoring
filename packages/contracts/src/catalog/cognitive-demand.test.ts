@@ -1,8 +1,39 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   cognitiveDemandManifestSchema,
   defineCognitiveDemandManifest
 } from "./cognitive-demand.js";
+
+type CognitiveManifestInput = Parameters<typeof defineCognitiveDemandManifest>[0];
+type ChangeRuleDecisionInput = Extract<
+  CognitiveManifestInput["decision"],
+  { mode: "construct-change-rule" }
+>;
+
+function changeRuleDecisionAuthority(): ChangeRuleDecisionInput {
+  const plan = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "scripts/curriculum/no-family-plan.json"),
+      "utf8"
+    )
+  ) as {
+    trackContracts: {
+      C01: {
+        engineCoreContractsByFamilyTrack: Record<
+          string,
+          { manifestDecision: ChangeRuleDecisionInput }
+        >;
+      };
+    };
+  };
+  return structuredClone(
+    plan.trackContracts.C01.engineCoreContractsByFamilyTrack[
+      "pattern.change-rule.construct-v1"
+    ]!.manifestDecision
+  );
+}
 
 const constructRuleManifest = () => ({
   schemaVersion: "1.0.0" as const,
@@ -357,51 +388,13 @@ describe("construct-rule cognitive decision contract", () => {
 describe("construct-change-rule cognitive decision contract", () => {
   const changeManifest = () => ({
     ...constructRuleManifest(),
-    decision: {
-      mode: "construct-change-rule" as const,
-      constructionMode: "student-constructed" as const,
-      answerMode: "conditional-rubric" as const,
-      ruleStatePath: "studentChangeRuleState",
-      stateFields: ["startValue", "stepMagnitude", "direction"] as const,
-      directionValues: ["increase", "decrease"] as const,
-      minimumDistinctStartValues: 2,
-      minimumDistinctStepMagnitudes: 2,
-      initialState: "empty" as const,
-      requiresStudentDeclaredState: true as const,
-      distractors: [
-        {
-          predicateKind: "cognitive.change-rule-state-contract",
-          misconception: "증가와 감소 방향을 반대로 적용한다."
-        },
-        {
-          predicateKind: "cognitive.change-rule-state-contract",
-          misconception: "선언한 변화량과 다른 간격을 적용한다."
-        }
-      ],
-      application: {
-        ruleStatePath: "studentChangeRuleState",
-        sequenceStatePath: "constructedSequenceState",
-        minimumVisibleTerms: 4,
-        transition: "next-equals-current-plus-signed-step" as const,
-        requiresAdjacentDifferenceEvidence: true as const,
-        requiresVisibleComparison: true as const
-      },
-      repair: {
-        ruleStatePath: "studentChangeRuleState",
-        beforeStatePath: "initialChangeSequenceState",
-        afterStatePath: "repairedChangeSequenceState",
-        wrongIndexPath: "misalignedTermIndex",
-        derivation: "replace-with-declared-transition-value" as const,
-        requiresConditionalMapping: true as const,
-        requiresOnlyWrongIndexChanges: true as const
-      }
-    },
+    decision: changeRuleDecisionAuthority(),
     verification: {
       kind: "data-representation" as const,
       roles: [
-        "start-value-control",
-        "step-magnitude-control",
-        "direction-control",
+        "rule-control-start",
+        "rule-control-step",
+        "rule-control-direction",
         "sequence-term-1",
         "sequence-term-2",
         "sequence-term-3",
@@ -432,5 +425,20 @@ describe("construct-change-rule cognitive decision contract", () => {
       misconception: duplicated.decision.distractors[0]!.misconception
     };
     expect(() => defineCognitiveDemandManifest(duplicated)).toThrow();
+  });
+
+  it("rejects source/write/native drift and an incomplete leak permutation gate", () => {
+    const sourceDrift = changeManifest();
+    sourceDrift.decision.sourceModel.sourcePools[0]!.sources[0]!.value = 9;
+    expect(() => defineCognitiveDemandManifest(sourceDrift)).toThrow();
+
+    const writeDrift = changeManifest();
+    writeDrift.decision.sourceWriteContract.writes[0]!.writesStateIndex = 1;
+    expect(() => defineCognitiveDemandManifest(writeDrift)).toThrow();
+
+    const leakDrift = changeManifest();
+    leakDrift.decision.answerLeakContract.permutationCoverage[5] =
+      leakDrift.decision.answerLeakContract.permutationCoverage[0]!;
+    expect(() => defineCognitiveDemandManifest(leakDrift)).toThrow();
   });
 });

@@ -114,6 +114,31 @@ const forbiddenKeys = new Set([
   "script"
 ]);
 
+const allowedPredicateMetadataPaths = new Set([
+  "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.width",
+  "valuePredicates.*.parameters.nativeEvidenceContract.renderedBounds.height",
+  "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.width",
+  "valuePredicates.*.parameters.nativeEvidenceContract.minimumTargetBounds.height"
+]);
+
+function isAllowedPredicateMetadataPath(path: readonly string[]): boolean {
+  if (path.length !== 6) return false;
+  const normalized = [
+    path[0],
+    path[1] === undefined ? undefined : "*",
+    path[2],
+    path[3],
+    path[4],
+    path[5]
+  ];
+  return (
+    normalized.every((segment) => typeof segment === "string") &&
+    allowedPredicateMetadataPaths.has(
+      normalized.join(".")
+    )
+  );
+}
+
 function assertBlueprintValue(
   value: unknown,
   path: readonly string[] = []
@@ -129,12 +154,13 @@ function assertBlueprintValue(
   }
   if (value === null || typeof value !== "object") return;
   for (const [key, child] of Object.entries(value)) {
-    if (forbiddenKeys.has(key)) {
+    const childPath = [...path, key];
+    if (forbiddenKeys.has(key) && !isAllowedPredicateMetadataPath(childPath)) {
       throw new Error(
-        `blueprint-key-forbidden:${[...path, key].join(".")}`
+        `blueprint-key-forbidden:${childPath.join(".")}`
       );
     }
-    assertBlueprintValue(child, [...path, key]);
+    assertBlueprintValue(child, childPath);
   }
 }
 

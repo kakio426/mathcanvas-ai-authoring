@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   CONTRACT_SCHEMA_VERSION,
@@ -25,6 +27,82 @@ import {
 } from "@mathcanvas/templates";
 import { validateForCreation } from "./index.js";
 import { validateRegisteredPredicates } from "./predicates/registry.js";
+
+type ChangeRuleDecision = Record<string, unknown> & {
+  ruleStatePath: string;
+  validStateCatalog: Array<{
+    ruleStateKey: string;
+    startValue: number;
+    stepMagnitude: number;
+    directionCode: number;
+    direction: "increase" | "decrease";
+    sequenceValues: number[];
+    wrongIndex: number;
+    wrongValue: number;
+    repairValue: number;
+  }>;
+  sourceModel: {
+    sourcePools: Array<{
+      id: string;
+      targetRole: string;
+      phase: string;
+      writesStatePath: string;
+      writesStateIndex: number;
+      writesStateIndexPath?: string;
+      mappingPath?: string;
+      stateField?: string;
+      sourceValueProperty: string;
+      valueDecoder: string;
+      sources: Array<{
+        roleId: string;
+        ruleStateKey: string;
+        value: number;
+        variantId: string;
+      }>;
+    }>;
+  };
+  sourceWriteContract: {
+    writes: Array<{ sourcePoolId: string; constraintId: string }>;
+  };
+  application: { sequenceStatePath: string };
+  repair: {
+    beforeStatePath: string;
+    afterStatePath: string;
+    wrongIndexPath: string;
+  };
+};
+
+function changeRuleDecisionAuthority(): ChangeRuleDecision {
+  const source = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "scripts/curriculum/no-family-plan.json"),
+      "utf8"
+    )
+  ) as any;
+  return structuredClone(
+    source.trackContracts.C01.engineCoreContractsByFamilyTrack[
+      "pattern.change-rule.construct-v1"
+    ].manifestDecision
+  );
+}
+
+function changeRuleRuntimeAuthority(): Record<string, unknown> {
+  const source = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "scripts/curriculum/no-family-plan.json"),
+      "utf8"
+    )
+  ) as any;
+  return structuredClone(
+    source.trackContracts.C01.engineCoreContractsByFamilyTrack[
+      "pattern.change-rule.construct-v1"
+    ].runtimePredicate.parameters
+  );
+}
+
+function blueprintSafeChangeRuleRuntimeAuthority(): Record<string, unknown> {
+  return changeRuleRuntimeAuthority();
+}
 
 function fixture() {
   const gated = recommendActivity({
@@ -766,15 +844,7 @@ function studentConstructedRepairRuleStatePredicateFixture(): ResolvedActivity {
 
 function changeRulePredicateFixture(): ResolvedActivity {
   const itemId = "item-1";
-  const semanticStates = [1, 4].flatMap((startValue) =>
-    [2, 3].flatMap((stepMagnitude) =>
-      ["increase", "decrease"].map((direction) => ({
-        startValue,
-        stepMagnitude,
-        direction
-      }))
-    )
-  );
+  const decision = changeRuleDecisionAuthority();
   const emission = (
     id: string,
     role: string,
@@ -791,128 +861,69 @@ function changeRulePredicateFixture(): ResolvedActivity {
     movable,
     instructionalIntent: "변화 규칙 검증 역할",
     toolIntent: {
-      kind: toolKey === "SM02PB" ? "pattern-block" : "draw-rectangle",
+      kind: toolKey === "NO04NT" ? "number-card" : "draw-rectangle",
       toolKey,
-      properties:
-        toolKey === "SM02PB"
-          ? properties
-          : { fill: "white", stroke: "slategray", ...properties }
+      properties: toolKey === "NO04NT"
+        ? properties
+        : { fill: "white", stroke: "slategray", ...properties }
     }
   });
-  const expected = (state: (typeof semanticStates)[number]) => {
-    const signed = state.direction === "increase"
-      ? state.stepMagnitude
-      : -state.stepMagnitude;
-    return Array.from(
-      { length: 4 },
-      (_, index) => state.startValue + signed * index
-    );
-  };
   const values = {
     studentChangeRuleState: [],
-    validChangeRuleStates: semanticStates,
-    validRepairedChangeStatesByRuleState: semanticStates.map((state) => {
-      const afterState = expected(state);
-      const beforeState = [...afterState];
-      beforeState[2] = 999;
-      return {
-        ruleState: state,
-        beforeState,
-        afterState,
-        wrongIndex: 2
-      };
-    }),
+    validChangeRuleStates: decision.validStateCatalog,
+    validRepairValueByRuleStateKey: Object.fromEntries(
+      decision.validStateCatalog.map((state) => [state.ruleStateKey, state.repairValue])
+    ),
     constructedSequenceState: [],
     initialChangeSequenceState: [],
     repairedChangeSequenceState: [],
     misalignedTermIndex: 2
   };
-  const controls = [
-    ["start-value-control", "startValue"],
-    ["step-magnitude-control", "stepMagnitude"],
-    ["direction-control", "direction"]
-  ].map(([role]) => emission(`item-1-${role}`, role!, {}));
-  const sequence = [1, 2, 3, 4].map((index) =>
-    emission(`item-1-sequence-term-${index}`, `sequence-term-${index}`, {})
-  );
+  const targetRoles = decision.sourceModel.sourcePools.map((pool) => pool.targetRole);
+  const targets = targetRoles.map((role) => emission(`${itemId}-${role}`, role, {}));
   const verification = [
-    emission("item-1-repair-target", "repair-target", {}),
     emission("item-1-prediction", "prediction-box", {}),
     emission("item-1-rubric", "teacher-rubric", {})
   ];
-  const controlRoles = [
-    "start-value-control",
-    "step-magnitude-control",
-    "direction-control"
-  ];
-  const sequenceRoles = [
-    "sequence-term-1",
-    "sequence-term-2",
-    "sequence-term-3",
-    "sequence-term-4"
-  ];
-  const allSources = [
-    "item-1-rule-source-1",
-    "item-1-rule-source-2",
-    "item-1-rule-source-3"
-  ];
-  const sources = allSources.map((id, index) =>
-    emission(
-      id,
-      `rule-source-${index + 1}`,
-      { variant: index + 1, orderedValues: index + 1 },
-      false,
-      true,
-      "SM02PB"
+  const sources = decision.sourceModel.sourcePools.flatMap((pool) =>
+    pool.sources.map((source) =>
+      emission(
+        `${itemId}-${source.roleId}`,
+        source.roleId,
+        { value: source.value, ruleStateKey: source.ruleStateKey },
+        false,
+        true,
+        "NO04NT"
+      )
     )
   );
-  const constraints = [
-    ...controlRoles.map((role, index) => ({
-      id: `select-change-rule-${index + 1}:item-1`,
+  const constraints = decision.sourceModel.sourcePools.map((pool) => {
+    const write = decision.sourceWriteContract.writes.find(
+      (entry) => entry.sourcePoolId === pool.id
+    )!;
+    return {
+      id: `${write.constraintId}:${itemId}`,
       kind: "fill-from-pool",
-      sourceIds: allSources,
-      targetId: `item-1-${role}`,
+      sourceIds: pool.sources.map((source) => `${itemId}-${source.roleId}`),
+      targetId: `${itemId}-${pool.targetRole}`,
       parameters: {
-        phase: "rule-selection",
-        writesStatePath: "studentChangeRuleState",
-        stateField: ["startValue", "stepMagnitude", "direction"][index],
-        stateIndex: index
+        phase: pool.phase,
+        writesStatePath: pool.writesStatePath,
+        writesStateIndex: pool.writesStateIndex,
+        ruleStateKeyProperty: "ruleStateKey",
+        selectionCorrelation: "single-ruleStateKey-across-eight-writes",
+        sourceValueProperty: pool.sourceValueProperty,
+        valueDecoder: pool.valueDecoder,
+        ...(pool.stateField ? { stateField: pool.stateField } : {}),
+        ...(pool.writesStateIndexPath
+          ? { writesStateIndexPath: pool.writesStateIndexPath }
+          : {}),
+        ...(pool.mappingPath ? { mappingPath: pool.mappingPath } : {})
       },
       requiresStudentAction: true,
       satisfiedInitially: false
-    })),
-    ...sequenceRoles.map((role, index) => ({
-      id: `apply-change-rule-${index + 1}:item-1`,
-      kind: "fill-from-pool",
-      sourceIds: allSources,
-      targetId: `item-1-${role}`,
-      parameters: {
-        phase: "apply-declared-change",
-        ruleStatePath: "studentChangeRuleState",
-        sequenceStatePath: "constructedSequenceState",
-        sequenceIndex: index,
-        transition: "next-equals-current-plus-signed-step"
-      },
-      requiresStudentAction: true,
-      satisfiedInitially: false
-    })),
-    {
-      id: "repair-change-rule:item-1",
-      kind: "fill-from-pool",
-      sourceIds: allSources,
-      targetId: "item-1-repair-target",
-      parameters: {
-        phase: "repair-declared-change",
-        ruleStatePath: "studentChangeRuleState",
-        beforeStatePath: "initialChangeSequenceState",
-        afterStatePath: "repairedChangeSequenceState",
-        wrongIndexPath: "misalignedTermIndex",
-        mappingPath: "validRepairedChangeStatesByRuleState"
-      },
-      requiresStudentAction: true,
-      satisfiedInitially: false
-    }
-  ];
+    };
+  });
   return {
     schemaVersion: "1.0.0",
     id: "change-rule-activity",
@@ -961,7 +972,7 @@ function changeRulePredicateFixture(): ResolvedActivity {
         }
       }
     ],
-    emissions: [...controls, ...sequence, ...verification, ...sources],
+    emissions: [...targets, ...verification, ...sources],
     constraints,
     layout: {
       width: 3000,
@@ -992,42 +1003,7 @@ function changeRulePredicateFixture(): ResolvedActivity {
     valuePredicates: [
       {
         kind: "cognitive.change-rule-state-contract",
-        parameters: {
-          mode: "construct-change-rule",
-          constructionMode: "student-constructed",
-          answerMode: "conditional-rubric",
-          ruleStatePath: "studentChangeRuleState",
-          stateFields: ["startValue", "stepMagnitude", "direction"],
-          directionValues: ["increase", "decrease"],
-          initialState: "empty",
-          distractors: [
-            {
-              predicateKind: "cognitive.change-rule-state-contract",
-              misconception: "증가와 감소 방향을 반대로 적용한다."
-            },
-            {
-              predicateKind: "cognitive.change-rule-state-contract",
-              misconception: "선언한 변화량 대신 다른 간격을 적용한다."
-            }
-          ],
-          application: {
-            ruleStatePath: "studentChangeRuleState",
-            sequenceStatePath: "constructedSequenceState",
-            minimumVisibleTerms: 4,
-            transition: "next-equals-current-plus-signed-step",
-            requiresAdjacentDifferenceEvidence: true,
-            requiresVisibleComparison: true
-          },
-          repair: {
-            ruleStatePath: "studentChangeRuleState",
-            beforeStatePath: "initialChangeSequenceState",
-            afterStatePath: "repairedChangeSequenceState",
-            wrongIndexPath: "misalignedTermIndex",
-            derivation: "replace-with-declared-transition-value",
-            requiresConditionalMapping: true,
-            requiresOnlyWrongIndexChanges: true
-          }
-        }
+        parameters: changeRuleRuntimeAuthority()
       }
     ]
   } as unknown as ResolvedActivity;
@@ -1035,23 +1011,7 @@ function changeRulePredicateFixture(): ResolvedActivity {
 
 function changeRuleResolvedNativeFixture() {
   const curriculum = resolveCurriculum("[2수02-02]");
-  const states = [1, 4].flatMap((startValue) =>
-    [2, 3].flatMap((stepMagnitude) =>
-      ["increase", "decrease"].map((direction) => ({
-        startValue,
-        stepMagnitude,
-        direction
-      }))
-    )
-  );
-  const sequenceFor = (state: (typeof states)[number]) => {
-    const signed = state.direction === "increase"
-      ? state.stepMagnitude
-      : -state.stepMagnitude;
-    return Array.from({ length: 4 }, (_, index) =>
-      state.startValue + signed * index
-    );
-  };
+  const decision = changeRuleDecisionAuthority();
   const block = (id: string, preset: string) => ({
     id,
     kind: "slot" as const,
@@ -1059,24 +1019,25 @@ function changeRuleResolvedNativeFixture() {
     repeat: "each-item" as const,
     children: []
   });
-  const sourceRoles = ["rule-source-1", "rule-source-2", "rule-source-3"];
-  const sourceBindings = sourceRoles.map((role, index) => ({
-    role,
-    scope: "each-item" as const,
-    layoutRole: role,
-    idRole: role,
-    toolKey: "SM02PB" as const,
-    intentKind: "pattern-block" as const,
-    locked: false,
-    movable: true,
-    instructionalIntent: "학생이 선택할 수 있는 변화 규칙 원천입니다.",
-    properties: {},
-    bindings: {
-      variant: `item.ruleSource${index + 1}`,
-      orderedValues: `item.ruleSource${index + 1}`
-    },
-    containerRole: "source-panel"
-  }));
+  const sourceRoles = decision.sourceModel.sourcePools.flatMap((pool) =>
+    pool.sources.map((source) => source.roleId)
+  );
+  const sourceBindings = decision.sourceModel.sourcePools.flatMap((pool) =>
+    pool.sources.map((source) => ({
+      role: source.roleId,
+      scope: "each-item" as const,
+      layoutRole: source.roleId,
+      idRole: source.roleId,
+      toolKey: "NO04NT" as const,
+      intentKind: "number-card" as const,
+      locked: false,
+      movable: true,
+      instructionalIntent: "학생이 변화 규칙을 구성할 때 옮기는 수 카드입니다.",
+      properties: { ruleStateKey: source.ruleStateKey },
+      bindings: { value: `item.sourceValues.${source.roleId}` },
+      containerRole: "source-panel"
+    }))
+  );
   const emptyRectangle = (role: string) => ({
     role,
     scope: "each-item" as const,
@@ -1110,9 +1071,9 @@ function changeRuleResolvedNativeFixture() {
     ...(containerRole ? { containerRole } : {})
   });
   const controlRoles = [
-    "start-value-control",
-    "step-magnitude-control",
-    "direction-control"
+    "rule-control-start",
+    "rule-control-step",
+    "rule-control-direction"
   ];
   const sequenceRoles = [
     "sequence-term-1",
@@ -1159,9 +1120,9 @@ function changeRuleResolvedNativeFixture() {
       containerRectangle("item-panel", "item-panel"),
       containerRectangle("source-panel", "source-panel", "item-panel"),
       ...sourceBindings,
-      ...controlRoles.map(emptyRectangle),
-      ...sequenceRoles.map(emptyRectangle),
-      emptyRectangle("repair-target"),
+      ...decision.sourceModel.sourcePools.map((pool) =>
+        emptyRectangle(pool.targetRole)
+      ),
       {
         role: "prediction-box",
         scope: "each-item" as const,
@@ -1202,59 +1163,47 @@ function changeRuleResolvedNativeFixture() {
           block("item-panel", "item.panel"),
           block("source-panel", "item.source-panel"),
           ...sourceRoles.map((role) => block(role, `item.${role}`)),
-          ...controlRoles.map((role) => block(role, `item.${role}`)),
-          ...sequenceRoles.map((role) => block(role, `item.${role}`)),
-          block("repair-target", "item.repair-target"),
+          ...decision.sourceModel.sourcePools.map((pool) =>
+            block(pool.targetRole, `item.${pool.targetRole}`)
+          ),
           block("prediction-box", "item.prediction-box"),
           block("explanation-box", "item.explanation-box")
         ]
       }
     },
-    constraints: [
-      ...controlRoles.map((role, index) => ({
-        id: `select-change-rule-${index + 1}`,
+    constraints: decision.sourceModel.sourcePools.map((pool) => {
+      const write = decision.sourceWriteContract.writes.find(
+        (entry) => entry.sourcePoolId === pool.id
+      )!;
+      return {
+        id: write.constraintId,
         kind: "fill-from-pool" as const,
-        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
-        target: { scope: "each-item" as const, role },
+        sources: pool.sources.map((source) => ({
+          scope: "each-item" as const,
+          role: source.roleId
+        })),
+        target: { scope: "each-item" as const, role: pool.targetRole },
         parameters: {
-          phase: "rule-selection",
-          writesStatePath: "studentChangeRuleState",
-          stateField: ["startValue", "stepMagnitude", "direction"][index],
-          stateIndex: index
+          phase: pool.phase,
+          writesStatePath: pool.writesStatePath,
+          writesStateIndex: pool.writesStateIndex,
+          ruleStateKeyProperty: "ruleStateKey",
+          selectionCorrelation: "single-ruleStateKey-across-eight-writes",
+          sourceValueProperty: pool.sourceValueProperty,
+          valueDecoder: pool.valueDecoder,
+          ...(pool.stateField ? { stateField: pool.stateField } : {}),
+          ...(pool.writesStateIndexPath
+            ? { writesStateIndexPath: pool.writesStateIndexPath }
+            : {}),
+          ...(pool.mappingPath ? { mappingPath: pool.mappingPath } : {})
         },
         requiresStudentAction: true
-      })),
-      ...sequenceRoles.map((role, index) => ({
-        id: `apply-change-rule-${index + 1}`,
-        kind: "fill-from-pool" as const,
-        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
-        target: { scope: "each-item" as const, role },
-        parameters: {
-          phase: "apply-declared-change",
-          ruleStatePath: "studentChangeRuleState",
-          sequenceStatePath: "constructedSequenceState",
-          sequenceIndex: index,
-          transition: "next-equals-current-plus-signed-step"
-        },
-        requiresStudentAction: true
-      })),
-      {
-        id: "repair-change-rule",
-        kind: "fill-from-pool" as const,
-        sources: sourceRoles.map((sourceRole) => ({ scope: "each-item" as const, role: sourceRole })),
-        target: { scope: "each-item" as const, role: "repair-target" },
-        parameters: {
-          phase: "repair-declared-change",
-          ruleStatePath: "studentChangeRuleState",
-          beforeStatePath: "initialChangeSequenceState",
-          afterStatePath: "repairedChangeSequenceState",
-          wrongIndexPath: "misalignedTermIndex",
-          mappingPath: "validRepairedChangeStatesByRuleState"
-        },
-        requiresStudentAction: true
-      }
-    ],
-    valuePredicates: [changeRulePredicateFixture().valuePredicates[0]!],
+      };
+    }),
+    valuePredicates: [{
+      kind: "cognitive.change-rule-state-contract",
+      parameters: blueprintSafeChangeRuleRuntimeAuthority()
+    }],
     instructions: ["시작값·변화량·방향을 정하고 네 항에 적용하세요."],
     payload: {
       categoryId: MATHCANVAS_PROJECT_CATEGORIES["변화와 관계"].categoryId,
@@ -1269,21 +1218,20 @@ function changeRuleResolvedNativeFixture() {
     order: 1,
     kind: "pattern",
     values: {
-      ruleSource1: 1,
-      ruleSource2: 2,
-      ruleSource3: 3,
+      sourceValues: Object.fromEntries(
+        decision.sourceModel.sourcePools.flatMap((pool) =>
+          pool.sources.map((source) => [source.roleId, source.value])
+        )
+      ),
       studentChangeRuleState: [],
       constructedSequenceState: [],
       initialChangeSequenceState: [],
       repairedChangeSequenceState: [],
       misalignedTermIndex: 2,
-      validChangeRuleStates: states,
-      validRepairedChangeStatesByRuleState: states.map((ruleState) => {
-        const expected = sequenceFor(ruleState);
-        const before = [...expected];
-        before[2] = 999;
-        return { ruleState, beforeState: before, afterState: expected, wrongIndex: 2 };
-      })
+      validChangeRuleStates: decision.validStateCatalog,
+      validRepairValueByRuleStateKey: Object.fromEntries(
+        decision.validStateCatalog.map((state) => [state.ruleStateKey, state.repairValue])
+      )
     },
     provenance: {
       generatorId: "change-rule-native-fixture",
@@ -1304,6 +1252,8 @@ function changeRuleResolvedNativeFixture() {
     }
   } as Parameters<typeof resolveActivity>[0];
   const resolved = resolveActivity(plan);
+  (resolved.valuePredicates[0] as { parameters: Record<string, unknown> }).parameters =
+    changeRuleRuntimeAuthority();
   const compiled = compileActivity(resolved);
   return { resolved, compiled };
 }
@@ -2545,13 +2495,13 @@ describe("생성 전 검증", () => {
       (emission) => emission.role === "sequence-term-1"
     )!.toolIntent.properties.variant = 1;
     const mapping = resolved.items[0]!.values
-      .validRepairedChangeStatesByRuleState as Array<Record<string, unknown>>;
-    mapping[0]!.afterState = [1, 3, 99, 7];
+      .validRepairValueByRuleStateKey as Record<string, number>;
+    mapping["inc-1-by-1"] = 9;
     const issues: Parameters<typeof validateRegisteredPredicates>[1] = [];
     validateRegisteredPredicates(resolved, issues);
     expect(issues.map((entry) => entry.code)).toEqual(
       expect.arrayContaining([
-        "cognitive-change-rule-application-missing",
+        "cognitive-change-rule-decision-missing",
         "cognitive-change-rule-envelope-invalid"
       ])
     );
@@ -2568,8 +2518,8 @@ describe("생성 전 검증", () => {
     expect(report.canCreate).toBe(true);
     expect(
       compiled.payload.contentsJson.filter((object) =>
-        typeof object.svgId === "string" && object.svgId.startsWith("SM02PB-")
+        typeof object.svgId === "string" && object.svgId.startsWith("NO04NT-")
       )
-    ).toHaveLength(3);
+    ).toHaveLength(32);
   });
 });

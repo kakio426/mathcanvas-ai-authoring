@@ -1,9 +1,39 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   defineCognitiveDemandManifest,
   type CognitiveDemandManifest
 } from "@mathcanvas/contracts";
 import { expectedCognitiveRuntimePredicate } from "./registry.js";
+
+type ChangeRuleDecision = Extract<
+  CognitiveDemandManifest["decision"],
+  { mode: "construct-change-rule" }
+>;
+
+function changeRuleDecisionAuthority(): ChangeRuleDecision {
+  const plan = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "scripts/curriculum/no-family-plan.json"),
+      "utf8"
+    )
+  ) as {
+    trackContracts: {
+      C01: {
+        engineCoreContractsByFamilyTrack: Record<
+          string,
+          { manifestDecision: ChangeRuleDecision }
+        >;
+      };
+    };
+  };
+  return structuredClone(
+    plan.trackContracts.C01.engineCoreContractsByFamilyTrack[
+      "pattern.change-rule.construct-v1"
+    ]!.manifestDecision
+  );
+}
 
 const manifest: CognitiveDemandManifest = defineCognitiveDemandManifest({
   schemaVersion: "1.0.0",
@@ -330,51 +360,13 @@ describe("cognitive runtime predicate binding", () => {
   it("projects the signed-step change contract without a fixed answer", () => {
     const changeManifest = defineCognitiveDemandManifest({
       ...manifest,
-      decision: {
-        mode: "construct-change-rule",
-        constructionMode: "student-constructed",
-        answerMode: "conditional-rubric",
-        ruleStatePath: "studentChangeRuleState",
-        stateFields: ["startValue", "stepMagnitude", "direction"],
-        directionValues: ["increase", "decrease"],
-        minimumDistinctStartValues: 2,
-        minimumDistinctStepMagnitudes: 2,
-        initialState: "empty",
-        requiresStudentDeclaredState: true,
-        distractors: [
-          {
-            predicateKind: "cognitive.change-rule-state-contract",
-            misconception: "증가와 감소 방향을 반대로 적용한다."
-          },
-          {
-            predicateKind: "cognitive.change-rule-state-contract",
-            misconception: "선언한 변화량과 다른 간격을 적용한다."
-          }
-        ],
-        application: {
-          ruleStatePath: "studentChangeRuleState",
-          sequenceStatePath: "constructedSequenceState",
-          minimumVisibleTerms: 4,
-          transition: "next-equals-current-plus-signed-step",
-          requiresAdjacentDifferenceEvidence: true,
-          requiresVisibleComparison: true
-        },
-        repair: {
-          ruleStatePath: "studentChangeRuleState",
-          beforeStatePath: "initialChangeSequenceState",
-          afterStatePath: "repairedChangeSequenceState",
-          wrongIndexPath: "misalignedTermIndex",
-          derivation: "replace-with-declared-transition-value",
-          requiresConditionalMapping: true,
-          requiresOnlyWrongIndexChanges: true
-        }
-      },
+      decision: changeRuleDecisionAuthority(),
       verification: {
         kind: "data-representation",
         roles: [
-          "start-value-control",
-          "step-magnitude-control",
-          "direction-control",
+          "rule-control-start",
+          "rule-control-step",
+          "rule-control-direction",
           "sequence-term-1",
           "sequence-term-2",
           "sequence-term-3",
@@ -392,6 +384,20 @@ describe("cognitive runtime predicate binding", () => {
         mode: "construct-change-rule",
         ruleStatePath: "studentChangeRuleState",
         initialState: "empty",
+        sourceModel: {
+          toolKey: "NO04NT",
+          physicalSourceRoleCount: 32
+        },
+        sourceWriteContract: {
+          cardinality: { writeCount: 32 }
+        },
+        answerLeakContract: {
+          mode: "unordered-field-set-across-emissions"
+        },
+        nativeEvidenceContract: {
+          expectedSourceRoleCount: 32,
+          expectedTargetRoleCount: 8
+        },
         application: { sequenceStatePath: "constructedSequenceState" },
         repair: { wrongIndexPath: "misalignedTermIndex" }
       }
