@@ -4078,6 +4078,70 @@
         "MINIMUM SAFE REPLAN: 다음 SOL_REPLAN은 learner answer-bearing paths의 width/height 금지는 보존하되 bounded contract metadata path만 허용하는 path-sensitive guard를 권위화하고 blueprint source/test를 bounded ENGINE_CORE 범위에 추가해야 한다. define/parse 양 경로의 positive exact-v15 fixture와 answer-data negative fixture가 필요하다.",
         "PRESERVED BOUNDARY: 중간 ENGINE_CORE diff는 승인·커밋하지 않고 stash에 보존했다. change-rule artifact는 planned-pending-engine-core, cursor는 ENGINE_CORE, repeat-rule/repeat-repair evidence와 offline 2/3·live 0/3을 유지한다. 새 SOL_REPLAN 승인 전 completion transition, FAMILY_TRACK, response/save/reopen/live 주장 또는 push를 금지한다."
       ]
+    },
+    {
+      "reviewId": "W002-SOL_REPLAN-SOL-A39",
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "operation": "SOL_REPLAN",
+      "reviewer": "gpt-5.6-sol / max",
+      "decision": "approved",
+      "attempt": 39,
+      "candidateCommit": "1ce4751a5566068d0f10019c7dd92bd8c0bcbd42",
+      "changedFiles": [
+        "W002_REPLAN.md",
+        "reports/curriculum-execution/no-family-plan.json",
+        "reports/curriculum-execution/no-family-plan.md",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
+        "reports/curriculum-execution/subwork-state/W002.json",
+        "scripts/curriculum/build-no-family-plan.mjs",
+        "scripts/curriculum/no-family-plan.json",
+        "tests/sol-review-status.test.ts"
+      ],
+      "supersedesReviewId": "W002-SOL_REPLAN-SOL-A38",
+      "checkedAt": "2026-08-13T00:31:08.000Z",
+      "replanDocumentPath": "W002_REPLAN.md",
+      "replanDocumentSha256": "06cb91eec2ed1b2b09495836eda284d09747fa91151c3fa3fedd8991c25bae97",
+      "supersedesBlockedReviewId": "W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3",
+      "replanOwner": "Luna",
+      "replanContractRevision": "W002-SOL-REPLAN-v16",
+      "replanScopes": [
+        {
+          "familyTrackId": "pattern.repeat-unit.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-rule"
+        },
+        {
+          "familyTrackId": "pattern.declared-repeat.repair-v1",
+          "scopeId": "W002-FAMILY_TRACK-repeat-repair"
+        },
+        {
+          "familyTrackId": "pattern.change-rule.construct-v1",
+          "scopeId": "W002-FAMILY_TRACK-change-rule"
+        }
+      ],
+      "evidenceRefs": [
+        "git:1ce4751a5566068d0f10019c7dd92bd8c0bcbd42",
+        "git:085e9ab3688167d7b1e6f3e587b1ca79bd5f2021#W002-SOL_REPLAN-SOL-A38",
+        "git:12b8b7b5bcfd7628be60dafdfc46f5ac15e61288#W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3",
+        "W002_REPLAN.md#v16-blueprint-predicate-metadata-path-seam",
+        "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
+        "scripts/curriculum/no-family-plan.json#trackContracts.C01.engineCoreContractsByFamilyTrack.pattern.change-rule.construct-v1.blueprintPredicateMetadataContract",
+        "scripts/curriculum/build-no-family-plan.mjs#assertEngineCoreContract",
+        "tests/sol-review-status.test.ts#resolves-an-educationally-separate-change-rule-ENGINE_CORE-contract",
+        "command:git diff-tree --no-commit-id --name-only -r 1ce4751a5566068d0f10019c7dd92bd8c0bcbd42 (exact 8 SOL_REPLAN files)",
+        "command:shasum -a 256 W002_REPLAN.md (06cb91eec2ed1b2b09495836eda284d09747fa91151c3fa3fedd8991c25bae97)",
+        "command:pnpm exec vitest run tests/sol-review-status.test.ts (27/27 PASS)",
+        "command:pnpm check (88 files / 556 tests; build/typecheck/native/cognitive/visual/quality PASS; P0/P1 0)",
+        "command:pnpm curriculum:no-family-plan (97 standards / 24 engines / 84 tracks PASS)"
+      ],
+      "findings": [
+        "APPROVED LINEAGE AND SCOPE: candidate 1ce4751은 A38을 supersede하고 current blocker W002-SOL_REPLAN_REQUEST-change-rule-SOL-A3를 정확히 소비한다. revision v16, W002/[2수02-02]와 세 family scope가 source·state·generated report에서 일치하며 exact 8 changedFiles는 SOL_REPLAN manifest 안이다.",
+        "APPROVED PATH-SENSITIVE BLUEPRINT SEAM: v16은 valuePredicates.*.parameters.nativeEvidenceContract 아래 renderedBounds/minimumTargetBounds의 width·height 네 leaf만 contract metadata로 허용한다. define/parse parity와 answer-bearing negative fixtures를 요구하며 x/y/contentsJson/answer/items 등 기존 금지 키와 다른 width·height 경로는 계속 fail-closed다.",
+        "PRESERVED MATHEMATICAL AND NATIVE AUTHORITY: v15의 네 valid change states, 8 pool×4=32 unique NO04NT source, 8 target write, signed-step/conditional repair, 여섯 answer-leak permutation 및 80×80→188×188 containment 계약은 변경하지 않았다.",
+        "APPROVED FAIL-CLOSED PROJECTION: builder는 exact four metadata paths·allowed keys·preserved forbidden keys와 blueprint source/test inclusion을 검증하며 focused negative fixture는 필수 path 누락을 거부한다. v16 pending artifact와 W002 state revision/hash가 current하다.",
+        "QA AND REGRESSION GATES: focused status suite 27/27, typecheck, no-family 97/24/84와 독립 full pnpm check 88 files/556 tests가 모두 통과했고 build/native/cognitive/visual/quality P0/P1은 0이다.",
+        "PENDING BOUNDARY: 이 승인은 governance authority와 v16 pending artifact만 승인한다. change-rule은 completedOperations=[]/nextOperation=ENGINE_CORE이며 보존된 구현 stash는 아직 승인되지 않았다. bounded ENGINE_CORE가 blueprint guard positive/negative, 실제 32-source+8-target layout, validator/audit와 current completion artifact를 증명하기 전 FAMILY_TRACK, response/save/reopen/live 또는 push를 주장할 수 없다."
+      ]
     }
   ]
 }
