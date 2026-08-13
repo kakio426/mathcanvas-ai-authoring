@@ -241,6 +241,7 @@ function nativeRoles(renderer: PortfolioRenderer): ActivityBlueprintBody["toolRo
         instructionalIntent: "점과 선을 움직여 도형의 방향·각·대응 관계를 확인합니다.",
         properties: {
           geometry: index === 3 ? "angle" : "line",
+          emphasis: "large-elementary",
           ...(index === 1 ? { ray: "base" } : {}),
           ...(index === 2 ? { ray: "turn" } : {}),
           stroke: index === 3 ? "#1677D2" : "#5E6473"

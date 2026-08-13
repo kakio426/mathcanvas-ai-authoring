@@ -487,12 +487,14 @@ function pointLineHandler(
   const properties = emission.toolIntent.properties;
   const geometry = properties.geometry;
   const angleDegrees = properties.angleDegrees;
+  const emphasis = properties.emphasis;
   if (
     (geometry !== "line" && geometry !== "angle") ||
     typeof angleDegrees !== "number" ||
     !Number.isFinite(angleDegrees) ||
     angleDegrees <= 0 ||
-    angleDegrees >= 180
+    angleDegrees >= 180 ||
+    (emphasis !== undefined && emphasis !== "large-elementary")
   ) {
     issue(
       issues,
@@ -502,8 +504,9 @@ function pointLineHandler(
     );
     return;
   }
+  const largeElementary = emphasis === "large-elementary";
   const rayLength = Math.min(
-    emission.bounds.width * 0.35,
+    emission.bounds.width * (largeElementary ? 0.47 : 0.35),
     emission.bounds.height * 0.78
   );
   const vertex = [
@@ -555,7 +558,8 @@ function pointLineHandler(
       native.svgId !== "drawElem" ||
       native.type !== "line" ||
       native.stroke !== stroke ||
-      native.strokeWidth !== 8 ||
+      native.strokeWidth !== (largeElementary ? 12 : 8) ||
+      native.radius !== (largeElementary ? 18 : 12) ||
       !samePoint(native.point1, vertex) ||
       !samePoint(native.point2, endpoint)
     ) {
@@ -572,7 +576,7 @@ function pointLineHandler(
   if (
     native.svgId !== "angleElem" ||
     native.stroke !== stroke ||
-    native.strokeWidth !== 4 ||
+    native.strokeWidth !== (largeElementary ? 8 : 4) ||
     native.isMoveRotateHandler !== true ||
     !samePoint(native.point1, base) ||
     !samePoint(native.point2, vertex) ||

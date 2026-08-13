@@ -100,6 +100,7 @@ export type PointLineIntent = {
   readonly angleDegrees: number;
   readonly ray?: "base" | "turn";
   readonly stroke?: string;
+  readonly emphasis?: "large-elementary";
 };
 
 /**

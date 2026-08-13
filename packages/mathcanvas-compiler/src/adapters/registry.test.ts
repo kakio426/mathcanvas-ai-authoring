@@ -252,16 +252,47 @@ describe("fail-closed tool adapter registry", () => {
       id: "target-turn-ray",
       svgId: "drawElem",
       type: "line",
-      point1: [450, 450]
+      point1: [450, 450],
+      strokeWidth: 8,
+      radius: 12
     });
     expect(measureAngle.requiredModuleKeys).toEqual([]);
     expect(measureAngle.object).toMatchObject({
       id: "measure-angle",
       svgId: "angleElem",
-      point2: [450, 450]
+      point2: [450, 450],
+      strokeWidth: 4
     });
     expect(measureAngle.object).toHaveProperty("point1");
     expect(measureAngle.object).toHaveProperty("point3");
+  });
+
+  it("초등 학생용 점·선·각을 크게 그리고 잘못된 강조값은 거부한다", () => {
+    const placement = { id: "large-line", x: 100, y: 200, width: 420, height: 260 };
+    const largeLine = compileNativeTool({
+      kind: "point-line",
+      toolKey: "common.point-line",
+      geometry: "line",
+      angleDegrees: 60,
+      ray: "base",
+      emphasis: "large-elementary"
+    }, placement);
+    const coordinates = largeLine.object.coordinates as readonly (
+      readonly [number, number]
+    )[];
+    expect(Math.hypot(
+      coordinates[1]![0] - coordinates[0]![0],
+      coordinates[1]![1] - coordinates[0]![1]
+    )).toBeGreaterThanOrEqual(190);
+    expect(largeLine.object).toMatchObject({ strokeWidth: 12, radius: 18 });
+    expect(() => compileNativeTool({
+      kind: "point-line",
+      toolKey: "common.point-line",
+      geometry: "line",
+      angleDegrees: 60,
+      ray: "base",
+      emphasis: "oversized"
+    } as never, placement)).toThrow("point-line-emphasis-invalid:oversized");
   });
 
   it("도구 의미 계약과 절대 좌표 배치를 분리한다", () => {

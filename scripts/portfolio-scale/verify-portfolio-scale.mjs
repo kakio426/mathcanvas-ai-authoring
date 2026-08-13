@@ -187,7 +187,7 @@ const inspectNativeUsability = (record, resolved, compiled) => {
         const coordinates = objectsById.get(emission.id)?.coordinates;
         return Array.isArray(coordinates) &&
           coordinates.length >= 2 &&
-          distance(coordinates[0], coordinates[1]) >= 140;
+          distance(coordinates[0], coordinates[1]) >= 190;
       });
     } else if (record.rendererKind === "clock") {
       nativeElementsUsable = nativeEmissions.every((emission) =>

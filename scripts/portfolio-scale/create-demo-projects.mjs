@@ -187,7 +187,7 @@ const measureFirstActivity = async ({
   };
   if (renderer === "number-card") requireMinimum(models, 145);
   else if (renderer === "place-value") requireMinimum(models, 175);
-  else if (renderer === "geometry") requireMinimum(models, 135, "max");
+  else if (renderer === "geometry") requireMinimum(models, 185, "max");
   else if (renderer === "clock") requireMinimum(models, 240);
   else if (renderer === "fraction") requireMinimum(models, 165, "max");
   else if (renderer === "pattern") requireMinimum(models, 120, "max");

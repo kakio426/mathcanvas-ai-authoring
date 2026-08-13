@@ -637,8 +637,12 @@ function anglePoints(
   ) {
     throw new Error(`angle-degrees-out-of-range:${intent.angleDegrees}`);
   }
+  if (intent.emphasis !== undefined && intent.emphasis !== "large-elementary") {
+    throw new Error(`point-line-emphasis-invalid:${String(intent.emphasis)}`);
+  }
+  const largeElementary = intent.emphasis === "large-elementary";
   const rayLength = Math.min(
-    placement.width * 0.35,
+    placement.width * (largeElementary ? 0.47 : 0.35),
     placement.height * 0.78
   );
   const vertex = [
@@ -661,6 +665,7 @@ export function makePointLineObject(
   placement: NativeToolPlacement
 ): Record<string, unknown> {
   const points = anglePoints(intent, placement);
+  const largeElementary = intent.emphasis === "large-elementary";
   const stroke = intent.stroke ??
     (intent.geometry === "angle" ? "#1677D2" : "#5E6473");
   if (intent.geometry === "line") {
@@ -695,14 +700,14 @@ export function makePointLineObject(
       },
       point1: [...points.vertex],
       point2: [...endpoint],
-      radius: 12,
+      radius: largeElementary ? 18 : 12,
       stroke,
       coordinates: [
         [...points.vertex],
         [...endpoint]
       ],
       curveOffset: 0,
-      strokeWidth: 8,
+      strokeWidth: largeElementary ? 12 : 8,
       strokeType: 3,
       strokeDashArray: "none",
       isStrokeChange: true,
@@ -738,7 +743,7 @@ export function makePointLineObject(
       [...points.turn]
     ],
     stroke,
-    strokeWidth: 4,
+    strokeWidth: largeElementary ? 8 : 4,
     strokeType: 2,
     strokeDashArray: "",
     isEyeOn: false,
