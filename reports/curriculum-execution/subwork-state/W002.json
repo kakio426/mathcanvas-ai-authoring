@@ -33,8 +33,16 @@
     },
     {
       "workItemId": "W002-FAMILY_TRACK-change-rule",
-      "completedOperations": [],
-      "nextOperation": "ENGINE_CORE"
+      "completedOperations": [
+        "ENGINE_CORE"
+      ],
+      "nextOperation": "FAMILY_TRACK",
+      "completionEvidenceByOperation": {
+        "ENGINE_CORE": {
+          "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
+          "artifactSha256": "7e0a5eb145fb2e38765df6cbb02da8f11513060867722c54ae3a8d8a62a5b693"
+        }
+      }
     }
   ]
 }
