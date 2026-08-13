@@ -28,7 +28,8 @@ export type ProblemFamilyCapabilityExtension = Readonly<{
 export interface ProblemFamilyRegistrySource {
   readonly registrationKind:
     | "legacy-blueprint-adapter"
-    | "native-problem-family-module";
+    | "native-problem-family-module"
+    | "portfolio-scale-adapter";
   readonly familyId: string;
   readonly templateId: string;
   readonly activityId: string;
@@ -42,6 +43,12 @@ export interface ProblemFamilyRegistrySource {
     | "자료와 가능성";
   readonly learningGoal: string;
   readonly assessmentTargetIds?: readonly string[];
+  /**
+   * 정식 AssessmentTarget 승격 전, 97개 확장 계획의 진단형 문항 경계를
+   * 식별한다. canonical target coverage에는 포함하지 않는다.
+   */
+  readonly portfolioTargetOutlineKeys?: readonly string[];
+  readonly engineClassIds?: readonly string[];
   readonly solReviewScope?: Readonly<{
     readonly familyTrackId: string;
     readonly scopeId: string;

@@ -1417,7 +1417,10 @@ export function prepareRegisteredActivity(
       `activity-handler-unregistered:${recommendation.templateId ?? "missing"}`
     );
   }
-  if (entry.supportState !== "released") {
+  if (
+    entry.supportState !== "released" &&
+    entry.creationMode !== "portfolio-pilot"
+  ) {
     throw new Error(
       `activity-not-released:${entry.blueprint.id}:${entry.supportState}`
     );

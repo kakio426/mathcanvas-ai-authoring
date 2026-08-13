@@ -69,16 +69,21 @@ function displayMathText(value: string): string {
   return value.replaceAll("\\times", "×");
 }
 
+function isCreatableActivity(activity: CurriculumActivityOption): boolean {
+  return activity.availability === "released" ||
+    activity.availability === "portfolio-pilot";
+}
+
 function formForStandard(
   current: LessonForm,
   standard: CurriculumStandardOption,
   requestedActivity?: CurriculumActivityOption
 ): LessonForm {
   const activity =
-    requestedActivity?.availability === "released"
+    requestedActivity && isCreatableActivity(requestedActivity)
       ? requestedActivity
       : standard.activities.find(
-          (candidate) => candidate.availability === "released"
+          isCreatableActivity
         );
   const learningNeed = activity?.learningNeeds[0];
   if (!activity || !learningNeed) {
@@ -304,7 +309,7 @@ export function App() {
           const standard =
             unitStandards.find((candidate) =>
               candidate.activities.some(
-                (activityOption) => activityOption.availability === "released"
+                isCreatableActivity
               )
             ) ??
             unitStandards[0];
@@ -499,9 +504,7 @@ export function App() {
       }));
     const standard =
       standards.find((candidate) =>
-        candidate.activities.some(
-          (activityOption) => activityOption.availability === "released"
-        )
+        candidate.activities.some(isCreatableActivity)
       ) ??
       standards[0];
     const next = { ...current, unitId: unit.id };
@@ -629,7 +632,7 @@ export function App() {
                     <span>성취기준</span>
                     <select value={form.standardCode} onChange={(event) => changeStandard(event.target.value)} disabled={!catalog || unitStandards.length === 0}>
                       {unitStandards.length ? unitStandards.map((standard) => {
-                        const released = standard.activities.some((activityOption) => activityOption.availability === "released");
+                        const released = standard.activities.some(isCreatableActivity);
                         // 교사에게는 지금 만들 수 있는지만 알리고, 내부 검증 단계는 노출하지 않는다.
                         return <option key={standard.standardCode} value={standard.standardCode}>{standard.standardCode} {standard.focusLabel}{released ? " · 활동 있음" : " · 준비 중"}</option>;
                       }) : <option value="">연결된 성취기준 확인 중</option>}
@@ -657,16 +660,17 @@ export function App() {
                     <span aria-hidden="true">2</span>
                     <div><h2 id="focus-step-title">이번 활동에서 다룰 내용을 골라 주세요.</h2><p>같은 성취기준 안에서도 수업의 초점을 한 가지로 정합니다.</p></div>
                   </div>
-                  {selectedStandard.activities.some((activityOption) => activityOption.availability === "released") ? (
+                  {selectedStandard.activities.some(isCreatableActivity) ? (
                     <fieldset className="card-choice-group">
                       <legend className="sr-only">활동 초점</legend>
                       <div className="activity-option-grid">
-                        {selectedStandard.activities.filter((activityOption) => activityOption.availability === "released").map((activityOption) => (
+                        {selectedStandard.activities.filter(isCreatableActivity).map((activityOption) => (
                           <label key={activityOption.id} className={form.activityId === activityOption.id ? "activity-option is-selected" : "activity-option"}>
                             <input type="radio" name="활동 초점" value={activityOption.id} checked={form.activityId === activityOption.id} onChange={() => changeActivity(activityOption.id)} />
                             <span className="option-check" aria-hidden="true">✓</span>
                             <strong>{activityOption.label}</strong>
                             <small>{activityOption.description}</small>
+                            {activityOption.availability === "portfolio-pilot" ? <em>현장 시연용 실행 검증판</em> : null}
                           </label>
                         ))}
                       </div>

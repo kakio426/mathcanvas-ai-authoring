@@ -21,7 +21,7 @@ const baseRequest = {
 } as const;
 
 describe("활동 추천", () => {
-  it("canonical FamilyId만으로 전체 29개 registry 항목을 중앙 분기 없이 라우팅한다", () => {
+  it("canonical FamilyId만으로 전체 registry와 97개 portfolio 실행판을 중앙 분기 없이 라우팅한다", () => {
     for (const family of listProblemFamilyManifests()) {
       const result = recommendActivity({
         ...baseRequest,
@@ -39,7 +39,8 @@ describe("활동 추천", () => {
       );
       expect(result.manipulation, family.familyId).toBe(family.manipulation);
       expect(result.supported, family.familyId).toBe(
-        family.releaseEvidence.supportState === "released"
+        family.releaseEvidence.supportState === "released" ||
+          family.renderRecipe.kind === "portfolio-scale-adapter"
       );
     }
   });

@@ -35,31 +35,46 @@ import type {
   ProblemFamilyNativeModule,
   ProblemFamilyRegistrySource
 } from "./types.js";
+import { PORTFOLIO_SCALE_COUNTS } from "./portfolio-scale.js";
 
 describe("canonical ProblemFamily registry", () => {
-  it("기존 29개와 다섯 native family를 canonical ID로 정확히 한 번 감싼다", () => {
+  it("기존 29개·다섯 native family·97개 portfolio 실행판을 canonical ID로 정확히 한 번 감싼다", () => {
     const manifests = listProblemFamilyManifests();
-    expect(manifests).toHaveLength(34);
+    expect(manifests).toHaveLength(34 + PORTFOLIO_SCALE_COUNTS.standards);
     expect(
       manifests.filter(
         (manifest) => manifest.releaseEvidence.supportState === "released"
       )
     ).toHaveLength(21);
-    expect(new Set(manifests.map((manifest) => manifest.familyId))).toEqual(
-      new Set([
-        ...Object.values(ACTIVITY_IDS),
-        CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
-        DATA_TABLE_ORGANIZE_FAMILY_ID,
-        DECLARED_REPEAT_REPAIR_FAMILY_ID,
-        REPEAT_RULE_CONSTRUCTION_FAMILY_ID,
-        REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
-      ])
+    expect(new Set(manifests.map((manifest) => manifest.familyId)).size).toBe(
+      manifests.length
     );
+    expect(
+      manifests.filter(
+        (manifest) => manifest.renderRecipe.kind === "portfolio-scale-adapter"
+      )
+    ).toHaveLength(PORTFOLIO_SCALE_COUNTS.standards);
+    expect(
+      manifests.filter(
+        (manifest) => manifest.renderRecipe.kind === "portfolio-scale-adapter"
+      ).reduce(
+        (sum, manifest) =>
+          sum +
+          (manifest.renderRecipe.kind === "portfolio-scale-adapter"
+            ? manifest.renderRecipe.targetOutlineCount
+            : 0),
+        0
+      )
+    ).toBe(PORTFOLIO_SCALE_COUNTS.targetOutlines);
     for (const manifest of manifests) {
       expect(manifest.familyId).toBe(manifest.activityId);
       expect(manifest.familyId).toBe(manifest.templateId);
-      expect(manifest.renderRecipe.kind).toBe(
-        ([
+      if (manifest.renderRecipe.kind === "portfolio-scale-adapter") {
+        expect(manifest.assessmentTargetIds).toEqual([]);
+        expect(manifest.releaseEvidence.supportState).toBe("verified");
+      } else {
+        expect(manifest.renderRecipe.kind).toBe(
+          ([
           CLASSIFICATION_GIVEN_CRITERION_COUNT_FAMILY_ID,
           DATA_TABLE_ORGANIZE_FAMILY_ID,
           DECLARED_REPEAT_REPAIR_FAMILY_ID,
@@ -67,8 +82,9 @@ describe("canonical ProblemFamily registry", () => {
           REPEATING_PATTERN_ARRANGEMENT_FAMILY_ID
         ] as readonly string[]).includes(manifest.familyId)
           ? "native-render-recipe"
-          : "legacy-blueprint-adapter"
-      );
+            : "legacy-blueprint-adapter"
+        );
+      }
       expect(manifest.releaseEvidence.blueprintContentHash).toMatch(
         /^[a-f0-9]{64}$/
       );

@@ -75,7 +75,7 @@ export interface CurriculumActivityOption {
   defaultProblemCount: number;
   availableProblemCounts: number[];
   learningNeeds: CurriculumLearningNeedOption[];
-  availability: "verified" | "released";
+  availability: "verified" | "released" | "portfolio-pilot";
   problemParameterCapability?: {
     familyId: string;
     title: string;

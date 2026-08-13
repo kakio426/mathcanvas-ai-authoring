@@ -82,6 +82,9 @@
     "mathcanvas:app:macos:install": "zsh scripts/build-macos-app.sh --install",
     "mathcanvas:ui": "pnpm --filter @mathcanvas/teacher-ui... build && pnpm --filter @mathcanvas/teacher-ui start",
     "mathcanvas:ui:no-open": "MATHCANVAS_UI_NO_OPEN=1 pnpm mathcanvas:ui",
+    "portfolio:verify": "pnpm build && node scripts/portfolio-scale/verify-portfolio-scale.mjs",
+    "portfolio:update": "pnpm build && node scripts/portfolio-scale/verify-portfolio-scale.mjs --write",
+    "portfolio:demo:create": "pnpm build && node scripts/portfolio-scale/create-demo-projects.mjs",
     "lesson-bundle:run": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/run-lesson-bundle-activity.mjs",
     "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
     "prompt-harness:eduitit-html30:update": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs --write",
@@ -115,7 +118,7 @@
     "test:watch": "vitest",
     "teacher-intent:verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/build-teacher-intent-report.mjs",
     "teacher-intent:ui-verify": "pnpm --filter @mathcanvas/teacher-ui... build && node scripts/quality-audit/capture-teacher-intent-ui.mjs",
-    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && node scripts/problem-families/build-registry-report.mjs && node scripts/curriculum/build-coverage-report.mjs && node scripts/curriculum/build-execution-program.mjs && node scripts/curriculum/build-no-family-plan.mjs && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
+    "check": "pnpm architecture:verify && pnpm test:budget && pnpm typecheck && pnpm test && pnpm build && node scripts/portfolio-scale/verify-portfolio-scale.mjs && node scripts/problem-families/build-registry-report.mjs && node scripts/curriculum/build-coverage-report.mjs && node scripts/curriculum/build-execution-program.mjs && node scripts/curriculum/build-no-family-plan.mjs && pnpm native-spatial:verify && pnpm contract:verify:division-native-rubric && pnpm contract:verify:division-counting-group && pnpm cognitive:verify && pnpm visual:audit && pnpm quality:audit"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

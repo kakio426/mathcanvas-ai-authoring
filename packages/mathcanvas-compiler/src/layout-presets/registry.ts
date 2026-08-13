@@ -29,6 +29,7 @@ import {
   wave23ClaimEvidenceLayoutPreset
 } from "./wave23-claim-evidence-v1.js";
 import { wave25DivisionGroupingLayoutPreset } from "./wave25-division-grouping-v1.js";
+import { portfolioScaleLayoutPreset } from "./portfolio-scale-v1.js";
 
 type WritingLayoutShift = {
   readonly fromY: number;
@@ -289,7 +290,8 @@ const rawPresets: Readonly<Record<string, LayoutPreset>> = {
   "wave23-claim-evidence-v1": wave23ClaimEvidenceLayoutPreset,
   "wave23-angle-claim-evidence-v1":
     wave23AngleClaimEvidenceLayoutPreset,
-  "wave25-division-grouping-v1": wave25DivisionGroupingLayoutPreset
+  "wave25-division-grouping-v1": wave25DivisionGroupingLayoutPreset,
+  "portfolio-scale-v1": portfolioScaleLayoutPreset
 };
 
 const presets: Readonly<Record<string, LayoutPreset>> =

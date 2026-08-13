@@ -37,12 +37,12 @@
     "packages/contracts/src/catalog/cognitive-demand.test.ts": "f34afe05085c5777d00e0715b956ef543f7327c80949360d50b321e5fa741a2f",
     "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.ts": "50f997d7f107393dccfb3aa735ef3e5522fd219b642c43b4e61f09dcc3f1f09c",
     "packages/mathcanvas-compiler/src/layout-presets/w002-change-rule-v1.test.ts": "c2cbc27b90c790304a64f2635a81ab4df86c01cdd34d1c1cc0d1b1117051f60c",
-    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "13c31238134eb09d5787d978e3c8960a412e7844e67bef87ccd60a8c211d63f7",
+    "packages/mathcanvas-compiler/src/layout-presets/registry.ts": "8fac10704eb7a7bd54898b88707c70a80c3cb1331d3768b63dbab4677f64877f",
     "packages/validator/src/predicates/registry.ts": "c8285cbcd2ff8527b3d04ba98f3982731348ad0a49b56ba3a2e4cf0220d0bb0d",
     "packages/validator/src/validator.test.ts": "3eb2ac0b6ea2e667eb4ab85e437bccdc63d58ba7eaaafa93ad2542913b8ebed8",
     "packages/templates/src/cognitive/registry.ts": "720686d94b0ea203a0d8913982a9d2a40fab9a8c2ef214a586189f4b02bfa81b",
     "packages/templates/src/cognitive/registry.test.ts": "594f5f031b7f3f352d2af116f8d198958f9e73a6da6b25a0f684628ac5ad3e7b",
-    "scripts/pedagogy/check-cognitive-demand.mjs": "80d3e583f8e222ccb2bbe9584e4c7ce25a2cb64e6601afbb57dd4ae293a57d18"
+    "scripts/pedagogy/check-cognitive-demand.mjs": "39b635b26c4e3742253b540be5e8353d47e76433a528126425ad17c669cc30f2"
   },
   "verification": {
     "status": "implemented-verified-pending-family-track",

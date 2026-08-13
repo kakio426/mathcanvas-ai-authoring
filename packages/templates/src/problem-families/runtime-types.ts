@@ -49,6 +49,8 @@ export type ProblemFamilyRuntimeBinding = Readonly<{
     options: GenerateActivitySpecOptions
   ) => RegisteredActivityPlan;
   supportState: "verified" | "released";
+  /** 정식 출시와 분리된, 담당자 시연용 실행 검증 경계. */
+  creationMode?: "portfolio-pilot";
   /**
    * 전체 variation/cognitive 감사가 native family의 문항 생성기를 중앙 switch 없이
    * 호출하는 경계다. legacy binding은 기존 item-generator registry를 사용한다.

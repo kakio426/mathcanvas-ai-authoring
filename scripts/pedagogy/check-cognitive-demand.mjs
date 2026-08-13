@@ -47,8 +47,20 @@ const learningMapUsage = JSON.parse(
     "utf8"
   )
 );
-const learningMapTopicIds = new Set(
-  learningMapUsage.topics.map((topic) => topic.id)
+const noFamilyLearningMapUsage = JSON.parse(
+  await readFile(
+    new URL(
+      "../../fixtures/pedagogy/no-family-learning-map.used.json",
+      import.meta.url
+    ),
+    "utf8"
+  )
+);
+const learningMapUsagesBySha256 = new Map(
+  [learningMapUsage, noFamilyLearningMapUsage].map((usage) => [
+    sha256Hex(usage),
+    usage
+  ])
 );
 
 const sameSet = (left, right) =>
@@ -864,23 +876,27 @@ for (const manifest of manifests) {
     continue;
   }
 
+  const manifestLearningMapUsage = learningMapUsagesBySha256.get(
+    manifest.learningMap.usageSnapshotSha256
+  );
+  const manifestLearningMapTopicIds = new Set(
+    manifestLearningMapUsage?.topics.map((topic) => topic.id) ?? []
+  );
   if (
     manifest.learningMap.commit !== LEARNING_MAP_COMMIT ||
-    learningMapUsage.commit !== LEARNING_MAP_COMMIT ||
-    manifest.learningMap.usageSnapshotSha256 !==
-      sha256Hex(learningMapUsage) ||
+    manifestLearningMapUsage?.commit !== LEARNING_MAP_COMMIT ||
     manifest.learningMap.topicIds.some(
-      (topicId) => !learningMapTopicIds.has(topicId)
+      (topicId) => !manifestLearningMapTopicIds.has(topicId)
     ) ||
     manifest.learningMap.prerequisiteTopicIds.some(
-      (topicId) => !learningMapTopicIds.has(topicId)
+      (topicId) => !manifestLearningMapTopicIds.has(topicId)
     )
   ) {
     failures.push(
       `learning-map-provenance-invalid:${blueprint.id}`
     );
   }
-  const sourceTopics = learningMapUsage.topics.filter((topic) =>
+  const sourceTopics = (manifestLearningMapUsage?.topics ?? []).filter((topic) =>
     manifest.learningMap.topicIds.includes(topic.id)
   );
   const sourceEvidence = new Set(

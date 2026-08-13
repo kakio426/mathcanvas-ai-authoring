@@ -14,7 +14,7 @@
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-rule-engine-core-v10-compat.json",
-          "artifactSha256": "e4fd91462c1628d3819f4b92cd8127f9f7d7a102fb7d3d5b17ca01eb6731f685"
+          "artifactSha256": "e546a5787f371a5ac508f5796c702bafc038cbece8807f6db6fe47fa05592df9"
         }
       }
     },
@@ -27,7 +27,7 @@
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-repeat-repair-engine-core-v11.json",
-          "artifactSha256": "fd76078d3a67600c6f88258b7d207c2d1e0c084eeded0474ef5e4b76d48442f1"
+          "artifactSha256": "d7d66b09e3c8230c307f9516bad4efeee3549f9e6cc65a613d1f4b55cc7d9704"
         }
       }
     },
@@ -40,7 +40,7 @@
       "completionEvidenceByOperation": {
         "ENGINE_CORE": {
           "artifactPath": "reports/curriculum-execution/subwork-state/W002-FAMILY_TRACK-change-rule-engine-core-v16.json",
-          "artifactSha256": "7e0a5eb145fb2e38765df6cbb02da8f11513060867722c54ae3a8d8a62a5b693"
+          "artifactSha256": "8ca3c6407a7be8d424b85d40151f1050403fdbdb0f44467b02f0fc87103ae53e"
         }
       }
     }

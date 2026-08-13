@@ -56,9 +56,14 @@ function defaultCapability(source: ProblemFamilyRegistrySource) {
     parameterFields: [],
     promptGuards: [],
     unsupportedParameterPolicy: "unsupported" as const,
-    title: source.learningGoal,
+    title:
+      source.registrationKind === "portfolio-scale-adapter"
+        ? `${source.standardCode} 핵심 판단·자료 확인`
+        : source.learningGoal,
     scopeNote:
-      "이 legacy family는 검증된 문제 수와 난이도 variation만 지원하며 추가 맞춤 조건은 아직 받지 않습니다."
+      source.registrationKind === "portfolio-scale-adapter"
+        ? `${source.portfolioTargetOutlineKeys?.length ?? 0}개 목표 윤곽을 모두 문항으로 만드는 현장 시연용 실행 검증판입니다. 정식 숙달 판정이나 자동 채점은 주장하지 않습니다.`
+        : "이 legacy family는 검증된 문제 수와 난이도 variation만 지원하며 추가 맞춤 조건은 아직 받지 않습니다."
   };
 }
 
@@ -151,13 +156,24 @@ export function createProblemFamilyRegistry(
                 blueprintId: source.familyId,
                 layoutTokenSet: source.blueprint.layoutTokenSet
               }
-            : {
+            : source.registrationKind === "native-problem-family-module"
+              ? {
                 kind: "native-render-recipe",
                 recipeId: source.familyId,
                 recipeVersion: source.blueprint.version,
                 rendererId: source.familyId,
                 layoutTokenSet: source.blueprint.layoutTokenSet
-              },
+              }
+              : {
+                  kind: "portfolio-scale-adapter",
+                  recipeId: source.familyId,
+                  recipeVersion: source.blueprint.version,
+                  rendererId: source.familyId,
+                  layoutTokenSet: source.blueprint.layoutTokenSet,
+                  targetOutlineCount:
+                    source.portfolioTargetOutlineKeys?.length ?? 0,
+                  engineClassIds: [...(source.engineClassIds ?? [])]
+                },
         ...(source.solReviewScope
           ? { solReviewScope: { ...source.solReviewScope } }
           : {}),

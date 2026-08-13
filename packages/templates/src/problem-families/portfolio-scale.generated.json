@@ -1,0 +1,4508 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": {
+    "planId": "kr-2022-elementary-math-no-family-baseline",
+    "targetOutlinePlanId": "kr-2022-elementary-math-no-family-target-outlines-sol-draft",
+    "targetOutlineSha256": "5051aea0b97670a9dec99d9790b293e328d1ef4985abe9b430213c16cf2b0096",
+    "executionPlanSha256": "3e1c9a2ade37fd96106c5caa6c6d238a29259ba2065daeba69526f6ee6839ecb",
+    "learningMapCommit": "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
+    "learningMapUsageSha256": "cb5db1d795f53fa0a11659aadf75d39c052f200ef4a84be7e58489b6bbde5b2a"
+  },
+  "standardCount": 97,
+  "targetOutlineCount": 237,
+  "records": [
+    {
+      "sequence": 1,
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "standardSlug": "2su04-02",
+      "officialGoal": "자료를 분류하여 표로 나타내고, 자료를 표로 나타내면 편리한 점을 말할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "archetypeId": "D01A",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.2su04-02.diagnostic-v1",
+      "manipulation": "portfolio-2su04-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "organize-classified-data-in-table",
+          "studentDecision": "분류된 각 자료를 알맞은 표의 범주에 대응시키고 개수를 나타낸다.",
+          "invariant": "표의 범주별 개수 합은 원자료의 전체 개수와 같고 각 자료는 정확히 한 범주에 속한다.",
+          "observableEvidence": "완성한 표의 범주·개수와 원자료의 대응을 화면에서 확인할 수 있다.",
+          "misconceptionClass": "table-category-or-count-mismatch"
+        },
+        {
+          "key": "explain-table-usefulness",
+          "studentDecision": "원자료보다 표가 비교·집계에 편리한 이유를 자료에 근거해 고른다.",
+          "invariant": "표는 같은 범주의 자료를 모아 개수와 범주 간 차이를 드러낸다.",
+          "observableEvidence": "표에서 바로 읽을 수 있는 개수나 비교 결과를 근거로 설명한다.",
+          "misconceptionClass": "table-as-decoration-without-information-gain"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g1-2.s2-04-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g1-2.s2-04-02.representation"
+        ],
+        "observableEvidence": [
+          "[2수04-02] 자료의 정리 - 적용과 설명을 수행하는 순서와 주의할 점을 말한 뒤 과제를 끝까지 실행한다.",
+          "수행 과정과 결과를 기록하고, [2수04-02] 자료의 정리 - 적용과 설명의 다음 시도에서 바꿀 점을 한 가지 제시한다."
+        ],
+        "assessmentPrompt": "'자료의 정리'에 관한 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 계산 또는 표현, 답의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 2,
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "standardSlug": "2su02-02",
+      "officialGoal": "자신이 정한 규칙에 따라 물체, 무늬, 수 등을 배열할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "변화와 관계",
+      "archetypeId": "C01",
+      "engineClassIds": [
+        "R08"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.2su02-02.diagnostic-v1",
+      "manipulation": "portfolio-2su02-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "choose-own-arrangement-rule",
+          "studentDecision": "물체·무늬 배열에 적용할 반복 단위의 성분과 순서를 스스로 정하고 선언한다.",
+          "invariant": "정한 반복 단위가 배열의 모든 연속 위치에 같은 순서로 적용된다.",
+          "observableEvidence": "학생이 구성·선언한 반복 단위와 그 경계가 배열 시작 부분에 드러난다.",
+          "misconceptionClass": "repeat-unit-changes-mid-sequence"
+        },
+        {
+          "key": "construct-repeat-arrangement-following-rule",
+          "studentDecision": "스스로 선언한 반복 단위에 맞도록 다음 항목들을 배열하고 어긋난 반복 항목을 고친다.",
+          "invariant": "반복 배열의 모든 항목은 학생이 선언한 동일한 반복 단위로 생성된다.",
+          "observableEvidence": "완성된 반복 배열에서 단위 경계·수정된 항목·반복 근거를 다시 추적할 수 있다.",
+          "misconceptionClass": "copy-last-item-instead-of-applying-repeat-rule"
+        },
+        {
+          "key": "construct-change-arrangement-following-rule",
+          "studentDecision": "수 배열에 적용할 시작값·변화량·방향을 스스로 정하고 선언한 뒤, 그 관계로 다음 항을 배열하고 어긋난 항을 고친다.",
+          "invariant": "변화 배열의 모든 인접 항은 학생이 선언한 시작값·변화량·방향의 같은 관계를 만족한다.",
+          "observableEvidence": "학생이 구성·선언한 시작값·변화량·방향과 연속 항의 관계를 화면에서 대조하고 다음 항을 예측한다.",
+          "misconceptionClass": "change-step-or-direction-mismatch"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g1-2.s2-02-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g1-2.s2-02-02.representation"
+        ],
+        "observableEvidence": [
+          "자신이 정한 규칙으로 배열을 끝까지 구성하고 어긋난 항목을 고친다.",
+          "수행 과정과 결과를 기록하고, 다음 배열에서 규칙을 더 분명히 드러낼 방법을 제시한다."
+        ],
+        "assessmentPrompt": "자신이 정한 규칙으로 물체·무늬·수를 배열하는 생활 또는 탐구 문제를 제시하고, 학생이 풀이 전략, 배열 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 3,
+      "workItemId": "W003",
+      "standardCode": "[4수03-01]",
+      "standardSlug": "4su03-01",
+      "officialGoal": "직선, 선분, 반직선을 이해하고 구별할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G01",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-01.diagnostic-v1",
+      "manipulation": "portfolio-4su03-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-line-ray-segment-properties",
+          "studentDecision": "끝점의 수와 뻗는 방향을 근거로 직선·선분·반직선의 성질을 정한다.",
+          "invariant": "직선은 양쪽, 반직선은 한쪽으로 계속 뻗고 선분은 두 끝점 사이로 한정된다.",
+          "observableEvidence": "끝점과 연장 방향을 표시한 그림에 알맞은 이름을 대응한다.",
+          "misconceptionClass": "line-type-judged-by-drawn-length"
+        },
+        {
+          "key": "distinguish-line-ray-segment-examples",
+          "studentDecision": "방향이나 길이가 달라진 사례에서도 직선·선분·반직선을 구별한다.",
+          "invariant": "그림의 위치·방향·보이는 길이는 도형의 종류를 바꾸지 않는다.",
+          "observableEvidence": "여러 방향의 사례를 분류하고 끝점·연장 표시로 근거를 남긴다.",
+          "misconceptionClass": "orientation-dependent-line-classification"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-01.representation"
+        ],
+        "observableEvidence": [
+          "직선, 선분, 반직선을 이해하고 구별할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 4,
+      "workItemId": "W004",
+      "standardCode": "[2수03-01]",
+      "standardSlug": "2su03-01",
+      "officialGoal": "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 직육면체, 원기둥, 구의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G02",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-01.diagnostic-v1",
+      "manipulation": "portfolio-2su03-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "match-everyday-objects-to-solid-shapes",
+          "studentDecision": "생활 물건의 전체 모양을 직육면체·원기둥·구와 대응한다.",
+          "invariant": "크기·색·재료가 달라도 평평한 면과 굽은 면의 구성은 같은 모양을 결정한다.",
+          "observableEvidence": "물건을 세 입체 모양 범주에 분류하고 보이는 면의 특징을 가리킨다.",
+          "misconceptionClass": "solid-classified-by-object-purpose"
+        },
+        {
+          "key": "compose-shapes-with-solid-objects",
+          "studentDecision": "직육면체·원기둥·구 모양을 조합해 목표 모양을 만들고 안정적인 위치를 정한다.",
+          "invariant": "사용한 입체 모양의 종류와 접촉 관계가 완성 모양에 남는다.",
+          "observableEvidence": "완성된 합성 모양에서 각 구성 물체의 위치와 방향을 확인할 수 있다.",
+          "misconceptionClass": "solid-composition-ignores-contact-orientation"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-01.representation"
+        ],
+        "observableEvidence": [
+          "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 직육면체, 원기둥, 구의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 5,
+      "workItemId": "W005",
+      "standardCode": "[4수04-02]",
+      "standardSlug": "4su04-02",
+      "officialGoal": "자료를 수집하여 꺾은선그래프로 나타내고 해석할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "archetypeId": "D02A",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.4su04-02.diagnostic-v1",
+      "manipulation": "portfolio-4su04-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "collect-ordered-change-data",
+          "studentDecision": "변화를 살필 순서 변수를 정하고 그 순서에 맞게 자료를 수집·정리한다.",
+          "invariant": "각 자료값은 정확히 하나의 순서 위치와 대응한다.",
+          "observableEvidence": "순서가 있는 표에 빠짐이나 중복 없이 자료값을 기록한다.",
+          "misconceptionClass": "unordered-or-duplicate-time-data"
+        },
+        {
+          "key": "construct-line-graph-from-data",
+          "studentDecision": "축·눈금·자료점을 정하고 순서대로 연결해 꺾은선그래프를 만든다.",
+          "invariant": "각 점의 좌표는 자료표의 순서와 값에 정확히 대응한다.",
+          "observableEvidence": "자료표와 그래프의 모든 점·눈금·연결 순서를 대조할 수 있다.",
+          "misconceptionClass": "line-graph-scale-or-order-mismatch"
+        },
+        {
+          "key": "interpret-line-graph-change",
+          "studentDecision": "그래프에서 증가·감소·변화량을 읽어 자료에 맞는 결론을 고른다.",
+          "invariant": "해석한 변화 방향과 크기는 인접 자료점의 차이와 일치한다.",
+          "observableEvidence": "선택한 구간과 두 값을 표시하고 변화 결론을 남긴다.",
+          "misconceptionClass": "line-slope-read-without-axis-values"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g3-4.s4-04-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g3-4.s4-04-02.representation"
+        ],
+        "observableEvidence": [
+          "자료를 수집하여 꺾은선그래프로 나타내고 해석할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수04-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수04-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 6,
+      "workItemId": "W006",
+      "standardCode": "[6수02-01]",
+      "standardSlug": "6su02-01",
+      "officialGoal": "한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "archetypeId": "C02C",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su02-01.diagnostic-v1",
+      "manipulation": "portfolio-6su02-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "find-covariation-rule-in-table",
+          "studentDecision": "표의 모든 행에 공통으로 적용되는 두 양의 대응 규칙을 찾는다.",
+          "invariant": "같은 입력-출력 관계가 표의 모든 순서쌍을 만족한다.",
+          "observableEvidence": "각 행에 같은 연산이나 배율을 적용해 결과가 맞음을 표시한다.",
+          "misconceptionClass": "rule-fits-only-one-table-row"
+        },
+        {
+          "key": "explain-covariation-rule",
+          "studentDecision": "한 양이 변할 때 다른 양이 어떻게 변하는지 두 양의 역할을 구별해 설명한다.",
+          "invariant": "설명은 입력과 출력의 방향 및 단위를 바꾸지 않는다.",
+          "observableEvidence": "표의 두 행 이상을 근거로 변화 관계를 문장으로 남긴다.",
+          "misconceptionClass": "input-output-role-reversal"
+        },
+        {
+          "key": "represent-covariation-with-symbolic-expression",
+          "studentDecision": "□와 △에 두 양을 대응시키고 규칙을 식으로 나타낸다.",
+          "invariant": "식에 표의 모든 입력값을 넣으면 대응 출력값이 나온다.",
+          "observableEvidence": "기호의 뜻을 표시하고 식을 표의 여러 행으로 검산한다.",
+          "misconceptionClass": "symbolic-expression-operation-or-role-mismatch"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g5-6.s6-02-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g5-6.s6-02-01.representation"
+        ],
+        "observableEvidence": [
+          "한 양이 변할 때 다른 양이 그에 종속하여 변하는 대응 관계를 나타낸 표에서 규칙을 찾아 설명하고, □, △ 등을 사용하여 식으로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수02-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수02-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 7,
+      "workItemId": "W007",
+      "standardCode": "[2수01-01]",
+      "standardSlug": "2su01-01",
+      "officialGoal": "수의 필요성을 인식하면서 0과 100까지의 수 개념을 이해하고, 수를 세고 읽고 쓸 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N01A",
+      "engineClassIds": [
+        "R01"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-01.diagnostic-v1",
+      "manipulation": "portfolio-2su01-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "recognize-number-purpose-and-zero",
+          "studentDecision": "생활 장면에서 수가 필요한 이유와 0이 나타내는 상태를 판단한다.",
+          "invariant": "수는 순서나 수량을 명확히 나타내며 0은 대상이 없음을 나타낼 수 있다.",
+          "observableEvidence": "장면의 수량·순서와 수 기호를 대응하고 0이 필요한 사례를 고른다.",
+          "misconceptionClass": "zero-treated-as-no-number"
+        },
+        {
+          "key": "count-cardinality-to-one-hundred",
+          "studentDecision": "대상을 빠짐·중복 없이 세어 전체 수량을 정한다.",
+          "invariant": "배열이나 세기 순서가 달라도 마지막 수와 전체 수량은 같다.",
+          "observableEvidence": "대상과 수를 일대일 대응하고 마지막 수 카드로 전체를 나타낸다.",
+          "misconceptionClass": "counting-skip-or-double-count"
+        },
+        {
+          "key": "read-and-write-numbers-to-one-hundred",
+          "studentDecision": "0부터 100까지 수의 기호와 읽기를 서로 대응한다.",
+          "invariant": "십의 자리와 일의 자리 값의 합이 읽고 쓴 수와 같다.",
+          "observableEvidence": "수 모형·수 기호·한글 읽기 중 두 표현 이상을 일치시킨다.",
+          "misconceptionClass": "digit-order-or-place-value-reversal"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-01.representation"
+        ],
+        "observableEvidence": [
+          "수의 필요성을 인식하면서 0과 100까지의 수 개념을 이해하고, 수를 세고 읽고 쓸 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 8,
+      "workItemId": "W008",
+      "standardCode": "[4수02-01]",
+      "standardSlug": "4su02-01",
+      "officialGoal": "다양한 변화 규칙을 찾아 설명하고, 그 규칙을 수나 식으로 나타낼 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "archetypeId": "C02A",
+      "engineClassIds": [
+        "R08"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.4su02-01.diagnostic-v1",
+      "manipulation": "portfolio-4su02-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "find-change-rule",
+          "studentDecision": "수·무늬·도형의 연속 변화에서 모든 단계에 맞는 규칙을 찾는다.",
+          "invariant": "동일한 변화 연산이 각 인접 단계에 일관되게 적용된다.",
+          "observableEvidence": "두 단계 이상에 규칙을 적용해 다음 상태를 맞힌다.",
+          "misconceptionClass": "rule-inferred-from-single-transition"
+        },
+        {
+          "key": "explain-change-rule",
+          "studentDecision": "무엇이 얼마만큼 어떻게 변하는지 대상을 분명히 하여 설명한다.",
+          "invariant": "설명의 방향과 변화량은 실제 배열의 순서와 일치한다.",
+          "observableEvidence": "변화 전후 요소를 가리키며 같은 설명이 반복됨을 보인다.",
+          "misconceptionClass": "change-direction-or-unit-omitted"
+        },
+        {
+          "key": "represent-change-rule-with-number-or-expression",
+          "studentDecision": "찾은 규칙을 수의 배열이나 식으로 나타낸다.",
+          "invariant": "표현에 값을 대입하거나 다음 항에 적용하면 실제 변화와 같다.",
+          "observableEvidence": "그림 규칙과 수·식 표현을 대응해 검산한다.",
+          "misconceptionClass": "representation-does-not-preserve-rule"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g3-4.s4-02-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g3-4.s4-02-01.representation"
+        ],
+        "observableEvidence": [
+          "다양한 변화 규칙을 찾아 설명하고, 그 규칙을 수나 식으로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수02-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수02-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 9,
+      "workItemId": "W009",
+      "standardCode": "[6수04-01]",
+      "standardSlug": "6su04-01",
+      "officialGoal": "평균의 의미를 알고, 자료를 수집하여 평균을 구하고 해석할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "archetypeId": "D03",
+      "engineClassIds": [
+        "R23"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su04-01.diagnostic-v1",
+      "manipulation": "portfolio-6su04-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-mean-as-equal-share",
+          "studentDecision": "자료의 전체를 같은 수의 대상에게 고르게 나눈 값을 평균으로 판단한다.",
+          "invariant": "자료의 합은 자료 수와 평균의 곱과 같다.",
+          "observableEvidence": "서로 다른 양을 재분배해 모두 같은 양이 되는 상태를 만든다.",
+          "misconceptionClass": "mean-confused-with-middle-or-most-frequent-value"
+        },
+        {
+          "key": "collect-data-for-mean",
+          "studentDecision": "평균으로 답할 수 있는 동일한 단위의 자료를 수집한다.",
+          "invariant": "모든 자료값은 같은 변인·단위·대상 범위를 사용한다.",
+          "observableEvidence": "자료표에 단위와 대상이 일관된 값을 기록한다.",
+          "misconceptionClass": "mean-data-mixes-units-or-populations"
+        },
+        {
+          "key": "calculate-mean",
+          "studentDecision": "자료의 합과 자료 수를 이용해 평균을 계산한다.",
+          "invariant": "계산한 평균×자료 수가 원자료 합과 같다.",
+          "observableEvidence": "합계·자료 수·나눗셈식과 평균을 함께 남긴다.",
+          "misconceptionClass": "divide-by-wrong-data-count"
+        },
+        {
+          "key": "interpret-mean-in-context",
+          "studentDecision": "평균이 자료 집단의 대표값으로 무엇을 뜻하는지 판단한다.",
+          "invariant": "평균은 개별 실제값일 필요는 없지만 전체 합을 보존하는 공평한 값이다.",
+          "observableEvidence": "원자료 범위와 평균을 비교해 가능한 해석과 불가능한 해석을 구별한다.",
+          "misconceptionClass": "mean-treated-as-observed-individual-value"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g5-6.s6-04-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g5-6.s6-04-01.representation"
+        ],
+        "observableEvidence": [
+          "평균의 의미를 알고, 자료를 수집하여 평균을 구하고 해석할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수04-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수04-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 10,
+      "workItemId": "W010",
+      "standardCode": "[4수01-01]",
+      "standardSlug": "4su01-01",
+      "officialGoal": "큰 수의 필요성을 인식하면서 10000 이상의 큰 수에 대한 자릿값과 위치적 기수법을 이해하고, 수를 읽고 쓸 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N01B",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-01.diagnostic-v1",
+      "manipulation": "portfolio-4su01-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "recognize-need-for-large-numbers",
+          "studentDecision": "생활 장면의 큰 수량을 묶음과 큰 수 단위로 나타낼 필요를 판단한다.",
+          "invariant": "같은 수량은 더 큰 단위로 묶어도 전체 값이 보존된다.",
+          "observableEvidence": "낱개 표현과 만 이상의 묶음 표현을 같은 수량으로 대응한다.",
+          "misconceptionClass": "large-number-unit-does-not-preserve-quantity"
+        },
+        {
+          "key": "compose-large-number-place-values",
+          "studentDecision": "10000 이상 수의 각 숫자가 나타내는 자릿값을 정한다.",
+          "invariant": "각 자리값의 합이 원래 수와 같고 한 칸 이동할 때 단위가 10배 변한다.",
+          "observableEvidence": "자릿값 모형·전개형·표준형을 서로 대응한다.",
+          "misconceptionClass": "large-number-zero-placeholder-or-place-shift"
+        },
+        {
+          "key": "read-and-write-large-numbers",
+          "studentDecision": "큰 수의 표준형과 한국어 읽기를 정확히 대응한다.",
+          "invariant": "자리 묶음과 0의 위치가 읽기와 쓰기에서 동일한 값을 나타낸다.",
+          "observableEvidence": "수 기호·자릿값표·읽기 카드 세 표현을 일치시킨다.",
+          "misconceptionClass": "large-number-grouping-or-zero-omission"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-01.representation"
+        ],
+        "observableEvidence": [
+          "큰 수의 필요성을 인식하면서 10000 이상의 큰 수에 대한 자릿값과 위치적 기수법을 이해하고, 수를 읽고 쓸 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 11,
+      "workItemId": "W011",
+      "standardCode": "[6수03-01]",
+      "standardSlug": "6su03-01",
+      "officialGoal": "도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G07",
+      "engineClassIds": [
+        "R15",
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-01.diagnostic-v1",
+      "manipulation": "portfolio-6su03-01-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-congruent-figures",
+          "studentDecision": "이동·뒤집기·돌리기로 완전히 겹칠 수 있는 두 도형을 합동으로 판단한다.",
+          "invariant": "위치와 방향이 달라도 대응하는 길이와 각이 모두 같으면 합동이다.",
+          "observableEvidence": "두 도형을 겹치거나 대응점·변·각을 표시해 판단을 남긴다.",
+          "misconceptionClass": "congruence-confused-with-same-orientation-or-area"
+        },
+        {
+          "key": "find-corresponding-elements-in-congruent-figures",
+          "studentDecision": "합동인 두 도형의 대응점·대응변·대응각을 정한다.",
+          "invariant": "한 대응 관계는 도형의 순서와 인접 관계를 모두 보존한다.",
+          "observableEvidence": "같은 표식으로 대응 요소를 연결하고 겹침으로 확인한다.",
+          "misconceptionClass": "congruent-correspondence-order-mismatch"
+        },
+        {
+          "key": "explain-congruent-properties",
+          "studentDecision": "대응변 길이와 대응각 크기가 같은 이유를 합동 관계로 설명한다.",
+          "invariant": "강체 이동은 길이와 각을 보존한다.",
+          "observableEvidence": "측정값이나 겹친 상태를 근거로 성질을 설명한다.",
+          "misconceptionClass": "congruent-property-claimed-without-correspondence"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-01.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-01.representation"
+        ],
+        "observableEvidence": [
+          "도형의 합동을 이해하고, 합동인 도형의 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-01]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-01] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 12,
+      "workItemId": "W012",
+      "standardCode": "[2수04-03]",
+      "standardSlug": "2su04-03",
+      "officialGoal": "자료를 분류하여 ○, ×, / 등을 이용한 그래프로 나타내고, 자료를 그래프로 나타내면 편리한 점을 말할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "자료와 가능성",
+      "archetypeId": "D01B",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.2su04-03.diagnostic-v1",
+      "manipulation": "portfolio-2su04-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "represent-classified-data-with-symbol-graph",
+          "studentDecision": "분류한 자료 하나마다 약속한 기호 하나를 알맞은 범주에 놓는다.",
+          "invariant": "범주별 기호 수는 원자료의 범주별 개수와 같고 전체 기호 수는 전체 자료 수와 같다.",
+          "observableEvidence": "완성한 기호그래프와 원자료를 하나씩 대응할 수 있다.",
+          "misconceptionClass": "symbol-graph-one-to-one-count-mismatch"
+        },
+        {
+          "key": "explain-symbol-graph-usefulness",
+          "studentDecision": "그래프가 개수와 범주 간 비교를 빠르게 보여 주는 이유를 고른다.",
+          "invariant": "같은 크기 기호의 수 차이는 자료 개수 차이와 일치한다.",
+          "observableEvidence": "그래프에서 바로 읽은 최다·최소·차이를 근거로 설명한다.",
+          "misconceptionClass": "symbol-size-instead-of-symbol-count"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g1-2.s2-04-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g1-2.s2-04-03.representation"
+        ],
+        "observableEvidence": [
+          "자료를 분류하여 ○, ×, / 등을 이용한 그래프로 나타내고, 자료를 그래프로 나타내면 편리한 점을 말할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수04-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수04-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 13,
+      "workItemId": "W013",
+      "standardCode": "[4수03-02]",
+      "standardSlug": "4su03-02",
+      "officialGoal": "각과 직각을 이해하고, 직각과 비교하는 활동을 통하여 예각과 둔각을 구별할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G05",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-02.diagnostic-v1",
+      "manipulation": "portfolio-4su03-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-angle-and-right-angle",
+          "studentDecision": "두 반직선의 벌어진 정도를 각으로 보고 직각과 일치하는 각을 찾는다.",
+          "invariant": "변의 길이가 아니라 두 변이 벌어진 정도가 각의 크기를 결정한다.",
+          "observableEvidence": "직각 기준 모형을 각에 겹쳐 일치 여부를 표시한다.",
+          "misconceptionClass": "angle-size-judged-by-ray-length"
+        },
+        {
+          "key": "classify-acute-and-obtuse-against-right-angle",
+          "studentDecision": "직각보다 작은 각과 큰 각을 각각 예각·둔각으로 분류한다.",
+          "invariant": "회전·방향이 달라도 직각과의 크기 비교 결과는 같다.",
+          "observableEvidence": "직각 기준을 겹친 상태와 분류 결과를 함께 남긴다.",
+          "misconceptionClass": "angle-classification-by-orientation"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-02.representation"
+        ],
+        "observableEvidence": [
+          "각과 직각을 이해하고, 직각과 비교하는 활동을 통하여 예각과 둔각을 구별할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 14,
+      "workItemId": "W014",
+      "standardCode": "[6수01-02]",
+      "standardSlug": "6su01-02",
+      "officialGoal": "실생활과 연결하여 이상, 이하, 초과, 미만의 의미와 쓰임을 알고, 이를 활용하여 수의 범위를 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N03",
+      "engineClassIds": [
+        "R03"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.6su01-02.diagnostic-v1",
+      "manipulation": "portfolio-6su01-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "distinguish-inclusive-exclusive-range-terms",
+          "studentDecision": "경계값 포함 여부에 맞게 이상·이하·초과·미만을 구별한다.",
+          "invariant": "이상·이하는 경계를 포함하고 초과·미만은 경계를 포함하지 않는다.",
+          "observableEvidence": "경계값 카드의 포함·제외와 용어를 대응한다.",
+          "misconceptionClass": "inclusive-exclusive-boundary-confusion"
+        },
+        {
+          "key": "represent-number-range",
+          "studentDecision": "한쪽 또는 양쪽 조건을 만족하는 수의 범위를 수직선이나 식으로 나타낸다.",
+          "invariant": "표현에 포함된 모든 수와 제외된 모든 수가 조건문과 일치한다.",
+          "observableEvidence": "경계 표식·방향·조건식을 서로 대조할 수 있다.",
+          "misconceptionClass": "range-direction-or-endpoint-mismatch"
+        },
+        {
+          "key": "apply-number-range-in-context",
+          "studentDecision": "생활 조건을 수의 범위로 번역해 해당하는 값과 해당하지 않는 값을 판단한다.",
+          "invariant": "단위와 경계 포함 여부가 원래 상황 조건과 같다.",
+          "observableEvidence": "경계 근처의 반례와 정례를 각각 분류한다.",
+          "misconceptionClass": "context-range-unit-or-boundary-loss"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-02.representation"
+        ],
+        "observableEvidence": [
+          "실생활과 연결하여 이상, 이하, 초과, 미만의 의미와 쓰임을 알고, 이를 활용하여 수의 범위를 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 15,
+      "workItemId": "W015",
+      "standardCode": "[2수03-02]",
+      "standardSlug": "2su03-02",
+      "officialGoal": "쌓기나무를 이용하여 여러 가지 입체도형의 모양을 만들고, 그 모양에 대해 위치나 방향을 이용하여 말할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G08",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-02.diagnostic-v1",
+      "manipulation": "portfolio-2su03-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-solid-with-cubes",
+          "studentDecision": "목표 조건에 맞게 쌓기나무를 놓고 숨은 칸 없이 입체 모양을 구성한다.",
+          "invariant": "각 쌓기나무는 격자 위치를 차지하고 안정적으로 면을 맞대며 구성된다.",
+          "observableEvidence": "완성 상태의 cube membership과 층별 위치를 확인할 수 있다.",
+          "misconceptionClass": "cube-construction-ignores-hidden-or-unsupported-position"
+        },
+        {
+          "key": "describe-cube-positions-and-directions",
+          "studentDecision": "기준 쌓기나무에 대한 다른 쌓기나무의 위·아래·앞·뒤·옆 위치를 말한다.",
+          "invariant": "위치 표현은 정한 관찰 방향과 기준 대상을 유지한다.",
+          "observableEvidence": "기준 큐브와 대상 큐브를 표시하고 위치 문장을 대응한다.",
+          "misconceptionClass": "relative-position-reference-reversal"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-02.representation"
+        ],
+        "observableEvidence": [
+          "쌓기나무를 이용하여 여러 가지 입체도형의 모양을 만들고, 그 모양에 대해 위치나 방향을 이용하여 말할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 16,
+      "workItemId": "W016",
+      "standardCode": "[4수04-03]",
+      "standardSlug": "4su04-03",
+      "officialGoal": "탐구 문제를 해결하기 위해 자료를 수집, 정리하여 막대그래프나 꺾은선그래프로 나타내고 해석할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "자료와 가능성",
+      "archetypeId": "D02B",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.4su04-03.diagnostic-v1",
+      "manipulation": "portfolio-4su04-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "collect-and-organize-data-for-inquiry",
+          "studentDecision": "탐구 질문에 답할 수 있는 자료의 대상·변인·수집 방법을 정해 표로 정리한다.",
+          "invariant": "자료의 범위·단위·범주 또는 순서가 탐구 질문과 일치한다.",
+          "observableEvidence": "탐구 질문과 자료표의 열·행이 직접 대응한다.",
+          "misconceptionClass": "inquiry-data-does-not-answer-question"
+        },
+        {
+          "key": "choose-and-construct-appropriate-graph",
+          "studentDecision": "범주 비교에는 막대그래프, 시간·순서 변화에는 꺾은선그래프를 선택해 나타낸다.",
+          "invariant": "그래프 유형·축·눈금·자료값이 질문의 구조와 원자료를 보존한다.",
+          "observableEvidence": "그래프 선택 이유와 완성 그래프를 자료표에 대조한다.",
+          "misconceptionClass": "graph-type-purpose-or-scale-mismatch"
+        },
+        {
+          "key": "interpret-graph-to-answer-inquiry",
+          "studentDecision": "그래프에서 필요한 비교·변화·차이를 읽어 탐구 질문에 답한다.",
+          "invariant": "결론에 사용한 값과 관계는 그래프의 축·눈금·자료점과 일치한다.",
+          "observableEvidence": "근거가 된 그래프 요소를 표시하고 결론을 남긴다.",
+          "misconceptionClass": "graph-conclusion-without-data-evidence"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g3-4.s4-04-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g3-4.s4-04-03.representation"
+        ],
+        "observableEvidence": [
+          "탐구 문제를 해결하기 위해 자료를 수집, 정리하여 막대그래프나 꺾은선그래프로 나타내고 해석할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수04-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수04-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 17,
+      "workItemId": "W017",
+      "standardCode": "[6수02-03]",
+      "standardSlug": "6su02-03",
+      "officialGoal": "비율을 이해하고, 비율을 분수, 소수, 백분율로 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "archetypeId": "C03",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su02-03.diagnostic-v1",
+      "manipulation": "portfolio-6su02-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-ratio-as-comparison-to-reference",
+          "studentDecision": "비교하는 양을 기준량으로 나눈 값을 비율로 판단한다.",
+          "invariant": "비교량과 기준량을 같은 배수로 바꾸어도 비율은 같다.",
+          "observableEvidence": "두 양의 역할과 단위를 표시하고 비의 값을 모델로 나타낸다.",
+          "misconceptionClass": "ratio-reference-and-comparison-quantity-reversal"
+        },
+        {
+          "key": "convert-ratio-among-fraction-decimal-percent",
+          "studentDecision": "같은 비율을 분수·소수·백분율 중 요구한 표현으로 바꾼다.",
+          "invariant": "세 표현은 같은 기준량 1 또는 100에 대한 같은 값을 나타낸다.",
+          "observableEvidence": "띠·수직선 또는 표에서 세 표현을 같은 위치에 대응한다.",
+          "misconceptionClass": "ratio-representation-conversion-scale-error"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g5-6.s6-02-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g5-6.s6-02-03.representation"
+        ],
+        "observableEvidence": [
+          "비율을 이해하고, 비율을 분수, 소수, 백분율로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수02-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수02-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 18,
+      "workItemId": "W018",
+      "standardCode": "[4수02-02]",
+      "standardSlug": "4su02-02",
+      "officialGoal": "계산식의 배열에서 규칙을 찾고, 계산 결과를 추측할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "변화와 관계",
+      "archetypeId": "C02B",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su02-02.diagnostic-v1",
+      "manipulation": "portfolio-4su02-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "find-rule-in-calculation-array",
+          "studentDecision": "연속 계산식에서 피연산자와 결과가 변하는 공통 구조를 찾는다.",
+          "invariant": "찾은 변화는 배열의 모든 계산식에 같은 방식으로 적용된다.",
+          "observableEvidence": "식의 대응하는 항을 표시하고 두 줄 이상에서 규칙을 확인한다.",
+          "misconceptionClass": "calculation-pattern-based-on-result-only"
+        },
+        {
+          "key": "predict-calculation-result-from-rule",
+          "studentDecision": "규칙을 다음 계산식에 적용해 계산 전 결과를 추측하고 검산한다.",
+          "invariant": "추측값은 규칙 적용 결과 및 직접 계산 결과와 같다.",
+          "observableEvidence": "추측값·규칙 적용 과정·직접 계산값을 함께 남긴다.",
+          "misconceptionClass": "pattern-prediction-ignores-operation-change"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g3-4.s4-02-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g3-4.s4-02-02.representation"
+        ],
+        "observableEvidence": [
+          "계산식의 배열에서 규칙을 찾고, 계산 결과를 추측할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수02-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수02-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 19,
+      "workItemId": "W019",
+      "standardCode": "[6수04-02]",
+      "standardSlug": "6su04-02",
+      "officialGoal": "자료를 수집하여 띠그래프나 원그래프로 나타내고 해석할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "archetypeId": "D04",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su04-02.diagnostic-v1",
+      "manipulation": "portfolio-6su04-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "collect-and-organize-part-whole-data",
+          "studentDecision": "전체와 부분의 비율을 비교할 수 있는 자료를 수집하고 합계와 비율을 정리한다.",
+          "invariant": "모든 범주는 겹치지 않고 전체를 이루며 비율의 합은 100%다.",
+          "observableEvidence": "범주별 수·비율과 전체 합계를 표에 함께 기록한다.",
+          "misconceptionClass": "ratio-graph-categories-overlap-or-total-not-one-hundred"
+        },
+        {
+          "key": "construct-strip-or-circle-graph",
+          "studentDecision": "비율에 맞게 띠의 길이 또는 원의 부채꼴 크기를 배분한다.",
+          "invariant": "각 영역의 크기는 해당 비율에 비례하고 전체 도형은 100%다.",
+          "observableEvidence": "표의 비율과 그래프 영역·눈금·범례를 대조할 수 있다.",
+          "misconceptionClass": "ratio-graph-area-not-proportional-to-value"
+        },
+        {
+          "key": "interpret-ratio-graph",
+          "studentDecision": "띠그래프나 원그래프에서 부분 비율·실제 수·범주 간 차이를 읽는다.",
+          "invariant": "해석값은 전체량과 그래프 비율의 곱 또는 차와 일치한다.",
+          "observableEvidence": "사용한 영역·비율·전체량을 표시하고 결론을 남긴다.",
+          "misconceptionClass": "ratio-graph-angle-or-length-read-as-raw-count"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g5-6.s6-04-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g5-6.s6-04-02.representation"
+        ],
+        "observableEvidence": [
+          "자료를 수집하여 띠그래프나 원그래프로 나타내고 해석할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수04-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수04-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 20,
+      "workItemId": "W020",
+      "standardCode": "[4수01-02]",
+      "standardSlug": "4su01-02",
+      "officialGoal": "다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N02A34",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-02.diagnostic-v1",
+      "manipulation": "portfolio-4su01-02-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-large-number-sequence",
+          "studentDecision": "다섯 자리 이상 수에서 주어진 간격에 따라 앞뒤 수와 빠진 수를 정한다.",
+          "invariant": "인접한 수의 차와 자리 넘김이 정한 간격을 유지한다.",
+          "observableEvidence": "수열·수직선에 간격과 빠진 수를 나타낸다.",
+          "misconceptionClass": "large-number-sequence-place-boundary-error"
+        },
+        {
+          "key": "compare-large-numbers",
+          "studentDecision": "자리 수와 가장 높은 서로 다른 자릿값을 근거로 큰 수를 비교한다.",
+          "invariant": "앞쪽의 가장 높은 서로 다른 자리가 전체 수의 대소를 결정한다.",
+          "observableEvidence": "비교한 자리와 부등호를 함께 표시한다.",
+          "misconceptionClass": "large-number-compare-by-isolated-digit"
+        },
+        {
+          "key": "explain-large-number-comparison-method",
+          "studentDecision": "두 수의 크기를 비교한 순서와 근거를 설명한다.",
+          "invariant": "설명은 자리 수 확인 뒤 높은 자리부터 비교하는 절차와 일치한다.",
+          "observableEvidence": "자릿값표에서 실제 근거 자리를 가리키며 설명한다.",
+          "misconceptionClass": "large-number-comparison-explanation-without-place-value"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-02.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-02.representation"
+        ],
+        "observableEvidence": [
+          "다섯 자리 이상의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교하며 그 방법을 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-02]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-02] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 21,
+      "workItemId": "W021",
+      "standardCode": "[6수03-03]",
+      "standardSlug": "6su03-03",
+      "officialGoal": "직육면체와 정육면체를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-03.diagnostic-v1",
+      "manipulation": "portfolio-6su03-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-cuboid-and-cube",
+          "studentDecision": "면의 모양과 크기 관계를 근거로 직육면체와 정육면체를 구별한다.",
+          "invariant": "정육면체는 여섯 면이 모두 합동인 정사각형이고 직육면체는 마주 보는 면이 합동인 직사각형이다.",
+          "observableEvidence": "입체 모형의 면을 표시하고 알맞은 이름을 대응한다.",
+          "misconceptionClass": "solid-classified-by-view-or-size"
+        },
+        {
+          "key": "identify-cuboid-components",
+          "studentDecision": "직육면체·정육면체의 면·모서리·꼭짓점을 구별하고 센다.",
+          "invariant": "각 입체는 면 6개, 모서리 12개, 꼭짓점 8개를 가진다.",
+          "observableEvidence": "선택한 구성 요소를 다른 색이나 표식으로 남기고 개수를 기록한다.",
+          "misconceptionClass": "solid-component-type-or-hidden-count-confusion"
+        },
+        {
+          "key": "explain-cuboid-properties",
+          "studentDecision": "마주 보는 면·모서리의 평행·길이·합동 관계를 찾아 설명한다.",
+          "invariant": "마주 보는 면은 합동이고 평행하며 평행한 모서리 묶음의 길이가 같다.",
+          "observableEvidence": "대응하는 면과 모서리를 표시하고 관계를 설명한다.",
+          "misconceptionClass": "cuboid-property-based-on-visible-elements-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-03.representation"
+        ],
+        "observableEvidence": [
+          "직육면체와 정육면체를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 22,
+      "workItemId": "W022",
+      "standardCode": "[4수03-03]",
+      "standardSlug": "4su03-03",
+      "officialGoal": "직선의 수직 관계와 평행 관계를 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G06",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-03.diagnostic-v1",
+      "manipulation": "portfolio-4su03-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-perpendicular-lines",
+          "studentDecision": "두 직선이 만나 이루는 각을 근거로 수직 관계인지 판단한다.",
+          "invariant": "두 직선이 이루는 각 중 하나가 직각이면 네 각이 모두 직각이다.",
+          "observableEvidence": "직각 기준을 겹쳐 수직인 두 직선을 표시한다.",
+          "misconceptionClass": "perpendicular-judged-by-visual-uprightness"
+        },
+        {
+          "key": "identify-parallel-lines",
+          "studentDecision": "두 직선의 방향과 일정한 간격을 근거로 평행 관계인지 판단한다.",
+          "invariant": "같은 평면의 평행한 두 직선은 아무리 연장해도 만나지 않고 거리가 일정하다.",
+          "observableEvidence": "여러 위치에서 두 직선 사이 거리를 확인하거나 연장 상태를 표시한다.",
+          "misconceptionClass": "parallel-judged-by-short-segment-appearance"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-03.representation"
+        ],
+        "observableEvidence": [
+          "직선의 수직 관계와 평행 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 23,
+      "workItemId": "W023",
+      "standardCode": "[6수01-03]",
+      "standardSlug": "6su01-03",
+      "officialGoal": "어림값을 구하기 위한 방법으로 올림, 버림, 반올림의 의미와 필요성을 알고, 이를 실생활에 활용함으로써 수학의 유용성을 인식할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N04",
+      "engineClassIds": [
+        "R03"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.6su01-03.diagnostic-v1",
+      "manipulation": "portfolio-6su01-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "distinguish-rounding-methods-and-purpose",
+          "studentDecision": "상황의 안전·최소·가까운 값 목적에 맞게 올림·버림·반올림을 선택한다.",
+          "invariant": "올림은 위쪽 경계, 버림은 아래쪽 경계, 반올림은 가까운 경계로 값을 옮긴다.",
+          "observableEvidence": "같은 원값에 세 방법을 적용하고 상황 목적과 연결한다.",
+          "misconceptionClass": "rounding-method-chosen-without-context-purpose"
+        },
+        {
+          "key": "compute-rounded-value-at-place",
+          "studentDecision": "정해진 자리에서 처리할 숫자와 남길 자리를 구별해 어림값을 구한다.",
+          "invariant": "정한 자리 아래 숫자는 처리되고 결과는 그 자리 단위의 배수다.",
+          "observableEvidence": "기준 자리·처리 부분·결과를 자릿값표에 함께 표시한다.",
+          "misconceptionClass": "rounding-wrong-place-or-carry"
+        },
+        {
+          "key": "apply-rounding-in-real-context",
+          "studentDecision": "생활 문제에서 필요한 정도의 어림값을 사용해 판단하고 그 유용성을 설명한다.",
+          "invariant": "어림 오차는 선택한 자리 단위와 방법이 허용하는 범위 안에 있다.",
+          "observableEvidence": "원값·어림값·판단을 비교하고 방법 선택 이유를 남긴다.",
+          "misconceptionClass": "rounded-value-reported-as-exact"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-03.representation"
+        ],
+        "observableEvidence": [
+          "어림값을 구하기 위한 방법으로 올림, 버림, 반올림의 의미와 필요성을 알고, 이를 실생활에 활용함으로써 수학의 유용성을 인식할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 24,
+      "workItemId": "W024",
+      "standardCode": "[2수03-03]",
+      "standardSlug": "2su03-03",
+      "officialGoal": "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 삼각형, 사각형, 원의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G03A",
+      "engineClassIds": [
+        "R21"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.2su03-03.diagnostic-v1",
+      "manipulation": "portfolio-2su03-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "match-everyday-objects-to-plane-shapes",
+          "studentDecision": "생활 물건에서 삼각형·사각형·원의 전체 윤곽을 찾는다.",
+          "invariant": "크기·색·방향이 달라도 변·꼭짓점·굽은 선의 구성은 같은 모양을 결정한다.",
+          "observableEvidence": "물건의 윤곽을 따라 표시하고 세 모양 범주에 분류한다.",
+          "misconceptionClass": "plane-shape-classified-by-object-purpose-or-color"
+        },
+        {
+          "key": "compose-new-shapes-from-plane-shapes",
+          "studentDecision": "주어진 삼각형·사각형·원을 이어 붙여 목표 또는 새로운 모양을 만든다.",
+          "invariant": "각 조각의 모양과 맞닿는 관계가 완성 모양에 그대로 남는다.",
+          "observableEvidence": "완성된 합성 모양에서 사용한 조각의 경계를 확인할 수 있다.",
+          "misconceptionClass": "shape-composition-overlap-or-gap-ignored"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-03.representation"
+        ],
+        "observableEvidence": [
+          "교실 및 생활 주변에서 여러 가지 물건을 관찰하여 삼각형, 사각형, 원의 모양을 찾고, 이를 이용하여 여러 가지 모양을 만들 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 25,
+      "workItemId": "W025",
+      "standardCode": "[6수02-04]",
+      "standardSlug": "6su02-04",
+      "officialGoal": "비례식을 알고, 그 성질을 이해하며, 이를 활용하여 간단한 비례식을 풀 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "archetypeId": "C04",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su02-04.diagnostic-v1",
+      "manipulation": "portfolio-6su02-04-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "recognize-proportion",
+          "studentDecision": "두 비가 같은 비율을 나타내는지 판단해 비례식으로 나타낸다.",
+          "invariant": "두 비를 같은 단위와 순서로 비교했을 때 값이 같다.",
+          "observableEvidence": "비율 표·띠와 비례식의 네 항을 대응한다.",
+          "misconceptionClass": "proportion-term-order-or-unit-mismatch"
+        },
+        {
+          "key": "understand-proportion-property",
+          "studentDecision": "비례식에서 외항의 곱과 내항의 곱이 같은 관계를 찾아 사용한다.",
+          "invariant": "비례식 `a:b=c:d`에서 `a×d=b×c`가 성립한다.",
+          "observableEvidence": "네 항의 대응과 두 곱을 표시해 equality를 확인한다.",
+          "misconceptionClass": "cross-product-pairs-chosen-incorrectly"
+        },
+        {
+          "key": "solve-simple-proportion",
+          "studentDecision": "비례식의 성질을 이용해 빠진 항을 구하고 원래 비로 검산한다.",
+          "invariant": "구한 값을 넣은 두 비의 값과 교차곱이 모두 같다.",
+          "observableEvidence": "풀이식·빠진 값·두 비의 검산을 함께 남긴다.",
+          "misconceptionClass": "proportion-unknown-solved-by-additive-change"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g5-6.s6-02-04.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g5-6.s6-02-04.representation"
+        ],
+        "observableEvidence": [
+          "비례식을 알고, 그 성질을 이해하며, 이를 활용하여 간단한 비례식을 풀 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수02-04]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수02-04] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 26,
+      "workItemId": "W026",
+      "standardCode": "[2수01-03]",
+      "standardSlug": "2su01-03",
+      "officialGoal": "네 자리 이하의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N02A12",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.2su01-03.diagnostic-v1",
+      "manipulation": "portfolio-2su01-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-number-sequence-to-four-digits",
+          "studentDecision": "정해진 간격에 따라 앞뒤 수와 빠진 수를 정한다.",
+          "invariant": "인접한 수의 차가 일정하고 자리 넘김 뒤에도 간격이 보존된다.",
+          "observableEvidence": "수열 또는 수직선에 간격과 빠진 값을 나타낸다.",
+          "misconceptionClass": "number-sequence-place-boundary-error"
+        },
+        {
+          "key": "compare-numbers-to-four-digits",
+          "studentDecision": "자리 수와 높은 자리부터 비교해 두 수의 대소를 정한다.",
+          "invariant": "가장 높은 서로 다른 자리의 값이 대소를 결정한다.",
+          "observableEvidence": "비교한 자릿값과 부등호를 함께 표시한다.",
+          "misconceptionClass": "whole-number-compare-by-last-or-largest-digit"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-03.representation"
+        ],
+        "observableEvidence": [
+          "네 자리 이하의 수의 범위에서 수의 계열을 이해하고, 수의 크기를 비교할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 27,
+      "workItemId": "W027",
+      "standardCode": "[4수01-03]",
+      "standardSlug": "4su01-03",
+      "officialGoal": "세 자리 수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N05A34",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-03.diagnostic-v1",
+      "manipulation": "portfolio-4su01-03-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-calculate-three-digit-addition",
+          "studentDecision": "같은 자리를 더하고 10개 묶음의 교환이 필요한 자리를 정한다.",
+          "invariant": "10개의 하위 단위를 상위 단위 1개로 바꾸어도 전체 합은 같다.",
+          "observableEvidence": "자릿값 모형·받아올림·세로셈 결과를 서로 대응한다.",
+          "misconceptionClass": "addition-place-misalignment-or-missing-regroup"
+        },
+        {
+          "key": "understand-and-calculate-three-digit-subtraction",
+          "studentDecision": "같은 자리를 빼고 상위 단위의 교환이 필요한 자리를 정한다.",
+          "invariant": "상위 단위 1개를 하위 단위 10개로 바꾸어도 전체 차는 같다.",
+          "observableEvidence": "자릿값 모형·받아내림·세로셈 결과를 서로 대응한다.",
+          "misconceptionClass": "subtraction-smaller-from-larger-digit-without-regroup"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-03.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-03.representation"
+        ],
+        "observableEvidence": [
+          "세 자리 수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-03]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-03] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 28,
+      "workItemId": "W028",
+      "standardCode": "[6수03-04]",
+      "standardSlug": "6su03-04",
+      "officialGoal": "직육면체와 정육면체의 겨냥도와 전개도를 그릴 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G10A",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-04.diagnostic-v1",
+      "manipulation": "portfolio-6su03-04-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "draw-oblique-view-of-cuboid",
+          "studentDecision": "직육면체·정육면체의 보이는 모서리와 숨은 모서리를 정해 겨냥도로 나타낸다.",
+          "invariant": "평행한 모서리 묶음과 꼭짓점의 연결 관계가 원래 입체와 같다.",
+          "observableEvidence": "입체 모형과 겨냥도의 대응 꼭짓점·모서리를 연결한다.",
+          "misconceptionClass": "oblique-drawing-breaks-parallel-or-adjacency-relations"
+        },
+        {
+          "key": "draw-valid-net-of-cuboid",
+          "studentDecision": "여섯 면의 인접 관계를 보존해 접히는 전개도를 구성한다.",
+          "invariant": "모든 면은 한 번씩 사용되고 접을 때 겹치지 않으며 맞닿는 모서리가 일치한다.",
+          "observableEvidence": "전개도의 면 대응과 접힐 모서리 쌍을 표시한다.",
+          "misconceptionClass": "cuboid-net-face-overlap-or-adjacency-error"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-04.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-04.representation"
+        ],
+        "observableEvidence": [
+          "직육면체와 정육면체의 겨냥도와 전개도를 그릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-04]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-04] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 29,
+      "workItemId": "W029",
+      "standardCode": "[4수03-04]",
+      "standardSlug": "4su03-04",
+      "officialGoal": "구체물이나 평면도형의 밀기, 뒤집기, 돌리기 활동을 통하여 그 변화를 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G11A",
+      "engineClassIds": [
+        "R15"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-04.diagnostic-v1",
+      "manipulation": "portfolio-4su03-04-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-shape-translation",
+          "studentDecision": "도형을 같은 방향과 거리만큼 밀었을 때의 위치를 정한다.",
+          "invariant": "밀기 전후 도형의 크기·모양·방향은 같고 위치만 변한다.",
+          "observableEvidence": "대응점의 같은 이동 벡터와 전후 도형을 표시한다.",
+          "misconceptionClass": "translation-changes-orientation-or-distance-by-point"
+        },
+        {
+          "key": "understand-shape-reflection",
+          "studentDecision": "기준선을 따라 뒤집은 도형의 방향과 위치를 정한다.",
+          "invariant": "대응점은 기준선에서 같은 수직 거리에 있고 방향은 반전된다.",
+          "observableEvidence": "기준선과 대응점 쌍을 연결해 같은 거리를 확인한다.",
+          "misconceptionClass": "reflection-confused-with-translation"
+        },
+        {
+          "key": "understand-shape-rotation",
+          "studentDecision": "회전 중심·방향·회전량에 따른 도형의 위치와 방향을 정한다.",
+          "invariant": "각 대응점의 회전 중심까지 거리는 같고 회전각이 일정하다.",
+          "observableEvidence": "회전 중심과 대응점의 반지름·회전 방향을 표시한다.",
+          "misconceptionClass": "rotation-center-or-direction-confusion"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-04.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-04.representation"
+        ],
+        "observableEvidence": [
+          "구체물이나 평면도형의 밀기, 뒤집기, 돌리기 활동을 통하여 그 변화를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-04]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-04] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 30,
+      "workItemId": "W030",
+      "standardCode": "[2수03-04]",
+      "standardSlug": "2su03-04",
+      "officialGoal": "삼각형, 사각형, 원을 직관적으로 이해하고, 그 모양을 그릴 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G03B",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-04.diagnostic-v1",
+      "manipulation": "portfolio-2su03-04-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "recognize-basic-plane-shapes-intuitively",
+          "studentDecision": "전체 윤곽을 보고 삼각형·사각형·원을 구별한다.",
+          "invariant": "삼각형은 곧은 변 3개, 사각형은 곧은 변 4개, 원은 닫힌 굽은 선으로 이루어진다.",
+          "observableEvidence": "방향·크기가 다른 예와 반례를 분류한다.",
+          "misconceptionClass": "shape-classification-by-prototype-or-orientation"
+        },
+        {
+          "key": "draw-basic-plane-shapes",
+          "studentDecision": "요구한 모양의 변·꼭짓점·굽은 선 조건을 만족하도록 그린다.",
+          "invariant": "그린 윤곽은 닫혀 있고 요구한 모양의 구성 조건을 가진다.",
+          "observableEvidence": "완성 도형의 변·꼭짓점 또는 원의 닫힌 곡선을 확인할 수 있다.",
+          "misconceptionClass": "open-or-wrong-sided-shape-drawing"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-04.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-04.representation"
+        ],
+        "observableEvidence": [
+          "삼각형, 사각형, 원을 직관적으로 이해하고, 그 모양을 그릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-04]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-04] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 31,
+      "workItemId": "W031",
+      "standardCode": "[6수02-05]",
+      "standardSlug": "6su02-05",
+      "officialGoal": "비례배분을 알고, 주어진 양을 비례배분 할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "변화와 관계",
+      "archetypeId": "C05",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "familyId": "portfolio.6su02-05.diagnostic-v1",
+      "manipulation": "portfolio-6su02-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-proportional-allocation",
+          "studentDecision": "전체를 주어진 비의 단위 수만큼 나눈 한 몫의 크기를 정한다.",
+          "invariant": "배분한 부분의 합은 전체와 같고 부분의 비는 주어진 비와 같다.",
+          "observableEvidence": "전체 띠를 비의 합만큼 나누고 각 부분에 단위 몫을 배치한다.",
+          "misconceptionClass": "ratio-numbers-used-as-absolute-amounts"
+        },
+        {
+          "key": "calculate-proportional-allocation",
+          "studentDecision": "전체량과 비를 사용해 각 부분의 양을 구하고 검산한다.",
+          "invariant": "각 부분=`전체×해당 비항/비항의 합`이며 부분합은 전체다.",
+          "observableEvidence": "단위 몫·각 부분값·부분합 검산을 함께 남긴다.",
+          "misconceptionClass": "divide-total-by-one-ratio-term"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.change-relationships.g5-6.s6-02-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.change-relationships.g5-6.s6-02-05.representation"
+        ],
+        "observableEvidence": [
+          "비례배분을 알고, 주어진 양을 비례배분 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수02-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수02-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 32,
+      "workItemId": "W032",
+      "standardCode": "[2수01-05]",
+      "standardSlug": "2su01-05",
+      "officialGoal": "덧셈과 뺄셈이 이루어지는 실생활 상황과 연결하여 덧셈과 뺄셈의 의미를 이해한다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N06",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-05.diagnostic-v1",
+      "manipulation": "portfolio-2su01-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "model-addition-situations",
+          "studentDecision": "합병·첨가 상황에서 합쳐지는 두 양과 전체를 정해 덧셈으로 나타낸다.",
+          "invariant": "두 부분을 겹치지 않게 합친 전체가 덧셈 결과와 같다.",
+          "observableEvidence": "상황의 두 부분을 모형으로 합치고 덧셈식과 대응한다.",
+          "misconceptionClass": "addition-used-for-removal-or-comparison"
+        },
+        {
+          "key": "model-subtraction-situations",
+          "studentDecision": "제거·비교·부분 찾기 상황에서 전체와 빼는 양 또는 차를 정해 뺄셈으로 나타낸다.",
+          "invariant": "전체에서 한 부분을 제거하거나 두 양을 대응한 남음·차가 결과와 같다.",
+          "observableEvidence": "상황 모형에서 제거·대응 상태와 뺄셈식을 연결한다.",
+          "misconceptionClass": "subtraction-role-or-order-reversal"
+        },
+        {
+          "key": "connect-add-sub-actions-to-expressions",
+          "studentDecision": "상황의 행동·관계를 수와 연산 기호로 번역하고 식의 각 수가 뜻하는 양을 말한다.",
+          "invariant": "식의 연산·수·단위는 상황의 부분·전체·변화 관계와 일치한다.",
+          "observableEvidence": "상황 요소에 식의 각 항을 대응해 표시한다.",
+          "misconceptionClass": "operation-selected-by-keyword-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-05.representation"
+        ],
+        "observableEvidence": [
+          "덧셈과 뺄셈이 이루어지는 실생활 상황과 연결하여 덧셈과 뺄셈의 의미를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 33,
+      "workItemId": "W033",
+      "standardCode": "[6수04-05]",
+      "standardSlug": "6su04-05",
+      "officialGoal": "사건이 일어날 가능성을 수로 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "archetypeId": "D05",
+      "engineClassIds": [
+        "R24",
+        "R03"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.6su04-05.diagnostic-v1",
+      "manipulation": "portfolio-6su04-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "order-event-likelihood",
+          "studentDecision": "사건들의 가능성을 불가능에서 확실까지 순서대로 놓는다.",
+          "invariant": "더 자주 또는 더 많은 유리한 경우를 가진 사건의 가능성 값이 더 크다.",
+          "observableEvidence": "사건 카드와 가능성 순서를 대응하고 극단 사건을 0과 1에 놓는다.",
+          "misconceptionClass": "likelihood-ordered-by-desirability"
+        },
+        {
+          "key": "represent-likelihood-with-number",
+          "studentDecision": "사건의 유리한 경우와 전체 경우를 근거로 0과 1 사이 수를 정한다.",
+          "invariant": "가능성은 유리한 경우 수/전체 경우 수이며 0 이상 1 이하다.",
+          "observableEvidence": "경우 모형·분수 또는 소수 값·수직선 위치를 일치시킨다.",
+          "misconceptionClass": "probability-numerator-or-denominator-mismatch"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g5-6.s6-04-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g5-6.s6-04-05.representation"
+        ],
+        "observableEvidence": [
+          "사건이 일어날 가능성을 수로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수04-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수04-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 34,
+      "workItemId": "W034",
+      "standardCode": "[6수03-05]",
+      "standardSlug": "6su03-05",
+      "officialGoal": "각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-05.diagnostic-v1",
+      "manipulation": "portfolio-6su03-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "distinguish-prisms-and-pyramids",
+          "studentDecision": "밑면의 수와 옆면이 만나는 방식을 근거로 각기둥과 각뿔을 구별한다.",
+          "invariant": "각기둥은 합동·평행한 두 밑면, 각뿔은 한 밑면과 하나의 꼭짓점을 가진다.",
+          "observableEvidence": "밑면·옆면·꼭짓점을 표시하고 입체 이름을 대응한다.",
+          "misconceptionClass": "solid-named-by-visible-face-only"
+        },
+        {
+          "key": "identify-prism-pyramid-components",
+          "studentDecision": "밑면·옆면·모서리·꼭짓점을 구별하고 종류에 따라 센다.",
+          "invariant": "구성 요소 수는 밑면 다각형의 변 수와 정해진 관계를 가진다.",
+          "observableEvidence": "구성 요소를 유형별로 표시하고 개수를 표로 남긴다.",
+          "misconceptionClass": "hidden-solid-components-not-counted"
+        },
+        {
+          "key": "explain-prism-pyramid-properties",
+          "studentDecision": "밑면 모양과 구성 요소 수 사이의 규칙을 찾아 설명한다.",
+          "invariant": "n각기둥과 n각뿔의 구성 요소 관계는 n에 따라 일관되게 변한다.",
+          "observableEvidence": "두 종류 이상의 입체를 비교한 표와 규칙 문장을 남긴다.",
+          "misconceptionClass": "solid-property-generalized-from-one-example"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-05.representation"
+        ],
+        "observableEvidence": [
+          "각기둥과 각뿔을 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 35,
+      "workItemId": "W035",
+      "standardCode": "[4수03-05]",
+      "standardSlug": "4su03-05",
+      "officialGoal": "평면에서 점의 이동에 대해 위치와 방향을 이용하여 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G11B",
+      "engineClassIds": [
+        "R15"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-05.diagnostic-v1",
+      "manipulation": "portfolio-4su03-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "locate-point-after-movement",
+          "studentDecision": "시작점·방향·이동량을 적용해 점의 끝 위치를 정한다.",
+          "invariant": "같은 시작점과 방향·이동량은 같은 끝점을 만든다.",
+          "observableEvidence": "격자나 평면에 시작점·이동 경로·끝점을 나타낸다.",
+          "misconceptionClass": "point-movement-direction-or-distance-error"
+        },
+        {
+          "key": "describe-point-movement",
+          "studentDecision": "두 점 사이 이동을 기준 방향과 이동량을 사용해 설명한다.",
+          "invariant": "설명을 시작점에 적용하면 정확히 목표점에 도달한다.",
+          "observableEvidence": "이동 문장과 실제 경로를 겹쳐 검산한다.",
+          "misconceptionClass": "movement-description-reference-frame-reversal"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-05.representation"
+        ],
+        "observableEvidence": [
+          "평면에서 점의 이동에 대해 위치와 방향을 이용하여 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 36,
+      "workItemId": "W036",
+      "standardCode": "[6수01-05]",
+      "standardSlug": "6su01-05",
+      "officialGoal": "배수, 공배수, 최소공배수를 이해하고 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N08",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.6su01-05.diagnostic-v1",
+      "manipulation": "portfolio-6su01-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-find-multiples",
+          "studentDecision": "어떤 수의 자연수 배로 나타낼 수 있는 수를 배수로 판단한다.",
+          "invariant": "배수는 기준 수로 나누어떨어지며 기준 수×자연수로 나타난다.",
+          "observableEvidence": "배수 열·배열과 곱셈식을 대응한다.",
+          "misconceptionClass": "multiple-confused-with-factor"
+        },
+        {
+          "key": "understand-and-find-common-multiples",
+          "studentDecision": "두 수의 배수 열에서 동시에 나타나는 수를 찾는다.",
+          "invariant": "공배수는 두 기준 수 모두로 나누어떨어진다.",
+          "observableEvidence": "두 배수 집합의 교집합을 표시하고 나눗셈으로 확인한다.",
+          "misconceptionClass": "common-multiple-divisible-by-only-one-number"
+        },
+        {
+          "key": "find-least-common-multiple",
+          "studentDecision": "0이 아닌 공배수 중 가장 작은 수를 최소공배수로 정한다.",
+          "invariant": "최소공배수는 모든 공배수의 기준 주기이며 두 수의 공배수다.",
+          "observableEvidence": "두 주기의 첫 교점과 이후 공배수를 함께 표시한다.",
+          "misconceptionClass": "least-common-multiple-confused-with-first-listed-multiple"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-05.representation"
+        ],
+        "observableEvidence": [
+          "배수, 공배수, 최소공배수를 이해하고 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 37,
+      "workItemId": "W037",
+      "standardCode": "[2수03-05]",
+      "standardSlug": "2su03-05",
+      "officialGoal": "삼각형, 사각형에서 각각의 공통점을 찾아 말할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G04A12",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-05.diagnostic-v1",
+      "manipulation": "portfolio-2su03-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "find-common-properties-of-triangles",
+          "studentDecision": "모양이 다른 삼각형 모두에 공통인 특징을 고른다.",
+          "invariant": "모든 삼각형은 곧은 변 3개와 꼭짓점 3개로 이루어진 닫힌 도형이다.",
+          "observableEvidence": "여러 삼각형에서 변·꼭짓점을 표시하고 반례를 제외한다.",
+          "misconceptionClass": "triangle-defined-by-upright-prototype"
+        },
+        {
+          "key": "find-common-properties-of-quadrilaterals",
+          "studentDecision": "모양이 다른 사각형 모두에 공통인 특징을 고른다.",
+          "invariant": "모든 사각형은 곧은 변 4개와 꼭짓점 4개로 이루어진 닫힌 도형이다.",
+          "observableEvidence": "여러 사각형에서 변·꼭짓점을 표시하고 반례를 제외한다.",
+          "misconceptionClass": "quadrilateral-defined-as-rectangle-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-05.representation"
+        ],
+        "observableEvidence": [
+          "삼각형, 사각형에서 각각의 공통점을 찾아 말할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 38,
+      "workItemId": "W038",
+      "standardCode": "[2수01-06]",
+      "standardSlug": "2su01-06",
+      "officialGoal": "두 자리 수의 범위에서 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N05A12",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.2su01-06.diagnostic-v1",
+      "manipulation": "portfolio-2su01-06-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-calculate-two-digit-addition",
+          "studentDecision": "십과 일을 같은 자리끼리 더하고 10개의 일을 십 1개로 바꿀지 정한다.",
+          "invariant": "교환 전후 전체 합은 같고 각 자리는 같은 단위끼리 계산한다.",
+          "observableEvidence": "십 묶음·일 낱개와 받아올림이 있는 식을 대응한다.",
+          "misconceptionClass": "two-digit-addition-place-or-regroup-error"
+        },
+        {
+          "key": "understand-and-calculate-two-digit-subtraction",
+          "studentDecision": "십과 일을 같은 자리끼리 빼고 십 1개를 일 10개로 바꿀지 정한다.",
+          "invariant": "교환 전후 전체 차는 같고 각 자리는 같은 단위끼리 계산한다.",
+          "observableEvidence": "십 묶음 교환과 받아내림이 있는 식을 대응한다.",
+          "misconceptionClass": "two-digit-subtraction-reverse-digits-without-regroup"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-06.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-06.representation"
+        ],
+        "observableEvidence": [
+          "두 자리 수의 범위에서 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-06]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-06] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 39,
+      "workItemId": "W039",
+      "standardCode": "[6수04-06]",
+      "standardSlug": "6su04-06",
+      "officialGoal": "자료를 이용하여 가능성을 예상하고, 가능성에 근거하여 적절한 판단을 내릴 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "자료와 가능성",
+      "archetypeId": "D06",
+      "engineClassIds": [
+        "R24",
+        "R22"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.6su04-06.diagnostic-v1",
+      "manipulation": "portfolio-6su04-06-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "estimate-likelihood-from-data",
+          "studentDecision": "반복 관찰 자료의 빈도나 비율을 근거로 다음 사건의 가능성을 예상한다.",
+          "invariant": "예상은 관찰 횟수와 상대빈도를 반영하며 단일 결과만으로 확정하지 않는다.",
+          "observableEvidence": "자료표·그래프에서 사용한 횟수와 비율을 표시하고 가능성 순서를 남긴다.",
+          "misconceptionClass": "probability-prediction-from-most-recent-outcome"
+        },
+        {
+          "key": "make-decision-based-on-likelihood",
+          "studentDecision": "가능성 자료와 결과의 중요성을 함께 고려해 더 적절한 선택을 고른다.",
+          "invariant": "판단의 근거는 자료가 지지하는 가능성과 상황 조건에 일치한다.",
+          "observableEvidence": "선택한 대안과 근거가 된 가능성 값을 연결한다.",
+          "misconceptionClass": "decision-based-on-preference-not-evidence"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.data-probability.g5-6.s6-04-06.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.data-probability.g5-6.s6-04-06.representation"
+        ],
+        "observableEvidence": [
+          "자료를 이용하여 가능성을 예상하고, 가능성에 근거하여 적절한 판단을 내릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수04-06]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수04-06] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 40,
+      "workItemId": "W040",
+      "standardCode": "[4수01-05]",
+      "standardSlug": "4su01-05",
+      "officialGoal": "나눗셈이 이루어지는 실생활 상황과 연결하여 나눗셈의 의미를 알고, 곱셈과 나눗셈의 관계를 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N09",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su01-05.diagnostic-v1",
+      "manipulation": "portfolio-4su01-05-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "model-division-situations",
+          "studentDecision": "생활 상황을 등분제 또는 포함제로 보고 제수·몫의 단위를 정한다.",
+          "invariant": "전체는 같은 크기 묶음의 수×묶음 크기와 남은 양으로 보존된다.",
+          "observableEvidence": "대상을 같은 크기로 묶거나 같은 수로 나누고 나눗셈식과 대응한다.",
+          "misconceptionClass": "division-partitive-measurement-role-confusion"
+        },
+        {
+          "key": "connect-multiplication-and-division",
+          "studentDecision": "나눗셈식과 같은 수 관계를 나타내는 곱셈식을 구성해 검산한다.",
+          "invariant": "나머지가 없을 때 제수×몫=피제수이며 곱셈과 나눗셈은 역관계다.",
+          "observableEvidence": "같은 배열·묶음에 곱셈식과 나눗셈식을 함께 나타낸다.",
+          "misconceptionClass": "multiplication-division-fact-family-role-reversal"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-05.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-05.representation"
+        ],
+        "observableEvidence": [
+          "나눗셈이 이루어지는 실생활 상황과 연결하여 나눗셈의 의미를 알고, 곱셈과 나눗셈의 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-05]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-05] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 41,
+      "workItemId": "W041",
+      "standardCode": "[6수03-06]",
+      "standardSlug": "6su03-06",
+      "officialGoal": "각기둥의 전개도를 그릴 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G10B",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-06.diagnostic-v1",
+      "manipulation": "portfolio-6su03-06-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-valid-prism-net",
+          "studentDecision": "두 밑면과 옆면의 수·배치를 정해 접히는 각기둥 전개도를 만든다.",
+          "invariant": "모든 면은 한 번씩 사용되고 옆면 수는 밑면의 변 수와 같으며 접을 때 겹치지 않는다.",
+          "observableEvidence": "전개도의 밑면·옆면과 접힐 모서리 쌍을 표시한다.",
+          "misconceptionClass": "prism-net-face-count-or-adjacency-error"
+        },
+        {
+          "key": "verify-prism-net-folding",
+          "studentDecision": "주어진 전개도가 각기둥으로 접힐 수 있는지 면의 인접 관계로 판단한다.",
+          "invariant": "접은 뒤 대응 모서리가 일치하고 같은 공간에 두 면이 겹치지 않는다.",
+          "observableEvidence": "접힘 대응 표시나 입체 모형과의 면 대응을 남긴다.",
+          "misconceptionClass": "prism-net-judged-by-face-shapes-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-06.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-06.representation"
+        ],
+        "observableEvidence": [
+          "각기둥의 전개도를 그릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-06]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-06] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 42,
+      "workItemId": "W042",
+      "standardCode": "[4수03-06]",
+      "standardSlug": "4su03-06",
+      "officialGoal": "원의 중심, 반지름, 지름을 이해하고, 그 성질을 안다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G12A",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-06.diagnostic-v1",
+      "manipulation": "portfolio-4su03-06-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-center-radius-diameter",
+          "studentDecision": "원에서 중심·반지름·지름에 해당하는 점과 선분을 구별한다.",
+          "invariant": "반지름은 중심과 원 위 한 점, 지름은 중심을 지나 원 위 두 점을 잇는다.",
+          "observableEvidence": "원 모형에 중심·반지름·지름을 직접 표시한다.",
+          "misconceptionClass": "radius-diameter-or-chord-confusion"
+        },
+        {
+          "key": "explain-circle-radius-diameter-properties",
+          "studentDecision": "한 원의 반지름 관계와 반지름·지름 길이 관계를 판단한다.",
+          "invariant": "한 원의 모든 반지름 길이는 같고 지름은 반지름의 2배다.",
+          "observableEvidence": "서로 다른 방향의 반지름과 지름을 측정·비교해 관계를 남긴다.",
+          "misconceptionClass": "circle-property-dependent-on-segment-orientation"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-06.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-06.representation"
+        ],
+        "observableEvidence": [
+          "원의 중심, 반지름, 지름을 이해하고, 그 성질을 안다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-06]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-06] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 43,
+      "workItemId": "W043",
+      "standardCode": "[2수03-06]",
+      "standardSlug": "2su03-06",
+      "officialGoal": "구체물의 길이, 들이, 무게, 넓이를 비교하여 각각 ‘길다, 짧다’, ‘많다, 적다’, ‘무겁다, 가볍다’, ‘넓다, 좁다’ 등을 구별하여 말할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G13",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-06.diagnostic-v1",
+      "manipulation": "portfolio-2su03-06-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "compare-object-lengths",
+          "studentDecision": "두 물체의 한쪽 끝을 맞추어 길이를 비교한다.",
+          "invariant": "같은 시작점에서 더 멀리 뻗은 물체가 더 길다.",
+          "observableEvidence": "끝을 맞춘 두 물체와 길다·짧다 판단을 함께 나타낸다.",
+          "misconceptionClass": "length-compared-with-misaligned-starts"
+        },
+        {
+          "key": "compare-container-capacities",
+          "studentDecision": "같은 단위 또는 옮겨 담기를 사용해 두 그릇의 들이를 비교한다.",
+          "invariant": "같은 단위로 더 많이 담을 수 있는 그릇의 들이가 더 많다.",
+          "observableEvidence": "옮겨 담은 상태나 같은 단위 개수와 많다·적다 판단을 남긴다.",
+          "misconceptionClass": "capacity-judged-by-height-only"
+        },
+        {
+          "key": "compare-object-masses",
+          "studentDecision": "같은 조건의 저울이나 들어 보기를 통해 두 물체의 무게를 비교한다.",
+          "invariant": "저울에서 더 내려간 쪽의 물체가 더 무겁다.",
+          "observableEvidence": "균형 상태와 무겁다·가볍다 판단을 대응한다.",
+          "misconceptionClass": "mass-judged-by-size-only"
+        },
+        {
+          "key": "compare-surface-areas",
+          "studentDecision": "겹치기 또는 같은 단위 덮기를 사용해 두 면의 넓이를 비교한다.",
+          "invariant": "겹쳤을 때 남는 부분이나 같은 단위 개수가 더 큰 면이 더 넓다.",
+          "observableEvidence": "겹친 윤곽이나 단위 덮기와 넓다·좁다 판단을 남긴다.",
+          "misconceptionClass": "area-judged-by-one-dimension-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-06.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-06.representation"
+        ],
+        "observableEvidence": [
+          "구체물의 길이, 들이, 무게, 넓이를 비교하여 각각 ‘길다, 짧다’, ‘많다, 적다’, ‘무겁다, 가볍다’, ‘넓다, 좁다’ 등을 구별하여 말할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-06]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-06] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 44,
+      "workItemId": "W044",
+      "standardCode": "[2수01-07]",
+      "standardSlug": "2su01-07",
+      "officialGoal": "덧셈과 뺄셈의 관계를 이해한다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N07",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-07.diagnostic-v1",
+      "manipulation": "portfolio-2su01-07-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-related-addition-subtraction-facts",
+          "studentDecision": "같은 세 수로 부분-전체 관계를 나타내는 덧셈식과 뺄셈식을 구성한다.",
+          "invariant": "두 부분과 전체가 같으면 연산 방향이 달라도 같은 fact family를 이룬다.",
+          "observableEvidence": "하나의 수 모형에 관련 덧셈식·뺄셈식을 함께 대응한다.",
+          "misconceptionClass": "fact-family-number-role-mismatch"
+        },
+        {
+          "key": "use-inverse-relation-to-check",
+          "studentDecision": "덧셈 결과를 뺄셈으로, 뺄셈 결과를 덧셈으로 확인한다.",
+          "invariant": "역연산을 적용하면 처음 수 관계로 돌아간다.",
+          "observableEvidence": "원래 식과 확인식을 나란히 놓고 같은 세 수를 표시한다.",
+          "misconceptionClass": "inverse-check-repeats-same-operation"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-07.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-07.representation"
+        ],
+        "observableEvidence": [
+          "덧셈과 뺄셈의 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-07]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-07] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 45,
+      "workItemId": "W045",
+      "standardCode": "[4수01-07]",
+      "standardSlug": "4su01-07",
+      "officialGoal": "나누는 수가 두 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N10",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-07.diagnostic-v1",
+      "manipulation": "portfolio-4su01-07-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-two-digit-divisor-division-principle",
+          "studentDecision": "나누는 수의 배수를 이용해 적절한 부분몫과 부분곱을 정한다.",
+          "invariant": "피제수는 누적 부분곱과 남은 양의 합이며 남은 양은 제수보다 작아야 한다.",
+          "observableEvidence": "부분몫·부분곱·남은 양을 단계별로 대응한다.",
+          "misconceptionClass": "partial-quotient-over-or-under-estimation"
+        },
+        {
+          "key": "calculate-with-two-digit-divisor",
+          "studentDecision": "몫의 각 자리를 정하고 곱하기·빼기·내리기 과정을 수행한다.",
+          "invariant": "최종적으로 제수×몫+나머지=피제수이고 0≤나머지<제수다.",
+          "observableEvidence": "세로셈 결과와 나눗셈 항등식 검산을 함께 남긴다.",
+          "misconceptionClass": "division-place-value-or-remainder-bound-error"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-07.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-07.representation"
+        ],
+        "observableEvidence": [
+          "나누는 수가 두 자리 수인 나눗셈의 계산 원리를 이해하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-07]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-07] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 46,
+      "workItemId": "W046",
+      "standardCode": "[6수03-07]",
+      "standardSlug": "6su03-07",
+      "officialGoal": "원기둥, 원뿔, 구를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-07.diagnostic-v1",
+      "manipulation": "portfolio-6su03-07-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "distinguish-cylinder-cone-sphere",
+          "studentDecision": "밑면·옆면·꼭짓점·곡면의 구성을 근거로 원기둥·원뿔·구를 구별한다.",
+          "invariant": "각 입체는 회전·크기와 무관하게 고유한 평면·곡면 구성을 가진다.",
+          "observableEvidence": "입체 모형의 평평한 면·곡면·꼭짓점을 표시하고 이름을 대응한다.",
+          "misconceptionClass": "round-solid-classified-by-silhouette"
+        },
+        {
+          "key": "identify-round-solid-components",
+          "studentDecision": "원기둥·원뿔·구의 밑면·옆면·꼭짓점·높이에 해당하는 요소를 정한다.",
+          "invariant": "원기둥은 합동·평행한 두 원 밑면, 원뿔은 원 밑면 하나와 꼭짓점, 구는 곡면만 가진다.",
+          "observableEvidence": "각 구성 요소를 모형에 표시하고 개수를 기록한다.",
+          "misconceptionClass": "round-solid-component-transfer-from-polyhedra"
+        },
+        {
+          "key": "explain-round-solid-properties",
+          "studentDecision": "세 입체의 공통점과 차이점을 구성 요소 관계로 설명한다.",
+          "invariant": "설명은 회전·방향이 달라져도 유지되는 성질을 사용한다.",
+          "observableEvidence": "둘 이상의 입체를 비교한 표와 근거 표시를 남긴다.",
+          "misconceptionClass": "round-solid-property-based-on-one-view"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-07.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-07.representation"
+        ],
+        "observableEvidence": [
+          "원기둥, 원뿔, 구를 이해하고, 구성 요소와 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-07]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-07] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 47,
+      "workItemId": "W047",
+      "standardCode": "[4수03-07]",
+      "standardSlug": "4su03-07",
+      "officialGoal": "컴퍼스를 이용하여 여러 가지 크기의 원을 그릴 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G12B",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-07.diagnostic-v1",
+      "manipulation": "portfolio-4su03-07-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "set-circle-center-and-radius-with-compass",
+          "studentDecision": "원 중심과 원하는 반지름에 맞게 컴퍼스의 두 점 위치를 정한다.",
+          "invariant": "컴퍼스의 벌어진 길이는 그리는 동안 일정하고 반지름과 같다.",
+          "observableEvidence": "중심점·컴퍼스 벌림·목표 반지름을 대응한다.",
+          "misconceptionClass": "compass-width-changes-during-construction"
+        },
+        {
+          "key": "construct-circles-of-given-sizes",
+          "studentDecision": "중심을 고정하고 컴퍼스를 한 바퀴 돌려 요구한 크기의 원을 완성한다.",
+          "invariant": "완성된 원 위 모든 점은 중심에서 같은 거리에 있다.",
+          "observableEvidence": "여러 방향의 반지름을 비교해 원의 크기를 확인한다.",
+          "misconceptionClass": "circle-drawn-with-moving-center"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-07.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-07.representation"
+        ],
+        "observableEvidence": [
+          "컴퍼스를 이용하여 여러 가지 크기의 원을 그릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-07]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-07] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 48,
+      "workItemId": "W048",
+      "standardCode": "[2수01-08]",
+      "standardSlug": "2su01-08",
+      "officialGoal": "두 자리 수의 범위에서 세 수의 덧셈과 뺄셈을 할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N05B",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-08.diagnostic-v1",
+      "manipulation": "portfolio-2su01-08-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "calculate-addition-of-three-numbers",
+          "studentDecision": "세 수의 합을 구하기 위해 적절한 두 수를 먼저 묶거나 순서대로 계산한다.",
+          "invariant": "덧셈에서는 묶는 순서가 달라도 세 수의 합이 같다.",
+          "observableEvidence": "중간합과 최종합을 수 모형 또는 식으로 연결한다.",
+          "misconceptionClass": "three-number-addition-omits-or-reuses-term"
+        },
+        {
+          "key": "calculate-mixed-three-number-add-sub",
+          "studentDecision": "덧셈과 뺄셈이 섞인 세 수 계산을 왼쪽부터 수행하고 중간값을 추적한다.",
+          "invariant": "각 단계의 중간값은 앞에서 수행한 연산 결과이며 다음 연산의 피연산자가 된다.",
+          "observableEvidence": "연산 순서·중간값·최종값을 한 줄씩 남긴다.",
+          "misconceptionClass": "three-number-operation-reordered-as-all-addition"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-08.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-08.representation"
+        ],
+        "observableEvidence": [
+          "두 자리 수의 범위에서 세 수의 덧셈과 뺄셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-08]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-08] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 49,
+      "workItemId": "W049",
+      "standardCode": "[4수01-08]",
+      "standardSlug": "4su01-08",
+      "officialGoal": "자연수의 덧셈, 뺄셈, 곱셈, 나눗셈과 관련한 여러 가지 상황에서 어림셈을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N11",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su01-08.diagnostic-v1",
+      "manipulation": "portfolio-4su01-08-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "choose-estimation-strategy-for-operation",
+          "studentDecision": "상황과 연산에 맞게 앞자리 수, 반올림, 범위 등 어림 전략을 고른다.",
+          "invariant": "선택한 전략은 필요한 정확도와 연산 구조를 보존한다.",
+          "observableEvidence": "원래 수·바꾼 수·전략 선택 이유를 함께 남긴다.",
+          "misconceptionClass": "estimation-strategy-ignores-operation-or-purpose"
+        },
+        {
+          "key": "estimate-four-operation-result",
+          "studentDecision": "바꾼 수로 덧셈·뺄셈·곱셈·나눗셈의 결과를 어림한다.",
+          "invariant": "어림 결과의 크기와 단위는 원래 연산 결과의 합리적 범위에 있다.",
+          "observableEvidence": "어림식과 결과 범위를 나타낸다.",
+          "misconceptionClass": "estimated-result-order-of-magnitude-error"
+        },
+        {
+          "key": "judge-reasonableness-with-estimate",
+          "studentDecision": "정확한 계산값이나 제시된 답이 어림 범위에 맞는지 판단한다.",
+          "invariant": "타당한 정확값은 합리적 어림 경계 안에 있다.",
+          "observableEvidence": "어림값·정확값·타당성 판단을 비교한다.",
+          "misconceptionClass": "estimate-treated-as-unrelated-separate-answer"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-08.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-08.representation"
+        ],
+        "observableEvidence": [
+          "자연수의 덧셈, 뺄셈, 곱셈, 나눗셈과 관련한 여러 가지 상황에서 어림셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-08]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-08] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 50,
+      "workItemId": "W050",
+      "standardCode": "[6수03-08]",
+      "standardSlug": "6su03-08",
+      "officialGoal": "원기둥의 전개도를 그릴 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G10B",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-08.diagnostic-v1",
+      "manipulation": "portfolio-6su03-08-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-cylinder-net",
+          "studentDecision": "원기둥의 두 밑면과 옆면을 펼친 모양의 크기·배치를 정한다.",
+          "invariant": "두 밑면은 합동인 원이고 옆면 직사각형의 한 변은 밑면 원주와 같다.",
+          "observableEvidence": "두 원과 직사각형의 대응 부분을 표시한 전개도를 만든다.",
+          "misconceptionClass": "cylinder-net-side-length-not-equal-circumference"
+        },
+        {
+          "key": "verify-cylinder-net",
+          "studentDecision": "주어진 전개도가 겹침이나 틈 없이 원기둥으로 말리는지 판단한다.",
+          "invariant": "옆면의 양 끝이 만나고 두 원 밑면이 서로 다른 경계에 정확히 붙는다.",
+          "observableEvidence": "접힐 경계와 밑면 위치를 표시한다.",
+          "misconceptionClass": "cylinder-net-bases-attached-to-wrong-edges"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-08.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-08.representation"
+        ],
+        "observableEvidence": [
+          "원기둥의 전개도를 그릴 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-08]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-08] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 51,
+      "workItemId": "W051",
+      "standardCode": "[4수03-08]",
+      "standardSlug": "4su03-08",
+      "officialGoal": "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 이등변삼각형, 정삼각형을 이해하고, 그 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-08.diagnostic-v1",
+      "manipulation": "portfolio-4su03-08-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "classify-isosceles-and-equilateral-triangles",
+          "studentDecision": "변의 길이 관계를 근거로 이등변삼각형과 정삼각형을 분류한다.",
+          "invariant": "이등변삼각형은 두 변 이상, 정삼각형은 세 변의 길이가 같다.",
+          "observableEvidence": "같은 길이의 변을 표시하고 분류 범주에 놓는다.",
+          "misconceptionClass": "triangle-classified-by-visual-symmetry-only"
+        },
+        {
+          "key": "explore-and-explain-special-triangle-properties",
+          "studentDecision": "같은 변과 대응하는 각의 관계 및 정삼각형의 각 성질을 찾아 설명한다.",
+          "invariant": "이등변삼각형의 같은 변에 마주 보는 각은 같고 정삼각형의 세 각은 같다.",
+          "observableEvidence": "변·각의 대응 표식과 측정·접기 근거를 남긴다.",
+          "misconceptionClass": "equal-angle-property-assigned-to-wrong-vertices"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-08.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-08.representation"
+        ],
+        "observableEvidence": [
+          "여러 가지 모양의 삼각형에 대한 분류 활동을 통하여 이등변삼각형, 정삼각형을 이해하고, 그 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-08]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-08] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 52,
+      "workItemId": "W052",
+      "standardCode": "[6수01-09]",
+      "standardSlug": "6su01-09",
+      "officialGoal": "분수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N17",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.6su01-09.diagnostic-v1",
+      "manipulation": "portfolio-6su01-09-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "model-fraction-multiplication-principle",
+          "studentDecision": "분수의 몇 배 또는 어떤 양의 일부를 분수 모형으로 구성한다.",
+          "invariant": "곱은 같은 전체에서 두 배율을 연속 적용한 양과 같다.",
+          "observableEvidence": "띠·영역 모형의 겹친 부분과 곱셈식을 대응한다.",
+          "misconceptionClass": "fraction-multiplication-adds-numerators-denominators"
+        },
+        {
+          "key": "calculate-fraction-products",
+          "studentDecision": "자연수×분수, 분수×분수의 분자·분모 연산과 약분을 수행한다.",
+          "invariant": "계산 결과는 모형의 양과 같고 동치분수로 약분해도 값이 보존된다.",
+          "observableEvidence": "계산식·약분 과정·모형 또는 어림 비교를 함께 남긴다.",
+          "misconceptionClass": "fraction-product-size-or-cancellation-error"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-09.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-09.representation"
+        ],
+        "observableEvidence": [
+          "분수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-09]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-09] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 53,
+      "workItemId": "W053",
+      "standardCode": "[2수01-09]",
+      "standardSlug": "2su01-09",
+      "officialGoal": "□가 사용된 덧셈식과 뺄셈식을 만들고, □의 값을 구할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N07",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-09.diagnostic-v1",
+      "manipulation": "portfolio-2su01-09-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-add-sub-equation-with-box",
+          "studentDecision": "상황이나 수 관계에서 모르는 양의 자리에 □를 놓아 덧셈식·뺄셈식을 만든다.",
+          "invariant": "□의 위치와 연산은 부분-전체 또는 변화 관계의 미지량 역할과 일치한다.",
+          "observableEvidence": "상황 요소와 식의 두 수·□를 직접 대응한다.",
+          "misconceptionClass": "box-always-placed-at-result"
+        },
+        {
+          "key": "solve-box-value",
+          "studentDecision": "역연산이나 수 모형을 이용해 □에 들어갈 값을 정한다.",
+          "invariant": "구한 값을 넣으면 등식의 양쪽 값이 같고 상황 관계가 성립한다.",
+          "observableEvidence": "풀이 모형·역연산식·대입 검산을 함께 남긴다.",
+          "misconceptionClass": "box-value-found-by-unrelated-operation"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-09.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-09.representation"
+        ],
+        "observableEvidence": [
+          "□가 사용된 덧셈식과 뺄셈식을 만들고, □의 값을 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-09]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-09] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 54,
+      "workItemId": "W054",
+      "standardCode": "[4수01-09]",
+      "standardSlug": "4su01-09",
+      "officialGoal": "양의 등분할을 통하여 분수의 필요성을 인식하고, 분수를 이해하고 읽고 쓸 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N13A",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.4su01-09.diagnostic-v1",
+      "manipulation": "portfolio-4su01-09-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "recognize-need-for-fractions-through-equal-partition",
+          "studentDecision": "자연수만으로 나타내기 어려운 양을 같은 크기로 나누어 분수로 나타낸다.",
+          "invariant": "전체는 겹침·틈 없는 같은 크기 부분들로 정확히 이루어진다.",
+          "observableEvidence": "같은 전체의 등분 상태와 선택한 부분을 표시한다.",
+          "misconceptionClass": "fraction-parts-unequal-or-whole-unspecified"
+        },
+        {
+          "key": "understand-fraction-numerator-denominator",
+          "studentDecision": "전체를 나눈 같은 부분 수와 취한 부분 수를 분모·분자에 대응한다.",
+          "invariant": "분모는 전체의 등분 수, 분자는 선택한 같은 부분 수다.",
+          "observableEvidence": "분수 모형의 경계·선택 부분과 분수 기호를 연결한다.",
+          "misconceptionClass": "numerator-denominator-role-reversal"
+        },
+        {
+          "key": "read-and-write-fractions",
+          "studentDecision": "분수 모형·말·기호 표현을 서로 대응한다.",
+          "invariant": "세 표현은 같은 전체와 같은 선택 부분을 나타낸다.",
+          "observableEvidence": "모형·분수 기호·한국어 읽기 카드를 일치시킨다.",
+          "misconceptionClass": "fraction-reading-ignores-whole-or-part-count"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-09.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-09.representation"
+        ],
+        "observableEvidence": [
+          "양의 등분할을 통하여 분수의 필요성을 인식하고, 분수를 이해하고 읽고 쓸 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-09]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-09] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 55,
+      "workItemId": "W055",
+      "standardCode": "[6수03-09]",
+      "standardSlug": "6su03-09",
+      "officialGoal": "쌓기나무로 만든 입체도형을 보고 사용된 쌓기나무의 개수를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G14",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-09.diagnostic-v1",
+      "manipulation": "portfolio-6su03-09-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "count-visible-and-hidden-cubes",
+          "studentDecision": "보이는 면과 층·기둥 관계를 이용해 숨은 쌓기나무의 존재를 판단하고 전체를 센다.",
+          "invariant": "각 격자 위치의 큐브는 한 번만 세며 위 큐브 아래에는 지지 큐브가 있다.",
+          "observableEvidence": "층별 또는 기둥별 cube membership과 개수를 나타낸다.",
+          "misconceptionClass": "count-visible-cubes-only"
+        },
+        {
+          "key": "justify-cube-count",
+          "studentDecision": "층별 수·기둥 높이·위에서 본 칸 중 한 방법으로 전체 개수를 설명한다.",
+          "invariant": "서로 다른 세기 방법의 합은 동일한 occupied cube 수를 나타낸다.",
+          "observableEvidence": "구조 표시와 덧셈·곱셈식을 대응해 검산한다.",
+          "misconceptionClass": "cube-count-double-counts-shared-view"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-09.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-09.representation"
+        ],
+        "observableEvidence": [
+          "쌓기나무로 만든 입체도형을 보고 사용된 쌓기나무의 개수를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-09]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-09] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 56,
+      "workItemId": "W056",
+      "standardCode": "[4수03-10]",
+      "standardSlug": "4su03-10",
+      "officialGoal": "여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-10.diagnostic-v1",
+      "manipulation": "portfolio-4su03-10-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "classify-special-quadrilaterals",
+          "studentDecision": "변의 평행·길이와 각의 성질을 근거로 다섯 사각형 종류를 분류한다.",
+          "invariant": "각 이름의 정의 성질은 회전·크기와 무관하게 유지된다.",
+          "observableEvidence": "평행·같은 길이·직각 표식을 도형에 남기고 범주에 놓는다.",
+          "misconceptionClass": "quadrilateral-classified-by-prototype-or-orientation"
+        },
+        {
+          "key": "explain-special-quadrilateral-properties",
+          "studentDecision": "각 사각형의 변·각·대각선 성질 중 관찰한 관계를 설명한다.",
+          "invariant": "설명한 성질은 같은 종류의 모든 예에서 성립한다.",
+          "observableEvidence": "여러 예의 측정·포개기·평행 표시를 근거로 남긴다.",
+          "misconceptionClass": "quadrilateral-property-generalized-from-one-drawing"
+        },
+        {
+          "key": "reason-about-quadrilateral-inclusion",
+          "studentDecision": "한 도형이 여러 사각형 정의를 동시에 만족하는지 판단한다.",
+          "invariant": "더 많은 조건을 만족하는 하위 범주는 상위 범주의 성질도 가진다.",
+          "observableEvidence": "정의 조건표나 포함 분류판에서 한 도형의 여러 소속을 나타낸다.",
+          "misconceptionClass": "quadrilateral-categories-treated-as-mutually-exclusive"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-10.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-10.representation"
+        ],
+        "observableEvidence": [
+          "여러 가지 모양의 사각형에 대한 분류 활동을 통하여 직사각형, 정사각형, 사다리꼴, 평행사변형, 마름모를 이해하고, 그 성질을 탐구하고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-10]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-10] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 57,
+      "workItemId": "W057",
+      "standardCode": "[6수01-10]",
+      "standardSlug": "6su01-10",
+      "officialGoal": "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 분수로 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N16",
+      "engineClassIds": [
+        "R06",
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.6su01-10.diagnostic-v1",
+      "manipulation": "portfolio-6su01-10-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "represent-natural-number-division-as-fraction",
+          "studentDecision": "나누어지는 수와 나누는 수를 각각 분자와 분모에 대응해 몫을 분수로 나타낸다.",
+          "invariant": "`a÷b=a/b`이며 같은 전체를 b등분한 양 a개와 같다.",
+          "observableEvidence": "나눗셈 상황·분할 모형·분수 기호를 대응한다.",
+          "misconceptionClass": "division-fraction-numerator-denominator-reversal"
+        },
+        {
+          "key": "verify-fraction-quotient",
+          "studentDecision": "분수로 나타낸 몫이 원래 나눗셈 상황의 각 몫과 같은지 확인한다.",
+          "invariant": "각 몫×나누는 수=나누어지는 전체 양이다.",
+          "observableEvidence": "분수 몫을 같은 크기 부분으로 반복해 전체를 복원한다.",
+          "misconceptionClass": "fraction-quotient-disconnected-from-sharing-context"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-10.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-10.representation"
+        ],
+        "observableEvidence": [
+          "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 분수로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-10]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-10] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 58,
+      "workItemId": "W058",
+      "standardCode": "[2수03-09]",
+      "standardSlug": "2su03-09",
+      "officialGoal": "실생활 문제 상황과 연결하여 1분, 1시간, 1일, 1주일, 1개월, 1년 사이의 관계를 이해한다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G17",
+      "engineClassIds": [
+        "R17"
+      ],
+      "rendererKind": "clock",
+      "familyId": "portfolio.2su03-09.diagnostic-v1",
+      "manipulation": "portfolio-2su03-09-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-time-calendar-unit-relations",
+          "studentDecision": "상황에 맞게 분·시간·일·주·개월·년 단위 사이의 묶음 관계를 선택한다.",
+          "invariant": "1시간=60분, 1일=24시간, 1주일=7일, 1년=12개월이며 달력 관계는 실제 달력 조건을 따른다.",
+          "observableEvidence": "단위 묶음·시계·달력에서 같은 기간을 두 단위로 나타낸다.",
+          "misconceptionClass": "time-units-treated-as-base-ten"
+        },
+        {
+          "key": "apply-time-unit-relations-in-context",
+          "studentDecision": "생활 일정의 기간을 알맞은 시간·달력 단위로 바꾸어 판단한다.",
+          "invariant": "단위를 바꾸어도 시작과 끝 사이 실제 기간이 보존된다.",
+          "observableEvidence": "상황의 시작·끝과 변환식을 연결해 검산한다.",
+          "misconceptionClass": "calendar-conversion-ignores-variable-month-length"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-09.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-09.representation"
+        ],
+        "observableEvidence": [
+          "실생활 문제 상황과 연결하여 1분, 1시간, 1일, 1주일, 1개월, 1년 사이의 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-09]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-09] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 59,
+      "workItemId": "W059",
+      "standardCode": "[4수01-10]",
+      "standardSlug": "4su01-10",
+      "officialGoal": "단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N13B",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.4su01-10.diagnostic-v1",
+      "manipulation": "portfolio-4su01-10-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-fraction-types",
+          "studentDecision": "분자·분모 관계와 전체 수를 근거로 단위분수·진분수·가분수·대분수를 구별한다.",
+          "invariant": "각 분수 유형의 정의는 같은 전체와 분자·분모 관계에 의해 결정된다.",
+          "observableEvidence": "분수 모형·기호·유형 이름을 대응하고 반례를 분류한다.",
+          "misconceptionClass": "fraction-type-classified-by-number-size-only"
+        },
+        {
+          "key": "relate-improper-and-mixed-fractions",
+          "studentDecision": "같은 양을 가분수와 대분수로 바꾸어 나타낸다.",
+          "invariant": "전체 단위 수와 남은 부분을 다시 합치면 원래 분자 수의 단위분수가 된다.",
+          "observableEvidence": "분수 모형을 전체 묶음과 남은 조각으로 재구성하고 두 기호를 대응한다.",
+          "misconceptionClass": "mixed-improper-conversion-adds-whole-without-scaling"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-10.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-10.representation"
+        ],
+        "observableEvidence": [
+          "단위분수, 진분수, 가분수, 대분수를 알고, 그 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-10]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-10] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 60,
+      "workItemId": "W060",
+      "standardCode": "[6수03-10]",
+      "standardSlug": "6su03-10",
+      "officialGoal": "쌓기나무로 만든 입체도형의 위, 앞, 옆에서 본 모양을 표현할 수 있고, 이러한 표현을 보고 입체도형의 모양을 추측할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G15",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-10.diagnostic-v1",
+      "manipulation": "portfolio-6su03-10-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "represent-orthographic-cube-views",
+          "studentDecision": "관찰 방향에 따라 겹쳐 보이는 쌓기나무를 고려해 위·앞·옆 모양을 나타낸다.",
+          "invariant": "각 투영 칸은 그 방향의 한 줄에 큐브가 하나 이상 있음을 나타낸다.",
+          "observableEvidence": "입체의 cube membership과 세 방향 격자 표시를 대응한다.",
+          "misconceptionClass": "orthographic-view-counts-depth-as-separate-squares"
+        },
+        {
+          "key": "infer-solid-from-orthographic-views",
+          "studentDecision": "세 방향 그림을 동시에 만족하는 쌓기나무 배치를 구성하고 가능한 모양을 판단한다.",
+          "invariant": "구성한 입체의 세 투영은 주어진 위·앞·옆 그림과 모두 일치한다.",
+          "observableEvidence": "구성한 입체와 재생성한 세 방향 그림을 대조한다.",
+          "misconceptionClass": "solid-inference-fits-only-one-or-two-views"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-10.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-10.representation"
+        ],
+        "observableEvidence": [
+          "쌓기나무로 만든 입체도형의 위, 앞, 옆에서 본 모양을 표현할 수 있고, 이러한 표현을 보고 입체도형의 모양을 추측할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-10]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-10] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 61,
+      "workItemId": "W061",
+      "standardCode": "[4수03-11]",
+      "standardSlug": "4su03-11",
+      "officialGoal": "다각형과 정다각형을 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-11.diagnostic-v1",
+      "manipulation": "portfolio-4su03-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "identify-polygons-by-definition",
+          "studentDecision": "여러 도형 중 선분으로 둘러싸인 닫힌 도형인지 판단하여 다각형을 고른다.",
+          "invariant": "다각형의 경계는 선분만으로 이루어지고 이웃한 선분의 끝점이 이어져 닫혀 있다.",
+          "observableEvidence": "경계 선분과 꼭짓점을 표시하고 예·반례를 분류한다.",
+          "misconceptionClass": "polygon-classified-by-familiar-appearance"
+        },
+        {
+          "key": "identify-regular-polygons-by-definition",
+          "studentDecision": "모든 변의 길이와 모든 각의 크기를 비교하여 정다각형인지 판단한다.",
+          "invariant": "정다각형은 모든 변의 길이가 같고 모든 각의 크기가 같으며 방향·크기가 달라도 정의가 유지된다.",
+          "observableEvidence": "변 길이와 각 크기의 같음 표시를 남겨 정다각형과 반례를 구별한다.",
+          "misconceptionClass": "regular-polygon-uses-only-equal-sides-or-prototype"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-11.representation"
+        ],
+        "observableEvidence": [
+          "다각형과 정다각형을 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 62,
+      "workItemId": "W062",
+      "standardCode": "[6수01-11]",
+      "standardSlug": "6su01-11",
+      "officialGoal": "분수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N18",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.6su01-11.diagnostic-v1",
+      "manipulation": "portfolio-6su01-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-fraction-divided-by-natural-principle",
+          "studentDecision": "분수인 양을 자연수만큼 똑같이 나누는 모형에서 각 몫을 구한다.",
+          "invariant": "분수 a/b를 n등분한 몫은 전체를 b×n등분한 부분 a개와 같으며 동치분수로 단순화할 수 있다.",
+          "observableEvidence": "분수 막대·영역을 n등분한 상태와 나눗셈식·몫을 대응한다.",
+          "misconceptionClass": "fraction-divided-by-natural-divides-denominator-instead-of-sharing"
+        },
+        {
+          "key": "derive-fraction-divided-by-fraction-principle",
+          "studentDecision": "피제수 안에 제수인 분수가 몇 번 들어가는지 공통 단위로 나타내어 몫을 정한다.",
+          "invariant": "같은 양의 단위로 환산한 비는 변하지 않으며 a/b ÷ c/d는 a/b × d/c와 같다.",
+          "observableEvidence": "공통 단위 분할 또는 수직선 반복 측정과 역수 곱셈식을 연결한다.",
+          "misconceptionClass": "fraction-division-multiplies-without-inverting-divisor"
+        },
+        {
+          "key": "calculate-and-verify-fraction-division",
+          "studentDecision": "문제의 분수 나눗셈 유형에 맞는 계산 절차를 선택하고 몫의 크기를 판단한다.",
+          "invariant": "몫×제수=피제수이며 제수가 1보다 작으면 양수인 몫은 피제수보다 커진다.",
+          "observableEvidence": "계산식과 곱셈 역검산 또는 크기 어림을 함께 남긴다.",
+          "misconceptionClass": "fraction-division-ignores-operation-size-effect"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-11.representation"
+        ],
+        "observableEvidence": [
+          "분수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 63,
+      "workItemId": "W063",
+      "standardCode": "[2수03-11]",
+      "standardSlug": "2su03-11",
+      "officialGoal": "1m와 1cm의 관계를 이해하고, 길이를 ‘몇 m 몇 cm’와 ‘몇 cm’로 표현할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G19A12",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su03-11.diagnostic-v1",
+      "manipulation": "portfolio-2su03-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-meter-centimeter-relation",
+          "studentDecision": "1m 길이를 1cm 단위가 몇 개 모인 양으로 나타낸다.",
+          "invariant": "1m=100cm이며 단위를 바꾸어도 실제 길이는 같다.",
+          "observableEvidence": "미터 띠를 센티미터 구간 100개와 대응한다.",
+          "misconceptionClass": "metric-length-relation-treated-as-ten"
+        },
+        {
+          "key": "convert-mixed-meter-centimeter-to-centimeter",
+          "studentDecision": "몇 m 몇 cm를 cm 한 단위로 바꾸어 나타낸다.",
+          "invariant": "m 수마다 100cm를 더하고 남은 cm를 보존한다.",
+          "observableEvidence": "미터 묶음과 낱개 센티미터를 풀어 전체 cm 수를 구성한다.",
+          "misconceptionClass": "mixed-length-conversion-concatenates-digits"
+        },
+        {
+          "key": "convert-centimeter-to-mixed-meter-centimeter",
+          "studentDecision": "전체 cm를 100cm 묶음과 남은 cm로 나누어 몇 m 몇 cm로 나타낸다.",
+          "invariant": "전체 cm=100×m+남은 cm이고 남은 cm는 0 이상 100 미만이다.",
+          "observableEvidence": "cm 단위를 100개씩 묶고 몫과 나머지를 혼합 단위에 대응한다.",
+          "misconceptionClass": "base-unit-to-mixed-unit-remainder-invalid"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-11.representation"
+        ],
+        "observableEvidence": [
+          "1m와 1cm의 관계를 이해하고, 길이를 ‘몇 m 몇 cm’와 ‘몇 cm’로 표현할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 64,
+      "workItemId": "W064",
+      "standardCode": "[2수01-11]",
+      "standardSlug": "2su01-11",
+      "officialGoal": "곱셈구구를 이해하고, 한 자리 수의 곱셈을 할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "수와 연산",
+      "archetypeId": "N12",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su01-11.diagnostic-v1",
+      "manipulation": "portfolio-2su01-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "construct-and-relate-multiplication-facts",
+          "studentDecision": "같은 수씩 묶인 양을 배열·묶음·뛰어 세기로 나타내고 알맞은 곱셈구구를 정한다.",
+          "invariant": "한 묶음의 수×묶음 수는 전체 수와 같고 배열의 행과 열을 바꾸어도 전체는 같다.",
+          "observableEvidence": "묶음 또는 배열과 곱셈식·관련 구구를 대응한다.",
+          "misconceptionClass": "multiplication-fact-reverses-factor-meaning-or-adds-factors"
+        },
+        {
+          "key": "calculate-one-digit-products",
+          "studentDecision": "이미 아는 곱셈구구와 교환·분배 관계를 이용해 한 자리 수의 곱을 구한다.",
+          "invariant": "분해한 부분 곱의 합과 원래 곱은 같으며 관련 곱셈구구는 같은 전체를 나타낸다.",
+          "observableEvidence": "선택한 구구 또는 분해식과 계산 결과를 배열로 검산한다.",
+          "misconceptionClass": "multiplication-fact-recall-without-equal-group-meaning"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g1-2.s2-01-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g1-2.s2-01-11.representation"
+        ],
+        "observableEvidence": [
+          "곱셈구구를 이해하고, 한 자리 수의 곱셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수01-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수01-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 65,
+      "workItemId": "W065",
+      "standardCode": "[4수01-11]",
+      "standardSlug": "4su01-11",
+      "officialGoal": "분모가 같은 분수끼리, 단위분수끼리 크기를 비교하고 그 방법을 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N14",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.4su01-11.diagnostic-v1",
+      "manipulation": "portfolio-4su01-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "compare-fractions-with-common-denominator",
+          "studentDecision": "같은 전체와 같은 분모를 가진 분수의 분자를 비교해 더 큰 양을 정한다.",
+          "invariant": "같은 전체를 같은 수로 나눈 조각은 크기가 같으므로 취한 조각 수인 분자가 큰 분수가 더 크다.",
+          "observableEvidence": "같은 전체의 분수 모형을 공통 출발점에 맞추고 비교 기호를 놓는다.",
+          "misconceptionClass": "common-denominator-fractions-compared-by-denominator"
+        },
+        {
+          "key": "compare-unit-fractions",
+          "studentDecision": "분자가 1인 두 분수에서 전체를 더 적게 나눈 쪽의 한 조각이 더 큰지 판단한다.",
+          "invariant": "같은 전체에서 단위분수는 분모가 클수록 한 조각의 크기가 작다.",
+          "observableEvidence": "같은 전체의 서로 다른 등분 모형에서 한 조각씩 표시해 비교한다.",
+          "misconceptionClass": "unit-fraction-larger-denominator-means-larger-value"
+        },
+        {
+          "key": "explain-fraction-comparison-method",
+          "studentDecision": "비교에 사용한 같은 전체·조각 크기·조각 수 중 알맞은 근거를 선택해 설명한다.",
+          "invariant": "비교 설명은 두 분수가 같은 전체를 기준으로 한다는 조건을 포함해야 한다.",
+          "observableEvidence": "비교 기호와 분수 모형의 대응 표식을 남기고 근거 문장을 완성한다.",
+          "misconceptionClass": "fraction-comparison-ignores-whole-size"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-11.representation"
+        ],
+        "observableEvidence": [
+          "분모가 같은 분수끼리, 단위분수끼리 크기를 비교하고 그 방법을 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 66,
+      "workItemId": "W066",
+      "standardCode": "[6수03-11]",
+      "standardSlug": "6su03-11",
+      "officialGoal": "평면도형의 둘레를 이해하고, 기본적인 평면도형의 둘레를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G22",
+      "engineClassIds": [
+        "R18",
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-11.diagnostic-v1",
+      "manipulation": "portfolio-6su03-11-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-perimeter-as-boundary-length",
+          "studentDecision": "도형의 둘레에 해당하는 닫힌 경계를 고르고 그 길이를 나타낸다.",
+          "invariant": "둘레는 내부 넓이가 아니라 도형 바깥 경계를 한 바퀴 잰 전체 길이다.",
+          "observableEvidence": "닫힌 경로의 각 변을 한 번씩 표시하고 측정 단위를 이어 붙인다.",
+          "misconceptionClass": "perimeter-confused-with-area-or-selected-sides"
+        },
+        {
+          "key": "calculate-basic-shape-perimeters",
+          "studentDecision": "주어진 도형의 같은 길이 변과 빠진 변을 추론해 둘레 계산식을 세운다.",
+          "invariant": "경계를 이루는 모든 변의 길이 합은 분해·묶는 방식과 관계없이 같다.",
+          "observableEvidence": "경계 변의 포함 표시와 덧셈 또는 곱셈식을 대응해 전체 둘레를 구한다.",
+          "misconceptionClass": "perimeter-omits-hidden-or-repeated-equal-sides"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-11.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-11.representation"
+        ],
+        "observableEvidence": [
+          "평면도형의 둘레를 이해하고, 기본적인 평면도형의 둘레를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-11]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-11] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 67,
+      "workItemId": "W067",
+      "standardCode": "[4수03-12]",
+      "standardSlug": "4su03-12",
+      "officialGoal": "주어진 도형을 이용하여 여러 가지 모양을 만들거나 채우고 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G16",
+      "engineClassIds": [
+        "R21"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.4su03-12.diagnostic-v1",
+      "manipulation": "portfolio-4su03-12-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "compose-shapes-from-given-pieces",
+          "studentDecision": "주어진 도형 조각을 회전·이동해 목표 모양 또는 서로 다른 합성 모양을 만든다.",
+          "invariant": "사용한 조각의 모양·크기·개수는 이동과 회전 뒤에도 보존되고 겹침 없이 합성된다.",
+          "observableEvidence": "각 조각의 membership이 남는 완성 합성 도형을 구성한다.",
+          "misconceptionClass": "shape-composition-overlaps-or-changes-pieces"
+        },
+        {
+          "key": "tile-a-region-with-given-shapes",
+          "studentDecision": "주어진 도형이 영역을 겹침과 빈틈 없이 채우도록 배치한다.",
+          "invariant": "조각들의 합집합은 목표 영역과 같고 내부 겹침이나 빈틈이 없다.",
+          "observableEvidence": "목표 경계 안에 모든 조각을 배치하고 남은 빈칸·겹침 여부를 확인한다.",
+          "misconceptionClass": "tiling-allows-gaps-overlaps-or-boundary-crossing"
+        },
+        {
+          "key": "explain-shape-composition-or-tiling",
+          "studentDecision": "조각의 이동·회전·반복 규칙 중 완성 모양을 만든 핵심 관계를 설명한다.",
+          "invariant": "설명한 변환과 배열 규칙을 다시 적용하면 같은 경계 또는 채움 상태가 재현된다.",
+          "observableEvidence": "조각의 대응 변·꼭짓점 또는 반복 단위를 표시해 구성 과정을 나타낸다.",
+          "misconceptionClass": "shape-construction-explanation-uses-appearance-only"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-12.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-12.representation"
+        ],
+        "observableEvidence": [
+          "주어진 도형을 이용하여 여러 가지 모양을 만들거나 채우고 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-12]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-12] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 68,
+      "workItemId": "W068",
+      "standardCode": "[6수01-12]",
+      "standardSlug": "6su01-12",
+      "officialGoal": "분수와 소수의 관계를 이해하고 크기를 비교하며 그 방법을 설명할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N15",
+      "engineClassIds": [
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "fraction",
+      "familyId": "portfolio.6su01-12.diagnostic-v1",
+      "manipulation": "portfolio-6su01-12-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "relate-fractions-and-decimals",
+          "studentDecision": "같은 양을 나타내는 분수와 소수를 등분 모형·자릿값을 이용해 대응한다.",
+          "invariant": "분모가 10의 거듭제곱인 동치분수와 소수의 자릿값 표현은 같은 양을 나타낸다.",
+          "observableEvidence": "분수 모형·분수 기호·소수 기호를 같은 위치나 영역에 연결한다.",
+          "misconceptionClass": "fraction-decimal-conversion-treats-digits-as-whole-numbers"
+        },
+        {
+          "key": "compare-fractions-and-decimals",
+          "studentDecision": "분수와 소수를 공통 분수·공통 소수 또는 수직선 위치로 바꾸어 크기를 비교한다.",
+          "invariant": "표현을 동치 형태로 바꾸어도 수의 크기와 수직선 위치는 변하지 않는다.",
+          "observableEvidence": "두 수를 한 표현으로 통일하거나 같은 수직선에 놓고 비교 기호를 선택한다.",
+          "misconceptionClass": "fraction-decimal-comparison-compares-visible-digits-only"
+        },
+        {
+          "key": "explain-fraction-decimal-comparison",
+          "studentDecision": "동치 변환·자릿값·수직선 중 사용한 비교 근거를 선택해 설명한다.",
+          "invariant": "설명은 두 표현이 같은 단위로 비교되었음을 보여야 한다.",
+          "observableEvidence": "변환 과정과 비교 결과를 연결해 다른 표현으로 재검산한다.",
+          "misconceptionClass": "fraction-decimal-explanation-lacks-common-unit"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-12.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-12.representation"
+        ],
+        "observableEvidence": [
+          "분수와 소수의 관계를 이해하고 크기를 비교하며 그 방법을 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-12]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-12] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 69,
+      "workItemId": "W069",
+      "standardCode": "[2수03-12]",
+      "standardSlug": "2su03-12",
+      "officialGoal": "여러 가지 물건의 길이를 어림하고, 길이에 대한 양감을 기른다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G20A12",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.2su03-12.diagnostic-v1",
+      "manipulation": "portfolio-2su03-12-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "estimate-length-with-benchmarks",
+          "studentDecision": "물건의 길이에 알맞은 단위와 알고 있는 기준 길이를 선택해 어림값을 정한다.",
+          "invariant": "어림값은 실제 대상과 같은 단위의 기준 길이를 반복하거나 비교한 범위 안에 있어야 한다.",
+          "observableEvidence": "기준 물체 또는 단위 막대를 대상과 비교하고 어림 범위를 표시한다.",
+          "misconceptionClass": "length-estimate-uses-wrong-unit-or-no-benchmark"
+        },
+        {
+          "key": "check-and-calibrate-length-sense",
+          "studentDecision": "측정값과 어림값의 차이를 비교해 다음 어림을 조정한다.",
+          "invariant": "같은 대상을 같은 단위로 비교해야 차이가 의미 있으며 측정값은 합리적 어림 범위에 들어간다.",
+          "observableEvidence": "어림값·측정값·차이를 한 단위로 기록하고 기준 길이 선택을 고친다.",
+          "misconceptionClass": "length-sense-does-not-revise-after-measurement"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-12.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-12.representation"
+        ],
+        "observableEvidence": [
+          "여러 가지 물건의 길이를 어림하고, 길이에 대한 양감을 기른다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-12]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-12] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 70,
+      "workItemId": "W070",
+      "standardCode": "[4수01-12]",
+      "standardSlug": "4su01-12",
+      "officialGoal": "분모가 10인 진분수와 연결하여 소수 한 자리 수를 이해하고 읽고 쓸 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N01C",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-12.diagnostic-v1",
+      "manipulation": "portfolio-4su01-12-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-tenths-through-fractions",
+          "studentDecision": "전체를 10등분한 몇 조각을 분모가 10인 분수와 소수 한 자리 수로 함께 나타낸다.",
+          "invariant": "a/10과 0.a는 같은 전체의 10분의 1 단위 a개를 나타낸다.",
+          "observableEvidence": "10등분 모형·분수·소수를 같은 양끼리 대응한다.",
+          "misconceptionClass": "tenths-decimal-disconnected-from-equal-partition"
+        },
+        {
+          "key": "read-and-write-one-decimal-place",
+          "studentDecision": "소수 한 자리 수의 정수 부분과 소수 첫째 자리 값을 구별해 읽고 쓴다.",
+          "invariant": "소수점 오른쪽 첫 자리는 10분의 1의 개수를 나타내며 0은 자릿값을 유지한다.",
+          "observableEvidence": "자릿값표·말·소수 기호를 서로 일치시킨다.",
+          "misconceptionClass": "decimal-point-ignored-or-read-as-two-whole-numbers"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-12.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-12.representation"
+        ],
+        "observableEvidence": [
+          "분모가 10인 진분수와 연결하여 소수 한 자리 수를 이해하고 읽고 쓸 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-12]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-12] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 71,
+      "workItemId": "W071",
+      "standardCode": "[6수03-12]",
+      "standardSlug": "6su03-12",
+      "officialGoal": "넓이 단위 1cm², 1m², 1km²를 알며, 그 관계를 이해한다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G23A",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-12.diagnostic-v1",
+      "manipulation": "portfolio-6su03-12-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-square-area-units",
+          "studentDecision": "측정할 영역의 크기에 맞게 1cm²·1m²·1km² 단위를 선택한다.",
+          "invariant": "각 넓이 단위는 한 변이 각각 1cm·1m·1km인 정사각형 한 칸의 넓이다.",
+          "observableEvidence": "대상 영역을 알맞은 단위 정사각형으로 덮고 단위와 수를 함께 나타낸다.",
+          "misconceptionClass": "area-unit-confused-with-side-length-unit"
+        },
+        {
+          "key": "relate-square-area-units",
+          "studentDecision": "변 길이 단위의 관계를 두 방향에 적용해 넓이 단위를 환산한다.",
+          "invariant": "1m²=10000cm²이고 1km²=1000000m²처럼 길이 환산 배율의 제곱이 넓이 환산 배율이다.",
+          "observableEvidence": "큰 단위 정사각형을 작은 단위의 행×열 배열로 분할해 환산값을 나타낸다.",
+          "misconceptionClass": "area-conversion-uses-linear-factor"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-12.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-12.representation"
+        ],
+        "observableEvidence": [
+          "넓이 단위 1cm², 1m², 1km²를 알며, 그 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-12]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-12] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 72,
+      "workItemId": "W072",
+      "standardCode": "[4수03-13]",
+      "standardSlug": "4su03-13",
+      "officialGoal": "1분과 1초의 관계를 이해하고, 초 단위까지 시각을 읽을 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G18",
+      "engineClassIds": [
+        "R17"
+      ],
+      "rendererKind": "clock",
+      "familyId": "portfolio.4su03-13.diagnostic-v1",
+      "manipulation": "portfolio-4su03-13-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-minute-second-relation",
+          "studentDecision": "초의 반복을 1분 묶음과 남은 초로 나타낸다.",
+          "invariant": "1분=60초이며 단위를 바꾸어도 실제 시간의 길이는 같다.",
+          "observableEvidence": "초 눈금 60개와 분침의 한 칸 이동을 대응한다.",
+          "misconceptionClass": "minute-second-relation-treated-as-base-ten-or-hundred"
+        },
+        {
+          "key": "read-clock-to-seconds",
+          "studentDecision": "시침·분침·초침의 위치를 구별해 시·분·초 단위의 시각을 읽는다.",
+          "invariant": "각 바늘은 서로 다른 눈금 단위를 나타내며 초침 한 바퀴마다 1분이 지난다.",
+          "observableEvidence": "아날로그 시계 바늘 위치와 디지털 시각 또는 말 표현을 일치시킨다.",
+          "misconceptionClass": "clock-hand-role-or-second-scale-confusion"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-13.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-13.representation"
+        ],
+        "observableEvidence": [
+          "1분과 1초의 관계를 이해하고, 초 단위까지 시각을 읽을 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-13]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-13] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 73,
+      "workItemId": "W073",
+      "standardCode": "[6수01-13]",
+      "standardSlug": "6su01-13",
+      "officialGoal": "소수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N19",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.6su01-13.diagnostic-v1",
+      "manipulation": "portfolio-6su01-13-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-decimal-times-natural-principle",
+          "studentDecision": "소수를 자릿값 단위로 분해하거나 자연수 배만큼 반복해 소수×자연수의 곱을 구한다.",
+          "invariant": "각 자릿값 단위의 개수에 자연수를 곱한 부분 곱의 합은 원래 곱과 같다.",
+          "observableEvidence": "10진 모형·수직선 반복 또는 분배식과 계산 결과를 대응한다.",
+          "misconceptionClass": "decimal-times-natural-ignores-place-value"
+        },
+        {
+          "key": "derive-decimal-times-decimal-principle",
+          "studentDecision": "두 소수를 자연수 크기로 확대해 곱한 뒤 전체 확대 배율만큼 되돌려 소수점을 정한다.",
+          "invariant": "각 인수의 10배 확대 배율의 곱만큼 곱도 확대되므로 소수 자릿수의 합이 보존된다.",
+          "observableEvidence": "영역 모형 또는 자연수 곱과 확대·축소 관계를 연결한다.",
+          "misconceptionClass": "decimal-times-decimal-aligns-decimal-points-as-addition"
+        },
+        {
+          "key": "calculate-and-verify-decimal-multiplication",
+          "studentDecision": "인수의 크기와 자릿값에 맞게 계산하고 결과의 자리와 크기가 타당한지 판단한다.",
+          "invariant": "양수에서 1보다 작은 인수를 곱하면 결과가 다른 인수보다 작아지며 어림한 범위와 맞아야 한다.",
+          "observableEvidence": "세로 계산과 자릿값표·어림값 중 하나를 함께 남겨 결과를 검산한다.",
+          "misconceptionClass": "decimal-multiplication-place-count-without-magnitude-check"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-13.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-13.representation"
+        ],
+        "observableEvidence": [
+          "소수의 곱셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-13]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-13] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 74,
+      "workItemId": "W074",
+      "standardCode": "[2수03-13]",
+      "standardSlug": "2su03-13",
+      "officialGoal": "실생활 문제 상황과 연결하여 길이의 덧셈과 뺄셈을 할 수 있다.",
+      "gradeBand": "1-2",
+      "domain": "도형과 측정",
+      "archetypeId": "G21A12",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.2su03-13.diagnostic-v1",
+      "manipulation": "portfolio-2su03-13-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "add-lengths-in-context",
+          "studentDecision": "이어 붙이거나 합치는 길이 상황을 덧셈으로 나타내고 같은 단위끼리 더한다.",
+          "invariant": "길이 단위를 통일한 뒤 합한 전체 길이는 각 부분 길이의 합과 같다.",
+          "observableEvidence": "길이 막대를 공통 출발점에 이어 붙이고 덧셈식과 합을 나타낸다.",
+          "misconceptionClass": "length-addition-mixes-units-or-does-not-compose-segments"
+        },
+        {
+          "key": "subtract-lengths-in-context",
+          "studentDecision": "전체와 한 부분 또는 두 길이의 차를 묻는 상황을 뺄셈으로 나타낸다.",
+          "invariant": "같은 단위에서 큰 길이=작은 길이+차이며 차를 더하면 원래 길이를 복원한다.",
+          "observableEvidence": "두 길이를 공통 출발점에 맞추고 남는 구간과 뺄셈식을 대응한다.",
+          "misconceptionClass": "length-subtraction-subtracts-digits-without-unit-or-order"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g1-2.s2-03-13.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g1-2.s2-03-13.representation"
+        ],
+        "observableEvidence": [
+          "실생활 문제 상황과 연결하여 길이의 덧셈과 뺄셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [2수03-13]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[2수03-13] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 75,
+      "workItemId": "W075",
+      "standardCode": "[4수01-13]",
+      "standardSlug": "4su01-13",
+      "officialGoal": "자릿값의 원리를 바탕으로 소수 두 자리 수와 소수 세 자리 수를 이해하고 읽고 쓸 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N01C",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-13.diagnostic-v1",
+      "manipulation": "portfolio-4su01-13-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-hundredths-and-thousandths-place-value",
+          "studentDecision": "한 단위를 10씩 거듭 나눈 관계로 10분의 1·100분의 1·1000분의 1 자릿값을 정한다.",
+          "invariant": "오른쪽으로 한 자리 이동할 때 단위 크기는 1/10이 되고 같은 숫자의 값도 1/10이 된다.",
+          "observableEvidence": "10진 모형·분수·자릿값표에서 각 숫자의 값을 연결한다.",
+          "misconceptionClass": "decimal-place-value-treated-as-whole-number-extension"
+        },
+        {
+          "key": "read-and-write-two-and-three-decimal-places",
+          "studentDecision": "정수 부분과 소수 각 자리의 단위 개수를 구별해 소수 두·세 자리 수를 읽고 쓴다.",
+          "invariant": "0을 포함한 각 자리의 위치가 값의 단위를 정하며 읽기·기호·자릿값 표현은 같은 수다.",
+          "observableEvidence": "말·전개식·자릿값표·소수 기호를 같은 수끼리 대응한다.",
+          "misconceptionClass": "decimal-zero-placeholder-omitted-or-misread"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-13.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-13.representation"
+        ],
+        "observableEvidence": [
+          "자릿값의 원리를 바탕으로 소수 두 자리 수와 소수 세 자리 수를 이해하고 읽고 쓸 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-13]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-13] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 76,
+      "workItemId": "W076",
+      "standardCode": "[6수03-13]",
+      "standardSlug": "6su03-13",
+      "officialGoal": "직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G24",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-13.diagnostic-v1",
+      "manipulation": "portfolio-6su03-13-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-rectangle-area-formula",
+          "studentDecision": "단위 정사각형을 직접 세는 대신 한 행의 수와 행 수를 이용해 직사각형의 넓이를 구한다.",
+          "invariant": "직사각형을 덮는 단위 정사각형 수는 가로 단위 수×세로 단위 수와 같다.",
+          "observableEvidence": "행·열 배열과 가로×세로 넓이식을 대응한다.",
+          "misconceptionClass": "rectangle-area-adds-side-lengths-or-counts-grid-lines"
+        },
+        {
+          "key": "derive-square-area-formula",
+          "studentDecision": "정사각형의 같은 두 변을 이용해 넓이 계산식을 정한다.",
+          "invariant": "정사각형은 가로와 세로가 같은 직사각형이므로 넓이는 한 변×한 변이다.",
+          "observableEvidence": "같은 변 표시와 정사각 배열의 행·열 수를 곱셈식에 연결한다.",
+          "misconceptionClass": "square-area-multiplies-by-four-or-confuses-perimeter"
+        },
+        {
+          "key": "calculate-rectangle-and-square-areas",
+          "studentDecision": "주어진 길이와 단위에 맞는 공식을 선택하고 빠진 길이 또는 넓이를 구한다.",
+          "invariant": "같은 영역을 분할·재배열해도 단위 정사각형의 전체 수와 넓이는 보존된다.",
+          "observableEvidence": "길이 표식·공식·넓이 단위를 연결하고 단위 격자로 검산한다.",
+          "misconceptionClass": "area-calculation-omits-square-unit-or-uses-wrong-dimensions"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-13.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-13.representation"
+        ],
+        "observableEvidence": [
+          "직사각형과 정사각형의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-13]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-13] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 77,
+      "workItemId": "W077",
+      "standardCode": "[4수03-14]",
+      "standardSlug": "4su03-14",
+      "officialGoal": "실생활 문제 상황과 연결하여 초 단위까지의 시간의 덧셈과 뺄셈을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-14.diagnostic-v1",
+      "manipulation": "portfolio-4su03-14-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "add-times-to-seconds",
+          "studentDecision": "두 시간의 길이를 시·분·초 같은 단위끼리 더하고 60초·60분 묶음을 받아올린다.",
+          "invariant": "60초=1분, 60분=1시간이며 단위를 바꾸어도 전체 시간의 길이는 같다.",
+          "observableEvidence": "시간 단위표 또는 시간선에서 합성과 받아올림을 나타낸다.",
+          "misconceptionClass": "time-addition-regroups-at-ten-or-hundred"
+        },
+        {
+          "key": "subtract-times-to-seconds",
+          "studentDecision": "두 시각 또는 시간의 차를 구할 때 필요한 경우 1분·1시간을 작은 단위로 바꾸어 뺀다.",
+          "invariant": "1분을 빌리면 60초, 1시간을 빌리면 60분이 더해지고 전체 시간은 보존된다.",
+          "observableEvidence": "시간선의 간격 또는 단위표의 받아내림과 뺄셈식을 대응한다.",
+          "misconceptionClass": "time-subtraction-borrows-ten-instead-of-sixty"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-14.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-14.representation"
+        ],
+        "observableEvidence": [
+          "실생활 문제 상황과 연결하여 초 단위까지의 시간의 덧셈과 뺄셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-14]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-14] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 78,
+      "workItemId": "W078",
+      "standardCode": "[6수01-14]",
+      "standardSlug": "6su01-14",
+      "officialGoal": "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 소수로 나타낼 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N16",
+      "engineClassIds": [
+        "R06",
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.6su01-14.diagnostic-v1",
+      "manipulation": "portfolio-6su01-14-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "represent-natural-number-division-as-decimal",
+          "studentDecision": "자연수 나눗셈에서 남은 양을 10분의 1·100분의 1 단위로 바꾸어 몫을 소수로 나타낸다.",
+          "invariant": "나머지를 10배 작은 단위로 바꾸어도 전체 양은 보존되며 몫의 각 숫자는 해당 자릿값의 몫이다.",
+          "observableEvidence": "등분 모형·자릿값 나눗셈·소수 몫을 대응한다.",
+          "misconceptionClass": "decimal-quotient-stops-at-whole-number-remainder"
+        },
+        {
+          "key": "verify-decimal-quotient",
+          "studentDecision": "소수 몫이 원래 자연수 나눗셈의 양을 정확히 나타내는지 곱셈과 크기로 확인한다.",
+          "invariant": "소수 몫×제수=피제수이며 몫은 인접한 자연수 몫 사이의 합리적 범위에 있다.",
+          "observableEvidence": "소수 몫의 곱셈 역검산 또는 등분한 양의 재결합을 남긴다.",
+          "misconceptionClass": "decimal-quotient-decimal-point-placed-without-place-value-check"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-14.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-14.representation"
+        ],
+        "observableEvidence": [
+          "‘(자연수) ÷ (자연수)’에서 나눗셈의 몫을 소수로 나타낼 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-14]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-14] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 79,
+      "workItemId": "W079",
+      "standardCode": "[4수01-14]",
+      "standardSlug": "4su01-14",
+      "officialGoal": "소수의 크기를 비교하고 그 방법을 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N02B",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-14.diagnostic-v1",
+      "manipulation": "portfolio-4su01-14-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "compare-decimals-by-place-value",
+          "studentDecision": "두 소수의 자릿수를 맞추고 가장 큰 자릿값부터 비교하여 크기를 정한다.",
+          "invariant": "소수 끝에 0을 붙여도 값은 같고, 처음으로 다른 자리의 숫자가 큰 수가 더 크다.",
+          "observableEvidence": "자릿값표 또는 수직선에 두 수를 나타내고 비교 기호를 선택한다.",
+          "misconceptionClass": "decimal-compared-by-digit-count-or-whole-number-reading"
+        },
+        {
+          "key": "explain-decimal-comparison-method",
+          "studentDecision": "자릿값·동치 소수·수직선 위치 중 사용한 근거로 비교 결과를 설명한다.",
+          "invariant": "비교하는 숫자는 같은 자릿값 단위에 놓여야 하며 표현을 바꾸어도 순서는 보존된다.",
+          "observableEvidence": "두 수의 대응 자리를 표시하고 비교가 결정된 자릿값을 근거로 남긴다.",
+          "misconceptionClass": "decimal-comparison-explanation-compares-noncorresponding-places"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-14.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-14.representation"
+        ],
+        "observableEvidence": [
+          "소수의 크기를 비교하고 그 방법을 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-14]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-14] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 80,
+      "workItemId": "W080",
+      "standardCode": "[6수03-14]",
+      "standardSlug": "6su03-14",
+      "officialGoal": "평행사변형, 삼각형, 사다리꼴, 마름모의 넓이를 구하는 방법을 다양하게 추론하고, 이와 관련된 문제를 해결할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G25",
+      "engineClassIds": [
+        "R21",
+        "R20"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.6su03-14.diagnostic-v1",
+      "manipulation": "portfolio-6su03-14-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-parallelogram-area",
+          "studentDecision": "평행사변형의 한 부분을 옮겨 같은 밑변과 높이의 직사각형으로 바꾸어 넓이를 정한다.",
+          "invariant": "겹침·빈틈 없이 잘라 옮기면 넓이는 보존되고 평행사변형의 넓이는 밑변×높이다.",
+          "observableEvidence": "절단선·이동 조각·대응하는 밑변과 수직 높이를 표시한다.",
+          "misconceptionClass": "parallelogram-area-uses-slanted-side-as-height"
+        },
+        {
+          "key": "derive-triangle-area",
+          "studentDecision": "합동인 삼각형 두 개로 평행사변형을 만들거나 직사각형의 절반으로 보아 넓이를 정한다.",
+          "invariant": "같은 밑변과 높이의 삼각형 넓이는 대응 평행사변형 넓이의 절반이다.",
+          "observableEvidence": "두 삼각형의 합성 상태와 밑변×높이÷2 식을 대응한다.",
+          "misconceptionClass": "triangle-area-omits-half-or-uses-nonperpendicular-height"
+        },
+        {
+          "key": "derive-trapezoid-area",
+          "studentDecision": "합동인 사다리꼴 두 개를 평행사변형으로 합치거나 삼각형으로 분할해 넓이를 정한다.",
+          "invariant": "두 평행한 변의 합이 합성한 평행사변형의 밑변이 되고 높이는 같으므로 넓이는 (윗변+아랫변)×높이÷2다.",
+          "observableEvidence": "합성·분할 상태와 두 밑변·수직 높이 표시를 계산식에 연결한다.",
+          "misconceptionClass": "trapezoid-area-uses-one-base-or-adds-height"
+        },
+        {
+          "key": "derive-rhombus-area",
+          "studentDecision": "마름모를 대각선으로 나누거나 둘러싼 직사각형과 비교해 넓이를 정한다.",
+          "invariant": "서로 수직인 두 대각선으로 생긴 삼각형 넓이의 합은 대각선 길이의 곱의 절반이다.",
+          "observableEvidence": "두 대각선과 네 삼각형의 대응 관계를 표시하고 대각선×대각선÷2 식을 만든다.",
+          "misconceptionClass": "rhombus-area-multiplies-side-lengths-or-omits-half"
+        },
+        {
+          "key": "solve-composite-area-problems",
+          "studentDecision": "문제 도형을 알려진 도형으로 분할·보완하고 필요한 밑변·높이·대각선을 선택한다.",
+          "invariant": "겹치지 않는 부분 넓이의 합 또는 포함 도형과 제외 부분의 차는 원래 영역의 넓이와 같다.",
+          "observableEvidence": "분할선·사용한 길이·부분 넓이 계산을 원래 도형에 대응해 검산한다.",
+          "misconceptionClass": "area-problem-uses-all-given-lengths-without-structural-role"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-14.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-14.representation"
+        ],
+        "observableEvidence": [
+          "평행사변형, 삼각형, 사다리꼴, 마름모의 넓이를 구하는 방법을 다양하게 추론하고, 이와 관련된 문제를 해결할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-14]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-14] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 81,
+      "workItemId": "W081",
+      "standardCode": "[4수03-15]",
+      "standardSlug": "4su03-15",
+      "officialGoal": "길이 단위 1mm와 1km를 알고, 이를 이용하여 길이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G20A34",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-15.diagnostic-v1",
+      "manipulation": "portfolio-4su03-15-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "select-millimeter-and-kilometer-units",
+          "studentDecision": "대상의 크기와 필요한 정밀도에 따라 mm 또는 km를 알맞은 길이 단위로 고른다.",
+          "invariant": "mm는 작은 길이의 세밀한 측정, km는 먼 거리의 표현에 적합하며 수치와 단위를 함께 해석한다.",
+          "observableEvidence": "실물·거리 상황을 알맞은 단위와 기준 길이에 대응한다.",
+          "misconceptionClass": "length-unit-selected-by-number-size-without-scale"
+        },
+        {
+          "key": "measure-length-at-millimeter-or-kilometer-scale",
+          "studentDecision": "눈금 또는 축척·거리 정보를 사용해 길이를 mm나 km로 나타낸다.",
+          "invariant": "측정은 0 눈금에서 시작하고 같은 크기 단위 구간의 개수를 세며 축척을 적용해도 실제 거리는 보존된다.",
+          "observableEvidence": "대상 끝점과 눈금·경로 구간을 맞추고 측정값에 단위를 기록한다.",
+          "misconceptionClass": "length-measurement-counts-marks-or-ignores-start-point-scale"
+        },
+        {
+          "key": "estimate-and-check-mm-km-length",
+          "studentDecision": "알고 있는 mm·km 기준을 이용해 길이나 거리를 어림하고 측정·자료값과 비교해 조정한다.",
+          "invariant": "어림과 확인값은 같은 단위로 비교하며 선택한 기준의 반복 수가 실제 규모와 맞아야 한다.",
+          "observableEvidence": "기준 길이·어림 범위·확인값을 나란히 나타내고 어림을 수정한다.",
+          "misconceptionClass": "metric-scale-estimate-lacks-benchmark-or-unit"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-15.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-15.representation"
+        ],
+        "observableEvidence": [
+          "길이 단위 1mm와 1km를 알고, 이를 이용하여 길이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-15]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-15] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 82,
+      "workItemId": "W082",
+      "standardCode": "[6수01-15]",
+      "standardSlug": "6su01-15",
+      "officialGoal": "소수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "수와 연산",
+      "archetypeId": "N20",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.6su01-15.diagnostic-v1",
+      "manipulation": "portfolio-6su01-15-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-decimal-divided-by-natural-principle",
+          "studentDecision": "소수인 양을 자연수만큼 똑같이 나누며 각 자릿값 단위의 몫을 구한다.",
+          "invariant": "피제수의 각 자릿값을 같은 수로 등분한 부분의 합은 전체 몫과 같고 남은 단위는 10배 작은 단위로 바꿀 수 있다.",
+          "observableEvidence": "10진 모형·등분 상태·자릿값 나눗셈을 계산식과 대응한다.",
+          "misconceptionClass": "decimal-divided-by-natural-ignores-place-value-or-remainder-unit"
+        },
+        {
+          "key": "derive-division-by-decimal-principle",
+          "studentDecision": "제수와 피제수를 같은 10의 거듭제곱만큼 확대해 제수를 자연수로 만든 뒤 몫을 구한다.",
+          "invariant": "피제수와 제수를 같은 0이 아닌 수로 곱해도 몫은 변하지 않는다.",
+          "observableEvidence": "수직선의 단위 확대 또는 동치 나눗셈식과 세로 계산을 연결한다.",
+          "misconceptionClass": "decimal-division-shifts-only-divisor-decimal-point"
+        },
+        {
+          "key": "calculate-and-verify-decimal-division",
+          "studentDecision": "몫의 자릿값과 필요한 나머지·반올림 조건을 판단해 계산 결과를 정한다.",
+          "invariant": "몫×제수와 나머지를 합하면 피제수가 되고 결과는 어림한 크기 범위에 들어간다.",
+          "observableEvidence": "세로 계산과 곱셈 역검산 또는 크기 어림을 함께 남긴다.",
+          "misconceptionClass": "decimal-division-decimal-point-placed-without-magnitude-check"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g5-6.s6-01-15.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g5-6.s6-01-15.representation"
+        ],
+        "observableEvidence": [
+          "소수의 나눗셈의 계산 원리를 탐구하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수01-15]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수01-15] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 83,
+      "workItemId": "W083",
+      "standardCode": "[6수03-15]",
+      "standardSlug": "6su03-15",
+      "officialGoal": "여러 가지 원 모양 물체의 원주와 지름을 측정하는 활동을 통하여, 원주율이 일정한 값임을 알고 그 근삿값을 사용할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G26",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-15.diagnostic-v1",
+      "manipulation": "portfolio-6su03-15-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "measure-circumference-and-diameter",
+          "studentDecision": "여러 원 모양 물체에서 중심을 지나는 지름과 한 바퀴의 원주를 알맞은 도구로 측정한다.",
+          "invariant": "지름은 중심을 지나는 가장 긴 현이고 원주는 원의 경계를 한 바퀴 잰 길이다.",
+          "observableEvidence": "각 원의 지름 선분·원주 측정 경로와 측정값을 짝지어 남긴다.",
+          "misconceptionClass": "circle-measurement-uses-radius-or-partial-arc-as-diameter-circumference"
+        },
+        {
+          "key": "recognize-pi-as-constant-ratio",
+          "studentDecision": "크기가 다른 원들의 원주÷지름 값을 비교해 거의 같은 비인지 판단한다.",
+          "invariant": "모든 원에서 원주와 지름은 비례하고 C÷d=π는 측정 오차 안에서 일정하다.",
+          "observableEvidence": "여러 원의 측정표와 비율 점 또는 띠 비교를 나타낸다.",
+          "misconceptionClass": "pi-treated-as-difference-or-size-dependent-value"
+        },
+        {
+          "key": "use-an-approximation-of-pi",
+          "studentDecision": "문제의 조건에 맞는 원주율 근삿값을 선택해 원주나 지름을 어림·계산한다.",
+          "invariant": "근삿값을 사용한 결과는 C≈πd 관계를 만족하고 측정 정밀도에 맞는 오차 범위를 가진다.",
+          "observableEvidence": "선택한 π 근삿값·식·측정 또는 어림 범위를 함께 남긴다.",
+          "misconceptionClass": "pi-approximation-used-as-exact-or-with-radius-instead-of-diameter"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-15.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-15.representation"
+        ],
+        "observableEvidence": [
+          "여러 가지 원 모양 물체의 원주와 지름을 측정하는 활동을 통하여, 원주율이 일정한 값임을 알고 그 근삿값을 사용할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-15]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-15] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 84,
+      "workItemId": "W084",
+      "standardCode": "[4수03-16]",
+      "standardSlug": "4su03-16",
+      "officialGoal": "1cm와 1mm, 1km와 1m의 관계를 이해하고, 길이를 ‘몇 cm 몇 mm’와 ‘몇 mm’, ‘몇 km 몇 m’와 ‘몇 m’로 다양하게 표현할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-16.diagnostic-v1",
+      "manipulation": "portfolio-4su03-16-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "relate-and-convert-centimeter-millimeter",
+          "studentDecision": "cm와 mm의 묶음 관계를 이용해 몇 cm 몇 mm와 전체 mm 표현을 서로 바꾼다.",
+          "invariant": "1cm=10mm이고 전체 mm=10×cm+남은 mm이며 남은 mm는 0 이상 10 미만이다.",
+          "observableEvidence": "1cm 구간을 mm 눈금 10개로 분해·묶어 두 표현을 대응한다.",
+          "misconceptionClass": "centimeter-millimeter-conversion-concatenates-or-uses-hundred"
+        },
+        {
+          "key": "relate-and-convert-kilometer-meter",
+          "studentDecision": "km와 m의 묶음 관계를 이용해 몇 km 몇 m와 전체 m 표현을 서로 바꾼다.",
+          "invariant": "1km=1000m이고 전체 m=1000×km+남은 m이며 남은 m는 0 이상 1000 미만이다.",
+          "observableEvidence": "거리 구간을 1000m 묶음과 남은 m로 구성해 두 표현을 대응한다.",
+          "misconceptionClass": "kilometer-meter-conversion-uses-base-ten-or-hundred"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-16.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-16.representation"
+        ],
+        "observableEvidence": [
+          "1cm와 1mm, 1km와 1m의 관계를 이해하고, 길이를 ‘몇 cm 몇 mm’와 ‘몇 mm’, ‘몇 km 몇 m’와 ‘몇 m’로 다양하게 표현할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-16]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-16] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 85,
+      "workItemId": "W085",
+      "standardCode": "[4수01-16]",
+      "standardSlug": "4su01-16",
+      "officialGoal": "소수 두 자리 수의 범위에서 소수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "수와 연산",
+      "archetypeId": "N05C",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "familyId": "portfolio.4su01-16.diagnostic-v1",
+      "manipulation": "portfolio-4su01-16-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "add-decimals-to-hundredths",
+          "studentDecision": "두 소수의 같은 자릿값 단위를 맞추어 더하고 10개가 모이면 윗자리로 받아올린다.",
+          "invariant": "소수점과 같은 자릿값을 맞춘 각 단위의 합은 전체 합과 같고 10개의 작은 단위는 1개의 큰 단위다.",
+          "observableEvidence": "자릿값표·10진 모형과 세로 덧셈의 받아올림을 대응한다.",
+          "misconceptionClass": "decimal-addition-aligns-final-digits-not-decimal-points"
+        },
+        {
+          "key": "subtract-decimals-to-hundredths",
+          "studentDecision": "두 소수의 같은 자릿값 단위를 맞추어 빼고 필요하면 윗자리 한 단위를 10개의 작은 단위로 바꾼다.",
+          "invariant": "받아내림 전후 전체 값은 같고 차+빼는 수=빼어지는 수다.",
+          "observableEvidence": "자릿값표·10진 모형과 세로 뺄셈의 받아내림을 대응해 역검산한다.",
+          "misconceptionClass": "decimal-subtraction-reverses-digits-or-ignores-place-value"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.number-operations.g3-4.s4-01-16.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.number-operations.g3-4.s4-01-16.representation"
+        ],
+        "observableEvidence": [
+          "소수 두 자리 수의 범위에서 소수의 덧셈과 뺄셈의 계산 원리를 이해하고 그 계산을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수01-16]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수01-16] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 86,
+      "workItemId": "W086",
+      "standardCode": "[6수03-16]",
+      "standardSlug": "6su03-16",
+      "officialGoal": "원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G27",
+      "engineClassIds": [
+        "R16",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-16.diagnostic-v1",
+      "manipulation": "portfolio-6su03-16-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-and-calculate-circumference",
+          "studentDecision": "지름 또는 반지름과 원주율의 관계를 선택해 원주를 구하거나 빠진 길이를 역으로 구한다.",
+          "invariant": "원주=지름×원주율=2×반지름×원주율이며 같은 단위를 사용한다.",
+          "observableEvidence": "원의 지름·반지름 표시와 사용한 원주 식·결과를 연결한다.",
+          "misconceptionClass": "circumference-uses-radius-once-or-confuses-with-area"
+        },
+        {
+          "key": "derive-and-calculate-circle-area",
+          "studentDecision": "원을 부채꼴로 나누어 재배열한 거의 직사각형에서 밑변과 높이를 정해 넓이를 구한다.",
+          "invariant": "재배열해도 넓이는 보존되고 밑변은 원주의 절반인 πr, 높이는 r이므로 넓이=πr²이다.",
+          "observableEvidence": "부채꼴 재배열과 πr×r 식을 대응하고 넓이 단위로 결과를 나타낸다.",
+          "misconceptionClass": "circle-area-uses-pi-times-diameter-or-omits-square"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-16.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-16.representation"
+        ],
+        "observableEvidence": [
+          "원주와 원의 넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-16]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-16] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 87,
+      "workItemId": "W087",
+      "standardCode": "[4수03-17]",
+      "standardSlug": "4su03-17",
+      "officialGoal": "들이 단위 1L와 1mL를 알고, 이를 이용하여 들이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G20B",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-17.diagnostic-v1",
+      "manipulation": "portfolio-4su03-17-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-select-liter-milliliter-units",
+          "studentDecision": "용기의 크기와 필요한 정밀도에 따라 L 또는 mL 단위를 고른다.",
+          "invariant": "단위는 용기의 겉보기 높이나 모양이 아니라 담을 수 있는 양을 나타낸다.",
+          "observableEvidence": "여러 용기 상황을 알맞은 단위와 기준 용량에 대응한다.",
+          "misconceptionClass": "capacity-unit-selected-by-container-height-or-number-size"
+        },
+        {
+          "key": "measure-capacity-with-liter-milliliter",
+          "studentDecision": "눈금 용기 또는 단위 용기를 이용해 담긴 양을 L나 mL로 측정한다.",
+          "invariant": "같은 크기 단위 용량의 반복 수가 전체 들이이며 눈금은 기준선에서 읽는다.",
+          "observableEvidence": "액면·눈금 또는 단위 붓기 횟수와 측정값을 대응한다.",
+          "misconceptionClass": "capacity-measurement-counts-marks-or-misreads-level"
+        },
+        {
+          "key": "estimate-and-check-capacity",
+          "studentDecision": "알고 있는 용기의 들이를 기준으로 다른 용기의 들이를 어림하고 측정값과 비교해 조정한다.",
+          "invariant": "어림과 확인값은 같은 단위로 비교하며 용기 모양이 달라도 실제 담긴 양으로 판단한다.",
+          "observableEvidence": "기준 용기·어림 범위·측정값을 나란히 나타내고 어림을 수정한다.",
+          "misconceptionClass": "capacity-estimate-equates-taller-container-with-greater-capacity"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-17.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-17.representation"
+        ],
+        "observableEvidence": [
+          "들이 단위 1L와 1mL를 알고, 이를 이용하여 들이를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-17]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-17] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 88,
+      "workItemId": "W088",
+      "standardCode": "[6수03-17]",
+      "standardSlug": "6su03-17",
+      "officialGoal": "직육면체와 정육면체의 겉넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G28",
+      "engineClassIds": [
+        "R13",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-17.diagnostic-v1",
+      "manipulation": "portfolio-6su03-17-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-surface-area-from-nets",
+          "studentDecision": "직육면체·정육면체의 여섯 면을 빠짐없이 한 번씩 펼쳐 면의 짝과 넓이를 정한다.",
+          "invariant": "겉넓이는 서로 겹치지 않는 모든 바깥면 넓이의 합이며 전개해도 각 면의 크기와 개수는 보존된다.",
+          "observableEvidence": "입체의 각 면과 전개도의 여섯 면을 대응하고 같은 면끼리 표시한다.",
+          "misconceptionClass": "surface-area-omits-hidden-face-or-double-counts-shared-edge"
+        },
+        {
+          "key": "calculate-cuboid-and-cube-surface-area",
+          "studentDecision": "마주 보는 같은 면을 묶거나 여섯 면을 합해 겉넓이 계산식을 세운다.",
+          "invariant": "직육면체 겉넓이는 2(lw+lh+wh), 정육면체는 6s²이며 결과는 넓이 단위다.",
+          "observableEvidence": "세 종류 면의 크기·개수 또는 같은 정사각형 여섯 개를 식에 연결한다.",
+          "misconceptionClass": "surface-area-multiplies-three-dimensions-or-uses-edge-unit"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-17.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-17.representation"
+        ],
+        "observableEvidence": [
+          "직육면체와 정육면체의 겉넓이를 구하는 방법을 이해하고, 이를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-17]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-17] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 89,
+      "workItemId": "W089",
+      "standardCode": "[4수03-18]",
+      "standardSlug": "4su03-18",
+      "officialGoal": "1L와 1mL의 관계를 이해하고, 들이를 ‘몇 L 몇 mL’와 ‘몇 mL’로 표현할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-18.diagnostic-v1",
+      "manipulation": "portfolio-4su03-18-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-liter-milliliter-relation",
+          "studentDecision": "1L 들이를 1mL 단위가 몇 개 모인 양으로 나타낸다.",
+          "invariant": "1L=1000mL이며 단위를 바꾸어도 실제 들이는 같다.",
+          "observableEvidence": "1L 용량을 mL 눈금 또는 1000개의 단위 양과 대응한다.",
+          "misconceptionClass": "liter-milliliter-relation-treated-as-hundred"
+        },
+        {
+          "key": "convert-between-mixed-liter-and-milliliter",
+          "studentDecision": "몇 L 몇 mL와 전체 mL 표현을 1000mL 묶음과 나머지를 이용해 서로 바꾼다.",
+          "invariant": "전체 mL=1000×L+남은 mL이며 남은 mL는 0 이상 1000 미만이다.",
+          "observableEvidence": "L 묶음을 풀거나 mL를 1000개씩 묶어 두 표현을 대응한다.",
+          "misconceptionClass": "mixed-capacity-conversion-concatenates-digits-or-invalid-remainder"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-18.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-18.representation"
+        ],
+        "observableEvidence": [
+          "1L와 1mL의 관계를 이해하고, 들이를 ‘몇 L 몇 mL’와 ‘몇 mL’로 표현할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-18]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-18] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 90,
+      "workItemId": "W090",
+      "standardCode": "[6수03-18]",
+      "standardSlug": "6su03-18",
+      "officialGoal": "부피 단위 1cm³, 1m³를 알며, 그 관계를 이해한다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G23B",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-18.diagnostic-v1",
+      "manipulation": "portfolio-6su03-18-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-cubic-volume-units",
+          "studentDecision": "입체의 크기에 맞게 1cm³ 또는 1m³ 단위 정육면체를 선택해 부피를 나타낸다.",
+          "invariant": "1cm³와 1m³는 각각 모서리 길이가 1cm와 1m인 정육면체 한 개의 부피다.",
+          "observableEvidence": "공간을 단위 정육면체로 겹침·빈틈 없이 채우고 단위와 개수를 나타낸다.",
+          "misconceptionClass": "volume-unit-confused-with-edge-or-face-unit"
+        },
+        {
+          "key": "relate-cubic-centimeter-and-cubic-meter",
+          "studentDecision": "1m의 각 방향을 100cm로 나누어 1m³ 안의 1cm³ 개수를 구한다.",
+          "invariant": "세 방향의 환산 배율을 모두 곱하므로 1m³=1000000cm³이다.",
+          "observableEvidence": "100×100×100 단위 정육면체 배열과 부피 환산식을 대응한다.",
+          "misconceptionClass": "volume-conversion-uses-linear-or-square-factor"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-18.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-18.representation"
+        ],
+        "observableEvidence": [
+          "부피 단위 1cm³, 1m³를 알며, 그 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-18]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-18] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 91,
+      "workItemId": "W091",
+      "standardCode": "[4수03-19]",
+      "standardSlug": "4su03-19",
+      "officialGoal": "실생활 문제 상황과 연결하여 들이의 덧셈과 뺄셈을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-19.diagnostic-v1",
+      "manipulation": "portfolio-4su03-19-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "add-capacities-in-context",
+          "studentDecision": "붓거나 합치는 들이 상황을 덧셈으로 나타내고 같은 단위끼리 더한다.",
+          "invariant": "단위를 통일한 전체 들이는 각 부분 들이의 합이며 1000mL는 1L로 다시 묶을 수 있다.",
+          "observableEvidence": "용기의 합성 상태 또는 단위표와 덧셈식의 받아올림을 대응한다.",
+          "misconceptionClass": "capacity-addition-mixes-units-or-regroups-at-ten"
+        },
+        {
+          "key": "subtract-capacities-in-context",
+          "studentDecision": "남은 들이 또는 두 들이의 차를 뺄셈으로 나타내고 필요하면 1L를 1000mL로 바꾼다.",
+          "invariant": "큰 들이=작은 들이+차이며 받아내림 전후 실제 들이는 보존된다.",
+          "observableEvidence": "용기 눈금 또는 단위표의 남은 양과 뺄셈식을 대응해 덧셈으로 검산한다.",
+          "misconceptionClass": "capacity-subtraction-borrows-ten-or-reverses-units"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-19.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-19.representation"
+        ],
+        "observableEvidence": [
+          "실생활 문제 상황과 연결하여 들이의 덧셈과 뺄셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-19]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-19] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 92,
+      "workItemId": "W092",
+      "standardCode": "[6수03-19]",
+      "standardSlug": "6su03-19",
+      "officialGoal": "직육면체와 정육면체의 부피를 구하는 방법을 이해하고, 이를 구할 수 있다.",
+      "gradeBand": "5-6",
+      "domain": "도형과 측정",
+      "archetypeId": "G29",
+      "engineClassIds": [
+        "R14",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.6su03-19.diagnostic-v1",
+      "manipulation": "portfolio-6su03-19-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "derive-cuboid-volume-formula",
+          "studentDecision": "한 층의 단위 정육면체 수와 층 수를 이용해 직육면체의 전체 단위 정육면체 수를 구한다.",
+          "invariant": "직육면체 부피는 가로 단위 수×세로 단위 수×높이 단위 수다.",
+          "observableEvidence": "한 층의 행·열 배열과 층 수를 곱셈식에 대응한다.",
+          "misconceptionClass": "cuboid-volume-counts-visible-cubes-or-adds-dimensions"
+        },
+        {
+          "key": "derive-cube-volume-formula",
+          "studentDecision": "세 모서리 길이가 같은 정육면체의 층 구조를 이용해 부피식을 정한다.",
+          "invariant": "정육면체는 세 길이가 같은 직육면체이므로 부피는 한 모서리×한 모서리×한 모서리다.",
+          "observableEvidence": "s×s 한 층과 s개 층을 s³ 식에 연결한다.",
+          "misconceptionClass": "cube-volume-uses-six-faces-or-square-only"
+        },
+        {
+          "key": "calculate-and-solve-volume-problems",
+          "studentDecision": "주어진 길이·부피 조건에서 공식을 선택해 부피 또는 빠진 길이를 구한다.",
+          "invariant": "부피 단위와 길이 단위의 세 차원이 일치하고 계산 결과는 단위 정육면체 수와 같다.",
+          "observableEvidence": "세 길이·공식·부피 단위를 입체 모형과 연결해 검산한다.",
+          "misconceptionClass": "volume-problem-uses-surface-area-formula-or-noncubic-unit"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g5-6.s6-03-19.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g5-6.s6-03-19.representation"
+        ],
+        "observableEvidence": [
+          "직육면체와 정육면체의 부피를 구하는 방법을 이해하고, 이를 구할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [6수03-19]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[6수03-19] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 93,
+      "workItemId": "W093",
+      "standardCode": "[4수03-20]",
+      "standardSlug": "4su03-20",
+      "officialGoal": "실생활에서 무게를 나타낼 때 사용하는 단위 1g과 1kg을 알고, 이를 이용하여 무게를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G20C",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "familyId": "portfolio.4su03-20.diagnostic-v1",
+      "manipulation": "portfolio-4su03-20-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-select-gram-kilogram-units",
+          "studentDecision": "물체의 무게 규모에 따라 g 또는 kg 단위와 알맞은 기준 물체를 고른다.",
+          "invariant": "무게 단위는 물체의 겉보기 크기나 부피가 아니라 저울로 비교되는 무거운 정도를 나타낸다.",
+          "observableEvidence": "생활 물체를 알맞은 단위와 기준 무게에 대응한다.",
+          "misconceptionClass": "mass-unit-selected-by-object-size-or-number-size"
+        },
+        {
+          "key": "measure-mass-with-gram-kilogram",
+          "studentDecision": "저울의 기준점·눈금 또는 추의 합을 이용해 물체의 무게를 g나 kg으로 측정한다.",
+          "invariant": "평형일 때 물체 무게는 반대쪽 표준 추의 합과 같고 눈금 간격은 일정하다.",
+          "observableEvidence": "저울 상태·사용한 추 또는 눈금과 측정값을 대응한다.",
+          "misconceptionClass": "mass-measurement-counts-marks-or-ignores-zero-balance"
+        },
+        {
+          "key": "estimate-and-check-mass",
+          "studentDecision": "알고 있는 물체의 무게를 기준으로 다른 물체의 무게를 어림하고 측정값과 비교해 조정한다.",
+          "invariant": "어림과 확인값은 같은 단위로 비교하며 크기가 커 보여도 반드시 더 무거운 것은 아니다.",
+          "observableEvidence": "기준 물체·어림 범위·저울 측정값을 나란히 나타내고 어림을 수정한다.",
+          "misconceptionClass": "mass-estimate-equates-volume-with-weight"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-20.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-20.representation"
+        ],
+        "observableEvidence": [
+          "실생활에서 무게를 나타낼 때 사용하는 단위 1g과 1kg을 알고, 이를 이용하여 무게를 측정하고 어림하며 수학의 유용성을 인식할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-20]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-20] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 94,
+      "workItemId": "W094",
+      "standardCode": "[4수03-21]",
+      "standardSlug": "4su03-21",
+      "officialGoal": "1kg과 1g의 관계를 이해하고, 무게를 ‘몇 kg 몇 g’과 ‘몇 g’으로 표현할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-21.diagnostic-v1",
+      "manipulation": "portfolio-4su03-21-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-kilogram-gram-relation",
+          "studentDecision": "1kg 무게를 1g 단위가 몇 개 모인 양으로 나타낸다.",
+          "invariant": "1kg=1000g이며 단위를 바꾸어도 실제 무게는 같다.",
+          "observableEvidence": "1kg 표준 추를 g 단위 추의 합과 대응한다.",
+          "misconceptionClass": "kilogram-gram-relation-treated-as-hundred"
+        },
+        {
+          "key": "convert-mixed-kilogram-gram-to-gram",
+          "studentDecision": "몇 kg 몇 g을 g 한 단위로 바꾸어 나타낸다.",
+          "invariant": "kg 수마다 1000g을 더하고 남은 g을 보존한다.",
+          "observableEvidence": "kg 묶음을 g 단위로 풀어 전체 g 수와 대응한다.",
+          "misconceptionClass": "mixed-mass-conversion-concatenates-digits"
+        },
+        {
+          "key": "convert-gram-to-mixed-kilogram-gram",
+          "studentDecision": "전체 g을 1000g 묶음과 남은 g으로 나누어 몇 kg 몇 g으로 나타낸다.",
+          "invariant": "전체 g=1000×kg+남은 g이고 남은 g은 0 이상 1000 미만이다.",
+          "observableEvidence": "g 단위를 1000개씩 묶고 몫과 나머지를 혼합 단위에 대응한다.",
+          "misconceptionClass": "base-mass-to-mixed-unit-remainder-invalid"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-21.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-21.representation"
+        ],
+        "observableEvidence": [
+          "1kg과 1g의 관계를 이해하고, 무게를 ‘몇 kg 몇 g’과 ‘몇 g’으로 표현할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-21]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-21] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 95,
+      "workItemId": "W095",
+      "standardCode": "[4수03-22]",
+      "standardSlug": "4su03-22",
+      "officialGoal": "실생활에서 무게를 나타낼 때 사용하는 단위 1t을 알고, 1t과 1kg의 관계를 이해한다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-22.diagnostic-v1",
+      "manipulation": "portfolio-4su03-22-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "understand-and-select-tonne-unit",
+          "studentDecision": "매우 무거운 물체나 운반량을 나타낼 때 t 단위가 적절한지 판단한다.",
+          "invariant": "t는 큰 무게를 나타내는 단위이며 물체 수나 부피가 아니라 전체 무게를 표현한다.",
+          "observableEvidence": "차량·화물 등 생활 상황을 t 단위의 합리적 범위와 대응한다.",
+          "misconceptionClass": "tonne-unit-confused-with-count-or-volume"
+        },
+        {
+          "key": "relate-tonne-and-kilogram",
+          "studentDecision": "t와 kg 사이의 1000배 관계를 이용해 같은 무게를 두 단위로 나타낸다.",
+          "invariant": "1t=1000kg이며 단위를 바꾸어도 실제 무게는 보존된다.",
+          "observableEvidence": "1t 묶음을 1000kg 단위 합과 연결하고 간단한 환산을 나타낸다.",
+          "misconceptionClass": "tonne-kilogram-relation-treated-as-hundred-or-ten"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-22.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-22.representation"
+        ],
+        "observableEvidence": [
+          "실생활에서 무게를 나타낼 때 사용하는 단위 1t을 알고, 1t과 1kg의 관계를 이해한다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-22]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-22] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 96,
+      "workItemId": "W096",
+      "standardCode": "[4수03-23]",
+      "standardSlug": "4su03-23",
+      "officialGoal": "실생활 문제 상황과 연결하여 무게의 덧셈과 뺄셈을 할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "familyId": "portfolio.4su03-23.diagnostic-v1",
+      "manipulation": "portfolio-4su03-23-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "add-masses-in-context",
+          "studentDecision": "함께 올리거나 합치는 무게 상황을 덧셈으로 나타내고 같은 단위끼리 더한다.",
+          "invariant": "단위를 통일한 전체 무게는 각 부분 무게의 합이며 1000g은 1kg, 1000kg은 1t으로 묶을 수 있다.",
+          "observableEvidence": "저울의 추 합성 또는 단위표와 덧셈식의 받아올림을 대응한다.",
+          "misconceptionClass": "mass-addition-mixes-units-or-regroups-at-ten"
+        },
+        {
+          "key": "subtract-masses-in-context",
+          "studentDecision": "남은 무게 또는 두 무게의 차를 뺄셈으로 나타내고 필요하면 큰 단위를 1000개의 작은 단위로 바꾼다.",
+          "invariant": "큰 무게=작은 무게+차이며 받아내림 전후 실제 무게는 보존된다.",
+          "observableEvidence": "균형 저울 또는 단위표의 남은 양과 뺄셈식을 대응해 덧셈으로 검산한다.",
+          "misconceptionClass": "mass-subtraction-borrows-ten-or-reverses-unit-order"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-23.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-23.representation"
+        ],
+        "observableEvidence": [
+          "실생활 문제 상황과 연결하여 무게의 덧셈과 뺄셈을 할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-23]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-23] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    },
+    {
+      "sequence": 97,
+      "workItemId": "W097",
+      "standardCode": "[4수03-25]",
+      "standardSlug": "4su03-25",
+      "officialGoal": "여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.",
+      "gradeBand": "3-4",
+      "domain": "도형과 측정",
+      "archetypeId": "G30",
+      "engineClassIds": [
+        "R21",
+        "R11"
+      ],
+      "rendererKind": "pattern",
+      "familyId": "portfolio.4su03-25.diagnostic-v1",
+      "manipulation": "portfolio-4su03-25-evidence-drag",
+      "targetOutlines": [
+        {
+          "key": "infer-and-explain-triangle-angle-sum",
+          "studentDecision": "삼각형의 세 각을 잘라 모으기·평행선 관계·회전 중 한 방법으로 내각의 합을 정하고 과정을 설명한다.",
+          "invariant": "모든 삼각형의 세 내각을 한 점에 겹치면 평각을 이루어 합은 180°다.",
+          "observableEvidence": "세 각 조각의 membership 또는 각 대응 표시와 180° 합을 연결해 추론 순서를 남긴다.",
+          "misconceptionClass": "triangle-angle-sum-inferred-from-one-prototype-or-side-length"
+        },
+        {
+          "key": "infer-and-explain-quadrilateral-angle-sum",
+          "studentDecision": "사각형을 삼각형 두 개로 나누거나 네 각을 모아 내각의 합을 정하고 과정을 설명한다.",
+          "invariant": "모든 단순 사각형은 한 대각선으로 두 삼각형으로 나뉘므로 내각의 합은 2×180°=360°다.",
+          "observableEvidence": "대각선 분할 또는 네 각 조각과 두 삼각형의 각 합을 대응해 추론 순서를 남긴다.",
+          "misconceptionClass": "quadrilateral-angle-sum-assumed-from-rectangle-only-or-counted-as-180"
+        }
+      ],
+      "learningMap": {
+        "topicId": "kr.mt.math.geometry-measurement.g3-4.s4-03-25.application",
+        "prerequisiteTopicIds": [
+          "kr.mt.math.geometry-measurement.g3-4.s4-03-25.representation"
+        ],
+        "observableEvidence": [
+          "여러 가지 방법으로 삼각형과 사각형의 내각의 크기의 합을 추론하고, 자신의 추론 과정을 설명할 수 있다.에 필요한 전략과 확인 방법을 말한 뒤 과제를 끝까지 수행한다.",
+          "수행 과정과 결과를 기록하고, 답이나 표현이 [4수03-25]의 성질·관계에 맞는지 확인한다."
+        ],
+        "assessmentPrompt": "[4수03-25] 성취기준과 관련된 생활 또는 탐구 문제를 제시하고, 학생이 전략, 수학적 표현, 결과의 타당성을 차례로 설명하게 하라."
+      }
+    }
+  ]
+}

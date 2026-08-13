@@ -246,6 +246,20 @@ export const renderRecipeSchema = z.discriminatedUnion("kind", [
       rendererId: familyIdSchema,
       layoutTokenSet: z.string().min(1).max(160)
     })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("portfolio-scale-adapter"),
+      recipeId: familyIdSchema,
+      recipeVersion: z.string().min(1).max(80),
+      rendererId: familyIdSchema,
+      layoutTokenSet: z.string().min(1).max(160),
+      targetOutlineCount: z.number().int().min(1).max(8),
+      engineClassIds: z
+        .array(z.string().regex(/^R\d{2}$/u))
+        .min(1)
+        .max(4)
+    })
     .strict()
 ]);
 

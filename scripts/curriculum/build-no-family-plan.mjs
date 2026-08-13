@@ -2666,34 +2666,40 @@ function markdown(report) {
   return lines.join("\n");
 }
 
-const report = buildReport();
-const json = `${JSON.stringify(report, null, 2)}\n`;
-const md = markdown(report);
+const isDirectRun =
+  typeof process.argv[1] === "string" &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
-if (shouldWrite) {
-  mkdirSync(dirname(jsonPath), { recursive: true });
-  writeFileSync(jsonPath, json);
-  writeFileSync(markdownPath, md);
-  console.log(
-    `no-family plan updated: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks / ${report.current.batchCount} batches`
-  );
-} else {
-  let existingJson;
-  let existingMarkdown;
-  try {
-    existingJson = readFileSync(jsonPath, "utf8");
-    existingMarkdown = readFileSync(markdownPath, "utf8");
-  } catch {
-    throw new Error(
-      "no-family plan report is missing; run pnpm curriculum:no-family-plan:update"
+if (isDirectRun) {
+  const report = buildReport();
+  const json = `${JSON.stringify(report, null, 2)}\n`;
+  const md = markdown(report);
+
+  if (shouldWrite) {
+    mkdirSync(dirname(jsonPath), { recursive: true });
+    writeFileSync(jsonPath, json);
+    writeFileSync(markdownPath, md);
+    console.log(
+      `no-family plan updated: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks / ${report.current.batchCount} batches`
+    );
+  } else {
+    let existingJson;
+    let existingMarkdown;
+    try {
+      existingJson = readFileSync(jsonPath, "utf8");
+      existingMarkdown = readFileSync(markdownPath, "utf8");
+    } catch {
+      throw new Error(
+        "no-family plan report is missing; run pnpm curriculum:no-family-plan:update"
+      );
+    }
+    if (existingJson !== json || existingMarkdown !== md) {
+      throw new Error(
+        "no-family plan report is stale; run pnpm curriculum:no-family-plan:update"
+      );
+    }
+    console.log(
+      `no-family plan PASS: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks; next ${report.current.nextOfflineWork?.standardCode ?? "none"}; replan ${report.current.nextReplanWork?.standardCode ?? "none"}`
     );
   }
-  if (existingJson !== json || existingMarkdown !== md) {
-    throw new Error(
-      "no-family plan report is stale; run pnpm curriculum:no-family-plan:update"
-    );
-  }
-console.log(
-    `no-family plan PASS: ${report.current.plannedStandardCount} standards / ${report.current.sharedEngineClassCount} engines / ${report.current.concreteTrackCount} tracks; next ${report.current.nextOfflineWork?.standardCode ?? "none"}; replan ${report.current.nextReplanWork?.standardCode ?? "none"}`
-  );
 }

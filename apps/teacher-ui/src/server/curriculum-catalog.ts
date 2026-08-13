@@ -42,7 +42,9 @@ export function buildCurriculumCatalogResponse(
   manifests: readonly ProblemFamilyManifest[] = listProblemFamilyManifests()
 ): CurriculumCatalogResponse {
   const nativeFamilies = manifests.filter(
-    (family) => family.renderRecipe.kind === "native-render-recipe"
+    (family) =>
+      family.renderRecipe.kind === "native-render-recipe" ||
+      family.renderRecipe.kind === "portfolio-scale-adapter"
   );
   return {
     units: teacherTextbookUnits.map((unit) => ({
@@ -122,7 +124,10 @@ export function buildCurriculumCatalogResponse(
             availableProblemCounts: [
               ...family.capability.availableProblemCounts
             ],
-            availability: family.releaseEvidence.supportState,
+            availability:
+              family.renderRecipe.kind === "portfolio-scale-adapter"
+                ? "portfolio-pilot" as const
+                : family.releaseEvidence.supportState,
             ...projectProblemParameterCapability(family),
             learningNeeds: [
               {

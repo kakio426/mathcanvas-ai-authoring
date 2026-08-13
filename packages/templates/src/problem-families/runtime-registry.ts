@@ -37,9 +37,22 @@ function assertNativeModuleConsistent(module: ProblemFamilyNativeModule): void {
       `problem-family-native-support-mismatch:${source.familyId}`
     );
   }
-  if ((source.assessmentTargetIds?.length ?? 0) < 1) {
+  if (
+    source.registrationKind === "native-problem-family-module" &&
+    (source.assessmentTargetIds?.length ?? 0) < 1
+  ) {
     throw new Error(
       `problem-family-native-assessment-target-missing:${source.familyId}`
+    );
+  }
+  if (
+    source.registrationKind === "portfolio-scale-adapter" &&
+    ((source.assessmentTargetIds?.length ?? 0) !== 0 ||
+      (source.portfolioTargetOutlineKeys?.length ?? 0) < 1 ||
+      runtime.creationMode !== "portfolio-pilot")
+  ) {
+    throw new Error(
+      `problem-family-portfolio-boundary-invalid:${source.familyId}`
     );
   }
   if (

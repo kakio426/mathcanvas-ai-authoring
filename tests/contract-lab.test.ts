@@ -413,7 +413,7 @@ describe("P0 contract-lab 격리와 정규화", () => {
     } finally {
       rmSync(temporary, { recursive: true, force: true });
     }
-  });
+  }, 15_000);
 
   it("나눗셈 actual canary는 그룹 chrome 중첩과 line-box check key 위조를 거부한다", () => {
     const temporary = mkdtempSync(

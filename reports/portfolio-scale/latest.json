@@ -1,0 +1,1996 @@
+{
+  "schemaVersion": "1.0.0",
+  "reportId": "portfolio-scale-97-runtime-verification-v1",
+  "generatedAt": "2026-08-13T12:00:00.000Z",
+  "source": {
+    "planId": "kr-2022-elementary-math-no-family-baseline",
+    "targetOutlinePlanId": "kr-2022-elementary-math-no-family-target-outlines-sol-draft",
+    "targetOutlineSha256": "5051aea0b97670a9dec99d9790b293e328d1ef4985abe9b430213c16cf2b0096",
+    "executionPlanSha256": "3e1c9a2ade37fd96106c5caa6c6d238a29259ba2065daeba69526f6ee6839ecb",
+    "learningMapCommit": "3ef0563084aa2a9baaa47da2c1ec0ebf5d7edc5c",
+    "learningMapUsageSha256": "cb5db1d795f53fa0a11659aadf75d39c052f200ef4a84be7e58489b6bbde5b2a"
+  },
+  "scope": {
+    "statement": "97개 확장 성취기준의 target-outline 진단형 활동을 planner→ActivitySpec→native compile→creation validator로 전수 실행한다.",
+    "doesNotClaim": [
+      "정식 AssessmentTarget 숙달 판정",
+      "자동 채점",
+      "97개 모두의 live 저장·재열기",
+      "학생 응답 영속성"
+    ]
+  },
+  "summary": {
+    "expectedStandardCount": 97,
+    "actualStandardCount": 97,
+    "passedStandardCount": 97,
+    "failedStandardCount": 0,
+    "expectedTargetOutlineCount": 237,
+    "passedTargetOutlineCount": 237,
+    "rendererCount": 7,
+    "engineClassCount": 23
+  },
+  "failures": [],
+  "rows": [
+    {
+      "workItemId": "W007",
+      "standardCode": "[2수01-01]",
+      "familyId": "portfolio.2su01-01.diagnostic-v1",
+      "archetypeId": "N01A",
+      "engineClassIds": [
+        "R01"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "fbf8731dbb15fc720245b63a1c397e13e500aabb9111641f525c8edb8e0cb118",
+      "approvalViewSha256": "33943d00c245a549bede68e808e18f9d53ad292cec0f59719bf4c22e30e2051e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W026",
+      "standardCode": "[2수01-03]",
+      "familyId": "portfolio.2su01-03.diagnostic-v1",
+      "archetypeId": "N02A12",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "9a6023407ce9d02b57cdd29b0283e8a8bfcb488ab073d09cb8163bfa5f90e571",
+      "approvalViewSha256": "4952dea6363cfe8b67f0c45340dd629eb2d4fe63b941723a5a451f2ba339bf7e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W032",
+      "standardCode": "[2수01-05]",
+      "familyId": "portfolio.2su01-05.diagnostic-v1",
+      "archetypeId": "N06",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "b51008e3d49a130834c5ab77aac14c927f687f6247f1acb632eaa62c7f6fc98e",
+      "approvalViewSha256": "a8589c65cc15493f7f68aebbe19e726bfa1afff980841dd32b3d8d42734e693d",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W038",
+      "standardCode": "[2수01-06]",
+      "familyId": "portfolio.2su01-06.diagnostic-v1",
+      "archetypeId": "N05A12",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "e615c6d2d0270c1df1d5d4192e3f49f674256123bdb3857373060be10504287c",
+      "approvalViewSha256": "833202e3e2926f8d87c01183ad0d58325d3a93df30ce46c1e9faa312dcbe218a",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W044",
+      "standardCode": "[2수01-07]",
+      "familyId": "portfolio.2su01-07.diagnostic-v1",
+      "archetypeId": "N07",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "72de4f01e68e02e7e3956b426d751395eccc3e92ce3c219f0030848cf5a4555d",
+      "approvalViewSha256": "97c2c4e5420f67f5a1d9a7f24b7ba18738a74547a974331d6f32975b75bd6689",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W048",
+      "standardCode": "[2수01-08]",
+      "familyId": "portfolio.2su01-08.diagnostic-v1",
+      "archetypeId": "N05B",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "21475469e307b6bf6dcc08cf4ac175102136aea98a6b89313bc035f35cb2e137",
+      "approvalViewSha256": "7937afd6416e4f2a71d9181f4f688de6eba9bda1efd7c1662f98bd29dff5db9b",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W053",
+      "standardCode": "[2수01-09]",
+      "familyId": "portfolio.2su01-09.diagnostic-v1",
+      "archetypeId": "N07",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "7f346c3f81f4dde997288a639c81fa62e1a37358f3dd570c7ccf334e89c5589c",
+      "approvalViewSha256": "69032076bdcb591ea3c63d163405f0318fde42638a0c9256bfe09d2f0eecd996",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W064",
+      "standardCode": "[2수01-11]",
+      "familyId": "portfolio.2su01-11.diagnostic-v1",
+      "archetypeId": "N12",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "7712b3b03f93ec4283edf5979d6f3b981e25d118bfa1db49d01de3629d71c224",
+      "approvalViewSha256": "d4777d2108cf004fb06d639dc431d25990454224874c2886f0b04707924511ac",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W002",
+      "standardCode": "[2수02-02]",
+      "familyId": "portfolio.2su02-02.diagnostic-v1",
+      "archetypeId": "C01",
+      "engineClassIds": [
+        "R08"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 75,
+      "compiledPayloadHash": "e210205a6f95ac7eb49373956cad71c5e7629461417859fe95be22015abcf668",
+      "approvalViewSha256": "7cf6814ae385e5d371f2af539c68c6f63fbb1e63f3609adeab232af0ac2683f2",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W004",
+      "standardCode": "[2수03-01]",
+      "familyId": "portfolio.2su03-01.diagnostic-v1",
+      "archetypeId": "G02",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "40eb1ec09def5ff50cdca84fcd0a0b2ae003f1ca41bd78c2a87f12085286311f",
+      "approvalViewSha256": "15800bfdd1ab322a46724a24c9135222bb9550f63960715e1f1e7827d8cc669e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W015",
+      "standardCode": "[2수03-02]",
+      "familyId": "portfolio.2su03-02.diagnostic-v1",
+      "archetypeId": "G08",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "5753ee3d8309f3b3297281a50822db8039c7749ac0eafd03b7414c77737c9196",
+      "approvalViewSha256": "96c02451153fd36726d83b7a7489d59ce3e05a9383f86a278deaa08f69b226bd",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W024",
+      "standardCode": "[2수03-03]",
+      "familyId": "portfolio.2su03-03.diagnostic-v1",
+      "archetypeId": "G03A",
+      "engineClassIds": [
+        "R21"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 51,
+      "compiledPayloadHash": "12953b4f8eee74484f3e6393975e3918dfcc47c9b07a35861741d1250768b2f3",
+      "approvalViewSha256": "0e5d86a809ac1ed01ecdf55ef4412fe314f0696e8bdc267a1d89294d51004301",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W030",
+      "standardCode": "[2수03-04]",
+      "familyId": "portfolio.2su03-04.diagnostic-v1",
+      "archetypeId": "G03B",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "9d639d7e05845e360e090231cc22d81ef32b4c90f33ca0deda7ee1fba991d45c",
+      "approvalViewSha256": "7e61987bbe6d46d6b4101c4a185671c967b5c3765a11cd6d78aa4a96090cdc17",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W037",
+      "standardCode": "[2수03-05]",
+      "familyId": "portfolio.2su03-05.diagnostic-v1",
+      "archetypeId": "G04A12",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "aa45852b992c7550f3bca748284dedd91c9d43c1aa0302417662594cf88879e2",
+      "approvalViewSha256": "d21aa5d0998d9533f52c6192b3ed8f96dd068962f0a16d5e3fcdf76516227277",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W043",
+      "standardCode": "[2수03-06]",
+      "familyId": "portfolio.2su03-06.diagnostic-v1",
+      "archetypeId": "G13",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 4,
+      "recommendationSupported": true,
+      "resolvedItemCount": 4,
+      "emissionCount": 95,
+      "compiledPayloadHash": "fec0bce15c9d99e9c0e5653e693623e1a27b73f280a3eaf823cba165a6c7aae3",
+      "approvalViewSha256": "8d6c4ae0adb7dcc4be7fcd3b32ce18581350c57a03c7f5c5a3720773e508c23b",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W058",
+      "standardCode": "[2수03-09]",
+      "familyId": "portfolio.2su03-09.diagnostic-v1",
+      "archetypeId": "G17",
+      "engineClassIds": [
+        "R17"
+      ],
+      "rendererKind": "clock",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "6ec124dd6a6544bb2009d81d50045330a14c1c1b2aaa2291eab6ebc6c2c5fd66",
+      "approvalViewSha256": "5fb43b018e8ca810cd6510bdff6a96387095e10c6d38c604ae396af8c22275d5",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W063",
+      "standardCode": "[2수03-11]",
+      "familyId": "portfolio.2su03-11.diagnostic-v1",
+      "archetypeId": "G19A12",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "5af75c10d16edda8372b8eb9a61bf36b7e670b6a973ee4434b3f105d5d4ac453",
+      "approvalViewSha256": "5ec87a123dc083944cf017c921dd4398aabd6553a14687d78098b499ea3b09cf",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W069",
+      "standardCode": "[2수03-12]",
+      "familyId": "portfolio.2su03-12.diagnostic-v1",
+      "archetypeId": "G20A12",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "70be9f65ae43761879350a4cfdfde1ad70d321800f682742708bebec9c585166",
+      "approvalViewSha256": "3a0e351114b782c1330fcaf8627af1c5a37b89e64f4e5097637e9ec084161a05",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W074",
+      "standardCode": "[2수03-13]",
+      "familyId": "portfolio.2su03-13.diagnostic-v1",
+      "archetypeId": "G21A12",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "682868671c81c53fbefdc5bc09b275a0df9e8c87e9423c670444147dd87ef5e7",
+      "approvalViewSha256": "8ab479ff5fddaeb3d721f717ec0aca37b19d797367dfac65d5a4b6954d1546c7",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W001",
+      "standardCode": "[2수04-02]",
+      "familyId": "portfolio.2su04-02.diagnostic-v1",
+      "archetypeId": "D01A",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "c8e5ce37b8cbc88dfb2da08a83f5f11be70ccab993db3cf191034936f4b4afdc",
+      "approvalViewSha256": "984820489cc93213a2c26c337ed4fd8132e8726c7bd70c0d485d51624f12a52e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W012",
+      "standardCode": "[2수04-03]",
+      "familyId": "portfolio.2su04-03.diagnostic-v1",
+      "archetypeId": "D01B",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "7a6c6567b3f03fd1a51cdb1ff869a4abdabbbc6e0c2a9c570a6376b60472722c",
+      "approvalViewSha256": "dfdf1fb69e51f677b5726572432dc81fcf743d0cc34c53cd705397a68030221b",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W010",
+      "standardCode": "[4수01-01]",
+      "familyId": "portfolio.4su01-01.diagnostic-v1",
+      "archetypeId": "N01B",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "8c22370de918478217bf4d977b001948a8883c722857573618d4d5b3a54380d6",
+      "approvalViewSha256": "9a71b924bb611ed93843e67bfb7d243df1f65edad05a0b87528deb63ed1b99c9",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W020",
+      "standardCode": "[4수01-02]",
+      "familyId": "portfolio.4su01-02.diagnostic-v1",
+      "archetypeId": "N02A34",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "b87230c15dda4db67b1ddbcb633a9eeee07b48f16c05d460852af1ff3e071e3d",
+      "approvalViewSha256": "0f84754758ee22c570dfbaab5d76f1bd2f74c26debc19eafaf2b0314bb6e0a36",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W027",
+      "standardCode": "[4수01-03]",
+      "familyId": "portfolio.4su01-03.diagnostic-v1",
+      "archetypeId": "N05A34",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "e0e36084ec6b5b2dc7c81c2e9dc48a7b288c692e6248fb00b43c6af0241ff4be",
+      "approvalViewSha256": "bae0378c9182c594a7dece1940d42936aba2454ae11dae8048ae84ec607c40bb",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W040",
+      "standardCode": "[4수01-05]",
+      "familyId": "portfolio.4su01-05.diagnostic-v1",
+      "archetypeId": "N09",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "b2bf763861e975053e171b76d44badac4419d9e65cf921dd698a7af4e1fd2500",
+      "approvalViewSha256": "15a015fc27a9ed5c5964037f1a0782df3c64e50981d053e9d91f36a46e76b1dd",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W045",
+      "standardCode": "[4수01-07]",
+      "familyId": "portfolio.4su01-07.diagnostic-v1",
+      "archetypeId": "N10",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "64cad4a8826895ab4e1c5e2b9359555b1e4496eb3f95084aeb6a17b6b89e502c",
+      "approvalViewSha256": "9ea1403c2ae2841cab6f8c35d4ea60f90ef0610d4077b80457f25266e618c812",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W049",
+      "standardCode": "[4수01-08]",
+      "familyId": "portfolio.4su01-08.diagnostic-v1",
+      "archetypeId": "N11",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "a523c8d8d10513108500fad6e61eda39f1e5411ae4491d4a0243dddac8d545a2",
+      "approvalViewSha256": "57db5920ab499620069159175eaa38da40d2addc0d376b438078b52992e77a2b",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W054",
+      "standardCode": "[4수01-09]",
+      "familyId": "portfolio.4su01-09.diagnostic-v1",
+      "archetypeId": "N13A",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "e321ca81f354343013a2c4992dc1beab8e30248797e3dd483ed67785cc4bb04f",
+      "approvalViewSha256": "3b51407fc771a7ae10f46b9b9da0e79b689cf7b9a3ef60b88c197c4ac86ea0c4",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W059",
+      "standardCode": "[4수01-10]",
+      "familyId": "portfolio.4su01-10.diagnostic-v1",
+      "archetypeId": "N13B",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "953a2bca90b2a9b23d4f96f953f843c40d466387b1f743e5bac02e364b88392d",
+      "approvalViewSha256": "5d4a72aca2156771a70aa5ea3ea6982d6e22ec457924d680c5b9e9ec3da371df",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W065",
+      "standardCode": "[4수01-11]",
+      "familyId": "portfolio.4su01-11.diagnostic-v1",
+      "archetypeId": "N14",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "04f4c8a481117e99954650dda589e515e7192810b16e8b9f668497233697735c",
+      "approvalViewSha256": "333e6cfdfbe290fa09d5708c5d3ae6c33a92a62be0c3ad17e3e34b9fce96a98e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W070",
+      "standardCode": "[4수01-12]",
+      "familyId": "portfolio.4su01-12.diagnostic-v1",
+      "archetypeId": "N01C",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "9f275904297be13a64f3b8bbf119b9492fe9521192d09ba7e61680cc39125b44",
+      "approvalViewSha256": "3007ae78ad380700ebd5452e708e9c5e0fc134692622e2890e8b4c4f18699818",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W075",
+      "standardCode": "[4수01-13]",
+      "familyId": "portfolio.4su01-13.diagnostic-v1",
+      "archetypeId": "N01C",
+      "engineClassIds": [
+        "R02"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "6c4b7fa7a3ca03b99fcc1158a99315e71285527efeed784288c4b230b517b0a1",
+      "approvalViewSha256": "05c9438409f513c77dbd5f288e6f45ffd8b9eac0aa213163a6394bd649522531",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W079",
+      "standardCode": "[4수01-14]",
+      "familyId": "portfolio.4su01-14.diagnostic-v1",
+      "archetypeId": "N02B",
+      "engineClassIds": [
+        "R02",
+        "R03"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "c7c6b09001318fe759a4e9ddc6d7dee8bdba145089eb2a213404cf5b5051a453",
+      "approvalViewSha256": "e68e72b8a157afa44998237466405f3faa3f687a3108e09c0a8d9245272121bb",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W085",
+      "standardCode": "[4수01-16]",
+      "familyId": "portfolio.4su01-16.diagnostic-v1",
+      "archetypeId": "N05C",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "f49328f79ba2d7952c35ece6db84222124cc9c8b9a085218eca873bcd2bac79f",
+      "approvalViewSha256": "ccfb84609e41e32511db5bbe8efbbe5d5709bf9fbbcee6f1ba24e1158815208f",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W008",
+      "standardCode": "[4수02-01]",
+      "familyId": "portfolio.4su02-01.diagnostic-v1",
+      "archetypeId": "C02A",
+      "engineClassIds": [
+        "R08"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 75,
+      "compiledPayloadHash": "1a15e3b57e87122a92e0fd669a4d69dcaed1ec5f0351475a24649b5bee8895b1",
+      "approvalViewSha256": "daa1e9dcb7c88be8d4cc94613db78861262749f4a97e636064c8beeede104dc3",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W018",
+      "standardCode": "[4수02-02]",
+      "familyId": "portfolio.4su02-02.diagnostic-v1",
+      "archetypeId": "C02B",
+      "engineClassIds": [
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "a85d29a2f210de82abf28115cb739c8f70672be80418854facb2b3b8daf55cb0",
+      "approvalViewSha256": "da1104c3c0488b0b226483cee7d8bcb7034af2c2230b3b98fd705e90f6ff4d31",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W003",
+      "standardCode": "[4수03-01]",
+      "familyId": "portfolio.4su03-01.diagnostic-v1",
+      "archetypeId": "G01",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "85b80bade720ae22435313d5164f5595db0385f54ded0fef6ed78dcaf92a56ec",
+      "approvalViewSha256": "6d1e6f38ef5936ef5089e5101105f15d7685ec5bac638dea3cdc50c2bcf65e3b",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W013",
+      "standardCode": "[4수03-02]",
+      "familyId": "portfolio.4su03-02.diagnostic-v1",
+      "archetypeId": "G05",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "b68fb05682087b25b7bbc51525fac7aa7e2589ea6ca37d7605146f8aa731598a",
+      "approvalViewSha256": "46bbf142cc4df7fcf3b7ee16c19c91a9a751bf7db2a77656942aba4ef7ce33f3",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W022",
+      "standardCode": "[4수03-03]",
+      "familyId": "portfolio.4su03-03.diagnostic-v1",
+      "archetypeId": "G06",
+      "engineClassIds": [
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "8ed192c2adb3ec8ddde033976dc5fa27e03fe2bb1afa7b0dbc54953150069ca5",
+      "approvalViewSha256": "5e7e73932c03bc75d88cb976ed788df621f075d32f66130f90f803b2c225b134",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W029",
+      "standardCode": "[4수03-04]",
+      "familyId": "portfolio.4su03-04.diagnostic-v1",
+      "archetypeId": "G11A",
+      "engineClassIds": [
+        "R15"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "4c986d01135793cc284f0819308e81866e603173bd925303f055783025bb582a",
+      "approvalViewSha256": "41463a7ec3ee0c63b620181f0283e721f45a5567a5cf511593f0718dd4622124",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W035",
+      "standardCode": "[4수03-05]",
+      "familyId": "portfolio.4su03-05.diagnostic-v1",
+      "archetypeId": "G11B",
+      "engineClassIds": [
+        "R15"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "ce998824cbbb97075756e598148ae0aec99a63674246da54e10ffd6e85759ae1",
+      "approvalViewSha256": "e0b077b4d1b984ccfbedefd155584e38898c609f6efb8a3ffd394d6606b8ee91",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W042",
+      "standardCode": "[4수03-06]",
+      "familyId": "portfolio.4su03-06.diagnostic-v1",
+      "archetypeId": "G12A",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "501e2380255ba91c5f8c0c28579d92823e2e42fa1a449897b238435b35236ef2",
+      "approvalViewSha256": "e25030789fa861dba73ebdb98bbeb0c591cdcbdbb68ffe20a3d0a8a3551e1ded",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W047",
+      "standardCode": "[4수03-07]",
+      "familyId": "portfolio.4su03-07.diagnostic-v1",
+      "archetypeId": "G12B",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "492506e5f4dfe7ba4807b2fbda1e68e1ae2cf646c72261ae76ba21779585184d",
+      "approvalViewSha256": "c7516798c90331a3c6876e14de10e28e7bcc2e88b590561ebcfa2588c187d55a",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W051",
+      "standardCode": "[4수03-08]",
+      "familyId": "portfolio.4su03-08.diagnostic-v1",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "72a31f89980c885ba6e401b8ebc0ff52d73106d2bd48ba8a7e1812557efd4b92",
+      "approvalViewSha256": "3391958c4a907805b6dc3116d88772069c0e474056539bcbd4245d1534e40f2c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W056",
+      "standardCode": "[4수03-10]",
+      "familyId": "portfolio.4su03-10.diagnostic-v1",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "c4c82ce3de94c15efa9053df547a4f07e4977d7dc25edba5be5bfa8eadc4e286",
+      "approvalViewSha256": "3f1b671facf0af9efb0b9f9ee8927501dfd82866944829eb7d450bc72e3b222a",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W061",
+      "standardCode": "[4수03-11]",
+      "familyId": "portfolio.4su03-11.diagnostic-v1",
+      "archetypeId": "G04B34",
+      "engineClassIds": [
+        "R12"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "94422c1b5acb4dada19ff514aa27af4f171aa009b7ee8c88eb84cd4ac943c2bf",
+      "approvalViewSha256": "e24cadc5f72b382430b0fd006aa93c1cf01412df4f2da9df831a17f53cb60285",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W067",
+      "standardCode": "[4수03-12]",
+      "familyId": "portfolio.4su03-12.diagnostic-v1",
+      "archetypeId": "G16",
+      "engineClassIds": [
+        "R21"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 75,
+      "compiledPayloadHash": "8f9f048f52ec05a78c5178197f90522759f79480ce680a4693d0dd9ef269b444",
+      "approvalViewSha256": "08b55471dd64221d569e734264500886167585c23c3819b853b445d7284f0903",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W072",
+      "standardCode": "[4수03-13]",
+      "familyId": "portfolio.4su03-13.diagnostic-v1",
+      "archetypeId": "G18",
+      "engineClassIds": [
+        "R17"
+      ],
+      "rendererKind": "clock",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "ffb24c9907e8dc97d31e5df1b9e7689cf3f9bf4cc63954b8cebc89eddad6002d",
+      "approvalViewSha256": "5af163a97575cc4ee63a156553a5aef60b8ea0fc6de287579b968b0e96183e68",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W077",
+      "standardCode": "[4수03-14]",
+      "familyId": "portfolio.4su03-14.diagnostic-v1",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "41236720ee3f76312ce381701950d3f888fc581e828fc7c6434820dabac6c3a2",
+      "approvalViewSha256": "fe104583c3f1e7db2a18e8ab7b0b58cd5f9dedc56f4b1a33ceaf79470d8ce1cb",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W081",
+      "standardCode": "[4수03-15]",
+      "familyId": "portfolio.4su03-15.diagnostic-v1",
+      "archetypeId": "G20A34",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "f35ec93e12f1b77411983a9f4723c1dcd1eacdc208f0c67b4e4b8a29521a71c4",
+      "approvalViewSha256": "e0d4975d14e5fabcde7d0d665b042ff55841029b6b060378e4827332f55a113d",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W084",
+      "standardCode": "[4수03-16]",
+      "familyId": "portfolio.4su03-16.diagnostic-v1",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "6937ad8a4e65b2f3195274c682764c627148275703f94e84c114d83658e0fd64",
+      "approvalViewSha256": "55a9976a1c51d2426b44bc36cdba7f82f35e7505b47efd4de728639dc36ab9dd",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W087",
+      "standardCode": "[4수03-17]",
+      "familyId": "portfolio.4su03-17.diagnostic-v1",
+      "archetypeId": "G20B",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "1bd909176d2126365ee16443cad905f38316aa0d35db48f3f3f3f0afecbecbae",
+      "approvalViewSha256": "93c71417dbe220fb2693fb5d76018778d123e871dfee1457eb1961537420e79c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W089",
+      "standardCode": "[4수03-18]",
+      "familyId": "portfolio.4su03-18.diagnostic-v1",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "c32ceb01ffee2e03fbfb1b8790d372838fcb50ce8d1b4f92cd9ed5afc8c9d340",
+      "approvalViewSha256": "603e79b4e49530392db7f990e7b23b707e9196387f9d61c7886f890067fedfa4",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W091",
+      "standardCode": "[4수03-19]",
+      "familyId": "portfolio.4su03-19.diagnostic-v1",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "c629fd4f12f5cb173bf57fa9bce302f0932385e34587d6729d065c0159499308",
+      "approvalViewSha256": "00cbe394891f3652bf6612e2403668f7f9848410362a1728bcdb3bf24f5f35bb",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W093",
+      "standardCode": "[4수03-20]",
+      "familyId": "portfolio.4su03-20.diagnostic-v1",
+      "archetypeId": "G20C",
+      "engineClassIds": [
+        "R18"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "ef4d30f3e99d6c61d3fc68242782632af60ca02314b5dc48d0319bb196194510",
+      "approvalViewSha256": "262f4d0de6f023ec70a0a59a1ec02841e0e6df3bd9174ebbc2c416f63d5cf7be",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W094",
+      "standardCode": "[4수03-21]",
+      "familyId": "portfolio.4su03-21.diagnostic-v1",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "3e66cb9581b64925b7c3251957bd7f93ab1cb218996f43319a95df24b45184ee",
+      "approvalViewSha256": "e3cf3fb8741d9a5a661ba451a2944728da4b3aeda103850c02685a12b0fa6104",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W095",
+      "standardCode": "[4수03-22]",
+      "familyId": "portfolio.4su03-22.diagnostic-v1",
+      "archetypeId": "G19B34",
+      "engineClassIds": [
+        "R19"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "6635ca790d7cc4b763308fd34fb0af6341654037ff3e3999a1edb4274918d8a7",
+      "approvalViewSha256": "8dfb4e1a7f76f2a6ddd4929598d62531574c75be08b842f20df8fcb70fde915e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W096",
+      "standardCode": "[4수03-23]",
+      "familyId": "portfolio.4su03-23.diagnostic-v1",
+      "archetypeId": "G21B34",
+      "engineClassIds": [
+        "R19",
+        "R04"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "4d30d4c6a21a9354201468ba0592d0d6ee696d0f92c1067d2a18bb036e7a258c",
+      "approvalViewSha256": "9ee311170e5b17dab2b7dc6d8e64d8280395880fc497c2f5f3344b1e10135dd8",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W097",
+      "standardCode": "[4수03-25]",
+      "familyId": "portfolio.4su03-25.diagnostic-v1",
+      "archetypeId": "G30",
+      "engineClassIds": [
+        "R21",
+        "R11"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 51,
+      "compiledPayloadHash": "84c89d76a4a7a36f79ac3ac75bc42aac812b74cd01e23f6ad3ff24574deb054b",
+      "approvalViewSha256": "4788cbd27a75ada5bd9f97cd4440daa372223d38629172ded98bbabdc4cf5c29",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W005",
+      "standardCode": "[4수04-02]",
+      "familyId": "portfolio.4su04-02.diagnostic-v1",
+      "archetypeId": "D02A",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 66,
+      "compiledPayloadHash": "c9b2de580c843fafc86f5c817bdf17e1db01a8d922b1640f185943c8c9072424",
+      "approvalViewSha256": "989bb1024fb30da2d7e45b2132e1075b5d819d8543a47db96c46fdcf361e4e42",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W016",
+      "standardCode": "[4수04-03]",
+      "familyId": "portfolio.4su04-03.diagnostic-v1",
+      "archetypeId": "D02B",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 66,
+      "compiledPayloadHash": "f15adae67242ea04954be77f948f9af96eae5f662db58e2bfdd529f6f942b82b",
+      "approvalViewSha256": "94661c647263ef8291cdb28fb5d03b8c557b3215845b446e753b670cb4b05b48",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W014",
+      "standardCode": "[6수01-02]",
+      "familyId": "portfolio.6su01-02.diagnostic-v1",
+      "archetypeId": "N03",
+      "engineClassIds": [
+        "R03"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "61c7813650476881cefdb99cb5c82099ed734abd539e01345ccc78fe978079e9",
+      "approvalViewSha256": "34bcf450b900fdb18dca5b366d91b3569d0db08506233fa3c6659ce89805ae8c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W023",
+      "standardCode": "[6수01-03]",
+      "familyId": "portfolio.6su01-03.diagnostic-v1",
+      "archetypeId": "N04",
+      "engineClassIds": [
+        "R03"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "8c66855f44652384cc704b0288880029250ae11bf5f63bff997cdacd0c36f7e8",
+      "approvalViewSha256": "42414335d26fe3933bb228c8dd2af8647cd26809812cd55e2d61fde76742e454",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W036",
+      "standardCode": "[6수01-05]",
+      "familyId": "portfolio.6su01-05.diagnostic-v1",
+      "archetypeId": "N08",
+      "engineClassIds": [
+        "R06"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 78,
+      "compiledPayloadHash": "69e9336a5a1b79c3fd2648378fdfdeecff4fa7d764d055101a30f265c0af989e",
+      "approvalViewSha256": "7cd590e312225cf632d8150d66838ed923e115943fa57672bf3c9fcd0c7db8ed",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W052",
+      "standardCode": "[6수01-09]",
+      "familyId": "portfolio.6su01-09.diagnostic-v1",
+      "archetypeId": "N17",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "e2ffe52b477cea899fc335fa1262e911612e117272927400df40e33b7ee99aed",
+      "approvalViewSha256": "7c28509970cd29c6b586822707c306cdfc8805af48047f1806f4803789b860dc",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W057",
+      "standardCode": "[6수01-10]",
+      "familyId": "portfolio.6su01-10.diagnostic-v1",
+      "archetypeId": "N16",
+      "engineClassIds": [
+        "R06",
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "56dc89a62d3408c84ac333e381e328d238e8002b2e204481f9cc391062d33c7b",
+      "approvalViewSha256": "2c00d3df9bd7b0f63815e2fe8aa58f26acfadbf667c31e56692d65829fbcc3d1",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W062",
+      "standardCode": "[6수01-11]",
+      "familyId": "portfolio.6su01-11.diagnostic-v1",
+      "archetypeId": "N18",
+      "engineClassIds": [
+        "R07"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "fc6b802b91c809119e360efad10f2263b575cd91341aa8c18cfdfa65544a7a65",
+      "approvalViewSha256": "df789ee13839ed7f733c6738b2b43cea0022cd1e3a3754850a962fe4b1aea9bc",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W068",
+      "standardCode": "[6수01-12]",
+      "familyId": "portfolio.6su01-12.diagnostic-v1",
+      "archetypeId": "N15",
+      "engineClassIds": [
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "337dc5387f94a7a3b8204945f0bc4de8b7c0e721bec69b85d894aa9de555c577",
+      "approvalViewSha256": "a80f8c915824ea588e4fb240fb60836bc21a655cbaf53c3a226f8ba0083eef9c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W073",
+      "standardCode": "[6수01-13]",
+      "familyId": "portfolio.6su01-13.diagnostic-v1",
+      "archetypeId": "N19",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "afefc30b08adfc3b9b6481bf6acf9aab6ca3e96d25ccbabc602e02a7098a79c4",
+      "approvalViewSha256": "3917ec5bb68f088ae983886f37e06bdc0482e4ac00b50e7fd808bbd2dad7425e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W078",
+      "standardCode": "[6수01-14]",
+      "familyId": "portfolio.6su01-14.diagnostic-v1",
+      "archetypeId": "N16",
+      "engineClassIds": [
+        "R06",
+        "R07",
+        "R02"
+      ],
+      "rendererKind": "number-card",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 53,
+      "compiledPayloadHash": "beb2843917b56508ecd211fbab589d65fd07ea675eecec91186690fefaa91a04",
+      "approvalViewSha256": "b6f1b5f6c798469569f070f206e9faf54bd9e38edd28ac1e70a0709a9e052718",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W082",
+      "standardCode": "[6수01-15]",
+      "familyId": "portfolio.6su01-15.diagnostic-v1",
+      "archetypeId": "N20",
+      "engineClassIds": [
+        "R05"
+      ],
+      "rendererKind": "place-value",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "7221e148a03e306dced6e168f074d9c3b47890b144a2eb6b74fe12dc2b60acb4",
+      "approvalViewSha256": "6d0ca55ea0b363f570bd38dad8b53aec3956c4afbe11fde33635695c65ad4ced",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W006",
+      "standardCode": "[6수02-01]",
+      "familyId": "portfolio.6su02-01.diagnostic-v1",
+      "archetypeId": "C02C",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 66,
+      "compiledPayloadHash": "889c62252b2c2a4f71c050b7a8958b028e6ed088b88effe4cb955d30d5603450",
+      "approvalViewSha256": "78b8640fd1b0d852a8a5e7fde17bd53ff5ff74fab16a31506387fc5622af08ff",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W017",
+      "standardCode": "[6수02-03]",
+      "familyId": "portfolio.6su02-03.diagnostic-v1",
+      "archetypeId": "C03",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "9176dcac89aa77e853b91a3e899cf889dca48825ed3fd030ef61330ebb33666b",
+      "approvalViewSha256": "497f713faa9cb44b77e4664049e7bbf8f4372fd79367ddadeae113822f530874",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W025",
+      "standardCode": "[6수02-04]",
+      "familyId": "portfolio.6su02-04.diagnostic-v1",
+      "archetypeId": "C04",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 66,
+      "compiledPayloadHash": "8fb31587d67734e781bd6adbe63cd947d3f130e0ced74a68bf085634355f5ec9",
+      "approvalViewSha256": "1bd8b3408e2b6989339b609df1ac3efed6bae683c0df4d94f145eaaf3e1df571",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W031",
+      "standardCode": "[6수02-05]",
+      "familyId": "portfolio.6su02-05.diagnostic-v1",
+      "archetypeId": "C05",
+      "engineClassIds": [
+        "R09"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 45,
+      "compiledPayloadHash": "40ebf26e075da9c028b91565ad08bb9256828bc424e55f96e4050eb72f88a02e",
+      "approvalViewSha256": "09222eba719a034aaf3697d2e9a3d4409ce515e91110a69106f59ceeb80c0e60",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W011",
+      "standardCode": "[6수03-01]",
+      "familyId": "portfolio.6su03-01.diagnostic-v1",
+      "archetypeId": "G07",
+      "engineClassIds": [
+        "R15",
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "29e1f487a81097858894b89893b21f9c564901aaad601bafb6c339457d92545a",
+      "approvalViewSha256": "9d5e6a6d5e96548b8a8eaab1139f3b0cd31174ead82f3d9efbc2692f965b173c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W021",
+      "standardCode": "[6수03-03]",
+      "familyId": "portfolio.6su03-03.diagnostic-v1",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "36d0e778723eb14b4886bca9ace60388348325a5253be86dc03c58ee11a17207",
+      "approvalViewSha256": "b3952e6934859f74d49638834d8ed1825e36713ca5a0a96605e8de733df9a09e",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W028",
+      "standardCode": "[6수03-04]",
+      "familyId": "portfolio.6su03-04.diagnostic-v1",
+      "archetypeId": "G10A",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "08f610be13b6a337a8901f603c380c308d76c4bd80a6fa272a6cf8dd965f2cc1",
+      "approvalViewSha256": "a5c5085ed9f1b5eb58c0aa9bc5886a98b3ac50fe00b2f9a37e98850fc52070cb",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W034",
+      "standardCode": "[6수03-05]",
+      "familyId": "portfolio.6su03-05.diagnostic-v1",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "bda0a88e6df1c036bc2e23e9527a948b36701900c1811efcc850277edc93477d",
+      "approvalViewSha256": "fd959241d359591b75bdcde1e4ee5635d24622dca458a5568e3b2646c78152b5",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W041",
+      "standardCode": "[6수03-06]",
+      "familyId": "portfolio.6su03-06.diagnostic-v1",
+      "archetypeId": "G10B",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "26f2e392f8dcef9c689b4b372b44399c4e4e223b44710e942c3071e09558523d",
+      "approvalViewSha256": "98e2432ed507f85a7ccd3b853a85e7e4d15c7070fdaf85b9427c08d24306b88c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W046",
+      "standardCode": "[6수03-07]",
+      "familyId": "portfolio.6su03-07.diagnostic-v1",
+      "archetypeId": "G09",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "673b31e25dc77ebdba1d6c3bf791c128c9850803c686573bd15c19399e0ac322",
+      "approvalViewSha256": "624edc6c62d8efd6c353974e47e2a9bd29032606e8435d867e80ce61d0e73339",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W050",
+      "standardCode": "[6수03-08]",
+      "familyId": "portfolio.6su03-08.diagnostic-v1",
+      "archetypeId": "G10B",
+      "engineClassIds": [
+        "R13"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "59c4798b837b7dbca372544eac7d5f87ad7afda84ea029b861ffbc91c84224d5",
+      "approvalViewSha256": "d7351596e76e9aa4d002cd282f1e8747507a3a8f2e1cbf9e1ce91668e2608321",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W055",
+      "standardCode": "[6수03-09]",
+      "familyId": "portfolio.6su03-09.diagnostic-v1",
+      "archetypeId": "G14",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "aca626b79e7c8764ce86774d9e634d22d4c64f92dcd87f2740d4bf3ddd529952",
+      "approvalViewSha256": "5f0c3bd65a74a1080666347358431e1dcfb6f48b1d49c8e38f7d6325804a8305",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W060",
+      "standardCode": "[6수03-10]",
+      "familyId": "portfolio.6su03-10.diagnostic-v1",
+      "archetypeId": "G15",
+      "engineClassIds": [
+        "R14"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "da661cfce982f7d78fafceae9580bbdf38fa91b8a1f420ddce74934d37cacd78",
+      "approvalViewSha256": "2680c2329014ebccb43b0c0621e865bcfeb3786bb60bc9bbccd58fab2f96146d",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W066",
+      "standardCode": "[6수03-11]",
+      "familyId": "portfolio.6su03-11.diagnostic-v1",
+      "archetypeId": "G22",
+      "engineClassIds": [
+        "R18",
+        "R11"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "2d0b7d9b56ff1fa3363e99a58682c8aa01d4f9c06b4c0a36b878b22bbd941614",
+      "approvalViewSha256": "3924ed6326b05b03e7e08e0672fc73772d8e0301f86cc1d49c683d3915907273",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W071",
+      "standardCode": "[6수03-12]",
+      "familyId": "portfolio.6su03-12.diagnostic-v1",
+      "archetypeId": "G23A",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "0262d149dfdecebe6b0066801dfbaf8523e0cc8945324a417e529a73f7ead1cf",
+      "approvalViewSha256": "4d7dc9cdd7d2a4b16de5a1dbcec934de7a33ed5cd4da85f7d59706256e0a3817",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W076",
+      "standardCode": "[6수03-13]",
+      "familyId": "portfolio.6su03-13.diagnostic-v1",
+      "archetypeId": "G24",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "8ceaa2d43d22fb0bd7bbb64e70458b06665caca7450234c7dbfadde83b0eadf4",
+      "approvalViewSha256": "954cc2d231cc94577e347dd985955525539359de9dab3225eb8454c6ca39e427",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W080",
+      "standardCode": "[6수03-14]",
+      "familyId": "portfolio.6su03-14.diagnostic-v1",
+      "archetypeId": "G25",
+      "engineClassIds": [
+        "R21",
+        "R20"
+      ],
+      "rendererKind": "pattern",
+      "targetOutlineCount": 5,
+      "recommendationSupported": true,
+      "resolvedItemCount": 5,
+      "emissionCount": 123,
+      "compiledPayloadHash": "c85422de4a89e569fb9803d8b7c643acfc93286b6ce808a3c247cca3e9b3f528",
+      "approvalViewSha256": "f4b9350118413a7866dddae2f8555f7c5e79af02046b4b2497730a1967315143",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W083",
+      "standardCode": "[6수03-15]",
+      "familyId": "portfolio.6su03-15.diagnostic-v1",
+      "archetypeId": "G26",
+      "engineClassIds": [
+        "R16"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "53dc2375daf498e856a1e8f96932c939345be9b27c7c5ed4b90ba2ec6f470bd0",
+      "approvalViewSha256": "0d31308a6d6b78eb6ed19396ccf2399ad5c2b4aad1f305ab77a8ac2d87c5aa3d",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W086",
+      "standardCode": "[6수03-16]",
+      "familyId": "portfolio.6su03-16.diagnostic-v1",
+      "archetypeId": "G27",
+      "engineClassIds": [
+        "R16",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "83d839eb52e27473b15f04be212f56fa429ccb2a0b48bfcdd2609236fb10b482",
+      "approvalViewSha256": "1a57a30c002613782592226fc0378ee5f78d0ead2458e16034cd28911c58a4c5",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W088",
+      "standardCode": "[6수03-17]",
+      "familyId": "portfolio.6su03-17.diagnostic-v1",
+      "archetypeId": "G28",
+      "engineClassIds": [
+        "R13",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "040ae5776bd61947d79b427024eff76ea60fd12fdafbeb987116d093cd767db0",
+      "approvalViewSha256": "a61dee11647e6dd21260ec53152c9c917aaf3fbc5968a485e30cf593dd3ffd04",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W090",
+      "standardCode": "[6수03-18]",
+      "familyId": "portfolio.6su03-18.diagnostic-v1",
+      "archetypeId": "G23B",
+      "engineClassIds": [
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "a39ee829a4ef187d14704aed0f172f3822146b3f50527eefb0b478c5e9f39a4d",
+      "approvalViewSha256": "44d462d1e47406eb2e87c6152810a592cfa62d7497dbc39109576b3ae1a7402c",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W092",
+      "standardCode": "[6수03-19]",
+      "familyId": "portfolio.6su03-19.diagnostic-v1",
+      "archetypeId": "G29",
+      "engineClassIds": [
+        "R14",
+        "R20"
+      ],
+      "rendererKind": "geometry",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 72,
+      "compiledPayloadHash": "a7d48490758dd8dce3b0a3a92dc6b8799160b9ce8f76a5d44ad89c759f5172fa",
+      "approvalViewSha256": "2383458783598e521fd945577814fdcee19cf92d45c8fbd6c8b5e61f324e6c03",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W009",
+      "standardCode": "[6수04-01]",
+      "familyId": "portfolio.6su04-01.diagnostic-v1",
+      "archetypeId": "D03",
+      "engineClassIds": [
+        "R23"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 4,
+      "recommendationSupported": true,
+      "resolvedItemCount": 4,
+      "emissionCount": 87,
+      "compiledPayloadHash": "63dcc9f6c4736d94a88709a68fa11d8605e8df2f93221ec1e627ca3274f6ebb6",
+      "approvalViewSha256": "a2055a087871092e9a2cf2240e253c62a3966df011ef43cfed2128e693cf4cda",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W019",
+      "standardCode": "[6수04-02]",
+      "familyId": "portfolio.6su04-02.diagnostic-v1",
+      "archetypeId": "D04",
+      "engineClassIds": [
+        "R22"
+      ],
+      "rendererKind": "table-graph",
+      "targetOutlineCount": 3,
+      "recommendationSupported": true,
+      "resolvedItemCount": 3,
+      "emissionCount": 66,
+      "compiledPayloadHash": "7f4c19b3878e909c11ea8ae555e6fc942099ec09ef2e585cc68e56b57b2c8a3b",
+      "approvalViewSha256": "f6d8b40960b87812578f7681e06db0e177443f1acfe9753d92b14de3567ec2a8",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W033",
+      "standardCode": "[6수04-05]",
+      "familyId": "portfolio.6su04-05.diagnostic-v1",
+      "archetypeId": "D05",
+      "engineClassIds": [
+        "R24",
+        "R03"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "b5db346c78d2afe23af0e10b885389b46d813c83d37a1d68ee4f535504b45b3b",
+      "approvalViewSha256": "a8e888d61267ef6b08a9030b9739679092490540c16fcdc34e48cd65729ef033",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    },
+    {
+      "workItemId": "W039",
+      "standardCode": "[6수04-06]",
+      "familyId": "portfolio.6su04-06.diagnostic-v1",
+      "archetypeId": "D06",
+      "engineClassIds": [
+        "R24",
+        "R22"
+      ],
+      "rendererKind": "fraction",
+      "targetOutlineCount": 2,
+      "recommendationSupported": true,
+      "resolvedItemCount": 2,
+      "emissionCount": 49,
+      "compiledPayloadHash": "800f6611ece7f787a7f18e7d712b7d80eef4d261eab32ec192f06f8a012fa17e",
+      "approvalViewSha256": "b62479eb1b7d33232b32a39d235a874db244cb939af0f26a417329c9393c8c61",
+      "itemCoverageExact": true,
+      "serverTagContractExact": true,
+      "canCreate": true,
+      "issues": []
+    }
+  ]
+}

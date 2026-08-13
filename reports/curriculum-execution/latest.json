@@ -26,7 +26,7 @@
     "fullyLiveStandards": 1,
     "representativeCellsProven": 1,
     "representativeCellTotal": 12,
-    "canonicalFamilies": 34,
+    "canonicalFamilies": 131,
     "releasedFamilies": 21,
     "commonParameterFamilies": 8,
     "globalTargetCoverageStatus": "unavailable"
@@ -42,7 +42,7 @@
       "phase": "1",
       "name": "공통 ProblemFamily 기반",
       "status": "complete",
-      "progress": "34 canonical / 21 released"
+      "progress": "131 canonical / 21 released"
     },
     {
       "phase": "2",
@@ -72,7 +72,7 @@
       "phase": "4",
       "name": "전 범위 TeacherRequest·반영 표·실제 미리보기",
       "status": "queued-after-phase-2",
-      "progress": "8/34 common-parameter families"
+      "progress": "8/131 common-parameter families"
     },
     {
       "phase": "5",
@@ -405,8 +405,7 @@
     "complete": 1,
     "cover-unbound-reviewed-targets": 2,
     "review-target-set-and-bind-released-family": 17,
-    "review-target-set-and-close-offline-family": 5,
-    "review-target-set-and-design-family": 95
+    "review-target-set-and-close-offline-family": 100
   },
   "remainingStandardCount": 120,
   "breadthQueue": [
@@ -708,11 +707,13 @@
         "note": "reviewed-complete target set 기준입니다. offline-validated 이상은 2/2, live-released는 0/2입니다."
       },
       "linkedFamilyIds": [
-        "data.early-table.organize-v1"
+        "data.early-table.organize-v1",
+        "portfolio.2su04-02.diagnostic-v1"
       ],
       "releasedFamilyIds": [],
       "offlineFamilyIds": [
-        "data.early-table.organize-v1"
+        "data.early-table.organize-v1",
+        "portfolio.2su04-02.diagnostic-v1"
       ],
       "offlineCoveredTargetCount": 2,
       "liveCoveredTargetCount": 0,
@@ -735,12 +736,14 @@
       "linkedFamilyIds": [
         "pattern.create-repeat-unit-explain-v1",
         "pattern.declared-repeat.repair-v1",
-        "pattern.repeat-unit.construct-v1"
+        "pattern.repeat-unit.construct-v1",
+        "portfolio.2su02-02.diagnostic-v1"
       ],
       "releasedFamilyIds": [],
       "offlineFamilyIds": [
         "pattern.declared-repeat.repair-v1",
-        "pattern.repeat-unit.construct-v1"
+        "pattern.repeat-unit.construct-v1",
+        "portfolio.2su02-02.diagnostic-v1"
       ],
       "offlineCoveredTargetCount": 2,
       "liveCoveredTargetCount": 0,
@@ -760,12 +763,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 15,
@@ -806,12 +813,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 17,
@@ -827,12 +838,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su04-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su04-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 18,
@@ -848,12 +863,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su02-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su02-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 19,
@@ -869,12 +888,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 20,
@@ -890,12 +913,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su02-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su02-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 21,
@@ -911,12 +938,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su04-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su04-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 22,
@@ -932,12 +963,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 23,
@@ -953,12 +988,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-01.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-01.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 24,
@@ -974,12 +1013,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su04-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su04-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 25,
@@ -995,12 +1038,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 26,
@@ -1016,12 +1063,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 27,
@@ -1037,12 +1088,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 28,
@@ -1058,12 +1113,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su04-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su04-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 29,
@@ -1079,12 +1138,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su02-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su02-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 30,
@@ -1125,12 +1188,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su02-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su02-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 32,
@@ -1146,12 +1213,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su04-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su04-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 33,
@@ -1167,12 +1238,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-02.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-02.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 34,
@@ -1188,12 +1263,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 35,
@@ -1209,12 +1288,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 36,
@@ -1230,12 +1313,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 37,
@@ -1251,12 +1338,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 38,
@@ -1272,12 +1363,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su02-04.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su02-04.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 39,
@@ -1293,12 +1388,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 40,
@@ -1339,12 +1438,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-03.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-03.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 42,
@@ -1360,12 +1463,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-04.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-04.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 43,
@@ -1381,12 +1488,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-04.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-04.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 44,
@@ -1427,12 +1538,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-04.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-04.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 46,
@@ -1448,12 +1563,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su02-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su02-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 47,
@@ -1469,12 +1588,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 48,
@@ -1490,12 +1613,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su04-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su04-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 49,
@@ -1536,12 +1663,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 51,
@@ -1557,12 +1688,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 52,
@@ -1578,12 +1713,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 53,
@@ -1599,12 +1738,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 54,
@@ -1620,12 +1763,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-06.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-06.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 55,
@@ -1641,12 +1788,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su04-06.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su04-06.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 56,
@@ -1662,12 +1813,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-05.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-05.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 57,
@@ -1683,12 +1838,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-06.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-06.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 58,
@@ -1704,12 +1863,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-06.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-06.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 59,
@@ -1750,12 +1913,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-06.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-06.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 61,
@@ -1771,12 +1938,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-07.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-07.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 62,
@@ -1792,12 +1963,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-07.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-07.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 63,
@@ -1813,12 +1988,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-07.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-07.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 64,
@@ -1834,12 +2013,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-07.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-07.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 65,
@@ -1907,12 +2090,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-08.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-08.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 68,
@@ -1928,12 +2115,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-08.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-08.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 69,
@@ -1949,12 +2140,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-08.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-08.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 70,
@@ -1970,12 +2165,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-08.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-08.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 71,
@@ -1991,12 +2190,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-09.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-09.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 72,
@@ -2037,12 +2240,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-09.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-09.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 74,
@@ -2058,12 +2265,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-09.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-09.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 75,
@@ -2079,12 +2290,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-09.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-09.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 76,
@@ -2100,12 +2315,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-10.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-10.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 77,
@@ -2121,12 +2340,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-10.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-10.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 78,
@@ -2142,12 +2365,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-09.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-09.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 79,
@@ -2188,12 +2415,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-10.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-10.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 81,
@@ -2209,12 +2440,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-10.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-10.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 82,
@@ -2230,12 +2465,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 83,
@@ -2251,12 +2490,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 84,
@@ -2272,12 +2515,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 85,
@@ -2293,12 +2540,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su01-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su01-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 86,
@@ -2314,12 +2565,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 87,
@@ -2335,12 +2590,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-11.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-11.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 88,
@@ -2356,12 +2615,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-12.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-12.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 89,
@@ -2377,12 +2640,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-12.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-12.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 90,
@@ -2398,12 +2665,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-12.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-12.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 91,
@@ -2419,12 +2690,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-12.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-12.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 92,
@@ -2440,12 +2715,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-12.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-12.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 93,
@@ -2461,12 +2740,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-13.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-13.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 94,
@@ -2482,12 +2765,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-13.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-13.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 95,
@@ -2503,12 +2790,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.2su03-13.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.2su03-13.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 96,
@@ -2524,12 +2815,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-13.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-13.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 97,
@@ -2545,12 +2840,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-13.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-13.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 98,
@@ -2566,12 +2865,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-14.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-14.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 99,
@@ -2587,12 +2890,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-14.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-14.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 100,
@@ -2608,12 +2915,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-14.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-14.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 101,
@@ -2629,12 +2940,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-14.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-14.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 102,
@@ -2650,12 +2965,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-15.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-15.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 103,
@@ -2671,12 +2990,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su01-15.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su01-15.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 104,
@@ -2719,12 +3042,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-15.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-15.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 106,
@@ -2740,12 +3067,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-16.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-16.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 107,
@@ -2761,12 +3092,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su01-16.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su01-16.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 108,
@@ -2782,12 +3117,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-16.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-16.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 109,
@@ -2803,12 +3142,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-17.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-17.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 110,
@@ -2824,12 +3167,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-17.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-17.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 111,
@@ -2845,12 +3192,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-18.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-18.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 112,
@@ -2866,12 +3217,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-18.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-18.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 113,
@@ -2887,12 +3242,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-19.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-19.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 114,
@@ -2908,12 +3267,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.6su03-19.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.6su03-19.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 115,
@@ -2929,12 +3292,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-20.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-20.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 116,
@@ -2950,12 +3317,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-21.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-21.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 117,
@@ -2971,12 +3342,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-22.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-22.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 118,
@@ -2992,12 +3367,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-23.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-23.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     },
     {
       "queueIndex": 119,
@@ -3038,12 +3417,16 @@
         "denominator": null,
         "note": "이 성취기준의 필수 AssessmentTarget 완전 분해가 아직 reviewed-complete가 아니므로 분모를 제시하지 않습니다."
       },
-      "linkedFamilyIds": [],
+      "linkedFamilyIds": [
+        "portfolio.4su03-25.diagnostic-v1"
+      ],
       "releasedFamilyIds": [],
-      "offlineFamilyIds": [],
+      "offlineFamilyIds": [
+        "portfolio.4su03-25.diagnostic-v1"
+      ],
       "offlineCoveredTargetCount": 0,
       "liveCoveredTargetCount": 0,
-      "nextAction": "review-target-set-and-design-family"
+      "nextAction": "review-target-set-and-close-offline-family"
     }
   ]
 }

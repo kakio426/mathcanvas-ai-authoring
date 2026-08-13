@@ -19,7 +19,7 @@
   "officialStandardCount": 121,
   "catalogStandardCount": 121,
   "mappedStandardCount": 121,
-  "standardsWithAnyActivity": 26,
+  "standardsWithAnyActivity": 121,
   "standardsWithReleasedActivity": 18,
   "reviewedAssessmentTargetStandardCount": 4,
   "reviewedAssessmentTargetCount": 11,
@@ -61,21 +61,21 @@
       "gradeBand": "1-2",
       "official": 29,
       "mapped": 29,
-      "withActivity": 10,
+      "withActivity": 29,
       "withReleasedActivity": 7
     },
     {
       "gradeBand": "3-4",
       "official": 47,
       "mapped": 47,
-      "withActivity": 7,
+      "withActivity": 47,
       "withReleasedActivity": 6
     },
     {
       "gradeBand": "5-6",
       "official": 45,
       "mapped": 45,
-      "withActivity": 9,
+      "withActivity": 45,
       "withReleasedActivity": 5
     }
   ],
@@ -84,28 +84,28 @@
       "domain": "수와 연산",
       "official": 42,
       "mapped": 42,
-      "withActivity": 11,
+      "withActivity": 42,
       "withReleasedActivity": 8
     },
     {
       "domain": "변화와 관계",
       "official": 10,
       "mapped": 10,
-      "withActivity": 4,
+      "withActivity": 10,
       "withReleasedActivity": 2
     },
     {
       "domain": "도형과 측정",
       "official": 57,
       "mapped": 57,
-      "withActivity": 6,
+      "withActivity": 57,
       "withReleasedActivity": 6
     },
     {
       "domain": "자료와 가능성",
       "official": 12,
       "mapped": 12,
-      "withActivity": 5,
+      "withActivity": 12,
       "withReleasedActivity": 2
     }
   ],
@@ -118,8 +118,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-1",
@@ -134,7 +136,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -179,8 +181,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-1",
@@ -198,7 +202,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -241,8 +245,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-3",
@@ -259,7 +265,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -271,8 +277,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-06.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-3",
@@ -289,7 +297,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -301,8 +309,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-07.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-3",
@@ -319,7 +329,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -331,8 +341,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-08.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-3",
@@ -349,7 +361,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -361,8 +373,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-09.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-3",
@@ -379,7 +393,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -421,8 +435,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su01-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-2-2"
@@ -435,7 +451,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -482,7 +498,8 @@
       "activityIds": [
         "pattern.create-repeat-unit-explain-v1",
         "pattern.declared-repeat.repair-v1",
-        "pattern.repeat-unit.construct-v1"
+        "pattern.repeat-unit.construct-v1",
+        "portfolio.2su02-02.diagnostic-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -497,7 +514,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 3,
+        "familyCount": 4,
         "releasedFamilyCount": 0
       }
     },
@@ -509,8 +526,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-2-3",
@@ -524,7 +543,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -536,8 +555,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-1-2"
@@ -550,7 +571,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -562,8 +583,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-2",
@@ -578,7 +601,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -590,8 +613,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-04.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-2",
@@ -606,7 +631,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -618,8 +643,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-2",
@@ -633,7 +660,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -645,8 +672,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-06.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "1-1-4",
@@ -660,7 +689,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -733,8 +762,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-09.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-2-4"
@@ -747,7 +778,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -790,8 +821,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-1-4",
@@ -805,7 +838,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -817,8 +850,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-12.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-1-4",
@@ -832,7 +867,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -844,8 +879,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su03-13.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-1-4",
@@ -859,7 +896,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -902,7 +939,8 @@
       "catalogGoalMatchesOfficial": true,
       "activityStage": "offline-validated",
       "activityIds": [
-        "data.early-table.organize-v1"
+        "data.early-table.organize-v1",
+        "portfolio.2su04-02.diagnostic-v1"
       ],
       "releasedActivityIds": [],
       "unitIds": [
@@ -916,7 +954,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 1,
+        "familyCount": 2,
         "releasedFamilyCount": 0
       }
     },
@@ -928,8 +966,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.2su04-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "2-2-5"
@@ -942,7 +982,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -954,8 +994,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-1"
@@ -968,7 +1010,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -980,8 +1022,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-1"
@@ -994,7 +1038,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1006,8 +1050,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-1"
@@ -1020,7 +1066,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1062,8 +1108,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-3",
@@ -1078,7 +1126,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1122,8 +1170,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-07.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-2",
@@ -1137,7 +1187,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1149,8 +1199,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-08.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-1"
@@ -1163,7 +1215,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1175,8 +1227,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-09.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-6",
@@ -1190,7 +1244,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1202,8 +1256,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-10.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-6",
@@ -1217,7 +1273,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1229,8 +1285,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-4"
@@ -1243,7 +1301,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1255,8 +1313,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-12.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-6",
@@ -1270,7 +1330,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1282,8 +1342,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-13.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-6",
@@ -1297,7 +1359,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1309,8 +1371,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-14.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-3"
@@ -1323,7 +1387,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1367,8 +1431,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su01-16.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-3"
@@ -1381,7 +1447,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1393,8 +1459,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su02-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-6"
@@ -1407,7 +1475,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1419,8 +1487,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su02-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-6"
@@ -1433,7 +1503,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1477,8 +1547,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-2"
@@ -1491,7 +1563,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1503,8 +1575,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-2"
@@ -1517,7 +1591,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1529,8 +1603,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-2"
@@ -1543,7 +1619,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1555,8 +1631,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-04.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-4"
@@ -1569,7 +1647,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1581,8 +1659,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-4"
@@ -1595,7 +1675,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1607,8 +1687,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-06.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-3"
@@ -1621,7 +1703,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1633,8 +1715,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-07.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-3"
@@ -1647,7 +1731,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1659,8 +1743,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-08.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-2"
@@ -1673,7 +1759,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1715,8 +1801,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-10.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-4"
@@ -1729,7 +1817,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1741,8 +1829,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-6"
@@ -1755,7 +1845,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1767,8 +1857,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-12.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-6"
@@ -1781,7 +1873,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1793,8 +1885,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-13.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-5"
@@ -1807,7 +1901,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1819,8 +1913,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-14.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-5"
@@ -1833,7 +1929,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1845,8 +1941,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-15.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-5"
@@ -1859,7 +1957,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1871,8 +1969,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-16.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-1-5"
@@ -1885,7 +1985,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1897,8 +1997,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-17.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -1911,7 +2013,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1923,8 +2025,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-18.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -1937,7 +2041,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1949,8 +2053,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-19.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -1963,7 +2069,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -1975,8 +2081,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-20.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -1989,7 +2097,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2001,8 +2109,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-21.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -2015,7 +2125,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2027,8 +2137,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-22.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -2041,7 +2153,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2053,8 +2165,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-23.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "3-2-5"
@@ -2067,7 +2181,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2109,8 +2223,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su03-25.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-2"
@@ -2123,7 +2239,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2168,8 +2284,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su04-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-1-5",
@@ -2183,7 +2301,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2195,8 +2313,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.4su04-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "4-2-5"
@@ -2209,7 +2329,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2249,8 +2369,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-1"
@@ -2263,7 +2385,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2275,8 +2397,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-1"
@@ -2289,7 +2413,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2329,8 +2453,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-2"
@@ -2343,7 +2469,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2447,8 +2573,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-09.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-2"
@@ -2461,7 +2589,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2473,8 +2601,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-10.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-1",
@@ -2488,7 +2618,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2500,8 +2630,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-1"
@@ -2514,7 +2646,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2526,8 +2658,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-12.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-1"
@@ -2540,7 +2674,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2552,8 +2686,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-13.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-4"
@@ -2566,7 +2702,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2578,8 +2714,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-14.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-3",
@@ -2593,7 +2731,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2605,8 +2743,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su01-15.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-2"
@@ -2619,7 +2759,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2631,8 +2771,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su02-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-3"
@@ -2645,7 +2787,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2685,8 +2827,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su02-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-4"
@@ -2699,7 +2843,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2711,8 +2855,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su02-04.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-4"
@@ -2725,7 +2871,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2737,8 +2883,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su02-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-4"
@@ -2751,7 +2899,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2763,8 +2911,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-3"
@@ -2777,7 +2927,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2819,8 +2969,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-03.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-5"
@@ -2833,7 +2985,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2845,8 +2997,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-04.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-5"
@@ -2859,7 +3013,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2871,8 +3025,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-2"
@@ -2885,7 +3041,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2897,8 +3053,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-06.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-2"
@@ -2911,7 +3069,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2923,8 +3081,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-07.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-6"
@@ -2937,7 +3097,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2949,8 +3109,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-08.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-6"
@@ -2963,7 +3125,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -2975,8 +3137,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-09.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-3"
@@ -2989,7 +3153,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3001,8 +3165,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-10.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-3"
@@ -3015,7 +3181,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3027,8 +3193,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-11.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-6"
@@ -3041,7 +3209,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3053,8 +3221,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-12.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-6"
@@ -3067,7 +3237,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3079,8 +3249,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-13.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-6"
@@ -3093,7 +3265,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3105,8 +3277,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-14.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-1-6"
@@ -3119,7 +3293,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3131,8 +3305,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-15.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-5"
@@ -3145,7 +3321,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3157,8 +3333,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-16.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-2-5"
@@ -3171,7 +3349,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3183,8 +3361,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-17.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-6"
@@ -3197,7 +3377,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3209,8 +3389,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-18.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-6"
@@ -3223,7 +3405,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3235,8 +3417,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su03-19.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-6"
@@ -3249,7 +3433,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3261,8 +3445,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su04-01.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-6"
@@ -3275,7 +3461,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3287,8 +3473,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su04-02.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "6-1-5"
@@ -3301,7 +3489,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3371,8 +3559,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su04-05.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-6"
@@ -3385,7 +3575,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     },
@@ -3397,8 +3587,10 @@
       "catalogMapped": true,
       "catalogSummaryKind": "official-goal",
       "catalogGoalMatchesOfficial": true,
-      "activityStage": "mapped",
-      "activityIds": [],
+      "activityStage": "offline-validated",
+      "activityIds": [
+        "portfolio.6su04-06.diagnostic-v1"
+      ],
       "releasedActivityIds": [],
       "unitIds": [
         "5-2-6"
@@ -3411,7 +3603,7 @@
       },
       "familyVariety": {
         "basis": "canonical-problem-family-registry",
-        "familyCount": 0,
+        "familyCount": 1,
         "releasedFamilyCount": 0
       }
     }

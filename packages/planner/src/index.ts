@@ -744,6 +744,8 @@ export function recommendActivity(input: unknown): Recommendation {
     const supportState =
       familyManifest?.releaseEvidence.supportState ??
       getActivitySupportState(candidate.templateId);
+    const portfolioPilot =
+      familyManifest?.renderRecipe.kind === "portfolio-scale-adapter";
     const problemCount =
       request.problemCount ??
       familyCapability?.defaultProblemCount ??
@@ -787,7 +789,7 @@ export function recommendActivity(input: unknown): Recommendation {
       schemaVersion: CONTRACT_SCHEMA_VERSION,
       requestId: request.requestId,
       supported:
-        supportState === "released" && variationSupported,
+        (supportState === "released" || portfolioPilot) && variationSupported,
       templateId: candidate.templateId,
       gradeBand: curriculum.record.gradeBand,
       recommendedGrade: request.requestedGrade ?? candidate.grade,
@@ -818,7 +820,7 @@ export function recommendActivity(input: unknown): Recommendation {
       blockingReasons:
         !variationSupported
           ? unsupportedRequests
-          : supportState === "released"
+          : supportState === "released" || portfolioPilot
             ? []
           : [
               supportState === "verified"
