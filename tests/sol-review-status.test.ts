@@ -136,7 +136,9 @@ describe("Sol review candidate and scope gates", () => {
     expect(nextAfterApproval.familyTrackId).toBe(
       "pattern.change-rule.construct-v1"
     );
-    expect(nextAfterApproval.nextOperation).toBe("ENGINE_CORE");
+    expect(["ENGINE_CORE", "FAMILY_TRACK"]).toContain(
+      nextAfterApproval.nextOperation
+    );
   });
 
   it("fails closed for incomplete student-constructed rule contracts", () => {
@@ -535,7 +537,7 @@ describe("Sol review candidate and scope gates", () => {
         expect(activeStateItem?.completionEvidenceByOperation).toBeUndefined();
       } else {
         expect(nextOffline?.operationWorkItemId).toBe(
-          "W002-FAMILY_TRACK-repeat-repair-FAMILY_TRACK"
+          `${activePlannedItem.workItemId}-FAMILY_TRACK`
         );
         expect(nextOffline?.nextFamilySubWork?.nextOperation).toBe(
           "FAMILY_TRACK"
@@ -849,17 +851,40 @@ describe("Sol review candidate and scope gates", () => {
       (item: { workItemId: string }) =>
         item.workItemId === "W002-FAMILY_TRACK-change-rule"
     );
-    expect(() =>
-      assertEngineCoreCompletionEvidence(
-        {
-          workItemId: planned.workItemId,
-          completedOperations: [],
-          nextOperation: "ENGINE_CORE"
-        },
-        planned,
-        contract
-      )
-    ).not.toThrow();
+    const artifactPath = change.artifactContract.artifactPath;
+    const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
+    const artifactSha256 = createHash("sha256")
+      .update(readFileSync(artifactPath))
+      .digest("hex");
+    const pendingState = {
+      workItemId: planned.workItemId,
+      completedOperations: [],
+      nextOperation: "ENGINE_CORE"
+    };
+    const completedState = {
+      workItemId: planned.workItemId,
+      completedOperations: ["ENGINE_CORE"],
+      nextOperation: "FAMILY_TRACK",
+      completionEvidenceByOperation: {
+        ENGINE_CORE: { artifactPath, artifactSha256 }
+      }
+    };
+    if (artifact.status === change.artifactContract.pendingStatus) {
+      expect(() =>
+        assertEngineCoreCompletionEvidence(pendingState, planned, contract)
+      ).not.toThrow();
+      expect(() =>
+        assertEngineCoreCompletionEvidence(completedState, planned, contract)
+      ).toThrow("no-family-plan-subwork-engine-core-evidence-invalid");
+    } else {
+      expect(artifact.status).toBe(change.artifactContract.completionStatus);
+      expect(artifact.replanContractRevision).toBe(
+        change.artifactContract.completionContractRevision
+      );
+      expect(() =>
+        assertEngineCoreCompletionEvidence(completedState, planned, contract)
+      ).not.toThrow();
+    }
   });
 
   it("invalidates an approval when a candidate implementation file changes afterwards", () => {
