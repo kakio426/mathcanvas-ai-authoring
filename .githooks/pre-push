@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+ROOT="$(git rev-parse --show-toplevel)"
+exec node "$ROOT/scripts/hooks/mathcanvas-git-guard.mjs" pre-push

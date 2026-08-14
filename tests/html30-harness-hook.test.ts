@@ -90,6 +90,32 @@ describe("Eduitit HTML30 Codex harness hook", () => {
     ).toBe(false);
   });
 
+  it("allows only the attestation-bound all-97 portfolio writer", () => {
+    const sha = "c".repeat(64);
+    expect(
+      evaluate(
+        `pnpm portfolio:live:sync -- --execute-live --attestation-sha ${sha}`
+      )
+    ).toEqual({
+      allowed: true,
+      code: "canonical-portfolio-live-sync"
+    });
+    expect(
+      evaluate(
+        `pnpm portfolio:live:sync -- --execute-live --attestation-sha ${sha} --representative`
+      ).allowed
+    ).toBe(false);
+    expect(
+      evaluate(
+        `node scripts/portfolio-scale/create-demo-projects.mjs --execute-live --attestation-sha ${sha}`
+      )
+    ).toMatchObject({ allowed: false, code: "protected-entrypoint" });
+    expect(evaluate("pnpm portfolio:demo:create")).toMatchObject({
+      allowed: false,
+      code: "portfolio-write-intent"
+    });
+  });
+
   it.each([
     [
       "node scripts/contract-lab/create-eduitit-html30-projects.mjs",

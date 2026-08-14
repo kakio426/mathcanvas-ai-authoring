@@ -13,12 +13,46 @@ import {
   acquireManagedProfileLock,
   resolveStateDirectory
 } from "../contract-lab/lib/paths.mjs";
+import { validatePortfolioStaticAttestation } from "./learning-design-policy.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const origin = "https://mathcanvas.vivasam.com";
 const generatedAt = "2026-08-13T12:00:00.000Z";
 const demoPrefix = "초등 수학 학생 활동";
 const representativeOnly = process.argv.includes("--representative");
+const executeLive = process.argv.includes("--execute-live");
+const argumentValue = (name) => {
+  const index = process.argv.indexOf(name);
+  return index >= 0 ? process.argv[index + 1] : undefined;
+};
+const suppliedAttestationSha256 = argumentValue("--attestation-sha");
+if (process.env.MATHCANVAS_CANONICAL_PORTFOLIO_WRITER !== "1") {
+  throw new Error(
+    "portfolio-live-writer-canonical-command-required:" +
+      "pnpm portfolio:live:sync -- --execute-live --attestation-sha <sha256>"
+  );
+}
+if (!executeLive) {
+  throw new Error("portfolio-live-writer-execute-live-required");
+}
+if (representativeOnly) {
+  throw new Error("portfolio-live-writer-all-97-required");
+}
+if (!/^[a-f0-9]{64}$/u.test(suppliedAttestationSha256 ?? "")) {
+  throw new Error("portfolio-live-writer-attestation-sha-required");
+}
+const staticAttestation = JSON.parse(
+  await readFile(resolve(root, "reports/portfolio-scale/latest.json"), "utf8")
+);
+const validatedStaticAttestation = validatePortfolioStaticAttestation(
+  staticAttestation
+);
+if (validatedStaticAttestation.contentSha256 !== suppliedAttestationSha256) {
+  throw new Error(
+    `portfolio-live-writer-attestation-mismatch:${suppliedAttestationSha256}:` +
+      validatedStaticAttestation.contentSha256
+  );
+}
 const stateDirectory = resolveStateDirectory();
 const profileDirectory = resolve(stateDirectory, "chrome-profile");
 const devToolsPortPath = resolve(profileDirectory, "DevToolsActivePort");
@@ -684,6 +718,8 @@ try {
 const report = {
   schemaVersion: "1.0.0",
   reportId: "portfolio-scale-live-demo-v1",
+  staticReportId: validatedStaticAttestation.reportId,
+  staticAttestationSha256: validatedStaticAttestation.contentSha256,
   observedAt: new Date().toISOString(),
   accountScope: "current-owner-my-canvas",
   runMode: representativeOnly ? "representative-7" : "all-97",

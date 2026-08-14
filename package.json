@@ -8,6 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "prepare": "node scripts/hooks/install-git-hooks.mjs",
     "build": "pnpm -r --sort run build",
     "architecture:baseline": "node scripts/architecture/check-core-diff.mjs baseline",
     "architecture:verify": "node scripts/architecture/check-core-diff.mjs verify",
@@ -77,6 +78,8 @@
     "doctor": "node scripts/doctor.mjs",
     "golden:verify": "vitest run tests/p0-golden.test.ts",
     "golden:update": "node scripts/golden/update.mjs",
+    "hooks:install": "node scripts/hooks/install-git-hooks.mjs",
+    "hooks:verify": "pnpm exec vitest run tests/html30-harness-hook.test.ts tests/mathcanvas-learning-harness.test.ts",
     "mathcanvas:login": "pnpm --filter @mathcanvas/managed-browser build && node scripts/login-mathcanvas.mjs",
     "mathcanvas:app:macos": "zsh scripts/build-macos-app.sh",
     "mathcanvas:app:macos:install": "zsh scripts/build-macos-app.sh --install",
@@ -85,6 +88,9 @@
     "portfolio:verify": "pnpm build && node scripts/portfolio-scale/verify-portfolio-scale.mjs",
     "portfolio:update": "pnpm build && node scripts/portfolio-scale/verify-portfolio-scale.mjs --write",
     "portfolio:demo:create": "pnpm build && node scripts/portfolio-scale/create-demo-projects.mjs",
+    "portfolio:live:sync": "pnpm portfolio:verify && MATHCANVAS_CANONICAL_PORTFOLIO_WRITER=1 node scripts/portfolio-scale/create-demo-projects.mjs",
+    "portfolio:live:verify": "node scripts/portfolio-scale/verify-live-attestation.mjs",
+    "mathcanvas:harness:verify": "pnpm hooks:verify && pnpm portfolio:verify && pnpm cognitive:verify && pnpm typecheck",
     "lesson-bundle:run": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/run-lesson-bundle-activity.mjs",
     "lesson-bundle:adopt-canary": "pnpm --filter @mathcanvas/mcp-server... build && node scripts/adopt-lesson-bundle-canary.mjs",
     "prompt-harness:eduitit-html30:update": "pnpm --filter @mathcanvas/curriculum... build && node scripts/prompt-harness/build-eduitit-html30.mjs --write",

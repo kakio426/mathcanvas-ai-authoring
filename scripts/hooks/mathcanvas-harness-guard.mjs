@@ -10,15 +10,18 @@ export const repositoryRoot = resolve(scriptDirectory, "..", "..");
 const protectedEntrypoints = [
   "scripts/contract-lab/create-eduitit-html30-projects.mjs",
   "scripts/prompt-harness/sync-eduitit-html30-links.mjs",
-  "scripts/prompt-harness/sync-eduitit-html30-v2-links.mjs"
+  "scripts/prompt-harness/sync-eduitit-html30-v2-links.mjs",
+  "scripts/portfolio-scale/create-demo-projects.mjs"
 ];
 
 const writeMethodPattern = /\b(?:POST|PUT|PATCH|DELETE)\b/i;
 const projectEndpointPattern = /(?:mathcanvas\.vivasam\.com)?\/api\/project(?:\b|\/)/i;
 const html30WriteIntentPattern =
   /(?:html30[^\n;&|]*(?:create|release|publish|sync|link|upload)|(?:create|release|publish|sync|link|upload)[^\n;&|]*html30)/i;
+const portfolioWriteIntentPattern =
+  /(?:portfolio[^\n;&|]*(?:demo:create|live:create|live:update|live:sync|publish|release)|(?:create|update|sync|publish|release)[^\n;&|]*portfolio)/i;
 const executableScriptPattern = /(?:^|[\s;&|])(?:node\s+)?["']?(scripts\/[A-Za-z0-9_./-]+\.(?:mjs|js|ts))["']?/g;
-const canonicalLiveWritePattern = /^(?:pnpm html30:v2:live:create -- --execute-live --artifact-sha [a-f0-9]{64}|pnpm html30:v2:live:update -- --execute-live --update-existing --artifact-sha [a-f0-9]{64}(?: --sequences (?:[1-9]|[12][0-9]|30)(?:,(?:[1-9]|[12][0-9]|30))*)?|pnpm html30:v2:links:sync -- --execute --attestation-sha [a-f0-9]{64}|node scripts\/contract-lab\/create-eduitit-html30-v2-candidates\.mjs --execute-live --artifact-sha [a-f0-9]{64}|node scripts\/contract-lab\/create-eduitit-html30-v2-candidates\.mjs --execute-live --update-existing --artifact-sha [a-f0-9]{64}(?: --sequences (?:[1-9]|[12][0-9]|30)(?:,(?:[1-9]|[12][0-9]|30))*)?|node scripts\/prompt-harness\/sync-eduitit-html30-v2-links\.mjs --execute --attestation-sha [a-f0-9]{64})$/;
+const canonicalLiveWritePattern = /^(?:pnpm portfolio:live:sync -- --execute-live --attestation-sha [a-f0-9]{64}|pnpm html30:v2:live:create -- --execute-live --artifact-sha [a-f0-9]{64}|pnpm html30:v2:live:update -- --execute-live --update-existing --artifact-sha [a-f0-9]{64}(?: --sequences (?:[1-9]|[12][0-9]|30)(?:,(?:[1-9]|[12][0-9]|30))*)?|pnpm html30:v2:links:sync -- --execute --attestation-sha [a-f0-9]{64}|node scripts\/contract-lab\/create-eduitit-html30-v2-candidates\.mjs --execute-live --artifact-sha [a-f0-9]{64}|node scripts\/contract-lab\/create-eduitit-html30-v2-candidates\.mjs --execute-live --update-existing --artifact-sha [a-f0-9]{64}(?: --sequences (?:[1-9]|[12][0-9]|30)(?:,(?:[1-9]|[12][0-9]|30))*)?|node scripts\/prompt-harness\/sync-eduitit-html30-v2-links\.mjs --execute --attestation-sha [a-f0-9]{64})$/;
 
 function isInsideRepository(cwd, root) {
   const pathFromRoot = relative(root, resolve(cwd));
@@ -33,7 +36,7 @@ function referencedScripts(command) {
   return [...command.matchAll(executableScriptPattern)].map((match) => match[1]);
 }
 
-function scriptContainsHtml30Write(scriptPath, root) {
+function scriptContainsMathCanvasWrite(scriptPath, root) {
   const absolutePath = resolve(root, scriptPath);
   if (!isInsideRepository(absolutePath, root) || !existsSync(absolutePath)) return false;
   const source = readFileSync(absolutePath, "utf8");
@@ -41,7 +44,7 @@ function scriptContainsHtml30Write(scriptPath, root) {
   const writesMathCanvas = projectEndpointPattern.test(source) && writeMethodPattern.test(source);
   const writesLessonBundle =
     /lesson_bundles/.test(source) && /writeFile(?:Sync)?\s*\(/.test(source);
-  return concernsHtml30 && (writesMathCanvas || writesLessonBundle);
+  return writesMathCanvas || (concernsHtml30 && writesLessonBundle);
 }
 
 export function evaluateMathCanvasHarnessGuard(input, options = {}) {
@@ -65,7 +68,8 @@ export function evaluateMathCanvasHarnessGuard(input, options = {}) {
       referencesProtectedEntrypoint ||
       canonicalLiveWritePattern.test(command.trim()) ||
       (projectEndpointPattern.test(command) && writeMethodPattern.test(command)) ||
-      html30WriteIntentPattern.test(command)
+      html30WriteIntentPattern.test(command) ||
+      portfolioWriteIntentPattern.test(command)
     ) {
       return {
         allowed: false,
@@ -81,7 +85,9 @@ export function evaluateMathCanvasHarnessGuard(input, options = {}) {
   if (canonicalLiveWritePattern.test(command.trim())) {
     return {
       allowed: true,
-      code: command.includes("links:sync") ||
+      code: command.includes("portfolio:live:sync")
+        ? "canonical-portfolio-live-sync"
+        : command.includes("links:sync") ||
         command.includes("sync-eduitit-html30-v2-links")
         ? "canonical-html30-v2-link-sync"
         : command.includes("update-existing")
@@ -123,15 +129,25 @@ export function evaluateMathCanvasHarnessGuard(input, options = {}) {
     };
   }
 
+  if (portfolioWriteIntentPattern.test(command)) {
+    return {
+      allowed: false,
+      code: "portfolio-write-intent",
+      reason:
+        "97개 포트폴리오 생성·갱신 명령을 차단했습니다. " +
+        "현재 정적 attestation을 소비하는 portfolio:live:sync만 사용할 수 있습니다."
+    };
+  }
+
   const unsafeScript = referencedScripts(command).find((scriptPath) =>
-    scriptContainsHtml30Write(scriptPath, root)
+    scriptContainsMathCanvasWrite(scriptPath, root)
   );
   if (unsafeScript) {
     return {
       allowed: false,
-      code: "indirect-html30-writer",
+      code: "indirect-mathcanvas-writer",
       reason:
-        `HTML30 외부 쓰기 기능이 있는 임의 스크립트를 차단했습니다: ${unsafeScript}. ` +
+        `MathCanvas 외부 쓰기 기능이 있는 임의 스크립트를 차단했습니다: ${unsafeScript}. ` +
         "canonical writer 경계에 연결하세요."
     };
   }

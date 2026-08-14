@@ -1,5 +1,5 @@
 {
-  "description": "Fail-closed guard for Eduitit HTML30 MathCanvas writes and lesson-bundle link promotion.",
+  "description": "Fail-closed guard for all MathCanvas project writes, portfolio release attestation, and lesson-bundle link promotion.",
   "hooks": {
     "PreToolUse": [
       {
@@ -9,7 +9,7 @@
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/hooks/mathcanvas-harness-guard.mjs\"",
             "timeout": 5,
-            "statusMessage": "Checking the MathCanvas harness write boundary"
+            "statusMessage": "Checking the MathCanvas learning-design and live-write boundary"
           }
         ]
       }

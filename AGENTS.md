@@ -25,6 +25,14 @@
 - 묶음 라벨은 가능하면 행 위에 두고 첫 요소와 왼쪽을 맞춘다. 묶음 전체는 같은 시각적 컨테이너나 작업 패널 안에서 가운데에 놓는다.
 - `pnpm cognitive:verify`와 `pnpm check`가 통과하기 전에는 support state를 `released`로 바꾸지 않는다.
 - 학생 화면을 바꾼 뒤에는 새 canary를 확인하기 전까지 support state를 `verified`로 유지한다.
+- 저장소의 `.githooks/pre-commit`과 `.githooks/pre-push`를 끄거나 우회하지 않는다.
+  `pnpm hooks:install`로 `core.hooksPath=.githooks`를 설치한다. 학생 문구·blueprint·native
+  조작·compiler·validator를 바꾸는 커밋은 정적 학습설계 하네스가, push는 전체
+  `pnpm check`와 현재 97개 live attestation이 차단 경계가 된다.
+- 97개 포트폴리오는 97/97 성취기준, 237/237 질문, 7개 화면 계열, 23개 엔진 계열,
+  조작형 성취기준 수, 초등 문장, native 최소 크기를 하나의 content SHA로 묶는다.
+  어느 한 계열만 남기거나 한 활동을 깊게 만드는 대신 나머지 범위를 줄이는 변경은
+  release readiness에서 fail-closed한다.
 - MathCanvas가 제공하지 않는 자동채점·단계 강제·오답 피드백을 있다고 주장하지 않는다.
 - Eduitit HTML30의 MathCanvas 프로젝트 생성·수정과 수업꾸러미 링크 승격은
   canonical harness가 발급한 release attestation을 소비하는 단일 writer로만 수행한다.
@@ -35,5 +43,9 @@
   `scripts/prompt-harness/sync-eduitit-html30-links.mjs`, 직접 `/api/project` 쓰기를 실행해
   하네스를 우회하지 않는다. `.codex/hooks.json`의 PreToolUse 차단을 끄거나 피해 가는
   명령을 만들지 않는다.
+- 97개 시연 프로젝트의 생성·갱신은 `portfolio:live:sync`만 사용한다. 명령은
+  `pnpm portfolio:live:sync -- --execute-live --attestation-sha <현재 content SHA>` 형식이며,
+  97개 exact 재열기·화면 크기·영역 포함과 최소 1개 실제 조작 저장·재열기 증거가 없는
+  live report는 `portfolio:live:verify`와 pre-push에서 거부한다.
 - 수업꾸러미 링크는 Sol P0/P1/P2 0, 30/30 재열기, 현재 payload·layout·스크린샷
   SHA를 묶은 attestation을 소비하는 `html30:v2:links:sync`로만 반영한다.

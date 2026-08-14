@@ -17,6 +17,10 @@ import {
   projectRegisteredApprovalView
 } from "../../packages/templates/dist/index.js";
 import { validateForCreation } from "../../packages/validator/dist/index.js";
+import {
+  evaluatePortfolioLearningDesignReadiness,
+  portfolioContentSha256
+} from "./learning-design-policy.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const write = process.argv.includes("--write");
@@ -350,6 +354,21 @@ for (const manifest of manifests) {
           )
       );
     const nativeUsability = inspectNativeUsability(record, resolved, compiled);
+    const constraintKinds = [...new Set(
+      resolved.constraints.map((constraint) => constraint.kind)
+    )].sort();
+    const manipulativeConstraintCount = resolved.constraints.filter(
+      (constraint) => constraint.kind !== "select-one-of"
+    ).length;
+    const interactionShellId = portfolioContentSha256({
+      rendererKind: record.rendererKind,
+      constraintKinds,
+      nativeRoles: [...new Set(
+        resolved.emissions
+          .map((emission) => emission.role)
+          .filter((role) => role.startsWith("native-"))
+      )].sort()
+    }).slice(0, 16);
     rows.push({
       workItemId: record.workItemId,
       standardCode: record.standardCode,
@@ -357,6 +376,9 @@ for (const manifest of manifests) {
       archetypeId: record.archetypeId,
       engineClassIds: record.engineClassIds,
       rendererKind: record.rendererKind,
+      constraintKinds,
+      manipulativeConstraintCount,
+      interactionShellId,
       targetOutlineCount: record.targetOutlines.length,
       recommendationSupported: recommendation.supported,
       resolvedItemCount: resolved.items.length,
@@ -384,6 +406,9 @@ for (const manifest of manifests) {
       archetypeId: record.archetypeId,
       engineClassIds: record.engineClassIds,
       rendererKind: record.rendererKind,
+      constraintKinds: [],
+      manipulativeConstraintCount: 0,
+      interactionShellId: null,
       targetOutlineCount: record.targetOutlines.length,
       recommendationSupported: false,
       resolvedItemCount: 0,
@@ -431,7 +456,16 @@ const passedRows = rows.filter(
     row.resolvedItemCount === row.targetOutlineCount
 );
 const failedRows = rows.filter((row) => !passedRows.includes(row));
-const report = {
+const passedTargetOutlineCount = passedRows.reduce(
+  (sum, row) => sum + row.targetOutlineCount,
+  0
+);
+const releaseReadiness = evaluatePortfolioLearningDesignReadiness({
+  rows,
+  passedTargetOutlineCount,
+  failedStandardCount: failedRows.length
+});
+const reportBody = {
   schemaVersion: "1.0.0",
   reportId: "portfolio-scale-97-runtime-verification-v1",
   generatedAt,
@@ -452,15 +486,17 @@ const report = {
     passedStandardCount: passedRows.length,
     failedStandardCount: failedRows.length,
     expectedTargetOutlineCount: 237,
-    passedTargetOutlineCount: passedRows.reduce(
-      (sum, row) => sum + row.targetOutlineCount,
-      0
-    ),
+    passedTargetOutlineCount,
     rendererCount: new Set(rows.map((row) => row.rendererKind)).size,
     engineClassCount: new Set(rows.flatMap((row) => row.engineClassIds)).size
   },
+  releaseReadiness,
   failures: failedRows,
   rows
+};
+const report = {
+  ...reportBody,
+  contentSha256: portfolioContentSha256(reportBody)
 };
 
 const jsonPath = resolve(root, "reports/portfolio-scale/latest.json");
@@ -472,8 +508,12 @@ const markdown = [
   `- 목표 윤곽 문항: ${report.summary.passedTargetOutlineCount}/${report.summary.expectedTargetOutlineCount}`,
   `- 실제 화면 유형: ${report.summary.rendererCount}`,
   `- 엔진 계열: ${report.summary.engineClassCount}`,
+  `- 상호작용 화면 계열: ${releaseReadiness.metrics.interactionShellCount}`,
+  `- 직접 조작 성취기준: ${releaseReadiness.metrics.manipulativeStandardCount}`,
   `- 조작물 크기·확인 영역 포함: ${passedRows.filter((row) => row.nativeElementsUsable && row.nativeElementsContained).length}/${report.summary.expectedStandardCount}`,
   `- 실패: ${report.summary.failedStandardCount}`,
+  `- 학습설계 출시 판정: ${releaseReadiness.ready ? "PASS" : `FAIL (${releaseReadiness.failedChecks.join(", ")})`}`,
+  `- 정적 attestation: ${report.contentSha256}`,
   "",
   "| 작업 | 성취기준 | 화면 | 엔진 | 문항 | 생성 |",
   "|---|---|---|---|---:|---|",
@@ -490,6 +530,19 @@ if (write) {
   await mkdir(dirname(jsonPath), { recursive: true });
   await writeFile(jsonPath, `${JSON.stringify(report, null, 2)}\n`);
   await writeFile(mdPath, markdown);
+} else {
+  const [existingJson, existingMarkdown] = await Promise.all([
+    readFile(jsonPath, "utf8").catch(() => ""),
+    readFile(mdPath, "utf8").catch(() => "")
+  ]);
+  if (
+    existingJson !== `${JSON.stringify(report, null, 2)}\n` ||
+    existingMarkdown !== markdown
+  ) {
+    throw new Error(
+      "portfolio-scale-attestation-stale:run-pnpm-portfolio-update-and-stage-reports"
+    );
+  }
 }
 
 console.log(
@@ -509,6 +562,7 @@ if (
   report.summary.passedTargetOutlineCount !== 237 ||
   report.summary.rendererCount < 6 ||
   report.summary.engineClassCount !== 23 ||
+  !releaseReadiness.ready ||
   failedRows.length > 0
 ) {
   process.exitCode = 1;
