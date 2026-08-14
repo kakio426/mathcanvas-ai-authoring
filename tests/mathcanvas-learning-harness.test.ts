@@ -3,7 +3,8 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   classifyMathCanvasChanges,
-  commandsForMathCanvasHook
+  commandsForMathCanvasHook,
+  differsOnlyByGeneratedAt
 } from "../scripts/hooks/mathcanvas-git-guard.mjs";
 import {
   evaluatePortfolioLearningDesignReadiness,
@@ -64,6 +65,16 @@ describe("MathCanvas learning-design Git harness", () => {
     expect(classification.learnerFacing).toEqual([]);
     expect(classification.requiresFullCheck).toBe(true);
     expect(classification.requiresLiveAttestation).toBe(false);
+  });
+
+  it("restores generated audit timestamps but rejects any substantive report mutation", () => {
+    const before = '{\n  "generatedAt": "2026-08-11T00:00:00.000Z",\n  "score": 100\n}\n';
+    const timestampOnly =
+      '{\n  "generatedAt": "2026-08-14T00:00:00.000Z",\n  "score": 100\n}\n';
+    const substantive =
+      '{\n  "generatedAt": "2026-08-14T00:00:00.000Z",\n  "score": 99\n}\n';
+    expect(differsOnlyByGeneratedAt(before, timestampOnly)).toBe(true);
+    expect(differsOnlyByGeneratedAt(before, substantive)).toBe(false);
   });
 
   it("fails closed when breadth collapses to one renderer or one action profile", () => {

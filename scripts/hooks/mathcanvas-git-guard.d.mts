@@ -8,6 +8,7 @@ export interface MathCanvasChangeClassification {
 }
 
 export function classifyMathCanvasChanges(files: string[]): MathCanvasChangeClassification;
+export function differsOnlyByGeneratedAt(before: string, after: string): boolean;
 export function commandsForMathCanvasHook(
   mode: "pre-commit" | "pre-push",
   classification: MathCanvasChangeClassification

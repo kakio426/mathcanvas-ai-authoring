@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -30,6 +31,10 @@ const harnessPrefixes = [
   "tests/"
 ];
 const harnessFiles = new Set(["AGENTS.md", "package.json", "pnpm-lock.yaml"]);
+const generatedAuditPaths = [
+  "reports/visual-audit/latest.json",
+  "reports/quality-audit/latest.json"
+];
 
 const normalizePath = (value) => value.replaceAll("\\", "/").replace(/^\.\//u, "");
 
@@ -50,6 +55,16 @@ export function classifyMathCanvasChanges(files) {
     requiresFullCheck: learnerFacing.length > 0 || harness.length > 0,
     requiresLiveAttestation: learnerFacing.length > 0
   };
+}
+
+export function differsOnlyByGeneratedAt(before, after) {
+  if (before === after) return false;
+  const normalize = (value) =>
+    value.replace(
+      /("generatedAt"\s*:\s*)"[^"]+"/u,
+      "$1\"<generated-at>\""
+    );
+  return normalize(before) === normalize(after);
 }
 
 function run(command, args, options = {}) {
@@ -139,6 +154,25 @@ function runFocusedHarnessTests() {
   ]);
 }
 
+function runFullCheckWithoutTimestampNoise() {
+  const snapshots = new Map(
+    generatedAuditPaths.map((path) => [
+      path,
+      readFileSync(resolve(repositoryRoot, path), "utf8")
+    ])
+  );
+  run("pnpm", ["check"]);
+  for (const [path, before] of snapshots) {
+    const absolutePath = resolve(repositoryRoot, path);
+    const after = readFileSync(absolutePath, "utf8");
+    if (after === before) continue;
+    if (!differsOnlyByGeneratedAt(before, after)) {
+      throw new Error(`mathcanvas-audit-report-content-changed:${path}`);
+    }
+    writeFileSync(absolutePath, before);
+  }
+}
+
 export function commandsForMathCanvasHook(mode, classification) {
   if (mode === "pre-commit") {
     return {
@@ -190,7 +224,7 @@ async function main() {
     run("pnpm", ["cognitive:verify"]);
     run("pnpm", ["typecheck"]);
   }
-  if (commands.fullCheck) run("pnpm", ["check"]);
+  if (commands.fullCheck) runFullCheckWithoutTimestampNoise();
   if (commands.liveAttestation) run("pnpm", ["portfolio:live:verify"]);
 
   console.log(`MathCanvas ${mode}: PASS`);
